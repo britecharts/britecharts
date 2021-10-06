@@ -10,8 +10,8 @@ import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
 
-const testDataSet = new GroupedBarChartDataBuilder();
-const datasetWithThreeSources = testDataSet.with3Sources().build();
+const atestDataSet = () => new GroupedBarChartDataBuilder();
+const datasetWithThreeSources = atestDataSet().with3Sources().build();
 
 let redrawCharts;
 
@@ -48,7 +48,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
             groupedBar.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(groupedBar);
+        container.datum(dataset).call(groupedBar);
 
         getInlineLegendChart(datasetWithThreeSources, groupedBar.colorMap());
 
@@ -81,9 +81,10 @@ function getInlineLegendChart(dataset, optionalColorMap) {
         containerWidth = legendContainer.node()
             ? legendContainer.node().getBoundingClientRect().width
             : false;
-    const legendData = [
-        ...new Set(dataset.data.map((d) => d.group)),
-    ].map((d) => ({ name: d, id: d }));
+    const legendData = [...new Set(dataset.map((d) => d.group))].map((d) => ({
+        name: d,
+        id: d,
+    }));
 
     if (containerWidth) {
         select('.js-inline-legend-chart-container .britechart-legend').remove();
@@ -144,7 +145,7 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
             groupedBar.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(groupedBar);
+        container.datum(dataset).call(groupedBar);
 
         // Tooltip Setup and start
         chartTooltip
@@ -162,10 +163,32 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
     }
 }
 
+function createLoadingState(isLoading, instance) {
+    let groupedBar = instance ? instance : groupedBarChart(),
+        container = select('.js-loading-container'),
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false;
+    const dataset = datasetWithThreeSources;
+
+    if (containerWidth) {
+        groupedBar
+            .width(containerWidth)
+            .height(300)
+            .isAnimated(true)
+            .isLoading(isLoading);
+
+        container.datum(dataset).call(groupedBar);
+    }
+
+    return groupedBarChart;
+}
+
 if (select('.js-grouped-bar-chart-tooltip-container').node()) {
     // Chart creation
     creategroupedBarChartWithTooltip();
     createHorizontalgroupedBarChart();
+    createLoadingState(true);
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
@@ -174,6 +197,7 @@ if (select('.js-grouped-bar-chart-tooltip-container').node()) {
 
         creategroupedBarChartWithTooltip();
         createHorizontalgroupedBarChart();
+        createLoadingState(false);
     };
 
     // Redraw charts on window resize

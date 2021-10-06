@@ -109,9 +109,9 @@ function createBarChartWithTooltip() {
 
 function createLoadingState(isLoading, instance) {
     let barChart = instance ? instance : bar(),
-        barContainer = select('.js-loading-container'),
-        containerWidth = barContainer.node()
-            ? barContainer.node().getBoundingClientRect().width
+        container = select('.js-loading-container'),
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
             : false;
     const dataset = aTestDataSet().withLettersFrequency().build();
 
@@ -122,7 +122,7 @@ function createLoadingState(isLoading, instance) {
             .isAnimated(true)
             .isLoading(isLoading);
 
-        barContainer.datum(dataset).call(barChart);
+        container.datum(dataset).call(barChart);
     }
 
     return barChart;

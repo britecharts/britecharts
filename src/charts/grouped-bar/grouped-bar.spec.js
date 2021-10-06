@@ -30,7 +30,7 @@ describe('Grouped Bar Chart', () => {
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
         containerFixture = d3.select('.test-container');
-        containerFixture.datum(dataset.data).call(groupedBarChart);
+        containerFixture.datum(dataset).call(groupedBarChart);
     });
 
     // remove the html fixture from the DOM
@@ -94,6 +94,15 @@ describe('Grouped Bar Chart', () => {
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should create a loading-state-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.loading-state-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('grid lines', () => {
@@ -138,15 +147,14 @@ describe('Grouped Bar Chart', () => {
 
         it('should render a layer for each data entry group', () => {
             const actual = containerFixture.selectAll('.layer').size();
-            const expected = dataset.data.reduce(differentDatesReducer, [])
-                .length;
+            const expected = dataset.reduce(differentDatesReducer, []).length;
 
             expect(actual).toEqual(expected);
         });
 
         it('should render a bar for each data entry', () => {
             const actual = containerFixture.selectAll('.bar').size();
-            const expected = dataset.data.length;
+            const expected = dataset.length;
 
             expect(actual).toEqual(expected);
         });
@@ -157,7 +165,7 @@ describe('Grouped Bar Chart', () => {
                 const newDataset = buildDataSet('with2Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(groupedBarChart);
+                containerFixture.datum(newDataset).call(groupedBarChart);
                 actual = containerFixture.selectAll('.grouped-bar').size();
 
                 expect(actual).toEqual(expected);
@@ -168,7 +176,7 @@ describe('Grouped Bar Chart', () => {
                 const newDataset = buildDataSet('with2Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(groupedBarChart);
+                containerFixture.datum(newDataset).call(groupedBarChart);
                 actual = containerFixture
                     .selectAll('.grouped-bar .layer')
                     .size();
@@ -181,7 +189,7 @@ describe('Grouped Bar Chart', () => {
                 const newDataset = buildDataSet('with2Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(groupedBarChart);
+                containerFixture.datum(newDataset).call(groupedBarChart);
                 actual = containerFixture.selectAll('.grouped-bar .bar').size();
 
                 expect(actual).toEqual(expected);
@@ -194,7 +202,7 @@ describe('Grouped Bar Chart', () => {
                 const nBarsPerLayer = 3;
 
                 groupedBarChart.isAnimated(true);
-                containerFixture.datum(dataset.data).call(groupedBarChart);
+                containerFixture.datum(dataset).call(groupedBarChart);
 
                 const actualNLayers = containerFixture
                     .selectAll('.chart-group .layer')
@@ -226,7 +234,7 @@ describe('Grouped Bar Chart', () => {
                 groupedBarChart = chart().colorMap(colorMap);
 
                 containerFixture = d3.select('.test-container');
-                containerFixture.datum(dataset.data).call(groupedBarChart);
+                containerFixture.datum(dataset).call(groupedBarChart);
             });
 
             // remove the html fixture from the DOM
@@ -244,6 +252,21 @@ describe('Grouped Bar Chart', () => {
                         colorMap[d.__data__.group]
                     );
                 });
+            });
+        });
+
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const expected = 1;
+
+                groupedBarChart.isLoading(true);
+                containerFixture.datum(dataset).call(groupedBarChart);
+
+                const actual = containerFixture
+                    .select('.bar-load-state')
+                    .size();
+
+                expect(actual).toEqual(expected);
             });
         });
     });
@@ -431,15 +454,15 @@ describe('Grouped Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide loadingState getter and setter', () => {
-            let previous = groupedBarChart.loadingState(),
-                expected = 'test',
+        it('should provide isLoading getter and setter', () => {
+            let previous = groupedBarChart.isLoading(),
+                expected = true,
                 actual;
 
-            groupedBarChart.loadingState(expected);
-            actual = groupedBarChart.loadingState();
+            groupedBarChart.isLoading(expected);
+            actual = groupedBarChart.isLoading();
 
-            expect(previous).not.toBe(actual);
+            expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
         });
 

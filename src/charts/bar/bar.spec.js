@@ -86,6 +86,15 @@ describe('Bar Chart', () => {
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should create a loading-state-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.loading-state-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('axis', () => {
