@@ -8,7 +8,7 @@ import { select, mouse } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
-import { line } from '../helpers/load';
+import { lineLoadingMarkup } from '../helpers/load';
 
 /**
  * @typedef StepChartData
@@ -61,7 +61,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        loadingState = line,
+        isLoading = false,
         ease = easeQuadInOut,
         data,
         chartWidth,
@@ -121,9 +121,16 @@ export default function module() {
                 'The Step Chart is being deprecated! Please use a line chart with lineCurve "step" for your visualization!'
             );
 
+            buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
+
             buildScales();
             buildAxis();
-            buildSVG(this);
             drawGridLines();
             drawSteps();
             drawAxis();
@@ -153,6 +160,8 @@ export default function module() {
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('grid-lines-group', true);
         container.append('g').classed('chart-group', true);
@@ -217,6 +226,14 @@ export default function module() {
     }
 
     /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
+    }
+
+    /**
      * Draws the x and y axis on the svg object within their
      * respective groups
      * @private
@@ -260,6 +277,14 @@ export default function module() {
                 .attr('transform', 'rotate(270 0 0)')
                 .text(yAxisLabel);
         }
+    }
+
+    /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(lineLoadingMarkup);
     }
 
     /**
@@ -445,15 +470,15 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {string} markup Desired markup to show when null data
-     * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function (_markup) {
+    exports.isLoading = function (_flag) {
         if (!arguments.length) {
-            return loadingState;
+            return isLoading;
         }
-        loadingState = _markup;
+        isLoading = _flag;
 
         return this;
     };

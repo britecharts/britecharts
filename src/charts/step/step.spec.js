@@ -281,13 +281,13 @@ describe('Step Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide loadingState getter and setter', () => {
-            let previous = stepChart.loadingState(),
-                expected = 'test',
+        it('should provide isLoading getter and setter', () => {
+            let previous = stepChart.isLoading(),
+                expected = true,
                 actual;
 
-            stepChart.loadingState(expected);
-            actual = stepChart.loadingState();
+            stepChart.isLoading(expected);
+            actual = stepChart.isLoading();
 
             expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);

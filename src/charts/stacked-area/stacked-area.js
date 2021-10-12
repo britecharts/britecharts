@@ -26,7 +26,7 @@ import {
     bounceCircleHighlight,
 } from '../helpers/filter';
 import { addDays, diffDays } from '../helpers/date';
-import { stackedArea as stackedAreaLoadingMarkup } from '../helpers/load';
+import { stackedAreaLoadingMarkup } from '../helpers/load';
 
 const uniq = (arrArg) =>
     arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);

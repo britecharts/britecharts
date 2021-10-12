@@ -8,7 +8,7 @@ import 'd3-transition';
 import { exportChart } from '../helpers/export';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import colorHelper from '../helpers/color';
-import { stackedArea as stackedAreaLoadingMarkup } from '../helpers/load';
+import { sparkLineLoadingMarkup } from '../helpers/load';
 import { uniqueId } from '../helpers/number';
 import { motion } from '../helpers/constants';
 
@@ -22,8 +22,8 @@ const DEFAULT_TITLE_TEXT_STYLE = {
 /**
  * @typedef SparklineChartData
  * @type {Object[]}
- * @property {Number} value        Value of the group (required)
- * @property {String} name         Name of the group (required)
+ * @property {number} value        Value of the group (required)
+ * @property {string} name         Name of the group (required)
  *
  * @example
  * [
@@ -67,7 +67,7 @@ export default function module() {
         },
         width = 100,
         height = 30,
-        loadingState = stackedAreaLoadingMarkup,
+        isLoading = false,
         xScale,
         yScale,
         areaGradient = ['#F5FDFF', '#F6FEFC'],
@@ -113,8 +113,14 @@ export default function module() {
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(_data);
 
-            buildScales();
             buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
+            buildScales();
             createGradients();
             createMaskingClip();
             drawArea();
@@ -138,6 +144,8 @@ export default function module() {
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('text-group', true);
         container.append('g').classed('chart-group', true);
@@ -189,6 +197,14 @@ export default function module() {
 
             return [...acc, d];
         }, []);
+    }
+
+    /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
     }
 
     /**
@@ -320,6 +336,14 @@ export default function module() {
     }
 
     /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(sparkLineLoadingMarkup);
+    }
+
+    /**
      * Draws the text element within the text group
      * Is displayed at the top of sparked area
      * @private
@@ -380,7 +404,7 @@ export default function module() {
     // API
     /**
      * Gets or Sets the duration of the animation
-     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @param  {number} _x=1200         Desired animation duration for the graph
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
@@ -395,7 +419,7 @@ export default function module() {
 
     /**
      * Gets or Sets the areaGradient of the chart
-     * @param  {String[]} _x = ['#F5FDFF', '#F6FEFC']   Desired areaGradient for the graph
+     * @param  {string[]} _x = ['#F5FDFF', '#F6FEFC']   Desired areaGradient for the graph
      * @return {areaGradient | module}                  Current areaGradient or Chart module to chain calls
      * @public
      */
@@ -410,7 +434,7 @@ export default function module() {
 
     /**
      * Gets or Sets the dateLabel of the chart
-     * @param  {Number} _x          Desired dateLabel for the graph
+     * @param  {number} _x          Desired dateLabel for the graph
      * @return {dateLabel | module} Current dateLabel or Chart module to chain calls
      * @public
      * @deprecated
@@ -427,8 +451,8 @@ export default function module() {
 
     /**
      * Chart exported to png and a download action is fired
-     * @param {String} filename     File title for the resulting picture
-     * @param {String} title        Title to add at the top of the exported picture
+     * @param {string} filename     File title for the resulting picture
+     * @param {string} title        Title to add at the top of the exported picture
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
@@ -438,7 +462,7 @@ export default function module() {
 
     /**
      * Gets or Sets the height of the chart
-     * @param  {Number} _x=30       Desired height for the graph
+     * @param  {number} _x=30       Desired height for the graph
      * @return { height | module}   Current height or Chart module to chain calls
      * @public
      */
@@ -455,7 +479,7 @@ export default function module() {
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
      * By default this is 'false'
      *
-     * @param  {Boolean} _x=false       Desired animation flag
+     * @param  {boolean} _x=false       Desired animation flag
      * @return {isAnimated | module}    Current isAnimated flag or Chart module
      * @public
      */
@@ -470,7 +494,7 @@ export default function module() {
 
     /**
      * Gets or Sets the lineGradient of the chart
-     * @param  {String[]} _x = colorHelper.colorGradients.greenBlue     Desired lineGradient for the graph
+     * @param  {string[]} _x = colorHelper.colorGradients.greenBlue     Desired lineGradient for the graph
      * @return {lineGradient | module}                                  Current lineGradient or Chart module to chain calls
      * @public
      */
@@ -485,23 +509,23 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {string} markup          Desired markup to show when null data
-     * @return {loadingState | module}  Current loading state markup or Chart module to chain calls
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function (_markup) {
+    exports.isLoading = function (_flag) {
         if (!arguments.length) {
-            return loadingState;
+            return isLoading;
         }
-        loadingState = _markup;
+        isLoading = _flag;
 
         return this;
     };
 
     /**
      * Gets or Sets the margin of the chart
-     * @param  {Object} _x          Margin object to get/set
-     * @return {margin | module}    Current margin or Chart module to chain calls
+     * @param  {object} _x          Margin object to get/set
+     * @return {object | module}    Current margin or Chart module to chain calls
      * @public
      */
     exports.margin = function (_x) {
@@ -519,8 +543,8 @@ export default function module() {
     /**
      * Gets or Sets the text of the title at the top of sparkline.
      * To style the title, use the titleTextStyle method below.
-     * @param  {String} _x = null   String to set
-     * @return {String | module}    Current titleText or Chart module to chain calls
+     * @param  {string} _x = null   String to set
+     * @return {string | module}    Current titleText or Chart module to chain calls
      * @public
      */
     exports.titleText = function (_x) {
@@ -552,7 +576,7 @@ export default function module() {
      * You can set attributes individually. Setting just 'font-family'
      * within the object will set custom 'font-family` while the rest
      * of the attributes will have the default values provided above.
-     * @param  {Object} _x          Object with text font configurations
+     * @param  {object} _x          Object with text font configurations
      * @return {Object | module}    Current titleTextStyle or Chart module to chain calls
      * @public
      * @example
@@ -575,7 +599,7 @@ export default function module() {
 
     /**
      * Gets or Sets the valueLabel of the chart
-     * @param  {Number} _x              Desired valueLabel for the graph
+     * @param  {number} _x              Desired valueLabel for the graph
      * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
      * @public
      * @deprecated
@@ -592,7 +616,7 @@ export default function module() {
 
     /**
      * Gets or Sets the width of the chart
-     * @param  {Number} _x=100      Desired width for the graph
+     * @param  {number} _x=100      Desired width for the graph
      * @return {width | module}     Current width or Chart module to chain calls
      * @public
      */
