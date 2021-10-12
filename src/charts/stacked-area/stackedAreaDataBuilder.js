@@ -56,6 +56,6 @@ export function StackedAreaDataBuilder(config) {
     };
 
     this.build = function () {
-        return this.config;
+        return this.config.data;
     };
 }

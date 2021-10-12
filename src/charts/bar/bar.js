@@ -195,9 +195,9 @@ export default function module() {
 
                 return;
             }
+            cleanLoadingState();
             buildScales();
             buildAxis(localeFormatter);
-            cleanLoadingState();
             buildGradient();
             drawGridLines();
             drawAxis();

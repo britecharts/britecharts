@@ -81,7 +81,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        loadingState = stackedAreaLoadingMarkup,
+        isLoading = false,
         xScale,
         xAxis,
         xSubAxis,
@@ -196,9 +196,15 @@ export default function module() {
             data = cleanData(_data);
             dataSorted = getSortedData(data);
 
+            buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
             buildLayers();
             buildScales();
-            buildSVG(this);
             buildAxis();
             drawAxis();
             drawStackedAreas();
@@ -358,6 +364,8 @@ export default function module() {
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container
             .append('g')
@@ -604,6 +612,14 @@ export default function module() {
     }
 
     /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
+    }
+
+    /**
      * Draws the x and y axis on the svg object within their
      * respective groups
      * @private
@@ -816,6 +832,14 @@ export default function module() {
             .append('stop')
             .attr('offset', ({ offset }) => offset)
             .attr('stop-color', ({ color }) => color);
+    }
+
+    /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(stackedAreaLoadingMarkup);
     }
 
     /**
@@ -1515,15 +1539,15 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {String} markup      Desired markup to show when null data
-     * @return {String | module}    Current loading state markup or Chart module to chain calls
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function (_markup) {
+    exports.isLoading = function (_flag) {
         if (!arguments.length) {
-            return loadingState;
+            return isLoading;
         }
-        loadingState = _markup;
+        isLoading = _flag;
 
         return this;
     };
