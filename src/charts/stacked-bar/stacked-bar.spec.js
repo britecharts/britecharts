@@ -29,7 +29,7 @@ describe('Stacked Bar Chart', () => {
         stackedBarChart = chart().grid('full');
 
         containerFixture = d3.select('.test-container');
-        containerFixture.datum(dataset.data).call(stackedBarChart);
+        containerFixture.datum(dataset).call(stackedBarChart);
     });
 
     // remove the html fixture from the DOM
@@ -93,6 +93,15 @@ describe('Stacked Bar Chart', () => {
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should create a loading-state-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.loading-state-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('grid lines', () => {
@@ -136,15 +145,14 @@ describe('Stacked Bar Chart', () => {
         });
 
         it('should render a layer for each data entry group', () => {
-            const expected = dataset.data.reduce(differentStacksReducer, [])
-                .length;
+            const expected = dataset.reduce(differentStacksReducer, []).length;
             const actual = containerFixture.selectAll('.layer').size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should render a bar for each data entry', () => {
-            const expected = dataset.data.length;
+            const expected = dataset.length;
             const actual = containerFixture.selectAll('.bar').size();
 
             expect(actual).toEqual(expected);
@@ -156,7 +164,7 @@ describe('Stacked Bar Chart', () => {
                 const newDataset = buildDataSet('with2Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(stackedBarChart);
+                containerFixture.datum(newDataset).call(stackedBarChart);
                 actual = containerFixture.selectAll('.stacked-bar').nodes()
                     .length;
 
@@ -168,7 +176,7 @@ describe('Stacked Bar Chart', () => {
                 const newDataset = buildDataSet('with2Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(stackedBarChart);
+                containerFixture.datum(newDataset).call(stackedBarChart);
                 actual = containerFixture
                     .selectAll('.stacked-bar .layer')
                     .nodes().length;
@@ -181,7 +189,7 @@ describe('Stacked Bar Chart', () => {
                 const newDataset = buildDataSet('with2Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(stackedBarChart);
+                containerFixture.datum(newDataset).call(stackedBarChart);
                 actual = containerFixture.selectAll('.stacked-bar .bar').nodes()
                     .length;
 
@@ -195,7 +203,7 @@ describe('Stacked Bar Chart', () => {
                 const nBarsPerLayer = 4;
 
                 stackedBarChart.isAnimated(true);
-                containerFixture.datum(dataset.data).call(stackedBarChart);
+                containerFixture.datum(dataset).call(stackedBarChart);
 
                 const actualNLayers = containerFixture
                     .selectAll('.chart-group .layer')
@@ -206,6 +214,21 @@ describe('Stacked Bar Chart', () => {
 
                 expect(actualNLayers).toEqual(expectedNLayers);
                 expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
+            });
+        });
+
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const expected = 1;
+
+                stackedBarChart.isLoading(true);
+                containerFixture.datum(dataset).call(stackedBarChart);
+
+                const actual = containerFixture
+                    .select('.bar-load-state')
+                    .size();
+
+                expect(actual).toEqual(expected);
             });
         });
 
@@ -227,7 +250,7 @@ describe('Stacked Bar Chart', () => {
                 stackedBarChart = chart().colorMap(colorMap);
 
                 containerFixture = d3.select('.test-container');
-                containerFixture.datum(dataset.data).call(stackedBarChart);
+                containerFixture.datum(dataset).call(stackedBarChart);
             });
 
             // remove the html fixture from the DOM
@@ -431,32 +454,16 @@ describe('Stacked Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        describe('loadingState', () => {
-            it('should provide loadingState getter and setter', () => {
-                let previous = stackedBarChart.loadingState(),
-                    expected = 'test',
-                    actual;
+        it('should provide isLoading getter and setter', () => {
+            let previous = stackedBarChart.isLoading(),
+                expected = true,
+                actual;
 
-                stackedBarChart.loadingState(expected);
-                actual = stackedBarChart.loadingState();
+            stackedBarChart.isLoading(expected);
+            actual = stackedBarChart.isLoading();
 
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            describe('when getting a loadingState', () => {
-                it('should return an SVG element', () => {
-                    let expected = 1,
-                        actual;
-
-                    stackedBarChart = chart();
-                    actual = stackedBarChart
-                        .loadingState()
-                        .match('bar-load-state').length;
-
-                    expect(actual).toEqual(expected);
-                });
-            });
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
         });
 
         it('should provide margin getter and setter', () => {
