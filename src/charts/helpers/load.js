@@ -53,25 +53,27 @@ export const donutLoadingMarkup = `
         </svg>
     `;
 
-export const line = `
+export const lineLoadingMarkup = `
         <svg
             class="load-state line-load-state"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 711 325"
         >
             ${linearGradient}
-            <path
-                id="chart-bg"
-                class="chart-bg"
-                style="stroke:#C3C6CF;"
-                d="M3.4,216.5h707.3 M3.4,160.5h707.3 M3.3,103.5h707.3 M3.3,48.5h707.6 M0.4,276.6H710H0.4z"
-            />
-            <polyline
-                id="chart-line"
-                class="chart-line"
-                style="stroke:#C3C6CF;stroke-width:4;fill:none;"
-                points="8.8,175.8 62.4,237.7 116.1,184.7 169.7,175.8 223.3,57 277,176.8 330.6,176.8 384.3,122.5 437.9,176.8 491.6,176.8 545.2,218.4 598.8,122.5 652.5,184.7 706.1,135.1 "
-            />
+            <g transform="translate(-10 -10)">
+                <path
+                    id="chart-bg"
+                    class="chart-bg"
+                    style="stroke:#C3C6CF;"
+                    d="M3.4,216.5h707.3 M3.4,160.5h707.3 M3.3,103.5h707.3 M3.3,48.5h707.6 M0.4,276.6H710H0.4z"
+                />
+                <polyline
+                    id="chart-line"
+                    class="chart-line"
+                    style="stroke:#C3C6CF;stroke-width:4;fill:none;"
+                    points="8.8,175.8 62.4,237.7 116.1,184.7 169.7,175.8 223.3,57 277,176.8 330.6,176.8 384.3,122.5 437.9,176.8 491.6,176.8 545.2,218.4 598.8,122.5 652.5,184.7 706.1,135.1 "
+                />
+            </g>
             <rect class="chart-filter" fill="url(#lgrad)" x="-100%" y="0" width="300%" height="100%"></rect>
         </svg>
     `;
@@ -126,7 +128,7 @@ export default {
     linearGradient,
     barLoadingMarkup,
     donutLoadingMarkup,
-    line,
+    lineLoadingMarkup,
     brushLoadingMarkup,
     stackedArea,
 };

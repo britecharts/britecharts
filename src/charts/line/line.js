@@ -12,7 +12,7 @@ import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
 import colorHelper from '../helpers/color';
-import { line as lineChartLoadingMarkup } from '../helpers/load';
+import { lineLoadingMarkup } from '../helpers/load';
 import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import { axisTimeCombinations, curveMap, motion } from '../helpers/constants';
@@ -32,16 +32,16 @@ import { castValueToType } from '../helpers/type';
 /**
  * @typedef D3Selection
  * @type {Array[]}
- * @property {Number} length            Size of the selection
+ * @property {number} length            Size of the selection
  * @property {DOMElement} parentNode    Parent of the selection
  */
 
 /**
  * @typedef lineChartFlatData
- * @type {Object}
- * @property {String} topicName    Topic name (required)
- * @property {Number} name         Topic identifier (required)
- * @property {Object[]} dates      All date entries with values for that topic in ISO8601 format (required)
+ * @type {object}
+ * @property {string} topicName    Topic name (required)
+ * @property {number} topic        Topic identifier (required)
+ * @property {object[]} dates      All date entries with values for that topic in ISO8601 format (required)
  *
  * @example
  * [
@@ -57,10 +57,10 @@ import { castValueToType } from '../helpers/type';
 /**
  * Former data standard, it is currently calculated internally if not passed
  * @typedef lineChartDataByTopic
- * @type {Object}
- * @property {String} topicName    Topic name (required)
- * @property {Number} topic        Topic identifier (required)
- * @property {Object[]} dates      All date entries with values for that topic in ISO8601 format (required)
+ * @type {object}
+ * @property {string} topicName    Topic name (required)
+ * @property {number} topic        Topic identifier (required)
+ * @property {object[]} dates      All date entries with values for that topic in ISO8601 format (required)
  *
  * @example
  * {
@@ -82,9 +82,9 @@ import { castValueToType } from '../helpers/type';
 /**
  * The Data Sorted is calculated internally in the chart in order to pass it to our tooltips
  * @typedef lineChartDataSorted
- * @type {Object[]}
- * @property {String} date | number        Date in ISO8601 format or number (required)]
- * @property {Object[]} topics     List of topics with values that date (required)
+ * @type {object[]}
+ * @property {string} date | number        Date in ISO8601 format or number (required)]
+ * @property {object[]} topics     List of topics with values that date (required)
  *
  * @example
  * [
@@ -117,7 +117,7 @@ import { castValueToType } from '../helpers/type';
  * Note that up to version 2.10.1, this required a "dataByTopic" array described on lineChartDataByTopic.
  * The "dataByTopic" schema still works, but we prefer a flat dataset as described here.
  * @typedef LineChartData
- * @type {Object}
+ * @type {object}
  * @property {lineChartFlatData[]} data  Data values to chart (required)
  *
  * @example
@@ -179,7 +179,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        loadingState = lineChartLoadingMarkup,
+        isLoading = false,
         tooltipThreshold = 480,
         svg,
         paths,
@@ -283,8 +283,14 @@ export default function module() {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
 
-            buildScales();
             buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
+            buildScales();
             buildAxis();
             drawAxis();
             buildGradient();
@@ -366,8 +372,8 @@ export default function module() {
 
     /**
      * Formats the value depending on its characteristics
-     * @param  {Number} value Value to format
-     * @return {Number}       Formatted value
+     * @param  {number} value Value to format
+     * @return {number}       Formatted value
      */
     function getFormattedValue(value) {
         let formatFn;
@@ -463,6 +469,8 @@ export default function module() {
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container
             .append('g')
@@ -675,6 +683,14 @@ export default function module() {
     }
 
     /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
+    }
+
+    /**
      * Creates a masking clip that would help us fake an animation if the
      * proper flag is true
      *
@@ -800,6 +816,14 @@ export default function module() {
             .attr('fill', 'none');
 
         lines.exit().remove();
+    }
+
+    /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(lineLoadingMarkup);
     }
 
     /**
@@ -1015,10 +1039,10 @@ export default function module() {
 
     /**
      * Finds out which datapoint is closer to the given x position
-     * @param  {Number} x0 Date value for data point
-     * @param  {Object} d0 Previous datapoint
-     * @param  {Object} d1 Next datapoint
-     * @return {Object}    d0 or d1, the datapoint with closest date to x0
+     * @param  {number} x0 Date value for data point
+     * @param  {object} d0 Previous datapoint
+     * @param  {object} d1 Next datapoint
+     * @return {object}    d0 or d1, the datapoint with closest date to x0
      */
     function findOutNearestDate(x0, d0, d1) {
         if (xAxisValueType === 'number') {
@@ -1033,8 +1057,8 @@ export default function module() {
 
     /**
      * Finds out the data entry that is closer to the given position on pixels
-     * @param  {Number} mouseX X position of the mouse
-     * @return {Object}        Data entry that is closer to that x axis position
+     * @param  {number} mouseX X position of the mouse
+     * @return {object}        Data entry that is closer to that x axis position
      */
     function getNearestDataPoint(mouseX) {
         let dateFromInvertedX = xScale.invert(mouseX);
@@ -1130,7 +1154,7 @@ export default function module() {
 
     /**
      * Creates coloured circles marking where the exact data y value is for a given data point
-     * @param  {Object} dataPoint Data point to extract info from
+     * @param  {object} dataPoint Data point to extract info from
      * @private
      */
     function highlightDataPoints(dataPoint) {
@@ -1252,7 +1276,7 @@ export default function module() {
 
     /**
      * Helper method to update the x position of the vertical marker
-     * @param  {Object} dataPoint Data entry to extract info
+     * @param  {object} dataPoint Data entry to extract info
      * @return void
      */
     function moveVerticalMarker(verticalMarkerXPosition) {
@@ -1273,7 +1297,7 @@ export default function module() {
     /**
      * Determines if we should add the tooltip related logic depending on the
      * size of the chart and the tooltipThreshold variable value
-     * @return {Boolean} Should we build the tooltip?
+     * @return {boolean} Should we build the tooltip?
      */
     function shouldShowTooltip() {
         return width > tooltipThreshold;
@@ -1282,7 +1306,7 @@ export default function module() {
     // API
     /**
      * Gets or Sets the duration of the animation
-     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @param  {number} _x=1200         Desired animation duration for the graph
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
@@ -1305,8 +1329,8 @@ export default function module() {
 
     /**
      * Gets or Sets the label of the X axis of the chart
-     * @param  {String} _x              Desired label for the X axis
-     * @return { (String | Module) }    Current label of the X axis or Line Chart module to chain calls
+     * @param  {string} _x              Desired label for the X axis
+     * @return { (string | module) }    Current label of the X axis or Line Chart module to chain calls
      * @public
      */
     exports.xAxisLabel = function (_x) {
@@ -1320,8 +1344,8 @@ export default function module() {
 
     /**
      * Gets or Sets the label of the Y axis of the chart
-     * @param  {String} _x              Desired label for the Y axis
-     * @return { (String | Module) }    Current label of the Y axis or Line Chart module to chain calls
+     * @param  {string} _x              Desired label for the Y axis
+     * @return { (String | module) }    Current label of the Y axis or Line Chart module to chain calls
      * @public
      */
     exports.yAxisLabel = function (_x) {
@@ -1335,8 +1359,8 @@ export default function module() {
 
     /**
      * Gets or Sets the colorSchema of the chart
-     * @param  {String[]} _x Desired colorSchema for the graph
-     * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+     * @param  {string[]} _x Desired colorSchema for the graph
+     * @return { string[] | module} Current colorSchema or Chart module to chain calls
      * @public
      */
     exports.colorSchema = function (_x) {
@@ -1366,8 +1390,8 @@ export default function module() {
 
     /**
      * Gets or Sets the dateLabel of the chart
-     * @param  {Number} _x Desired dateLabel for the graph
-     * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+     * @param  {number} _x Desired dateLabel for the graph
+     * @return { number | module} Current dateLabel or Chart module to chain calls
      * @public
      * @deprecated
      */
@@ -1385,8 +1409,8 @@ export default function module() {
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
-     * @param  {String} _x              Desired format for x axis, one of the d3.js date formats [here]{@link https://github.com/d3/d3-time-format#locale_format}
-     * @return { String|Module }        Current format or module to chain calls
+     * @param  {string} _x              Desired format for x axis, one of the d3.js date formats [here]{@link https://github.com/d3/d3-time-format#locale_format}
+     * @return { string|module }        Current format or module to chain calls
      * @public
      */
     exports.xAxisCustomFormat = function (_x) {
@@ -1400,7 +1424,7 @@ export default function module() {
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
-     * @param  {String} _x          Desired format, a combination of axisTimeCombinations (MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR)
+     * @param  {string} _x          Desired format, a combination of axisTimeCombinations (MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR)
      * Set it to 'custom' to make use of specific formats with xAxisCustomFormat
      * @return { String|Module }      Current format or module to chain calls
      * @public
@@ -1421,8 +1445,8 @@ export default function module() {
      * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
      * how many and where the ticks will appear.
      *
-     * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-     * @return { (Number|Module) }      Current number or ticks or module to chain calls
+     * @param  {number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+     * @return { (Number|module) }      Current number or ticks or module to chain calls
      * @public
      */
     exports.xTicks = function (_x) {
@@ -1437,7 +1461,7 @@ export default function module() {
     /**
      * Gets or Sets the grid mode.
      *
-     * @param  {String} _x          Desired mode for the grid ('vertical'|'horizontal'|'full')
+     * @param  {string} _x          Desired mode for the grid ('vertical'|'horizontal'|'full')
      * @return { String | module}   Current mode of the grid or Line Chart module to chain calls
      * @public
      */
@@ -1452,8 +1476,8 @@ export default function module() {
 
     /**
      * Gets or Sets the height of the chart
-     * @param  {Number} _x              Desired width for the graph
-     * @return { (Number | Module) }    Current height or Line Chart module to chain calls
+     * @param  {number} _x              Desired width for the graph
+     * @return { (Number | module) }    Current height or Line Chart module to chain calls
      * @public
      */
     exports.height = function (_x) {
@@ -1467,7 +1491,7 @@ export default function module() {
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
-     * @param  {Boolean} _x = false     Desired animation flag
+     * @param  {boolean} _x = false     Desired animation flag
      * @return { isAnimated | module}   Current isAnimated flag or Chart module
      * @public
      */
@@ -1483,8 +1507,8 @@ export default function module() {
     /**
      * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
      * onto the chart with a specific color and a text annotation over the line.
-     * @param  {Object[]} _x            Array of Objects describing the lines
-     * @return { (Object[] | Module) }  Current lines or module to chain calls
+     * @param  {object[]} _x            Array of Objects describing the lines
+     * @return { (Object[] | module) }  Current lines or module to chain calls
      * @public
      * @example line.lines([{
      *   y: 2,
@@ -1506,7 +1530,7 @@ export default function module() {
      * @param  {curve} _x Desired curve for the lines, default 'linear'. Other options are:
      * basis, natural, monotoneX, monotoneY, step, stepAfter, stepBefore, cardinal, and
      * catmullRom. Visit https://github.com/d3/d3-shape#curves for more information.
-     * @return { (curve | Module) } Current line curve or Line Chart module to chain calls
+     * @return { (curve | module) } Current line curve or Line Chart module to chain calls
      * @public
      */
     exports.lineCurve = function (_x) {
@@ -1520,8 +1544,8 @@ export default function module() {
 
     /**
      * Gets or Sets the gradient colors of the line chart when there is only one line
-     * @param  {String[]} _x            Desired color gradient for the line (array of two hexadecimal numbers)
-     * @return { (Number | Module) }    Current color gradient or Line Chart module to chain calls
+     * @param  {string[]} _x            Desired color gradient for the line (array of two hexadecimal numbers)
+     * @return { (Number | module) }    Current color gradient or Line Chart module to chain calls
      * @public
      */
     exports.lineGradient = function (_x) {
@@ -1535,15 +1559,15 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {string} markup Desired markup to show when null data
-     * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function (_markup) {
+    exports.isLoading = function (_flag) {
         if (!arguments.length) {
-            return loadingState;
+            return isLoading;
         }
-        loadingState = _markup;
+        isLoading = _flag;
 
         return this;
     };
@@ -1552,8 +1576,8 @@ export default function module() {
      * Pass language tag for the tooltip to localize the date.
      * Uses Intl.DateTimeFormat, for compatability and support, refer to
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-     * @param  {String} _x            A language tag (BCP 47) like 'en-US' or 'fr-FR'
-     * @return { (String|Module) }    Current locale or module to chain calls
+     * @param  {string} _x            A language tag (BCP 47) like 'en-US' or 'fr-FR'
+     * @return { (string|module) }    Current locale or module to chain calls
      * @public
      */
     exports.locale = function (_x) {
@@ -1567,8 +1591,8 @@ export default function module() {
 
     /**
      * Gets or Sets the margin object of the chart (top, bottom, left and right)
-     * @param  {Object} _x              Margin object to get/set
-     * @return { (Object | Module) }    Current margin or Line Chart module to chain calls
+     * @param  {object} _x              Margin object to get/set
+     * @return { (object | module) }    Current margin or Line Chart module to chain calls
      * @public
      */
     exports.margin = function (_x) {
@@ -1600,7 +1624,7 @@ export default function module() {
 
     /**
      * Gets or Sets the topicLabel of the chart
-     * @param  {Boolean} _x=false                   Whether all data points should be drawn
+     * @param  {boolean} _x=false                   Whether all data points should be drawn
      * @return {shouldShowAllDataPoints | module}   Current shouldShowAllDataPoints or Chart module to chain calls
      * @public
      */
@@ -1616,8 +1640,8 @@ export default function module() {
     /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
      * NOTE: This could also depend on the aspect ratio
-     * @param  {Number} _x              Desired tooltip threshold for the graph
-     * @return { (Number | Module) }    Current tooltip threshold or Line Chart module to chain calls
+     * @param  {number} _x              Desired tooltip threshold for the graph
+     * @return { (Number | module) }    Current tooltip threshold or Line Chart module to chain calls
      * @public
      */
     exports.tooltipThreshold = function (_x) {
@@ -1631,7 +1655,7 @@ export default function module() {
 
     /**
      * Gets or Sets the topicLabel of the chart
-     * @param  {Number} _x              Desired topicLabel for the graph
+     * @param  {number} _x              Desired topicLabel for the graph
      * @return {topicLabel | module}    Current topicLabel or Chart module to chain calls
      * @public
      * @deprecated
@@ -1648,7 +1672,7 @@ export default function module() {
 
     /**
      * Gets or Sets the valueLabel of the chart
-     * @param  {Number} _x              Desired valueLabel for the graph
+     * @param  {number} _x              Desired valueLabel for the graph
      * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
      * @public
      * @deprecated
@@ -1665,7 +1689,7 @@ export default function module() {
 
     /**
      * Gets or Sets the yAxisLabelPadding of the chart.
-     * @param  {Number} _x= -36                 Desired yAxisLabelPadding for the graph
+     * @param  {number} _x= -36                 Desired yAxisLabelPadding for the graph
      * @return {yAxisLabelPadding | module}     Current yAxisLabelPadding or Chart module to chain calls
      * @public
      */
@@ -1680,8 +1704,8 @@ export default function module() {
 
     /**
      * Gets or Sets the number of ticks of the y axis on the chart
-     * @param  {Number} _x = 5     Desired yTicks
-     * @return {Number | module}   Current yTicks or Chart module to chain calls
+     * @param  {number} _x = 5     Desired yTicks
+     * @return {number | module}   Current yTicks or Chart module to chain calls
      * @public
      */
     exports.yTicks = function (_x) {
@@ -1695,8 +1719,8 @@ export default function module() {
 
     /**
      * Gets or Sets the width of the chart
-     * @param  {Number} _x          Desired width for the graph
-     * @return {Number | Module}    Current width or Line Chart module to chain calls
+     * @param  {number} _x          Desired width for the graph
+     * @return {number | Module}    Current width or Line Chart module to chain calls
      * @public
      */
     exports.width = function (_x) {
@@ -1710,8 +1734,8 @@ export default function module() {
 
     /**
      * Chart exported to png and a download action is fired
-     * @param {String} filename     File title for the resulting picture
-     * @param {String} title        Title to add at the top of the exported picture
+     * @param {string} filename     File title for the resulting picture
+     * @param {string} title        Title to add at the top of the exported picture
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
