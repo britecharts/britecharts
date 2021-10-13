@@ -1,3 +1,5 @@
+const { path } = require('d3-path');
+
 define(function(require){
     'use strict';
 
@@ -232,6 +234,7 @@ define(function(require){
             shouldShowAllDataPoints = false,
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
+            easeLiner = d3Ease.easeLinear,
             animationDuration = 1500,
             maskingRectangle,
 
@@ -310,7 +313,7 @@ define(function(require){
                 drawAxis();
                 buildGradient();
                 drawLines();
-                createMaskingClip();
+                animateLines();
 
                 if (shouldShowTooltip()) {
                     drawHoverOverlay();
@@ -424,7 +427,7 @@ define(function(require){
 
                 if(xAxisScale === 'logarithmic') {
                     xAxis = d3Axis.axisBottom(xScale)
-                        .ticks(minor.tick, "e")
+                        .ticks(minor.tick, 'e')
                         .tickFormat(function (d) {
                             const log = Math.log(d) / Math.LN10;
                             return Math.abs(Math.round(log) - log) < 1e-6 ? '10^' + Math.round(log) : '';
@@ -798,6 +801,21 @@ define(function(require){
             lines
                 .exit()
                 .remove();
+        }
+
+        function animateLines() {
+            if (isAnimated) {
+                const totalLength = paths.node().getTotalLength();
+
+                paths
+                    .attr('stroke-dasharray', totalLength + ' ' + 3*totalLength)
+                    .attr('stroke-dashoffset', totalLength)
+                    .transition()
+                    .ease(easeLiner)
+                    .duration(3000)
+                    .attr('stroke-dashoffset', 10);
+
+            }
         }
 
         /**
