@@ -50,7 +50,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             stackedBar.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(stackedBar);
+        container.datum(dataset).call(stackedBar);
 
         getInlineLegendChart(datasetWithThreeSources, stackedBar.colorMap());
 
@@ -83,9 +83,10 @@ function getInlineLegendChart(dataset, optionalColorMap) {
         containerWidth = legendContainer.node()
             ? legendContainer.node().getBoundingClientRect().width
             : false;
-    const legendData = [
-        ...new Set(dataset.data.map((d) => d.stack)),
-    ].map((d) => ({ name: d, id: d }));
+    const legendData = [...new Set(dataset.map((d) => d.stack))].map((d) => ({
+        name: d,
+        id: d,
+    }));
 
     if (containerWidth) {
         select('.js-inline-legend-chart-container .britechart-legend').remove();
@@ -147,7 +148,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
             stackedBar.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(stackedBar);
+        container.datum(dataset).call(stackedBar);
 
         // Tooltip Setup and start
         chartTooltip
@@ -165,10 +166,32 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
     }
 }
 
+function createLoadingState(isLoading, instance) {
+    let stackedBar = instance ? instance : stackedBarChart(),
+        container = select('.js-loading-container'),
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false;
+    const dataset = datasetWithThreeSources;
+
+    if (containerWidth) {
+        stackedBar
+            .width(containerWidth)
+            .height(300)
+            .isAnimated(true)
+            .isLoading(isLoading);
+
+        container.datum(dataset).call(stackedBar);
+    }
+
+    return stackedBar;
+}
+
 if (select('.js-stacked-bar-chart-tooltip-container').node()) {
     // Chart creation
     createStackedBarChartWithTooltip();
     createHorizontalStackedBarChart();
+    createLoadingState(true);
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
@@ -177,6 +200,7 @@ if (select('.js-stacked-bar-chart-tooltip-container').node()) {
 
         createStackedBarChartWithTooltip();
         createHorizontalStackedBarChart();
+        createLoadingState(false);
     };
 
     // Redraw charts on window resize

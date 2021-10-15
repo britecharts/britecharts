@@ -55,7 +55,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             stackedArea.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(stackedArea);
+        container.datum(dataset).call(stackedArea);
 
         // Tooltip Setup and start
         chartTooltip.topicLabel('values').title('Testing tooltip');
@@ -105,7 +105,7 @@ function createStackedAreaChart(optionalColorSchema) {
             stackedArea.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(stackedArea);
+        container.datum(dataset).call(stackedArea);
 
         // Tooltip Setup and start
         chartTooltip.topicLabel('values').title('Tooltip Title');
@@ -150,7 +150,7 @@ function createStackedAreaChartWithSyncedTooltip() {
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
 
-        container.datum(dataset.data).call(stackedArea);
+        container.datum(dataset).call(stackedArea);
 
         // Tooltip Setup and start
         chartTooltip
@@ -164,7 +164,7 @@ function createStackedAreaChartWithSyncedTooltip() {
             ])
             .topicLabel('values')
             .title('Testing tooltip')
-            .topicsOrder(uniq(dataset.data.map((d) => d.name)));
+            .topicsOrder(uniq(dataset.map((d) => d.name)));
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
@@ -175,17 +175,25 @@ function createStackedAreaChartWithSyncedTooltip() {
     }
 }
 
-function createLoadingState() {
-    let stackedArea = stackedAreaChart(),
-        stackedAreaContainer = select('.js-loading-container'),
-        containerWidth = stackedAreaContainer.node()
-            ? stackedAreaContainer.node().getBoundingClientRect().width
-            : false,
-        dataset = null;
+function createLoadingState(isLoading, instance) {
+    let stackedArea = instance ? instance : stackedAreaChart(),
+        container = select('.js-loading-container'),
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false;
+    const dataset = aTestDataSet().withSalesChannelData().build();
 
     if (containerWidth) {
-        stackedAreaContainer.html(stackedArea.loadingState());
+        stackedArea
+            .width(containerWidth)
+            .height(300)
+            .isAnimated(true)
+            .isLoading(isLoading);
+
+        container.datum(dataset).call(stackedArea);
     }
+
+    return stackedArea;
 }
 
 if (select('.js-stacked-area-chart-tooltip-container').node()) {
@@ -193,7 +201,7 @@ if (select('.js-stacked-area-chart-tooltip-container').node()) {
     createStackedAreaChartWithTooltip();
     createStackedAreaChart();
     createStackedAreaChartWithSyncedTooltip();
-    createLoadingState();
+    createLoadingState(true);
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
@@ -202,7 +210,7 @@ if (select('.js-stacked-area-chart-tooltip-container').node()) {
         createStackedAreaChartWithTooltip();
         createStackedAreaChart();
         createStackedAreaChartWithSyncedTooltip();
-        createLoadingState();
+        createLoadingState(false);
     };
 
     // Redraw charts on window resize

@@ -86,6 +86,15 @@ describe('Bar Chart', () => {
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should create a loading-state-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.loading-state-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('axis', () => {
@@ -281,6 +290,21 @@ describe('Bar Chart', () => {
                         colorMap[d.__data__.name]
                     );
                 });
+            });
+        });
+
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const expected = 1;
+
+                barChart.isLoading(true);
+                containerFixture.datum(dataset).call(barChart);
+
+                const actual = containerFixture
+                    .select('.bar-load-state')
+                    .size();
+
+                expect(actual).toEqual(expected);
             });
         });
     });
@@ -617,6 +641,18 @@ describe('Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should provide isLoading getter and setter', () => {
+            let previous = barChart.isLoading(),
+                expected = true,
+                actual;
+
+            barChart.isLoading(expected);
+            actual = barChart.isLoading();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide labelsMargin getter and setter', () => {
             let previous = barChart.labelsMargin(),
                 expected = 10,
@@ -651,33 +687,6 @@ describe('Bar Chart', () => {
 
             expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);
-        });
-
-        describe('loadingState', () => {
-            it('should provide loadingState getter and setter', () => {
-                let previous = barChart.loadingState(),
-                    expected = 'test',
-                    actual;
-
-                barChart.loadingState(expected);
-                actual = barChart.loadingState();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            describe('when getting a loadingState', () => {
-                it('should return an SVG element', () => {
-                    let expected = 1,
-                        actual;
-
-                    barChart = chart();
-                    actual = barChart.loadingState().match('bar-load-state')
-                        .length;
-
-                    expect(actual).toEqual(expected);
-                });
-            });
         });
 
         describe('margin', () => {

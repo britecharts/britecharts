@@ -216,17 +216,25 @@ function createLineChartWithFixedHeight() {
     }
 }
 
-function createLoadingState() {
-    let lineChart = line(),
-        lineContainer = select('.js-loading-container'),
-        containerWidth = lineContainer.node()
-            ? lineContainer.node().getBoundingClientRect().width
-            : false,
-        dataset = null;
+function createLoadingState(isLoading, instance) {
+    let lineChart = instance ? instance : line(),
+        container = select('.js-loading-container'),
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false;
+    const dataset = aTestDataSet().withOneSource().build();
 
     if (containerWidth) {
-        lineContainer.html(lineChart.loadingState());
+        lineChart
+            .width(containerWidth)
+            .height(300)
+            .isAnimated(true)
+            .isLoading(isLoading);
+
+        container.datum(dataset).call(lineChart);
     }
+
+    return lineChart;
 }
 
 /*
@@ -277,7 +285,7 @@ if (select('.js-line-chart-container').node()) {
     createBrushChart();
     createLineChartWithSingleLine();
     createLineChartWithFixedHeight();
-    createLoadingState();
+    createLoadingState(true);
 
     redrawCharts = function () {
         selectAll('.line-chart, .brush-chart').remove();
@@ -285,7 +293,7 @@ if (select('.js-line-chart-container').node()) {
         createBrushChart();
         createLineChartWithSingleLine();
         createLineChartWithFixedHeight();
-        createLoadingState();
+        createLoadingState(false);
     };
 
     // Redraw charts on window resize

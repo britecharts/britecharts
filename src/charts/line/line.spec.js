@@ -150,6 +150,15 @@ describe('Line Chart', () => {
 
                     expect(actual).toEqual(expected);
                 });
+
+                it('should create a loading-state-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture
+                        .select('g.loading-state-group')
+                        .size();
+
+                    expect(actual).toEqual(expected);
+                });
             });
 
             describe('grids', () => {
@@ -817,6 +826,21 @@ describe('Line Chart', () => {
                 });
             });
         });
+
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const expected = 1;
+
+                lineChart.isLoading(true);
+                containerFixture.datum(dataset).call(lineChart);
+
+                const actual = containerFixture
+                    .select('.line-load-state')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
     });
 
     describe('Lifecycle', () => {
@@ -1030,13 +1054,25 @@ describe('Line Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide animation getter and setter', () => {
+        it('should provide isAnimated getter and setter', () => {
             let previous = lineChart.isAnimated(),
                 expected = true,
                 actual;
 
             lineChart.isAnimated(expected);
             actual = lineChart.isAnimated();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide isLoading getter and setter', () => {
+            let previous = lineChart.isLoading(),
+                expected = true,
+                actual;
+
+            lineChart.isLoading(expected);
+            actual = lineChart.isLoading();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
@@ -1119,18 +1155,6 @@ describe('Line Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide loadingState getter and setter', () => {
-            let previous = lineChart.loadingState(),
-                expected = 'test',
-                actual;
-
-            lineChart.loadingState(expected);
-            actual = lineChart.loadingState();
-
-            expect(previous).not.toBe(actual);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide locale getter and setter', () => {
             let previous = lineChart.locale(),
                 expected = 'en-US',
@@ -1141,33 +1165,6 @@ describe('Line Chart', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
-        });
-
-        describe('loadingState', () => {
-            it('should provide a loading state getter and setter', () => {
-                let previous = lineChart.loadingState(),
-                    expected = '<svg></svg>',
-                    actual;
-
-                lineChart.loadingState(expected);
-                actual = lineChart.loadingState();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            describe('when getting a loadingState', () => {
-                it('should return an SVG element', () => {
-                    let expected = 1,
-                        actual;
-
-                    lineChart = chart();
-                    actual = lineChart.loadingState().match('line-load-state')
-                        .length;
-
-                    expect(actual).toEqual(expected);
-                });
-            });
         });
 
         it('should have shouldShowAllDataPoints getter and setter', () => {

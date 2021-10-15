@@ -35,7 +35,7 @@ container.datum(dataset).call(sparklineChart);
         <div class="
     col-md-6">
             <article>
-                <h2 class="tutorial__heading">Loading State</h2>
+                <h2 class="tutorial__heading">Loading State (until viewport resize)</h2>
                 <div class="js-loading-container card--chart"></div>
             </article>
         </div>
@@ -43,10 +43,17 @@ container.datum(dataset).call(sparklineChart);
     col-md-6 sidebar">
             <h3>The code</h3>
             <pre><code class="language-javascript">
-if (containerWidth) {
-    container.html(sparkline.loadingState());
-}
+        sparkLine
+            .width(containerWidth)
+            .height(300)
+            .isAnimated(true)
+            .isLoading(isLoading);
+
+        container.datum(dataset).call(sparkLine);
             </code></pre>
+
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/britecharts/britecharts/blob/master/demos/src/demo-sparkline.js">in github</a></p>
         </div>
     </div>
 </div>

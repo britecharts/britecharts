@@ -11,7 +11,7 @@ import 'd3-transition';
 import { wrapTextWithEllipses } from '../helpers/text';
 import { exportChart } from '../helpers/export';
 import colorHelper from '../helpers/color';
-import { bar as barChartLoadingMarkup } from '../helpers/load';
+import { barLoadingMarkup } from '../helpers/load';
 import { uniqueId } from '../helpers/number';
 import { setDefaultLocale } from '../helpers/locale';
 import { dataKeyDeprecationMessage } from '../helpers/project';
@@ -90,7 +90,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        loadingState = barChartLoadingMarkup,
+        isLoading = false,
         data,
         dataZeroed,
         chartWidth,
@@ -189,9 +189,15 @@ export default function module() {
             chartHeight = height - margin.top - margin.bottom;
             ({ data, dataZeroed } = sortData(cleanData(_data)));
 
+            buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
             buildScales();
             buildAxis(localeFormatter);
-            buildSVG(this);
             buildGradient();
             drawGridLines();
             drawAxis();
@@ -235,6 +241,8 @@ export default function module() {
                     margin.top
                 })`
             );
+
+        svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('grid-lines-group', true);
         container.append('g').classed('chart-group', true);
@@ -416,6 +424,14 @@ export default function module() {
      */
     function wrapText(text, containerWidth) {
         wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit);
+    }
+
+    /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
     }
 
     /**
@@ -727,6 +743,14 @@ export default function module() {
             .attr('x2', (d) => xScale(d));
 
         drawVerticalExtendedLine();
+    }
+
+    /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(barLoadingMarkup);
     }
 
     /**
@@ -1124,15 +1148,15 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {string} markup Desired markup to show when null data
-     * @return {loadingState | module} Current loading state markup or Chart module to chain calls
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function (_markup) {
+    exports.isLoading = function (_flag) {
         if (!arguments.length) {
-            return loadingState;
+            return isLoading;
         }
-        loadingState = _markup;
+        isLoading = _flag;
 
         return this;
     };

@@ -5,6 +5,8 @@ import PubSub from 'pubsub-js';
 import brush from './../../src/charts/brush/brush';
 import { BrushDataBuilder } from './../../src/charts/brush/brushChartDataBuilder';
 
+const aTestDataSet = () => new BrushDataBuilder();
+
 require('./helpers/resizeHelper');
 
 function createBrushChart() {
@@ -98,10 +100,32 @@ function createMissingDataBrushChart() {
     return brushChart;
 }
 
+function createLoadingState(isLoading, instance) {
+    const brushChart = instance ? instance : brush();
+    const brushContainer = select('.js-loading-container');
+    const containerWidth = brushContainer.node()
+        ? brushContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withSimpleData().build();
+
+    if (containerWidth) {
+        brushChart
+            .width(containerWidth)
+            .height(125)
+            .isAnimated(true)
+            .isLoading(isLoading);
+
+        brushContainer.datum(dataset).call(brushChart);
+    }
+
+    return brushChart;
+}
+
 // Show charts if container available
 if (select('.js-brush-chart-container').node()) {
     const brushChart = createBrushChart();
     const missingDataBrushChart = createMissingDataBrushChart();
+    const loadingChart = createLoadingState(true);
 
     const redrawCharts = function () {
         const brushContainer = select('.js-brush-chart-container');
@@ -122,6 +146,7 @@ if (select('.js-brush-chart-container').node()) {
 
         brushContainer.call(brushChart);
         missingDataBrushContainer.call(missingDataBrushChart);
+        createLoadingState(false, loadingChart);
     };
 
     // Redraw charts on window resize

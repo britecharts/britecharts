@@ -14,7 +14,7 @@ import 'd3-transition';
 import { exportChart } from '../helpers/export';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import colorHelper from '../helpers/color';
-import { bar as barChartLoadingMarkup } from '../helpers/load';
+import { barLoadingMarkup } from '../helpers/load';
 import { setDefaultLocale } from '../helpers/locale';
 import { motion } from '../helpers/constants';
 
@@ -74,7 +74,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        loadingState = barChartLoadingMarkup,
+        isLoading = false,
         xScale,
         xAxis,
         yScale,
@@ -152,9 +152,15 @@ export default function module() {
             data = cleanData(_data);
 
             prepareData(data);
+            buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
             buildScales();
             buildLayers();
-            buildSVG(this);
             drawGridLines();
             buildAxis(localeFormatter);
             drawAxis();
@@ -230,6 +236,8 @@ export default function module() {
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container
             .append('g')
@@ -345,6 +353,14 @@ export default function module() {
     }
 
     /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
+    }
+
+    /**
      * Draws the x and y axis on the svg object within their
      * respective groups
      * @private
@@ -384,6 +400,14 @@ export default function module() {
                 .attr('transform', 'rotate(270 0 0)')
                 .text(yAxisLabel);
         }
+    }
+
+    /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(barLoadingMarkup);
     }
 
     /**
@@ -1002,15 +1026,15 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {String} markup      Desired markup to show when null data
-     * @return {String | module}    Current loading state markup or Chart module to chain calls
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function (_markup) {
+    exports.isLoading = function (_flag) {
         if (!arguments.length) {
-            return loadingState;
+            return isLoading;
         }
-        loadingState = _markup;
+        isLoading = _flag;
 
         return this;
     };

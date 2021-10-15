@@ -27,7 +27,7 @@ describe('Sparkline Chart', () => {
         sparklineChart = sparkline();
 
         containerFixture = d3.select('.test-container').append('svg');
-        containerFixture.datum(dataset.data).call(sparklineChart);
+        containerFixture.datum(dataset).call(sparklineChart);
     });
 
     // remove the html fixture from the DOM
@@ -75,6 +75,15 @@ describe('Sparkline Chart', () => {
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should create a loading-state-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.loading-state-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         it('should render a sparkline', () => {
@@ -114,7 +123,7 @@ describe('Sparkline Chart', () => {
         describe('when the title text is set', () => {
             it('should create a text node with proper attributes', () => {
                 sparklineChart.titleText('text');
-                containerFixture.datum(dataset.data).call(sparklineChart);
+                containerFixture.datum(dataset).call(sparklineChart);
                 const titleTextNode = containerFixture
                     .selectAll('.sparkline-text')
                     .node();
@@ -131,7 +140,7 @@ describe('Sparkline Chart', () => {
                 let actual;
 
                 sparklineChart.titleText(expected);
-                containerFixture.datum(dataset.data).call(sparklineChart);
+                containerFixture.datum(dataset).call(sparklineChart);
                 actual = containerFixture.selectAll('.sparkline-text').node()
                     .textContent;
 
@@ -145,7 +154,7 @@ describe('Sparkline Chart', () => {
                 const newDataset = buildDataSet('withLowValues');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(sparklineChart);
+                containerFixture.datum(newDataset).call(sparklineChart);
                 actual = containerFixture.selectAll('.sparkline').size();
 
                 expect(actual).toEqual(expected);
@@ -156,7 +165,7 @@ describe('Sparkline Chart', () => {
                 const newDataset = buildDataSet('withLowValues');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(sparklineChart);
+                containerFixture.datum(newDataset).call(sparklineChart);
                 actual = containerFixture.selectAll('.sparkline .line').size();
 
                 expect(actual).toEqual(expected);
@@ -167,7 +176,7 @@ describe('Sparkline Chart', () => {
                 const newDataset = buildDataSet('withLowValues');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(sparklineChart);
+                containerFixture.datum(newDataset).call(sparklineChart);
                 actual = containerFixture
                     .selectAll('.sparkline .sparkline-area')
                     .size();
@@ -180,7 +189,7 @@ describe('Sparkline Chart', () => {
                 const newDataset = buildDataSet('withLowValues');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(sparklineChart);
+                containerFixture.datum(newDataset).call(sparklineChart);
 
                 actual = containerFixture
                     .selectAll('.sparkline .sparkline-circle')
@@ -195,11 +204,26 @@ describe('Sparkline Chart', () => {
                 const expected = 1;
 
                 sparklineChart.isAnimated(true);
-                containerFixture.datum(dataset.data).call(sparklineChart);
+                containerFixture.datum(dataset).call(sparklineChart);
                 const actual = _.filter(
                     containerFixture.selectAll('.clip-path').nodes(),
                     (f) => f && hasIdWithPrefix(f, 'maskingClip')
                 ).length;
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const expected = 1;
+
+                sparklineChart.isLoading(true);
+                containerFixture.datum(dataset).call(sparklineChart);
+
+                const actual = containerFixture
+                    .select('.sparkline-load-state')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -273,32 +297,16 @@ describe('Sparkline Chart', () => {
             expect(newAnimation).toBe(testAnimation);
         });
 
-        describe('loadingState', () => {
-            it('should provide a loading state getter and setter', () => {
-                let previous = sparklineChart.loadingState(),
-                    expected = '<svg></svg>',
-                    actual;
+        it('should provide isLoading getter and setter', () => {
+            let previous = sparklineChart.isLoading(),
+                expected = true,
+                actual;
 
-                sparklineChart.loadingState(expected);
-                actual = sparklineChart.loadingState();
+            sparklineChart.isLoading(expected);
+            actual = sparklineChart.isLoading();
 
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            describe('when getting a loadingState', () => {
-                it('should return an SVG element', () => {
-                    let expected = 1,
-                        actual;
-
-                    sparklineChart = sparkline();
-                    actual = sparklineChart
-                        .loadingState()
-                        .match('stacked-area-load-state').length;
-
-                    expect(actual).toEqual(expected);
-                });
-            });
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
         });
 
         it('should provide a lineGradient getter and setter', () => {

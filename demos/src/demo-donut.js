@@ -188,16 +188,24 @@ function createDonutWithHighlightSliceChart() {
     }
 }
 
-function createLoadingState() {
-    let donutChart = donut(),
+function createLoadingState(isLoading, instance) {
+    let donutChart = instance ? instance : donut(),
         donutContainer = select('.js-loading-container'),
         containerWidth = donutContainer.node()
             ? donutContainer.node().getBoundingClientRect().width
-            : false,
-        dataset = null;
+            : false;
 
     if (containerWidth) {
-        donutContainer.html(donutChart.loadingState());
+        donutChart
+            .isAnimated(true)
+            .highlightSliceById(2)
+            .width(containerWidth)
+            .height(containerWidth)
+            .externalRadius(containerWidth / 2.5)
+            .internalRadius(containerWidth / 5)
+            .isLoading(isLoading);
+
+        donutContainer.datum(dataset).call(donutChart);
     }
 }
 
@@ -206,7 +214,7 @@ if (select('.js-donut-chart-container').node()) {
     createDonutChart();
     createSmallDonutChart();
     createDonutWithHighlightSliceChart();
-    createLoadingState();
+    createLoadingState(true);
 
     redrawCharts = function () {
         selectAll('.donut-chart').remove();
@@ -214,7 +222,7 @@ if (select('.js-donut-chart-container').node()) {
         createDonutChart();
         createSmallDonutChart();
         createDonutWithHighlightSliceChart();
-        createLoadingState();
+        createLoadingState(false);
     };
 
     // Redraw charts on window resize

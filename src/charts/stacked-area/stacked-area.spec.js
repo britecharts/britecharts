@@ -26,7 +26,7 @@ describe('Stacked Area Chart', () => {
         stackedAreaChart = stackedArea();
 
         containerFixture = d3.select('.test-container').append('svg');
-        containerFixture.datum(dataset.data).call(stackedAreaChart);
+        containerFixture.datum(dataset).call(stackedAreaChart);
     });
 
     // remove the html fixture from the DOM
@@ -90,6 +90,15 @@ describe('Stacked Area Chart', () => {
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should create a loading-state-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.loading-state-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('grid', function () {
@@ -119,7 +128,7 @@ describe('Stacked Area Chart', () => {
                     containerFixture = d3
                         .select('.test-container')
                         .append('svg');
-                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    containerFixture.datum(dataset).call(stackedAreaChart);
                 });
 
                 it('should render the horizontal grid lines', () => {
@@ -149,9 +158,7 @@ describe('Stacked Area Chart', () => {
                         containerFixture = d3
                             .select('.test-container')
                             .append('svg');
-                        containerFixture
-                            .datum(dataset.data)
-                            .call(stackedAreaChart);
+                        containerFixture.datum(dataset).call(stackedAreaChart);
                     });
 
                     it('the highest X-axis value is a number', () => {
@@ -172,9 +179,7 @@ describe('Stacked Area Chart', () => {
                         containerFixture = d3
                             .select('.test-container')
                             .append('svg');
-                        containerFixture
-                            .datum(dataset.data)
-                            .call(stackedAreaChart);
+                        containerFixture.datum(dataset).call(stackedAreaChart);
                     });
 
                     it('the highest X-axis value is a logarithmic number', () => {
@@ -194,7 +199,7 @@ describe('Stacked Area Chart', () => {
                     containerFixture = d3
                         .select('.test-container')
                         .append('svg');
-                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    containerFixture.datum(dataset).call(stackedAreaChart);
                 });
 
                 it('should render the vertical grid lines', () => {
@@ -215,7 +220,7 @@ describe('Stacked Area Chart', () => {
                     containerFixture = d3
                         .select('.test-container')
                         .append('svg');
-                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    containerFixture.datum(dataset).call(stackedAreaChart);
                 });
 
                 it('should render the vertical grid lines', () => {
@@ -259,20 +264,16 @@ describe('Stacked Area Chart', () => {
         });
 
         it('should render an area for each category', () => {
-            const expected = _.chain(dataset.data)
-                .pluck('name')
-                .unique()
-                .value().length;
+            const expected = _.chain(dataset).pluck('name').unique().value()
+                .length;
             const actual = containerFixture.selectAll('.layer').size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should render an area-outline for each category', () => {
-            const expected = _.chain(dataset.data)
-                .pluck('name')
-                .unique()
-                .value().length;
+            const expected = _.chain(dataset).pluck('name').unique().value()
+                .length;
             const actual = containerFixture.selectAll('.area-outline').size();
 
             expect(actual).toEqual(expected);
@@ -330,7 +331,7 @@ describe('Stacked Area Chart', () => {
                 const newDataset = buildDataSet('with3Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(stackedAreaChart);
+                containerFixture.datum(newDataset).call(stackedAreaChart);
                 actual = containerFixture.selectAll('.stacked-area').size();
 
                 expect(actual).toEqual(expected);
@@ -343,7 +344,7 @@ describe('Stacked Area Chart', () => {
                 let actual;
 
                 stackedAreaChart.hasOutline(false);
-                containerFixture.datum(dataset.data).call(stackedAreaChart);
+                containerFixture.datum(dataset).call(stackedAreaChart);
 
                 const outlines = containerFixture.selectAll('.area-outline');
 
@@ -357,7 +358,7 @@ describe('Stacked Area Chart', () => {
                 const newDataset = buildDataSet('with3Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(stackedAreaChart);
+                containerFixture.datum(newDataset).call(stackedAreaChart);
                 actual = containerFixture
                     .selectAll('.stacked-area .layer')
                     .size();
@@ -370,7 +371,7 @@ describe('Stacked Area Chart', () => {
                 const newDataset = buildDataSet('with3Sources');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(stackedAreaChart);
+                containerFixture.datum(newDataset).call(stackedAreaChart);
                 actual = containerFixture
                     .selectAll('.stacked-area .area-outline')
                     .size();
@@ -385,7 +386,7 @@ describe('Stacked Area Chart', () => {
                 stackedAreaChart = stackedArea().grid('full');
 
                 containerFixture = d3.select('.test-container').append('svg');
-                containerFixture.datum(dataset.data).call(stackedAreaChart);
+                containerFixture.datum(dataset).call(stackedAreaChart);
             });
 
             it('The lowest Y-axis value is negative', () => {
@@ -415,7 +416,7 @@ describe('Stacked Area Chart', () => {
                     containerFixture = d3
                         .select('.test-container')
                         .append('svg');
-                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    containerFixture.datum(dataset).call(stackedAreaChart);
                 });
 
                 it('the lowest Y-axis value is changing in respect to the y-axis baseline', () => {
@@ -437,7 +438,7 @@ describe('Stacked Area Chart', () => {
                     containerFixture = d3
                         .select('.test-container')
                         .append('svg');
-                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    containerFixture.datum(dataset).call(stackedAreaChart);
                 });
 
                 it('the highest Y-axis value is changing in respect to the y-axis baseline', () => {
@@ -469,7 +470,7 @@ describe('Stacked Area Chart', () => {
                 stackedAreaChart = stackedArea().colorMap(colorMap);
 
                 containerFixture = d3.select('.test-container');
-                containerFixture.datum(newDataset.data).call(stackedAreaChart);
+                containerFixture.datum(newDataset).call(stackedAreaChart);
             });
 
             // remove the html fixture from the DOM
@@ -487,6 +488,21 @@ describe('Stacked Area Chart', () => {
                         colorMap[d.__data__.key]
                     );
                 });
+            });
+        });
+
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const expected = 1;
+
+                stackedAreaChart.isLoading(true);
+                containerFixture.datum(dataset).call(stackedAreaChart);
+
+                const actual = containerFixture
+                    .select('.stacked-area-load-state')
+                    .size();
+
+                expect(actual).toEqual(expected);
             });
         });
     });
@@ -705,32 +721,16 @@ describe('Stacked Area Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        describe('loadingState', () => {
-            it('should provide loadingState getter and setter', () => {
-                let previous = stackedAreaChart.loadingState(),
-                    expected = 'test',
-                    actual;
+        it('should provide isLoading getter and setter', () => {
+            let previous = stackedAreaChart.isLoading(),
+                expected = true,
+                actual;
 
-                stackedAreaChart.loadingState(expected);
-                actual = stackedAreaChart.loadingState();
+            stackedAreaChart.isLoading(expected);
+            actual = stackedAreaChart.isLoading();
 
-                expect(previous).not.toEqual(expected);
-                expect(actual).toEqual(expected);
-            });
-
-            describe('when getting a loadingState', () => {
-                it('should return an SVG element', () => {
-                    let expected = 1,
-                        actual;
-
-                    stackedAreaChart = stackedArea();
-                    actual = stackedAreaChart
-                        .loadingState()
-                        .match('stacked-area-load-state').length;
-
-                    expect(actual).toEqual(expected);
-                });
-            });
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
         });
 
         it('should provide isAnimated getter and setter', () => {

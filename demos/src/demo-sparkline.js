@@ -29,31 +29,39 @@ function createSparklineChart() {
         .height(containerWidth / 4)
         .width(containerWidth);
 
-    container.datum(dataset.data).call(sparkline);
+    container.datum(dataset).call(sparkline);
 }
 
-function createLoadingState() {
-    let sparkline = sparklineChart(),
-        containerWidth = select('.js-loading-container')
-            .node()
-            .getBoundingClientRect().width,
+function createLoadingState(isLoading, instance) {
+    let sparkLine = instance ? instance : sparklineChart(),
         container = select('.js-loading-container'),
-        dataset = null;
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false;
+    const dataset = aTestDataSet().with1Source().build();
 
     if (containerWidth) {
-        container.html(sparkline.loadingState());
+        sparkLine
+            .width(containerWidth)
+            .height(containerWidth / 4)
+            .isAnimated(true)
+            .isLoading(isLoading);
+
+        container.datum(dataset).call(sparkLine);
     }
+
+    return sparkLine;
 }
 
 // Show charts if container available
 if (select('.js-sparkline-chart-container').node()) {
     createSparklineChart();
-    createLoadingState();
+    createLoadingState(true);
 
     redrawCharts = function () {
         selectAll('.sparkline').remove();
         createSparklineChart();
-        createLoadingState();
+        createLoadingState(false);
     };
 
     // Redraw charts on window resize

@@ -10,7 +10,7 @@ export interface ChartBaseAPI<T> {
     /** Gets or Sets the height of the chart */
     height(height?: number): T & ChartBaseAPI<T>;
     /** Gets or Sets the loading state of the chart */
-    loadingState(markup?: string): T & ChartBaseAPI<T>;
+    isLoading(isLoading?: boolean): T & ChartBaseAPI<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
     margin(margin?: ChartMarginParams): T & ChartBaseAPI<T>;
     /** Gets or Sets the width of the chart */
@@ -22,7 +22,7 @@ export interface ChartBaseAPIMinimal<T> {
     /** Gets or Sets the height of the chart */
     height(height?: number): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the loading state of the chart */
-    loadingState(markup?: string): T & ChartBaseAPIMinimal<T>;
+    isLoading(isLoading?: boolean): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
     margin(margin?: ChartMarginParams): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the width of the chart */

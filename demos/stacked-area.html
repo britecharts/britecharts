@@ -121,14 +121,20 @@ tooltipContainer.datum([]).call(chartTooltip);
             <div class="col-md-8">
                 <article>
                     <a name="loading-state"></a>
-                    <h2 class="tutorial__heading">Loading State</h2>
+                    <h2 class="tutorial__heading">Loading State (until viewport resize)</h2>
                     <div class="js-loading-container"></div>
                 </article>
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-container.html(stackedArea.loadingState())
+    stackedArea
+        .width(containerWidth)
+        .height(300)
+        .isAnimated(true)
+        .isLoading(isLoading);
+        
+    container.datum(dataset).call(stackedArea);
                 </code></pre>
 
                 <h4>Demo Code</h4>
