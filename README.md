@@ -2,17 +2,14 @@
 
 > Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][1] that provides easy composition of charts and components to create amazing visualizations.
 
-[![Build Status](https://travis-ci.org/britecharts/britecharts.svg?branch=master)](https://travis-ci.org/britecharts/britecharts)
-[![npm version](https://badge.fury.io/js/britecharts.svg)](https://badge.fury.io/js/britecharts)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md)
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
-[![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![test workflow](https://github.com/britecharts/britecharts/actions/workflows/tests.yml/badge.svg)](https://github.com/britecharts/britecharts/actions/workflows/tests.yml) [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/britecharts/britecharts)](https://github.com/britecharts/britecharts/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc) [![](https://data.jsdelivr.com/v1/package/npm/britecharts/badge)](https://www.jsdelivr.com/package/npm/britecharts)
 
-| [![Bar Chart][barchartimg]][barchartdemo]                       | [![Line Chart][linechartimg]][linechartdemo]                            | [![Donut Chart][donutchartimg]][donutchartdemo]                 |
-| --------------------------------------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------- |
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md) [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#toc8__anchor) [![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
+
+| [![Bar Chart][barchartimg]][barchartdemo] | [![Line Chart][linechartimg]][linechartdemo] | [![Donut Chart][donutchartimg]][donutchartdemo] |
+| --- | --- | --- |
 | [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchartdemo] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachartdemo] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchartdemo] |
-| [![Sparkline Chart][sparklinechartimg]][sparklinechartdemo]     | [![Legend Chart][legendchartimg]][donutchartdemo]                       | [![Brush Chart][brushchartimg]][brushchartdemo]                 |
+| [![Sparkline Chart][sparklinechartimg]][sparklinechartdemo] | [![Legend Chart][legendchartimg]][donutchartdemo] | [![Brush Chart][brushchartimg]][brushchartdemo] |
 
 Britecharts [components][32] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
 
@@ -71,6 +68,7 @@ Britecharts components are distributed in **UMD modules**, each one exposing a D
 ```
 
 Then, in your JavaScript module file you can now import and use charts:
+
 ```js
 import { bar } from 'britecharts';
 import { select } from 'd3-selection';
@@ -97,11 +95,13 @@ container.datum(barData).call(barChart);
 Britecharts comes with custom CSS - to load CSS in your html file you may include it in the `<head>` tag
 
 ```html
-<link rel="stylesheet" href="./node_modules/britecharts/dist/css/britecharts.css">
+<link
+    rel="stylesheet"
+    href="./node_modules/britecharts/dist/css/britecharts.css"
+/>
 ```
 
-Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [JSBin][jsbinsandbox] and [CodePen][codependemos] demo projects.
-In addition, you have an option to customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to see more options.
+Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [JSBin][jsbinsandbox] and [CodePen][codependemos] demo projects. In addition, you have an option to customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to see more options.
 
 ## See Also
 
@@ -147,29 +147,21 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://allcontributors.org) specification.
-Contributions of any kind are welcome!
+This project follows the [all-contributors](https://allcontributors.org) specification. Contributions of any kind are welcome!
 
 ## License
 
-Copyright 2019 Eventbrite
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 [https://www.apache.org/licenses/LICENSE-2.0][14]
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 Read more in the [license document][15]
 
@@ -219,18 +211,18 @@ Read more in the [license document][15]
 [d3slack]: https://d3js.slack.com/
 [proposals]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+label%3Aproposal
 [release3project]: https://github.com/britecharts/britecharts/projects/2
-[barchartdemo]: https://britecharts.github.io/britecharts/tutorial-bar.html "Check the Demo"
-[linechartdemo]: https://britecharts.github.io/britecharts/tutorial-line.html "Check the Demo"
-[donutchartdemo]: https://britecharts.github.io/britecharts/tutorial-donut.html "Check the Demo"
-[scatterplotdemo]: https://britecharts.github.io/britecharts/tutorial-scatter-plot.html "Check the Demo"
-[sparklinechartdemo]: https://britecharts.github.io/britecharts/tutorial-sparkline.html "Check the Demo"
-[stackedareachartdemo]: https://britecharts.github.io/britecharts/tutorial-stacked-area.html "Check the Demo"
-[stepchartdemo]: https://britecharts.github.io/britecharts/tutorial-step.html "Check the Demo"
-[brushchartdemo]: https://britecharts.github.io/britecharts/tutorial-brush.html "Check the Demo"
-[bulletchartdemo]: https://britecharts.github.io/britecharts/tutorial-bullet.html "Check the Demo"
-[stackedbarchartdemo]: https://britecharts.github.io/britecharts/tutorial-stacked-bar.html "Check the Demo"
-[groupedbarchartdemo]: https://britecharts.github.io/britecharts/tutorial-grouped-bar.html "Check the Demo"
-[stackedareademo]: https://britecharts.github.io/britecharts-react/#stacked-area-chart "Check the Demo"
+[barchartdemo]: https://britecharts.github.io/britecharts/tutorial-bar.html 'Check the Demo'
+[linechartdemo]: https://britecharts.github.io/britecharts/tutorial-line.html 'Check the Demo'
+[donutchartdemo]: https://britecharts.github.io/britecharts/tutorial-donut.html 'Check the Demo'
+[scatterplotdemo]: https://britecharts.github.io/britecharts/tutorial-scatter-plot.html 'Check the Demo'
+[sparklinechartdemo]: https://britecharts.github.io/britecharts/tutorial-sparkline.html 'Check the Demo'
+[stackedareachartdemo]: https://britecharts.github.io/britecharts/tutorial-stacked-area.html 'Check the Demo'
+[stepchartdemo]: https://britecharts.github.io/britecharts/tutorial-step.html 'Check the Demo'
+[brushchartdemo]: https://britecharts.github.io/britecharts/tutorial-brush.html 'Check the Demo'
+[bulletchartdemo]: https://britecharts.github.io/britecharts/tutorial-bullet.html 'Check the Demo'
+[stackedbarchartdemo]: https://britecharts.github.io/britecharts/tutorial-stacked-bar.html 'Check the Demo'
+[groupedbarchartdemo]: https://britecharts.github.io/britecharts/tutorial-grouped-bar.html 'Check the Demo'
+[stackedareademo]: https://britecharts.github.io/britecharts-react/#stacked-area-chart 'Check the Demo'
 [stackedareaimg]: https://raw.githubusercontent.com/britecharts/britecharts-react/master/src/docs/images/thumbnails/stacked-area.png
 [barchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/bar-chart.png
 [linechartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/line-chart.png
