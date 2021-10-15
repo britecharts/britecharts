@@ -4,7 +4,7 @@ module.exports = function (grunt) {
     // Project configuration.
     grunt.config.set('jsdoc', {
         dist: {
-            src: ['./src/charts/*.js', './README.md'],
+            src: ['./src/charts/**/*.js', './README.md'],
             jsdoc: './node_modules/.bin/jsdoc',
             options: {
                 destination: 'docs',
