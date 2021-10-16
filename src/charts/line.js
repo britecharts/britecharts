@@ -1,5 +1,3 @@
-const { path } = require('d3-path');
-
 define(function(require){
     'use strict';
 
@@ -14,6 +12,7 @@ define(function(require){
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
+    const path = require('d3-path');
 
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
@@ -235,8 +234,9 @@ define(function(require){
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             easeLiner = d3Ease.easeLinear,
-            animationDuration = 1500,
-            maskingRectangle,
+            animationDuration = 3000,
+            strokeDashoffset = 10,
+            strokeDasharrayOffset = 3,
 
             lineCurve = 'linear',
 
@@ -686,30 +686,6 @@ define(function(require){
         }
 
         /**
-         * Creates a masking clip that would help us fake an animation if the
-         * proper flag is true
-         *
-         * @return {void}
-         */
-        function createMaskingClip() {
-            if (isAnimated) {
-                // We use a white rectangle to simulate the line drawing animation
-                maskingRectangle = svg.append('rect')
-                    .attr('class', 'masking-rectangle')
-                    .attr('width', width)
-                    .attr('height', height)
-                    .attr('x', 0)
-                    .attr('y', 0);
-
-                maskingRectangle.transition()
-                    .duration(animationDuration)
-                    .ease(ease)
-                    .attr('x', width)
-                    .on('end', () => maskingRectangle.remove());
-            }
-        }
-
-        /**
          * Draws the x and y axis on the svg object within their
          * respective groups along with the axis labels if given
          * @private
@@ -808,12 +784,12 @@ define(function(require){
                 const totalLength = paths.node().getTotalLength();
 
                 paths
-                    .attr('stroke-dasharray', totalLength + ' ' + 3*totalLength)
+                    .attr('stroke-dasharray', totalLength + ' ' + strokeDasharrayOffset * totalLength)
                     .attr('stroke-dashoffset', totalLength)
                     .transition()
                     .ease(easeLiner)
-                    .duration(3000)
-                    .attr('stroke-dashoffset', 10);
+                    .duration(animationDuration)
+                    .attr('stroke-dashoffset', strokeDashoffset);
 
             }
         }
