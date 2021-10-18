@@ -1,13 +1,47 @@
 2.18.0
+------
+* feature - time formatter in scatter plot
+
 2.17.6
+------
+* fix - heatmap merge conflict
+
 2.17.5
+------
+* fix - Bullet chart redrawing bug
+
 2.17.4
+------
+* fix - fixes bullet chart not getting the right range
+
 2.17.3
+------
+* feature - Independent marker color for bullet chart
+* docs - split of topics page and fixed links
+
 2.17.2
+------
+* Feature - Smoother animation for mini-tooltip
+
 2.17.1
+------
+* Fix - Sets min yScale range in Line chart
+
 2.17.0
+------
+* Fix - Adds 'fill' none to charts to avoid 'black' chart effect when no CSS is loaded
+* Fix - Updates types on brush
+* Fix - Multi row message on tooltip
+* Fix - Grouped and stacked chart issue with all values at zero
+* Feature - Adds padding between bars and groups in grouped bar chart
+* Feature - locale setter/getter for grouped bar
+* Feature - heatmap isAnmated & scatter plot optimizations
+* Docs - Default values to Legend's API, Heatmap and Grouped bar docs
+
 2.16.1
-2.16.0
+------
+* Fix - Fixes bar chart bars showing for 0 values
+
 2.16.0
 ------
 Features
