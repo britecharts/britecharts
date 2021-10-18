@@ -16,6 +16,7 @@ import { uniqueId } from '../helpers/number';
 import { setDefaultLocale } from '../helpers/locale';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import { motion } from '../helpers/constants';
+import { gridHorizontal, gridVertical } from '../helpers/grid';
 
 const PERCENTAGE_FORMAT = '%';
 const NUMBER_FORMAT = ',f';
@@ -717,12 +718,12 @@ export default function module() {
      * @return void
      */
     function drawGridLines() {
-        svg.select('.grid-lines-group').selectAll('line').remove();
+        svg.select('.grid-lines-group').selectAll('grid').remove();
 
         if (isHorizontal) {
-            drawHorizontalGridLines();
-        } else {
             drawVerticalGridLines();
+        } else {
+            drawHorizontalGridLines();
         }
     }
 
@@ -730,17 +731,13 @@ export default function module() {
      * Draws the grid lines for an horizontal bar chart
      * @return {void}
      */
-    function drawHorizontalGridLines() {
-        svg.select('.grid-lines-group')
-            .selectAll('line.vertical-grid-line')
-            .data(xScale.ticks(xTicks).slice(1))
-            .enter()
-            .append('line')
-            .attr('class', 'vertical-grid-line')
-            .attr('y1', xAxisPadding.left)
-            .attr('y2', chartHeight)
-            .attr('x1', (d) => xScale(d))
-            .attr('x2', (d) => xScale(d));
+    function drawVerticalGridLines() {
+        const grid = gridVertical(xScale)
+            .range([0, chartHeight])
+            .hideEdges('first')
+            .ticks(xTicks);
+
+        grid(svg.select('.grid-lines-group'));
 
         drawVerticalExtendedLine();
     }
@@ -774,17 +771,13 @@ export default function module() {
      * Draws the grid lines for a vertical bar chart
      * @return {void}
      */
-    function drawVerticalGridLines() {
-        svg.select('.grid-lines-group')
-            .selectAll('line.horizontal-grid-line')
-            .data(yScale.ticks(yTicks).slice(1))
-            .enter()
-            .append('line')
-            .attr('class', 'horizontal-grid-line')
-            .attr('x1', xAxisPadding.left)
-            .attr('x2', chartWidth)
-            .attr('y1', (d) => yScale(d))
-            .attr('y2', (d) => yScale(d));
+    function drawHorizontalGridLines() {
+        const grid = gridHorizontal(yScale)
+            .range([0, chartWidth])
+            .hideEdges('first')
+            .ticks(yTicks);
+
+        grid(svg.select('.grid-lines-group'));
 
         drawHorizontalExtendedLine();
     }

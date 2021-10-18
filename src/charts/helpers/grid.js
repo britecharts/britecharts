@@ -12,8 +12,6 @@ const DIRECTION_HORIZONTAL = 'horizontal';
 const DIRECTION_VERTICAL = 'vertical';
 const DIRECTION_FULL = 'full';
 
-const DEFAULT_STROKE_COLOR = '#000';
-
 // Direction orientations
 const DIR = {
     H: DIRECTION_HORIZONTAL,
@@ -94,10 +92,7 @@ function gridBase(orient, scale) {
             // Set up line selections
             line = container.selectAll('line').data(values, scale).order(),
             lineExit = line.exit(),
-            lineEnter = line
-                .enter()
-                .append('line')
-                .attr('stroke', DEFAULT_STROKE_COLOR);
+            lineEnter = line.enter().append('line').attr('class', 'grid-line');
 
         line = line.merge(lineEnter);
 

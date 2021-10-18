@@ -149,7 +149,7 @@ describe('Bar Chart', () => {
             });
         });
 
-        describe('Axis labels', () => {
+        describe('axis labels', () => {
             it('should show custom x axis label and offset', () => {
                 const expectedValue = 'labelValue';
                 const expectedOffset = 20;
@@ -236,6 +236,31 @@ describe('Bar Chart', () => {
                         expect(actual).toEqual(expected);
                     });
                 });
+            });
+        });
+
+        describe('when animated', () => {
+            it('should show a chart with minimal requirements', () => {
+                const expected = 1;
+                let actual;
+
+                barChart.isAnimated(true);
+                containerFixture.datum(dataset).call(barChart);
+
+                actual = containerFixture.select('.bar-chart').size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should draw a bar for each data entry', () => {
+                const expected = dataset.length;
+
+                barChart.isAnimated(true);
+                containerFixture.datum(dataset).call(barChart);
+
+                const actual = containerFixture.selectAll('.bar').size();
+
+                expect(actual).toEqual(expected);
             });
         });
 
@@ -617,6 +642,18 @@ describe('Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should provide highlightBarFunction getter and setter', () => {
+            let previous = barChart.highlightBarFunction(),
+                expected = () => {},
+                actual;
+
+            barChart.highlightBarFunction(expected);
+            actual = barChart.highlightBarFunction();
+
+            expect(previous).not.toBe(actual);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide horizontal direction getter and setter', () => {
             let previous = barChart.isHorizontal(),
                 expected = true,
@@ -742,6 +779,18 @@ describe('Bar Chart', () => {
             actual = barChart.nameLabel();
 
             expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide orderingFunction getter and setter', () => {
+            let previous = barChart.orderingFunction(),
+                expected = () => {},
+                actual;
+
+            barChart.orderingFunction(expected);
+            actual = barChart.orderingFunction();
+
+            expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);
         });
 
