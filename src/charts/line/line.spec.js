@@ -704,6 +704,21 @@ describe('Line Chart', () => {
                     });
                 });
             });
+
+            describe('when isLoading is true', () => {
+                it('should render the loading state', () => {
+                    const expected = 1;
+
+                    lineChart.isLoading(true);
+                    containerFixture.datum(dataset).call(lineChart);
+
+                    const actual = containerFixture
+                        .select('.line-load-state')
+                        .size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
         });
 
         describe('when single line', () => {
@@ -824,21 +839,6 @@ describe('Line Chart', () => {
                         expect(circle.getAttribute('style')).toBeDefined();
                     });
                 });
-            });
-        });
-
-        describe('when isLoading is true', () => {
-            it('should render the loading state', () => {
-                const expected = 1;
-
-                lineChart.isLoading(true);
-                containerFixture.datum(dataset).call(lineChart);
-
-                const actual = containerFixture
-                    .select('.line-load-state')
-                    .size();
-
-                expect(actual).toEqual(expected);
             });
         });
     });

@@ -37,15 +37,16 @@ module.exports = function (config) {
             reporters: [{ type: 'text' }],
             check: {
                 global: {
-                    statements: 50,
-                    branches: 50,
-                    functions: 50,
-                    lines: 50,
+                    statements: 75,
+                    branches: 75,
+                    functions: 75,
+                    lines: 75,
                     excludes: [
                         'tests_index.js',
                         'src/charts/helpers/export.js',
                         'src/charts/helpers/date.js',
                         'src/charts/helpers/filter.js',
+                        '*DataBuilder.js',
                     ],
                 },
             },
