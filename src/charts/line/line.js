@@ -828,6 +828,7 @@ export default function module() {
 
     /**
      * Draws grid lines on the background of the chart
+     * TODO: Refactor into new grid helper
      * @return void
      */
     function drawGridLines(xTicks, yTicks) {

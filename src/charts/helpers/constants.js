@@ -43,8 +43,6 @@ import {
     utcYear,
 } from 'd3-time';
 
-const FORMAT_LOCALE_URL = 'https://cdn.jsdelivr.net/npm/d3-format/locale';
-
 export const axisTimeCombinations = {
     MINUTE_HOUR: 'minute-hour',
     HOUR_DAY: 'hour-daymonth',

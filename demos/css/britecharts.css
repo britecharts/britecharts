@@ -25,6 +25,7 @@
   to {
     transform: translateX(100%); } }
 
+.grid-line,
 .vertical-grid-line,
 .horizontal-grid-line {
   fill: none;
