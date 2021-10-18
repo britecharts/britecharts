@@ -746,7 +746,6 @@ export default function module() {
     /**
      * Finds the closest point to the current mouse position
      * @param {SVGHtmlElement} svg
-     * @returns
      * @private
      */
     function getClosestPoint(svg) {
