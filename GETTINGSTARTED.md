@@ -116,7 +116,7 @@ window.addEventListener("resize", throttledRedraw);
 ### Learning More
 Check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
-If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, run our docs and demos and create new Pull Requests.
+If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
 
 [demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
