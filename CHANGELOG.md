@@ -1,13 +1,99 @@
+3.0.0-alpha-6
+---------------
+* !feature - Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts
+* chore - Updates bar chart to use new grid helper
+* fix - Ordering of the horizontal bar chart elements
+* fix - Cleans up custom lines annotation text before rendering
+* feature - Zoom controls for scatter plot
+* chore - Types and husky updates
+
+3.0.0-alpha-5.2
+---------------
+* chore - Deprecates Travis into Github Actions
+* chore - Removes all critical security warnings due to dependencies
+* chore - Updates karma
+* chore - Changes ubication of tests and data builders
+
+3.0.0-alpha-5.1
+---------------
+* !feature - Adds ES5 version to bundle
+* fix - Fixes bullet chart issues 
+* fix - Tooltip tweaks
+
+3.0.0-alpha-4
+---------------
+* !feature - Removed the 'aspectRatio' configuration chart from line, scatter plot, stacked area, bullet, grouped bar, stacked bar
+* !feature - Changed exportChart to return a promise
+* feature - Allows for fixed window in brush chart with 'isLocked' option
+
+3.0.0-alpha-3
+---------------
+* !feature - Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar
+* !fix - Fixes the custom format feature on line and stacked area chart, renaming 'xAxisFormat' into 'xAxisCustomFormat' and  'xAxisCustomFormat' into 'xAxisFormat'. Removes 'axisTimeCombinations'
+* feature - Adds colorMap to bar chart, donut, line, scatter plot, and stacked area
+* feature - Adds 'animationDuration' option to all animated charts
+* feature - Allows brush to have missing data and to be animated
+
+3.0.0-alpha-2.4
+---------------
+* feature - Adds TypeScript types via declaration files
+* feature - Adds colorMap to legend, grouped bar chart and stacked bar chart
+
+3.0.0-alpha-2.3
+---------------
+* !feature - renames value formatting functions into 'numberFormat' in grouped bar, stacked bar
+* feature - tooltip on heatmap
+
+3.0.0-alpha-2.2
+---------------
+* feature - stacked area loading state
+* !fix - text sizes normalization in line and stacked area charts
+* chore - linting and formatting for CSS and JS 
+
 2.18.0
+------
+* feature - time formatter in scatter plot
+
 2.17.6
+------
+* fix - heatmap merge conflict
+
 2.17.5
+------
+* fix - Bullet chart redrawing bug
+
 2.17.4
+------
+* fix - fixes bullet chart not getting the right range
+
 2.17.3
+------
+* feature - Independent marker color for bullet chart
+* docs - split of topics page and fixed links
+
 2.17.2
+------
+* Feature - Smoother animation for mini-tooltip
+
 2.17.1
+------
+* Fix - Sets min yScale range in Line chart
+
 2.17.0
+------
+* Fix - Adds 'fill' none to charts to avoid 'black' chart effect when no CSS is loaded
+* Fix - Updates types on brush
+* Fix - Multi row message on tooltip
+* Fix - Grouped and stacked chart issue with all values at zero
+* Feature - Adds padding between bars and groups in grouped bar chart
+* Feature - locale setter/getter for grouped bar
+* Feature - heatmap isAnmated & scatter plot optimizations
+* Docs - Default values to Legend's API, Heatmap and Grouped bar docs
+
 2.16.1
-2.16.0
+------
+* Fix - Fixes bar chart bars showing for 0 values
+
 2.16.0
 ------
 Features
