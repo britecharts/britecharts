@@ -656,6 +656,13 @@ export function grid(scaleX, scaleY) {
  * Constructor for a horizontal grid helper
  * @param {*} scale - d3 scale to initialize the grid
  * @return {gridBaseGenerator}
+ * @example
+ * const grid = gridHorizontal(yScale)
+        .range([0, chartWidth])
+        .hideEdges('first')
+        .ticks(yTicks);
+
+    grid(svg.select('.grid-lines-group'));
  */
 export function gridHorizontal(scale) {
     return gridBase(DIR.H, scale);
@@ -665,6 +672,13 @@ export function gridHorizontal(scale) {
  * Constructor for a vertical grid helper
  * @param {*} scale - d3 scale to initialize the grid
  * @return {gridBaseGenerator}
+ * @example
+ *  const grid = gridVertical(xScale)
+        .range([0, chartHeight])
+        .hideEdges('first')
+        .ticks(xTicks);
+
+    grid(svg.select('.grid-lines-group'));
  */
 export function gridVertical(scale) {
     return gridBase(DIR.V, scale);

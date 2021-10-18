@@ -725,6 +725,7 @@ export default function module() {
     /**
      * Draw horizontal gridles of the chart
      * These gridlines are parallel to x-axis
+     * TODO: Refactor into new grid helper
      * @return {void}
      * @private
      */
@@ -742,6 +743,12 @@ export default function module() {
             .attr('y2', (d) => yScale(d));
     }
 
+    /**
+     * Finds the closest point to the current mouse position
+     * @param {SVGHtmlElement} svg
+     * @returns
+     * @private
+     */
     function getClosestPoint(svg) {
         let mousePos = mouse(svg);
 
