@@ -12,6 +12,7 @@ define(function(require){
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
+    const path = require('d3-path');
 
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
@@ -232,8 +233,10 @@ define(function(require){
             shouldShowAllDataPoints = false,
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
-            animationDuration = 1500,
-            maskingRectangle,
+            easeLiner = d3Ease.easeLinear,
+            animationDuration = 3000,
+            strokeDashoffset = 10,
+            strokeDasharrayOffset = 3,
 
             lineCurve = 'linear',
 
@@ -310,7 +313,7 @@ define(function(require){
                 drawAxis();
                 buildGradient();
                 drawLines();
-                createMaskingClip();
+                animateLines();
 
                 if (shouldShowTooltip()) {
                     drawHoverOverlay();
@@ -424,7 +427,7 @@ define(function(require){
 
                 if(xAxisScale === 'logarithmic') {
                     xAxis = d3Axis.axisBottom(xScale)
-                        .ticks(minor.tick, "e")
+                        .ticks(minor.tick, 'e')
                         .tickFormat(function (d) {
                             const log = Math.log(d) / Math.LN10;
                             return Math.abs(Math.round(log) - log) < 1e-6 ? '10^' + Math.round(log) : '';
@@ -683,30 +686,6 @@ define(function(require){
         }
 
         /**
-         * Creates a masking clip that would help us fake an animation if the
-         * proper flag is true
-         *
-         * @return {void}
-         */
-        function createMaskingClip() {
-            if (isAnimated) {
-                // We use a white rectangle to simulate the line drawing animation
-                maskingRectangle = svg.append('rect')
-                    .attr('class', 'masking-rectangle')
-                    .attr('width', width)
-                    .attr('height', height)
-                    .attr('x', 0)
-                    .attr('y', 0);
-
-                maskingRectangle.transition()
-                    .duration(animationDuration)
-                    .ease(ease)
-                    .attr('x', width)
-                    .on('end', () => maskingRectangle.remove());
-            }
-        }
-
-        /**
          * Draws the x and y axis on the svg object within their
          * respective groups along with the axis labels if given
          * @private
@@ -798,6 +777,21 @@ define(function(require){
             lines
                 .exit()
                 .remove();
+        }
+
+        function animateLines() {
+            if (isAnimated) {
+                const totalLength = paths.node().getTotalLength();
+
+                paths
+                    .attr('stroke-dasharray', totalLength + ' ' + strokeDasharrayOffset * totalLength)
+                    .attr('stroke-dashoffset', totalLength)
+                    .transition()
+                    .ease(easeLiner)
+                    .duration(animationDuration)
+                    .attr('stroke-dashoffset', strokeDashoffset);
+
+            }
         }
 
         /**
