@@ -9,6 +9,7 @@ import { scaleOrdinal, scaleTime, scaleLinear, scaleLog } from 'd3-scale';
 import { line } from 'd3-shape';
 import { select, mouse, touch } from 'd3-selection';
 import 'd3-transition';
+import { path } from 'd3-path';
 
 import { exportChart } from '../helpers/export';
 import colorHelper from '../helpers/color';
@@ -224,7 +225,8 @@ export default function module() {
         isAnimated = false,
         ease = easeQuadInOut,
         animationDuration = motion.duration,
-        maskingRectangle,
+        strokeDashoffset = 10,
+        strokeDasharrayOffset = 3,
         lineCurve = 'linear',
         dataByTopic,
         dataSorted,
@@ -295,7 +297,7 @@ export default function module() {
             drawAxis();
             buildGradient();
             drawLines();
-            createMaskingClip();
+            animateLine();
 
             if (shouldShowTooltip()) {
                 drawHoverOverlay();
@@ -696,23 +698,19 @@ export default function module() {
      *
      * @return {void}
      */
-    function createMaskingClip() {
+    function animateLine() {
         if (isAnimated) {
-            // We use a white rectangle to simulate the line drawing animation
-            maskingRectangle = svg
-                .append('rect')
-                .attr('class', 'masking-rectangle')
-                .attr('width', width)
-                .attr('height', height)
-                .attr('x', 0)
-                .attr('y', 0);
-
-            maskingRectangle
+            const totalLength = paths.node().getTotalLength();
+            paths
+                .attr(
+                    'stroke-dasharray',
+                    totalLength + ' ' + strokeDasharrayOffset * totalLength
+                )
+                .attr('stroke-dashoffset', totalLength)
                 .transition()
                 .duration(animationDuration)
                 .ease(ease)
-                .attr('x', width)
-                .on('end', () => maskingRectangle.remove());
+                .attr('stroke-dashoffset', strokeDashoffset);
         }
     }
 
