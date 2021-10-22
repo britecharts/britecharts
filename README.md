@@ -117,9 +117,9 @@ Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this
 
 ## Roadmap
 
-This project is in active development. You can check our [plans for the next release][release3project] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
+This project is in active development. You can check our [roadmap][roadmap] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
 
-To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#britecharts** channel. If you want to help, you can check the [contributing][35] guide.
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#britecharts** channel and upvote us in [producthunt]. If you want to help, you can check the [contributing][35] guide.
 
 If you work with Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We are also preparing a wrapper for React, and we will be talking about it on our [twitter][twitter].
 
@@ -239,3 +239,5 @@ Read more in the [license document][15]
 [howtoindex]: http://britecharts.github.io/britecharts/how-to-index.html
 [topicsindex]: http://britecharts.github.io/britecharts/topics-index.html
 [stylingbritecharts]: http://britecharts.github.io/britecharts/styling-charts.html
+[producthunt]: https://www.producthunt.com/posts/britecharts-2
+[roadmap]: https://github.com/britecharts/britecharts/blob/master/ROADMAP.md
