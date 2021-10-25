@@ -108,7 +108,7 @@ describe('Stacked Bar Chart', () => {
             it('should draw horizontal grid line', () => {
                 const expected = 1;
                 const actual = containerFixture
-                    .select('.horizontal-grid-line')
+                    .select('g.grid.horizontal')
                     .size();
 
                 expect(actual).toEqual(expected);
@@ -117,7 +117,7 @@ describe('Stacked Bar Chart', () => {
             it('should draw vertical grid line', () => {
                 const expected = 1;
                 const actual = containerFixture
-                    .select('.vertical-grid-line')
+                    .select('g.grid.vertical')
                     .size();
 
                 expect(actual).toEqual(expected);
