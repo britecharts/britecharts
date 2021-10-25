@@ -104,6 +104,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/shayh"><img src="https://avatars3.githubusercontent.com/u/366321?v=4?s=100" width="100px;" alt=""/><br /><sub><b>shayh</b></sub></a><br /><a href="https://github.com/britecharts/britecharts/commits?author=shayh" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/jayeclark"><img src="https://avatars.githubusercontent.com/u/84106309?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jay Clark</b></sub></a><br /><a href="https://github.com/britecharts/britecharts/commits?author=jayeclark" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/bratter"><img src="https://avatars.githubusercontent.com/u/10243813?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brendan Ratter</b></sub></a><br /><a href="https://github.com/britecharts/britecharts/commits?author=bratter" title="Code">💻</a> <a href="#ideas-bratter" title="Ideas, Planning, & Feedback">🤔</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
