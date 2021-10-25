@@ -106,6 +106,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/bratter"><img src="https://avatars.githubusercontent.com/u/10243813?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brendan Ratter</b></sub></a><br /><a href="https://github.com/britecharts/britecharts/commits?author=bratter" title="Code">💻</a> <a href="#ideas-bratter" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/rajeshmr82"><img src="https://avatars.githubusercontent.com/u/10022651?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rajesh</b></sub></a><br /><a href="https://github.com/britecharts/britecharts/commits?author=rajeshmr82" title="Code">💻</a></td>
   </tr>
 </table>
 

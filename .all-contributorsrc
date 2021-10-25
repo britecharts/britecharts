@@ -93,6 +93,15 @@
         "code",
         "ideas"
       ]
+    },
+    {
+      "login": "rajeshmr82",
+      "name": "Rajesh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10022651?v=4",
+      "profile": "https://github.com/rajeshmr82",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
