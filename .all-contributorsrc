@@ -74,6 +74,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jayeclark",
+      "name": "Jay Clark",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84106309?v=4",
+      "profile": "https://github.com/jayeclark",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
