@@ -21,6 +21,7 @@ import {
 import { calcLinearRegression } from '../helpers/number';
 import { setDefaultLocale } from '../helpers/locale';
 import { motion } from '../helpers/constants';
+import { gridHorizontal, gridVertical } from '../helpers/grid';
 
 /**
  * @typedef ScatterPlotData
@@ -564,17 +565,32 @@ export default function module() {
      * @private
      */
     function drawVerticalGridLines() {
-        maskGridLines = svg
+        const grid = gridVertical(xScale)
+            .range([0, chartHeight])
+            .hideEdges('first')
+            .ticks(xTicks);
+
+        grid(svg.select('.grid-lines-group'));
+
+        drawVerticalExtendedLine();
+    }
+
+    /**
+     * Draws a vertical line to extend y-axis till the edges
+     * @return {void}
+     */
+    function drawVerticalExtendedLine() {
+        baseLine = svg
             .select('.grid-lines-group')
-            .selectAll('line.vertical-grid-line')
-            .data(xScale.ticks(xTicks))
+            .selectAll('line.extended-y-line')
+            .data([0])
             .enter()
             .append('line')
-            .attr('class', 'vertical-grid-line')
-            .attr('y1', xAxisPadding.left)
+            .attr('class', 'extended-y-line')
+            .attr('y1', xAxisPadding.bottom)
             .attr('y2', chartHeight)
-            .attr('x1', (d) => xScale(d))
-            .attr('x2', (d) => xScale(d));
+            .attr('x1', 0)
+            .attr('x2', 0);
     }
 
     /**
@@ -690,7 +706,7 @@ export default function module() {
      * @private
      */
     function drawGridLines() {
-        svg.select('.grid-lines-group').selectAll('line').remove();
+        svg.select('.grid-lines-group').selectAll('grid').remove();
 
         if (grid === 'horizontal' || grid === 'full') {
             drawHorizontalGridLines();
@@ -699,8 +715,6 @@ export default function module() {
         if (grid === 'vertical' || grid === 'full') {
             drawVerticalGridLines();
         }
-
-        drawHorizontalExtendedLine();
     }
 
     /**
@@ -725,22 +739,18 @@ export default function module() {
     /**
      * Draw horizontal gridles of the chart
      * These gridlines are parallel to x-axis
-     * TODO: Refactor into new grid helper
      * @return {void}
      * @private
      */
     function drawHorizontalGridLines() {
-        maskGridLines = svg
-            .select('.grid-lines-group')
-            .selectAll('line.horizontal-grid-line')
-            .data(yScale.ticks(yTicks))
-            .enter()
-            .append('line')
-            .attr('class', 'horizontal-grid-line')
-            .attr('x1', xAxisPadding.left)
-            .attr('x2', chartWidth)
-            .attr('y1', (d) => yScale(d))
-            .attr('y2', (d) => yScale(d));
+        const grid = gridHorizontal(yScale)
+            .range([0, chartWidth])
+            .hideEdges('first')
+            .ticks(yTicks);
+
+        grid(svg.select('.grid-lines-group'));
+
+        drawHorizontalExtendedLine();
     }
 
     /**

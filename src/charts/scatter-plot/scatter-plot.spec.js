@@ -129,7 +129,7 @@ describe('Scatter Plot', () => {
             it('should render horizontal grid lines', () => {
                 const expected = 1;
                 const actual = containerFixture
-                    .select('.horizontal-grid-line')
+                    .select('g.grid.horizontal')
                     .size();
 
                 expect(actual).toEqual(expected);
@@ -138,18 +138,18 @@ describe('Scatter Plot', () => {
             it('should render vertical grid lines', () => {
                 const expected = 1;
                 const actual = containerFixture
-                    .select('.vertical-grid-line')
+                    .select('g.grid.vertical')
                     .size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render as many gridlines as number of ticks', () => {
+            it('should render one less gridline than the number of ticks', () => {
                 const actualVerticalN = containerFixture
-                    .selectAll('.grid-lines-group .vertical-grid-line')
+                    .selectAll('.grid.vertical .grid-line')
                     .size();
                 const actualHorizontalN = containerFixture
-                    .selectAll('.grid-lines-group .horizontal-grid-line')
+                    .selectAll('.grid.horizontal .grid-line')
                     .size();
                 const expectedXticks = containerFixture
                     .selectAll('.x-axis-group .tick')
@@ -158,8 +158,8 @@ describe('Scatter Plot', () => {
                     .selectAll('.y-axis-group .tick')
                     .size();
 
-                expect(actualVerticalN).toBe(expectedXticks);
-                expect(actualHorizontalN).toBe(expectedYticks);
+                expect(actualVerticalN).toBe(expectedXticks - 1);
+                expect(actualHorizontalN).toBe(expectedYticks - 1);
             });
         });
 

@@ -29,6 +29,7 @@ import {
     uniqueId,
 } from '../helpers/number';
 import { castValueToType } from '../helpers/type';
+import { gridHorizontal, gridVertical } from '../helpers/grid';
 
 /**
  * @typedef D3Selection
@@ -830,45 +831,81 @@ export default function module() {
      * @return void
      */
     function drawGridLines(xTicks, yTicks) {
-        svg.select('.grid-lines-group').selectAll('line').remove();
+        svg.select('.grid-lines-group').selectAll('grid').remove();
 
         let minY = min(dataByTopic, ({ dates }) => min(dates, getValue));
         let shouldHighlightXAxis = minY < 0;
 
         if (grid === 'horizontal' || grid === 'full') {
-            horizontalGridLines = svg
-                .select('.grid-lines-group')
-                .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(yTicks))
-                .enter()
-                .append('line')
-                .attr('class', 'horizontal-grid-line')
-                .attr('x1', -xAxisPadding.left - verticalShift)
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d))
-                .classed(
-                    'horizontal-grid-line--highlighted',
-                    (value) => shouldHighlightXAxis && value === 0
-                );
+            drawHorizontalGridLines(yTicks);
+            if (shouldHighlightXAxis) {
+                drawHorizontalHighlightLine();
+            }
         }
 
         if (grid === 'vertical' || grid === 'full') {
-            verticalGridLines = svg
-                .select('.grid-lines-group')
-                .selectAll('line.vertical-grid-line')
-                .data(xScale.ticks(xTicks))
-                .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', 0)
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d))
-                .attr('fill', 'none');
+            drawVerticalGridLines(xTicks);
         }
+    }
 
-        //draw a horizontal line to extend x-axis till the edges
+    /**
+     * Draws vertical gridlines of the chart
+     * These gridlines are parallel to y-axis
+     * @return {void}
+     * @private
+     */
+    function drawVerticalGridLines(xTicks) {
+        const grid = gridVertical(xScale)
+            .range([0, chartHeight])
+            .hideEdges('first')
+            .ticks(xTicks);
+
+        grid(svg.select('.grid-lines-group'));
+
+        drawVerticalExtendedLine();
+    }
+
+    /**
+     * Draws a vertical line to extend y-axis till the edges
+     * @return {void}
+     */
+    function drawVerticalExtendedLine() {
+        baseLine = svg
+            .select('.grid-lines-group')
+            .selectAll('line.extended-y-line')
+            .data([0])
+            .enter()
+            .append('line')
+            .attr('class', 'extended-y-line')
+            .attr('y1', xAxisPadding.bottom)
+            .attr('y2', chartHeight)
+            .attr('x1', 0)
+            .attr('x2', 0);
+    }
+
+    /**
+     * Draw horizontal gridlinees of the chart
+     * These gridlines are parallel to x-axis
+     * @return {void}
+     * @private
+     */
+    function drawHorizontalGridLines(yTicks) {
+        const grid = gridHorizontal(yScale)
+            .range([0, chartWidth])
+            .hideEdges('first')
+            .ticks(yTicks);
+
+        grid(svg.select('.grid-lines-group'));
+
+        drawHorizontalExtendedLine();
+    }
+
+    /**
+     * Draws a horizontal line to extend x-axis till the edges
+     * @return {void}
+     * @private
+     */
+    function drawHorizontalExtendedLine() {
         baseLine = svg
             .select('.grid-lines-group')
             .selectAll('line.extended-x-line')
@@ -876,10 +913,26 @@ export default function module() {
             .enter()
             .append('line')
             .attr('class', 'extended-x-line')
-            .attr('x1', -xAxisPadding.left - verticalShift)
+            .attr('x1', 0)
             .attr('x2', chartWidth)
-            .attr('y1', height - margin.bottom - margin.top)
-            .attr('y2', height - margin.bottom - margin.top);
+            .attr('y1', chartHeight)
+            .attr('y2', chartHeight);
+    }
+
+    /**
+     * Adds highlight class to horizontal grid line at data = 0
+     * @return {void}
+     * @private
+     */
+    function drawHorizontalHighlightLine() {
+        const horizontalGrid = svg
+            .select('.horizontal')
+            .selectAll('.grid-line');
+        horizontalGrid.attr('class', (d) =>
+            d === 0
+                ? 'grid-line horizontal-grid-line--highlighted'
+                : 'grid-line'
+        );
     }
 
     /**
