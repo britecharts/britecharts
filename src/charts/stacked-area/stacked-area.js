@@ -27,6 +27,7 @@ import {
 } from '../helpers/filter';
 import { addDays, diffDays } from '../helpers/date';
 import { stackedAreaLoadingMarkup } from '../helpers/load';
+import { gridHorizontal, gridVertical } from '../helpers/grid';
 
 const uniq = (arrArg) =>
     arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
@@ -151,8 +152,6 @@ export default function module() {
         dataSorted,
         dataSortedFormatted,
         dataSortedZeroed,
-        verticalGridLines,
-        horizontalGridLines,
         grid = null,
         tooltipThreshold = 480,
         xAxisPadding = {
@@ -726,44 +725,43 @@ export default function module() {
      * TODO: Refactor into new grid helper
      * @return void
      */
-    function drawGridLines(xTicks, yTicks) {
-        svg.select('.grid-lines-group').selectAll('line').remove();
+    function drawGridLines() {
+        svg.select('.grid-lines-group').selectAll('grid').remove();
 
         let shouldHighlightXAxis = getMinYAxisScale() < 0;
 
         if (grid === 'horizontal' || grid === 'full') {
-            horizontalGridLines = svg
-                .select('.grid-lines-group')
-                .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(yTicks))
-                .enter()
-                .append('line')
-                .attr('class', 'horizontal-grid-line')
-                .attr('x1', -xAxisPadding.left - 30)
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d))
-                .classed(
-                    'horizontal-grid-line--highlighted',
-                    (value) => shouldHighlightXAxis && value === 0
-                );
+            drawHorizontalGridLines();
+            if (shouldHighlightXAxis) {
+                drawHorizontalHighlightLine();
+            }
         }
 
         if (grid === 'vertical' || grid === 'full') {
-            verticalGridLines = svg
-                .select('.grid-lines-group')
-                .selectAll('line.vertical-grid-line')
-                .data(xScale.ticks(xTicks))
-                .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', 0)
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d));
+            drawVerticalGridLines();
         }
+    }
 
-        //draw a horizontal line to extend x-axis till the edges
+    /**
+     * Draws the grid lines for a vertical bar chart
+     * @return {void}
+     */
+    function drawHorizontalGridLines() {
+        const grid = gridHorizontal(yScale)
+            .range([0, chartWidth])
+            .hideEdges('first')
+            .ticks(yTicks);
+
+        grid(svg.select('.grid-lines-group'));
+
+        drawHorizontalExtendedLine();
+    }
+
+    /**
+     * Draws a vertical line to extend x-axis till the edges
+     * @return {void}
+     */
+    function drawHorizontalExtendedLine() {
         baseLine = svg
             .select('.grid-lines-group')
             .selectAll('line.extended-x-line')
@@ -771,10 +769,67 @@ export default function module() {
             .enter()
             .append('line')
             .attr('class', 'extended-x-line')
-            .attr('x1', -xAxisPadding.left - 30)
+            .attr('x1', 0)
             .attr('x2', chartWidth)
-            .attr('y1', height - margin.bottom - margin.top)
-            .attr('y2', height - margin.bottom - margin.top);
+            .attr('y1', chartHeight)
+            .attr('y2', chartHeight);
+    }
+
+    /**
+     * Adds highlight class to horizontal grid line at data = 0
+     * @return {void}
+     * @private
+     */
+    function drawHorizontalHighlightLine() {
+        const horizontalGrid = svg
+            .select('.horizontal')
+            .selectAll('.grid-line');
+        horizontalGrid.attr('class', (d) =>
+            d === 0
+                ? 'grid-line horizontal-grid-line--highlighted'
+                : 'grid-line'
+        );
+    }
+
+    /**
+     * Draws the grid lines for an horizontal bar chart
+     * @return {void}
+     */
+    function drawVerticalGridLines() {
+        const grid = gridVertical(xScale)
+            .range([0, chartHeight])
+            .hideEdges('first')
+            .ticks(xTicks);
+
+        grid(svg.select('.grid-lines-group'));
+
+        drawVerticalExtendedLine();
+    }
+
+    /**
+     * Draws a vertical line to extend y-axis till the edges
+     * @return {void}
+     */
+    function drawVerticalExtendedLine() {
+        baseLine = svg
+            .select('.grid-lines-group')
+            .selectAll('line.extended-y-line')
+            .data([0])
+            .enter()
+            .append('line')
+            .attr('class', 'extended-y-line')
+            .attr('y1', xAxisPadding.bottom)
+            .attr('y2', chartHeight)
+            .attr('x1', 0)
+            .attr('x2', 0);
+    }
+
+    /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(barLoadingMarkup);
     }
 
     /**

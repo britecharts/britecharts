@@ -133,10 +133,10 @@ describe('Stacked Area Chart', () => {
 
                 it('should render the horizontal grid lines', () => {
                     expect(
-                        containerFixture.select('.horizontal-grid-line').empty()
+                        containerFixture.select('g.grid.horizontal').empty()
                     ).toBeFalsy();
                     expect(
-                        containerFixture.select('.vertical-grid-line').empty()
+                        containerFixture.select('g.grid.vertical').empty()
                     ).toBeTruthy();
                 });
 
@@ -204,10 +204,10 @@ describe('Stacked Area Chart', () => {
 
                 it('should render the vertical grid lines', () => {
                     expect(
-                        containerFixture.select('.horizontal-grid-line').empty()
+                        containerFixture.select('g.grid.horizontal').empty()
                     ).toBeTruthy();
                     expect(
-                        containerFixture.select('.vertical-grid-line').empty()
+                        containerFixture.select('g.grid.vertical').empty()
                     ).toBeFalsy();
                 });
             });
@@ -225,10 +225,10 @@ describe('Stacked Area Chart', () => {
 
                 it('should render the vertical grid lines', () => {
                     expect(
-                        containerFixture.select('.horizontal-grid-line').empty()
+                        containerFixture.select('g.grid.horizontal').empty()
                     ).toBeFalsy();
                     expect(
-                        containerFixture.select('.vertical-grid-line').empty()
+                        containerFixture.select('g.grid.vertical').empty()
                     ).toBeFalsy();
                 });
             });
