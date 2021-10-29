@@ -641,6 +641,18 @@ donutDataSets.forEach((datasetName) => {
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide hasCenterLegend getter and setter', () => {
+                let previous = donutChart.hasCenterLegend(),
+                    expected = false,
+                    actual;
+
+                donutChart.hasCenterLegend(expected);
+                actual = donutChart.hasCenterLegend();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('Lifecycle', () => {
