@@ -703,17 +703,6 @@ export default function module() {
     };
 
     /**
-     * Chart exported to png and a download action is fired
-     * @param {String} filename     File title for the resulting picture
-     * @param {String} title        Title to add at the top of the exported picture
-     * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
-     * @public
-     */
-    exports.exportChart = function (filename, title) {
-        return exportChart.call(exports, svg, filename, title);
-    };
-
-    /**
      * Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
      * adds up to zero or there are no entries), the chart will render an empty slice
      * with a given color (light gray by default)
@@ -735,10 +724,11 @@ export default function module() {
      * Chart exported to png and a download action is fired
      * @param {String} filename     File title for the resulting picture
      * @param {String} title        Title to add at the top of the exported picture
+     * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
     exports.exportChart = function (filename, title) {
-        exportChart.call(exports, svg, filename, title);
+        return exportChart.call(exports, svg, filename, title);
     };
 
     /**
