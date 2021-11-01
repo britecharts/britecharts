@@ -15,7 +15,7 @@ export type TooltipTopic = {
     topicName: string;
 };
 
-// This is equivalent to the lineChartDataSorted data type in Britecharts
+// This is equivalent to the LineChartDataSorted data type in Britecharts
 export type TooltipDataShape = {
     [tooltipKeys.Date]: string;
     [tooltipKeys.Topics]: TooltipTopic[];

@@ -22,6 +22,7 @@ const defaultFontFace = 'Arial';
  * REF: http://bl.ocks.org/mbostock/7555321
  * More discussions on https://github.com/mbostock/d3/issues/1642
  * @return {void}
+ * @private
  */
 export const wrapText = function (xOffset, fontSize, availableWidth, node) {
     let text = select(node),
@@ -85,6 +86,7 @@ export const wrapText = function (xOffset, fontSize, availableWidth, node) {
  * REF: http://bl.ocks.org/mbostock/7555321
  * More discussions on https://github.com/mbostock/d3/issues/1642
  * @return {void}
+ * @private
  */
 export const wrapTextWithEllipses = function (
     text,
@@ -145,6 +147,7 @@ export const wrapTextWithEllipses = function (
  * @param  {Number} [fontSize=12]       Font size (or default)
  * @param  {String} [fontFace='Arial']  Font family to use in the calculation (or default)
  * @return {String}                     Approximated width of the text
+ * @private
  */
 export const getTextWidth = function (
     text,
@@ -164,6 +167,7 @@ export const getTextWidth = function (
  * or falls back to the default font size
  * @param {HTMLElement} node The node to get the computed font size for
  * @return {number}
+ * @private
  */
 export const getFontSize = function (node) {
     if (typeof window.getComputedStyle === 'function') {

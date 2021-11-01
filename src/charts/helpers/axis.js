@@ -27,6 +27,7 @@ const settingsToMajorTickMap = {
  * Figures out the proper settings from the current time span
  * @param  {Number} timeSpan    Span of time charted by the graph in milliseconds
  * @return {String}             Type of settings for the given timeSpan
+ * @private
  */
 const getAxisSettingsFromTimeSpan = (timeSpan) => {
     let { ONE_YEAR, ONE_DAY } = timeBenchmarks;
@@ -48,6 +49,7 @@ const getAxisSettingsFromTimeSpan = (timeSpan) => {
  * @param  {Number} width               Chart width
  * @param  {Number} dataPointNumber     Number of entries on the data
  * @return {Number}                     Number of ticks to render
+ * @private
  */
 const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
     let ticksForWidth = Math.ceil(
@@ -65,6 +67,7 @@ const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
  * @param  {Number} width               Chart width
  * @param  {Number} dataPointNumber     Number of entries on the data
  * @return {Number}                     Number of ticks to render
+ * @private
  */
 const getMaxNumOfHorizontalTicksForNumberRanges = (width, dataPointNumber) => {
     let ticksForWidth = Math.ceil(
@@ -81,6 +84,7 @@ const getMaxNumOfHorizontalTicksForNumberRanges = (width, dataPointNumber) => {
  * @param {String} [settings=null]      Optional forced settings for axis, a combination of one of minute, hour, day, daymonth, month, year separated by '-'
  * @param {String} [locale=null]        Optional forced locale
  * @return {object}                     Tick settings for major and minr axis
+ * @private
  */
 export const getTimeSeriesAxis = (
     dataByDate,
@@ -133,6 +137,7 @@ export const getTimeSeriesAxis = (
  * @param {Number} width                Chart width
  * @param {String} [settings=null]      Optional forced settings for axis
  * @return {object} tick settings for minor axis
+ * @private
  */
 export const getSortedNumberAxis = (dataSorted, width) => {
     const firstEntry = dataSorted[0].date;

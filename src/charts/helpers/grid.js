@@ -23,6 +23,7 @@ const DIR = {
  * The +0.5 avoids anti-aliasing artifacts
  * @param {*} scale - Scale for positioning
  * @return {function}
+ * @private
  */
 function positionNumber(scale) {
     return (d) => +scale(d) + 0.5;
@@ -33,6 +34,7 @@ function positionNumber(scale) {
  * Also adjusted for anti-aliasing
  * @param {*} scale - Scale for positioning
  * @return {function}
+ * @private
  */
 function positionCenter(scale) {
     let offset = Math.max(0, scale.bandwidth() - 1) / 2;
@@ -49,6 +51,7 @@ function positionCenter(scale) {
  * @param {string} orient - orientation string to define the direction
  * @param {*} scale - d3 scale for the grid's ticks
  * @return {gridBaseGenerator}
+ * @private
  */
 function gridBase(orient, scale) {
     let range = [0, 1],
@@ -311,6 +314,15 @@ function gridBase(orient, scale) {
  * @param {*} scaleX - d3 scale for the grid's x direction
  * @param {*} scaleY - d3 scale for the grid's y direction
  * @return {gridGenerator}
+ * @memberof Grid
+ * @alias module:Grid.grid
+ * @example
+ * const grid = grid(xScale, yScale)
+        .offsetStart(5)
+        .hideEdges(true)
+        .ticks(4);
+
+    grid(svg.select('.grid-lines-group'));
  */
 export function grid(scaleX, scaleY) {
     let gridH = gridHorizontal(scaleY || scaleLinear()),
@@ -656,6 +668,9 @@ export function grid(scaleX, scaleY) {
  * Constructor for a horizontal grid helper
  * @param {*} scale - d3 scale to initialize the grid
  * @return {gridBaseGenerator}
+ * @public
+ * @memberof Grid
+ * @alias module:Grid.gridHorizontal
  * @example
  * const grid = gridHorizontal(yScale)
         .range([0, chartWidth])
@@ -672,6 +687,9 @@ export function gridHorizontal(scale) {
  * Constructor for a vertical grid helper
  * @param {*} scale - d3 scale to initialize the grid
  * @return {gridBaseGenerator}
+ * @public
+ * @memberof Grid
+ * @alias module:Grid.gridVertical
  * @example
  *  const grid = gridVertical(xScale)
         .range([0, chartHeight])
@@ -685,8 +703,13 @@ export function gridVertical(scale) {
 }
 
 /**
+ * Reusable Grid component helper that renders either a vertical, horizontal or full grid, and that
+ * will usually be used inside charts. It could also be used as a standalone component to use on custom charts.
  * @module Grid
  * @requires d3-scale
+ * @exports gridHorizontal
+ * @exports gridVertical
+ * @exports grid
  */
 export default {
     gridHorizontal,

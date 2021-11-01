@@ -136,6 +136,7 @@ module.exports = (function () {
      * Extracts the styles of elements of the given tag name
      * @param {String} tagName  Tag name that we will check for styles
      * @return {Object}         Values of the styles applied to the given element
+     * @private
      */
     const computeDefaultStyleByTagName = (tagName) => {
         let defaultStyle = {},
@@ -155,6 +156,7 @@ module.exports = (function () {
     /**
      * Returns a serializer function, only run it when you know you want to serialize your chart
      * @return {func} serializer to add styles in line to dom string
+     * @private
      */
     const initializeSerializer = () => {
         // Mapping between tag names and css default values lookup tables. This allows to exclude default values in the result.
