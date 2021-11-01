@@ -222,7 +222,7 @@ function createLoadingState(isLoading, instance) {
         containerWidth = container.node()
             ? container.node().getBoundingClientRect().width
             : false;
-    const dataset = aTestDataSet().withOneSource().build();
+    const dataset = isLoading ? {} : aTestDataSet().withOneSource().build();
 
     if (containerWidth) {
         lineChart
