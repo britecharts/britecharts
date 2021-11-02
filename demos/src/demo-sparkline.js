@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import sparklineChart from './../../src/charts/sparkline/sparkline';
 import { SparklineDataBuilder } from './../../src/charts/sparkline/sparklineDataBuilder';

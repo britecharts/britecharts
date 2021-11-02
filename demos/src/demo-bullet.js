@@ -1,5 +1,5 @@
 import { select } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import bullet from './../../src/charts/bullet/bullet';
 import { BulletChartDataBuilder } from './../../src/charts/bullet/bulletChartDataBuilder';

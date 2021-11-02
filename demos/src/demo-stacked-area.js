@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import stackedAreaChart from './../../src/charts/stacked-area/stacked-area';
 import tooltip from './../../src/charts/tooltip/tooltip';

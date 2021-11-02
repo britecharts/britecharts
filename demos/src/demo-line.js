@@ -1,6 +1,6 @@
 import { select, selectAll } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import brush from './../../src/charts/brush/brush';
 import line from './../../src/charts/line/line';

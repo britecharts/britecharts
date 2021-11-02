@@ -1,4 +1,5 @@
 import { select } from 'd3-selection';
+// import PubSub from 'pubsub-js';
 
 import step from './../../src/charts/step/step';
 import miniTooltip from './../../src/charts/mini-tooltip/mini-tooltip';

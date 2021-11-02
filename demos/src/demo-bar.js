@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import bar from '../../src/charts/bar/bar';
 import miniTooltip from '../../src/charts/mini-tooltip/mini-tooltip';
