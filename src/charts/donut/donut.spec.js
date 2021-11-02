@@ -368,9 +368,9 @@ donutDataSets.forEach((datasetName) => {
                     let actualLabel;
                     let actualValue;
 
-                    donutChart.centeredTextFunction(
-                        (d) => `${d.id} ${d.quantity}`
-                    );
+                    donutChart
+                        .centeredTextFunction((d) => `${d.id} ${d.quantity}`)
+                        .hasCenterLegend(true);
                     donutChart.highlightSliceById(11);
                     containerFixture.datum(dataset).call(donutChart);
 
@@ -454,6 +454,18 @@ donutDataSets.forEach((datasetName) => {
 
                 donutChart.externalRadius(expected);
                 actual = donutChart.externalRadius();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide hasCenterLegend getter and setter', () => {
+                let previous = donutChart.hasCenterLegend(),
+                    expected = false,
+                    actual;
+
+                donutChart.hasCenterLegend(expected);
+                actual = donutChart.hasCenterLegend();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);

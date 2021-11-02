@@ -101,6 +101,7 @@ export default function module() {
         percentageLabel = 'percentage',
         percentageFormat = '.1f',
         numberFormat,
+        hasCenterLegend = true,
         // colors
         colorScale,
         nameToColorMap = null,
@@ -340,7 +341,7 @@ export default function module() {
      * @private
      */
     function drawLegend(obj) {
-        if (obj.data) {
+        if (obj.data && hasCenterLegend) {
             svg.select('.donut-text')
                 .text(() => centeredTextFunction(obj.data))
                 .attr('dy', '.2em')
@@ -742,6 +743,23 @@ export default function module() {
             return externalRadius;
         }
         externalRadius = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the hasCenterLegend property of the chart, making it display
+     * legend at the center of the donut.
+     *
+     * @param  {boolean} _x         If we want to show legent at the center of the donut
+     * @return {boolean | Module}   Current hasCenterLegend flag or Chart module
+     * @public
+     */
+    exports.hasCenterLegend = function (_x) {
+        if (!arguments.length) {
+            return hasCenterLegend;
+        }
+        hasCenterLegend = _x;
 
         return this;
     };
