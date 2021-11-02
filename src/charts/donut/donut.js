@@ -758,6 +758,23 @@ export default function module() {
     };
 
     /**
+     * Gets or Sets the hasCenterLegend property of the chart, making it display
+     * legend at the center of the donut.
+     *
+     * @param  {boolean} _x         If we want to show legent at the center of the donut
+     * @return {boolean | Module}   Current hasCenterLegend flag or Chart module
+     * @public
+     */
+    exports.hasCenterLegend = function (_x) {
+        if (!arguments.length) {
+            return hasCenterLegend;
+        }
+        hasCenterLegend = _x;
+
+        return this;
+    };
+
+    /**
      * Gets or Sets the hasHoverAnimation property of the chart. By default,
      * donut chart highlights the hovered slice. This property explicitly
      * disables this hover behavior.
@@ -991,23 +1008,6 @@ export default function module() {
             return width;
         }
         width = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the hasCenterLegend property of the chart, making it display
-     * legend at the center of the donut.
-     *
-     * @param  {boolean} _x         If we want to show legent at the center of the donut
-     * @return {boolean | Module}   Current hasCenterLegend flag or Chart module
-     * @public
-     */
-    exports.hasCenterLegend = function (_x) {
-        if (!arguments.length) {
-            return hasCenterLegend;
-        }
-        hasCenterLegend = _x;
 
         return this;
     };
