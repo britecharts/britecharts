@@ -17,6 +17,7 @@ import colorHelper from '../helpers/color';
 import { barLoadingMarkup } from '../helpers/load';
 import { setDefaultLocale } from '../helpers/locale';
 import { motion } from '../helpers/constants';
+import { gridHorizontal, gridVertical } from '../helpers/grid';
 
 const PERCENTAGE_FORMAT = '%';
 const NUMBER_FORMAT = ',f';
@@ -412,44 +413,23 @@ export default function module() {
 
     /**
      * Draws grid lines on the background of the chart
-     * TODO: Refactor into new grid helper
      * @return void
      */
     function drawGridLines() {
-        let scale = isHorizontal ? xScale : yScale;
-
-        svg.select('.grid-lines-group').selectAll('line').remove();
+        svg.select('.grid-lines-group').selectAll('grid').remove();
 
         if (grid === 'horizontal' || grid === 'full') {
-            svg.select('.grid-lines-group')
-                .selectAll('line.horizontal-grid-line')
-                .data(scale.ticks(yTicks).slice(1))
-                .enter()
-                .append('line')
-                .attr('class', 'horizontal-grid-line')
-                .attr('x1', -xAxisPadding.left + 1)
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d));
+            drawHorizontalGridLines();
         }
 
         if (grid === 'vertical' || grid === 'full') {
-            svg.select('.grid-lines-group')
-                .selectAll('line.vertical-grid-line')
-                .data(scale.ticks(xTicks).slice(1))
-                .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', 0)
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d));
+            drawVerticalGridLines();
         }
 
         if (isHorizontal) {
-            drawVerticalExtendedLine();
+            drawVerticalGridLines();
         } else {
-            drawHorizontalExtendedLine();
+            drawHorizontalGridLines();
         }
     }
 
@@ -490,6 +470,21 @@ export default function module() {
         } else {
             bars.attr('width', (d) => xScale(d[1] - d[0]));
         }
+    }
+
+    /**
+     * Draws the grid lines for a vertical bar chart
+     * @return {void}
+     */
+    function drawHorizontalGridLines() {
+        const grid = gridHorizontal(yScale)
+            .range([0, chartWidth])
+            .hideEdges('first')
+            .ticks(yTicks);
+
+        grid(svg.select('.grid-lines-group'));
+
+        drawHorizontalExtendedLine();
     }
 
     /**
@@ -547,6 +542,21 @@ export default function module() {
         } else {
             bars.attr('height', (d) => yScale(d[0]) - yScale(d[1]));
         }
+    }
+
+    /**
+     * Draws the grid lines for an horizontal bar chart
+     * @return {void}
+     */
+    function drawVerticalGridLines() {
+        const grid = gridVertical(xScale)
+            .range([0, chartHeight])
+            .hideEdges('first')
+            .ticks(xTicks);
+
+        grid(svg.select('.grid-lines-group'));
+
+        drawVerticalExtendedLine();
     }
 
     /**

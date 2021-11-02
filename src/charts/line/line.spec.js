@@ -175,7 +175,7 @@ describe('Line Chart', () => {
                     it('should draw horizontal grid lines', () => {
                         const expected = 1;
                         const actual = containerFixture
-                            .select('.horizontal-grid-line')
+                            .select('.horizontal .grid-line')
                             .size();
 
                         expect(actual).toEqual(expected);
@@ -184,7 +184,7 @@ describe('Line Chart', () => {
                     it('should not draw vertical grid lines', () => {
                         const expected = 0;
                         const actual = containerFixture
-                            .select('.vertical-grid-line')
+                            .select('.vertical .grid-line')
                             .size();
 
                         expect(actual).toEqual(expected);
@@ -204,7 +204,7 @@ describe('Line Chart', () => {
                     it('should not draw horizontal grid lines', () => {
                         const expected = 0;
                         const actual = containerFixture
-                            .select('.horizontal-grid-line')
+                            .select('.horizontal .grid-line')
                             .size();
 
                         expect(actual).toEqual(expected);
@@ -213,7 +213,7 @@ describe('Line Chart', () => {
                     it('should draw vertical grid lines', () => {
                         const expected = 1;
                         const actual = containerFixture
-                            .select('.vertical-grid-line')
+                            .select('.vertical .grid-line')
                             .size();
 
                         expect(actual).toEqual(expected);
@@ -233,7 +233,7 @@ describe('Line Chart', () => {
                     it('should draw horizontal grid lines', () => {
                         const expected = 1;
                         const actual = containerFixture
-                            .select('.horizontal-grid-line')
+                            .select('.horizontal .grid-line')
                             .size();
 
                         expect(actual).toEqual(expected);
@@ -242,7 +242,7 @@ describe('Line Chart', () => {
                     it('should draw vertical grid lines', () => {
                         const expected = 1;
                         const actual = containerFixture
-                            .select('.vertical-grid-line')
+                            .select('.vertical .grid-line')
                             .size();
 
                         expect(actual).toEqual(expected);
@@ -543,10 +543,10 @@ describe('Line Chart', () => {
                     it('0-axis is highlighted with an additional class', () => {
                         let values = dataset.data.map((d) => d.value);
                         let minValue = Math.min(...values);
-                        let indexOf0 = -minValue;
+                        let indexOf0 = -minValue - 1;
 
                         let horizontalGridLines = d3
-                            .selectAll('.horizontal-grid-line')
+                            .selectAll('.horizontal .grid-line')
                             .filter((_, i) => i === indexOf0);
                         let classes = horizontalGridLines
                             .attr('class')
