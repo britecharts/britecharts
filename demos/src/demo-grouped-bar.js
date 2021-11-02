@@ -201,7 +201,7 @@ if (select('.js-grouped-bar-chart-tooltip-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector(

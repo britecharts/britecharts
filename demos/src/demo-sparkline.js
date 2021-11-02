@@ -65,5 +65,5 @@ if (select('.js-sparkline-chart-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 }

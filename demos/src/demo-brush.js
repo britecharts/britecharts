@@ -150,7 +150,7 @@ if (select('.js-brush-chart-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     select('#clear-selection').on('click', function (e) {
         brushChart.dateRange([null, null]);

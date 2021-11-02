@@ -1,5 +1,4 @@
-import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+import { select } from 'd3-selection';
 
 import step from './../../src/charts/step/step';
 import miniTooltip from './../../src/charts/mini-tooltip/mini-tooltip';
@@ -31,13 +30,13 @@ function createStepChart() {
             .width(containerWidth)
             .height(300)
             .xAxisLabel('Meal Type')
-            .xAxisLabelOffset(45)
+            .xAxisLabelOffset(60)
             .yAxisLabel('Quantity')
             .yAxisLabelOffset(-50)
             .margin({
                 top: 40,
                 right: 40,
-                bottom: 50,
+                bottom: 80,
                 left: 80,
             })
             .on('customMouseOver', tooltip.show)
@@ -68,5 +67,5 @@ if (select('.js-step-chart-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 }

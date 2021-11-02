@@ -31,6 +31,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         stackedArea
             .isAnimated(true)
             .tooltipThreshold(600)
+            .height(400)
             .width(containerWidth)
             .grid('horizontal')
             .on('customDataEntryClick', function (d, mousePosition) {
@@ -96,6 +97,7 @@ function createStackedAreaChart(optionalColorSchema) {
             .xAxisFormat('custom')
             .xAxisCustomFormat('%Y/%m/%d')
             .xTicks(2)
+            .height(400)
             .width(containerWidth)
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
@@ -136,6 +138,7 @@ function createStackedAreaChartWithSyncedTooltip() {
         stackedArea
             .isAnimated(true)
             .tooltipThreshold(600)
+            .height(400)
             .width(containerWidth)
             .grid('horizontal')
             .topicsOrder([
@@ -186,7 +189,7 @@ function createLoadingState(isLoading, instance) {
     if (containerWidth) {
         stackedArea
             .width(containerWidth)
-            .height(300)
+            .height(400)
             .isAnimated(true)
             .isLoading(isLoading);
 
@@ -214,7 +217,7 @@ if (select('.js-stacked-area-chart-tooltip-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector(

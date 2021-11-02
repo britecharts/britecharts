@@ -91,7 +91,7 @@ export const stackedAreaLoadingMarkup = `
                 style="stroke:#C3C6CF;"
                 d="M3.4,216.5h707.3 M3.4,160.5h707.3 M3.3,103.5h707.3 M3.3,48.5h707.6 M0.4,276.6H710H0.4z"
             />
-            <g transform="translate(20 50)">
+            <g transform="translate(20 53)">
                 <path
                     id="chart-area"
                     strokeLinecap="square"
