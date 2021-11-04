@@ -189,7 +189,10 @@ export default function module() {
      * @private
      */
     function buildContainerGroups() {
-        let container = svg.append('g').classed('container-group', true);
+        let container = svg
+            .append('g')
+            .classed('container-group', true)
+            .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
         svg.append('g').classed('loading-state-group', true);
 
@@ -231,14 +234,10 @@ export default function module() {
             buildContainerGroups();
         }
 
-        // Updates Container Group position
-        svg.select('.container-group').attr(
-            'transform',
-            `translate(${width / 2}, ${height / 2})`
-        );
-
-        // Updates SVG size
-        svg.attr('width', width).attr('height', height);
+        svg.attr('viewBox', [0, 0, width, height])
+            .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
+            .attr('width', width)
+            .attr('height', height);
     }
 
     /**

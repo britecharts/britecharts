@@ -360,7 +360,10 @@ export default function module() {
             buildContainerGroups();
         }
 
-        svg.attr('width', width).attr('height', height);
+        svg.attr('viewBox', [0, 0, width, height])
+            .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
+            .attr('width', width)
+            .attr('height', height);
     }
 
     /**

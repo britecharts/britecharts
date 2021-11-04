@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import donut from './../../src/charts/donut/donut';
 import legend from './../../src/charts/legend/legend';
@@ -137,7 +137,7 @@ if (select('.js-legend-chart-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector(

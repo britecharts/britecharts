@@ -1,6 +1,6 @@
 import { select, selectAll } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import brush from './../../src/charts/brush/brush';
 import line from './../../src/charts/line/line';
@@ -293,7 +293,7 @@ if (select('.js-line-chart-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector(

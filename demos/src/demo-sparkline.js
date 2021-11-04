@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import sparklineChart from './../../src/charts/sparkline/sparkline';
 import { SparklineDataBuilder } from './../../src/charts/sparkline/sparklineDataBuilder';
@@ -65,5 +65,5 @@ if (select('.js-sparkline-chart-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 }

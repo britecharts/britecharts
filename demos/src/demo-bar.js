@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import bar from '../../src/charts/bar/bar';
 import miniTooltip from '../../src/charts/mini-tooltip/mini-tooltip';
@@ -57,7 +57,7 @@ function createHorizontalBarChart() {
             })
             .colorSchema(colors.colorSchemas.britecharts)
             .width(containerWidth)
-            .yAxisPaddingBetweenChart(30)
+            .yAxisPaddingBetweenChart(20)
             .height(300)
             .percentageAxisToMaxRatio(1.3)
             .on('customMouseOver', tooltip.show)
@@ -144,5 +144,5 @@ if (select('.js-bar-chart-tooltip-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 }

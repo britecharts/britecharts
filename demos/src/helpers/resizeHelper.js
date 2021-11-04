@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { select } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 const debounceDelay = 200;
 let cachedWidth = window.innerWidth;

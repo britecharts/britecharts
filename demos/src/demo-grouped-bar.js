@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import groupedBarChart from './../../src/charts/grouped-bar/grouped-bar';
 import tooltip from './../../src/charts/tooltip/tooltip';
@@ -201,7 +201,7 @@ if (select('.js-grouped-bar-chart-tooltip-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector(

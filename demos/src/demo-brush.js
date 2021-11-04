@@ -1,6 +1,6 @@
 import { select, event } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import brush from './../../src/charts/brush/brush';
 import { BrushDataBuilder } from './../../src/charts/brush/brushChartDataBuilder';
@@ -150,7 +150,7 @@ if (select('.js-brush-chart-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     select('#clear-selection').on('click', function (e) {
         brushChart.dateRange([null, null]);

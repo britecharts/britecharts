@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import stackedBarChart from './../../src/charts/stacked-bar/stacked-bar';
 import tooltip from './../../src/charts/tooltip/tooltip';
@@ -32,6 +32,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
         // StackedAreChart Setup and start
         stackedBar
             .tooltipThreshold(600)
+            .height(400)
             .width(containerWidth)
             .grid('horizontal')
             .isAnimated(true)
@@ -125,6 +126,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
             .isHorizontal(true)
             .tooltipThreshold(600)
             .grid('vertical')
+            .height(400)
             .width(containerWidth)
             .isAnimated(true)
             .margin({
@@ -177,7 +179,7 @@ function createLoadingState(isLoading, instance) {
     if (containerWidth) {
         stackedBar
             .width(containerWidth)
-            .height(300)
+            .height(400)
             .isAnimated(true)
             .isLoading(isLoading);
 
@@ -204,7 +206,7 @@ if (select('.js-stacked-bar-chart-tooltip-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector(

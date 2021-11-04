@@ -1,5 +1,5 @@
 import { select } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import bullet from './../../src/charts/bullet/bullet';
 import { BulletChartDataBuilder } from './../../src/charts/bullet/bulletChartDataBuilder';
@@ -46,7 +46,7 @@ if (select('.js-bullet-chart-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector(

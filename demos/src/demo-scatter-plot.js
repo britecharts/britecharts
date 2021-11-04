@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import scatterPlot from './../../src/charts/scatter-plot/scatter-plot';
 import miniTooltip from './../../src/charts/mini-tooltip/mini-tooltip';
@@ -36,6 +36,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             .margin({
                 left: 60,
                 bottom: 50,
+                right: 20,
             })
             .xAxisFormat('.1f')
             .xAxisLabel('Temperature (C)')
@@ -83,6 +84,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
             .margin({
                 left: 60,
                 bottom: 45,
+                right: 20,
             })
             .maxCircleArea(15)
             .on('customMouseOver', tooltip.show)
@@ -115,7 +117,7 @@ if (select('.js-scatter-plot-chart-tooltip-container').node()) {
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector(
