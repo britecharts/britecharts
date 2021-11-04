@@ -6686,3 +6686,19 @@ ul.dropdown-menu {
     border-radius: 0 2px 2px 0;
     box-shadow: -8px 0 32px 8px #666;
 }
+
+
+/* BuyMeCoffe Button */
+.container .bmc-btn-container {
+    margin-bottom: 24px;
+}
+.container .bmc-btn {
+    font-size: 24px;
+    border-radius: 8px;
+    height: 42px;
+    padding: 0 8px;
+    min-width: auto;
+}
+.container .bmc-btn .bmc-btn-text {
+    margin-left: 4px;
+}

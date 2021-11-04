@@ -12,6 +12,7 @@ const localeTimeMap = {
  * @param  {String}  startDate      Date
  * @param  {Number}  days           Number of days to add
  * @return {String}                 Offsetted date
+ * @private
  */
 export const addDays = (startDate, days) => {
     const result = new Date(startDate);
@@ -26,6 +27,7 @@ export const addDays = (startDate, days) => {
  * @param  {String}  startDate  Date in string form
  * @param  {String}  endDate    Date in string form
  * @return {Number}             Number of days between dates
+ * @private
  */
 export const diffDays = (startDate, endDate) => {
     const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
@@ -42,6 +44,7 @@ export const diffDays = (startDate, endDate) => {
  * Takes a number representing milliseconds and convert to days
  * @param  {Number} milliseconds    Any number of days in milliseconds
  * @return {Number}                 Number of days that the input represents
+ * @private
  */
 export const convertMillisecondsToDays = (milliseconds) =>
     Math.ceil(milliseconds / (24 * 60 * 60 * 1000));
@@ -51,6 +54,7 @@ export const convertMillisecondsToDays = (milliseconds) =>
  * @param  {String} locale              Locale tag eg. en-US, fr-FR, ru-RU
  * @param  {String} [timeUnit='day']    One of minute, hour, day, daymonth, month, year
  * @return {Function}                   Function that formats dates in the proper locale
+ * @private
  */
 export const getLocaleDateFormatter = (locale, timeUnit = 'day') => {
     let options = localeTimeMap[timeUnit];

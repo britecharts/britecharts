@@ -117,7 +117,7 @@ export default function module() {
             data = cleanData(_data);
 
             // eslint-disable-next-line no-console
-            console.log(
+            console.warn(
                 'The Step Chart is being deprecated! Please use a line chart with lineCurve "step" for your visualization!'
             );
 

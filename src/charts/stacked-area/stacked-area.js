@@ -38,7 +38,7 @@ const uniq = (arrArg) =>
  */
 
 /**
- * @typedef areaChartData
+ * @typedef AreaChartData
  * @type {Object[]}
  * @property {String} date         Date of the entry in ISO8601 format (required)
  * @property {String} name         Name of the entry (required)
@@ -186,7 +186,7 @@ export default function module() {
      * This function creates the graph using the selection and data provided
      * @param {D3Selection} _selection A d3 selection that represents
      * the container(s) where the chart(s) will be rendered
-     * @param {areaChartData} _data The data to attach and generate the chart
+     * @param {AreaChartData} _data The data to attach and generate the chart
      */
     function exports(_selection) {
         _selection.each(function (_data) {
@@ -594,8 +594,8 @@ export default function module() {
     /**
      * Cleaning data casting the values and dates to the proper type while keeping
      * the rest of properties on the data. It creates fake data is the data is empty.
-     * @param  {areaChartData} originalData   Raw data from the container
-     * @return {areaChartData}                Parsed data with values and dates
+     * @param  {AreaChartData} originalData   Raw data from the container
+     * @return {AreaChartData}                Parsed data with values and dates
      * @private
      */
     function cleanData(originalData) {
@@ -1063,7 +1063,7 @@ export default function module() {
 
     /**
      * Orders the data by date for consumption on the chart tooltip
-     * @param  {areaChartData} data    Chart data
+     * @param  {AreaChartData} data    Chart data
      * @return {Object[]}               Chart data ordered by date
      * @private
      */

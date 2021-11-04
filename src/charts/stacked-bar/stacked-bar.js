@@ -30,7 +30,7 @@ const uniq = (arrArg) =>
  */
 
 /**
- * @typedef stackedBarData
+ * @typedef StackedBarData
  * @type {Object[]}
  * @property {String} name         Name of the entry
  * @property {String} stack        Stack of the entry
@@ -140,7 +140,7 @@ export default function module() {
      * This function creates the graph using the selection and data provided
      * @param {D3Selection} _selection A d3 selection that represents
      * the container(s) where the chart(s) will be rendered
-     * @param {stackedBarData} _data The data to attach and generate the chart
+     * @param {StackedBarData} _data The data to attach and generate the chart
      */
     function exports(_selection) {
         if (locale) {
@@ -336,8 +336,8 @@ export default function module() {
     /**
      * Cleaning data casting the values, stacks, names and topic names to the proper type while keeping
      * the rest of properties on the data
-     * @param  {stackedBarData} originalData   Raw data from the container
-     * @return {stackedBarData}                Parsed data with values and dates
+     * @param  {StackedBarData} originalData   Raw data from the container
+     * @return {StackedBarData}                Parsed data with values and dates
      * @private
      */
     function cleanData(originalData) {

@@ -46,6 +46,7 @@ const config = {
  * @param  {array} svgs         (or an svg element) pass in both chart & legend as array or just chart as svg or in array
  * @param  {string} filename    [download to be called <filename>.png]
  * @param  {string} title       Title for the image
+ * @private
  */
 export function exportChart(d3svg, filename, title) {
     if (isIE) {
@@ -68,6 +69,7 @@ export function exportChart(d3svg, filename, title) {
 /**
  * adds background styles to raw html
  * @param {string} html raw html
+ * @private
  */
 function addBackground(html) {
     return html.replace('>', `>${config.styleBackgroundString}`);
@@ -78,6 +80,7 @@ function addBackground(html) {
  * from stylesheets, adds white background and returns string
  * @param  {SVGElement} d3svg   TYPE d3 svg element
  * @return {String}             String of passed d3
+ * @private
  */
 export function convertSvgToHtml(d3svg, title) {
     if (!d3svg) {
@@ -105,6 +108,7 @@ export function convertSvgToHtml(d3svg, title) {
  * @param  {number} width
  * @param  {number} height
  * @return {object} TYPE canvas element
+ * @private
  */
 function createCanvas(width, height) {
     let canvas = document.createElement('canvas');
@@ -120,6 +124,7 @@ function createCanvas(width, height) {
  * @param  {string} svgHtml string representation of svg el
  * @param  {Function} callback function to prepare image for loading
  * @return {object}  TYPE element <img>, src points at svg
+ * @private
  */
 function createImage(svgHtml, callback) {
     let img = new Image();
@@ -141,6 +146,7 @@ function createImage(svgHtml, callback) {
  * Draws image on canvas
  * @param  {object} image TYPE:el <img>, to be drawn
  * @param  {object} canvas TYPE: el <canvas>, to draw on
+ * @private
  */
 export function drawImageOnCanvas(image, canvas) {
     canvas.getContext('2d').drawImage(image, 0, 0);
@@ -155,6 +161,7 @@ export function drawImageOnCanvas(image, canvas) {
  * @param  {object} canvas TYPE: el <canvas>
  * @param  {string} filename
  * @param  {string} extensionType
+ * @private
  */
 function downloadCanvas(
     canvas,
@@ -175,6 +182,7 @@ function downloadCanvas(
  * Some browsers need special formatting, we handle that here
  * @param  {string} html string of svg html
  * @return {string} string of svg html
+ * @private
  */
 function formatHtmlByBrowser(html) {
     if (navigator.userAgent.search('FireFox') > -1) {
@@ -191,6 +199,7 @@ function formatHtmlByBrowser(html) {
  * Handles on load event fired by img.onload, this=img
  * @param  {object} canvas TYPE: el <canvas>
  * @param  {string} filename
+ * @private
  */
 function handleImageLoad(canvas, filename) {
     downloadCanvas(drawImageOnCanvas(this, canvas), filename);
@@ -200,6 +209,7 @@ function handleImageLoad(canvas, filename) {
  * Create Image instance and attach event listeners for future promise
  * @param  {string} svgHtml string representation of svg el
  * @returns {Promise} promise that exposes loaded image instance
+ * @private
  */
 function loadImage(svgHtml) {
     return new Promise((res, rej) => {
@@ -216,6 +226,7 @@ function loadImage(svgHtml) {
  * @param  {string} title    title of the graph
  * @param  {number} svgWidth width of graph container
  * @return {string}         raw html with title prepended
+ * @private
  */
 function prependTitle(html, title, svgWidth) {
     if (!title || !svgWidth) {

@@ -14,6 +14,7 @@ const WRONG_LOCALE_OBJECT_MESSAGE =
  * When an object is used, it simply uses it to set the new locale.
  * @param  {LocaleObject} locale    The desired locale object
  * @return {Object}                 Object with a 'format' and 'formatPrefix' functions
+ * @private
  */
 export const setDefaultLocale = (locale) => {
     if (isValidLocaleDefinition(locale)) {
@@ -27,6 +28,7 @@ export const setDefaultLocale = (locale) => {
  * Checks if a locale definition object contains the required keys
  * @param  {LocaleObject}  locale   Locale to check
  * @return {Boolean}                Is the locale definition has a correct format (https://cdn.jsdelivr.net/npm/d3-format/locale/en-US.json)
+ * @private
  */
 const isValidLocaleDefinition = (locale) => {
     return (

@@ -38,6 +38,7 @@ const decimalValueFormats = {
  * @param {Number} value    Value to assess its relative size
  * @param {Object} limits   Object stablishing the limits and formats
  * to consider the value of a given size
+ * @private
  */
 const getValueSize = (value, limits) => {
     let size = 'large';
@@ -56,6 +57,7 @@ const getValueSize = (value, limits) => {
  * calculation of slope and y-intercept uses basic accumulative linear regression formula.
  * @param  {Object[]} dataPoints    Array of circle data points
  * @return {Object}
+ * @private
  */
 export const calcLinearRegression = (dataPoints) => {
     let n = dataPoints.length,
@@ -91,6 +93,7 @@ export const calcLinearRegression = (dataPoints) => {
  * @param  {Number}  total    Sum of values
  * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
  * @return {String}           Percentage
+ * @private
  */
 export const calculatePercent = (value, total, decimals) => {
     const percent = total ? (value / total) * 100 : 0;
@@ -102,6 +105,7 @@ export const calculatePercent = (value, total, decimals) => {
  * Checks if a number is an integer or a decimal value
  * @param  {Number}  value Value to check
  * @return {Boolean}       If it is an iteger
+ * @private
  */
 export const isInteger = (value) => {
     return value % 1 === 0;
@@ -111,6 +115,7 @@ export const isInteger = (value) => {
  * Formats a floating point value depending on its value range
  * @param  {Number} value Decimal point value to format
  * @return {Number}       Formatted value to show
+ * @private
  */
 export const formatDecimalValue = (value) => {
     let size = getValueSize(value, decimalValueFormats);
@@ -123,6 +128,7 @@ export const formatDecimalValue = (value) => {
  * Formats an integer value depending on its value range
  * @param  {Number} value Decimal point value to format
  * @return {Number}       Formatted value to show
+ * @private
  */
 export const formatIntegerValue = (value) => {
     let size = getValueSize(value, integerValueFormats);
@@ -135,6 +141,7 @@ export const formatIntegerValue = (value) => {
  * Generates a unique id with a prefix
  * @param  {String} prefix   Prefix to add before the id
  * @return {String}          Unique id
+ * @private
  */
 export const uniqueId = (prefix) => {
     const id = ++idCounter;
