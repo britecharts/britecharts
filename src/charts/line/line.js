@@ -1092,6 +1092,17 @@ export default function module() {
     }
 
     /**
+     * Reduces a list of SVGPaths to their longest length
+     * @param {number} acc          Longest path until the moment
+     * @param {SVGElement} path     Path to examine
+     * @returns {number}            Longest between the accumulated length or the current path's length
+     * @private
+     */
+    function findLongestPath(acc, path) {
+        return acc > path.getTotalLength() ? acc : path.getTotalLength();
+    }
+
+    /**
      * Finds out which datapoint is closer to the given x position
      * @param  {number} x0 Date value for data point
      * @param  {object} d0 Previous datapoint
@@ -1107,17 +1118,6 @@ export default function module() {
             new Date(d1.date).getTime() - new Date(x0).getTime()
             ? d0
             : d1;
-    }
-
-    /**
-     * Reduces a list of SVGPaths to their longest length
-     * @param {number} acc          Longest path until the moment
-     * @param {SVGElement} path     Path to examine
-     * @returns {number}            Longest between the accumulated length or the current path's length
-     * @private
-     */
-    function findLongestPath(acc, path) {
-        return acc > path.getTotalLength() ? acc : path.getTotalLength();
     }
 
     /**
