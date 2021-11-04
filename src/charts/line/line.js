@@ -701,12 +701,14 @@ export default function module() {
      */
     function animateLine() {
         if (isAnimated) {
-            const totalLength = paths.node().getTotalLength();
+            const totalLength = paths.nodes().reduce(findLongestPath, 0);
+
             paths
                 .attr(
                     'stroke-dasharray',
                     totalLength + ' ' + strokeDasharrayOffset * totalLength
                 )
+                .style('will-change', 'stroke-dasharray')
                 .attr('stroke-dashoffset', totalLength)
                 .transition()
                 .duration(animationDuration)
@@ -1087,6 +1089,17 @@ export default function module() {
                 .attr('x2', 0)
                 .attr('y2', 0);
         }
+    }
+
+    /**
+     * Reduces a list of SVGPaths to their longest length
+     * @param {number} acc          Longest path until the moment
+     * @param {SVGElement} path     Path to examine
+     * @returns {number}            Longest between the accumulated length or the current path's length
+     * @private
+     */
+    function findLongestPath(acc, path) {
+        return acc > path.getTotalLength() ? acc : path.getTotalLength();
     }
 
     /**
