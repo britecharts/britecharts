@@ -8,7 +8,7 @@ import { select, mouse } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
-import { lineLoadingMarkup } from '../helpers/load';
+import { barLoadingMarkup } from '../helpers/load';
 
 /**
  * @typedef StepChartData
@@ -287,7 +287,7 @@ export default function module() {
      * @private
      */
     function drawLoadingState() {
-        svg.select('.loading-state-group').html(lineLoadingMarkup);
+        svg.select('.loading-state-group').html(barLoadingMarkup);
     }
 
     /**
