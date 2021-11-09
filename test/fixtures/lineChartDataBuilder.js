@@ -14,6 +14,7 @@ define(function(require) {
         jsonSmallValueRange = require('../json/lineDataSmallValueRange'),
         jsonNegativeValues = require('../json/lineDataNegativeValues.json'),
         jsonOnlyNegativeValues = require('../json/lineDataOnlyNegativeValues.json'),
+        jsonOnlyNonzeroPositiveValues = require('../json/lineDataOnlyNonzeroPositiveValues.json'),
         jsonNumericKeys = require('../json/lineDataNumericKeys');
 
     function LineDataBuilder(config) {
@@ -83,6 +84,12 @@ define(function(require) {
 
         this.withOnlyNegativeValues = function() {
             var attributes = _.extend({}, this.config, jsonOnlyNegativeValues);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withOnlyNonzeroPositiveValues = function() {
+            var attributes = _.extend({}, this.config, jsonOnlyNonzeroPositiveValues);
 
             return new this.Klass(attributes);
         };

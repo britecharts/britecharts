@@ -717,6 +717,40 @@ define([
                         expect(text.text()).toEqual('-4');
                     });
                 });
+
+                describe('when has only non-zero positive values and hasMinimumValueScale is true', () => {
+                    beforeEach(() => {
+                        dataset = buildDataSet('withOnlyNonzeroPositiveValues');
+                        lineChart = chart().grid('full').hasMinimumValueScale(true);
+
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
+
+                        containerFixture = d3.select('.test-container');
+                        containerFixture.datum(dataset).call(lineChart);
+                    });
+
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
+
+                    it('The highest Y-axis value is positive', () => {
+                        let yAxis = d3.selectAll('.y-axis-group');
+                        let text = yAxis.selectAll('g.tick:nth-child(6)');
+                        expect(text.text()).toEqual('10');
+                    });
+
+                    it('The lowest Y-axis value is positive', () => {
+                        let yAxis = d3.selectAll('.y-axis-group');
+                        let text = yAxis.selectAll('g.tick');
+                        expect(text.text()).toEqual('2');
+                    });
+                });
             });
 
             describe('Lifecycle', () => {
