@@ -599,6 +599,41 @@ describe('Line Chart', () => {
                         expect(actual).toEqual(expected);
                     });
                 });
+                describe('when has only non-zero positive values and hasMinimumValueScale is true', () => {
+                    beforeEach(() => {
+                        const fixture =
+                            '<div id="fixture"><div class="test-container"></div></div>';
+
+                        // adds an html fixture to the DOM
+                        document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                        dataset = buildDataSet('withOnlyNonzeroPositiveValues');
+                        lineChart = chart()
+                            .grid('full')
+                            .hasMinimumValueScale(true);
+
+                        containerFixture = d3.select('.test-container');
+                        containerFixture.datum(dataset).call(lineChart);
+                    });
+
+                    afterEach(() => {
+                        document.body.removeChild(
+                            document.getElementById('fixture')
+                        );
+                    });
+
+                    it('The highest Y-axis value is positive', () => {
+                        let yAxis = d3.selectAll('.y-axis-group');
+                        let text = yAxis.selectAll('g.tick:nth-child(6)');
+                        expect(text.text()).toEqual('10');
+                    });
+
+                    it('The lowest Y-axis value is positive', () => {
+                        let yAxis = d3.selectAll('.y-axis-group');
+                        let text = yAxis.selectAll('g.tick');
+                        expect(text.text()).toEqual('2');
+                    });
+                });
             });
 
             describe('when different date ranges', () => {

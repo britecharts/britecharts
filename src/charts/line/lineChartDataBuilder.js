@@ -10,6 +10,7 @@ import jsonHourDateRange from './lineDataOneSetHourly.json';
 import jsonSmallValueRange from './lineDataSmallValueRange.json';
 import jsonNegativeValues from './lineDataNegativeValues.json';
 import jsonOnlyNegativeValues from './lineDataOnlyNegativeValues.json';
+import jsonOnlyNonzeroPositiveValues from './lineDataOnlyNonzeroPositiveValues.json';
 import jsonNumericKeys from './lineDataNumericKeys.json';
 
 export function LineDataBuilder(config) {
@@ -79,6 +80,16 @@ export function LineDataBuilder(config) {
 
     this.withOnlyNegativeValues = function () {
         var attributes = _.extend({}, this.config, jsonOnlyNegativeValues);
+
+        return new this.Klass(attributes);
+    };
+
+    this.withOnlyNonzeroPositiveValues = function () {
+        var attributes = _.extend(
+            {},
+            this.config,
+            jsonOnlyNonzeroPositiveValues
+        );
 
         return new this.Klass(attributes);
     };
