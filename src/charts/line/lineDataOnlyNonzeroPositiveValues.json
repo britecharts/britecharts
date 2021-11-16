@@ -1,42 +1,52 @@
 {
-	"dataByTopic": [
+	"data": [
+    {
+      "name": -1,
+      "topicName": "Shiny",
+      "date": "2015-06-27T00:00:00",
+      "value": 10
+    },
 		{
-			"topicName": "Shiny",
-			"topic": 1,
-			"dates": [
-				{
-					"value": 10,
-					"date": "2015-06-27T00:00:00"
-				},
-				{
-					"value": 2,
-					"date": "2015-06-28T00:00:00"
-				},
-				{
-					"value": 4,
-					"date": "2015-06-29T00:00:00"
-				},
-				{
-					"value": 2,
-					"date": "2015-06-30T00:00:00"
-				},
-				{
-					"value": 3,
-					"date": "2015-07-01T00:00:00"
-				},
-				{
-					"value": 3,
-					"date": "2015-07-02T00:00:00"
-				},
-				{
-					"value": 6,
-					"date": "2015-07-03T00:00:00"
-				},
-				{
-					"value": 2,
-					"date": "2015-07-04T00:00:00"
-				}
-			]
-		}
+      "name": -1,
+      "topicName": "Shiny",
+      "date": "2015-06-28T00:00:00",
+      "value": 2
+    },
+		{
+      "name": -1,
+      "topicName": "Shiny",
+      "date": "2015-06-29T00:00:00",
+      "value": 4
+    },
+		{
+      "name": -1,
+      "topicName": "Shiny",
+      "date": "2015-06-30T00:00:00",
+      "value": 2
+    },
+		{
+      "name": -1,
+      "topicName": "Shiny",
+      "date": "2015-07-01T00:00:00",
+      "value": 3
+    },
+		{
+      "name": -1,
+      "topicName": "Shiny",
+      "date": "2015-07-02T00:00:00",
+      "value": 3
+    },
+		{
+      "name": -1,
+      "topicName": "Shiny",
+      "date": "2015-07-03T00:00:00",
+      "value": 6
+    },
+		{
+      "name": -1,
+      "topicName": "Shiny",
+      "date": "2015-07-04T00:00:00",
+      "value": 2
+    }
 	]
 }
