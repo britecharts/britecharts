@@ -242,6 +242,7 @@ export default function module() {
         yAxisLabelEl = null,
         yAxisLabelPadding = 36,
         yTicks = 5,
+        hasMinimumValueScale = false,
         overlay,
         overlayColor = 'rgba(0, 0, 0, 0)',
         verticalMarkerContainer,
@@ -576,7 +577,7 @@ export default function module() {
     function buildYAxisScale() {
         let maxY = max(dataByTopic, ({ dates }) => max(dates, getValue)),
             minY = min(dataByTopic, ({ dates }) => min(dates, getValue));
-        let yScaleBottomValue = minY < 0 ? minY : 0;
+        let yScaleBottomValue = minY < 0 || hasMinimumValueScale ? minY : 0;
         let yScaleTopValue = minY === 0 && maxY === 0 ? 1 : maxY;
 
         return scaleLinear()
@@ -1538,6 +1539,24 @@ export default function module() {
             return grid;
         }
         grid = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the hasMinimumValueScale property of the chart, making yAxix bottom value
+     * to adjust to the minimum dataset value.
+     * By default this is 'false'
+     *
+     * @param  {Boolean} _x Desired minimum value flag
+     * @return { hasMinimumValueScale | module} Current hasMinimumValueScale flag or Chart module
+     * @public
+     */
+    exports.hasMinimumValueScale = function (_x) {
+        if (!arguments.length) {
+            return hasMinimumValueScale;
+        }
+        hasMinimumValueScale = _x;
 
         return this;
     };
