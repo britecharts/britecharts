@@ -1544,6 +1544,24 @@ export default function module() {
     };
 
     /**
+     * Gets or Sets the hasMinimumValueScale property of the chart, making yAxix bottom value
+     * to adjust to the minimum dataset value.
+     * By default this is 'false'
+     *
+     * @param  {Boolean} _x Desired minimum value flag
+     * @return { hasMinimumValueScale | module} Current hasMinimumValueScale flag or Chart module
+     * @public
+     */
+    exports.hasMinimumValueScale = function (_x) {
+        if (!arguments.length) {
+            return hasMinimumValueScale;
+        }
+        hasMinimumValueScale = _x;
+
+        return this;
+    };
+
+    /**
      * Gets or Sets the height of the chart
      * @param  {number} _x              Desired width for the graph
      * @return { (Number | module) }    Current height or Line Chart module to chain calls
@@ -1782,24 +1800,6 @@ export default function module() {
             return yTicks;
         }
         yTicks = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the hasMinimumValueScale property of the chart, making yAxix bottom value
-     * to adjust to the minimum dataset value.
-     * By default this is 'false'
-     *
-     * @param  {Boolean} _x Desired minimum value flag
-     * @return { hasMinimumValueScale | module} Current hasMinimumValueScale flag or Chart module
-     * @public
-     */
-    exports.hasMinimumValueScale = function (_x) {
-        if (!arguments.length) {
-            return hasMinimumValueScale;
-        }
-        hasMinimumValueScale = _x;
 
         return this;
     };
