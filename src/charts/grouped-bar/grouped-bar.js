@@ -176,9 +176,10 @@ export default function module() {
      */
     function addMouseEvents() {
         if (shouldShowTooltip()) {
-            svg.on('mouseover', function (d) {
-                handleMouseOver(this, d);
-            })
+            svg.select('.chart-group')
+                .on('mouseover', function (d) {
+                    handleMouseOver(this, d);
+                })
                 .on('mouseout', function (d) {
                     handleMouseOut(this, d);
                 })

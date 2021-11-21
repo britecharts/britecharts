@@ -295,7 +295,9 @@ describe('Grouped Bar Chart', () => {
 
         describe('when hovering', () => {
             it('mouseover should trigger a callback', () => {
-                const chart = containerFixture.selectAll('.grouped-bar');
+                const chart = containerFixture.selectAll(
+                    '.grouped-bar .chart-group'
+                );
                 const callbackSpy = jasmine.createSpy('callback');
                 const expectedCalls = 1;
                 const expectedArguments = 2;
@@ -312,7 +314,9 @@ describe('Grouped Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback', () => {
-                const chart = containerFixture.selectAll('.grouped-bar');
+                const chart = containerFixture.selectAll(
+                    '.grouped-bar .chart-group'
+                );
                 const callbackSpy = jasmine.createSpy('callback');
                 const expectedCalls = 1;
                 const expectedArguments = 2;

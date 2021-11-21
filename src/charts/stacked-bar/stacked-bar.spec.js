@@ -295,7 +295,9 @@ describe('Stacked Bar Chart', () => {
 
         describe('when hovering', () => {
             it('mouseover should trigger a callback', () => {
-                const chart = containerFixture.selectAll('.stacked-bar');
+                const chart = containerFixture.selectAll(
+                    '.stacked-bar .chart-group'
+                );
                 const callbackSpy = jasmine.createSpy('callback');
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
@@ -310,7 +312,9 @@ describe('Stacked Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback', () => {
-                const chart = containerFixture.selectAll('.stacked-bar');
+                const chart = containerFixture.selectAll(
+                    '.stacked-bar .chart-group'
+                );
                 const callbackSpy = jasmine.createSpy('callback');
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
