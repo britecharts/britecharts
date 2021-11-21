@@ -605,12 +605,11 @@ export default function module() {
         if (layerElements) {
             svg.selectAll('.layer').remove();
         }
-
-        let series = svg.select('.chart-group').selectAll('.layer');
+        const series = svg.select('.chart-group').selectAll('.layer');
 
         animationDelays = range(
             animationDelayStep,
-            (layers.length + 1) * animationDelayStep,
+            (groups.length + 1) * animationDelayStep,
             animationDelayStep
         );
         if (isHorizontal) {
@@ -791,9 +790,9 @@ export default function module() {
      * @return {void}
      */
     function horizontalBarsTween(d) {
-        let node = select(this),
-            i = interpolateRound(0, xScale(getValue(d))),
-            j = interpolateNumber(0, 1);
+        const node = select(this);
+        const i = interpolateRound(0, xScale(getValue(d)));
+        const j = interpolateNumber(0, 1);
 
         return function (t) {
             node.attr('width', i(t)).style('opacity', j(t));
