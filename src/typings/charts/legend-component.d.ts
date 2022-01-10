@@ -41,6 +41,10 @@ export interface LegendAPI
      * added as color identifiers for the chart's categories.
      */
     markerSize(markerSize?: number): LegendModule;
+    /**
+     * Command that clears all highlighted entries on a legend instance
+     */
+    clearHighlight()
 }
 
 export type LegendModule = ChartModuleSelection<LegendDataShape[]> & LegendAPI;

@@ -29,7 +29,7 @@ export interface DonutEmptyDataConfig {
 export interface DonutChartAPI
     extends ChartBaseAPI<DonutChartModule>,
         InteractiveChartAPI<DonutChartModule>,
-        ExportableChartAPI<DonutChartModule>,
+        ExportableChartAPI,
         AnimatedChartAPI<DonutChartModule>,
         ThemableChartAPI<DonutChartModule> {
     /**

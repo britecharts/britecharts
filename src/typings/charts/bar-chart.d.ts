@@ -28,7 +28,7 @@ export type BarSelection = Selection<
 
 export interface BarChartAPI
     extends ChartBaseAPI<BarChartModule>,
-        ExportableChartAPI<BarChartModule>,
+        ExportableChartAPI,
         InteractiveChartAPI<BarChartModule>,
         AnimatedChartAPI<BarChartModule>,
         ThemableChartAPI<BarChartModule> {

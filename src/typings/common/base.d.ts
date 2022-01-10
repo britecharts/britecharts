@@ -30,8 +30,6 @@ export interface ChartBaseAPIMinimal<T> {
 }
 
 export interface ComponentBaseAPI<T> {
-    /** Gets or Sets the colorSchema of the chart */
-    colorSchema(schema: ColorsSchemasType): T & ComponentBaseAPI<T>;
     /** Gets or Sets the number format of the chart */
     numberFormat(format?: string): T & ComponentBaseAPI<T>;
     /** Gets or Sets the height of the chart */
@@ -106,21 +104,21 @@ export interface TimeSeriesChartAPI<T> {
      *     chart.xAxisFormat(chart.axisTimeCombinations.HOUR_DAY)
      */
     axisTimeCombinations: {
-        [key in keyof typeof AxisTimeCombination]: T & TimeSeriesChartAPI;
+        [key in keyof typeof AxisTimeCombination]: key;
     };
     /**
      * Pass language tag for the tooltip to localize the date.
      * Uses Intl.DateTimeFormat, for compatability and support, refer to
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
      */
-    locale(localObject?: LocaleString | null): T & TimeSeriesChartAPI;
+    locale(localObject?: LocaleString | null): T & TimeSeriesChartAPI<T>;
     /**
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
      * Accepts the format for x axis, one of the d3.js date formats [here]{@link https://github.com/d3/d3-time-format#locale_format}
      */
-    xAxisCustomFormat(format?: string): T & TimeSeriesChartAPI;
+    xAxisCustomFormat(format?: string): T & TimeSeriesChartAPI<T>;
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
      * It is a combination of axisTimeCombinations (MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR)
@@ -128,5 +126,5 @@ export interface TimeSeriesChartAPI<T> {
      * * @example
      *     chart.xAxisCustomFormat(chart.axisTimeCombinations.HOUR_DAY)
      */
-    xAxisFormat(format?: 'custom' | string): T & TimeSeriesChartAPI;
+    xAxisFormat(format?: TimeSeriesChartAPI<T>['axisTimeCombinations']): T & TimeSeriesChartAPI<T>;
 }

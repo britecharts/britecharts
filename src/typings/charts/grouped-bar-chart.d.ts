@@ -33,7 +33,7 @@ export type GroupedBarSelection = Selection<
 export interface GroupedBarChartAPI
     extends ChartBaseAPI<GroupedBarChartModule>,
         InteractiveChartAPI<GroupedBarChartModule>,
-        ExportableChartAPI<GroupedBarChartModule>,
+        ExportableChartAPI,
         AnimatedChartAPI<GroupedBarChartModule>,
         ThemableChartAPI<GroupedBarChartModule> {
     /** Gets or Sets the padding between bars. */

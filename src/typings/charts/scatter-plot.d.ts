@@ -29,7 +29,7 @@ export type ScatterPlotBaseAPI = Omit<
 export interface ScatterPlotAPI
     extends ScatterPlotBaseAPI,
         InteractiveChartAPI<ScatterPlotModule>,
-        ExportableChartAPI<ScatterPlotModule>,
+        ExportableChartAPI,
         AnimatedChartAPI<ScatterPlotModule>,
         ThemableChartAPI<ScatterPlotModule> {
     /**
@@ -86,8 +86,8 @@ export interface ScatterPlotAPI
     valueLocale(localObject?: LocalObject | null): ScatterPlotModule;
     /** Exposes ability to set the format of x-axis values */
     xAxisFormat(format?: string): ScatterPlotModule;
-    /** 
-     * Exposes ability to set the formatter of x-axis values 
+    /**
+     * Exposes ability to set the formatter of x-axis values
      * The `timeFormat` formatter function is applied if a custom `xAxisFormatType`
      that is not equal to 'number' is provided
      */
@@ -112,7 +112,7 @@ export interface ScatterPlotAPI
      * Gets or Sets the offset of the yAxisLabel of the chart.
      * The method accepts both positive and negative values.
      */
-    yAxisLabelOffset(offset?: string): ScatterPlotModule;
+    yAxisLabelOffset(offset?: number): ScatterPlotModule;
     /** Gets or Sets the xTicks of the chart */
     yTicks(ticks?: number): ScatterPlotModule;
 }
