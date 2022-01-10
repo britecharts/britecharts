@@ -19,7 +19,7 @@ export type BulletChartBaseAPI = Omit<
   'locale' | 'isAnimated' | 'loadingState'
 >;
 
-export interface BulletChartAPI extends BulletChartBaseAPI, ExportableChartAPI<BulletChartModule> {
+export interface BulletChartAPI extends BulletChartBaseAPI, ExportableChartAPI {
   /** Gets or Sets the colorSchema of the chart */
   colorSchema(schema: ColorsSchemasType): BulletChartModule;
   /** Gets or Sets the subtitle for measure identifier range. */

@@ -34,7 +34,7 @@ export interface SparkelineTitleTextStyle {
 export interface SparklineChartAPI
     extends ChartDimensionsAPI<SparklineChartModule>,
         AnimatedChartAPI<SparklineChartModule>,
-        ExportableChartAPI<SparklineChartModule> {
+        ExportableChartAPI {
     /** Gets or Sets the areaGradient of the chart */
     areaGradient(gradient?: [string, string]): SparklineChartModule;
     /** Gets or Sets the lineGradient of the chart */

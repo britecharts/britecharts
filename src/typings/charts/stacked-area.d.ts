@@ -7,10 +7,8 @@ import {
     TimeSeriesChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
-import { LocaleString } from '../common/local';
 import { ChartModuleSelection } from '../common/selection';
-import { AxisTimeCombination } from '../helpers/constants';
-import { StackedBarChartModule } from 'britecharts';
+import {StackedBarChartModule} from './stacked-bar-chart';
 
 export enum StackedAreaChartKeys {
     Date = 'date',
@@ -33,7 +31,7 @@ export interface StackedAreaEmptyDataConfig {
 export interface StackedAreaChartAPI
     extends ChartBaseAPI<StackedAreaChartModule>,
         InteractiveChartAPI<StackedBarChartModule>,
-        ExportableChartAPI<StackedAreaChartModule>,
+        ExportableChartAPI,
         AnimatedChartAPI<StackedAreaChartModule>,
         TimeSeriesChartAPI<StackedAreaChartModule>,
         ThemableChartAPI<StackedAreaChartModule> {

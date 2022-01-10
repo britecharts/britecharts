@@ -15,7 +15,7 @@ export type HeatmapChartDataShape = {
 
 export interface HeatmapChartAPI
     extends BaseAPI<HeatmapChartModule>,
-        ExportableChartAPI<HeatmapChartModule> {
+        ExportableChartAPI {
     /** Gets or Sets the y-axis labels of the chart */
     yAxisLabels(labels?: string[]): HeatmapChartModule;
     /** Gets or Sets the boxSize of the chart */

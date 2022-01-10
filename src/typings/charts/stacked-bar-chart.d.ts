@@ -1,4 +1,3 @@
-import { LocalObject } from '../common/local';
 import {
     ChartBaseAPI,
     InteractiveChartAPI,
@@ -10,8 +9,6 @@ import { GridTypes } from '../common/grid';
 import { ChartModuleSelection } from '../common/selection';
 import { LocalObject } from '../common/local';
 import { BaseType, Selection } from 'd3-selection';
-import { StackedAreaChartModule } from 'britecharts';
-import { StackedAreaChartModule } from './stacked-area';
 
 export enum StackedBarChartKeys {
     Stack = 'stack',
@@ -35,7 +32,7 @@ export type StackedBarSelection = Selection<
 export interface StackedBarChartAPI
     extends ChartBaseAPI<StackedBarChartModule>,
         InteractiveChartAPI<StackedBarChartModule>,
-        ExportableChartAPI<StackedBarChartModule>,
+        ExportableChartAPI,
         AnimatedChartAPI<StackedBarChartModule>,
         ThemableChartAPI<StackedBarChartModule> {
     /** Gets or Sets the padding of the stacked bar chart */

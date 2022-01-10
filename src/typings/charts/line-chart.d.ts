@@ -7,9 +7,7 @@ import {
     TimeSeriesChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
-import { LocaleString } from '../common/local';
 import { ChartModuleSelection } from '../common/selection';
-import { AxisTimeCombination } from '../helpers/constants';
 
 export enum LineChartKeys {
     Date = 'date',
@@ -44,7 +42,7 @@ export interface CustomLine {
 export interface LineChartAPI
     extends ChartBaseAPI<LineChartModule>,
         InteractiveChartAPI<LineChartModule>,
-        ExportableChartAPI<LineChartModule>,
+        ExportableChartAPI,
         AnimatedChartAPI<LineChartModule>,
         TimeSeriesChartAPI<LineChartModule>,
         ThemableChartAPI<LineChartModule> {
