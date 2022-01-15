@@ -128,7 +128,7 @@
     "rimraf": "^2.6.3",
     "sanitize-html": "1.20.1",
     "sass-loader": "6.0.6",
-    "shelljs": "0.7.8",
+    "shelljs": "0.8.5",
     "sinon": "7.5.0",
     "style-loader": "0.23.1",
     "text": "requirejs/text",
