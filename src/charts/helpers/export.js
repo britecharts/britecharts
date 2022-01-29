@@ -7,6 +7,7 @@ const isBrowser = typeof window !== 'undefined';
 const isIE = navigator.msSaveOrOpenBlob;
 const IE_ERROR_MSG =
     'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
+const DEFAULT_FONT_STACK = '‘Helvetica Neue’, Helvetica, Arial, sans-serif';
 
 let encoder = isBrowser && window.btoa;
 
@@ -34,7 +35,7 @@ const config = {
     imageSourceBase: 'data:image/svg+xml;base64,',
     titleFontSize: '15px',
     // eslint-disable-next-line quotes
-    titleFontFamily: "'Benton Sans', sans-serif",
+    titleFontFamily: DEFAULT_FONT_STACK,
     titleTopOffset: 15,
     get styleBackgroundString() {
         return `<style>svg{background:${this.chartBackground};}</style>`;
