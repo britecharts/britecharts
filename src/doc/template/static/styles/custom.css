@@ -10,9 +10,16 @@
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+
+@font-face {
+    font-family: 'Karla', sans-serif;
+    font-weight: 300;
+    src: url('https://fonts.googleapis.com/css?family=Karla') format('opentype');
+}
+
+ /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
-    font-family: sans-serif;
+    font-family: 'Karla', sans-serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
@@ -1415,7 +1422,7 @@ html {
 }
 
 body {
-    font-family: "Benton Regular", Helvetica, Arial, sans-serif;
+    font-family: "Karla", Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.44;
     color: #45494e;
@@ -1525,7 +1532,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-    font-family: "Benton Light", sans-serif;
+    font-family: "Karla", sans-serif;
     font-weight: 400;
     line-height: 1.2;
     color: inherit;
@@ -6250,31 +6257,6 @@ button.close {
     .hidden-print {
         display: none !important;
     }
-}
-@font-face {
-    font-family: "Benton Light";
-    src: url("../fonts/benton/light/Benton_Sans-Light.eot");
-    /* IE9 Compat Modes */
-    src: url("../fonts/benton/light/Benton_Sans-Light.eot?#iefix")
-            format("embedded-opentype"),
-        url("../fonts/benton/light/Benton_Sans-Light.woff") format("woff"),
-        url("../fonts/benton/light/Benton_Sans-Light.ttf") format("truetype"),
-        url("../fonts/benton/light/Benton_Sans-Light.svg#svgFontName")
-            format("svg");
-    /* Legacy iOS */
-}
-@font-face {
-    font-family: "Benton Regular";
-    src: url("../fonts/benton/regular/Benton_Sans-Regular.eot");
-    /* IE9 Compat Modes */
-    src: url("../fonts/benton/regular/Benton_Sans-Regular.eot?#iefix")
-            format("embedded-opentype"),
-        url("../fonts/benton/regular/Benton_Sans-Regular.woff") format("woff"),
-        url("../fonts/benton/regular/Benton_Sans-Regular.ttf")
-            format("truetype"),
-        url("../fonts/benton/regular/Benton_Sans-Regular.svg#svgFontName")
-            format("svg");
-    /* Legacy iOS */
 }
 body {
     text-rendering: optimizeLegibility;
