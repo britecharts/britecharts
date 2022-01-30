@@ -37,11 +37,7 @@ Include one of these prefixes:
 
 <!--- Review the list before submitting your pull request -->
 <!--- Leave the list intact for the code reviewer's use -->
-
--   [ ] Latest master code has been merged into this branch
 -   [ ] No commented out code (if required, place // TODO above with explanation)
--   [ ] Build is successful
 -   [ ] Code follows the [API Guidelines](http://britecharts.github.io/britecharts/topics-index.html#toc5__anchor)
 -   [ ] Updated the documentation
 -   [ ] Added tests to cover changes
--   [ ] All new and existing tests passed
