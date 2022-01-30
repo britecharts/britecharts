@@ -105,23 +105,33 @@ Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this
 
 ## See Also
 
--   [Documentation Homepage][31]
+-   [Documentation Homepage][docs-homepage]
 -   [Getting Started Guide][gettingstarted]
 -   [Tutorials][tutorialsindex]
 -   [How To Guides][howtoindex]
 -   [About Britecharts][topicsindex]
--   [Contributing Guide][35]
--   [Github Repo][33]
+-   [Contributing Guide][contributing-guide]
+-   [Github Repo][main-repository]
 -   [Bar Chart Tutorial][screencast][Video]
--   [Release Notes][13]
+-   [Release Notes][release-notes]
 
 ## Roadmap
 
 This project is in active development. You can check our [plans for the next release][release3project] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
 
-To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#britecharts** channel. If you want to help, you can check the [contributing][35] guide.
-
 If you work with Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We are also preparing a wrapper for React, and we will be talking about it on our [twitter][twitter].
+
+## Code of Conduct
+
+Britecharts is dedicated to building a welcoming, diverse, and safe community. We expect everyone participating in the Britecharts community to abide by our [Code of Conduct][code-conduct]. Please read it and follow it.
+
+## How to Contribute
+
+Whether you're helping us fix bugs, improving the docs, or spreading the word, we'd love to have you as part of the Britecharts community!
+
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. If you want to help, you can check the [contributing][contributing-guide] guide.
+
+Check out our Contributing Guide for ideas on contributing and setup steps for getting our repositories up and running on your local machine.
 
 ## Acknowledgments
 
@@ -169,7 +179,7 @@ Read more in the [license document][15]
 [2]: https://webpack.github.io/
 [3]: https://bost.ocks.org/mike/chart/
 [12]: https://nodejs.org/en/download/
-[13]: https://github.com/britecharts/britecharts/releases
+[release-notes]: https://github.com/britecharts/britecharts/releases
 [14]: https://www.apache.org/licenses/LICENSE-2.0
 [15]: https://github.com/britecharts/britecharts/blob/master/LICENSE.md
 [16]: https://github.com/britecharts/britecharts/issues
@@ -186,11 +196,11 @@ Read more in the [license document][15]
 [28]: https://britecharts.github.io/britecharts/module-Step.html
 [29]: https://britecharts.github.io/britecharts/module-Sparkline.html
 [30]: https://britecharts.github.io/britecharts/module-Stacked-area.html
-[31]: https://britecharts.github.io/britecharts/
+[docs-homepage]: https://britecharts.github.io/britecharts/
 [32]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
-[33]: https://github.com/britecharts/britecharts
+[main-repository]: https://github.com/britecharts/britecharts
 [gettingstarted]: https://britecharts.github.io/britecharts/getting-started.html
-[35]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contributing-guide]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
 [36]: https://britecharts.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
 [38]: https://britecharts.github.io/britecharts/module-Stacked-bar.html
@@ -239,3 +249,4 @@ Read more in the [license document][15]
 [howtoindex]: http://britecharts.github.io/britecharts/how-to-index.html
 [topicsindex]: http://britecharts.github.io/britecharts/topics-index.html
 [stylingbritecharts]: http://britecharts.github.io/britecharts/styling-charts.html
+[code-conduct]: https://github.com/britecharts/britecharts/blob/master/CODE_OF_CONDUCT.md
