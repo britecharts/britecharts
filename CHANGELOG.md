@@ -1,3 +1,33 @@
+3.0.0-alpha-6.1.4
+-----------------
+* fix: fixes book image on docs
+* docs: adds code of conduct and updates Readme
+* docs: Readme review and contribution updates
+
+3.0.0-alpha-6.1.3
+-----------------
+* fix: typings fixes
+
+3.0.0-alpha-6.1.2
+-----------------
+* feat: Add hasMinimumValueScale parameter to autoscale Line Chart y-axis
+* fix: step loading and stracked and grouped bar charts tooltip issue mitigation
+* fix: Fixes grouped bar chart animation
+
+3.0.0-alpha-6.1.0
+-----------------
+* feat: Added Donut's hasCenterLegend to hide/show center legend
+* fix: line chart animation fix on multiline, fixes demo
+* fix: API generation docs and renaming data types
+* feat: Makes charts responsive by default
+
+
+3.0.0-alpha-6.0.1
+-----------------
+* fix - Rework of Line Chart animation
+* refactor - Added grid helper on the rest of charts
+* fix - Cleaned duplicated accessor in Donut Chart
+
 3.0.0-alpha-6
 ---------------
 * !feature - Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts
