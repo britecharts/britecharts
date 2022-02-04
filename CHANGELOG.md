@@ -1,6 +1,8 @@
 3.0.0-alpha-6.1.4
 -----------------
+* feat: extended line on brush chart
 * fix: fixes book image on docs
+* fix: extended line color matching ticks
 * docs: adds code of conduct and updates Readme
 * docs: Readme review and contribution updates
 
