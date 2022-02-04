@@ -126,7 +126,7 @@ function createLineChartWithSingleLine() {
         dataset;
 
     if (containerWidth) {
-        dataset = aTestDataSet().withOneSource().build();
+        dataset = aTestDataSet().withNegativeValues().build();
 
         lineChart2
             .tooltipThreshold(600)
@@ -223,7 +223,9 @@ function createLoadingState(isLoading, instance) {
         containerWidth = container.node()
             ? container.node().getBoundingClientRect().width
             : false;
-    const dataset = isLoading ? {} : aTestDataSet().withOneSource().build();
+    const dataset = isLoading
+        ? { data: [] }
+        : aTestDataSet().withOneSource().build();
 
     if (containerWidth) {
         lineChart

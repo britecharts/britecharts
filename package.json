@@ -1,391 +1,400 @@
 {
-    "name": "britecharts",
-    "version": "3.0.0-alpha-6.1.4",
-    "description": "D3.js based Modular Charting Library by Eventbrite",
-    "main": "dist/bundled/britecharts.min.js",
-    "module": "src/index.js",
-    "types": "src/typings/index.d.ts",
-    "contributors": [
-        {
-            "name": "Marcos Iglesias",
-            "email": "golodhros@gmail.com"
-        },
-        {
-            "name": "Daler Asrorov",
-            "email": "asrorids@gmail.com"
-        },
-        {
-            "name": "Ryan Wholey",
-            "email": "rjwholey@gmail.com"
-        },
-        {
-            "name": "Sun Dai",
-            "email": "sundaisf@gmail.com"
-        }
-    ],
-    "scripts": {
-        "build": "webpack --env=production",
-        "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
-        "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
-        "clean": "yarn cache clean && rimraf node_modules",
-        "demos:compile": "webpack --progress --colors --env=demos",
-        "demos:serve": "webpack-dev-server --content-base docs/ --inline --hot --port 8001 --env=demos",
-        "demos:watch": "webpack --watch --progress --colors --env=demos",
-        "docs": "webpack --env=demos && yarn run styles && grunt docs",
-        "format": "prettier --loglevel warn --write \"**/*.js\"",
-        "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
-        "lint:js": "yarn run lint",
-        "lint:styles": "yarn run stylelint",
-        "lint": "eslint src/charts/ src/tasks test/ webpack.*.js --cache",
-        "posttest": "npm run format",
-        "prebuild": "yarn run styles",
-        "release:major": "grunt release:major",
-        "release:minor": "grunt release:minor",
-        "release": "grunt release:patch",
-        "sandbox:compile": "webpack --env=sandbox",
-        "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",
-        "start": "concurrently \"yarn run docs\" \"yarn run demos:serve\" \"yarn run sandbox\"",
-        "stylelint:fix": "stylelint '**/*.scss' --fix",
-        "stylelint": "stylelint '**/*.scss'",
-        "styles": "grunt lint && grunt sass && grunt cssmin",
-        "test:ci": "karma start --single-run --browsers=ChromeHeadlessCustom --env=test",
-        "test:once": "karma start --single-run",
-        "test": "karma start --env=test",
-        "test:watch": "karma start --env=test",
-        "prepare": "husky install"
+  "name": "britecharts",
+  "version": "3.0.0-alpha-6.1.4",
+  "description": "D3.js based Modular Charting Library by Eventbrite",
+  "main": "dist/bundled/britecharts.min.js",
+  "module": "src/index.js",
+  "types": "src/typings/index.d.ts",
+  "contributors": [
+    {
+      "name": "Marcos Iglesias",
+      "email": "golodhros@gmail.com"
     },
-    "sideEffects": [
-        "dist/css/**/*.css",
-        "src/styles/**/*.scss"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/britecharts/britecharts.git"
+    {
+      "name": "Daler Asrorov",
+      "email": "asrorids@gmail.com"
     },
-    "keywords": [
-        "d3",
-        "svg",
-        "chart",
-        "javascript",
-        "es6",
-        "es2015",
-        "visualizations",
-        "data-visualization",
-        "interactive-visualizations"
-    ],
-    "author": "Eventbrite",
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/britecharts/britecharts/issues"
+    {
+      "name": "Ryan Wholey",
+      "email": "rjwholey@gmail.com"
     },
-    "homepage": "http://britecharts.github.io/britecharts/",
-    "babel": {
-        "presets": [
-            [
-                "@babel/preset-env",
-                {
-                    "targets": {
-                        "chrome": "58",
-                        "ie": "11"
-                    }
-                }
-            ]
-        ],
-        "plugins": [
-            "@babel/plugin-syntax-dynamic-import",
-            "@babel/plugin-syntax-import-meta",
-            "@babel/plugin-proposal-class-properties",
-            "@babel/plugin-proposal-json-strings",
-            [
-                "@babel/plugin-proposal-decorators",
-                {
-                    "legacy": true
-                }
-            ],
-            "@babel/plugin-proposal-function-sent",
-            "@babel/plugin-proposal-export-namespace-from",
-            "@babel/plugin-proposal-numeric-separator",
-            "@babel/plugin-proposal-throw-expressions",
-            "@babel/plugin-proposal-export-default-from",
-            "@babel/plugin-proposal-logical-assignment-operators",
-            "@babel/plugin-proposal-optional-chaining",
-            [
-                "@babel/plugin-proposal-pipeline-operator",
-                {
-                    "proposal": "minimal"
-                }
-            ],
-            "@babel/plugin-proposal-nullish-coalescing-operator",
-            "@babel/plugin-proposal-do-expressions",
-            "@babel/plugin-proposal-function-bind",
-            [
-                "@babel/plugin-transform-runtime",
-                {
-                    "regenerator": true
-                }
-            ]
-        ],
-        "env": {
-            "test": {
-                "plugins": [
-                    "istanbul"
-                ]
-            }
-        }
-    },
-    "eslintConfig": {
-        "env": {
-            "es6": true,
-            "browser": true,
-            "jasmine": true,
-            "amd": true
-        },
-        "parser": "@babel/eslint-parser",
-        "parserOptions": {
-            "sourceType": "module",
-            "ecmaFeatures": {
-                "experimentalObjectRestSpread": true
-            }
-        },
-        "globals": {
-            "sinon": true
-        },
-        "rules": {
-            "block-scoped-var": 1,
-            "comma-style": [
-                2,
-                "last"
-            ],
-            "complexity": 1,
-            "consistent-this": [
-                0,
-                "self"
-            ],
-            "default-case": 1,
-            "dot-notation": 0,
-            "guard-for-in": 1,
-            "keyword-spacing": 1,
-            "padding-line-between-statements": [
-                "error",
-                {
-                    "blankLine": "always",
-                    "prev": "*",
-                    "next": "return"
-                }
-            ],
-            "no-alert": 2,
-            "no-console": 2,
-            "no-debugger": 2,
-            "no-div-regex": 1,
-            "no-eq-null": 1,
-            "no-floating-decimal": 1,
-            "no-multiple-empty-lines": [
-                2,
-                {
-                    "max": 2
-                }
-            ],
-            "no-nested-ternary": 1,
-            "no-param-reassign": 0,
-            "no-self-compare": 1,
-            "no-throw-literal": 1,
-            "no-void": 1,
-            "no-unused-vars": [
-                1,
-                {
-                    "varsIgnorePattern": "[d3Transition]"
-                }
-            ],
-            "no-underscore-dangle": 0,
-            "quotes": [
-                2,
-                "single"
-            ],
-            "one-var": [
-                1,
-                {
-                    "var": "always",
-                    "const": "never"
-                }
-            ],
-            "radix": 1,
-            "vars-on-top": 1,
-            "wrap-iife": [
-                2,
-                "inside"
-            ]
-        },
-        "overrides": [
-            {
-                "files": [
-                    "*.d.ts"
-                ],
-                "parser": "@typescript-eslint/parser"
-            }
-        ]
-    },
-    "prettier": {
-        "endOfLine": "lf",
-        "tabWidth": 4,
-        "semi": true,
-        "bracketSpacing": true,
-        "singleQuote": true,
-        "arrowParens": "always",
-        "overrides": [
-            {
-                "files": "*.md",
-                "options": {
-                    "printWidth": 70,
-                    "useTabs": false,
-                    "trailingComma": "none",
-                    "arrowParens": "avoid",
-                    "proseWrap": "never"
-                }
-            }
-        ]
-    },
-    "stylelint": {
-        "plugins": [
-            "stylelint-scss"
-        ],
-        "extends": [
-            "stylelint-config-standard",
-            "stylelint-config-sass-guidelines"
-        ],
-        "rules": {
-            "indentation": 4,
-            "scss/dollar-variable-colon-space-after": "always",
-            "no-descending-specificity": null,
-            "selector-class-pattern": null,
-            "scss/at-import-no-partial-leading-underscore": null,
-            "max-nesting-depth": 2,
-            "at-rule-no-unknown": [
-                true,
-                {
-                    "ignoreAtRules": [
-                        "function",
-                        "if",
-                        "each",
-                        "include",
-                        "mixin"
-                    ]
-                }
-            ]
-        }
-    },
-    "dependencies": {
-        "d3-axis": "^1.0.12",
-        "d3-brush": "^1.1.6",
-        "d3-collection": "^1.0.7",
-        "d3-format": "^1.4.5",
-        "d3-scale": "^3.2.4",
-        "d3-selection": "^1.4.1",
-        "d3-shape": "^1.3.7",
-        "d3-time": "^1.1.0",
-        "d3-time-format": "^3.0.0",
-        "d3-transition": "^1.3.2",
-        "d3-voronoi": "^1.1.4",
-        "d3-zoom": "^1.8.3"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.2.0",
-        "@babel/eslint-parser": "^7.12.1",
-        "@babel/plugin-proposal-class-properties": "^7.0.0",
-        "@babel/plugin-proposal-decorators": "^7.0.0",
-        "@babel/plugin-proposal-do-expressions": "^7.0.0",
-        "@babel/plugin-proposal-export-default-from": "^7.0.0",
-        "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
-        "@babel/plugin-proposal-function-bind": "^7.0.0",
-        "@babel/plugin-proposal-function-sent": "^7.0.0",
-        "@babel/plugin-proposal-json-strings": "^7.0.0",
-        "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
-        "@babel/plugin-proposal-numeric-separator": "^7.0.0",
-        "@babel/plugin-proposal-optional-chaining": "^7.0.0",
-        "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
-        "@babel/plugin-proposal-throw-expressions": "^7.0.0",
-        "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-        "@babel/plugin-syntax-import-meta": "^7.0.0",
-        "@babel/plugin-transform-async-to-generator": "^7.4.4",
-        "@babel/plugin-transform-runtime": "^7.4.4",
-        "@babel/preset-env": "^7.0.0",
-        "@babel/runtime": "^7.4.5",
-        "@types/d3-selection": "^1.4.1",
-        "@typescript-eslint/parser": "^4.6.1",
-        "babel-loader": "^8.0.0",
-        "babel-plugin-async-import": "^2.0.2",
-        "babel-plugin-istanbul": "^6.0.0",
-        "base-64": "^0.1.0",
-        "brace": "0.10.0",
-        "concurrently": "^4.1.0",
-        "css-loader": "3.0.0",
-        "d3": "^5.16.0",
-        "es-check": "^6.0.0",
-        "eslint": "^7.13.0",
-        "eslint-loader": "^2.1.2",
-        "grunt": "1.0.4",
-        "grunt-babel": "6.0.0",
-        "grunt-contrib-cssmin": "2.2.1",
-        "grunt-contrib-requirejs": "^1.0.0",
-        "grunt-contrib-sass": "1.0.0",
-        "grunt-contrib-watch": "1.1.0",
-        "grunt-jsdoc": "2.4.0",
-        "grunt-karma": "2.0.0",
-        "grunt-release": "git://github.com/beevelop/grunt-release",
-        "grunt-reload": "^0.2.0",
-        "grunt-sass": "3.0.2",
-        "grunt-sass-lint": "0.2.4",
-        "grunt-shell": "2.1.0",
-        "grunt-sync": "0.8.0",
-        "husky": "^7.0.0",
-        "ink-docstrap": "1.3.2",
-        "istanbul-instrumenter-loader": "3.0.1",
-        "jasmine-core": "3.7.1",
-        "jasmine-jquery": "2.1.1",
-        "jquery": "3.5.0",
-        "jsdoc": "3.6.1",
-        "karma": "6.3.2",
-        "karma-babel-preprocessor": "8.0.1",
-        "karma-chrome-launcher": "3.1.0",
-        "karma-coverage": "2.0.3",
-        "karma-jasmine": "4.0.1",
-        "karma-sourcemap-loader": "^0.3.8",
-        "karma-webpack": "4.0.2",
-        "lint-staged": ">=10",
-        "load-grunt-tasks": "5.0.0",
-        "moment": "2.24.0",
-        "node-gyp": "4.0.0",
-        "node-sass": "^5.0.0",
-        "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
-        "prettier": "^2.0.5",
-        "prismjs": "1.21.0",
-        "pubsub-js": "1.7.0",
-        "requirejs-plugins": "^1.0.2",
-        "rimraf": "^2.6.3",
-        "sanitize-html": "1.20.1",
-        "sass-loader": "6.0.6",
-        "shelljs": "0.7.8",
-        "sinon": "7.5.0",
-        "style-loader": "0.23.1",
-        "stylelint": "^13.6.0",
-        "stylelint-config-sass-guidelines": "^7.0.0",
-        "stylelint-config-standard": "^20.0.0",
-        "stylelint-scss": "^3.17.2",
-        "text": "requirejs/text",
-        "typescript": "^3.9.2",
-        "underscore": "1.9.1",
-        "webpack": "4.46.0",
-        "webpack-bundle-analyzer": "3.3.2",
-        "webpack-cli": "^3.3.5",
-        "webpack-dev-server": "3.7.2",
-        "webpack-merge": "4.2.1",
-        "yargs": "8.0.2"
-    },
-    "lint-staged": {
-        "*.js": [
-            "yarn run lint:js",
-            "yarn run format"
-        ],
-        "*.scss": "yarn run lint:styles"
+    {
+      "name": "Sun Dai",
+      "email": "sundaisf@gmail.com"
     }
+  ],
+  "scripts": {
+    "build": "webpack --env=production",
+    "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
+    "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
+    "clean": "yarn cache clean && rimraf node_modules",
+    "demos:compile": "webpack --progress --colors --env=demos",
+    "demos:serve": "webpack-dev-server --content-base docs/ --inline --hot --port 8001 --env=demos",
+    "demos:watch": "webpack --watch --progress --colors --env=demos",
+    "docs": "webpack --env=demos && yarn run styles && grunt docs",
+    "format": "prettier --loglevel warn --write \"**/*.js\"",
+    "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
+    "lint:js": "yarn run lint",
+    "lint:styles": "yarn run stylelint",
+    "lint": "eslint src/charts/ src/tasks test/ webpack.*.js --cache",
+    "posttest": "npm run format",
+    "prebuild": "yarn run styles",
+    "release:major": "grunt release:major",
+    "release:minor": "grunt release:minor",
+    "release": "grunt release:patch",
+    "sandbox:compile": "webpack --env=sandbox",
+    "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",
+    "start": "concurrently \"yarn run docs\" \"yarn run demos:serve\" \"yarn run sandbox\"",
+    "stylelint:fix": "stylelint '**/*.scss' --fix",
+    "stylelint": "stylelint '**/*.scss'",
+    "styles": "grunt lint && grunt sass && grunt cssmin",
+    "test:ci": "karma start --single-run --browsers=ChromeHeadlessCustom --env=test",
+    "test:once": "karma start --single-run",
+    "test": "karma start --env=test",
+    "test:watch": "karma start --env=test",
+    "prepare": "husky install"
+  },
+  "sideEffects": [
+    "dist/css/**/*.css",
+    "src/styles/**/*.scss"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/britecharts/britecharts.git"
+  },
+  "keywords": [
+    "d3",
+    "svg",
+    "chart",
+    "javascript",
+    "es6",
+    "es2015",
+    "visualizations",
+    "data-visualization",
+    "interactive-visualizations"
+  ],
+  "author": "Eventbrite",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/britecharts/britecharts/issues"
+  },
+  "homepage": "http://britecharts.github.io/britecharts/",
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "chrome": "58",
+            "ie": "11"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-syntax-import-meta",
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-json-strings",
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      "@babel/plugin-proposal-function-sent",
+      "@babel/plugin-proposal-export-namespace-from",
+      "@babel/plugin-proposal-numeric-separator",
+      "@babel/plugin-proposal-throw-expressions",
+      "@babel/plugin-proposal-export-default-from",
+      "@babel/plugin-proposal-logical-assignment-operators",
+      "@babel/plugin-proposal-optional-chaining",
+      [
+        "@babel/plugin-proposal-pipeline-operator",
+        {
+          "proposal": "minimal"
+        }
+      ],
+      "@babel/plugin-proposal-nullish-coalescing-operator",
+      "@babel/plugin-proposal-do-expressions",
+      "@babel/plugin-proposal-function-bind",
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "regenerator": true
+        }
+      ]
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "istanbul"
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "browser": true,
+      "jasmine": true,
+      "amd": true
+    },
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "globals": {
+      "sinon": true
+    },
+    "rules": {
+      "block-scoped-var": 1,
+      "comma-style": [
+        2,
+        "last"
+      ],
+      "complexity": 1,
+      "consistent-this": [
+        0,
+        "self"
+      ],
+      "default-case": 1,
+      "dot-notation": 0,
+      "guard-for-in": 1,
+      "keyword-spacing": 1,
+      "padding-line-between-statements": [
+        "error",
+        {
+          "blankLine": "always",
+          "prev": "*",
+          "next": "return"
+        }
+      ],
+      "no-alert": 2,
+      "no-console": 2,
+      "no-debugger": 2,
+      "no-div-regex": 1,
+      "no-eq-null": 1,
+      "no-floating-decimal": 1,
+      "no-multiple-empty-lines": [
+        2,
+        {
+          "max": 2
+        }
+      ],
+      "no-nested-ternary": 1,
+      "no-param-reassign": 0,
+      "no-self-compare": 1,
+      "no-throw-literal": 1,
+      "no-void": 1,
+      "no-unused-vars": [
+        1,
+        {
+          "varsIgnorePattern": "[d3Transition]"
+        }
+      ],
+      "no-underscore-dangle": 0,
+      "quotes": [
+        2,
+        "single"
+      ],
+      "one-var": [
+        1,
+        {
+          "var": "always",
+          "const": "never"
+        }
+      ],
+      "radix": 1,
+      "vars-on-top": 1,
+      "wrap-iife": [
+        2,
+        "inside"
+      ]
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.d.ts"
+        ],
+        "parser": "@typescript-eslint/parser"
+      }
+    ]
+  },
+  "prettier": {
+    "endOfLine": "lf",
+    "tabWidth": 4,
+    "semi": true,
+    "bracketSpacing": true,
+    "singleQuote": true,
+    "arrowParens": "always",
+    "overrides": [
+      {
+        "files": "*.md",
+        "options": {
+          "printWidth": 70,
+          "useTabs": false,
+          "trailingComma": "none",
+          "arrowParens": "avoid",
+          "proseWrap": "never"
+        }
+      },
+      {
+        "files": "*.json",
+        "options": {
+          "printWidth": 70,
+          "useTabs": false,
+          "trailingComma": "none",
+          "tabWidth": 2
+        }
+      }
+    ]
+  },
+  "stylelint": {
+    "plugins": [
+      "stylelint-scss"
+    ],
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-sass-guidelines"
+    ],
+    "rules": {
+      "indentation": 4,
+      "scss/dollar-variable-colon-space-after": "always",
+      "no-descending-specificity": null,
+      "selector-class-pattern": null,
+      "scss/at-import-no-partial-leading-underscore": null,
+      "max-nesting-depth": 2,
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "function",
+            "if",
+            "each",
+            "include",
+            "mixin"
+          ]
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "d3-axis": "^1.0.12",
+    "d3-brush": "^1.1.6",
+    "d3-collection": "^1.0.7",
+    "d3-format": "^1.4.5",
+    "d3-scale": "^3.2.4",
+    "d3-selection": "^1.4.1",
+    "d3-shape": "^1.3.7",
+    "d3-time": "^1.1.0",
+    "d3-time-format": "^3.0.0",
+    "d3-transition": "^1.3.2",
+    "d3-voronoi": "^1.1.4",
+    "d3-zoom": "^1.8.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.0.0",
+    "@babel/plugin-proposal-do-expressions": "^7.0.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
+    "@babel/plugin-proposal-function-bind": "^7.0.0",
+    "@babel/plugin-proposal-function-sent": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-transform-async-to-generator": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.4.5",
+    "@types/d3-selection": "^1.4.1",
+    "@typescript-eslint/parser": "^4.6.1",
+    "babel-loader": "^8.0.0",
+    "babel-plugin-async-import": "^2.0.2",
+    "babel-plugin-istanbul": "^6.0.0",
+    "base-64": "^0.1.0",
+    "brace": "0.10.0",
+    "concurrently": "^4.1.0",
+    "css-loader": "3.0.0",
+    "d3": "^5.16.0",
+    "es-check": "^6.0.0",
+    "eslint": "^7.13.0",
+    "eslint-loader": "^2.1.2",
+    "grunt": "1.0.4",
+    "grunt-babel": "6.0.0",
+    "grunt-contrib-cssmin": "2.2.1",
+    "grunt-contrib-requirejs": "^1.0.0",
+    "grunt-contrib-sass": "1.0.0",
+    "grunt-contrib-watch": "1.1.0",
+    "grunt-jsdoc": "2.4.0",
+    "grunt-karma": "2.0.0",
+    "grunt-release": "git://github.com/beevelop/grunt-release",
+    "grunt-reload": "^0.2.0",
+    "grunt-sass": "3.0.2",
+    "grunt-sass-lint": "0.2.4",
+    "grunt-shell": "2.1.0",
+    "grunt-sync": "0.8.0",
+    "husky": "^7.0.0",
+    "ink-docstrap": "1.3.2",
+    "istanbul-instrumenter-loader": "3.0.1",
+    "jasmine-core": "3.7.1",
+    "jasmine-jquery": "2.1.1",
+    "jquery": "3.5.0",
+    "jsdoc": "3.6.1",
+    "karma": "6.3.2",
+    "karma-babel-preprocessor": "8.0.1",
+    "karma-chrome-launcher": "3.1.0",
+    "karma-coverage": "2.0.3",
+    "karma-jasmine": "4.0.1",
+    "karma-sourcemap-loader": "^0.3.8",
+    "karma-webpack": "4.0.2",
+    "lint-staged": ">=10",
+    "load-grunt-tasks": "5.0.0",
+    "moment": "2.24.0",
+    "node-gyp": "4.0.0",
+    "node-sass": "^5.0.0",
+    "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
+    "prettier": "^2.0.5",
+    "prismjs": "1.21.0",
+    "pubsub-js": "1.7.0",
+    "requirejs-plugins": "^1.0.2",
+    "rimraf": "^2.6.3",
+    "sanitize-html": "1.20.1",
+    "sass-loader": "6.0.6",
+    "shelljs": "0.7.8",
+    "sinon": "7.5.0",
+    "style-loader": "0.23.1",
+    "stylelint": "^13.6.0",
+    "stylelint-config-sass-guidelines": "^7.0.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.17.2",
+    "text": "requirejs/text",
+    "typescript": "^3.9.2",
+    "underscore": "1.9.1",
+    "webpack": "4.46.0",
+    "webpack-bundle-analyzer": "3.3.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "3.7.2",
+    "webpack-merge": "4.2.1",
+    "yargs": "8.0.2"
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn run lint:js",
+      "yarn run format"
+    ],
+    "*.scss": "yarn run lint:styles"
+  }
 }
