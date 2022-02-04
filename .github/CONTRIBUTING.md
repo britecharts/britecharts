@@ -66,8 +66,15 @@ Check also our [Topics Page][topicsPage] to learn about our Code Standards, API 
 
 You can add yourself or somebody else to the contributors list by using the [All Contributors bot][allContributorsBot].
 
+## Good First Issues
+We have a set of [good first issues][good-first-issues] that contain bugs and improvements which have a relatively limited scope. This is a great place to get started, gain experience with the project and the contributing workflow.
+
+## Joining Britecharts
+Britecharts is an open project looking to get your contributions (in whatever form you prefer) and ready to welcome new committers. We aspire to create a community based on meritocracy, and open to grow and evolve with our users.
+
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [issues]: https://github.com/britecharts/britecharts/issues
 [contributorHowTo]: http://britecharts.github.io/britecharts/contributor-how-to-guides.html
 [topicsPage]: http://britecharts.github.io/britecharts/topics-index.html
 [allContributorsBot]: https://allcontributors.org/docs/en/bot/usage
+[good-first-issues]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22
