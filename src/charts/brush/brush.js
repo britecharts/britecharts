@@ -178,6 +178,8 @@ export default function module() {
             .tickSize(10, 0)
             .tickPadding([tickPadding])
             .tickFormat(minor.format);
+
+        drawHorizontalExtendedLine();
     }
 
     /**
@@ -451,6 +453,24 @@ export default function module() {
         handle = chartBrush
             .selectAll('.handle.brush-rect')
             .style('fill', handleFillColor);
+    }
+
+    /**
+     * Draws a horizontal line to extend x-axis till the edges
+     * @return {void}
+     * @private
+     */
+    function drawHorizontalExtendedLine() {
+        svg.select('.x-axis-group')
+            .selectAll('line.extended-x-line')
+            .data([0])
+            .enter()
+            .append('line')
+            .attr('class', 'extended-x-line')
+            .attr('x1', 0)
+            .attr('x2', chartWidth)
+            .attr('y1', chartHeight)
+            .attr('y2', chartHeight);
     }
 
     /**

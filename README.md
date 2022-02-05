@@ -1,6 +1,6 @@
 # Britecharts
 
-> Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][1] that provides easy composition of charts and components to create amazing visualizations.
+> Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][d3] that provides easy composition of charts and components to create amazing visualizations.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![test workflow](https://github.com/britecharts/britecharts/actions/workflows/tests.yml/badge.svg)](https://github.com/britecharts/britecharts/actions/workflows/tests.yml) [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/britecharts/britecharts)](https://github.com/britecharts/britecharts/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc) [![](https://data.jsdelivr.com/v1/package/npm/britecharts/badge)](https://www.jsdelivr.com/package/npm/britecharts)
 
@@ -11,13 +11,31 @@
 | [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchartdemo] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachartdemo] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchartdemo] |
 | [![Sparkline Chart][sparklinechartimg]][sparklinechartdemo] | [![Legend Chart][legendchartimg]][donutchartdemo] | [![Brush Chart][brushchartimg]][brushchartdemo] |
 
-Britecharts [components][32] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
+<h4 align="center">
+  <a href="https://britecharts.github.io/britecharts/getting-started.html">Quickstart</a>
+  <span> · </span>
+  <a href="https://britecharts.github.io/britecharts/tutorials-index.html">Tutorials</a>
+  <span> · </span>
+  <a href="https://britecharts.github.io/britecharts/">Docs</a>
+  <span> · </span>
+  <a href="https://github.com/britecharts/britecharts-test-project">Test Project</a>
+  <span> · </span>
+  <a href="https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html">Kitchen Sink</a>
+  <span> · </span>
+  <a href="https://britecharts.github.io/britecharts/contributor-how-to-guides.html">Contribute</a>
+  <br />
+  Support: <a href="https://twitter.com/britecharts">Twitter</a>, <a href="https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">Issues</a>
+  <span> & </span>
+  <a href="https://d3js.slack.com/messages/tools-britecharts/">Slack</a>
+</h2>
 
 ## Key Features
 
 -   🛠 Reusability
 -   🏗 Composability
 -   🌈 Great design
+
+Britecharts [components][kitchen-sink] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
 
 ## Usage
 
@@ -38,28 +56,28 @@ The typical use of Britecharts involves creating a chart using its simple API, t
     barContainer.datum(dataset).call(barChart);
 ```
 
-## API
+## API 
 
 All the components expose some **common API methods** like width, height, and margin. Additionally, each chart or component can expose specific methods you can find in the documentation:
 
--   [API][25], [Demo][linechartdemo] Line Chart
--   [API][22], [Demo][barchartdemo] Bar Chart
--   [API][21], [Demo][donutchartdemo] Donut Chart
--   [API][38], [Demo][stackedbarchartdemo] Stacked Bar Chart
--   [API][40], [Demo][groupedbarchartdemo] Grouped Bar Chart
--   [API][43], [Demo][bulletchartdemo] Bullet Chart
--   [API][23], [Demo][brushchartdemo] Brush Chart
--   [API][41], [Demo][scatterplotdemo] Scatter Plot
--   [API][29], [Demo][sparklinechartdemo] Sparkline Chart
--   [API][30], [Demo][stackedareachartdemo] Stacked Area Chart
--   [API][28], [Demo][stepchartdemo] Step Chart
--   [API][26], [Demo][barchartdemo] Mini Tooltip
--   [API][27], [Demo][linechartdemo] Tooltip
--   [API][24], [Demo][donutchartdemo] Legend
+-   [API][line-docs], [Demo][linechartdemo] Line Chart
+-   [API][bar-docs], [Demo][barchartdemo] Bar Chart
+-   [API][donut-docs], [Demo][donutchartdemo] Donut Chart
+-   [API][stacked-bar-docs], [Demo][stackedbarchartdemo] Stacked Bar Chart
+-   [API][grouped-bar-docs], [Demo][groupedbarchartdemo] Grouped Bar Chart
+-   [API][bullet-docs], [Demo][bulletchartdemo] Bullet Chart
+-   [API][brush-docs], [Demo][brushchartdemo] Brush Chart
+-   [API][scatter-docs], [Demo][scatterplotdemo] Scatter Plot
+-   [API][sparkline-docs], [Demo][sparklinechartdemo] Sparkline Chart
+-   [API][stacked-area-docs], [Demo][stackedareachartdemo] Stacked Area Chart
+-   [API][step-docs], [Demo][stepchartdemo] Step Chart
+-   [API][mini-tooltip-docs], [Demo][barchartdemo] Mini Tooltip
+-   [API][tooltip-docs], [Demo][linechartdemo] Tooltip
+-   [API][legend-docs], [Demo][donutchartdemo] Legend
 
 ## Installation
 
-Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][3]. To use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the `src` pointing to the file. You would also need to load the [d3-selection][37] submodule to select the chart container.
+Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][mike-chart]. To use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the `src` pointing to the file. You would also need to load the [d3-selection][d3-selection] submodule to select the chart container.
 
 ```bash
    npm install --save britecharts d3-selection
@@ -112,14 +130,13 @@ Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this
 -   [About Britecharts][topicsindex]
 -   [Contributing Guide][contributing-guide]
 -   [Github Repo][main-repository]
--   [Bar Chart Tutorial][screencast][Video]
--   [Release Notes][release-notes]
+-   [Changelog][changelog]
 
 ## Roadmap
 
-This project is in active development. You can check our [plans for the next release][release3project] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
+This project is in active development. You can check our [plans for the next release][release3project] and our [projects][github-projects] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
 
-If you work with Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We are also preparing a wrapper for React, and we will be talking about it on our [twitter][twitter].
+If you work with Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We are also preparing a wrapper for [React][britecharts-react], and we will be talking about it on our [twitter][twitter].
 
 ## Code of Conduct
 
@@ -129,13 +146,13 @@ Britecharts is dedicated to building a welcoming, diverse, and safe community. W
 
 Whether you're helping us fix bugs, improving the docs, or spreading the word, we'd love to have you as part of the Britecharts community!
 
-To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. If you want to help, you can check the [contributing][contributing-guide] guide.
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and commiters, so if you want to become a part of this project, check the [contributing][contributing-guide] guide and get started today!
 
 Check out our Contributing Guide for ideas on contributing and setup steps for getting our repositories up and running on your local machine.
 
 ## Acknowledgments
 
-[Sun Dai][sunsdribble] designs Britecharts, and two books inspired the code, [Developing a D3.js Edge][19] and [Mastering D3.js][20]. It also leveraged a significant number of examples and articles from the [D3.js][1] community overall.
+[Sun Dai][sunsdribble] designs Britecharts, and two books inspired the code, [Developing a D3.js Edge][d3-edge] and [Mastering D3.js][mastering-d3]. It also leveraged a significant number of examples and articles from the [D3.js][d3] community overall.
 
 ## Contributors ✨
 
@@ -169,57 +186,50 @@ This project follows the [all-contributors](https://allcontributors.org) specifi
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
-[https://www.apache.org/licenses/LICENSE-2.0][14]
+[https://www.apache.org/licenses/LICENSE-2.0][license-original]
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-Read more in the [license document][15]
+Read more in the [license document][britecharts-license]
 
-[1]: https://d3js.org/
-[2]: https://webpack.github.io/
-[3]: https://bost.ocks.org/mike/chart/
-[12]: https://nodejs.org/en/download/
-[release-notes]: https://github.com/britecharts/britecharts/releases
-[14]: https://www.apache.org/licenses/LICENSE-2.0
-[15]: https://github.com/britecharts/britecharts/blob/master/LICENSE.md
-[16]: https://github.com/britecharts/britecharts/issues
-[17]: https://github.com/babel/babel
-[19]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
-[20]: https://www.packtpub.com/web-development/mastering-d3js
-[21]: https://britecharts.github.io/britecharts/module-Donut.html
-[22]: https://britecharts.github.io/britecharts/module-Bar.html
-[23]: https://britecharts.github.io/britecharts/module-Brush.html
-[24]: https://britecharts.github.io/britecharts/module-Legend.html
-[25]: https://britecharts.github.io/britecharts/module-Line.html
-[26]: https://britecharts.github.io/britecharts/module-Mini-tooltip.html
-[27]: https://britecharts.github.io/britecharts/module-Tooltip.html
-[28]: https://britecharts.github.io/britecharts/module-Step.html
-[29]: https://britecharts.github.io/britecharts/module-Sparkline.html
-[30]: https://britecharts.github.io/britecharts/module-Stacked-area.html
+[d3]: https://d3js.org/
+[mike-chart]: https://bost.ocks.org/mike/chart/
+[changelog]: https://github.com/britecharts/britecharts/blob/master/CHANGELOG.md
+[license-original]: https://www.apache.org/licenses/LICENSE-2.0
+[britecharts-license]: https://github.com/britecharts/britecharts/blob/master/LICENSE.md
+[d3-edge]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
+[mastering-d3]: https://www.packtpub.com/web-development/mastering-d3js
+[donut-docs]: https://britecharts.github.io/britecharts/module-Donut.html
+[bar-docs]: https://britecharts.github.io/britecharts/module-Bar.html
+[brush-docs]: https://britecharts.github.io/britecharts/module-Brush.html
+[legend-docs]: https://britecharts.github.io/britecharts/module-Legend.html
+[line-docs]: https://britecharts.github.io/britecharts/module-Line.html
+[mini-tooltip-docs]: https://britecharts.github.io/britecharts/module-Mini-tooltip.html
+[tooltip-docs]: https://britecharts.github.io/britecharts/module-Tooltip.html
+[step-docs]: https://britecharts.github.io/britecharts/module-Step.html
+[sparkline-docs]: https://britecharts.github.io/britecharts/module-Sparkline.html
+[stacked-area-docs]: https://britecharts.github.io/britecharts/module-Stacked-area.html
 [docs-homepage]: https://britecharts.github.io/britecharts/
-[32]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
+[kitchen-sink]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
 [main-repository]: https://github.com/britecharts/britecharts
 [gettingstarted]: https://britecharts.github.io/britecharts/getting-started.html
 [contributing-guide]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
-[36]: https://britecharts.github.io/britecharts/img/logo-stripes-small.png
-[37]: https://github.com/d3/d3-selection
-[38]: https://britecharts.github.io/britecharts/module-Stacked-bar.html
-[40]: https://britecharts.github.io/britecharts/module-Grouped-bar.html
-[41]: https://britecharts.github.io/britecharts/module-Scatter-plot.html
-[42]: https://scrimba.com/casts/cZWm2tb
-[43]: https://britecharts.github.io/britecharts/module-Bullet.html
+[d3-selection]: https://github.com/d3/d3-selection
+[stacked-bar-docs]: https://britecharts.github.io/britecharts/module-Stacked-bar.html
+[grouped-bar-docs]: https://britecharts.github.io/britecharts/module-Grouped-bar.html
+[scatter-docs]: https://britecharts.github.io/britecharts/module-Scatter-plot.html
+[bullet-docs]: https://britecharts.github.io/britecharts/module-Bullet.html
 [cdndemo]: https://britecharts.github.io/britecharts/cdn.html
 [cdnhome]: https://cdn.jsdelivr.net/npm/britecharts/dist/
 [jsbinsandbox]: https://jsbin.com/wativun/3/edit?html,js,output
 [codepensandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
 [codependemos]: https://codepen.io/Britecharts/pens/forked/
-[screencast]: https://scrimba.com/casts/cZWm2tb
 [angularwrapper]: https://github.com/colapdev/ngx-britecharts
 [angularwrapperdemos]: https://colapdev.github.io/ngx-britecharts/
 [twitter]: https://twitter.com/britecharts
 [sunsdribble]: https://dribbble.com/sundai
-[d3slack]: https://d3js.slack.com/
-[proposals]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+label%3Aproposal
+[d3slack]: https://d3js.slack.com/messages/tools-britecharts/
+[proposals]: https://github.com/britecharts/britecharts/issues?q=is%3Aopen+label%3A%22Type%3A+Feature%22+sort%3Aupdated-desc
 [release3project]: https://github.com/britecharts/britecharts/projects/2
 [barchartdemo]: https://britecharts.github.io/britecharts/tutorial-bar.html 'Check the Demo'
 [linechartdemo]: https://britecharts.github.io/britecharts/tutorial-line.html 'Check the Demo'
@@ -250,3 +260,5 @@ Read more in the [license document][15]
 [topicsindex]: http://britecharts.github.io/britecharts/topics-index.html
 [stylingbritecharts]: http://britecharts.github.io/britecharts/styling-charts.html
 [code-conduct]: https://github.com/britecharts/britecharts/blob/master/CODE_OF_CONDUCT.md
+[britecharts-react]: https://britecharts.github.io/britecharts-react/
+[github-projects]: https://github.com/britecharts/britecharts/projects

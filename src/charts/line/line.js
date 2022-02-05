@@ -250,11 +250,9 @@ export default function module() {
         numberFormat,
         customLines = [],
         defaultCustomLineColor = colorHelper.colorSchemas.grey[3],
-        verticalLines,
-        verticalGridLines,
-        horizontalGridLines,
         grid = null,
-        baseLine,
+        baseLineX,
+        baseLineY,
         pathYCache = {},
         // extractors
         getDate = ({ date }) => date,
@@ -876,7 +874,7 @@ export default function module() {
      * @return {void}
      */
     function drawVerticalExtendedLine() {
-        baseLine = svg
+        baseLineY = svg
             .select('.grid-lines-group')
             .selectAll('line.extended-y-line')
             .data([0])
@@ -912,7 +910,7 @@ export default function module() {
      * @private
      */
     function drawHorizontalExtendedLine() {
-        baseLine = svg
+        baseLineX = svg
             .select('.grid-lines-group')
             .selectAll('line.extended-x-line')
             .data([0])
@@ -934,6 +932,7 @@ export default function module() {
         const horizontalGrid = svg
             .select('.horizontal')
             .selectAll('.grid-line');
+
         horizontalGrid.attr('class', (d) =>
             d === 0
                 ? 'grid-line horizontal-grid-line--highlighted'
@@ -965,8 +964,7 @@ export default function module() {
         };
 
         //draw a horizontal line to extend x-axis till the edges
-        verticalLines = svg
-            .select('.custom-lines-group')
+        svg.select('.custom-lines-group')
             .selectAll('line.custom-line')
             .data(yValues)
             .enter()
