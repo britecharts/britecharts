@@ -1,6 +1,6 @@
 # Britecharts
 
-> Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][d3] that provides easy composition of charts and components to create amazing visualizations.
+> Britecharts makes it easier to build stunning [D3.js][d3]-powered interactive charts with little code.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![test workflow](https://github.com/britecharts/britecharts/actions/workflows/tests.yml/badge.svg)](https://github.com/britecharts/britecharts/actions/workflows/tests.yml) [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/britecharts/britecharts)](https://github.com/britecharts/britecharts/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc) [![](https://data.jsdelivr.com/v1/package/npm/britecharts/badge)](https://www.jsdelivr.com/package/npm/britecharts)
 
@@ -11,7 +11,7 @@
 | [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchartdemo] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachartdemo] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchartdemo] |
 | [![Sparkline Chart][sparklinechartimg]][sparklinechartdemo] | [![Legend Chart][legendchartimg]][donutchartdemo] | [![Brush Chart][brushchartimg]][brushchartdemo] |
 
-<h4 align="center">
+<div align="center">
   <a href="https://britecharts.github.io/britecharts/getting-started.html">Quickstart</a>
   <span> · </span>
   <a href="https://britecharts.github.io/britecharts/tutorials-index.html">Tutorials</a>
@@ -27,13 +27,17 @@
   Support: <a href="https://twitter.com/britecharts">Twitter</a>, <a href="https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">Issues</a>
   <span> & </span>
   <a href="https://d3js.slack.com/messages/tools-britecharts/">Slack</a>
-</h2>
+</div>
+<br/>
+
+Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][d3] that provides easy composition of charts and components to create amazing data visualizations.
 
 ## Key Features
 
--   🛠 Reusability
--   🏗 Composability
--   🌈 Great design
+- 🛠 **Reusable** - Configure your charts to create different looks and behaviors.
+- 🏗 **Composable** - Mix and match components to create insightful experiences.
+- 🌈 **Great design** - Clean and vivid looks to amaze your users.
+- ⚙️ **Simple** - The codebase is regular D3.js code you can fork and modify.
 
 Britecharts [components][kitchen-sink] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
 
@@ -58,7 +62,7 @@ The typical use of Britecharts involves creating a chart using its simple API, t
 
 ## API 
 
-All the components expose some **common API methods** like width, height, and margin. Additionally, each chart or component can expose specific methods you can find in the documentation:
+All the components expose **common API methods** like width, height, and margin. Additionally, each component exposes specific methods you can find in the documentation:
 
 -   [API][line-docs], [Demo][linechartdemo] Line Chart
 -   [API][bar-docs], [Demo][barchartdemo] Bar Chart
@@ -77,7 +81,7 @@ All the components expose some **common API methods** like width, height, and ma
 
 ## Installation
 
-Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][mike-chart]. To use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the `src` pointing to the file. You would also need to load the [d3-selection][d3-selection] submodule to select the chart container.
+Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][mike-chart]. To use any of the Britecharts modules, you will need to require the chart in your JS file using CommonJS modules, ES modules, or adding a script tag with the `src` pointing to the file. You would also need to load the [d3-selection][d3-selection] submodule to select the chart container.
 
 ```bash
    npm install --save britecharts d3-selection
