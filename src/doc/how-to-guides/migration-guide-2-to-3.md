@@ -77,9 +77,58 @@ barChart
 
 In contrast, for time series charts (lineChart, stackedAreaChart), we use 'locale' to pass the language tag for the tooltip to localize the *date*. It uses Intl.DateTimeFormat, for compatibility and support.
 
-1. Use 'xAxisCustomFormat' and 'xAxisFormat' on time series charts
-1. Use 'numberFormat' in bar charts
-1. Stop using 'aspectRatio' to set charts' dimensions
+4. Swap the use 'xAxisCustomFormat' and 'xAxisFormat' on brush charts
+
+Whenever you were using 'xAxisCustomFormat' in a brush chart, now you should use 'xAxisFormat', and viceversa.
+
+```js
+// Version 2
+brush
+    .xAxisCustomFormat('custom')
+    .xAxisFormat('%A');
+
+// Version 3
+brush
+    .xAxisCustomFormat('%A')
+    .xAxisFormat('custom');
+```
+
+This made this configuration consistent with the line and stacked area charts.
+
+5. Use 'numberFormat' in bar charts
+
+Search for uses of 'valueLabelFormat' and change them to 'numberFormat':
+
+```js
+// Version 2
+groupedBarChart
+    .valueLabelFormat(',s')
+    // other configurations
+
+// Version 3
+groupedBarChart
+    .numberFormat(',s')
+    // other configurations
+
+```
+
+The 'numberFormat' configuration is available for the bar, bullet, donut, grouped bar, stacked-bar, legend, line, mini-tooltip, and tooltip components.
+
+6. Stop using 'aspectRatio' to set charts' dimensions
+
+We eliminated the 'aspectRatio' accessor from our charts. Instead, use the 'width' and 'height' attributes to set a explicit size and leave the chart to respond to container width changes.
+
+```js
+// Version 2
+lineChart
+    .width(100)
+    .aspectRatio('0.5');
+
+// Version 3
+lineChart
+    .width(100)
+    .height(50)
+```
 
 ### New features
 1. Start using TypeScript with Britecharts
