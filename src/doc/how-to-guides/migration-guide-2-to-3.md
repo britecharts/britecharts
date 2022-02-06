@@ -1,16 +1,82 @@
-# Migration Guide from version 2.x to version 3
+# Migration Guide from version 2 to version 3
 In February 2022, we released version 3.0 of Britecharts. The new version fixes many bugs, improves loading and animation performance, and adds a lot of new small features. We also introduced many breaking changes aimed to make more consistent the component's APIs and data shapes.
 
 We recommend to migrate as soon as possible to get all these benefits. For that, we have prepared the following migration guide.
 
 ## Migration Steps
-Most of the migration steps involve changing accessor names, but there are also changes on how we load the modules. Follow these steps to get your application updated in no time:
+Most of the migration tasks involve changing accessor names, but there are also changes on how we load the modules. Follow these steps to get your application updated in no time:
 
 ### Breaking changes
 1. Update the way you load the charts
-1. Update how you show loading states
-1. Use 'valueLocale' to formatting values
-1. Use 'locale' to set the localization options
+
+```js
+// Version 2
+// For ES modules
+import bar from 'britecharts/dist/umd/bar.min';
+
+// For AMD and CommonJS modules
+const LineChart = require('britecharts/umd/line.min');
+
+// Version 3
+// As ES modules
+import { bar } from 'britecharts';
+import bar from 'britecharts/dist/umd/bar.min';
+
+// As CommonJS modules
+const { bar } = require('britecharts');
+const bar = require('britecharts/dist/umd/bar.min');
+
+```
+You can also check more ways of loading (CommonJS and CDN) in our [Britecharts Test Project](https://github.com/britecharts/britecharts-test-project#usage)
+
+2. Change how you show loading states
+
+Search for any use of the 'loadingState' accessor for getting the loading state, and simply render the chart with 'isLoading' as true and a valid dataset (it can be empty). 
+
+```js
+// Version 2
+barContainer.html(barChart.loadingState())
+
+// Version 3
+barChart
+    .width(containerWidth)
+    .height(300)
+    .isAnimated(true)
+    .isLoading(true);
+    
+barContainer.datum(dataset).call(barChart);
+```
+
+3. Use 'valueLocale' to format values
+
+You must use the 'valueLocale' accessor to set the locale object (see [the d3-format docs](https://github.com/d3/d3-format#formatLocale)) of the component´s rendered values (axes ticks, numerical values, etc.).
+
+Before, this used to be ´locale´ in the bar, grouped bar, scatted bar, and scatter plot.
+
+```js
+// Version 2
+barChart
+    .locale({
+        thousands: '.', 
+        grouping: [3], 
+        currency: ["$", ""], 
+        decimal: "."
+    })
+    //...other configurations
+
+// Version 3
+barChart
+    .valueLocale({
+        thousands: '.', 
+        grouping: [3], 
+        currency: ["$", ""], 
+        decimal: "."
+    })
+    //...other configurations
+```
+
+In contrast, for time series charts (lineChart, stackedAreaChart), we use 'locale' to pass the language tag for the tooltip to localize the *date*. It uses Intl.DateTimeFormat, for compatibility and support.
+
 1. Use 'xAxisCustomFormat' and 'xAxisFormat' on time series charts
 1. Use 'numberFormat' in bar charts
 1. Stop using 'aspectRatio' to set charts' dimensions
