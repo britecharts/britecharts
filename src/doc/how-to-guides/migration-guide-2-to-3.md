@@ -1,13 +1,15 @@
 # Migration Guide from version 2 to version 3
-In February 2022, we released version 3.0 of Britecharts. The new version fixes many bugs, improves loading and animation performance, and adds a lot of new small features. We also introduced many breaking changes aimed to make more consistent the component's APIs and data shapes.
+In February 2022, we released version 3.0 of Britecharts. The new version fixes many bugs, improves loading and animation performance, and adds minor features. We also introduced many breaking changes to make the component's APIs and data shapes more consistent.
 
-We recommend to migrate as soon as possible to get all these benefits. For that, we have prepared the following migration guide.
+We recommend migrating as soon as possible to get all these benefits. For that, we have prepared the following migration guide.
 
 ## Migration Steps
-Most of the migration tasks involve changing accessor names, but there are also changes on how we load the modules. Follow these steps to get your application updated in no time:
+Most of the migration tasks involve changing accessor names, but there are also changes in how we load the modules. Follow these steps to get your application updated in no time:
 
 ### Breaking changes
 1. Update the way you load the charts
+
+We moved Britecharts internally from the outdated AMD modules into ES Modules, which changed how you will import the components. See below some examples:
 
 ```js
 // Version 2
@@ -31,7 +33,7 @@ You can also check more ways of loading (CommonJS and CDN) in our [Britecharts T
 
 2. Change how you show loading states
 
-Search for any use of the 'loadingState' accessor for getting the loading state, and simply render the chart with 'isLoading' as true and a valid dataset (it can be empty). 
+Search for any use of the 'loadingState' accessor for getting the loading state, and render the chart with 'isLoading' as true and a valid dataset (it can be empty). 
 
 ```js
 // Version 2
@@ -131,27 +133,37 @@ lineChart
 ```
 
 ### New features
-1. Start using TypeScript with Britecharts
-1. Stop re-rendering charts when the viewport width changes
-1. Use 'colorMap' to select the colors you want for each data category
+1. Start using TypeScript with Britecharts.
+
+You can now use Britecharts in your TypeScript projects! The Britecharts package includes a "types" entry that points to our type declaration files. We plan to re-write Britecharts in TypeScript, but type definition files will do for now!
+
+1. Stop re-rendering charts when the viewport width changes.
+
+In version 2 and our demos, we recommended listening to viewport width changes and re-render charts with the updated container width. This wasn't necessary, as SVGs provide a viewBox property that allows us to make our charts fully responsive out of the box. That's how Britecharts works starting version 3, so say bye-bye to those window 'resize' listeners!
+
+1. Use 'colorMap' to select the colors you want for each data category.
+
+One common request of our users was to specify the colors for each category on the different Britecharts components. Now you can! Use the ["colorMap"](https://britecharts.github.io/britecharts/module-Bar.html#.colorMap__anchor) property to specify a hash map between category names and HEX colors.
+
 1. Specify the duration of animations with 'animationDuration'
 
+Most Britecharts' components have animations that you can activate with the 'isAnimated' configuration. Since version 3, you can also set the duration of those animations in milliseconds with the 'animationDuration' accessor.
 
 ## Summary of Changes
-We changed many things in the third version of Britecharts, here are some summaries:
+We changed many things in the third version of Britecharts; here are some summaries:
 
 ### Breaking Changes
-* Adds ES5 version to bundle
-* Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts
-* Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar
-* Fixes the custom format feature on line and stacked area chart, renaming 'xAxisFormat' into 'xAxisCustomFormat' and  'xAxisCustomFormat' into 'xAxisFormat'. Removes 'axisTimeCombinations'
-* Renames value formatting functions into 'numberFormat' in grouped bar, stacked bar
-* Removed the 'aspectRatio' configuration chart from line, scatter plot, stacked area, bullet, grouped bar, stacked bar
-* Changed exportChart to return a promise
+* Adds ES5 version to bundle.
+* Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.
+* Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar.
+* Fixes the custom format feature in the line and stacked area chart, renaming 'xAxisFormat' into 'xAxisCustomFormat' and  'xAxisCustomFormat' into 'xAxisFormat'. Removes 'axisTimeCombinations'.
+* Renames value formatting functions into 'numberFormat' in the grouped bar and stacked bar charts.
+* Removed the 'aspectRatio' configuration chart from the line, scatter plot, stacked area, bullet, grouped bar, stacked bar.
+* Changed 'exportChart' to return a promise.
 
 ### New Feature Changes
 * Added TypeScript types via declaration files
-* Charts are responsive by default using the viewBox property
+* Charts are responsive by default using the viewBox property.
 * Adds colorMap to all charts
 * Adds 'animationDuration' option to all animated charts
 * Added grid helper on charts
@@ -159,14 +171,15 @@ We changed many things in the third version of Britecharts, here are some summar
 * Added hasMinimumValueScale parameter to autoscale Line Chart y-axis
 * Rework of Line Chart animation for better performance
 * Allows brush to have missing data and to be animated
-* Allows for fixed window in brush chart with 'isLocked' option
+* Allows for a fixed window in brush chart with 'isLocked' option
 * Added Donut's hasCenterLegend to hide/show center legend
 * Added Stacked Area loading state
-* Added tooltip on heatmap
+* Added tooltip on the heatmap
 
 ### Bug Fixes
 * Fixes all critical security warnings due to dependencies
-* Step loading and stracked and grouped bar charts tooltip issue mitigation
+* Fixes step chart loading
+* Mitigates the stacked and grouped bar charts tooltip issues
 * Improved Grouped bar chart animation
 * Line chart animation fix on multiline
 * Ordering of the horizontal bar chart elements
