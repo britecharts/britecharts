@@ -120,7 +120,7 @@
     "load-grunt-tasks": "5.0.0",
     "moment": "2.24.0",
     "node-gyp": "4.0.0",
-    "node-sass": "4.13.1",
+    "node-sass": "7.0.0",
     "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
     "prismjs": "1.21.0",
     "pubsub-js": "1.7.0",
