@@ -26,6 +26,7 @@
   "scripts": {
     "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
+    "build:styles": "webpack --env=prodStyles",
     "build:charts": "webpack --env=prodChartsConfig",
     "build:cdn:bundle": "webpack --env=CDNBundleConfig",
     "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
@@ -337,6 +338,8 @@
     "es-check": "^6.0.0",
     "eslint": "^7.13.0",
     "eslint-loader": "^2.1.2",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.2.0",
     "grunt": "1.0.4",
     "grunt-babel": "6.0.0",
     "grunt-contrib-cssmin": "2.2.1",
@@ -392,6 +395,7 @@
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "3.7.2",
+    "webpack-fix-style-only-entries": "^0.6.1",
     "webpack-merge": "4.2.1",
     "yargs": "8.0.2"
   },

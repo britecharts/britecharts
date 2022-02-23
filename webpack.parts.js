@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin;
 const constants = require('./webpack.constants');
+const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 
 exports.babelLoader = () => ({
     module: {
@@ -53,6 +54,32 @@ exports.sassLoader = () => ({
             },
         ],
     },
+});
+
+exports.allStyles = () => ({
+    module: {
+        rules: [
+            {
+                test: /\.scss$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: { name: 'britecharts.css' },
+                    },
+                    {
+                        loader: 'extract-loader',
+                    },
+                    {
+                        loader: 'css-loader?-url',
+                    },
+                    {
+                        loader: 'sass-loader',
+                    },
+                ],
+            },
+        ],
+    },
+    plugins: [new FixStyleOnlyEntriesPlugin({ extensions: ['scss'] })],
 });
 
 exports.noParseD3Vendor = () => ({

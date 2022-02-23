@@ -163,6 +163,18 @@ const prodChartsConfig = merge([
     parts.externals(),
 ]);
 
+const prodStylesConfig = merge([
+    {
+        mode: 'production',
+        devtool: false,
+        entry: constants.PATHS.styles,
+        output: {
+            path: path.resolve(__dirname, './dist/styles/bundle'),
+        },
+    },
+    parts.allStyles(),
+]);
+
 module.exports = (env) => {
     // eslint-disable-next-line no-console
     console.log('%%%%%%%% env', env);
@@ -177,6 +189,10 @@ module.exports = (env) => {
 
     if (env === 'sandbox') {
         return sandboxConfig;
+    }
+
+    if (env === 'prodStyles') {
+        return prodStylesConfig;
     }
 
     if (env === 'production') {
