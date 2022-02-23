@@ -9,7 +9,6 @@ import { scaleOrdinal, scaleTime, scaleLinear, scaleLog } from 'd3-scale';
 import { line } from 'd3-shape';
 import { select, mouse, touch } from 'd3-selection';
 import 'd3-transition';
-import { path } from 'd3-path';
 
 import { exportChart } from '../helpers/export';
 import colorHelper from '../helpers/color';

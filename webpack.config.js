@@ -81,6 +81,46 @@ const sandboxConfig = merge([
     parts.devServer(8002),
 ]);
 
+const CDNBundleConfig = merge([
+    {
+        mode: 'production',
+        devtool: 'source-map',
+        entry: {
+            britecharts: constants.PATHS.bundleIndex,
+        },
+        output: {
+            path: path.resolve(__dirname, './dist/cdn/bundle'),
+            filename: 'britecharts.cdn.min.js',
+            library: ['britecharts'],
+            libraryExport: 'default',
+            libraryTarget: 'umd',
+            globalObject: 'this',
+        },
+    },
+    parts.babelLoader(),
+    parts.aliasD3ToVendorPath(),
+    // parts.bundleTreeChart(8899),
+]);
+
+const CDNChartsBundleConfig = merge([
+    {
+        mode: 'production',
+        devtool: 'source-map',
+        entry: constants.CHARTS,
+        output: {
+            path: path.resolve(__dirname, './dist/cdn/charts'),
+            filename: '[name].cdn.min.js',
+            library: ['britecharts', '[name]'],
+            libraryExport: 'default',
+            libraryTarget: 'umd',
+            globalObject: 'this',
+        },
+    },
+    parts.babelLoader(),
+    parts.aliasD3ToVendorPath(),
+    // parts.bundleTreeChart(8899),
+]);
+
 const prodBundleConfig = merge([
     {
         mode: 'production',
@@ -89,8 +129,8 @@ const prodBundleConfig = merge([
             britecharts: constants.PATHS.bundleIndex,
         },
         output: {
-            path: path.resolve(__dirname, 'dist/bundled'),
-            filename: 'britecharts.min.js',
+            path: path.resolve(__dirname, './dist/umd/bundle'),
+            filename: 'britecharts.bundled.min.js',
             library: ['britecharts'],
             libraryExport: 'default',
             libraryTarget: 'umd',
@@ -109,7 +149,7 @@ const prodChartsConfig = merge([
         devtool: 'source-map',
         entry: constants.CHARTS,
         output: {
-            path: path.resolve(__dirname, './dist/umd'),
+            path: path.resolve(__dirname, './dist/umd/charts'),
             filename: '[name].min.js',
             library: ['britecharts', '[name]'],
             libraryExport: 'default',
@@ -140,6 +180,24 @@ module.exports = (env) => {
     }
 
     if (env === 'production') {
-        return [prodBundleConfig, prodChartsConfig];
+        return [
+            prodBundleConfig,
+            prodChartsConfig,
+            CDNBundleConfig,
+            CDNChartsBundleConfig,
+        ];
+    }
+
+    if (env === 'prodBundleConfig') {
+        return prodBundleConfig;
+    }
+    if (env === 'prodChartsConfig') {
+        return prodChartsConfig;
+    }
+    if (env === 'CDNBundleConfig') {
+        return CDNBundleConfig;
+    }
+    if (env === 'CDNChartsBundleConfig') {
+        return CDNChartsBundleConfig;
     }
 };

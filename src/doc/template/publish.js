@@ -42,6 +42,7 @@ var template = require('jsdoc/template'),
  howtoIndexUrl = helper.getUniqueFilename('how-to-index'),
  contributorHowToUrl = helper.getUniqueFilename('contributor-how-to-guides'),
  userHowToUrl = helper.getUniqueFilename('user-how-to-guides'),
+ migation2to3Url = helper.getUniqueFilename('migration-guide-2-to-3'),
 
 // Topics
  topicsIndexUrl = helper.getUniqueFilename('topics-index'),
@@ -173,6 +174,7 @@ function hashToLink(doclet, hash) {
     var url = helper.createLink(doclet);
 
     url = url.replace(/(#.+|$)/, hash);
+    
     return '<a href="' + url + '">' + hash + '</a>';
 }
 
@@ -329,6 +331,7 @@ function searchData(html) {
     });
 
     stripped = stripped.replace(/\s+/g, ' ');
+
     return stripped;
 }
 
@@ -1044,9 +1047,16 @@ for (var longname in helper.longnameToUrl) {
                 './src/doc/how-to-guides/user-how-to-guides.md'
         )
         .toString(),
+     migration2to3Content = fs
+        .readFileSync(
+            `${process.cwd()}/` +
+                './src/doc/how-to-guides/migration-guide-2-to-3.md'
+        )
+        .toString(),
      howToIndexhtml = parser(howToIndexContent),
      contributorHowTohtml = parser(contributorHowToContent),
-     userHowTohtml = parser(userHowToContent);
+     userHowTohtml = parser(userHowToContent),
+     migration2to3html = parser(migration2to3Content);
 
     generate(
         'how-to-index',
@@ -1083,6 +1093,18 @@ for (var longname in helper.longnameToUrl) {
             },
         ],
         userHowToUrl
+    );
+    generate(
+        'migration-guide-2-to-3',
+        'Migration Guide from v2 to v3',
+        [
+            {
+                kind: 'mainpage',
+                class: 'tutorial',
+                readme: migration2to3html,
+            },
+        ],
+        migation2to3Url
     );
 
     // Tutorials

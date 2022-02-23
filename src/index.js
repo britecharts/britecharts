@@ -35,3 +35,25 @@ export {
     bullet,
     colors,
 };
+
+const britecharts = {
+    bar,
+    donut,
+    legend,
+    line,
+    loadingStates,
+    tooltip,
+    miniTooltip,
+    sparkline,
+    stackedArea,
+    scatterPlot,
+    groupedBar,
+    stackedBar,
+    heatmap,
+    step,
+    brush,
+    bullet,
+    colors,
+};
+
+export default britecharts;

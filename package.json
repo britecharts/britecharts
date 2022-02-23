@@ -2,7 +2,7 @@
   "name": "britecharts",
   "version": "3.0.0-alpha-6.1.4",
   "description": "D3.js based Modular Charting Library by Eventbrite",
-  "main": "dist/bundled/britecharts.min.js",
+  "main": "dist/umd/bundle/britecharts.bundled.min.js",
   "module": "src/index.js",
   "types": "src/typings/index.d.ts",
   "contributors": [
@@ -25,6 +25,10 @@
   ],
   "scripts": {
     "build": "webpack --env=production",
+    "build:bundle": "webpack --env=prodBundleConfig",
+    "build:charts": "webpack --env=prodChartsConfig",
+    "build:cdn:bundle": "webpack --env=CDNBundleConfig",
+    "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
     "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
     "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
     "clean": "yarn cache clean && rimraf node_modules",
@@ -294,7 +298,8 @@
     "d3-time-format": "^3.0.0",
     "d3-transition": "^1.3.2",
     "d3-voronoi": "^1.1.4",
-    "d3-zoom": "^1.8.3"
+    "d3-zoom": "^1.8.3",
+    "base-64": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
