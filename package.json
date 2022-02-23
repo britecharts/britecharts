@@ -25,6 +25,10 @@
   ],
   "scripts": {
     "build": "webpack --env=production",
+    "build:bundle": "webpack --env=prodBundleConfig",
+    "build:charts": "webpack --env=prodChartsConfig",
+    "build:cdn:bundle": "webpack --env=CDNBundleConfig",
+    "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
     "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
     "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
     "clean": "yarn cache clean && rimraf node_modules",

@@ -187,4 +187,17 @@ module.exports = (env) => {
             CDNChartsBundleConfig,
         ];
     }
+
+    if (env === 'prodBundleConfig') {
+        return prodBundleConfig;
+    }
+    if (env === 'prodChartsConfig') {
+        return prodChartsConfig;
+    }
+    if (env === 'CDNBundleConfig') {
+        return CDNBundleConfig;
+    }
+    if (env === 'CDNChartsBundleConfig') {
+        return CDNChartsBundleConfig;
+    }
 };
