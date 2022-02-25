@@ -163,6 +163,18 @@ const prodChartsConfig = merge([
     parts.externals(),
 ]);
 
+const devStylesConfig = merge([
+    {
+        mode: 'development',
+        devtool: 'cheap-eval-source-map',
+        entry: constants.PATHS.styles,
+        output: {
+            path: path.resolve(__dirname, './demos/styles/'),
+        },
+    },
+    parts.allStyles(),
+]);
+
 const prodStylesConfig = merge([
     {
         mode: 'production',
@@ -218,7 +230,7 @@ module.exports = (env) => {
     console.log('%%%%%%%% env', env);
 
     if (env === 'demos') {
-        return demosConfig;
+        return [demosConfig, devStylesConfig];
     }
 
     if (env === 'test') {
@@ -255,7 +267,9 @@ module.exports = (env) => {
             CDNBundleConfig,
             CDNChartsBundleConfig,
             prodStylesConfig,
+            prodStylesConfigMin,
             prodChartsStylesConfig,
+            prodChartsStylesConfigMin,
         ];
     }
 };
