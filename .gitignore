@@ -58,3 +58,6 @@ docs
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# remove coverage dir
+.coverage

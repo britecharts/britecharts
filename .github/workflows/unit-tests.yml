@@ -1,0 +1,30 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  getNodeVersion:
+    uses: gagoar/ts-node-template/.github/workflows/get_node_version.yml@main
+
+  unit-test:
+    runs-on: ubuntu-latest
+    needs: getNodeVersion
+    steps:
+      - uses: actions/checkout@main
+      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
+      - name: Install dependencies
+        run: npm install
+      - name: Testing Library 🕵️‍♀️
+        run: yarn test:ci
+      - name: Send coverage to codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests

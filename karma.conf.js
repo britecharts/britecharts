@@ -34,7 +34,10 @@ module.exports = function (config) {
         // https://github.com/karma-runner/karma-coverage
         coverageReporter: {
             type: 'text',
-            reporters: [{ type: 'text' }],
+            reporters: [
+                { type: 'lcov', subdir: '.coverage' },
+                { type: 'text' },
+            ],
             check: {
                 global: {
                     statements: 75,
