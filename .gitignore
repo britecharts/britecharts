@@ -49,3 +49,12 @@ docs
 
 # Github actions sandbox
 .actrc
+
+# Ignoring yarn/cache files
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
