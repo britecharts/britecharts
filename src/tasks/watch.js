@@ -7,7 +7,7 @@ module.exports = function (grunt) {
             tasks: ['jsdoc:dist'],
         },
         styles: {
-            files: ['demos/css/**'],
+            files: ['demos/styles/**'],
             tasks: ['sync:fonts'],
         },
         fonts: {

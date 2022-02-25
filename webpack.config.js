@@ -163,12 +163,74 @@ const prodChartsConfig = merge([
     parts.externals(),
 ]);
 
+const devStylesConfig = merge([
+    {
+        mode: 'development',
+        devtool: 'cheap-eval-source-map',
+        entry: constants.PATHS.styles,
+        output: {
+            path: path.resolve(__dirname, './demos/styles/'),
+        },
+    },
+    parts.allStyles(),
+]);
+
+const prodStylesConfig = merge([
+    {
+        mode: 'production',
+        devtool: false,
+        entry: constants.PATHS.styles,
+        output: {
+            path: path.resolve(__dirname, './dist/styles/bundle'),
+        },
+    },
+    parts.allStyles(),
+]);
+
+const prodStylesConfigMin = merge([
+    {
+        mode: 'production',
+        devtool: false,
+        entry: constants.PATHS.styles,
+        output: {
+            path: path.resolve(__dirname, './dist/styles/bundle'),
+        },
+    },
+    parts.allStyles(true),
+    parts.minifyStyles(),
+]);
+
+const prodChartsStylesConfig = merge([
+    {
+        mode: 'production',
+        devtool: false,
+        entry: constants.CHART_STYLES,
+        output: {
+            path: path.resolve(__dirname, './dist/styles/charts'),
+        },
+    },
+    parts.chartStyles(),
+]);
+
+const prodChartsStylesConfigMin = merge([
+    {
+        mode: 'production',
+        devtool: false,
+        entry: constants.CHART_STYLES,
+        output: {
+            path: path.resolve(__dirname, './dist/styles/charts'),
+        },
+    },
+    parts.chartStyles(true),
+    parts.minifyStyles(),
+]);
+
 module.exports = (env) => {
     // eslint-disable-next-line no-console
     console.log('%%%%%%%% env', env);
 
     if (env === 'demos') {
-        return demosConfig;
+        return [demosConfig, devStylesConfig];
     }
 
     if (env === 'test') {
@@ -179,15 +241,12 @@ module.exports = (env) => {
         return sandboxConfig;
     }
 
-    if (env === 'production') {
-        return [
-            prodBundleConfig,
-            prodChartsConfig,
-            CDNBundleConfig,
-            CDNChartsBundleConfig,
-        ];
+    if (env === 'prodStyles') {
+        return [prodStylesConfig, prodStylesConfigMin];
     }
-
+    if (env === 'prodChartStyles') {
+        return [prodChartsStylesConfig, prodChartsStylesConfigMin];
+    }
     if (env === 'prodBundleConfig') {
         return prodBundleConfig;
     }
@@ -199,5 +258,18 @@ module.exports = (env) => {
     }
     if (env === 'CDNChartsBundleConfig') {
         return CDNChartsBundleConfig;
+    }
+
+    if (env === 'production') {
+        return [
+            prodBundleConfig,
+            prodChartsConfig,
+            CDNBundleConfig,
+            CDNChartsBundleConfig,
+            prodStylesConfig,
+            prodStylesConfigMin,
+            prodChartsStylesConfig,
+            prodChartsStylesConfigMin,
+        ];
     }
 };

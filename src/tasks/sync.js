@@ -25,7 +25,7 @@ module.exports = function (grunt) {
         styles: {
             files: [
                 {
-                    cwd: 'demos/css/',
+                    cwd: 'demos/styles/',
                     src: ['**'],
                     dest: 'docs/styles/',
                 },

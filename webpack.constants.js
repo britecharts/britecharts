@@ -21,6 +21,20 @@ exports.CHARTS = {
     colors: ['./src/charts/helpers/color.js'],
 };
 
+exports.CHART_STYLES = {
+    bar: './src/styles/charts/bar.scss',
+    brush: './src/styles/charts/brush.scss',
+    bullet: './src/styles/charts/bullet.scss',
+    groupedBar: './src/styles/charts/grouped-bar.scss',
+    line: './src/styles/charts/line.scss',
+    scatterPlot: './src/styles/charts/scatter-plot.scss',
+    sparkline: './src/styles/charts/sparkline.scss',
+    stackedArea: './src/styles/charts/stacked-area.scss',
+    stackedBar: './src/styles/charts/stacked-bar.scss',
+    step: './src/styles/charts/step.scss',
+    common: './src/styles/common.scss',
+};
+
 exports.DEMOS = {
     'demo-bar': './demos/src/demo-bar.js',
     'demo-bullet': './demos/src/demo-bullet.js',
@@ -43,4 +57,5 @@ exports.PATHS = {
     vendor: path.resolve('./node_modules'),
     bundleIndex: path.resolve('./src/index.js'),
     charts: path.resolve('./src/charts'),
+    styles: path.resolve('./src/styles/britecharts.scss'),
 };
