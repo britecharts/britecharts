@@ -29,13 +29,13 @@ import bar from 'britecharts/dist/umd/bar.min';
 
 When loading the styles, you have two options, loading the whole stylesheet of the library:
 ```html
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/britecharts.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/bundle/britecharts.min.css">
 ```
 
 Or loading only the styles for the current chart plus the common Britecharts styles:
 ```html
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/common/common.min.css">
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/charts/bar.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/charts/common.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/charts/bar.min.css">
 ```
 
 ## Download from the CDN

@@ -84,12 +84,12 @@ Here is the whole code:
 
 It won't look perfect though, you will need to load a small CSS file in order to see it styled. You can load the whole bundle:
 ```html
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/britecharts.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/bundle/britecharts.min.css">
 ```
 or just load the styles for the current chart plus the common Britecharts styles:
 ```html
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/common/common.css">
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/charts/line.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/charts/common.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/charts/line.css">
 ```
 
 ### Making it Responsive
