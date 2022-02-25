@@ -21,6 +21,6 @@ jobs:
           node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
       - run: yarn
       - name: Linting Styles 🌈
-      - run: yarn lint:styles
+        run: yarn lint:styles
       - name: Linting Code 🗃
         run: yarn lint:js
