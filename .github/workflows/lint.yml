@@ -1,0 +1,33 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+
+jobs:
+  getNodeVersion:
+    uses: calyptia/.github/.github/workflows/get_node_version.yml@main
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: getNodeVersion
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
+      - name: Use Yarn cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '.yarn/cache'
+          key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn
+      - name: Linting Styles 🌈
+        run: yarn lint:styles
+      - name: Linting Code 🗃
+        run: yarn lint:js
