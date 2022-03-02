@@ -1,3 +1,10 @@
+3.0.0-alpha-6.1.5
+-----------------
+* feat: brush extended lines and extended line color fix
+* docs: Readme review, added migration guide
+* build: Upgrade yarn to v3 and node to version 16
+* build: removes grunt-sass and reuses webpack for styling build
+
 3.0.0-alpha-6.1.4
 -----------------
 * feat: extended line on brush chart

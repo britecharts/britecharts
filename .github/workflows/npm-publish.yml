@@ -8,45 +8,40 @@ on:
     types: [created]
 
 jobs:
+  getNodeVersion:
+    uses: calyptia/.github/.github/workflows/get_node_version.yml@main
+
   build:
     runs-on: ubuntu-latest
+    needs: getNodeVersion
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-
-      - name: Install and Test
-        uses: actions/setup-node@v1
+      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
+        uses: actions/setup-node@v3
         with:
-          node-version: 12.2.0
-      - uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: install
-#       - uses: borales/actions-yarn@v2.0.2
-#         with:
-#           cmd: run test:travis
-
+          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
+      - name: Install
+        run: yarn
       - name: Build 🔧
-        uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: run build
-      - uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: run docs
+        run: yarn build
+      - name: Docs 📚
+        run: yarn docs
 
   publish-npm:
-    needs: build
+    needs: [getNodeVersion, build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
+        uses: actions/setup-node@v3
         with:
-          node-version: 12.2.0
+          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
           registry-url: https://registry.npmjs.org/
-      - uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: install
+      - run: yarn
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -61,11 +56,3 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
           FOLDER: docs
-
-
-
-
-
-
-
-
