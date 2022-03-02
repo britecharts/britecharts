@@ -20,20 +20,15 @@ jobs:
         with:
           persist-credentials: false
       - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
-      - name: Install and Test
-        uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: install
+      - name: Install
+        run: yarn
       - name: Build 🔧
-        uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: run build
-      - uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: run docs
+        run: yarn build
+      - name: Docs 📚
+        run: yarn docs
 
   publish-npm:
     needs: [getNodeVersion, build]
@@ -42,13 +37,11 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
       - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
           registry-url: https://registry.npmjs.org/
-      - uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: install
+      - run: yarn
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -63,11 +56,3 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
           FOLDER: docs
-
-
-
-
-
-
-
-
