@@ -87,12 +87,18 @@
     "extends": [
       "@commitlint/config-conventional"
     ],
-    "type-enum": [
-      "docs",
-      "fix",
-      "feat",
-      "chore"
-    ]
+    "rules": {
+      "type-enum": [
+        2,
+        "always",
+        [
+          "docs",
+          "fix",
+          "feat",
+          "chore"
+        ]
+      ]
+    }
   },
   "babel": {
     "presets": [
