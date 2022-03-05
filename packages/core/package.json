@@ -18,13 +18,12 @@
   },
   "scripts": {
     "storybook:build": "build-storybook -c .storybook -o build",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook -p 1111"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^6.3.9",
     "@storybook/addon-actions": "^6.3.9",
     "@storybook/addon-console": "^1.2.3",
-    "@storybook/addon-postcss": "^2.0.0",
     "@storybook/addon-viewport": "^6.3.9",
     "@storybook/html": "^6.3.9"
   },

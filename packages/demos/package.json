@@ -1,4 +1,11 @@
 {
   "name": "@britecharts/demos",
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "devDependencies": {
+    "@storybook/html": "^6.3.9"
+  },
+  "scripts": {
+    "storybook:build": "build-storybook -c .storybook -o build",
+    "storybook": "start-storybook -p 9999"
+  }
 }
