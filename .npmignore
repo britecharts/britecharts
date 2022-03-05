@@ -62,11 +62,13 @@ node_modules
 # OSX
 .DS_Store
 
-# Demos
-demos
+# Core package
+packages/core/sandbox
+packages/core/docs
+packages/core/node_modules
 
-# Docs
-docs
-
-# Sandbox
-sandbox
+# React Package
+# Test helpers
+packages/react/__mocks__
+packages/react/docs
+packages/react/**/*.test.js

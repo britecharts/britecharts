@@ -36,15 +36,10 @@ node_modules
 # OSX
 .DS_Store
 
-# Demos
-demos/build
-
 # Builds
-sandbox/build
-dist
-docs
 *.tgz
 
+# Builds
 .eslintcache
 
 # Github actions sandbox
@@ -61,3 +56,19 @@ docs
 
 # remove coverage dir
 .coverage
+
+dist
+docs
+demos
+
+# Core package
+packages/core/sandbox/build
+packages/core/demos/build
+packages/core/dist
+packages/core/docs
+packages/core/node_modules
+
+# React package
+packages/react/lib
+packages/react/dist
+packages/react/docs

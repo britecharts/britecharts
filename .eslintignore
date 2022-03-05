@@ -1,0 +1,3 @@
+packages/react/src/templates/*.js
+packages/react/src/scripts/plopfile.js
+packages/react/src/scripts

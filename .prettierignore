@@ -1,2 +1,8 @@
-sandbox/build/
-src/doc/template/
+# Core package
+packages/core/src/doc/template/
+
+# React package
+packages/react/dist
+packages/react/lib
+packages/react/node_modules
+packages/react/src/templates
