@@ -1,0 +1,25 @@
+@import '../helpers/_variables';
+
+$line-width: 1;
+$dot-size: 0;
+
+.sparkline {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: $line-width;
+
+    .line {
+        stroke-width: 2;
+    }
+
+    .sparkline-circle {
+        display: none;
+        fill: $brand-color-red;
+        stroke-width: $dot-size;
+    }
+
+    .sparkline-area {
+        stroke: none;
+    }
+}

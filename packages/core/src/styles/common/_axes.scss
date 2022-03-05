@@ -1,0 +1,25 @@
+@import '../helpers/variables';
+
+$text-padding: 12px;
+$tick-size: 1;
+
+.tick {
+    line {
+        fill: none;
+        shape-rendering: crispEdges;
+        stroke: $grey-500;
+        stroke-width: $tick-size;
+    }
+
+    text {
+        fill: $grey-600;
+        font-size: $text-size-small;
+        padding: $text-padding;
+    }
+}
+
+.y-axis-label,
+.x-axis-label {
+    fill: $grey-500;
+    font-size: $text-size-medium;
+}

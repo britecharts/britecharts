@@ -1,0 +1,27 @@
+@import '../helpers/_variables';
+
+.brush-chart {
+    .brush-area {
+        fill: $grey-300;
+    }
+
+    .missing-brush-area {
+        fill: $grey-100;
+    }
+
+    .brush-rect.selection {
+        fill-opacity: 0.08;
+        stroke-linejoin: round;
+    }
+
+    .brush-rect.handle {
+        fill: $bc-e-blue-300;
+        width: 0.2rem;
+    }
+
+    // Axes
+    .x-axis-group path,
+    .y-axis-group path {
+        display: none;
+    }
+}

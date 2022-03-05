@@ -1,0 +1,64 @@
+{
+    "data": [
+        {
+            "date": "2016-01-02T08:00:00Z",
+            "name": "google",
+            "value": "22"
+        },
+        {
+            "date": "2016-01-02T08:00:00Z",
+            "name": "facebook",
+            "value": "21"
+        },
+        {
+            "date": "2016-01-02T08:00:00Z",
+            "name": "twitter",
+            "value": "24"
+        },
+        {
+            "date": "2016-01-02T08:00:00Z",
+            "name": "user_newsletter",
+            "value": "26"
+        },
+        {
+            "date": "2016-01-02T08:00:00Z",
+            "name": "user_email",
+            "value": "31"
+        },
+        {
+            "date": "2016-01-02T08:00:00Z",
+            "name": "unknown",
+            "value": "50"
+        },
+        {
+            "date": "2016-01-03T08:00:00Z",
+            "name": "google",
+            "value": "37"
+        },
+        {
+            "date": "2016-01-03T08:00:00Z",
+            "name": "facebook",
+            "value": "24"
+        },
+        {
+            "date": "2016-01-03T08:00:00Z",
+            "name": "twitter",
+            "value": "31"
+        },
+        {
+            "date": "2016-01-03T08:00:00Z",
+            "name": "user_newsletter",
+            "value": "24"
+        },
+        {
+            "date": "2016-01-03T08:00:00Z",
+            "name": "user_email",
+            "value": "41"
+        },
+        {
+            "date": "2016-01-03T08:00:00Z",
+            "name": "unknown",
+            "value": "0"
+        }
+    ]
+}

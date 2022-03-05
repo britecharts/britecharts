@@ -1,0 +1,53 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "ops": {
+        "tutorials": "./tutorials",
+        "demos": "./demos"
+    },
+    "source": {
+        "includePattern": ".+\\.js(doc)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+        // "include": ["./README.md"]
+    },
+    "plugins": [],
+    "templates": {
+        "default": {
+            "staticFiles": {
+                "paths": ["./src/doc/html"]
+            }
+        },
+        "logoFile": "img/britecharts-logo.svg",
+        "systemName": "Britecharts",
+        "footer": "",
+        "includeDate": false,
+        "navType": "inline",
+        "theme": "flatly",
+        "linenums": false,
+        "collapseSymbols": false,
+        "inverseNav": false,
+        "cleverLinks": false,
+        "outputSourceFiles": true,
+        "syntaxTheme": "default",
+        "monospaceLinks": false,
+        "search": true,
+        "analytics": {
+            "ua": "G-W3BQXCKSD9",
+            "domain": "auto"
+        },
+        "openGraph": {
+            "title": "Britecharts, a D3.js based charting library of reusable components",
+            "type": "website",
+            "image": "https://britecharts.github.io/britecharts/img/logo-stripes-small.png",
+            "site_name": "Britecharts",
+            "url": "http://britecharts.github.io/britecharts/",
+            "description": "Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations."
+        },
+        "meta": {
+            "title": "Britecharts - D3.js based charting library of reusable components",
+            "description": "Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.",
+            "keyword": "Britecharts, D3.js, JavaScript"
+        }
+    }
+}

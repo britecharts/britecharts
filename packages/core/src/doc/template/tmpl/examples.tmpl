@@ -1,0 +1,11 @@
+<?js
+    var data = obj;
+    data.forEach(function(example) {
+        if (example.caption) {
+    ?>
+        <p class="code-caption"><?js= example.caption ?></p>
+    <?js } ?>
+    <pre class=""><code class="language-javascript"><?js~ example.code ?></code></pre>
+<?js
+    });
+?>

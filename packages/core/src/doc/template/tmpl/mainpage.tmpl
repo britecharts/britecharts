@@ -1,0 +1,16 @@
+<?js
+    var data = obj;
+    var self = this;
+?>
+
+<?js if (data.kind === 'package' && (data.name ||data.version)) { ?>
+    <h3><?js= data.name ?> <?js= data.version ?></h3>
+<?js } ?>
+
+<?js if (data.readme) { ?>
+    <section class="readme-section <?js= data.class ?>">
+        <article>
+            <?js= data.readme.replace(/https?:\/\/eventbrite\.github\.io\/britecharts\//g,"") ?>
+        </article>
+    </section>
+<?js } ?>

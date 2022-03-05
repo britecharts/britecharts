@@ -1,0 +1,18 @@
+@import '../helpers/_variables';
+
+.grouped-bar {
+
+    // Axes
+    .x-axis-group path,
+    .y-axis-group path {
+        display: none;
+    }
+
+    .y-axis-group text {
+        font-size: 14px;
+    }
+
+    .tick line {
+        display: none;
+    }
+}

@@ -1,0 +1,461 @@
+import * as d3 from 'd3';
+
+import chart from './brush';
+import { BrushDataBuilder } from './brushChartDataBuilder';
+
+const aTestDataSet = () => new BrushDataBuilder();
+const buildDataSet = (dataSetName) => {
+    return aTestDataSet()[dataSetName]().build();
+};
+
+describe('Brush Chart', () => {
+    let brushChart, dataset, containerFixture;
+
+    beforeEach(() => {
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
+
+        dataset = buildDataSet('withSimpleData');
+        brushChart = chart();
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
+        containerFixture = d3.select('.test-container');
+        containerFixture.datum(dataset).call(brushChart);
+    });
+
+    // remove the html fixture from the DOM
+    afterEach(() => {
+        document.body.removeChild(document.getElementById('fixture'));
+    });
+
+    describe('Render', () => {
+        it('should show a chart with minimal requirements', () => {
+            const expected = 1;
+            const actual = containerFixture.select('.brush-chart').size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        describe('groups', () => {
+            it('should create a container-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should create a chart-group', () => {
+                const expected = 1;
+                const actual = containerFixture.select('g.chart-group').size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should create a x-axis-group', () => {
+                const expected = 1;
+                const actual = containerFixture.select('g.x-axis-group').size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should draw a month X axis', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('.x-axis-group .axis.sub-x')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should create a metadata-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should create a brush-group', () => {
+                const expected = 1;
+                const actual = containerFixture.select('g.brush-group').size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should create a loading-state-group', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('g.loading-state-group')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        it('should render an X axis', () => {
+            const expected = 1;
+            const actual = containerFixture.selectAll('.x.axis').size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render an area', () => {
+            const expected = 1;
+            const actual = containerFixture.selectAll('.brush-area').size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should not render a missing data area', () => {
+            const expected = 0;
+            const actual = containerFixture
+                .selectAll('.brush-chart .missing-brush-area')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render a brush rect overlay', () => {
+            const expected = 1;
+            const actual = containerFixture
+                .selectAll('.overlay.brush-rect')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render a brush rect selection', () => {
+            const expected = 1;
+            const actual = containerFixture
+                .selectAll('.selection.brush-rect')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render an e handle', () => {
+            const expected = 1;
+            const actual = containerFixture
+                .selectAll('.handle.handle--e.brush-rect')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render an w handle', () => {
+            const expected = 1;
+            const actual = containerFixture
+                .selectAll('.handle.handle--w.brush-rect')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        describe('when reloading with a different dataset', () => {
+            it('should render in the same svg', () => {
+                const expected = 1;
+                const newDataset = buildDataSet('withShortData');
+                let actual;
+
+                containerFixture.datum(newDataset).call(brushChart);
+                actual = containerFixture.selectAll('.brush-chart').size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render one area', () => {
+                const expected = 1;
+                const newDataset = buildDataSet('withShortData');
+                let actual;
+
+                containerFixture.datum(newDataset).call(brushChart);
+                actual = containerFixture
+                    .selectAll('.brush-chart .brush-area')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render one axis', () => {
+                const expected = 1;
+                const newDataset = buildDataSet('withShortData');
+                let actual;
+
+                containerFixture.datum(newDataset).call(brushChart);
+                actual = containerFixture
+                    .selectAll('.brush-chart .x.axis')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when loading missing data', () => {
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                dataset = buildDataSet('withMissingData');
+                brushChart = chart();
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(brushChart);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should still render the chart', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render the regular area', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart .brush-area')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render a missing data area', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart .missing-brush-area')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const expected = 1;
+
+                brushChart.isLoading(true);
+                containerFixture.datum(dataset).call(brushChart);
+
+                const actual = containerFixture
+                    .select('.brush-load-state')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
+    });
+
+    describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = brushChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            brushChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = brushChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
+        it('should provide areaCurve getter and setter', () => {
+            let previous = brushChart.areaCurve(),
+                expected = 'step',
+                actual;
+
+            brushChart.areaCurve(expected);
+            actual = brushChart.areaCurve();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
+        });
+
+        it('should provide a bush date range getter and setter', () => {
+            let previous = brushChart.dateRange(),
+                expected = ['9/15/2015', '1/25/2016'],
+                actual;
+
+            brushChart.dateRange(expected);
+            actual = brushChart.dateRange();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a gradient getter and setter', () => {
+            let previous = brushChart.gradient(),
+                expected = ['#ffffff', '#fafefc'],
+                actual;
+
+            brushChart.gradient(expected);
+            actual = brushChart.gradient();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide height getter and setter', () => {
+            let previous = brushChart.height(),
+                expected = 200,
+                actual;
+
+            brushChart.height(expected);
+            actual = brushChart.height();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide isAnimated getter and setter', () => {
+            let previous = brushChart.isAnimated(),
+                expected = true,
+                actual;
+
+            brushChart.isAnimated(expected);
+            actual = brushChart.isAnimated();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
+        });
+
+        it('should provide isLocked getter and setter', () => {
+            let previous = brushChart.isLocked(),
+                expected = true,
+                actual;
+
+            brushChart.isLocked(expected);
+            actual = brushChart.isLocked();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
+        });
+
+        it('should provide isLoading getter and setter', () => {
+            let previous = brushChart.isLoading(),
+                expected = true,
+                actual;
+
+            brushChart.isLoading(expected);
+            actual = brushChart.isLoading();
+
+            expect(previous).not.toBe(actual);
+            expect(actual).toBe(expected);
+        });
+
+        describe('margin', () => {
+            it('should provide margin getter and setter', () => {
+                let previous = brushChart.margin(),
+                    expected = { top: 4, right: 4, bottom: 4, left: 4 },
+                    actual;
+
+                brushChart.margin(expected);
+                actual = brushChart.margin();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
+            describe('when margins are set partially', () => {
+                it('should override the default values', () => {
+                    let previous = brushChart.margin(),
+                        expected = {
+                            ...previous,
+                            top: 10,
+                            right: 20,
+                        },
+                        actual;
+
+                    brushChart.width(expected);
+                    actual = brushChart.width();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                });
+            });
+        });
+
+        it('should provide width getter and setter', () => {
+            let previous = brushChart.width(),
+                expected = 200,
+                actual;
+
+            brushChart.width(expected);
+            actual = brushChart.width();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a xAxisFormat getter and setter', () => {
+            let previous = brushChart.xAxisFormat(),
+                expected = brushChart.axisTimeCombinations.HOUR_DAY,
+                actual;
+
+            brushChart.xAxisFormat(expected);
+            actual = brushChart.xAxisFormat();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a xAxisCustomFormat getter and setter', () => {
+            let previous = brushChart.xAxisCustomFormat(),
+                expected = '%d %b',
+                actual;
+
+            brushChart.xAxisCustomFormat(expected);
+            actual = brushChart.xAxisCustomFormat();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a xTicks getter and setter', () => {
+            let previous = brushChart.xTicks(),
+                expected = 2,
+                actual;
+
+            brushChart.xTicks(expected);
+            actual = brushChart.xTicks();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide locale getter and setter', () => {
+            let previous = brushChart.locale(),
+                expected = 'en-US',
+                actual;
+
+            brushChart.locale(expected);
+            actual = brushChart.locale();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a roundingTimeInterval getter and setter', () => {
+            let previous = brushChart.roundingTimeInterval(),
+                expected = 'timeMillisecond',
+                actual;
+
+            brushChart.roundingTimeInterval(expected);
+            actual = brushChart.roundingTimeInterval();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+    });
+});
