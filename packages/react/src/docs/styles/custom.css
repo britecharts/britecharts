@@ -1,0 +1,86 @@
+body,
+.britechart {
+    font-family: 'Rubik', 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+.rsg--body-0 h1,
+.rsg--body-0 h2,
+.rsg--body-0 h2 a {
+    font-weight: 300;
+}
+
+/* Sidebar */
+.rsg--sidebar-4 a {
+    color: #d2d6df !important;
+}
+.rsg--sidebar-4 a:hover,
+.rsg--sidebar-4 a:active,
+.rsg--sidebar-4 a:focus {
+    color: #ffffff !important;
+}
+
+.stacked-area-container {
+    display: flex;
+}
+
+/* Logo */
+.rsg--sidebar-4 .rsg--logo-5 {
+    padding: 24px;
+    border-bottom: none;
+}
+
+.rsg--sidebar-4 .logo__image {
+    max-width: 100%;
+}
+
+/* Search */
+.rsg--sidebar-4 .rsg--search-64 {
+    padding: 0 16px 16px 16px;
+}
+.rsg--sidebar-4 .rsg--input-65 {
+    border: none;
+    border-radius: 2px;
+}
+
+/* Body */
+.rsg--body-0 #introduction {
+    display: none;
+}
+.rsg--body-0 blockquote {
+    font-size: 24px;
+    margin: 16px 0 24px 0;
+}
+
+/* Headings */
+.rsg--body-0 h1 {
+    font-size: 48px;
+}
+.rsg--body-0 h2 {
+    font-size: 32px;
+    margin-bottom: 16px;
+}
+.rsg--body-0 .rsg--heading-11 {
+    font-weight: 300;
+}
+
+.rsg--body-0 .rsg--content-3 {
+    padding: 60px 32px;
+}
+
+.rsg--body-0 .rsg--preview-59 {
+    padding: 0;
+}
+
+.rsg--body-0 table thead {
+    border-style: none;
+}
+.rsg--body-0 table a {
+    display: block;
+}
+.rsg--body-0 table img {
+    max-width: 100%;
+    vertical-align: middle;
+}
+.rsg--body-0 table td {
+    text-align: center;
+}
