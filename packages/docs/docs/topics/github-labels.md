@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # Issue and Feature Labelling
@@ -41,7 +41,7 @@ Read on to learn more about them.
     -   Needs Reproducing >> Ready to Go >> In Progress >> Completed
     -   Outside the flow: On Hold || Blocked || Abandoned
 
-![alt_text](static/img/docs/feature-issue-labels.png "image_tooltip")
+![alt_text](../../static/img/docs/feature-issue-labels.png "image_tooltip")
 
 #### Type Labels
 

@@ -43,7 +43,6 @@ module.exports = {
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
             navbar: {
-                title: 'Britecharts',
                 logo: {
                     alt: 'Britecharts Logo',
                     src: 'img/brand/britecharts-logo.svg',
@@ -51,7 +50,7 @@ module.exports = {
                 items: [
                     {
                         type: 'doc',
-                        docId: 'intro',
+                        docId: 'tutorials/tutorials-index',
                         position: 'left',
                         label: 'Documentation',
                     },

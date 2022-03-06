@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # How-To Guides
 The Britecharts how-to guides provide step by step instructions on how to accomplish standardized tasks for the library.
 
@@ -8,7 +12,7 @@ We have how multiple guides for specific type of users:
 
 You can also check the [Topics page][topicsIndex] to learn more about Britecharts approach and code philosophy.
 
-[userHowTo]: ./user-how-to-guides.html
-[contributorHowTo]: ./contributor-how-to-guides.html
-[topicsIndex]: ./topics-index.html
-[migrationGuide2to3]: ./migration-guide-2-to-3.html
+[userHowTo]: ./user-how-to-guides.md
+[contributorHowTo]: ./contributor-how-to-guides.md
+[topicsIndex]: ./topics-index.md
+[migrationGuide2to3]: ./migration-guide-2-to-3.md

@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Tutorials
 Britechart tutorials allow new users to get started and learn the basic procedures and components of the library. They are meant to be a learning experience ideal for newcomers:
 
@@ -9,7 +13,7 @@ Britechart tutorials allow new users to get started and learn the basic procedur
 After following these tutorials, you can also check the [Topics page][topicsIndex] to learn more about Britecharts' approach and code philosophy.
 
 [gettingStarted]: ./getting-started.md
-[installingBritecharts]: http://britecharts.github.io/britecharts/installing-britecharts.html
-[composingDataviz]: http://britecharts.github.io/britecharts/composing-dataviz.html
-[stylingBritecharts]: http://britecharts.github.io/britecharts/styling-charts.html
-[topicsIndex]: http://britecharts.github.io/britecharts/topics-index.html
+[installingBritecharts]: ./installing-britecharts.md
+[composingDataviz]: ./composing-dataviz.md
+[stylingBritecharts]: ./styling-charts.md
+[topicsIndex]: ../topics/topics-index.md
