@@ -111,6 +111,22 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "gagoar",
+      "name": "Gago",
+      "avatar_url": "https://avatars.githubusercontent.com/u/226559?v=4",
+      "profile": "https://github.com/gagoar",
+      "contributions": [
+        "code",
+        "content",
+        "ideas",
+        "infra",
+        "maintenance",
+        "review",
+        "tool",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
