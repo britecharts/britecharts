@@ -34,16 +34,16 @@ Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][d
 
 ## Key Features
 
-- 🛠 **Reusable** - Configure your charts to create different looks and behaviors.
-- 🏗 **Composable** - Mix and match components to create insightful experiences.
-- 🌈 **Great design** - Clean and vivid looks to amaze your users.
-- ⚙️ **Simple** - The codebase is regular D3.js code you can fork and modify.
+-   🛠 **Reusable** - Configure your charts to create different looks and behaviors.
+-   🏗 **Composable** - Mix and match components to create insightful experiences.
+-   🌈 **Great design** - Clean and vivid looks to amaze your users.
+-   ⚙️ **Simple** - The codebase is a regular D3.js code you can fork and modify.
 
 Britecharts [components][kitchen-sink] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
 
 ## Usage
 
-The typical use of Britecharts involves creating a chart using its simple API, then rendering it on a container which has previously had data applied to it. The code will look like this:
+The typical use of Britecharts involves creating a chart using its simple API, then rendering it on a container that has previously had data applied to it. The code will look like this:
 
 ```js
     import { select } from 'd3-selection';
@@ -60,7 +60,7 @@ The typical use of Britecharts involves creating a chart using its simple API, t
     barContainer.datum(dataset).call(barChart);
 ```
 
-## API 
+## API
 
 All the components expose **common API methods** like width, height, and margin. Additionally, each component exposes specific methods you can find in the documentation:
 
@@ -114,7 +114,7 @@ barChart
 container.datum(barData).call(barChart);
 ```
 
-Britecharts comes with custom CSS - to load CSS in your html file you may include it in the `<head>` tag
+Britecharts comes with custom CSS - to load CSS in your HTML file you may include it in the `<head>` tag
 
 ```html
 <link
@@ -150,7 +150,7 @@ Britecharts is dedicated to building a welcoming, diverse, and safe community. W
 
 Whether you're helping us fix bugs, improving the docs, or spreading the word, we'd love to have you as part of the Britecharts community!
 
-To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and commiters, so if you want to become a part of this project, check the [contributing][contributing-guide] guide and get started today!
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and committers, so if you want to become a part of this project, check the [contributing][contributing-guide] guide and get started today!
 
 Check out our Contributing Guide for ideas on contributing and setup steps for getting our repositories up and running on your local machine.
 
