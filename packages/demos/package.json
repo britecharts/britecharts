@@ -6,6 +6,8 @@
   },
   "scripts": {
     "storybook:build": "build-storybook -c .storybook -o build",
-    "storybook": "start-storybook -p 9999"
+    "storybook": "start-storybook -p 9999",
+    "start": "yarn storybook",
+    "demo": "yarn storybook"
   }
 }

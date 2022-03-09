@@ -58,7 +58,7 @@ node_modules
 .coverage
 
 dist
-docs
+/docs
 demos
 
 # Core package
@@ -72,3 +72,20 @@ packages/core/node_modules
 packages/react/lib
 packages/react/dist
 packages/react/docs
+
+
+# Docs package
+packages/docs/build
+# Generated files
+packages/docs/.docusaurus
+packages/docs/.cache-loader
+# Misc
+packages/docs/.yarn
+packages/docs/.env.local
+packages/docs/.env.development.local
+packages/docs/.env.test.local
+packages/docs/.env.production.local
+# Logs
+packages/docs/npm-debug.log*
+packages/docs/yarn-debug.log*
+packages/docs/yarn-error.log*

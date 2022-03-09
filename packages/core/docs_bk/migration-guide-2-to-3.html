@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html lang="en" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Migration Guide from v2 to v3</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js, JavaScript" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="msapplication-config" content="img/icons/browserconfig.xml">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+
+        <!-- MacOS -->
+        <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/icons/favicon.ico">
+        <link rel="icon" type="image/png" href="img/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
+
+        
+            <!-- Google / Search Engine Tags -->
+            <meta itemprop="name" content="Britecharts, a D3.js based charting library of reusable components">
+            <meta itemprop="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.">
+            <meta itemprop="image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png">
+
+            <!-- Facebook Meta Tags -->
+            <meta property="og:title" content="Britecharts, a D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content="http://britecharts.github.io/britecharts/"/>
+            <meta property="og:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.">
+
+            <!-- Twitter Meta Tags -->
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:title" content="Britecharts, a D3.js based charting library of reusable components">
+            <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            <meta name="twitter:image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png">
+        
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+        <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
+        <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+                <a class="ribbon" href="https://github.com/britecharts/britecharts" title="Check this project in github"><svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 250 250" fill="#fff" style="position: absolute; top: 0; right: 0"><path d="M0 0l115 115h15l12 27 108 108V0z" fill="#000"/><path class="octo-arm" d="M128 109c-15-9-9-19-9-19 3-7 2-11 2-11-1-7 3-2 3-2 4 5 2 11 2 11-3 10 5 15 9 16" style="-webkit-transform-origin: 130px 106px; transform-origin: 130px 106px"/><path class="octo-body" d="M115 115s4 2 5 0l14-14c3-2 6-3 8-3-8-11-15-24 2-41 5-5 10-7 16-7 1-2 3-7 12-11 0 0 5 3 7 16 4 2 8 5 12 9s7 8 9 12c14 3 17 7 17 7-4 8-9 11-11 11 0 6-2 11-7 16-16 16-30 10-41 2 0 3-1 7-5 11l-12 11c-1 1 1 5 1 5z"/></svg></a>
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav navbar-right">
+            			
+                        
+            			<li class="">
+            				<a href="tutorials-index.html" >Tutorials<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="">
+            				<a href="how-to-index.html" >How-To Guides<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-bullet.html">Bullet Chart</a></li>
+                                
+                                <li><a href="tutorial-color.html">Color Palettes</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-grouped-bar.html">Grouped Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-heatmap.html">Heatmap Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-legend.html">Legend Chart</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-scatter-plot.html">Scatter Plot</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Bullet.html">Bullet</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Grid.html">Grid</a></li>
+                                
+                                <li><a href="module-Grouped-bar.html">Grouped-bar</a></li>
+                                
+                                <li><a href="module-Heatmap.html">Heatmap</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Scatter-plot.html">Scatter-plot</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        <li class="dropdown">
+                            <a class="github-link" href="https://twitter.com/britecharts">Twitter</a>
+                        </li>
+            		</ul>
+                    
+                        <div class="col-sm-12 col-md-3 no-gutter pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group search-container clearfix">
+                                    <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-9 col-lg-7 col-lg-offset-1 is-source ">
+            	
+            		<div id="main">
+            			
+
+	
+	<!--h1 class="page-title">Migration Guide from v2 to v3</h1-->
+	
+	
+
+
+
+
+    <section class="readme-section tutorial">
+        <article>
+            <h1>Migration Guide from version 2 to version 3</h1>
+<p>In February 2022, we released version 3.0 of Britecharts. The new version fixes many bugs, improves loading and animation performance, and adds minor features. We also introduced many breaking changes to make the component's APIs and data shapes more consistent.</p>
+<p>We recommend migrating as soon as possible to get all these benefits. For that, we have prepared the following migration guide.</p>
+<h2>Migration Steps</h2>
+<p>Most of the migration tasks involve changing accessor names, but there are also changes in how we load the modules. Follow these steps to get your application updated in no time:</p>
+<h3>Breaking changes</h3>
+<ol>
+<li>Update the way you load the charts</li>
+</ol>
+<p>We moved Britecharts internally from the outdated AMD modules into ES Modules, which changed how you will import the components. See below some examples:</p>
+<pre class="prettyprint source lang-js"><code>// Version 2
+// For ES modules
+import bar from 'britecharts/dist/umd/bar.min';
+
+// For AMD and CommonJS modules
+const LineChart = require('britecharts/umd/line.min');
+
+// Version 3
+// As ES modules
+import { bar } from 'britecharts';
+import bar from 'britecharts/dist/umd/bar.min';
+
+// As CommonJS modules
+const { bar } = require('britecharts');
+const bar = require('britecharts/dist/umd/bar.min');
+
+</code></pre>
+<p>You can also check more ways of loading (CommonJS and CDN) in our <a href="https://github.com/britecharts/britecharts-test-project#usage">Britecharts Test Project</a></p>
+<ol start="2">
+<li>Change how you show loading states</li>
+</ol>
+<p>Search for any use of the 'loadingState' accessor for getting the loading state, and render the chart with 'isLoading' as true and a valid dataset (it can be empty).</p>
+<pre class="prettyprint source lang-js"><code>// Version 2
+barContainer.html(barChart.loadingState())
+
+// Version 3
+barChart
+    .width(containerWidth)
+    .height(300)
+    .isAnimated(true)
+    .isLoading(true);
+    
+barContainer.datum(dataset).call(barChart);
+</code></pre>
+<ol start="3">
+<li>Use 'valueLocale' to format values</li>
+</ol>
+<p>You must use the 'valueLocale' accessor to set the locale object (see <a href="https://github.com/d3/d3-format#formatLocale">the d3-format docs</a>) of the component´s rendered values (axes ticks, numerical values, etc.).</p>
+<p>Before, this used to be ´locale´ in the bar, grouped bar, scatted bar, and scatter plot.</p>
+<pre class="prettyprint source lang-js"><code>// Version 2
+barChart
+    .locale({
+        thousands: '.', 
+        grouping: [3], 
+        currency: [&quot;$&quot;, &quot;&quot;], 
+        decimal: &quot;.&quot;
+    })
+    //...other configurations
+
+// Version 3
+barChart
+    .valueLocale({
+        thousands: '.', 
+        grouping: [3], 
+        currency: [&quot;$&quot;, &quot;&quot;], 
+        decimal: &quot;.&quot;
+    })
+    //...other configurations
+</code></pre>
+<p>In contrast, for time series charts (lineChart, stackedAreaChart), we use 'locale' to pass the language tag for the tooltip to localize the <em>date</em>. It uses Intl.DateTimeFormat, for compatibility and support.</p>
+<ol start="4">
+<li>Swap the use 'xAxisCustomFormat' and 'xAxisFormat' on brush charts</li>
+</ol>
+<p>Whenever you were using 'xAxisCustomFormat' in a brush chart, now you should use 'xAxisFormat', and viceversa.</p>
+<pre class="prettyprint source lang-js"><code>// Version 2
+brush
+    .xAxisCustomFormat('custom')
+    .xAxisFormat('%A');
+
+// Version 3
+brush
+    .xAxisCustomFormat('%A')
+    .xAxisFormat('custom');
+</code></pre>
+<p>This made this configuration consistent with the line and stacked area charts.</p>
+<ol start="5">
+<li>Use 'numberFormat' in bar charts</li>
+</ol>
+<p>Search for uses of 'valueLabelFormat' and change them to 'numberFormat':</p>
+<pre class="prettyprint source lang-js"><code>// Version 2
+groupedBarChart
+    .valueLabelFormat(',s')
+    // other configurations
+
+// Version 3
+groupedBarChart
+    .numberFormat(',s')
+    // other configurations
+
+</code></pre>
+<p>The 'numberFormat' configuration is available for the bar, bullet, donut, grouped bar, stacked-bar, legend, line, mini-tooltip, and tooltip components.</p>
+<ol start="6">
+<li>Stop using 'aspectRatio' to set charts' dimensions</li>
+</ol>
+<p>We eliminated the 'aspectRatio' accessor from our charts. Instead, use the 'width' and 'height' attributes to set a explicit size and leave the chart to respond to container width changes.</p>
+<pre class="prettyprint source lang-js"><code>// Version 2
+lineChart
+    .width(100)
+    .aspectRatio('0.5');
+
+// Version 3
+lineChart
+    .width(100)
+    .height(50)
+</code></pre>
+<h3>New features</h3>
+<ol>
+<li>Start using TypeScript with Britecharts.</li>
+</ol>
+<p>You can now use Britecharts in your TypeScript projects! The Britecharts package includes a &quot;types&quot; entry that points to our type declaration files. We plan to re-write Britecharts in TypeScript, but type definition files will do for now!</p>
+<ol>
+<li>Stop re-rendering charts when the viewport width changes.</li>
+</ol>
+<p>In version 2 and our demos, we recommended listening to viewport width changes and re-render charts with the updated container width. This wasn't necessary, as SVGs provide a viewBox property that allows us to make our charts fully responsive out of the box. That's how Britecharts works starting version 3, so say bye-bye to those window 'resize' listeners!</p>
+<ol>
+<li>Use 'colorMap' to select the colors you want for each data category.</li>
+</ol>
+<p>One common request of our users was to specify the colors for each category on the different Britecharts components. Now you can! Use the <a href="https://britecharts.github.io/britecharts/module-Bar.html#.colorMap__anchor">&quot;colorMap&quot;</a> property to specify a hash map between category names and HEX colors.</p>
+<ol>
+<li>Specify the duration of animations with 'animationDuration'</li>
+</ol>
+<p>Most Britecharts' components have animations that you can activate with the 'isAnimated' configuration. Since version 3, you can also set the duration of those animations in milliseconds with the 'animationDuration' accessor.</p>
+<h2>Summary of Changes</h2>
+<p>We changed many things in the third version of Britecharts; here are some summaries:</p>
+<h3>Breaking Changes</h3>
+<ul>
+<li>Adds ES5 version to bundle.</li>
+<li>Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.</li>
+<li>Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar.</li>
+<li>Fixes the custom format feature in the line and stacked area chart, renaming 'xAxisFormat' into 'xAxisCustomFormat' and  'xAxisCustomFormat' into 'xAxisFormat'. Removes 'axisTimeCombinations'.</li>
+<li>Renames value formatting functions into 'numberFormat' in the grouped bar and stacked bar charts.</li>
+<li>Removed the 'aspectRatio' configuration chart from the line, scatter plot, stacked area, bullet, grouped bar, stacked bar.</li>
+<li>Changed 'exportChart' to return a promise.</li>
+</ul>
+<h3>New Feature Changes</h3>
+<ul>
+<li>Added TypeScript types via declaration files</li>
+<li>Charts are responsive by default using the viewBox property.</li>
+<li>Adds colorMap to all charts</li>
+<li>Adds 'animationDuration' option to all animated charts</li>
+<li>Added grid helper on charts</li>
+<li>Adds zoom controls for scatter plot</li>
+<li>Added hasMinimumValueScale parameter to autoscale Line Chart y-axis</li>
+<li>Rework of Line Chart animation for better performance</li>
+<li>Allows brush to have missing data and to be animated</li>
+<li>Allows for a fixed window in brush chart with 'isLocked' option</li>
+<li>Added Donut's hasCenterLegend to hide/show center legend</li>
+<li>Added Stacked Area loading state</li>
+<li>Added tooltip on the heatmap</li>
+</ul>
+<h3>Bug Fixes</h3>
+<ul>
+<li>Fixes all critical security warnings due to dependencies</li>
+<li>Fixes step chart loading</li>
+<li>Mitigates the stacked and grouped bar charts tooltip issues</li>
+<li>Improved Grouped bar chart animation</li>
+<li>Line chart animation fix on multiline</li>
+<li>Ordering of the horizontal bar chart elements</li>
+<li>Cleans up custom lines annotation text before rendering</li>
+<li>Fixes bullet chart issues</li>
+<li>Tooltip tweaks
+<em>Visual Fixes Summary</em></li>
+<li>Added extended line on brush chart</li>
+<li>Extended line color matching ticks</li>
+<li>Normalized text sizes in line and stacked area charts</li>
+</ul>
+<h3>Contributor's Developer Experience Changes</h3>
+<ul>
+<li>Deprecated Travis into Github Actions</li>
+<li>Updated Karma test runner version</li>
+<li>Added linting and formatting for CSS and JS</li>
+<li>Changed organization of tests and data builders to be colocated</li>
+</ul>
+        </article>
+    </section>
+
+
+
+
+
+
+
+            		</div>
+            	</div>
+            	
+            		<div class="col-md-3 col-lg-2">
+            			<div id="toc" class="col-md-3 col-lg-3 affix hidden-xs hidden-sm">
+                            <div style="padding-left:14px">
+                                <h4>Loving this project?</h4>
+                                <iframe src="https://github.com/sponsors/britecharts/button" title="Sponsor britecharts" height="35" width="130" style="border: 0; margin-bottom: 8px;"></iframe>
+                                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="britecharts" data-color="#ffa71a" data-emoji="🍕" data-font="Cookie" data-text="Buy me a pizza" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#FFDD00" ></script>
+                                <h4>Learn more about Britecharts</h4>
+                                <a
+                                    class="book-container"
+                                    href="http://bit.ly/pro-d3"
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                >
+                                    <div class="book">
+                                        <img
+                                            alt="Marcos Iglesias - Pro D3.js cover"
+                                            src="./img/pro-d3-cover.png"
+                                        />
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+            		</div>
+            	
+            	<div class="clearfix"></div>
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer class="footer">
+            
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.1</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
+        
+
+        <script src="/britecharts/scripts/prism.js"></script>
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+            // Highlight with prism
+            $( "pre.prettyprint.source" )
+                .each( function () {
+                    var $this = $( this );
+                    var example = $this.find( "code" );
+
+                    $this
+                        .wrap("<pre class='language-javascript' ></pre>" )
+                        .wrap("<code class='language-javascript'></code>" )
+                        .addClass( "language-javascript" )
+                        .html( example.html() );
+                } );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
+            <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-W3BQXCKSD9');
+            </script>
+        
+
+        <!-- Search Init -->
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>
