@@ -77,14 +77,13 @@ describe('Export Helper', () => {
     describe('createImage', () => {
         describe('when callback is passed', () => {
             it('should be called at least once with one arg', () => {
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCalls = 1;
                 const expectedArgumentsCount = 1;
 
                 exportChart.createImage(regularHTML, callbackSpy);
-                const actualCalls = callbackSpy.calls.count();
-                const actualArgumentsCount = callbackSpy.calls.allArgs()[0]
-                    .length;
+                const actualCalls = callbackSpy.mock.calls.length;
+                const actualArgumentsCount = callbackSpy.mock.calls[0].length;
 
                 expect(actualCalls).toEqual(expectedCalls);
                 expect(actualArgumentsCount).toEqual(expectedArgumentsCount);
