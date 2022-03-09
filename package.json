@@ -46,7 +46,7 @@
     "data-visualization",
     "interactive-visualizations"
   ],
-  "author": "Eventbrite",
+  "author": "Britecharts Team",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/britecharts/britecharts/issues"
@@ -70,60 +70,6 @@
           "chore"
         ]
       ]
-    }
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "chrome": "58",
-            "ie": "11"
-          }
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-syntax-dynamic-import",
-      "@babel/plugin-syntax-import-meta",
-      "@babel/plugin-proposal-class-properties",
-      "@babel/plugin-proposal-json-strings",
-      [
-        "@babel/plugin-proposal-decorators",
-        {
-          "legacy": true
-        }
-      ],
-      "@babel/plugin-proposal-function-sent",
-      "@babel/plugin-proposal-export-namespace-from",
-      "@babel/plugin-proposal-numeric-separator",
-      "@babel/plugin-proposal-throw-expressions",
-      "@babel/plugin-proposal-export-default-from",
-      "@babel/plugin-proposal-logical-assignment-operators",
-      "@babel/plugin-proposal-optional-chaining",
-      [
-        "@babel/plugin-proposal-pipeline-operator",
-        {
-          "proposal": "minimal"
-        }
-      ],
-      "@babel/plugin-proposal-nullish-coalescing-operator",
-      "@babel/plugin-proposal-do-expressions",
-      "@babel/plugin-proposal-function-bind",
-      [
-        "@babel/plugin-transform-runtime",
-        {
-          "regenerator": true
-        }
-      ]
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "istanbul"
-        ]
-      }
     }
   },
   "eslintConfig": {
@@ -307,70 +253,32 @@
     "@babel/runtime": "^7.4.5",
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
-    "@typescript-eslint/parser": "^4.6.1",
     "babel-loader": "^8.0.0",
     "babel-plugin-async-import": "^2.0.2",
     "concurrently": "^4.1.0",
-    "css-minimizer-webpack-plugin": "^3.4.1",
-    "d3": "^5.16.0",
-    "es-check": "^6.0.0",
     "eslint": "^7.13.0",
-    "eslint-loader": "^2.1.2",
-    "extract-loader": "^5.1.0",
-    "file-loader": "^6.2.0",
-    "grunt": "1.0.4",
-    "grunt-babel": "6.0.0",
-    "grunt-contrib-watch": "1.1.0",
-    "grunt-jsdoc": "2.4.0",
     "husky": "^7.0.0",
     "lint-staged": ">=10",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
-    "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
     "prettier": "^2.0.5",
-    "rimraf": "^2.6.3",
-    "webpack": "4.46.0",
-    "webpack-bundle-analyzer": "3.3.2",
-    "webpack-cli": "^3.3.5",
-    "webpack-dev-server": "3.7.2",
-    "webpack-fix-style-only-entries": "^0.6.1",
-    "webpack-merge": "4.2.1"
+    "rimraf": "^2.6.3"
   },
   "scripts": {
-    "build": "webpack --env=production",
-    "build:bundle": "webpack --env=prodBundleConfig",
-    "build:styles": "webpack --env=prodStyles",
-    "build:chartStyles": "webpack --env=prodChartStyles",
-    "build:charts": "webpack --env=prodChartsConfig",
-    "build:cdn:bundle": "webpack --env=CDNBundleConfig",
-    "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
-    "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
     "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
     "clean": "yarn cache clean && rimraf node_modules",
-    "demos:compile": "webpack --progress --colors --env=demos",
-    "demos:serve": "webpack-dev-server --content-base docs/ --inline --hot --port 8001 --env=demos",
-    "demos:watch": "webpack --watch --progress --colors --env=demos",
-    "docs:readme": "cp README.md packages/docs/docs/.",
-    "docs:readmeNotWorking": "echo -e \"--\nid: README\nslug: /\n---\n$ (cat README.md)\" > packages/docs/docs/README.md",
-    "docs:api": "npx jsdoc2md packages/core/src/charts/**/*.js > packages/docs/docs/api.md",
-    "docs": "yarn run docs:readme && yarn run docs:api && cd packages/docs && yarn run build && yarn run serve",
+    "demos": "yarn workspaces foreach -p run demo",
+    "test": "yarn workspaces foreach -p run test",
+    "docs": "yarn workspace @britecharts/docs start",
+    "docs:build": "yarn workspace @britecharts/docs build",
     "format": "prettier --loglevel warn --write \"**/*.js\"",
     "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
     "lint:js": "yarn run lint",
     "lint:styles": "yarn run stylelint",
-    "lint": "eslint src/charts/ src/tasks test/ webpack.*.js --cache",
-    "posttest": "npm run format",
-    "release:major": "grunt release:major",
-    "release:minor": "grunt release:minor",
-    "release": "grunt release:patch",
-    "sandbox:compile": "webpack --env=sandbox",
-    "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",
-    "start": "concurrently \"yarn run docs\" \"yarn run demos:serve\" \"yarn run sandbox\"",
+    "lint": "yarn workspaces lint",
+    "posttest": "yarn run format",
+    "start": "concurrently \"yarn run docs\" \"yarn run demos\"",
     "stylelint:fix": "stylelint 'src/styles/**/*.scss' --fix",
     "stylelint": "stylelint 'src/styles/**/*.scss'",
-    "test:ci": "karma start --single-run --browsers=ChromeHeadlessCustom --env=test",
-    "test:once": "karma start --single-run",
-    "test": "karma start --env=test",
-    "test:watch": "karma start --env=test",
     "prepare": "husky install"
   }
 }

@@ -563,7 +563,7 @@ export default function module() {
      * Gets or Sets the text style object of the title at the top of sparkline.
      * Using this method, you can set font-family, font-size, font-weight, font-style,
      * and color (fill). The default text font settings:
-     *
+     * @example
      * <pre>
      * <code>
      * {

@@ -10,7 +10,7 @@ assignees: ''
 <!--- Provide a general summary of the feature request or improvement in the Title above -->
 <!--- Look through existing open and closed feature proposals to see if someone has asked for the feature before -->
 
-## Expected Behavior
+## Package and Expected Behavior
 <!--- Tell us how it should work -->
 
 ## Difference from Current Behavior

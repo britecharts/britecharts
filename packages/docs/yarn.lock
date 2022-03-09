@@ -538,7 +538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.12.7, @babel/parser@npm:^7.16.7, @babel/parser@npm:^7.17.3, @babel/parser@npm:^7.9.4":
+"@babel/parser@npm:^7.12.7, @babel/parser@npm:^7.16.7, @babel/parser@npm:^7.17.3, @babel/parser@npm:^7.4.4, @babel/parser@npm:^7.9.4":
   version: 7.17.3
   resolution: "@babel/parser@npm:7.17.3"
   bin:
@@ -1621,6 +1621,7 @@ __metadata:
     "@mdx-js/react": ^1.6.22
     clsx: ^1.1.1
     docusaurus-lunr-search: ^2.1.15
+    jsdoc: 3.6.1
     jsdoc-to-markdown: ^7.1.1
     prism-react-renderer: ^1.2.1
     react: ^17.0.1
@@ -3535,7 +3536,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:^3.7.1, bluebird@npm:^3.7.2":
+"bluebird@npm:^3.5.4, bluebird@npm:^3.7.1, bluebird@npm:^3.7.2":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 869417503c722e7dc54ca46715f70e15f4d9c602a423a02c825570862d12935be59ed9c7ba34a9b31f186c017c23cac6b54e35446f8353059c101da73eac22ef
@@ -3784,6 +3785,15 @@ __metadata:
   version: 1.0.30001313
   resolution: "caniuse-lite@npm:1.0.30001313"
   checksum: 49f2dcd1fa493a09a5247dcf3a4da3b9df355131b1fc1fd08b67ae7683c300ed9b9eef6a5424b4ac7e5d1ff0e129d2a0b4adf2a6a5a04ab5c2c0b2c590e935be
+  languageName: node
+  linkType: hard
+
+"catharsis@npm:^0.8.10":
+  version: 0.8.11
+  resolution: "catharsis@npm:0.8.11"
+  dependencies:
+    lodash: ^4.17.14
+  checksum: 3da1c56846b2890123b66cc87ba637ea960faa8aeae7eccbd304a2ca92531de94481794dd19839521e3ba5ca6395d62447bd4a6b8a9cc1475a527af53797e44b
   languageName: node
   linkType: hard
 
@@ -5934,7 +5944,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
+"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.1.9, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
   version: 4.2.9
   resolution: "graceful-fs@npm:4.2.9"
   checksum: 68ea4e07ff2c041ada184f9278b830375f8e0b75154e3f080af6b70f66172fabb4108d19b3863a96b53fc068a310b9b6493d86d1291acc5f3861eb4b79d26ad6
@@ -7003,7 +7013,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js2xmlparser@npm:^4.0.2":
+"js2xmlparser@npm:^4.0.0, js2xmlparser@npm:^4.0.2":
   version: 4.0.2
   resolution: "js2xmlparser@npm:4.0.2"
   dependencies:
@@ -7057,6 +7067,30 @@ __metadata:
   bin:
     jsdoc2md: bin/cli.js
   checksum: bae4892fd552e65c46634b3a61fc9a15fd9bff26f2731fbc63cf8b8b75cbe0fa391af8ac04b53fac17a395cdde5c74ada1e6af479a39d2ba2758f5583ac3afc4
+  languageName: node
+  linkType: hard
+
+"jsdoc@npm:3.6.1":
+  version: 3.6.1
+  resolution: "jsdoc@npm:3.6.1"
+  dependencies:
+    "@babel/parser": ^7.4.4
+    bluebird: ^3.5.4
+    catharsis: ^0.8.10
+    escape-string-regexp: ^2.0.0
+    js2xmlparser: ^4.0.0
+    klaw: ^3.0.0
+    markdown-it: ^8.4.2
+    markdown-it-anchor: ^5.0.2
+    marked: ^0.6.2
+    mkdirp: ^0.5.1
+    requizzle: ^0.2.2
+    strip-json-comments: ^3.0.1
+    taffydb: 2.6.2
+    underscore: ~1.9.1
+  bin:
+    jsdoc: ./jsdoc.js
+  checksum: c73fb66eb702bcc534477712f16aecd139adba9da098ab847abdc225edbec4e079bb85cea8ee5dbebf10bd542ece674e4611f314df0f22181b09c9f6c690dae9
   languageName: node
   linkType: hard
 
@@ -7189,6 +7223,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"klaw@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "klaw@npm:3.0.0"
+  dependencies:
+    graceful-fs: ^4.1.9
+  checksum: 1bf9de22392c80d28de8a2babd6f0de29fa52fcdc1654838fd35174b3641c168ec32b8b03022191e3c190efd535c31fce23f85e29cb260245571da7263ef418e
+  languageName: node
+  linkType: hard
+
 "klaw@npm:^4.0.1":
   version: 4.0.1
   resolution: "klaw@npm:4.0.1"
@@ -7237,6 +7280,15 @@ __metadata:
   version: 1.2.4
   resolution: "lines-and-columns@npm:1.2.4"
   checksum: 0c37f9f7fa212b38912b7145e1cd16a5f3cd34d782441c3e6ca653485d326f58b3caccda66efce1c5812bde4961bbde3374fae4b0d11bf1226152337f3894aa5
+  languageName: node
+  linkType: hard
+
+"linkify-it@npm:^2.0.0":
+  version: 2.2.0
+  resolution: "linkify-it@npm:2.2.0"
+  dependencies:
+    uc.micro: ^1.0.1
+  checksum: d198871d0b3f3cfdb745dae564bfd6743474f20cd0ef1057e6ca29451834749e7f3da52b59b4de44e98f31a1e5c71bdad160490d4ae54de251cbcde57e4d7837
   languageName: node
   linkType: hard
 
@@ -7564,6 +7616,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"markdown-it-anchor@npm:^5.0.2":
+  version: 5.3.0
+  resolution: "markdown-it-anchor@npm:5.3.0"
+  peerDependencies:
+    markdown-it: "*"
+  checksum: e1092fe45001ec9fb6df24afcada4f0cb774eebbe76db7c57943bcd84e0977c85764c5e6cd539617eef2a0f0c7abed59890f748b55c7379e2e4c45ff8b69f813
+  languageName: node
+  linkType: hard
+
 "markdown-it-anchor@npm:^8.4.1":
   version: 8.4.1
   resolution: "markdown-it-anchor@npm:8.4.1"
@@ -7586,6 +7647,30 @@ __metadata:
   bin:
     markdown-it: bin/markdown-it.js
   checksum: 890555711c1c00fa03b936ca2b213001a3b9b37dea140d8445ae4130ce16628392aad24b12e2a0a9935336ca5951f2957a38f4e5309a2e38eab44e25ff32a41e
+  languageName: node
+  linkType: hard
+
+"markdown-it@npm:^8.4.2":
+  version: 8.4.2
+  resolution: "markdown-it@npm:8.4.2"
+  dependencies:
+    argparse: ^1.0.7
+    entities: ~1.1.1
+    linkify-it: ^2.0.0
+    mdurl: ^1.0.1
+    uc.micro: ^1.0.5
+  bin:
+    markdown-it: bin/markdown-it.js
+  checksum: ad171466933d6ce33fcdddf32f641fc7ff238820a11397f07d45ab293e3fd6d83de14eaa59bfdc67dc4a715e73aa08bae9b2a38e44b119d7340d8ae691ca4b2d
+  languageName: node
+  linkType: hard
+
+"marked@npm:^0.6.2":
+  version: 0.6.3
+  resolution: "marked@npm:0.6.3"
+  bin:
+    marked: ./bin/marked
+  checksum: 0d68b5a4513350871d7c5a99436454e4229edd576fe15076e78548b5ddba58d0e2bbf2b658e59c00e1c2affa172cf4dbd40813ebd83a5af69c77fd2a1dd3b271
   languageName: node
   linkType: hard
 
@@ -7909,7 +7994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:^0.5.5":
+"mkdirp@npm:^0.5.1, mkdirp@npm:^0.5.5":
   version: 0.5.5
   resolution: "mkdirp@npm:0.5.5"
   dependencies:
@@ -9805,7 +9890,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"requizzle@npm:^0.2.3":
+"requizzle@npm:^0.2.2, requizzle@npm:^0.2.3":
   version: 0.2.3
   resolution: "requizzle@npm:0.2.3"
   dependencies:
@@ -10574,7 +10659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-json-comments@npm:^3.1.0, strip-json-comments@npm:^3.1.1":
+"strip-json-comments@npm:^3.0.1, strip-json-comments@npm:^3.1.0, strip-json-comments@npm:^3.1.1":
   version: 3.1.1
   resolution: "strip-json-comments@npm:3.1.1"
   checksum: 492f73e27268f9b1c122733f28ecb0e7e8d8a531a6662efbd08e22cccb3f9475e90a1b82cab06a392f6afae6d2de636f977e231296400d0ec5304ba70f166443
@@ -10986,6 +11071,13 @@ __metadata:
   version: 1.13.2
   resolution: "underscore@npm:1.13.2"
   checksum: 6ab156c845ccc757fd01d8b9eb28be18ba89ac68993370dd7397a66a95b124f2ba26947fd53e687c084d334429914fc3dd1620d5123b6e0a7cf112cdcf4e859f
+  languageName: node
+  linkType: hard
+
+"underscore@npm:~1.9.1":
+  version: 1.9.2
+  resolution: "underscore@npm:1.9.2"
+  checksum: 70091e558fdcbd48041c96356b9df1e5eec73ba3c0f45937286301b1359759fcab87c93bd8b2aed7cb546b649552eaeaebdda5b2952dcafb339efe2ac875e595
   languageName: node
   linkType: hard
 

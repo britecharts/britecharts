@@ -1,0 +1,15 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "ops": {
+    // "tutorials": "./tutorials",
+    // "demos": "./demos"
+  },
+  "source": {
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+    // "include": ["./README.md"]
+  },
+  "example-lang": "javascript"
+}
