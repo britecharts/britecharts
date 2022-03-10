@@ -549,7 +549,7 @@ export default function module() {
             .attr('stroke-width', trendLineStrokWidth)
             .attr('fill', 'none');
 
-        const totalLength = trendLinePath.node().getTotalLength();
+        const totalLength = trendLinePath.node().pathLength;
 
         trendLinePath
             .attr('stroke-dasharray', `${totalLength} ${totalLength}`)

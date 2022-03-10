@@ -952,8 +952,9 @@ export default function module() {
         let yValues = customLines.map((line) => line.y);
 
         let getColor = (yValue) => {
-            const definedColor = customLines.find((line) => line.y === yValue)
-                .color;
+            const definedColor = customLines.find(
+                (line) => line.y === yValue
+            ).color;
 
             if (definedColor) {
                 return definedColor;
@@ -1100,7 +1101,7 @@ export default function module() {
      * @private
      */
     function findLongestPath(acc, path) {
-        return acc > path.getTotalLength() ? acc : path.getTotalLength();
+        return acc > path.pathLength ? acc : path.pathLength;
     }
 
     /**
@@ -1304,7 +1305,7 @@ export default function module() {
         const maxIterations = 100;
 
         let lengthStart = 0;
-        let lengthEnd = path.getTotalLength();
+        let lengthEnd = path.pathLength;
         let point;
 
         try {
