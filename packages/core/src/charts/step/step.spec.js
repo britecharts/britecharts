@@ -147,8 +147,9 @@ describe('Step Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stepChart);
-                actual = containerFixture.selectAll('.step-chart').nodes()
-                    .length;
+                actual = containerFixture
+                    .selectAll('.step-chart')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -159,8 +160,9 @@ describe('Step Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stepChart);
-                actual = containerFixture.selectAll('.step-chart .step').nodes()
-                    .length;
+                actual = containerFixture
+                    .selectAll('.step-chart .step')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -171,15 +173,15 @@ describe('Step Chart', () => {
         describe('when hovering a step', () => {
             it('should trigger a callback', () => {
                 const step = containerFixture.select('.step:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 3;
 
                 stepChart.on('customMouseOver', callbackSpy);
                 step.dispatch('mouseover');
 
-                expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
+                expect(callbackSpy.mock.calls[0].length).toBe(
                     expectedArgumentsCount
                 );
             });
@@ -188,15 +190,15 @@ describe('Step Chart', () => {
         describe('when moving on a step', () => {
             it('should trigger a callback', () => {
                 const step = containerFixture.select('.step:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 3;
 
                 stepChart.on('customMouseMove', callbackSpy);
                 step.dispatch('mousemove');
 
-                expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
+                expect(callbackSpy.mock.calls[0].length).toBe(
                     expectedArgumentsCount
                 );
             });
@@ -205,15 +207,15 @@ describe('Step Chart', () => {
         describe('when moving out of a step', () => {
             it('should trigger a callback', () => {
                 const step = containerFixture.select('.step:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 3;
 
                 stepChart.on('customMouseOut', callbackSpy);
                 step.dispatch('mouseout');
 
-                expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
+                expect(callbackSpy.mock.calls[0].length).toBe(
                     expectedArgumentsCount
                 );
             });

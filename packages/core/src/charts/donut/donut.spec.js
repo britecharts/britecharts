@@ -272,8 +272,9 @@ donutDataSets.forEach((datasetName) => {
                     let actual;
 
                     containerFixture.datum(newDataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart').nodes()
-                        .length;
+                    actual = containerFixture
+                        .selectAll('.donut-chart')
+                        .nodes().length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -658,43 +659,43 @@ donutDataSets.forEach((datasetName) => {
         describe('Lifecycle', () => {
             describe('when mouse events are triggered', () => {
                 it('should trigger an event on click', () => {
-                    let callback = jasmine.createSpy('clickCallback'),
+                    let callback = jest.fn(),
                         firstSlice = containerFixture.select(
                             '.chart-group .arc path'
                         );
 
                     donutChart.on('customClick', callback);
                     firstSlice.dispatch('click');
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(3);
+                    expect(callback.mock.calls.length).toBe(1);
+                    expect(callback.mock.calls[0].length).toBe(3);
                 });
 
                 it('should trigger an event on hover', () => {
-                    let callback = jasmine.createSpy('hoverCallback'),
+                    let callback = jest.fn(),
                         firstSlice = containerFixture.select(
                             '.chart-group .arc path'
                         );
 
                     donutChart.on('customMouseOver', callback);
                     firstSlice.dispatch('mouseover');
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(3);
+                    expect(callback.mock.calls.length).toBe(1);
+                    expect(callback.mock.calls[0].length).toBe(3);
                 });
 
                 it('should trigger an event on mouse out', () => {
-                    let callback = jasmine.createSpy('mouseOutCallback'),
+                    let callback = jest.fn(),
                         firstSlice = containerFixture.select(
                             '.chart-group .arc path'
                         );
 
                     donutChart.on('customMouseOut', callback);
                     firstSlice.dispatch('mouseout');
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(3);
+                    expect(callback.mock.calls.length).toBe(1);
+                    expect(callback.mock.calls[0].length).toBe(3);
                 });
 
                 it('should trigger a callback on mouse move', () => {
-                    let callback = jasmine.createSpy('mouseMoveCallback'),
+                    let callback = jest.fn(),
                         firstSlice = containerFixture.select(
                             '.chart-group .arc path'
                         );
@@ -702,8 +703,8 @@ donutDataSets.forEach((datasetName) => {
                     donutChart.on('customMouseMove', callback);
                     firstSlice.dispatch('mousemove');
 
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(3);
+                    expect(callback.mock.calls.length).toBe(1);
+                    expect(callback.mock.calls[0].length).toBe(3);
                 });
             });
 

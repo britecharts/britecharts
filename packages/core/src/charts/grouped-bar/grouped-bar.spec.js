@@ -276,7 +276,7 @@ describe('Grouped Bar Chart', () => {
         xdescribe('when clicking on the chart', () => {
             it('should trigger a callback', () => {
                 const bar = containerFixture.select('.grouped-bar');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCalls = 1;
                 const expectedArguments = 2;
                 let actualCalls;
@@ -285,8 +285,8 @@ describe('Grouped Bar Chart', () => {
                 groupedBarChart.on('customClick', callbackSpy);
                 bar.dispatch('click');
 
-                actualCalls = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCalls = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCalls).toEqual(expectedCalls);
                 expect(actualArgumentsNumber).toEqual(expectedArguments);
@@ -298,7 +298,7 @@ describe('Grouped Bar Chart', () => {
                 const chart = containerFixture.selectAll(
                     '.grouped-bar .chart-group'
                 );
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCalls = 1;
                 const expectedArguments = 2;
                 let actualCalls;
@@ -306,8 +306,8 @@ describe('Grouped Bar Chart', () => {
 
                 groupedBarChart.on('customMouseOver', callbackSpy);
                 chart.dispatch('mouseover');
-                actualCalls = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCalls = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCalls).toEqual(expectedCalls);
                 expect(actualArgumentsNumber).toEqual(expectedArguments);
@@ -317,7 +317,7 @@ describe('Grouped Bar Chart', () => {
                 const chart = containerFixture.selectAll(
                     '.grouped-bar .chart-group'
                 );
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCalls = 1;
                 const expectedArguments = 2;
                 let actualCalls;
@@ -325,8 +325,8 @@ describe('Grouped Bar Chart', () => {
 
                 groupedBarChart.on('customMouseOut', callbackSpy);
                 chart.dispatch('mouseout');
-                actualCalls = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCalls = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCalls).toEqual(expectedCalls);
                 expect(actualArgumentsNumber).toEqual(expectedArguments);

@@ -346,8 +346,9 @@ describe('Bar Chart', () => {
 
                 barChart.orderingFunction(orderFunction);
                 containerFixture.call(barChart);
-                actual = containerFixture.selectAll('.bar-chart .bar').node()
-                    .__data__;
+                actual = containerFixture
+                    .selectAll('.bar-chart .bar')
+                    .node().__data__;
 
                 expect(actual.name).toBe(expected.name);
                 expect(actual.value).toBe(expected.value);
@@ -363,8 +364,9 @@ describe('Bar Chart', () => {
 
                 barChart.orderingFunction(orderFunction);
                 containerFixture.call(barChart);
-                actual = containerFixture.selectAll('.bar-chart .bar').node()
-                    .__data__;
+                actual = containerFixture
+                    .selectAll('.bar-chart .bar')
+                    .node().__data__;
 
                 expect(actual.name).toBe(expected.name);
                 expect(actual.value).toBe(expected.value);
@@ -432,12 +434,10 @@ describe('Bar Chart', () => {
 
                 barChart.hasSingleBarHighlight(false);
                 barChart.highlightBarFunction(customHighlightFunction);
-                const barNotHighlighted = containerFixture.selectAll(
-                    '.bar:nth-child(1)'
-                );
-                const barHighlighted = containerFixture.selectAll(
-                    '.bar:nth-child(2)'
-                );
+                const barNotHighlighted =
+                    containerFixture.selectAll('.bar:nth-child(1)');
+                const barHighlighted =
+                    containerFixture.selectAll('.bar:nth-child(2)');
 
                 const beforeHighlightColor = barNotHighlighted.attr('fill');
 
@@ -474,7 +474,7 @@ describe('Bar Chart', () => {
 
         describe('when clicking on a bar', () => {
             it('should trigger a callback on mouse click', () => {
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
                 const expectedCalls = 1;
                 const expectedArgumentsNumber = 3;
@@ -483,8 +483,8 @@ describe('Bar Chart', () => {
 
                 barChart.on('customClick', callbackSpy);
                 bar.dispatch('click');
-                actualCalls = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCalls = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCalls).toEqual(expectedCalls);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -494,7 +494,7 @@ describe('Bar Chart', () => {
         describe('when hovering a bar', () => {
             it('should trigger a callback on mouse over', () => {
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsNumber = 3;
                 let actualCallCount;
@@ -502,8 +502,8 @@ describe('Bar Chart', () => {
 
                 barChart.on('customMouseOver', callbackSpy);
                 bar.dispatch('mouseover');
-                actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCallCount = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -517,12 +517,12 @@ describe('Bar Chart', () => {
                 let actualArgumentsNumber;
 
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
 
                 barChart.on('customMouseMove', callbackSpy);
                 bar.dispatch('mousemove');
-                actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCallCount = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -536,12 +536,12 @@ describe('Bar Chart', () => {
                 let actualArgumentsNumber;
 
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
 
                 barChart.on('customMouseOut', callbackSpy);
                 bar.dispatch('mouseout');
-                actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCallCount = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);

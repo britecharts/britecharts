@@ -165,8 +165,9 @@ describe('Stacked Bar Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset).call(stackedBarChart);
-                actual = containerFixture.selectAll('.stacked-bar').nodes()
-                    .length;
+                actual = containerFixture
+                    .selectAll('.stacked-bar')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -190,8 +191,9 @@ describe('Stacked Bar Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset).call(stackedBarChart);
-                actual = containerFixture.selectAll('.stacked-bar .bar').nodes()
-                    .length;
+                actual = containerFixture
+                    .selectAll('.stacked-bar .bar')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -277,7 +279,7 @@ describe('Stacked Bar Chart', () => {
         xdescribe('when clicking on the chart', () => {
             it('should trigger a callback', () => {
                 const chart = containerFixture.select('.stacked-bar');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
                 let actualCalls;
@@ -285,8 +287,8 @@ describe('Stacked Bar Chart', () => {
 
                 stackedBarChart.on('customClick', callbackSpy);
                 chart.dispatch('click');
-                actualCalls = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCalls = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCalls).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsCount);
@@ -298,15 +300,15 @@ describe('Stacked Bar Chart', () => {
                 const chart = containerFixture.selectAll(
                     '.stacked-bar .chart-group'
                 );
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
                 stackedBarChart.on('customMouseOver', callbackSpy);
                 chart.dispatch('mouseover');
 
-                expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
+                expect(callbackSpy.mock.calls[0].length).toBe(
                     expectedArgumentsCount
                 );
             });
@@ -315,15 +317,15 @@ describe('Stacked Bar Chart', () => {
                 const chart = containerFixture.selectAll(
                     '.stacked-bar .chart-group'
                 );
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
                 stackedBarChart.on('customMouseOut', callbackSpy);
                 chart.dispatch('mouseout');
 
-                expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
+                expect(callbackSpy.mock.calls[0].length).toBe(
                     expectedArgumentsCount
                 );
             });

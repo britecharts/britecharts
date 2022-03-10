@@ -303,7 +303,6 @@
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.0.0",
     "babel-plugin-async-import": "^2.0.2",
-    "canvas": "^2.9.0",
     "concurrently": "^4.1.0",
     "eslint": "^7.13.0",
     "husky": "^7.0.0",

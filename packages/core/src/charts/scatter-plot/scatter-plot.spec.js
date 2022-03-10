@@ -1008,7 +1008,7 @@ describe('Scatter Plot', () => {
     describe('Lifecycle', () => {
         describe('when clicking on a point', function () {
             it('should trigger a callback on mouse click', () => {
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const scatterDataPoint = containerFixture.select('svg');
                 const expectedCallCount = 1;
                 const expectedArguments = 3;
@@ -1016,8 +1016,10 @@ describe('Scatter Plot', () => {
                 scatterPlot.on('customClick', callbackSpy);
                 scatterDataPoint.dispatch('click');
 
-                expect(callbackSpy.calls.count()).toEqual(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toEqual(
+                expect(callbackSpy.mock.calls.length).toEqual(
+                    expectedCallCount
+                );
+                expect(callbackSpy.mock.calls[0].length).toEqual(
                     expectedArguments
                 );
             });
@@ -1025,7 +1027,7 @@ describe('Scatter Plot', () => {
 
         describe('mouse events', () => {
             it('should dispatch customMouseOver event', () => {
-                const callback = jasmine.createSpy('hoverCallback');
+                const callback = jest.fn();
                 const container = containerFixture.selectAll('svg');
                 const expectedCallCount = 1;
                 const expectedArguments = 2;
@@ -1033,14 +1035,14 @@ describe('Scatter Plot', () => {
                 scatterPlot.on('customMouseOver', callback);
                 container.dispatch('mouseover');
 
-                expect(callback.calls.count()).toEqual(expectedCallCount);
-                expect(callback.calls.allArgs()[0].length).toEqual(
+                expect(callback.mock.calls.length).toEqual(expectedCallCount);
+                expect(callback.mock.calls[0].length).toEqual(
                     expectedArguments
                 );
             });
 
             it('should dispatch customMouseOut event', () => {
-                const callback = jasmine.createSpy('hoverCallback');
+                const callback = jest.fn();
                 const container = containerFixture.selectAll('svg');
                 const expectedCallCount = 1;
                 const expectedArguments = 2;
@@ -1048,14 +1050,14 @@ describe('Scatter Plot', () => {
                 scatterPlot.on('customMouseOut', callback);
                 container.dispatch('mouseout');
 
-                expect(callback.calls.count()).toEqual(expectedCallCount);
-                expect(callback.calls.allArgs()[0].length).toEqual(
+                expect(callback.mock.calls.length).toEqual(expectedCallCount);
+                expect(callback.mock.calls[0].length).toEqual(
                     expectedArguments
                 );
             });
 
             it('should dispatch customMouseMove event', () => {
-                const callback = jasmine.createSpy('hoverCallback');
+                const callback = jest.fn();
                 const container = containerFixture.selectAll('svg');
                 const expectedCallCount = 1;
                 const expectedArguments = 3;
@@ -1063,8 +1065,8 @@ describe('Scatter Plot', () => {
                 scatterPlot.on('customMouseMove', callback);
                 container.dispatch('mousemove');
 
-                expect(callback.calls.count()).toEqual(expectedCallCount);
-                expect(callback.calls.allArgs()[0].length).toEqual(
+                expect(callback.mock.calls.length).toEqual(expectedCallCount);
+                expect(callback.mock.calls[0].length).toEqual(
                     expectedArguments
                 );
             });
