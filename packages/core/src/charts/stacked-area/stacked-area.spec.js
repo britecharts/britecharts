@@ -151,9 +151,8 @@ describe('Stacked Area Chart', () => {
                 describe('when x-axis value type is number', () => {
                     beforeEach(function () {
                         dataset = aTestDataSet().withNumericKeys().build();
-                        stackedAreaChart = stackedArea().xAxisValueType(
-                            'number'
-                        );
+                        stackedAreaChart =
+                            stackedArea().xAxisValueType('number');
 
                         containerFixture = d3
                             .select('.test-container')
@@ -264,16 +263,20 @@ describe('Stacked Area Chart', () => {
         });
 
         it('should render an area for each category', () => {
-            const expected = _.chain(dataset).pluck('name').unique().value()
-                .length;
+            const expected = _.chain(dataset)
+                .pluck('name')
+                .unique()
+                .value().length;
             const actual = containerFixture.selectAll('.layer').size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should render an area-outline for each category', () => {
-            const expected = _.chain(dataset).pluck('name').unique().value()
-                .length;
+            const expected = _.chain(dataset)
+                .pluck('name')
+                .unique()
+                .value().length;
             const actual = containerFixture.selectAll('.area-outline').size();
 
             expect(actual).toEqual(expected);
@@ -554,7 +557,7 @@ describe('Stacked Area Chart', () => {
         });
 
         it('should trigger an event on hover', () => {
-            const callback = jasmine.createSpy('hoverCallback');
+            const callback = jest.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCallCount = 1;
             const expectedArgumentCount = 2;
@@ -562,14 +565,14 @@ describe('Stacked Area Chart', () => {
             stackedAreaChart.on('customMouseOver', callback);
             container.dispatch('mouseover');
 
-            expect(callback.calls.count()).toEqual(expectedCallCount);
-            expect(callback.calls.allArgs()[0].length).toEqual(
+            expect(callback.mock.calls.length).toEqual(expectedCallCount);
+            expect(callback.mock.calls[0].length).toEqual(
                 expectedArgumentCount
             );
         });
 
         it('should trigger an event on mouse out', () => {
-            const callback = jasmine.createSpy('mouseOutCallback');
+            const callback = jest.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCallCount = 1;
             const expectedArgumentCount = 2;
@@ -577,14 +580,14 @@ describe('Stacked Area Chart', () => {
             stackedAreaChart.on('customMouseOut', callback);
             container.dispatch('mouseout');
 
-            expect(callback.calls.count()).toEqual(expectedCallCount);
-            expect(callback.calls.allArgs()[0].length).toEqual(
+            expect(callback.mock.calls.length).toEqual(expectedCallCount);
+            expect(callback.mock.calls[0].length).toEqual(
                 expectedArgumentCount
             );
         });
 
         it('should trigger an event on touchmove', () => {
-            const callback = jasmine.createSpy('touchMoveCallback');
+            const callback = jest.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCallCount = 1;
             const expectedArgumentCount = 2;
@@ -592,8 +595,8 @@ describe('Stacked Area Chart', () => {
             stackedAreaChart.on('customTouchMove', callback);
             container.dispatch('touchmove');
 
-            expect(callback.calls.count()).toEqual(expectedCallCount);
-            expect(callback.calls.allArgs()[0].length).toEqual(
+            expect(callback.mock.calls.length).toEqual(expectedCallCount);
+            expect(callback.mock.calls[0].length).toEqual(
                 expectedArgumentCount
             );
         });

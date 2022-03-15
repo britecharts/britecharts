@@ -449,18 +449,20 @@ describe('Line Chart', () => {
 
                     it('should not render the x-axis label', () => {
                         const expected = 0;
-                        const actual = containerFixture.selectAll(
-                            '.x-axis-label'
-                        )['_groups'][0].length;
+                        const actual =
+                            containerFixture.selectAll('.x-axis-label')[
+                                '_groups'
+                            ][0].length;
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should not render any axisLabel', () => {
                         const expected = 0;
-                        const actual = containerFixture.selectAll(
-                            '.y-axis-label'
-                        )['_groups'][0].length;
+                        const actual =
+                            containerFixture.selectAll('.y-axis-label')[
+                                '_groups'
+                            ][0].length;
 
                         expect(actual).toEqual(expected);
                     });
@@ -491,18 +493,20 @@ describe('Line Chart', () => {
 
                     it('should render the x-axis label', () => {
                         let expected = 1,
-                            actual = containerFixture.selectAll(
-                                '.x-axis-label'
-                            )['_groups'][0].length;
+                            actual =
+                                containerFixture.selectAll('.x-axis-label')[
+                                    '_groups'
+                                ][0].length;
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should render any axisLabel', () => {
                         let expected = 1,
-                            actual = containerFixture.selectAll(
-                                '.y-axis-label'
-                            )['_groups'][0].length;
+                            actual =
+                                containerFixture.selectAll('.y-axis-label')[
+                                    '_groups'
+                                ][0].length;
 
                         expect(actual).toEqual(expected);
                     });
@@ -899,7 +903,7 @@ describe('Line Chart', () => {
         });
 
         it('should trigger an event on hover', () => {
-            const callback = jasmine.createSpy('hoverCallback');
+            const callback = jest.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCalls = 1;
             const expectedArguments = 2;
@@ -907,12 +911,12 @@ describe('Line Chart', () => {
             lineChart.on('customMouseOver', callback);
             container.dispatch('mouseover');
 
-            expect(callback.calls.count()).toBe(expectedCalls);
-            expect(callback.calls.allArgs()[0].length).toBe(expectedArguments);
+            expect(callback.mock.calls.length).toBe(expectedCalls);
+            expect(callback.mock.calls[0].length).toBe(expectedArguments);
         });
 
         it('should trigger an event on mouse out', () => {
-            const callback = jasmine.createSpy('mouseOutCallback');
+            const callback = jest.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCalls = 1;
             const expectedArguments = 2;
@@ -920,12 +924,12 @@ describe('Line Chart', () => {
             lineChart.on('customMouseOut', callback);
             container.dispatch('mouseout');
 
-            expect(callback.calls.count()).toBe(expectedCalls);
-            expect(callback.calls.allArgs()[0].length).toBe(expectedArguments);
+            expect(callback.mock.calls.length).toBe(expectedCalls);
+            expect(callback.mock.calls[0].length).toBe(expectedArguments);
         });
 
         it('should trigger an event on touchmove', () => {
-            const callback = jasmine.createSpy('touchMoveCallback');
+            const callback = jest.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCalls = 1;
             const expectedArguments = 2;
@@ -933,10 +937,8 @@ describe('Line Chart', () => {
             lineChart.on('customTouchMove', callback);
             container.dispatch('touchmove');
 
-            expect(callback.calls.count()).toEqual(expectedCalls);
-            expect(callback.calls.allArgs()[0].length).toEqual(
-                expectedArguments
-            );
+            expect(callback.mock.calls.length).toEqual(expectedCalls);
+            expect(callback.mock.calls[0].length).toEqual(expectedArguments);
         });
 
         it('should show the overlay when the mouse is hovering', () => {

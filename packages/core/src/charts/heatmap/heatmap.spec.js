@@ -143,7 +143,7 @@ describe('Heatmap Chart', () => {
         describe('when hovering a box', () => {
             it('should trigger a callback on mouse over', () => {
                 const box = containerFixture.selectAll('.box:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsNumber = 3;
                 let actualCallCount;
@@ -151,8 +151,8 @@ describe('Heatmap Chart', () => {
 
                 heatmapChart.on('customMouseOver', callbackSpy);
                 box.dispatch('mouseover');
-                actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCallCount = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -166,12 +166,12 @@ describe('Heatmap Chart', () => {
                 let actualArgumentsNumber;
 
                 const box = containerFixture.selectAll('.box:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
 
                 heatmapChart.on('customMouseMove', callbackSpy);
                 box.dispatch('mousemove');
-                actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCallCount = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -185,12 +185,12 @@ describe('Heatmap Chart', () => {
                 let actualArgumentsNumber;
 
                 const box = containerFixture.selectAll('.box:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
 
                 heatmapChart.on('customMouseOut', callbackSpy);
                 box.dispatch('mouseout');
-                actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCallCount = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -204,12 +204,12 @@ describe('Heatmap Chart', () => {
                 let actualArgumentsNumber;
 
                 const box = containerFixture.selectAll('.box:nth-child(1)');
-                const callbackSpy = jasmine.createSpy('callback');
+                const callbackSpy = jest.fn();
 
                 heatmapChart.on('customClick', callbackSpy);
                 box.dispatch('click');
-                actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                actualCallCount = callbackSpy.mock.calls.length;
+                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);

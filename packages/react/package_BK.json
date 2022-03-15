@@ -207,15 +207,5 @@
         }
       }
     ]
-  },
-  "jest": {
-    "moduleDirectories": ["node_modules"],
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/src/templates/",
-      "<rootDir>/lib/"
-    ],
-    "setupFiles": ["jest-canvas-mock"],
-    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
   }
 }

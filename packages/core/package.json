@@ -106,21 +106,14 @@
           "regenerator": true
         }
       ]
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "istanbul"
-        ]
-      }
-    }
+    ]
   },
   "scripts": {
     "storybook:build": "build-storybook -c .storybook -o build",
     "demo": "start-storybook -p 1111",
     "test:ci": "karma start --single-run --browsers=ChromeHeadlessCustom --env=test",
     "test:once": "karma start --single-run",
-    "test": "karma start --env=test",
+    "test": "jest ",
     "test:watch": "karma start --env=test",
     "lint": "eslint src/charts/ src/tasks test/ webpack.*.js --cache",
     "build": "webpack --env=production",
