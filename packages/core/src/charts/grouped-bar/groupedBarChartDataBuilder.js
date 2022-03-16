@@ -2,8 +2,8 @@ import _ from 'underscore';
 import jsonTwoSources from './groupedbarDataTwoSources.json';
 import jsonThreeSources from './groupedbarDataThreeSources.json';
 
-export function GroupedBarChartDataBuilder(config) {
-    this.Klass = GroupedBarChartDataBuilder;
+export function GroupedBarDataBuilder(config) {
+    this.Klass = GroupedBarDataBuilder;
 
     this.config = _.defaults({}, config);
 

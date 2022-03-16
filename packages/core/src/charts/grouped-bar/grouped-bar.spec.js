@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
 
 import chart from './grouped-bar';
-import { GroupedBarChartDataBuilder } from './groupedBarChartDataBuilder';
+import { GroupedBarDataBuilder } from './groupedBarChartDataBuilder';
 
-const aTestDataSet = () => new GroupedBarChartDataBuilder();
+const aTestDataSet = () => new GroupedBarDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };

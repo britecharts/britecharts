@@ -1,16 +1,31 @@
 import _ from 'underscore';
 
-export function BulletChartDataBuilder(config) {
-    this.Klass = BulletChartDataBuilder;
+export function BulletDataBuilder(config) {
+    this.Klass = BulletDataBuilder;
 
     this.config = _.defaults({}, config);
+
+    this.withAllElements = function () {
+        var attributes = _.extend({}, this.config, {
+            data: [
+                {
+                    title: 'Title',
+                    subtitle: 'Subtitle',
+                    ranges: [1500, 2100, 3500],
+                    measures: [1800, 2200],
+                    markers: [2600],
+                },
+            ],
+        });
+
+        return new this.Klass(attributes);
+    };
 
     this.withNoMarker = function () {
         var attributes = _.extend({}, this.config, {
             data: [
                 {
-                    title: 'CPU 1',
-                    subtitle: 'GHz',
+                    title: 'No Marker',
                     ranges: [1500, 2100, 3500],
                     measures: [1800, 2200],
                     markers: [],
