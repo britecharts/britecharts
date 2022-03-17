@@ -6,11 +6,20 @@
 $child-font-size: 1em !important;
 $letter-spacing: 0.5px;
 $value-letter-spacing: 0.8px;
-$enter-opacity: 0.97;
+$enter-opacity: 0.6;
 
 .britechart-legend {
     .legend-entry {
         font-size: $text-size-medium;
+
+        &.is-faded {
+            .legend-entry-name,
+            .legend-entry-value,
+            .legend-circle {
+                opacity: $enter-opacity;
+                transition: opacity 0.2s ease-out;
+            }
+        }
     }
 
     .legend-entry-name,
@@ -25,14 +34,5 @@ $enter-opacity: 0.97;
     .legend-entry-value {
         letter-spacing: $value-letter-spacing;
         text-anchor: end;
-    }
-
-    &.is-faded {
-        .legend-entry-name,
-        .legend-entry-value,
-        .legend-circle {
-            opacity: $enter-opacity;
-            transition: opacity 0.2s ease-out;
-        }
     }
 }
