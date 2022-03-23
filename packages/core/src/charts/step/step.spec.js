@@ -22,7 +22,7 @@ describe('Step Chart', () => {
         stepChart = chart();
 
         containerFixture = d3.select('.test-container');
-        containerFixture.datum(dataset.data).call(stepChart);
+        containerFixture.datum(dataset).call(stepChart);
     });
 
     // remove the html fixture from the DOM
@@ -134,7 +134,7 @@ describe('Step Chart', () => {
         });
 
         it('should render a step for each data entry', () => {
-            const expected = dataset.data.length;
+            const expected = dataset.length;
             const actual = containerFixture.selectAll('.step').size();
 
             expect(actual).toEqual(expected);

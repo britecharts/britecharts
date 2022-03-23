@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
 
 import chart from './bullet';
-import { BulletChartDataBuilder } from './bulletChartDataBuilder';
+import { BulletDataBuilder } from './bulletChartDataBuilder';
 
-const aTestDataSet = () => new BulletChartDataBuilder();
+const aTestDataSet = () => new BulletDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
@@ -121,7 +121,8 @@ describe('Bullet Chart', () => {
                 let diff = 0.2;
 
                 it('sets correct default range for range bars', () => {
-                    const expectedStartOpacity = bulletChart.startMaxRangeOpacity();
+                    const expectedStartOpacity =
+                        bulletChart.startMaxRangeOpacity();
                     const rangeBars = containerFixture
                         .selectAll('rect.range')
                         .nodes()
@@ -156,8 +157,9 @@ describe('Bullet Chart', () => {
         describe('markers', () => {
             it('should render a marker', () => {
                 let expected = 1;
-                let actual = containerFixture.selectAll('.marker-line').nodes()
-                    .length;
+                let actual = containerFixture
+                    .selectAll('.marker-line')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });

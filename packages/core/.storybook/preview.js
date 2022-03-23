@@ -1,6 +1,6 @@
 import { addParameters } from '@storybook/html';
 import '@storybook/addon-console';
-// import '../src/global.css';
+import '../src/styles/britecharts.scss';
 
 addParameters({
     a11y: {

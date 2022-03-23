@@ -160,11 +160,9 @@ export default function module() {
      */
     function buildScales() {
         const decidedRange = isReverse ? [chartWidth, 0] : [0, chartWidth];
+        const domain = [0, Math.max(...ranges, ...markers, ...measures)];
 
-        xScale = scaleLinear()
-            .domain([0, Math.max(...ranges, ...markers, ...measures)])
-            .rangeRound(decidedRange)
-            .nice();
+        xScale = scaleLinear().domain(domain).rangeRound(decidedRange).nice();
 
         // Derive width scales from x scales
         barWidth = bulletWidth(xScale);
@@ -178,7 +176,9 @@ export default function module() {
             .reverse();
 
         // initialize range and measure bars and marker line colors
-        [rangeColor, measureColor, markerColor] = colorSchema;
+        rangeColor = colorSchema[0];
+        measureColor = colorSchema[1];
+        markerColor = colorSchema[2];
     }
 
     /**
