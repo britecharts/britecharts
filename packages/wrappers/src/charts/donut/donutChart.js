@@ -1,17 +1,16 @@
-// import { donut as donutChart } from 'britecharts';
-import donutChart from 'britecharts/dist/umd/donut.min';
 import { select } from 'd3-selection';
+import { donut } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const donut = {};
+const donutChart = {};
 
-donut.create = (el, data, configuration = {}) => {
+donutChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = donutChart();
+    const chart = donut();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -22,7 +21,7 @@ donut.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-donut.update = (el, data, configuration = {}, chart) => {
+donutChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -39,6 +38,6 @@ donut.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-donut.destroy = () => {};
+donutChart.destroy = () => {};
 
-export default donut;
+export default donutChart;

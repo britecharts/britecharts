@@ -1,16 +1,18 @@
-import barChart from 'britecharts/dist/umd/bar.min';
 import { select } from 'd3-selection';
+
+import { bar } from '@britecharts/core';
+
 import {
     validateConfiguration,
     validateContainer,
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const bar = {};
+const barChart = {};
 
-bar.create = (el, data, configuration = {}) => {
+barChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = barChart();
+    const chart = bar();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -20,7 +22,7 @@ bar.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-bar.update = (el, data, configuration = {}, chart) => {
+barChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -37,6 +39,6 @@ bar.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-bar.destroy = () => {};
+barChart.destroy = () => {};
 
-export default bar;
+export default barChart;

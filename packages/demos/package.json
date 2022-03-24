@@ -1,6 +1,7 @@
 {
   "name": "@britecharts/demos",
   "packageManager": "yarn@3.2.0",
+  "version": "0.0.0",
   "devDependencies": {
     "@storybook/html": "^6.3.9"
   },

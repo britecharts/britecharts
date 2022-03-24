@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import bar from './barChart';
+import { BarWrapper } from '@britecharts/wrappers';
 
 class Bar extends Component {
     static propTypes = {
@@ -197,7 +197,7 @@ class Bar extends Component {
     };
 
     static defaultProps = {
-        chart: bar,
+        chart: BarWrapper,
         createTooltip: () => null,
     };
 

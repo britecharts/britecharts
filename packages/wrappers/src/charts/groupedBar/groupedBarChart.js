@@ -1,16 +1,16 @@
-import groupedBarChart from 'britecharts/dist/umd/groupedBar.min';
 import { select } from 'd3-selection';
+import { groupedBar } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const groupedBar = {};
+const groupedBarChart = {};
 
-groupedBar.create = (el, data, configuration = {}) => {
+groupedBarChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = groupedBarChart();
+    const chart = groupedBar();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -21,7 +21,7 @@ groupedBar.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-groupedBar.update = (el, data, configuration = {}, chart) => {
+groupedBarChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -38,6 +38,6 @@ groupedBar.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-groupedBar.destroy = () => {};
+groupedBarChart.destroy = () => {};
 
-export default groupedBar;
+export default groupedBarChart;

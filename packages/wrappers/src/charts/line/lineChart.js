@@ -1,17 +1,17 @@
-import lineChart from 'britecharts/dist/umd/line.min';
-
 import { select } from 'd3-selection';
+import { line } from '@britecharts/core';
+
 import {
     validateConfiguration,
     validateContainer,
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const line = {};
+const lineChart = {};
 
-line.create = (el, data, configuration = {}) => {
+lineChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = lineChart();
+    const chart = line();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -22,7 +22,7 @@ line.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-line.update = (el, data, configuration = {}, chart) => {
+lineChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
     // TODO: Review this with Version 4
     const shouldUpdateData =
@@ -44,6 +44,6 @@ line.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-line.destroy = () => {};
+lineChart.destroy = () => {};
 
-export default line;
+export default lineChart;

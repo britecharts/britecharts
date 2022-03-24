@@ -1,16 +1,17 @@
-import tooltipChart from 'britecharts/dist/umd/tooltip.min';
 import { select } from 'd3-selection';
+
+import { tooltip } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const tooltip = {};
+const tooltipChart = {};
 
-tooltip.create = (el, configuration = {}) => {
+tooltipChart.create = (el, configuration = {}) => {
     const container = select(el);
-    const chart = tooltipChart();
+    const chart = tooltip();
 
     chart.topicLabel('values');
 
@@ -25,7 +26,7 @@ tooltip.create = (el, configuration = {}) => {
     return chartConfigured;
 };
 
-tooltip.update = (el, configuration = {}, state = {}, chart) => {
+tooltipChart.update = (el, configuration = {}, state = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -53,6 +54,6 @@ tooltip.update = (el, configuration = {}, state = {}, chart) => {
     return chartConfigured;
 };
 
-tooltip.destroy = () => {};
+tooltipChart.destroy = () => {};
 
-export default tooltip;
+export default tooltipChart;

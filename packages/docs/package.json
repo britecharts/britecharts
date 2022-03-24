@@ -1,6 +1,7 @@
 {
   "name": "@britecharts/docs",
   "packageManager": "yarn@3.2.0",
+  "version": "0.0.0",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "yarn run docs:readme && yarn run docs:api && docusaurus start",

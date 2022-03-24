@@ -1,4 +1,4 @@
-import stepChart from 'britecharts/dist/umd/step.min';
+import { step } from '@britecharts/core';
 import { select } from 'd3-selection';
 import {
     validateConfiguration,
@@ -8,11 +8,11 @@ import { applyConfiguration } from '../helpers/configuration';
 
 // TODO: Implement the correct loading state(line, bar, and donut are the available options atm)
 
-const step = {};
+const stepChart = {};
 
-step.create = (el, data, configuration = {}) => {
+stepChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = stepChart();
+    const chart = step();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -23,7 +23,7 @@ step.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-step.update = (el, data, configuration = {}, chart) => {
+stepChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -40,6 +40,6 @@ step.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-step.destroy = () => {};
+stepChart.destroy = () => {};
 
-export default step;
+export default stepChart;

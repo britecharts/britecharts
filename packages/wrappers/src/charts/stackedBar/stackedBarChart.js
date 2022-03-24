@@ -1,4 +1,4 @@
-import stackedBarChart from 'britecharts/dist/umd/stackedBar.min';
+import { stackedBar } from '@britecharts/core';
 import { select } from 'd3-selection';
 import {
     validateConfiguration,
@@ -6,11 +6,11 @@ import {
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const stackedBar = {};
+const stackedBarChart = {};
 
-stackedBar.create = (el, data, configuration = {}) => {
+stackedBarChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = stackedBarChart();
+    const chart = stackedBar();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -21,7 +21,7 @@ stackedBar.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-stackedBar.update = (el, data, configuration = {}, chart) => {
+stackedBarChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -38,6 +38,6 @@ stackedBar.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-stackedBar.destroy = () => {};
+stackedBarChart.destroy = () => {};
 
-export default stackedBar;
+export default stackedBarChart;
