@@ -1,16 +1,16 @@
-import legendChart from 'britecharts/dist/umd/legend.min';
 import { select } from 'd3-selection';
+import { legend } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const legend = {};
+const legendChart = {};
 
-legend.create = (el, data, configuration = {}) => {
+legendChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = legendChart();
+    const chart = legend();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -21,7 +21,7 @@ legend.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-legend.update = (el, data, configuration = {}, chart) => {
+legendChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -38,6 +38,6 @@ legend.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-legend.destroy = () => {};
+legendChart.destroy = () => {};
 
-export default legend;
+export default legendChart;

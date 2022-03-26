@@ -1,16 +1,16 @@
-import bulletChart from 'britecharts/dist/umd/bullet.min';
 import { select } from 'd3-selection';
+import { bullet } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const bullet = {};
+const bulletChart = {};
 
-bullet.create = (el, data, configuration = {}) => {
+bulletChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = bulletChart();
+    const chart = bullet();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -21,7 +21,7 @@ bullet.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-bullet.update = (el, data, configuration = {}, chart) => {
+bulletChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -38,6 +38,6 @@ bullet.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-bullet.destroy = () => {};
+bulletChart.destroy = () => {};
 
-export default bullet;
+export default bulletChart;

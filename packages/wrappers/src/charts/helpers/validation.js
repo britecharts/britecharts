@@ -1,4 +1,4 @@
-import { britechartsCustomEvents } from '../constants';
+import { britechartsCustomEvents } from '../../constants';
 
 const isNotCustomEvent = (configName) =>
     britechartsCustomEvents.indexOf(configName) === -1;
@@ -6,9 +6,8 @@ const isNotCustomEvent = (configName) =>
 export const validateConfiguration = (chart, configuration) => {
     const configurationProperties = Object.keys(configuration);
     // eslint-disable-next-line prettier/prettier
-    const configurationPropertiesWithoutEvents = configurationProperties.filter(
-        isNotCustomEvent
-    );
+    const configurationPropertiesWithoutEvents =
+        configurationProperties.filter(isNotCustomEvent);
     const supportedMethods = Object.keys(chart.prototype.constructor);
 
     const notSupportedMethods = configurationPropertiesWithoutEvents.filter(

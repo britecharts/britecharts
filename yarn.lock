@@ -1905,7 +1905,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@britecharts/core@workspace:packages/core":
+"@britecharts/core@workspace:^, @britecharts/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@britecharts/core@workspace:packages/core"
   dependencies:
@@ -1998,6 +1998,8 @@ __metadata:
   resolution: "@britecharts/react@workspace:packages/react"
   dependencies:
     "@babel/core": ^7.17.5
+    "@britecharts/core": "workspace:^"
+    "@britecharts/wrappers": "workspace:^"
     "@mdx-js/react": ^1.6.22
     "@storybook/addon-actions": ^6.4.19
     "@storybook/addon-docs": ^6.4.19
@@ -2010,9 +2012,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@britecharts/wrappers@workspace:packages/wrappers":
+"@britecharts/wrappers@workspace:^, @britecharts/wrappers@workspace:packages/wrappers":
   version: 0.0.0-use.local
   resolution: "@britecharts/wrappers@workspace:packages/wrappers"
+  dependencies:
+    "@britecharts/core": "workspace:^"
   languageName: unknown
   linkType: soft
 

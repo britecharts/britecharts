@@ -1,6 +1,10 @@
 {
   "name": "@britecharts/core",
   "packageManager": "yarn@3.2.0",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/typings/index.d.ts",
   "dependencies": {
     "base-64": "^0.1.0",
     "d3-axis": "^1.0.12",
@@ -110,6 +114,7 @@
   },
   "scripts": {
     "storybook:build": "build-storybook -c .storybook -o build",
+    "start": "yarn run demo",
     "demo": "start-storybook -p 1111",
     "test": "jest ",
     "lint": "eslint src/charts/ src/tasks test/ webpack.*.js --cache",

@@ -1,4 +1,4 @@
-import sparklineChart from 'britecharts/dist/umd/sparkline.min';
+import { sparkline } from '@britecharts/core';
 import { select } from 'd3-selection';
 import {
     validateConfiguration,
@@ -6,11 +6,11 @@ import {
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const sparkline = {};
+const sparklineChart = {};
 
-sparkline.create = (el, data, configuration = {}) => {
+sparklineChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = sparklineChart();
+    const chart = sparkline();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -21,7 +21,7 @@ sparkline.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-sparkline.update = (el, data, configuration = {}, chart) => {
+sparklineChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
 
     validateContainer(container);
@@ -38,6 +38,6 @@ sparkline.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-sparkline.destroy = () => {};
+sparklineChart.destroy = () => {};
 
-export default sparkline;
+export default sparklineChart;

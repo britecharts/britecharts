@@ -1,4 +1,5 @@
-import stackedAreaChart from 'britecharts/dist/umd/stackedArea.min';
+import { stackedArea } from '@britecharts/core';
+
 import { select } from 'd3-selection';
 import {
     validateConfiguration,
@@ -6,11 +7,11 @@ import {
 } from '../helpers/validation';
 import { applyConfiguration } from '../helpers/configuration';
 
-const stackedArea = {};
+const stackedAreaChart = {};
 
-stackedArea.create = (el, data, configuration = {}) => {
+stackedAreaChart.create = (el, data, configuration = {}) => {
     const container = select(el);
-    const chart = stackedAreaChart();
+    const chart = stackedArea();
 
     validateContainer(container);
     validateConfiguration(chart, configuration);
@@ -21,7 +22,7 @@ stackedArea.create = (el, data, configuration = {}) => {
     return chart;
 };
 
-stackedArea.update = (el, data, configuration = {}, chart) => {
+stackedAreaChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
     const shouldUpdateData = data && data.length;
 
@@ -39,6 +40,6 @@ stackedArea.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-stackedArea.destroy = () => {};
+stackedAreaChart.destroy = () => {};
 
-export default stackedArea;
+export default stackedAreaChart;

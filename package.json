@@ -1,8 +1,9 @@
 {
   "name": "britecharts",
   "packageManager": "yarn@3.2.0",
+  "version": "0.0.0",
   "description": "D3.js based Modular Charting Library",
-  "main": "dist/umd/bundle/britecharts.bundled.min.js",
+  "main": "index.js",
   "module": "src/index.js",
   "types": "src/typings/index.d.ts",
   "contributors": [
@@ -328,7 +329,7 @@
     "lint:styles": "yarn run stylelint",
     "lint": "yarn workspaces lint",
     "posttest": "yarn run format",
-    "start": "concurrently \"yarn run docs\" \"yarn run demos\"",
+    "start": "yarn workspaces foreach -vpiR run start",
     "stylelint:fix": "stylelint 'src/styles/**/*.scss' --fix",
     "stylelint": "stylelint 'src/styles/**/*.scss'",
     "prepare": "husky install"

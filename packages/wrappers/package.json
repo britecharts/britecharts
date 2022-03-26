@@ -1,4 +1,10 @@
 {
   "name": "@britecharts/wrappers",
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "dependencies": {
+    "@britecharts/core": "workspace:^"
+  }
 }

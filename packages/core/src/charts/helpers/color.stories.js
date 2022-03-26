@@ -82,4 +82,4 @@ export const SingleColors = () => {
     return container;
 };
 
-export default { title: 'Charts/Colors' };
+export default { title: 'Attributes/Colors' };
