@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import line from './lineChart';
+
+import { LineWrapper } from '@britecharts/wrappers';
+
 import { axisTimeCombinations as combinations } from '../constants';
 
 class Line extends React.Component {
@@ -187,7 +189,7 @@ class Line extends React.Component {
     };
 
     static defaultProps = {
-        chart: line,
+        chart: LineWrapper,
         createTooltip: () => null,
     };
 
