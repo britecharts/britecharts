@@ -3,7 +3,6 @@ import React from 'react';
 import StackedArea from './StackedArea';
 import Tooltip from '../tooltip/Tooltip';
 import stackedAreaData from './stackedAreaChart.fixtures';
-import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/StackedArea',

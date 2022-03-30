@@ -2,7 +2,6 @@ import React from 'react';
 
 import GroupedBar from './GroupedBar';
 import groupedBarData from './groupedBarChart.fixtures';
-import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/GroupedBar',

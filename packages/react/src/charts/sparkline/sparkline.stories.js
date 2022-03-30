@@ -2,7 +2,6 @@ import React from 'react';
 
 import Sparkline from './Sparkline';
 import sparklineData from './sparklineChart.fixtures';
-import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/Sparkline',

@@ -2,7 +2,6 @@ import React from 'react';
 
 import Step from './Step';
 import stepData from './stepChart.fixtures';
-import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/Step',

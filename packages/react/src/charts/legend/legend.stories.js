@@ -2,7 +2,6 @@ import React from 'react';
 
 import Legend from './Legend';
 import legendData from './legendChart.fixtures';
-import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/Legend',

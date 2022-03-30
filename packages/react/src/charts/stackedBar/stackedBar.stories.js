@@ -3,7 +3,6 @@ import React from 'react';
 import StackedBar from './StackedBar';
 import Tooltip from '../tooltip/Tooltip';
 import stackedBarData from './stackedBarChart.fixtures';
-import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/StackedBar',
