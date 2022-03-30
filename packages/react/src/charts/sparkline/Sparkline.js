@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import sparkline from './sparklineChart';
+
+import { SparklineWrapper } from '@britecharts/wrappers';
 
 class Sparkline extends React.Component {
     static propTypes = {
@@ -122,7 +123,7 @@ class Sparkline extends React.Component {
     };
 
     static defaultProps = {
-        chart: sparkline,
+        chart: SparklineWrapper,
         createTooltip: () => null,
     };
 
