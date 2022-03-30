@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Donut from './Donut';
+import Legend from '../legend/Legend';
 import donutData from './donutChart.fixtures';
 import { colors } from '@britecharts/core';
 
@@ -28,6 +29,48 @@ export const WithHoverEvent = () => {
             highlightSliceById={1}
             isAnimated={false}
         />
+    );
+};
+
+export const WithHighlightedLegend = () => {
+    const data = donutData.with4Slices();
+    const legendMargin = {
+        top: 10,
+        bottom: 10,
+        left: 0,
+        right: 30,
+    };
+    const width = 500;
+    const [highlightedSlice, setHighlightedSlice] = React.useState(null);
+
+    const handleMouseOver = (data) => {
+        setHighlightedSlice(data.data.id);
+    };
+    const handleMouseOut = (data) => {
+        setHighlightedSlice(99999);
+    };
+
+    return (
+        <>
+            <Donut
+                data={data}
+                height={width}
+                width={width}
+                externalRadius={width / 2.5}
+                internalRadius={width / 5}
+                isAnimated={false}
+                highlightSliceById={highlightedSlice}
+                customMouseOver={handleMouseOver.bind(this)}
+                customMouseOut={handleMouseOut.bind(this)}
+            />
+            <Legend
+                data={donutData.with4Slices()}
+                height={200}
+                width={width}
+                margin={legendMargin}
+                highlightEntryById={highlightedSlice}
+            />
+        </>
     );
 };
 
