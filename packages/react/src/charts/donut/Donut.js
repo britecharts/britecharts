@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import donut from './donutChart';
+import { DonutWrapper } from '@britecharts/wrappers';
 
 export default class Donut extends Component {
     static propTypes = {
@@ -131,7 +131,7 @@ export default class Donut extends Component {
     };
 
     static defaultProps = {
-        chart: donut,
+        chart: DonutWrapper,
         isAnimated: true,
     };
 
