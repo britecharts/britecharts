@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import tooltip from './tooltipChart';
+
+import { TooltipWrapper } from '@britecharts/wrappers';
+
 import { axisTimeCombinations as combinations } from '../constants';
 
 const tooltipContainerWithMarkerSelector =
@@ -149,7 +151,7 @@ export default class Tooltip extends React.Component {
     };
 
     static defaultProps = {
-        chart: tooltip,
+        chart: TooltipWrapper,
     };
 
     constructor(props) {

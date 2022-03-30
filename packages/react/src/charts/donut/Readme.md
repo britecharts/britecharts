@@ -1,32 +1,4 @@
-### With default properties
-
-```js
-const donutData = require('./donutChart.fixtures.js').default;
-
-<Donut data={donutData.with4Slices()} />;
-```
-
-### With hover event
-
-```js
-const donutData = require('./donutChart.fixtures.js').default;
-const logMouseOver = () => console.log('Mouse Over');
-
-<Donut
-    data={donutData.with4Slices()}
-    customMouseOver={logMouseOver}
-    externalRadius={100}
-    internalRadius={47}
-    highlightSliceById={1}
-    isAnimated={false}
-/>;
-```
-
-### With loading state
-
-```js
-<Donut data={[]} isLoading={true} />
-```
+# Donut Chart
 
 ### With highlighted Legend
 

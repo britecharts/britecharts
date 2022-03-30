@@ -1,18 +1,4 @@
-### With default properties
-
-```js
-const chartData = require('./bulletChart.fixtures.js').default;
-
-<Bullet data={chartData.fullTestData()} />;
-```
-
-### With measure under ranges
-
-```js
-const chartData = require('./bulletChart.fixtures.js').default;
-
-<Bullet data={chartData.underRangeNoMarker()} />;
-```
+# Bullet Chart
 
 See more:
 

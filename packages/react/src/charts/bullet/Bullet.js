@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import bullet from './bulletChart';
+import { BulletWrapper } from '@britecharts/wrappers';
 
 class Bullet extends React.Component {
     static propTypes = {
@@ -82,7 +82,7 @@ class Bullet extends React.Component {
     };
 
     static defaultProps = {
-        chart: bullet,
+        chart: BulletWrapper,
         createTooltip: () => null,
     };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import step from './stepChart';
+
+import { StepWrapper } from '@britecharts/wrappers';
 
 class Step extends React.Component {
     static propTypes = {
@@ -84,7 +85,7 @@ class Step extends React.Component {
     };
 
     static defaultProps = {
-        chart: step,
+        chart: StepWrapper,
         createTooltip: () => null,
     };
 

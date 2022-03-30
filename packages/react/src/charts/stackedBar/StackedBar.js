@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import stackedBar from './stackedBarChart';
+
+import { StackedBarWrapper } from '@britecharts/wrappers';
 
 class StackedBar extends React.Component {
     static propTypes = {
@@ -165,7 +166,7 @@ class StackedBar extends React.Component {
     };
 
     static defaultProps = {
-        chart: stackedBar,
+        chart: StackedBarWrapper,
         createTooltip: () => null,
     };
 

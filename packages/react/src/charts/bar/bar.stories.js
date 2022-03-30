@@ -9,7 +9,7 @@ export default {
     component: Bar,
 };
 
-export const WithVerticalDirection = () => {
+export const WithDefaultProperties = () => {
     const data = barData.withLetters();
 
     return <Bar data={data} />;

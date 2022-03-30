@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import groupedBar from './groupedBarChart';
+
+import { GroupedBarWrapper } from '@britecharts/wrappers';
 
 class GroupedBar extends React.Component {
     static propTypes = {
@@ -161,7 +162,7 @@ class GroupedBar extends React.Component {
     };
 
     static defaultProps = {
-        chart: groupedBar,
+        chart: GroupedBarWrapper,
         createTooltip: () => null,
     };
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import stackedArea from './stackedAreaChart';
+
+import { StackedAreaWrapper } from '@britecharts/wrappers';
+
 import { axisTimeCombinations as combinations } from '../constants';
 
 class StackedArea extends React.Component {
@@ -182,7 +184,7 @@ class StackedArea extends React.Component {
     };
 
     static defaultProps = {
-        chart: stackedArea,
+        chart: StackedAreaWrapper,
         createTooltip: () => null,
     };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import legendChart from './legendChart';
+
+import { LegendWrapper } from '@britecharts/wrappers';
 
 export default class Legend extends React.Component {
     static propTypes = {
@@ -90,7 +91,7 @@ export default class Legend extends React.Component {
     };
 
     static defaultProps = {
-        chart: legendChart,
+        chart: LegendWrapper,
     };
 
     constructor(props) {

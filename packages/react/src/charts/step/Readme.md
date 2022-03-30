@@ -1,21 +1,4 @@
-### With default properties
-```js
-    const chartData = require('./stepChart.fixtures.js').default;
-
-    <Step
-        data={chartData.firstDataMethod()}
-    />
-```
-
-### With loading state
-```js
-
-    <Step
-        data={[]}
-        isLoading={true}
-    />
-```
-
+# Step Chart
 
 See more:
 * [API description][APILink]
