@@ -23,7 +23,7 @@ import { getTextWidth, getApproximateNumberOfLines } from '../helpers/text';
  * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
- * var lineChart = line(),
+ * const lineChart = line(),
  *     tooltip = tooltip();
  *
  * tooltip
@@ -138,7 +138,7 @@ export default function module() {
      * @private
      */
     function buildContainerGroups() {
-        var container = svg
+        const container = svg
             .append('g')
             .classed('tooltip-container-group select-disable', true)
             .attr('transform', `translate( ${margin.left}, ${margin.top})`);
@@ -571,7 +571,7 @@ export default function module() {
      */
     function textWrap(text, width, xpos = 0) {
         text.each(function () {
-            var words, word, line, lineNumber, lineHeight, y, dy, tspan;
+            const words, word, line, lineNumber, lineHeight, y, dy, tspan;
 
             text = select(this);
 
@@ -624,7 +624,7 @@ export default function module() {
      * @private
      */
     function updateContent(dataPoint) {
-        var topics = dataPoint[topicLabel];
+        const topics = dataPoint[topicLabel];
 
         // sort order by topicsOrder array if passed
         if (topicsOrder.length) {

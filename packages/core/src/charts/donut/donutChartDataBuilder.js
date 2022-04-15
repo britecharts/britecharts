@@ -13,37 +13,41 @@ export function DonutDataBuilder(config) {
     this.config = _.defaults({}, config);
 
     this.withFivePlusOther = function () {
-        var attributes = _.extend({}, this.config, jsonFivePlusOther);
+        const attributes = _.extend({}, this.config, jsonFivePlusOther);
 
         return new this.Klass(attributes);
     };
 
     this.withFivePlusOtherNoPercent = function () {
-        var attributes = _.extend({}, this.config, jsonFivePlusOtherNoPercent);
+        const attributes = _.extend(
+            {},
+            this.config,
+            jsonFivePlusOtherNoPercent
+        );
 
         return new this.Klass(attributes);
     };
 
     this.withThreeCategories = function () {
-        var attributes = _.extend({}, this.config, jsonThreeCategories);
+        const attributes = _.extend({}, this.config, jsonThreeCategories);
 
         return new this.Klass(attributes);
     };
 
     this.withOneTopicAtZero = function () {
-        var attributes = _.extend({}, this.config, jsonOneZeroed);
+        const attributes = _.extend({}, this.config, jsonOneZeroed);
 
         return new this.Klass(attributes);
     };
 
     this.withAllTopicsAtZero = function () {
-        var attributes = _.extend({}, this.config, jsonAllZeroed);
+        const attributes = _.extend({}, this.config, jsonAllZeroed);
 
         return new this.Klass(attributes);
     };
 
     this.withNoQuantity = function () {
-        var attributes = _.extend({}, this.config, jsonLegendNoQuantity);
+        const attributes = _.extend({}, this.config, jsonLegendNoQuantity);
 
         return new this.Klass(attributes);
     };

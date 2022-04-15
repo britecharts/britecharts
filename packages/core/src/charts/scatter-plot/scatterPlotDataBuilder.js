@@ -8,13 +8,13 @@ export function ScatterPlotDataBuilder(config) {
     this.config = _.defaults({}, config);
 
     this.withFourNames = function () {
-        var attributes = _.extend({}, this.config, jsonWithFourNames);
+        const attributes = _.extend({}, this.config, jsonWithFourNames);
 
         return new this.Klass(attributes);
     };
 
     this.withOneSource = function () {
-        var attributes = _.extend({}, this.config, jsonWithOneSource);
+        const attributes = _.extend({}, this.config, jsonWithOneSource);
 
         return new this.Klass(attributes);
     };

@@ -40,7 +40,7 @@ import { barLoadingMarkup } from '../helpers/load';
  * @requires d3-array, d3-axis, d3-dispatch, d3-ease, d3-format, d3-scale, d3-selection, d3-transition
  * @deprecated
  * @example
- * var stepChart= step();
+ * const stepChart= step();
  *
  * stepChart
  *     .height(500)

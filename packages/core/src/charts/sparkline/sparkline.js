@@ -47,7 +47,7 @@ const DEFAULT_TITLE_TEXT_STYLE = {
  * @requires d3-array, d3-ease, d3-scale, d3-shape, d3-selection, d3-transition
  *
  * @example
- * var sparkLineChart = sparkline();
+ * const sparkLineChart = sparkline();
  *
  * sparkLineChart
  *     .width(200)

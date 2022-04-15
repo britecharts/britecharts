@@ -9,19 +9,19 @@ export function BrushDataBuilder(config) {
     this.config = _.defaults({}, config);
 
     this.withSimpleData = function () {
-        var attributes = _.extend({}, this.config, jsonSimpleData);
+        const attributes = _.extend({}, this.config, jsonSimpleData);
 
         return new this.Klass(attributes);
     };
 
     this.withShortData = function () {
-        var attributes = _.extend({}, this.config, jsonShortData);
+        const attributes = _.extend({}, this.config, jsonShortData);
 
         return new this.Klass(attributes);
     };
 
     this.withMissingData = function () {
-        var attributes = _.extend({}, this.config, jsonMissingData);
+        const attributes = _.extend({}, this.config, jsonMissingData);
 
         return new this.Klass(attributes);
     };

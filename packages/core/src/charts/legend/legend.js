@@ -38,7 +38,7 @@ import colorHelper from '../helpers/color';
  * @requires d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
- * var donutChart = donut(),
+ * const donutChart = donut(),
  *     legendBox = legend();
  *
  * donutChart

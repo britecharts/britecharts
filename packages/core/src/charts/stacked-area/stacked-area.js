@@ -686,7 +686,7 @@ export default function module() {
      */
     function drawDataReferencePoints() {
         // Creates Dots on Data points
-        var points = svg
+        const points = svg
             .select('.chart-group')
             .selectAll('.dots')
             .data(layers)

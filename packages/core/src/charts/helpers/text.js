@@ -95,7 +95,7 @@ export const wrapTextWithEllipses = function (
     limit = 2
 ) {
     text.each(function () {
-        var words, word, line, lineNumber, lineHeight, y, dy, tspan;
+        const words, word, line, lineNumber, lineHeight, y, dy, tspan;
 
         text = select(this);
 

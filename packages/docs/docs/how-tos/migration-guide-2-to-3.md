@@ -141,15 +141,15 @@ lineChart
 
 You can now use Britecharts in your TypeScript projects! The Britecharts package includes a "types" entry that points to our type declaration files. We plan to re-write Britecharts in TypeScript, but type definition files will do for now!
 
-1. Stop re-rendering charts when the viewport width changes.
+2. Stop re-rendering charts when the viewport width changes.
 
 In version 2 and our demos, we recommended listening to viewport width changes and re-render charts with the updated container width. This wasn't necessary, as SVGs provide a viewBox property that allows us to make our charts fully responsive out of the box. That's how Britecharts works starting version 3, so say bye-bye to those window 'resize' listeners!
 
-1. Use 'colorMap' to select the colors you want for each data category.
+3. Use 'colorMap' to select the colors you want for each data category.
 
 One common request of our users was to specify the colors for each category on the different Britecharts components. Now you can! Use the ["colorMap"](https://britecharts.github.io/britecharts/module-Bar.html#.colorMap__anchor) property to specify a hash map between category names and HEX colors.
 
-1. Specify the duration of animations with 'animationDuration'
+4. Specify the duration of animations with 'animationDuration'
 
 Most Britecharts' components have animations that you can activate with the 'isAnimated' configuration. Since version 3, you can also set the duration of those animations in milliseconds with the 'animationDuration' accessor.
 

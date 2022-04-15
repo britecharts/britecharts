@@ -6,7 +6,7 @@ export function BarDataBuilder(config) {
     this.config = _.defaults({}, config);
 
     this.withLettersFrequency = function () {
-        var attributes = _.extend({}, this.config, {
+        const attributes = _.extend({}, this.config, {
             data: [
                 {
                     name: 'A',
@@ -119,7 +119,7 @@ export function BarDataBuilder(config) {
     };
 
     this.withColors = function () {
-        var attributes = _.extend({}, this.config, {
+        const attributes = _.extend({}, this.config, {
             data: [
                 {
                     name: 'Radiating',

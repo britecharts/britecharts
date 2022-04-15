@@ -6,7 +6,7 @@ export function BulletDataBuilder(config) {
     this.config = _.defaults({}, config);
 
     this.withAllElements = function () {
-        var attributes = _.extend({}, this.config, {
+        const attributes = _.extend({}, this.config, {
             data: [
                 {
                     title: 'Title',
@@ -22,7 +22,7 @@ export function BulletDataBuilder(config) {
     };
 
     this.withNoMarker = function () {
-        var attributes = _.extend({}, this.config, {
+        const attributes = _.extend({}, this.config, {
             data: [
                 {
                     title: 'No Marker',
@@ -37,7 +37,7 @@ export function BulletDataBuilder(config) {
     };
 
     this.withCpuData = function () {
-        var attributes = _.extend({}, this.config, {
+        const attributes = _.extend({}, this.config, {
             data: [
                 {
                     title: 'CPU 1',
@@ -67,7 +67,7 @@ export function BulletDataBuilder(config) {
     };
 
     this.withManyCPUData = function () {
-        var attributes = _.extend({}, this.config, {
+        const attributes = _.extend({}, this.config, {
             data: [
                 {
                     title: 'CPU 1',

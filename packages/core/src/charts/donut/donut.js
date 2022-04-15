@@ -48,7 +48,7 @@ import { motion } from '../helpers/constants';
  * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
  *
  * @example
- * var donutChart = donut();
+ * const donutChart = donut();
  *
  * donutChart
  *     .externalRadius(500)

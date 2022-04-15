@@ -63,7 +63,7 @@ function formatPrependZero(n) {
 }
 
 function formatDateUTC(_date, isUTC) {
-    var time = 'T00:00:00',
+    const time = 'T00:00:00',
         d = _date.toUTCString().split(' '),
         year = d[3],
         month = d[2],

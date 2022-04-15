@@ -71,7 +71,7 @@ const NUMBER_FORMAT = ',f';
  * @requires d3-array, d3-ease, d3-axis, d3-color, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
- * var barChart = bar();
+ * const barChart = bar();
  *
  * barChart
  *     .height(500)

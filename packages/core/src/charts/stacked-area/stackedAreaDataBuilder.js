@@ -14,43 +14,43 @@ export function StackedAreaDataBuilder(config) {
     this.config = _.defaults({}, config);
 
     this.with3Sources = function () {
-        var attributes = _.extend({}, this.config, jsonThreeSources);
+        const attributes = _.extend({}, this.config, jsonThreeSources);
 
         return new this.Klass(attributes);
     };
 
     this.with6Sources = function () {
-        var attributes = _.extend({}, this.config, jsonSixSources);
+        const attributes = _.extend({}, this.config, jsonSixSources);
 
         return new this.Klass(attributes);
     };
 
     this.withReportData = function () {
-        var attributes = _.extend({}, this.config, jsonReportService);
+        const attributes = _.extend({}, this.config, jsonReportService);
 
         return new this.Klass(attributes);
     };
 
     this.withSalesChannelData = function () {
-        var attributes = _.extend({}, this.config, jsonSalesChannel);
+        const attributes = _.extend({}, this.config, jsonSalesChannel);
 
         return new this.Klass(attributes);
     };
 
     this.withLargeData = function () {
-        var attributes = _.extend({}, this.config, jsonLargeService);
+        const attributes = _.extend({}, this.config, jsonLargeService);
 
         return new this.Klass(attributes);
     };
 
     this.withNegativeValues = function () {
-        var attributes = _.extend({}, this.config, jsonNegativeValues);
+        const attributes = _.extend({}, this.config, jsonNegativeValues);
 
         return new this.Klass(attributes);
     };
 
     this.withNumericKeys = function () {
-        var attributes = _.extend({}, this.config, jsonNumericKeys);
+        const attributes = _.extend({}, this.config, jsonNumericKeys);
 
         return new this.Klass(attributes);
     };
