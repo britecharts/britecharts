@@ -50,7 +50,7 @@ module.exports = {
                 items: [
                     {
                         type: 'doc',
-                        docId: 'tutorials/tutorials-index',
+                        docId: 'README',
                         position: 'left',
                         label: 'Documentation',
                     },
@@ -58,7 +58,7 @@ module.exports = {
                         type: 'doc',
                         docId: 'API',
                         position: 'left',
-                        label: 'API',
+                        label: 'API Reference',
                     },
                     {
                         type: 'doc',
@@ -66,7 +66,11 @@ module.exports = {
                         position: 'left',
                         label: 'StoryBook',
                     },
-                    { to: '/blog', label: 'Blog', position: 'left' },
+                    {
+                        to: '/blog',
+                        label: 'Blog',
+                        position: 'left',
+                    },
                     {
                         href: 'https://github.com/britecharts/britecharts',
                         label: 'GitHub',
@@ -82,11 +86,15 @@ module.exports = {
                         items: [
                             {
                                 label: 'Getting Started',
-                                to: '/docs/intro',
+                                to: '/docs/tutorials/getting-started',
+                            },
+                            {
+                                label: 'API Reference',
+                                to: '/docs/API',
                             },
                             {
                                 label: 'How-to Guides',
-                                to: '/docs/intro',
+                                to: '/docs/how-tos/how-to-index',
                             },
                         ],
                     },
