@@ -571,7 +571,7 @@ export default function module() {
      */
     function textWrap(text, width, xpos = 0) {
         text.each(function () {
-            const words, word, line, lineNumber, lineHeight, y, dy, tspan;
+            let words, word, line, lineNumber, lineHeight, y, dy, tspan;
 
             text = select(this);
 
