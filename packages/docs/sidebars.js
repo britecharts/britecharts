@@ -8,7 +8,7 @@ module.exports = {
   "primarySidebar": {
     "CoreCharts": [
       {
-        "Core": [
+        "Bar": [
           {
             "API Reference": [
               {
@@ -23,82 +23,502 @@ module.exports = {
                                 "Charts": [
                                   {
                                     "Bar": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/bar/bar"
+                                      "charts/bar/api-reference/britecharts/packages/core/src/charts/bar/bar"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Brush": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Brush": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/brush/brush"
+                                      "charts/brush/api-reference/britecharts/packages/core/src/charts/brush/brush"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Bullet": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Bullet": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/bullet/bullet"
+                                      "charts/bullet/api-reference/britecharts/packages/core/src/charts/bullet/bullet"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Donut": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Donut": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/donut/donut"
+                                      "charts/donut/api-reference/britecharts/packages/core/src/charts/donut/donut"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Grouped-bar": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Grouped Bar": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/grouped-bar/grouped-bar"
+                                      "charts/grouped-bar/api-reference/britecharts/packages/core/src/charts/grouped-bar/grouped-bar"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Heatmap": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Heatmap": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/heatmap/heatmap"
+                                      "charts/heatmap/api-reference/britecharts/packages/core/src/charts/heatmap/heatmap"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Helpers": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Helpers": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/helpers/grid"
+                                      "charts/helpers/api-reference/britecharts/packages/core/src/charts/helpers/grid"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Legend": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Legend": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/legend/legend"
+                                      "charts/legend/api-reference/britecharts/packages/core/src/charts/legend/legend"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Line": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Line": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/line/line"
+                                      "charts/line/api-reference/britecharts/packages/core/src/charts/line/line"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Mini-tooltip": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Mini Tooltip": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/mini-tooltip/mini-tooltip"
+                                      "charts/mini-tooltip/api-reference/britecharts/packages/core/src/charts/mini-tooltip/mini-tooltip"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Scatter-plot": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Scatter Plot": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/scatter-plot/scatter-plot"
+                                      "charts/scatter-plot/api-reference/britecharts/packages/core/src/charts/scatter-plot/scatter-plot"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Sparkline": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Sparkline": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/sparkline/sparkline"
+                                      "charts/sparkline/api-reference/britecharts/packages/core/src/charts/sparkline/sparkline"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Stacked-area": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Stacked Area": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/stacked-area/stacked-area"
+                                      "charts/stacked-area/api-reference/britecharts/packages/core/src/charts/stacked-area/stacked-area"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Stacked-bar": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Stacked Bar": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/stacked-bar/stacked-bar"
+                                      "charts/stacked-bar/api-reference/britecharts/packages/core/src/charts/stacked-bar/stacked-bar"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Step": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Step": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/step/step"
+                                      "charts/step/api-reference/britecharts/packages/core/src/charts/step/step"
                                     ]
-                                  },
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Tooltip": [
+          {
+            "API Reference": [
+              {
+                "Britecharts": [
+                  {
+                    "Packages": [
+                      {
+                        "Core": [
+                          {
+                            "Src": [
+                              {
+                                "Charts": [
                                   {
                                     "Tooltip": [
-                                      "charts/core/api-reference/britecharts/packages/core/src/charts/tooltip/tooltip"
+                                      "charts/tooltip/api-reference/britecharts/packages/core/src/charts/tooltip/tooltip"
                                     ]
                                   }
                                 ]

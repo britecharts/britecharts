@@ -20,7 +20,7 @@ const packageNameOverrides = [
  * Runs through packages folders looking for JSDoc and generates markdown docs
  */
 function generateDocs() {
-    console.log('Generating package docs');
+    console.log('-= Generating package docs =-');
     // Use glob to get all js/ts files
     const pathPattern = path.join(
         __dirname,
@@ -47,8 +47,7 @@ function generateDocs() {
 
     // grab all js files
     filePaths.forEach((filePath) => {
-        console.log('filePath', path.join(__dirname, '../jsdoc.conf.json'));
-        console.log('filePath', path.join(__dirname, './template.hbs'));
+        console.log('filePath', filePath);
         // Generate markdown from JSDoc comments
         const markdown = jsdoc2md.renderSync({
             files: filePath,
@@ -57,14 +56,14 @@ function generateDocs() {
             'heading-depth': 1,
         });
 
-        console.log('markdown', markdown);
-
         // if there's markdown, do stuff
         if (markdown && markdown.length > 0) {
             // get the package ID from the file path
-            const chartId = filePath.match(
-                /\/packages\/([\s\S]*?)\/src\/charts\//i
-            )[1];
+            const matchingExpression = filePath.match(
+                /\/packages\/([\s\S]*?)\/src\/charts\/([\s\S]*?)\//i
+            );
+            const packageId = matchingExpression[1];
+            const chartId = matchingExpression[2];
 
             // check against the title overrides array
             let chartName;
@@ -79,7 +78,9 @@ function generateDocs() {
 
             if (chartName !== processingPackageName) {
                 processingPackageName = chartName;
-                console.log(`   Processing the ${chartName} package`);
+                console.log(
+                    `-= Processing the ${chartName} chart from the ${packageId} package =-`
+                );
             }
 
             // get the sub-folder structure relative to /src/
