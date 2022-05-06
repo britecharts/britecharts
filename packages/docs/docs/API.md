@@ -125,7 +125,7 @@ simple and configurable bar chart.
 **Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
-var barChart = bar();
+const barChart = bar();
 
 barChart
     .height(500)
@@ -1221,7 +1221,7 @@ simple and configurable donut chart.
 **Requires**: <code>module:d3-dispatch,</code>  
 **Example**  
 ```js
-var donutChart = donut();
+const donutChart = donut();
 
 donutChart
     .externalRadius(500)
@@ -2259,7 +2259,7 @@ simple and configurable legend element.
 **Requires**: <code>module:d3-format,</code>  
 **Example**  
 ```js
-var donutChart = donut(),
+const donutChart = donut(),
     legendBox = legend();
 
 donutChart
@@ -3007,7 +3007,7 @@ bar and step chart.
 **Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
-var barChart = line(),
+const barChart = line(),
     miniTooltip = miniTooltip();
 
 barChart
@@ -3678,7 +3678,7 @@ rendering a sparkline configurable chart.
 **Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
-var sparkLineChart = sparkline();
+const sparkLineChart = sparkline();
 
 sparkLineChart
     .width(200)
@@ -4879,7 +4879,7 @@ NOTE: We will be deprecating this chart soon
 **Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
-var stepChart= step();
+const stepChart= step();
 
 stepChart
     .height(500)
@@ -5056,4 +5056,4 @@ Gets or Sets the offset of the yAxisLabel on the chart
 **Returns**: <code>Number</code> \| <code>module</code> - label or Chart module to chain calls  
 **Access**: public  
 
-| Param | Type | Descript
+| Param | Typ
