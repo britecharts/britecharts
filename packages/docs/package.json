@@ -12,10 +12,9 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "docs:readme": "cp ../../README.md ./docs/.",
+    "docs:readme": "node ./scripts/copy-readme.js",
     "docs:readmeNotWorking": "echo -e \"--\nid: README\nslug: /\n---\n$ (cat README.md)\" > packages/docs/docs/README.md",
-    "docs:api": "yarn run jsdoc2md -f ../core/src/charts/**/*.js -c jsdoc.conf.json  > ./docs/API.md",
-    "docs:apibis": "node ./scripts/generate-docs.js"
+    "docs:api": "node ./scripts/generate-docs.js"
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-beta.17",

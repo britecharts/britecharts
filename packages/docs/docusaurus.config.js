@@ -50,13 +50,13 @@ module.exports = {
                 items: [
                     {
                         type: 'doc',
-                        docId: 'README',
+                        docId: 'Britecharts',
                         position: 'left',
                         label: 'Documentation',
                     },
                     {
                         type: 'doc',
-                        docId: 'API',
+                        docId: 'API/bar',
                         position: 'left',
                         label: 'API Reference',
                     },
