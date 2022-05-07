@@ -20,25 +20,6 @@ const DEFAULT_TITLE_TEXT_STYLE = {
 };
 
 /**
- * @typedef SparklineChartData
- * @type {Object[]}
- * @property {number} value        Value of the group (required)
- * @property {string} name         Name of the group (required)
- *
- * @example
- * [
- *     {
- *         value: 1,
- *         date: '2011-01-06T00:00:00Z'
- *     },
- *     {
- *         value: 2,
- *         date: '2011-01-07T00:00:00Z'
- *     }
- * ]
- */
-
-/**
  * Sparkline Chart reusable API module that allows us
  * rendering a sparkline configurable chart.
  *
@@ -58,6 +39,26 @@ const DEFAULT_TITLE_TEXT_STYLE = {
  *     .call(sparkLineChart);
  *
  */
+
+/**
+ * @typedef SparklineChartData
+ * @type {Object[]}
+ * @property {number} value        Value of the group (required)
+ * @property {string} name         Name of the group (required)
+ *
+ * @example
+ * [
+ *     {
+ *         value: 1,
+ *         date: '2011-01-06T00:00:00Z'
+ *     },
+ *     {
+ *         value: 2,
+ *         date: '2011-01-07T00:00:00Z'
+ *     }
+ * ]
+ */
+
 export default function module() {
     let margin = {
             left: 5,

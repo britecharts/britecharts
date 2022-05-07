@@ -25,6 +25,27 @@ const uniq = (arrArg) =>
     arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
 
 /**
+ * Stacked Area Chart reusable API module that allows us
+ * rendering a multi area and configurable chart.
+ *
+ * @module Stacked-bar
+ * @tutorial stacked-bar
+ * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
+ *  d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
+ *
+ * @example
+ * let stackedBar = stackedBar();
+ *
+ * stackedBar
+ *     .width(containerWidth);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset.data)
+ *     .call(stackedBar);
+ *
+ */
+
+/**
  * @typdef D3Layout
  * @type function
  */
@@ -44,27 +65,6 @@ const uniq = (arrArg) =>
  *         value: 0
  *     }
  * ]
- */
-
-/**
- * Stacked Area Chart reusable API module that allows us
- * rendering a multi area and configurable chart.
- *
- * @module Stacked-bar
- * @tutorial stacked-bar
- * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
- *  d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
- *
- * @example
- * let stackedBar = stackedBar();
- *
- * stackedBar
- *     .width(containerWidth);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset.data)
- *     .call(stackedBar);
- *
  */
 export default function module() {
     let margin = {

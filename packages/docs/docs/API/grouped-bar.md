@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Grouped-bar">Grouped-bar</a></dt>
-<dd><p>Grouped Bar Chart reusable API module that allows us
-rendering a multi grouped bar and configurable chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#GroupedBarChartData">GroupedBarChartData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Grouped-bar"></a>
 
 # Grouped-bar
@@ -35,31 +19,34 @@ d3Selection.select('.css-selector')
 
 * [Grouped-bar](#module_Grouped-bar)
     * [exports(_selection, _data)](#exp_module_Grouped-bar--exports) ⏏
-        * [.animationDuration(_x)](#module_Grouped-bar--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
-        * [.betweenBarsPadding([_x])](#module_Grouped-bar--exports.betweenBarsPadding) ⇒ <code>Number</code> \| <code>module</code>
-        * [.betweenGroupsPadding([_x])](#module_Grouped-bar--exports.betweenGroupsPadding) ⇒ <code>Number</code> \| <code>module</code>
-        * [.colorMap([_x])](#module_Grouped-bar--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
-        * [.colorSchema(_x)](#module_Grouped-bar--exports.colorSchema) ⇒ <code>colorSchema</code> \| <code>module</code>
-        * [.exportChart(filename, title)](#module_Grouped-bar--exports.exportChart) ⇒ <code>Promise</code>
-        * ~~[.groupLabel(_x)](#module_Grouped-bar--exports.groupLabel) ⇒ <code>groupLabel</code> \| <code>module</code>~~
-        * [.grid([_x])](#module_Grouped-bar--exports.grid) ⇒ <code>String</code> \| <code>module</code>
-        * [.height([_x])](#module_Grouped-bar--exports.height) ⇒ <code>height</code> \| <code>module</code>
-        * [.isHorizontal([_x])](#module_Grouped-bar--exports.isHorizontal) ⇒ <code>isHorizontal</code> \| <code>module</code>
-        * [.isAnimated([_x])](#module_Grouped-bar--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
-        * [.isLoading(flag)](#module_Grouped-bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.margin(_x)](#module_Grouped-bar--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
-        * ~~[.nameLabel(_x)](#module_Grouped-bar--exports.nameLabel) ⇒ <code>nameLabel</code> \| <code>module</code>~~
-        * [.numberFormat(_x)](#module_Grouped-bar--exports.numberFormat) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
-        * [.on()](#module_Grouped-bar--exports.on) ⇒ <code>module</code>
-        * [.tooltipThreshold([_x])](#module_Grouped-bar--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
-        * ~~[.valueLabel(_x)](#module_Grouped-bar--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
-        * [.valueLocale([_x])](#module_Grouped-bar--exports.valueLocale) ⇒ <code>LocaleObject</code> \| <code>module</code>
-        * [.width([_x])](#module_Grouped-bar--exports.width) ⇒ <code>Number</code> \| <code>module</code>
-        * [.xTicks([_x])](#module_Grouped-bar--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yAxisLabel(_x)](#module_Grouped-bar--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
-        * [.yAxisLabelOffset([_x])](#module_Grouped-bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yTicks([_x])](#module_Grouped-bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yTickTextOffset([_x])](#module_Grouped-bar--exports.yTickTextOffset) ⇒ <code>Object</code> \| <code>module</code>
+        * _static_
+            * [.animationDuration(_x)](#module_Grouped-bar--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
+            * [.betweenBarsPadding([_x])](#module_Grouped-bar--exports.betweenBarsPadding) ⇒ <code>Number</code> \| <code>module</code>
+            * [.betweenGroupsPadding([_x])](#module_Grouped-bar--exports.betweenGroupsPadding) ⇒ <code>Number</code> \| <code>module</code>
+            * [.colorMap([_x])](#module_Grouped-bar--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
+            * [.colorSchema(_x)](#module_Grouped-bar--exports.colorSchema) ⇒ <code>colorSchema</code> \| <code>module</code>
+            * [.exportChart(filename, title)](#module_Grouped-bar--exports.exportChart) ⇒ <code>Promise</code>
+            * ~~[.groupLabel(_x)](#module_Grouped-bar--exports.groupLabel) ⇒ <code>groupLabel</code> \| <code>module</code>~~
+            * [.grid([_x])](#module_Grouped-bar--exports.grid) ⇒ <code>String</code> \| <code>module</code>
+            * [.height([_x])](#module_Grouped-bar--exports.height) ⇒ <code>height</code> \| <code>module</code>
+            * [.isHorizontal([_x])](#module_Grouped-bar--exports.isHorizontal) ⇒ <code>isHorizontal</code> \| <code>module</code>
+            * [.isAnimated([_x])](#module_Grouped-bar--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
+            * [.isLoading(flag)](#module_Grouped-bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.margin(_x)](#module_Grouped-bar--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
+            * ~~[.nameLabel(_x)](#module_Grouped-bar--exports.nameLabel) ⇒ <code>nameLabel</code> \| <code>module</code>~~
+            * [.numberFormat(_x)](#module_Grouped-bar--exports.numberFormat) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
+            * [.on()](#module_Grouped-bar--exports.on) ⇒ <code>module</code>
+            * [.tooltipThreshold([_x])](#module_Grouped-bar--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
+            * ~~[.valueLabel(_x)](#module_Grouped-bar--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
+            * [.valueLocale([_x])](#module_Grouped-bar--exports.valueLocale) ⇒ <code>LocaleObject</code> \| <code>module</code>
+            * [.width([_x])](#module_Grouped-bar--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+            * [.xTicks([_x])](#module_Grouped-bar--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yAxisLabel(_x)](#module_Grouped-bar--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
+            * [.yAxisLabelOffset([_x])](#module_Grouped-bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yTicks([_x])](#module_Grouped-bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yTickTextOffset([_x])](#module_Grouped-bar--exports.yTickTextOffset) ⇒ <code>Object</code> \| <code>module</code>
+        * _inner_
+            * [~GroupedBarChartData](#module_Grouped-bar--exports..GroupedBarChartData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Grouped-bar--exports"></a>
 
@@ -71,7 +58,7 @@ This function creates the graph using the selection and data provided
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents the container(s) where the chart(s) will be rendered |
-| _data | [<code>GroupedBarChartData</code>](#GroupedBarChartData) | The data to attach and generate the chart |
+| _data | <code>GroupedBarChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Grouped-bar--exports.animationDuration"></a>
 
@@ -422,10 +409,10 @@ Gets or Sets the x and y offset of ticks of the y axis on the chart
 | --- | --- | --- | --- |
 | [_x] | <code>Object</code> | <code>{ y: -8, x: -20 }</code> | Desired offset |
 
-<a name="GroupedBarChartData"></a>
+<a name="module_Grouped-bar--exports..GroupedBarChartData"></a>
 
-# GroupedBarChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~GroupedBarChartData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
 **Properties**
 
 | Name | Type | Description |

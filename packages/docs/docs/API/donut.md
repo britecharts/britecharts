@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Donut">Donut</a></dt>
-<dd><p>Reusable Donut Chart API class that renders a
-simple and configurable donut chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#DonutChartData">DonutChartData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Donut"></a>
 
 # Donut
@@ -36,29 +20,32 @@ d3Selection.select('.css-selector')
 
 * [Donut](#module_Donut)
     * [exports(_selection, _data)](#exp_module_Donut--exports) ⏏
-        * [.animationDuration(_x)](#module_Donut--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
-        * [.centeredTextFunction(_x)](#module_Donut--exports.centeredTextFunction) ⇒ <code>function</code> \| <code>module</code>
-        * [.colorMap([_x])](#module_Donut--exports.colorMap) ⇒ <code>number</code> \| <code>module</code>
-        * [.colorSchema(_x)](#module_Donut--exports.colorSchema) ⇒ <code>String</code> \| <code>module</code>
-        * [.emptyDataConfig(_x)](#module_Donut--exports.emptyDataConfig) ⇒ <code>Object</code> \| <code>module</code>
-        * [.exportChart(filename, title)](#module_Donut--exports.exportChart) ⇒ <code>Promise</code>
-        * [.externalRadius(_x)](#module_Donut--exports.externalRadius) ⇒ <code>Number</code> \| <code>Module</code>
-        * [.hasCenterLegend(_x)](#module_Donut--exports.hasCenterLegend) ⇒ <code>boolean</code> \| <code>Module</code>
-        * [.hasHoverAnimation(_x)](#module_Donut--exports.hasHoverAnimation) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.hasFixedHighlightedSlice(_x)](#module_Donut--exports.hasFixedHighlightedSlice) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.hasLastHoverSliceHighlighted(_x)](#module_Donut--exports.hasLastHoverSliceHighlighted) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.height(_x)](#module_Donut--exports.height) ⇒ <code>Number</code> \| <code>Module</code>
-        * [.highlightSliceById(_x)](#module_Donut--exports.highlightSliceById) ⇒ <code>Number</code> \| <code>Module</code>
-        * [.internalRadius(_x)](#module_Donut--exports.internalRadius) ⇒ <code>Number</code> \| <code>Module</code>
-        * [.isAnimated(_x)](#module_Donut--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.isLoading(flag)](#module_Donut--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.margin(_x)](#module_Donut--exports.margin) ⇒ <code>Object</code> \| <code>Module</code>
-        * [.numberFormat(_x)](#module_Donut--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
-        * [.on()](#module_Donut--exports.on) ⇒ <code>module</code>
-        * [.orderingFunction(_x)](#module_Donut--exports.orderingFunction) ⇒ <code>function</code> \| <code>Module</code>
-        * [.percentageFormat(_x)](#module_Donut--exports.percentageFormat) ⇒ <code>Number</code> \| <code>Module</code>
-        * [.radiusHoverOffset(_x)](#module_Donut--exports.radiusHoverOffset) ⇒ <code>Number</code> \| <code>Module</code>
-        * [.width(_x)](#module_Donut--exports.width) ⇒ <code>Number</code> \| <code>Module</code>
+        * _static_
+            * [.animationDuration(_x)](#module_Donut--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
+            * [.centeredTextFunction(_x)](#module_Donut--exports.centeredTextFunction) ⇒ <code>function</code> \| <code>module</code>
+            * [.colorMap([_x])](#module_Donut--exports.colorMap) ⇒ <code>number</code> \| <code>module</code>
+            * [.colorSchema(_x)](#module_Donut--exports.colorSchema) ⇒ <code>String</code> \| <code>module</code>
+            * [.emptyDataConfig(_x)](#module_Donut--exports.emptyDataConfig) ⇒ <code>Object</code> \| <code>module</code>
+            * [.exportChart(filename, title)](#module_Donut--exports.exportChart) ⇒ <code>Promise</code>
+            * [.externalRadius(_x)](#module_Donut--exports.externalRadius) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.hasCenterLegend(_x)](#module_Donut--exports.hasCenterLegend) ⇒ <code>boolean</code> \| <code>Module</code>
+            * [.hasHoverAnimation(_x)](#module_Donut--exports.hasHoverAnimation) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.hasFixedHighlightedSlice(_x)](#module_Donut--exports.hasFixedHighlightedSlice) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.hasLastHoverSliceHighlighted(_x)](#module_Donut--exports.hasLastHoverSliceHighlighted) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.height(_x)](#module_Donut--exports.height) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.highlightSliceById(_x)](#module_Donut--exports.highlightSliceById) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.internalRadius(_x)](#module_Donut--exports.internalRadius) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.isAnimated(_x)](#module_Donut--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.isLoading(flag)](#module_Donut--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.margin(_x)](#module_Donut--exports.margin) ⇒ <code>Object</code> \| <code>Module</code>
+            * [.numberFormat(_x)](#module_Donut--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
+            * [.on()](#module_Donut--exports.on) ⇒ <code>module</code>
+            * [.orderingFunction(_x)](#module_Donut--exports.orderingFunction) ⇒ <code>function</code> \| <code>Module</code>
+            * [.percentageFormat(_x)](#module_Donut--exports.percentageFormat) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.radiusHoverOffset(_x)](#module_Donut--exports.radiusHoverOffset) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.width(_x)](#module_Donut--exports.width) ⇒ <code>Number</code> \| <code>Module</code>
+        * _inner_
+            * [~DonutChartData](#module_Donut--exports..DonutChartData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Donut--exports"></a>
 
@@ -70,7 +57,7 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>DonutChartData</code>](#DonutChartData) | The data to attach and generate the chart |
+| _data | <code>DonutChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Donut--exports.animationDuration"></a>
 
@@ -397,10 +384,10 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the graph |
 
-<a name="DonutChartData"></a>
+<a name="module_Donut--exports..DonutChartData"></a>
 
-# DonutChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~DonutChartData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Donut--exports)  
 **Properties**
 
 | Name | Type | Description |

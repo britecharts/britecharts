@@ -1,32 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Line">Line</a></dt>
-<dd><p>Line Chart reusable API module that allows us
-rendering a multi line and configurable chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#D3Selection">D3Selection</a> : <code>Array.&lt;Array&gt;</code></dt>
-<dd></dd>
-<dt><a href="#LineChartFlatData">LineChartFlatData</a> : <code>object</code></dt>
-<dd></dd>
-<dt><a href="#LineChartDataByTopic">LineChartDataByTopic</a> : <code>object</code></dt>
-<dd><p>Former data standard, it is currently calculated internally if not passed</p>
-</dd>
-<dt><a href="#LineChartDataSorted">LineChartDataSorted</a> : <code>Array.&lt;object&gt;</code></dt>
-<dd><p>The Data Sorted is calculated internally in the chart in order to pass it to our tooltips</p>
-</dd>
-<dt><a href="#LineChartData">LineChartData</a> : <code>object</code></dt>
-<dd><p>The data shape for the line chart.
-Note that up to version 2.10.1, this required a &quot;dataByTopic&quot; array described on LineChartDataByTopic.
-The &quot;dataByTopic&quot; schema still works, but we prefer a flat dataset as described here.</p>
-</dd>
-</dl>
-
 <a name="module_Line"></a>
 
 # Line
@@ -48,38 +19,45 @@ d3Selection.select('.css-selector')
 
 * [Line](#module_Line)
     * [exports(_selection, _data)](#exp_module_Line--exports) ⏏
-        * [.axisTimeCombinations](#module_Line--exports.axisTimeCombinations)
-        * [.animationDuration(_x)](#module_Line--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
-        * [.xAxisLabel(_x)](#module_Line--exports.xAxisLabel) ⇒ <code>string</code> \| <code>module</code>
-        * [.yAxisLabel(_x)](#module_Line--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
-        * [.colorSchema(_x)](#module_Line--exports.colorSchema) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
-        * [.colorMap([_x])](#module_Line--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
-        * ~~[.dateLabel(_x)](#module_Line--exports.dateLabel) ⇒ <code>number</code> \| <code>module</code>~~
-        * [.xAxisCustomFormat(_x)](#module_Line--exports.xAxisCustomFormat) ⇒ <code>string</code> \| <code>module</code>
-        * [.xAxisFormat(_x)](#module_Line--exports.xAxisFormat) ⇒ <code>String</code> \| <code>Module</code>
-        * [.xTicks(_x)](#module_Line--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
-        * [.grid(_x)](#module_Line--exports.grid) ⇒ <code>String</code> \| <code>module</code>
-        * [.hasMinimumValueScale(_x)](#module_Line--exports.hasMinimumValueScale) ⇒ <code>hasMinimumValueScale</code> \| <code>module</code>
-        * [.height(_x)](#module_Line--exports.height) ⇒ <code>Number</code> \| <code>module</code>
-        * [.isAnimated(_x)](#module_Line--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
-        * [.lines(_x)](#module_Line--exports.lines) ⇒ <code>Array.&lt;Object&gt;</code> \| <code>module</code>
-        * [.lineCurve(_x)](#module_Line--exports.lineCurve) ⇒ <code>curve</code> \| <code>module</code>
-        * [.lineGradient(_x)](#module_Line--exports.lineGradient) ⇒ <code>Number</code> \| <code>module</code>
-        * [.isLoading(flag)](#module_Line--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.locale(_x)](#module_Line--exports.locale) ⇒ <code>string</code> \| <code>module</code>
-        * [.margin(_x)](#module_Line--exports.margin) ⇒ <code>object</code> \| <code>module</code>
-        * [.numberFormat(_x)](#module_Line--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
-        * [.shouldShowAllDataPoints(_x)](#module_Line--exports.shouldShowAllDataPoints) ⇒ <code>shouldShowAllDataPoints</code> \| <code>module</code>
-        * [.tooltipThreshold(_x)](#module_Line--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
-        * ~~[.topicLabel(_x)](#module_Line--exports.topicLabel) ⇒ <code>topicLabel</code> \| <code>module</code>~~
-        * ~~[.valueLabel(_x)](#module_Line--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
-        * [.yAxisLabelPadding(_x&#x3D;)](#module_Line--exports.yAxisLabelPadding) ⇒ <code>yAxisLabelPadding</code> \| <code>module</code>
-        * [.yTicks(_x)](#module_Line--exports.yTicks) ⇒ <code>number</code> \| <code>module</code>
-        * [.width(_x)](#module_Line--exports.width) ⇒ <code>number</code> \| <code>Module</code>
-        * [.exportChart(filename, title)](#module_Line--exports.exportChart) ⇒ <code>Promise</code>
-        * [.on()](#module_Line--exports.on) ⇒ <code>module</code>
-        * [.xAxisValueType([_x])](#module_Line--exports.xAxisValueType) ⇒ <code>string</code> \| <code>module</code>
-        * [.xAxisScale([_x])](#module_Line--exports.xAxisScale) ⇒ <code>string</code> \| <code>module</code>
+        * _static_
+            * [.axisTimeCombinations](#module_Line--exports.axisTimeCombinations)
+            * [.animationDuration(_x)](#module_Line--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
+            * [.xAxisLabel(_x)](#module_Line--exports.xAxisLabel) ⇒ <code>string</code> \| <code>module</code>
+            * [.yAxisLabel(_x)](#module_Line--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
+            * [.colorSchema(_x)](#module_Line--exports.colorSchema) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
+            * [.colorMap([_x])](#module_Line--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
+            * ~~[.dateLabel(_x)](#module_Line--exports.dateLabel) ⇒ <code>number</code> \| <code>module</code>~~
+            * [.xAxisCustomFormat(_x)](#module_Line--exports.xAxisCustomFormat) ⇒ <code>string</code> \| <code>module</code>
+            * [.xAxisFormat(_x)](#module_Line--exports.xAxisFormat) ⇒ <code>String</code> \| <code>Module</code>
+            * [.xTicks(_x)](#module_Line--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.grid(_x)](#module_Line--exports.grid) ⇒ <code>String</code> \| <code>module</code>
+            * [.hasMinimumValueScale(_x)](#module_Line--exports.hasMinimumValueScale) ⇒ <code>hasMinimumValueScale</code> \| <code>module</code>
+            * [.height(_x)](#module_Line--exports.height) ⇒ <code>Number</code> \| <code>module</code>
+            * [.isAnimated(_x)](#module_Line--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
+            * [.lines(_x)](#module_Line--exports.lines) ⇒ <code>Array.&lt;Object&gt;</code> \| <code>module</code>
+            * [.lineCurve(_x)](#module_Line--exports.lineCurve) ⇒ <code>curve</code> \| <code>module</code>
+            * [.lineGradient(_x)](#module_Line--exports.lineGradient) ⇒ <code>Number</code> \| <code>module</code>
+            * [.isLoading(flag)](#module_Line--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.locale(_x)](#module_Line--exports.locale) ⇒ <code>string</code> \| <code>module</code>
+            * [.margin(_x)](#module_Line--exports.margin) ⇒ <code>object</code> \| <code>module</code>
+            * [.numberFormat(_x)](#module_Line--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
+            * [.shouldShowAllDataPoints(_x)](#module_Line--exports.shouldShowAllDataPoints) ⇒ <code>shouldShowAllDataPoints</code> \| <code>module</code>
+            * [.tooltipThreshold(_x)](#module_Line--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
+            * ~~[.topicLabel(_x)](#module_Line--exports.topicLabel) ⇒ <code>topicLabel</code> \| <code>module</code>~~
+            * ~~[.valueLabel(_x)](#module_Line--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
+            * [.yAxisLabelPadding(_x&#x3D;)](#module_Line--exports.yAxisLabelPadding) ⇒ <code>yAxisLabelPadding</code> \| <code>module</code>
+            * [.yTicks(_x)](#module_Line--exports.yTicks) ⇒ <code>number</code> \| <code>module</code>
+            * [.width(_x)](#module_Line--exports.width) ⇒ <code>number</code> \| <code>Module</code>
+            * [.exportChart(filename, title)](#module_Line--exports.exportChart) ⇒ <code>Promise</code>
+            * [.on()](#module_Line--exports.on) ⇒ <code>module</code>
+            * [.xAxisValueType([_x])](#module_Line--exports.xAxisValueType) ⇒ <code>string</code> \| <code>module</code>
+            * [.xAxisScale([_x])](#module_Line--exports.xAxisScale) ⇒ <code>string</code> \| <code>module</code>
+        * _inner_
+            * [~D3Selection](#module_Line--exports..D3Selection) : <code>Array.&lt;Array&gt;</code>
+            * [~LineChartFlatData](#module_Line--exports..LineChartFlatData) : <code>object</code>
+            * [~LineChartDataByTopic](#module_Line--exports..LineChartDataByTopic) : <code>object</code>
+            * [~LineChartDataSorted](#module_Line--exports..LineChartDataSorted) : <code>Array.&lt;object&gt;</code>
+            * [~LineChartData](#module_Line--exports..LineChartData) : <code>object</code>
 
 <a name="exp_module_Line--exports"></a>
 
@@ -90,8 +68,8 @@ This function creates the graph using the selection and data provided
 
 | Param | Type | Description |
 | --- | --- | --- |
-| _selection | [<code>D3Selection</code>](#D3Selection) | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>LineChartData</code>](#LineChartData) | The data to attach and generate the chart |
+| _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
+| _data | <code>LineChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Line--exports.axisTimeCombinations"></a>
 
@@ -550,10 +528,10 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 ```js
 line.xAxisValueType('numeric').xAxisScale('logarithmic')
 ```
-<a name="D3Selection"></a>
+<a name="module_Line--exports..D3Selection"></a>
 
-# D3Selection : <code>Array.&lt;Array&gt;</code>
-**Kind**: global typedef  
+### exports~D3Selection : <code>Array.&lt;Array&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -561,10 +539,10 @@ line.xAxisValueType('numeric').xAxisScale('logarithmic')
 | length | <code>number</code> | Size of the selection |
 | parentNode | <code>DOMElement</code> | Parent of the selection |
 
-<a name="LineChartFlatData"></a>
+<a name="module_Line--exports..LineChartFlatData"></a>
 
-# LineChartFlatData : <code>object</code>
-**Kind**: global typedef  
+### exports~LineChartFlatData : <code>object</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -584,12 +562,12 @@ line.xAxisValueType('numeric').xAxisScale('logarithmic')
     }
 ]
 ```
-<a name="LineChartDataByTopic"></a>
+<a name="module_Line--exports..LineChartDataByTopic"></a>
 
-# LineChartDataByTopic : <code>object</code>
+### exports~LineChartDataByTopic : <code>object</code>
 Former data standard, it is currently calculated internally if not passed
 
-**Kind**: global typedef  
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -615,12 +593,12 @@ Former data standard, it is currently calculated internally if not passed
     ]
 }
 ```
-<a name="LineChartDataSorted"></a>
+<a name="module_Line--exports..LineChartDataSorted"></a>
 
-# LineChartDataSorted : <code>Array.&lt;object&gt;</code>
+### exports~LineChartDataSorted : <code>Array.&lt;object&gt;</code>
 The Data Sorted is calculated internally in the chart in order to pass it to our tooltips
 
-**Kind**: global typedef  
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -654,19 +632,19 @@ The Data Sorted is calculated internally in the chart in order to pass it to our
     {...}
 ]
 ```
-<a name="LineChartData"></a>
+<a name="module_Line--exports..LineChartData"></a>
 
-# LineChartData : <code>object</code>
+### exports~LineChartData : <code>object</code>
 The data shape for the line chart.
 Note that up to version 2.10.1, this required a "dataByTopic" array described on LineChartDataByTopic.
 The "dataByTopic" schema still works, but we prefer a flat dataset as described here.
 
-**Kind**: global typedef  
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| data | [<code>Array.&lt;LineChartFlatData&gt;</code>](#LineChartFlatData) | Data values to chart (required) |
+| data | <code>Array.&lt;LineChartFlatData&gt;</code> | Data values to chart (required) |
 
 **Example**  
 ```js

@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Brush">Brush</a></dt>
-<dd><p>Brush Chart reusable API class that renders a
-simple and configurable brush chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#BrushChartData">BrushChartData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Brush"></a>
 
 # Brush
@@ -57,6 +41,7 @@ d3Selection.select('.css-selector')
         * _inner_
             * ["customBrushStart"](#event_customBrushStart)
             * ["customBrushEnd"](#event_customBrushEnd)
+            * [~BrushChartData](#module_Brush--exports..BrushChartData) : <code>Array.&lt;Object&gt;</code>
             * [~DateExtent](#module_Brush--exports..DateExtent) : <code>Array.&lt;Date&gt;</code>
             * [~eventCallback](#module_Brush--exports..eventCallback) : <code>function</code>
 
@@ -70,7 +55,7 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>BrushChartData</code>](#BrushChartData) | The data to attach and generate the chart |
+| _data | <code>BrushChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Brush--exports.axisTimeCombinations"></a>
 
@@ -327,6 +312,30 @@ Event indicating the end of a brush gesture
 
 **Kind**: event emitted by [<code>exports</code>](#exp_module_Brush--exports)  
 **See**: [d3-brush:on(end)](https://github.com/d3/d3-brush#brush_on)  
+<a name="module_Brush--exports..BrushChartData"></a>
+
+### exports~BrushChartData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Brush--exports)  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| value | <code>Number</code> | Value to chart (required) |
+| date | <code>Date</code> | Date of the value in ISO8601 format (required) |
+
+**Example**  
+```js
+[
+    {
+        value: 1,
+        date: '2011-01-06T00:00:00Z'
+    },
+    {
+        value: 2,
+        date: '2011-01-07T00:00:00Z'
+    }
+]
+```
 <a name="module_Brush--exports..DateExtent"></a>
 
 ### exports~DateExtent : <code>Array.&lt;Date&gt;</code>
@@ -350,27 +359,3 @@ Date range
 | --- | --- | --- |
 | dateExtent | [<code>DateExtent</code>](#module_Brush--exports..DateExtent) | Date range |
 
-<a name="BrushChartData"></a>
-
-# BrushChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| value | <code>Number</code> | Value to chart (required) |
-| date | <code>Date</code> | Date of the value in ISO8601 format (required) |
-
-**Example**  
-```js
-[
-    {
-        value: 1,
-        date: '2011-01-06T00:00:00Z'
-    },
-    {
-        value: 2,
-        date: '2011-01-07T00:00:00Z'
-    }
-]
-```

@@ -11,26 +11,6 @@ import { exportChart } from '../helpers/export';
 import { barLoadingMarkup } from '../helpers/load';
 
 /**
- * @typedef StepChartData
- * @type Object[]
- *
- * @property {String} key      Key we measure (required)
- * @property {Number} value    value of the key (required)
- *
- * @example
- * [
- *     {
- *         value: 1,
- *         key: 'glittering'
- *     },
- *     {
- *         value: 1,
- *         key: 'luminous'
- *     }
- * ]
- */
-
-/**
  * Step Chart reusable API class that renders a
  * simple and configurable step chart.
  * NOTE: We will be deprecating this chart soon
@@ -50,6 +30,26 @@ import { barLoadingMarkup } from '../helpers/load';
  *     .datum(dataset)
  *     .call(stepChart);
  *
+ */
+
+/**
+ * @typedef StepChartData
+ * @type Object[]
+ *
+ * @property {String} key      Key we measure (required)
+ * @property {Number} value    value of the key (required)
+ *
+ * @example
+ * [
+ *     {
+ *         value: 1,
+ *         key: 'glittering'
+ *     },
+ *     {
+ *         value: 1,
+ *         key: 'luminous'
+ *     }
+ * ]
  */
 
 export default function module() {

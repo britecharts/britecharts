@@ -1,21 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Bar">Bar</a></dt>
-<dd><p>Bar Chart reusable API class that renders a
-simple and configurable bar chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#BarChartData">BarChartData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-<dt><a href="#LocaleObject">LocaleObject</a> : <code>Object</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Bar"></a>
 
 # Bar
@@ -38,40 +20,44 @@ d3.select('.css-selector')
 
 * [Bar](#module_Bar)
     * [exports(_selection, _data)](#exp_module_Bar--exports) ⏏
-        * [.animationDuration(_x)](#module_Bar--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
-        * [.betweenBarsPadding(_x)](#module_Bar--exports.betweenBarsPadding) ⇒ <code>padding</code> \| <code>module</code>
-        * [.chartGradient(_x)](#module_Bar--exports.chartGradient) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-        * [.colorMap([_x])](#module_Bar--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
-        * [.colorSchema(_x)](#module_Bar--exports.colorSchema) ⇒ <code>colorSchema</code> \| <code>module</code>
-        * [.enableLabels([_x])](#module_Bar--exports.enableLabels) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.exportChart(filename, title)](#module_Bar--exports.exportChart) ⇒ <code>Promise</code>
-        * [.hasPercentage(_x)](#module_Bar--exports.hasPercentage) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.hasSingleBarHighlight(_x)](#module_Bar--exports.hasSingleBarHighlight) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.height(_x)](#module_Bar--exports.height) ⇒ <code>height</code> \| <code>module</code>
-        * [.highlightBarFunction(_x)](#module_Bar--exports.highlightBarFunction) ⇒ <code>highlightBarFunction</code> \| <code>module</code>
-        * [.isAnimated(_x)](#module_Bar--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
-        * [.isHorizontal(_x)](#module_Bar--exports.isHorizontal) ⇒ <code>isHorizontal</code> \| <code>module</code>
-        * [.labelsMargin([_x])](#module_Bar--exports.labelsMargin) ⇒ <code>number</code> \| <code>module</code>
-        * [.labelsNumberFormat([_x])](#module_Bar--exports.labelsNumberFormat) ⇒ <code>string</code> \| <code>module</code>
-        * [.labelsSize([_x])](#module_Bar--exports.labelsSize) ⇒ <code>number</code> \| <code>module</code>
-        * [.isLoading(flag)](#module_Bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.margin(_x)](#module_Bar--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
-        * ~~[.nameLabel(_x)](#module_Bar--exports.nameLabel) ⇒ <code>number</code> \| <code>module</code>~~
-        * [.numberFormat(_x)](#module_Bar--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
-        * [.on()](#module_Bar--exports.on) ⇒ <code>module</code>
-        * [.percentageAxisToMaxRatio(_x)](#module_Bar--exports.percentageAxisToMaxRatio) ⇒ <code>ratio</code> \| <code>module</code>
-        * [.shouldReverseColorList(_x)](#module_Bar--exports.shouldReverseColorList) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.orderingFunction(_x)](#module_Bar--exports.orderingFunction) ⇒ <code>function</code> \| <code>Module</code>
-        * ~~[.valueLabel(_x)](#module_Bar--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
-        * [.valueLocale([_x])](#module_Bar--exports.valueLocale) ⇒ [<code>LocaleObject</code>](#LocaleObject) \| <code>module</code>
-        * [.width(_x)](#module_Bar--exports.width) ⇒ <code>width</code> \| <code>module</code>
-        * [.xAxisLabel(_x)](#module_Bar--exports.xAxisLabel) ⇒ <code>String</code> \| <code>module</code>
-        * [.xAxisLabelOffset(_x)](#module_Bar--exports.xAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
-        * [.xTicks(_x)](#module_Bar--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yAxisLabel(_x)](#module_Bar--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
-        * [.yAxisLabelOffset(_x)](#module_Bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yAxisPaddingBetweenChart(_x)](#module_Bar--exports.yAxisPaddingBetweenChart) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yTicks(_x)](#module_Bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+        * _static_
+            * [.animationDuration(_x)](#module_Bar--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
+            * [.betweenBarsPadding(_x)](#module_Bar--exports.betweenBarsPadding) ⇒ <code>padding</code> \| <code>module</code>
+            * [.chartGradient(_x)](#module_Bar--exports.chartGradient) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+            * [.colorMap([_x])](#module_Bar--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
+            * [.colorSchema(_x)](#module_Bar--exports.colorSchema) ⇒ <code>colorSchema</code> \| <code>module</code>
+            * [.enableLabels([_x])](#module_Bar--exports.enableLabels) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.exportChart(filename, title)](#module_Bar--exports.exportChart) ⇒ <code>Promise</code>
+            * [.hasPercentage(_x)](#module_Bar--exports.hasPercentage) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.hasSingleBarHighlight(_x)](#module_Bar--exports.hasSingleBarHighlight) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.height(_x)](#module_Bar--exports.height) ⇒ <code>height</code> \| <code>module</code>
+            * [.highlightBarFunction(_x)](#module_Bar--exports.highlightBarFunction) ⇒ <code>highlightBarFunction</code> \| <code>module</code>
+            * [.isAnimated(_x)](#module_Bar--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
+            * [.isHorizontal(_x)](#module_Bar--exports.isHorizontal) ⇒ <code>isHorizontal</code> \| <code>module</code>
+            * [.labelsMargin([_x])](#module_Bar--exports.labelsMargin) ⇒ <code>number</code> \| <code>module</code>
+            * [.labelsNumberFormat([_x])](#module_Bar--exports.labelsNumberFormat) ⇒ <code>string</code> \| <code>module</code>
+            * [.labelsSize([_x])](#module_Bar--exports.labelsSize) ⇒ <code>number</code> \| <code>module</code>
+            * [.isLoading(flag)](#module_Bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.margin(_x)](#module_Bar--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
+            * ~~[.nameLabel(_x)](#module_Bar--exports.nameLabel) ⇒ <code>number</code> \| <code>module</code>~~
+            * [.numberFormat(_x)](#module_Bar--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
+            * [.on()](#module_Bar--exports.on) ⇒ <code>module</code>
+            * [.percentageAxisToMaxRatio(_x)](#module_Bar--exports.percentageAxisToMaxRatio) ⇒ <code>ratio</code> \| <code>module</code>
+            * [.shouldReverseColorList(_x)](#module_Bar--exports.shouldReverseColorList) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.orderingFunction(_x)](#module_Bar--exports.orderingFunction) ⇒ <code>function</code> \| <code>Module</code>
+            * ~~[.valueLabel(_x)](#module_Bar--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
+            * [.valueLocale([_x])](#module_Bar--exports.valueLocale) ⇒ <code>LocaleObject</code> \| <code>module</code>
+            * [.width(_x)](#module_Bar--exports.width) ⇒ <code>width</code> \| <code>module</code>
+            * [.xAxisLabel(_x)](#module_Bar--exports.xAxisLabel) ⇒ <code>String</code> \| <code>module</code>
+            * [.xAxisLabelOffset(_x)](#module_Bar--exports.xAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
+            * [.xTicks(_x)](#module_Bar--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yAxisLabel(_x)](#module_Bar--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
+            * [.yAxisLabelOffset(_x)](#module_Bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yAxisPaddingBetweenChart(_x)](#module_Bar--exports.yAxisPaddingBetweenChart) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yTicks(_x)](#module_Bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+        * _inner_
+            * [~BarChartData](#module_Bar--exports..BarChartData) : <code>Array.&lt;Object&gt;</code>
+            * [~LocaleObject](#module_Bar--exports..LocaleObject) : <code>Object</code>
 
 <a name="exp_module_Bar--exports"></a>
 
@@ -83,7 +69,7 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>BarChartData</code>](#BarChartData) | The data to attach and generate the chart |
+| _data | <code>BarChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Bar--exports.animationDuration"></a>
 
@@ -435,17 +421,17 @@ Gets or Sets the valueLabel of the chart
 
 <a name="module_Bar--exports.valueLocale"></a>
 
-### exports.valueLocale([_x]) ⇒ [<code>LocaleObject</code>](#LocaleObject) \| <code>module</code>
+### exports.valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
-**Returns**: [<code>LocaleObject</code>](#LocaleObject) \| <code>module</code> - Current locale object or Chart module to chain calls  
+**Returns**: <code>LocaleObject</code> \| <code>module</code> - Current locale object or Chart module to chain calls  
 **Access**: public  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [_x] | [<code>LocaleObject</code>](#LocaleObject) | <code></code> | _x    Desired locale object format. |
+| [_x] | <code>LocaleObject</code> | <code></code> | _x    Desired locale object format. |
 
 **Example**  
 ```js
@@ -556,10 +542,10 @@ Gets or Sets the number of vertical ticks on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 6         Desired number of vertical ticks for the graph |
 
-<a name="BarChartData"></a>
+<a name="module_Bar--exports..BarChartData"></a>
 
-# BarChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~BarChartData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Bar--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -580,10 +566,10 @@ Gets or Sets the number of vertical ticks on the chart
     }
 ]
 ```
-<a name="LocaleObject"></a>
+<a name="module_Bar--exports..LocaleObject"></a>
 
-# LocaleObject : <code>Object</code>
-**Kind**: global typedef  
+### exports~LocaleObject : <code>Object</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Bar--exports)  
 **Properties**
 
 | Name | Type | Description |

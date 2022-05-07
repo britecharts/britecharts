@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Stacked-area">Stacked-area</a></dt>
-<dd><p>Stacked Area Chart reusable API module that allows us
-rendering a multi area and configurable chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#AreaChartData">AreaChartData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Stacked-area"></a>
 
 # Stacked-area
@@ -35,37 +19,40 @@ d3Selection.select('.css-selector')
 
 * [Stacked-area](#module_Stacked-area)
     * [exports(_selection, _data)](#exp_module_Stacked-area--exports) ⏏
-        * [.axisTimeCombinations](#module_Stacked-area--exports.axisTimeCombinations)
-        * [.animationDuration(_x)](#module_Stacked-area--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
-        * [.areaCurve([_x])](#module_Stacked-area--exports.areaCurve) ⇒ <code>String</code> \| <code>module</code>
-        * [.areaOpacity(_x)](#module_Stacked-area--exports.areaOpacity) ⇒ <code>Number</code> \| <code>module</code>
-        * [.colorMap([_x])](#module_Stacked-area--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
-        * [.colorSchema(_x)](#module_Stacked-area--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-        * ~~[.dateLabel(_x)](#module_Stacked-area--exports.dateLabel) ⇒ <code>String</code> \| <code>module</code>~~
-        * [.emptyDataConfig(_x)](#module_Stacked-area--exports.emptyDataConfig) ⇒ <code>Object</code> \| <code>module</code>
-        * [.grid(_x)](#module_Stacked-area--exports.grid) ⇒ <code>String</code> \| <code>module</code>
-        * [.hasOutline(_x)](#module_Stacked-area--exports.hasOutline) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.height(_x)](#module_Stacked-area--exports.height) ⇒ <code>Number</code> \| <code>module</code>
-        * [.isAnimated(_x)](#module_Stacked-area--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
-        * ~~[.keyLabel(_x)](#module_Stacked-area--exports.keyLabel) ⇒ <code>Number</code> \| <code>module</code>~~
-        * [.margin(_x)](#module_Stacked-area--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
-        * [.tooltipThreshold(_x)](#module_Stacked-area--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
-        * [.topicsOrder(_x)](#module_Stacked-area--exports.topicsOrder) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-        * [.isLoading(flag)](#module_Stacked-area--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.locale(_x)](#module_Stacked-area--exports.locale) ⇒ <code>String</code> \| <code>Module</code>
-        * [.exportChart(filename, title)](#module_Stacked-area--exports.exportChart) ⇒ <code>Promise</code>
-        * [.on()](#module_Stacked-area--exports.on) ⇒ <code>module</code>
-        * ~~[.valueLabel(_x)](#module_Stacked-area--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
-        * [.width(_x)](#module_Stacked-area--exports.width) ⇒ <code>Number</code> \| <code>module</code>
-        * [.xAxisCustomFormat(_x)](#module_Stacked-area--exports.xAxisCustomFormat) ⇒ <code>String</code> \| <code>Module</code>
-        * [.xAxisFormat(_x)](#module_Stacked-area--exports.xAxisFormat) ⇒ <code>String</code> \| <code>Module</code>
-        * [.xAxisValueType([_x])](#module_Stacked-area--exports.xAxisValueType) ⇒ <code>string</code> \| <code>module</code>
-        * [.xAxisScale([_x])](#module_Stacked-area--exports.xAxisScale) ⇒ <code>string</code> \| <code>module</code>
-        * [.xTicks(_x)](#module_Stacked-area--exports.xTicks) ⇒ <code>Number</code> \| <code>Module</code>
-        * [.yAxisLabel(_x)](#module_Stacked-area--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
-        * [.yAxisLabelOffset([_x])](#module_Stacked-area--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yTicks([_x])](#module_Stacked-area--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yAxisBaseline([_x])](#module_Stacked-area--exports.yAxisBaseline) ⇒ <code>Number</code> \| <code>module</code>
+        * _static_
+            * [.axisTimeCombinations](#module_Stacked-area--exports.axisTimeCombinations)
+            * [.animationDuration(_x)](#module_Stacked-area--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
+            * [.areaCurve([_x])](#module_Stacked-area--exports.areaCurve) ⇒ <code>String</code> \| <code>module</code>
+            * [.areaOpacity(_x)](#module_Stacked-area--exports.areaOpacity) ⇒ <code>Number</code> \| <code>module</code>
+            * [.colorMap([_x])](#module_Stacked-area--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
+            * [.colorSchema(_x)](#module_Stacked-area--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+            * ~~[.dateLabel(_x)](#module_Stacked-area--exports.dateLabel) ⇒ <code>String</code> \| <code>module</code>~~
+            * [.emptyDataConfig(_x)](#module_Stacked-area--exports.emptyDataConfig) ⇒ <code>Object</code> \| <code>module</code>
+            * [.grid(_x)](#module_Stacked-area--exports.grid) ⇒ <code>String</code> \| <code>module</code>
+            * [.hasOutline(_x)](#module_Stacked-area--exports.hasOutline) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.height(_x)](#module_Stacked-area--exports.height) ⇒ <code>Number</code> \| <code>module</code>
+            * [.isAnimated(_x)](#module_Stacked-area--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
+            * ~~[.keyLabel(_x)](#module_Stacked-area--exports.keyLabel) ⇒ <code>Number</code> \| <code>module</code>~~
+            * [.margin(_x)](#module_Stacked-area--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
+            * [.tooltipThreshold(_x)](#module_Stacked-area--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
+            * [.topicsOrder(_x)](#module_Stacked-area--exports.topicsOrder) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+            * [.isLoading(flag)](#module_Stacked-area--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.locale(_x)](#module_Stacked-area--exports.locale) ⇒ <code>String</code> \| <code>Module</code>
+            * [.exportChart(filename, title)](#module_Stacked-area--exports.exportChart) ⇒ <code>Promise</code>
+            * [.on()](#module_Stacked-area--exports.on) ⇒ <code>module</code>
+            * ~~[.valueLabel(_x)](#module_Stacked-area--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
+            * [.width(_x)](#module_Stacked-area--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+            * [.xAxisCustomFormat(_x)](#module_Stacked-area--exports.xAxisCustomFormat) ⇒ <code>String</code> \| <code>Module</code>
+            * [.xAxisFormat(_x)](#module_Stacked-area--exports.xAxisFormat) ⇒ <code>String</code> \| <code>Module</code>
+            * [.xAxisValueType([_x])](#module_Stacked-area--exports.xAxisValueType) ⇒ <code>string</code> \| <code>module</code>
+            * [.xAxisScale([_x])](#module_Stacked-area--exports.xAxisScale) ⇒ <code>string</code> \| <code>module</code>
+            * [.xTicks(_x)](#module_Stacked-area--exports.xTicks) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.yAxisLabel(_x)](#module_Stacked-area--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
+            * [.yAxisLabelOffset([_x])](#module_Stacked-area--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yTicks([_x])](#module_Stacked-area--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yAxisBaseline([_x])](#module_Stacked-area--exports.yAxisBaseline) ⇒ <code>Number</code> \| <code>module</code>
+        * _inner_
+            * [~AreaChartData](#module_Stacked-area--exports..AreaChartData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Stacked-area--exports"></a>
 
@@ -77,7 +64,7 @@ This function creates the graph using the selection and data provided
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents the container(s) where the chart(s) will be rendered |
-| _data | [<code>AreaChartData</code>](#AreaChartData) | The data to attach and generate the chart |
+| _data | <code>AreaChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Stacked-area--exports.axisTimeCombinations"></a>
 
@@ -534,10 +521,10 @@ Gets or Sets the yAxisBaseline - this is the y-value where the area starts from 
 ```js
 stackedArea.yAxisBaseline(20)
 ```
-<a name="AreaChartData"></a>
+<a name="module_Stacked-area--exports..AreaChartData"></a>
 
-# AreaChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~AreaChartData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Stacked-area--exports)  
 **Properties**
 
 | Name | Type | Description |

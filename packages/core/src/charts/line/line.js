@@ -31,6 +31,26 @@ import { castValueToType } from '../helpers/type';
 import { gridHorizontal, gridVertical } from '../helpers/grid';
 
 /**
+ * Line Chart reusable API module that allows us
+ * rendering a multi line and configurable chart.
+ *
+ * @module Line
+ * @tutorial line
+ * @requires d3-array, d3-axis, d3-collection, d3-dispatch, d3-ease, d3-format, d3-time-format, d3-scale, d3-shape, d3-selection, d3-transition
+ *
+ * @example
+ * let lineChart = line();
+ *
+ * lineChart
+ *     .width(500);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset)
+ *     .call(lineChart);
+ *
+ */
+
+/**
  * @typedef D3Selection
  * @type {Array[]}
  * @property {number} length            Size of the selection
@@ -150,26 +170,6 @@ import { gridHorizontal, gridVertical } from '../helpers/grid';
  *         }
  *     ]
  * }
- */
-
-/**
- * Line Chart reusable API module that allows us
- * rendering a multi line and configurable chart.
- *
- * @module Line
- * @tutorial line
- * @requires d3-array, d3-axis, d3-collection, d3-dispatch, d3-ease, d3-format, d3-time-format, d3-scale, d3-shape, d3-selection, d3-transition
- *
- * @example
- * let lineChart = line();
- *
- * lineChart
- *     .width(500);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset)
- *     .call(lineChart);
- *
  */
 export default function module() {
     let margin = {

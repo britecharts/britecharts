@@ -5,11 +5,11 @@
   "ops": {
     // "tutorials": "./tutorials",
     // "demos": "./demos"
+    // "template": "node_modules/docdash"
   },
   "source": {
     "includePattern": ".+\\.js(doc)?$",
     "excludePattern": "(^|\\/|\\\\)_"
-    // "include": ["./README.md"]
   },
   "example-lang": "javascript"
 }

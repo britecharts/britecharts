@@ -10,6 +10,25 @@ import colorHelper from '../helpers/color';
 import { hoursHuman, motion } from '../helpers/constants';
 
 /**
+ * Reusable Heatmap API module that renders a
+ * simple and configurable heatmap chart.
+ *
+ * @module Heatmap
+ * @tutorial heatmap
+ * @requires d3-array, d3-selection, d3-scale, d3-interpolate, d3-transition
+ *
+ * @example
+ * let heatmap = heatmap();
+ *
+ * heatmap
+ *     .width(500);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset)
+ *     .call(heatmap);
+ */
+
+/**
  * @typedef HeatmapData
  * @type {Array[]}
  * @property {Number} week
@@ -31,24 +50,6 @@ import { hoursHuman, motion } from '../helpers/constants';
  * ]
  */
 
-/**
- * Reusable Heatmap API module that renders a
- * simple and configurable heatmap chart.
- *
- * @module Heatmap
- * @tutorial heatmap
- * @requires d3-array, d3-selection, d3-scale, d3-interpolate, d3-transition
- *
- * @example
- * let heatmap = heatmap();
- *
- * heatmap
- *     .width(500);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset)
- *     .call(heatmap);
- */
 export default function module() {
     let margin = {
             top: 40,

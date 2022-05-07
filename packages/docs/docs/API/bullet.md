@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Bullet">Bullet</a></dt>
-<dd><p>Reusable Bullet Chart API class that renders a
-simple and configurable Bullet Chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#BulletChartData">BulletChartData</a> : <code>Object</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Bullet"></a>
 
 # Bullet
@@ -35,18 +19,21 @@ d3Selection.select('.css-selector')
 
 * [Bullet](#module_Bullet)
     * [exports(_selection, _data)](#exp_module_Bullet--exports) ⏏
-        * [.colorSchema(_x)](#module_Bullet--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-        * [.customTitle(_x)](#module_Bullet--exports.customTitle) ⇒ <code>String</code> \| <code>module</code>
-        * [.customSubtitle(_x)](#module_Bullet--exports.customSubtitle) ⇒ <code>String</code> \| <code>module</code>
-        * [.exportChart(filename, title)](#module_Bullet--exports.exportChart) ⇒ <code>Promise</code>
-        * [.height(_x)](#module_Bullet--exports.height) ⇒ <code>Number</code> \| <code>module</code>
-        * [.isReverse(_x)](#module_Bullet--exports.isReverse) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.margin(_x)](#module_Bullet--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
-        * [.numberFormat(_x)](#module_Bullet--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
-        * [.paddingBetweenAxisAndChart(_x)](#module_Bullet--exports.paddingBetweenAxisAndChart) ⇒ <code>Number</code> \| <code>module</code>
-        * [.startMaxRangeOpacity(_x)](#module_Bullet--exports.startMaxRangeOpacity) ⇒ <code>Number</code> \| <code>module</code>
-        * [.ticks(_x)](#module_Bullet--exports.ticks) ⇒ <code>Number</code> \| <code>module</code>
-        * [.width(_x)](#module_Bullet--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+        * _static_
+            * [.colorSchema(_x)](#module_Bullet--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+            * [.customTitle(_x)](#module_Bullet--exports.customTitle) ⇒ <code>String</code> \| <code>module</code>
+            * [.customSubtitle(_x)](#module_Bullet--exports.customSubtitle) ⇒ <code>String</code> \| <code>module</code>
+            * [.exportChart(filename, title)](#module_Bullet--exports.exportChart) ⇒ <code>Promise</code>
+            * [.height(_x)](#module_Bullet--exports.height) ⇒ <code>Number</code> \| <code>module</code>
+            * [.isReverse(_x)](#module_Bullet--exports.isReverse) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.margin(_x)](#module_Bullet--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
+            * [.numberFormat(_x)](#module_Bullet--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
+            * [.paddingBetweenAxisAndChart(_x)](#module_Bullet--exports.paddingBetweenAxisAndChart) ⇒ <code>Number</code> \| <code>module</code>
+            * [.startMaxRangeOpacity(_x)](#module_Bullet--exports.startMaxRangeOpacity) ⇒ <code>Number</code> \| <code>module</code>
+            * [.ticks(_x)](#module_Bullet--exports.ticks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.width(_x)](#module_Bullet--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+        * _inner_
+            * [~BulletChartData](#module_Bullet--exports..BulletChartData) : <code>Object</code>
 
 <a name="exp_module_Bullet--exports"></a>
 
@@ -58,7 +45,7 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>BulletChartData</code>](#BulletChartData) | The data to attach and generate the chart |
+| _data | <code>BulletChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Bullet--exports.colorSchema"></a>
 
@@ -234,10 +221,10 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the chart |
 
-<a name="BulletChartData"></a>
+<a name="module_Bullet--exports..BulletChartData"></a>
 
-# BulletChartData : <code>Object</code>
-**Kind**: global typedef  
+### exports~BulletChartData : <code>Object</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Bullet--exports)  
 **Properties**
 
 | Name | Type | Description |

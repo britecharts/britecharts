@@ -1,20 +1,3 @@
-# Modules
-
-<dl>
-<dt><del><a href="#module_Step">Step</a></del></dt>
-<dd><p>Step Chart reusable API class that renders a
-simple and configurable step chart.
-NOTE: We will be deprecating this chart soon</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#StepChartData">StepChartData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Step"></a>
 
 # ~~Step~~
@@ -40,17 +23,20 @@ d3Selection.select('.css-selector')
 
 * ~~[Step](#module_Step)~~
     * ~~[exports(_selection, _data)](#exp_module_Step--exports) ⏏~~
-        * [.exportChart(filename, title)](#module_Step--exports.exportChart) ⇒ <code>Promise</code>
-        * [.margin(_x)](#module_Step--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
-        * [.yTicks(_x)](#module_Step--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
-        * [.height(_x)](#module_Step--exports.height) ⇒ <code>height</code> \| <code>module</code>
-        * [.isLoading(flag)](#module_Step--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.on()](#module_Step--exports.on) ⇒ <code>module</code>
-        * [.width(_x)](#module_Step--exports.width) ⇒ <code>width</code> \| <code>module</code>
-        * [.xAxisLabel(_x)](#module_Step--exports.xAxisLabel) ⇒ <code>String</code> \| <code>module</code>
-        * [.xAxisLabelOffset(_x)](#module_Step--exports.xAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yAxisLabel(_x)](#module_Step--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
-        * [.yAxisLabelOffset(_x)](#module_Step--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
+        * _static_
+            * [.exportChart(filename, title)](#module_Step--exports.exportChart) ⇒ <code>Promise</code>
+            * [.margin(_x)](#module_Step--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
+            * [.yTicks(_x)](#module_Step--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.height(_x)](#module_Step--exports.height) ⇒ <code>height</code> \| <code>module</code>
+            * [.isLoading(flag)](#module_Step--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.on()](#module_Step--exports.on) ⇒ <code>module</code>
+            * [.width(_x)](#module_Step--exports.width) ⇒ <code>width</code> \| <code>module</code>
+            * [.xAxisLabel(_x)](#module_Step--exports.xAxisLabel) ⇒ <code>String</code> \| <code>module</code>
+            * [.xAxisLabelOffset(_x)](#module_Step--exports.xAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yAxisLabel(_x)](#module_Step--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
+            * [.yAxisLabelOffset(_x)](#module_Step--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
+        * _inner_
+            * [~StepChartData](#module_Step--exports..StepChartData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Step--exports"></a>
 
@@ -64,7 +50,7 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>StepChartData</code>](#StepChartData) | The data to attach and generate the chart |
+| _data | <code>StepChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Step--exports.exportChart"></a>
 
@@ -208,10 +194,10 @@ Gets or Sets the offset of the yAxisLabel on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired offset for the label |
 
-<a name="StepChartData"></a>
+<a name="module_Step--exports..StepChartData"></a>
 
-# StepChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~StepChartData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Step--exports)  
 **Properties**
 
 | Name | Type | Description |

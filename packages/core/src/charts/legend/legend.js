@@ -7,28 +7,6 @@ import * as textHelper from '../helpers/text';
 import colorHelper from '../helpers/color';
 
 /**
- * @typedef LegendChartData
- * @type {Object[]}
- * @property {Number} id        Id of the group (required)
- * @property {String} name      Name of the group (required)
- * @property {Number} quantity  Quantity of the group (optional)
- *
- * @example
- * [
- *     {
- *         id: 1,
- *         quantity: 2,
- *         name: 'glittering'
- *     },
- *     {
- *         id: 2,
- *         quantity: 3,
- *         name: 'luminous'
- *     }
- * ]
- */
-
-/**
  * @fileOverview Legend Component reusable API class that renders a
  * simple and configurable legend element.
  *
@@ -60,6 +38,29 @@ import colorHelper from '../helpers/color';
  *     .call(legendBox);
  *
  */
+
+/**
+ * @typedef LegendChartData
+ * @type {Object[]}
+ * @property {Number} id        Id of the group (required)
+ * @property {String} name      Name of the group (required)
+ * @property {Number} quantity  Quantity of the group (optional)
+ *
+ * @example
+ * [
+ *     {
+ *         id: 1,
+ *         quantity: 2,
+ *         name: 'glittering'
+ *     },
+ *     {
+ *         id: 2,
+ *         quantity: 3,
+ *         name: 'luminous'
+ *     }
+ * ]
+ */
+
 export default function module() {
     let margin = {
             top: 5,

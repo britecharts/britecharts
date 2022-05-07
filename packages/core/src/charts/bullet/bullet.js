@@ -8,6 +8,25 @@ import { exportChart } from '../helpers/export';
 import colorHelper from '../helpers/color';
 
 /**
+ * Reusable Bullet Chart API class that renders a
+ * simple and configurable Bullet Chart.
+ *
+ * @module Bullet
+ * @tutorial bullet-chart
+ * @requires d3-axis, d3-format, d3-scale, d3-selection, d3-transition
+ *
+ * @example
+ * let bulletChart = bullet();
+ *
+ * bulletChart
+ *     .width(containerWidth);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset)
+ *     .call(bulletChart);
+ */
+
+/**
  * @typedef BulletChartData
  * @type {Object}
  * @property {Number[]} ranges      Range that encodes the qualitative measure
@@ -27,24 +46,6 @@ import colorHelper from '../helpers/color';
  *
  */
 
-/**
- * Reusable Bullet Chart API class that renders a
- * simple and configurable Bullet Chart.
- *
- * @module Bullet
- * @tutorial bullet-chart
- * @requires d3-axis, d3-format, d3-scale, d3-selection, d3-transition
- *
- * @example
- * let bulletChart = bullet();
- *
- * bulletChart
- *     .width(containerWidth);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset)
- *     .call(bulletChart);
- */
 export default function module() {
     let margin = {
             top: 20,

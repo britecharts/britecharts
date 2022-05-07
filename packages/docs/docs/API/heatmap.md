@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Heatmap">Heatmap</a></dt>
-<dd><p>Reusable Heatmap API module that renders a
-simple and configurable heatmap chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#HeatmapData">HeatmapData</a> : <code>Array.&lt;Array&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Heatmap"></a>
 
 # Heatmap
@@ -35,16 +19,19 @@ d3Selection.select('.css-selector')
 
 * [Heatmap](#module_Heatmap)
     * [exports(_selection, _data)](#exp_module_Heatmap--exports) ⏏
-        * [.animationDuration(_x)](#module_Heatmap--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
-        * [.boxSize(_x)](#module_Heatmap--exports.boxSize) ⇒ <code>Number</code> \| <code>module</code>
-        * [.colorSchema(_x)](#module_Heatmap--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-        * [.exportChart(filename, title)](#module_Heatmap--exports.exportChart)
-        * [.height(_x)](#module_Heatmap--exports.height) ⇒ <code>Number</code> \| <code>module</code>
-        * [.isAnimated(_x)](#module_Heatmap--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.margin(_x)](#module_Heatmap--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
-        * [.on()](#module_Heatmap--exports.on) ⇒ <code>module</code>
-        * [.yAxisLabels(_x)](#module_Heatmap--exports.yAxisLabels) ⇒ <code>yAxisLabels</code> \| <code>module</code>
-        * [.width(_x)](#module_Heatmap--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+        * _static_
+            * [.animationDuration(_x)](#module_Heatmap--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
+            * [.boxSize(_x)](#module_Heatmap--exports.boxSize) ⇒ <code>Number</code> \| <code>module</code>
+            * [.colorSchema(_x)](#module_Heatmap--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+            * [.exportChart(filename, title)](#module_Heatmap--exports.exportChart)
+            * [.height(_x)](#module_Heatmap--exports.height) ⇒ <code>Number</code> \| <code>module</code>
+            * [.isAnimated(_x)](#module_Heatmap--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.margin(_x)](#module_Heatmap--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
+            * [.on()](#module_Heatmap--exports.on) ⇒ <code>module</code>
+            * [.yAxisLabels(_x)](#module_Heatmap--exports.yAxisLabels) ⇒ <code>yAxisLabels</code> \| <code>module</code>
+            * [.width(_x)](#module_Heatmap--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+        * _inner_
+            * [~HeatmapData](#module_Heatmap--exports..HeatmapData) : <code>Array.&lt;Array&gt;</code>
 
 <a name="exp_module_Heatmap--exports"></a>
 
@@ -56,7 +43,7 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>HeatmapData</code>](#HeatmapData) | The data to attach and generate the chart |
+| _data | <code>HeatmapData</code> | The data to attach and generate the chart |
 
 <a name="module_Heatmap--exports.animationDuration"></a>
 
@@ -185,10 +172,10 @@ Gets or Sets the width of the chart
 | --- | --- | --- | --- |
 | _x | <code>Number</code> | <code>780</code> | Desired width for the chart |
 
-<a name="HeatmapData"></a>
+<a name="module_Heatmap--exports..HeatmapData"></a>
 
-# HeatmapData : <code>Array.&lt;Array&gt;</code>
-**Kind**: global typedef  
+### exports~HeatmapData : <code>Array.&lt;Array&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Heatmap--exports)  
 **Properties**
 
 | Name | Type |

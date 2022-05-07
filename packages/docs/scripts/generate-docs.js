@@ -7,14 +7,9 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const { execSync } = require('child_process');
 const jsdoc2md = require('jsdoc-to-markdown');
+const { execSync } = require('child_process');
 const sidebars = require('../sidebars');
-
-// Custom package names that don't match the base pattern `utils => Utils`
-const packageNameOverrides = [
-    // { id: 'api', name: 'API' },
-];
 
 /**
  * Runs through packages folders looking for JSDoc and generates markdown docs
@@ -60,17 +55,8 @@ function generateDocs() {
             );
             const packageId = matchingExpression[1];
             const chartId = matchingExpression[2];
-
-            // check against the title overrides array
-            let chartName;
-            // if override, use the title, else title = capitalize chartId
-            if (packageNameOverrides.find((item) => item.id === chartId)) {
-                chartName = packageNameOverrides.find(
-                    (item) => item.id === chartId
-                ).name;
-            } else {
-                chartName = chartId.charAt(0).toUpperCase() + chartId.slice(1);
-            }
+            const chartName =
+                chartId.charAt(0).toUpperCase() + chartId.slice(1);
 
             if (chartName !== processingPackageName) {
                 processingPackageName = chartName;

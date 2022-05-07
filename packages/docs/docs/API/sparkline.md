@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Sparkline">Sparkline</a></dt>
-<dd><p>Sparkline Chart reusable API module that allows us
-rendering a sparkline configurable chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#SparklineChartData">SparklineChartData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Sparkline"></a>
 
 # Sparkline
@@ -36,19 +20,22 @@ d3Selection.select('.css-selector')
 
 * [Sparkline](#module_Sparkline)
     * [exports(_selection, _data)](#exp_module_Sparkline--exports) ⏏
-        * [.animationDuration(_x)](#module_Sparkline--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
-        * [.areaGradient(_x)](#module_Sparkline--exports.areaGradient) ⇒ <code>areaGradient</code> \| <code>module</code>
-        * ~~[.dateLabel(_x)](#module_Sparkline--exports.dateLabel) ⇒ <code>dateLabel</code> \| <code>module</code>~~
-        * [.exportChart(filename, title)](#module_Sparkline--exports.exportChart) ⇒ <code>Promise</code>
-        * [.height(_x)](#module_Sparkline--exports.height) ⇒ <code>height</code> \| <code>module</code>
-        * [.isAnimated(_x)](#module_Sparkline--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
-        * [.lineGradient(_x)](#module_Sparkline--exports.lineGradient) ⇒ <code>lineGradient</code> \| <code>module</code>
-        * [.isLoading(flag)](#module_Sparkline--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.margin(_x)](#module_Sparkline--exports.margin) ⇒ <code>object</code> \| <code>module</code>
-        * [.titleText(_x)](#module_Sparkline--exports.titleText) ⇒ <code>string</code> \| <code>module</code>
-        * [.titleTextStyle(_x)](#module_Sparkline--exports.titleTextStyle) ⇒ <code>Object</code> \| <code>module</code>
-        * ~~[.valueLabel(_x)](#module_Sparkline--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
-        * [.width(_x)](#module_Sparkline--exports.width) ⇒ <code>width</code> \| <code>module</code>
+        * _static_
+            * [.animationDuration(_x)](#module_Sparkline--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
+            * [.areaGradient(_x)](#module_Sparkline--exports.areaGradient) ⇒ <code>areaGradient</code> \| <code>module</code>
+            * ~~[.dateLabel(_x)](#module_Sparkline--exports.dateLabel) ⇒ <code>dateLabel</code> \| <code>module</code>~~
+            * [.exportChart(filename, title)](#module_Sparkline--exports.exportChart) ⇒ <code>Promise</code>
+            * [.height(_x)](#module_Sparkline--exports.height) ⇒ <code>height</code> \| <code>module</code>
+            * [.isAnimated(_x)](#module_Sparkline--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
+            * [.lineGradient(_x)](#module_Sparkline--exports.lineGradient) ⇒ <code>lineGradient</code> \| <code>module</code>
+            * [.isLoading(flag)](#module_Sparkline--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.margin(_x)](#module_Sparkline--exports.margin) ⇒ <code>object</code> \| <code>module</code>
+            * [.titleText(_x)](#module_Sparkline--exports.titleText) ⇒ <code>string</code> \| <code>module</code>
+            * [.titleTextStyle(_x)](#module_Sparkline--exports.titleTextStyle) ⇒ <code>Object</code> \| <code>module</code>
+            * ~~[.valueLabel(_x)](#module_Sparkline--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
+            * [.width(_x)](#module_Sparkline--exports.width) ⇒ <code>width</code> \| <code>module</code>
+        * _inner_
+            * [~SparklineChartData](#module_Sparkline--exports..SparklineChartData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Sparkline--exports"></a>
 
@@ -60,7 +47,7 @@ This function creates the graph using the selection and data provided
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents the container(s) where the chart(s) will be rendered |
-| _data | [<code>SparklineChartData</code>](#SparklineChartData) | The data to attach and generate the chart |
+| _data | <code>SparklineChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Sparkline--exports.animationDuration"></a>
 
@@ -268,10 +255,10 @@ Gets or Sets the width of the chart
 | --- | --- | --- | --- |
 | _x | <code>number</code> | <code>100</code> | Desired width for the graph |
 
-<a name="SparklineChartData"></a>
+<a name="module_Sparkline--exports..SparklineChartData"></a>
 
-# SparklineChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~SparklineChartData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Sparkline--exports)  
 **Properties**
 
 | Name | Type | Description |

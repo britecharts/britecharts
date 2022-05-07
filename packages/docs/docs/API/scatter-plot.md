@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Scatter-plot">Scatter-plot</a></dt>
-<dd><p>Reusable Scatter Plot API class that renders a
-simple and configurable scatter chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#ScatterPlotData">ScatterPlotData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Scatter-plot"></a>
 
 # Scatter-plot
@@ -68,6 +52,7 @@ d3Selection.select('.css-selector')
             * [.yTicks(_x)](#module_Scatter-plot--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
         * _inner_
             * [~nameToColorMap](#module_Scatter-plot--exports..nameToColorMap)
+            * [~ScatterPlotData](#module_Scatter-plot--exports..ScatterPlotData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Scatter-plot--exports"></a>
 
@@ -79,7 +64,7 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>ScatterPlotData</code>](#ScatterPlotData) | The data to attach and generate the chart |
+| _data | <code>ScatterPlotData</code> | The data to attach and generate the chart |
 
 <a name="module_Scatter-plot--exports.animationDuration"></a>
 
@@ -530,10 +515,10 @@ each color of the given color scheme
 }
 
 **Kind**: inner property of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
-<a name="ScatterPlotData"></a>
+<a name="module_Scatter-plot--exports..ScatterPlotData"></a>
 
-# ScatterPlotData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~ScatterPlotData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
 **Properties**
 
 | Name | Type | Description |

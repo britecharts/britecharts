@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Stacked-bar">Stacked-bar</a></dt>
-<dd><p>Stacked Area Chart reusable API module that allows us
-rendering a multi area and configurable chart.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#StackedBarData">StackedBarData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Stacked-bar"></a>
 
 # Stacked-bar
@@ -35,32 +19,35 @@ d3Selection.select('.css-selector')
 
 * [Stacked-bar](#module_Stacked-bar)
     * [exports(_selection, _data)](#exp_module_Stacked-bar--exports) ⏏
-        * [.animationDuration(_x)](#module_Stacked-bar--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
-        * [.betweenBarsPadding(_x)](#module_Stacked-bar--exports.betweenBarsPadding) ⇒ <code>Number</code> \| <code>module</code>
-        * [.colorMap([_x])](#module_Stacked-bar--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
-        * [.colorSchema(_x)](#module_Stacked-bar--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-        * [.exportChart(filename, title)](#module_Stacked-bar--exports.exportChart) ⇒ <code>Promise</code>
-        * [.grid(_x)](#module_Stacked-bar--exports.grid) ⇒ <code>String</code> \| <code>module</code>
-        * [.hasPercentage(_x)](#module_Stacked-bar--exports.hasPercentage) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.height(_x)](#module_Stacked-bar--exports.height) ⇒ <code>Number</code> \| <code>module</code>
-        * [.hasReversedStacks(_x)](#module_Stacked-bar--exports.hasReversedStacks) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.isAnimated(_x)](#module_Stacked-bar--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.isHorizontal(_x)](#module_Stacked-bar--exports.isHorizontal) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.isLoading(flag)](#module_Stacked-bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
-        * [.margin(_x)](#module_Stacked-bar--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
-        * ~~[.nameLabel(_x)](#module_Stacked-bar--exports.nameLabel) ⇒ <code>Number</code> \| <code>module</code>~~
-        * [.numberFormat(_x)](#module_Stacked-bar--exports.numberFormat) ⇒ <code>String</code> \| <code>module</code>
-        * [.on()](#module_Stacked-bar--exports.on) ⇒ <code>module</code>
-        * [.percentageAxisToMaxRatio(_x)](#module_Stacked-bar--exports.percentageAxisToMaxRatio) ⇒ <code>Number</code> \| <code>module</code>
-        * ~~[.stackLabel(_x)](#module_Stacked-bar--exports.stackLabel) ⇒ <code>String</code> \| <code>module</code>~~
-        * [.tooltipThreshold([_x])](#module_Stacked-bar--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
-        * ~~[.valueLabel(_x)](#module_Stacked-bar--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
-        * [.valueLocale([_x])](#module_Stacked-bar--exports.valueLocale) ⇒ <code>LocaleObject</code> \| <code>module</code>
-        * [.width(_x)](#module_Stacked-bar--exports.width) ⇒ <code>Number</code> \| <code>module</code>
-        * [.xTicks(_x)](#module_Stacked-bar--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yAxisLabel(_x)](#module_Stacked-bar--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
-        * [.yAxisLabelOffset(_x)](#module_Stacked-bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
-        * [.yTicks(_x)](#module_Stacked-bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+        * _static_
+            * [.animationDuration(_x)](#module_Stacked-bar--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
+            * [.betweenBarsPadding(_x)](#module_Stacked-bar--exports.betweenBarsPadding) ⇒ <code>Number</code> \| <code>module</code>
+            * [.colorMap([_x])](#module_Stacked-bar--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
+            * [.colorSchema(_x)](#module_Stacked-bar--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+            * [.exportChart(filename, title)](#module_Stacked-bar--exports.exportChart) ⇒ <code>Promise</code>
+            * [.grid(_x)](#module_Stacked-bar--exports.grid) ⇒ <code>String</code> \| <code>module</code>
+            * [.hasPercentage(_x)](#module_Stacked-bar--exports.hasPercentage) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.height(_x)](#module_Stacked-bar--exports.height) ⇒ <code>Number</code> \| <code>module</code>
+            * [.hasReversedStacks(_x)](#module_Stacked-bar--exports.hasReversedStacks) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.isAnimated(_x)](#module_Stacked-bar--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.isHorizontal(_x)](#module_Stacked-bar--exports.isHorizontal) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.isLoading(flag)](#module_Stacked-bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.margin(_x)](#module_Stacked-bar--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
+            * ~~[.nameLabel(_x)](#module_Stacked-bar--exports.nameLabel) ⇒ <code>Number</code> \| <code>module</code>~~
+            * [.numberFormat(_x)](#module_Stacked-bar--exports.numberFormat) ⇒ <code>String</code> \| <code>module</code>
+            * [.on()](#module_Stacked-bar--exports.on) ⇒ <code>module</code>
+            * [.percentageAxisToMaxRatio(_x)](#module_Stacked-bar--exports.percentageAxisToMaxRatio) ⇒ <code>Number</code> \| <code>module</code>
+            * ~~[.stackLabel(_x)](#module_Stacked-bar--exports.stackLabel) ⇒ <code>String</code> \| <code>module</code>~~
+            * [.tooltipThreshold([_x])](#module_Stacked-bar--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
+            * ~~[.valueLabel(_x)](#module_Stacked-bar--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
+            * [.valueLocale([_x])](#module_Stacked-bar--exports.valueLocale) ⇒ <code>LocaleObject</code> \| <code>module</code>
+            * [.width(_x)](#module_Stacked-bar--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+            * [.xTicks(_x)](#module_Stacked-bar--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yAxisLabel(_x)](#module_Stacked-bar--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
+            * [.yAxisLabelOffset(_x)](#module_Stacked-bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
+            * [.yTicks(_x)](#module_Stacked-bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+        * _inner_
+            * [~StackedBarData](#module_Stacked-bar--exports..StackedBarData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Stacked-bar--exports"></a>
 
@@ -72,7 +59,7 @@ This function creates the graph using the selection and data provided
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents the container(s) where the chart(s) will be rendered |
-| _data | [<code>StackedBarData</code>](#StackedBarData) | The data to attach and generate the chart |
+| _data | <code>StackedBarData</code> | The data to attach and generate the chart |
 
 <a name="module_Stacked-bar--exports.animationDuration"></a>
 
@@ -438,10 +425,10 @@ Gets or Sets the number of vertical ticks of the axis on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 5      Desired vertical ticks |
 
-<a name="StackedBarData"></a>
+<a name="module_Stacked-bar--exports..StackedBarData"></a>
 
-# StackedBarData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~StackedBarData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
 **Properties**
 
 | Name | Type | Description |

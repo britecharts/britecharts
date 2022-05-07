@@ -1,19 +1,3 @@
-# Modules
-
-<dl>
-<dt><a href="#module_Legend">Legend</a></dt>
-<dd><p>Legend Component reusable API class that renders a
-simple and configurable legend element.</p>
-</dd>
-</dl>
-
-# Typedefs
-
-<dl>
-<dt><a href="#LegendChartData">LegendChartData</a> : <code>Array.&lt;Object&gt;</code></dt>
-<dd></dd>
-</dl>
-
 <a name="module_Legend"></a>
 
 # Legend
@@ -47,19 +31,22 @@ d3Selection.select('.other-css-selector')
 
 * [Legend](#module_Legend)
     * [exports(_selection, _data)](#exp_module_Legend--exports) ⏏
-        * [.clearHighlight()](#module_Legend--exports.clearHighlight)
-        * [.colorMap([_x])](#module_Legend--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
-        * [.colorSchema([_x])](#module_Legend--exports.colorSchema) ⇒ <code>number</code> \| <code>module</code>
-        * [.height([_x])](#module_Legend--exports.height) ⇒ <code>height</code> \| <code>module</code>
-        * [.highlight(entryId)](#module_Legend--exports.highlight)
-        * [.highlightEntryById([_x])](#module_Legend--exports.highlightEntryById) ⇒ <code>Number</code> \| <code>Module</code>
-        * [.isHorizontal([_x])](#module_Legend--exports.isHorizontal) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.margin(_x)](#module_Legend--exports.margin) ⇒ <code>object</code> \| <code>module</code>
-        * [.marginRatio([_x])](#module_Legend--exports.marginRatio) ⇒ <code>number</code> \| <code>module</code>
-        * [.markerSize([_x])](#module_Legend--exports.markerSize) ⇒ <code>object</code> \| <code>module</code>
-        * [.numberFormat(_x)](#module_Legend--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
-        * [.unit([_x])](#module_Legend--exports.unit) ⇒ <code>String</code> \| <code>module</code>
-        * [.width([_x])](#module_Legend--exports.width) ⇒ <code>number</code> \| <code>module</code>
+        * _static_
+            * [.clearHighlight()](#module_Legend--exports.clearHighlight)
+            * [.colorMap([_x])](#module_Legend--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
+            * [.colorSchema([_x])](#module_Legend--exports.colorSchema) ⇒ <code>number</code> \| <code>module</code>
+            * [.height([_x])](#module_Legend--exports.height) ⇒ <code>height</code> \| <code>module</code>
+            * [.highlight(entryId)](#module_Legend--exports.highlight)
+            * [.highlightEntryById([_x])](#module_Legend--exports.highlightEntryById) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.isHorizontal([_x])](#module_Legend--exports.isHorizontal) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.margin(_x)](#module_Legend--exports.margin) ⇒ <code>object</code> \| <code>module</code>
+            * [.marginRatio([_x])](#module_Legend--exports.marginRatio) ⇒ <code>number</code> \| <code>module</code>
+            * [.markerSize([_x])](#module_Legend--exports.markerSize) ⇒ <code>object</code> \| <code>module</code>
+            * [.numberFormat(_x)](#module_Legend--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
+            * [.unit([_x])](#module_Legend--exports.unit) ⇒ <code>String</code> \| <code>module</code>
+            * [.width([_x])](#module_Legend--exports.width) ⇒ <code>number</code> \| <code>module</code>
+        * _inner_
+            * [~LegendChartData](#module_Legend--exports..LegendChartData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Legend--exports"></a>
 
@@ -71,7 +58,7 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | [<code>LegendChartData</code>](#LegendChartData) | The data to attach and generate the chart |
+| _data | <code>LegendChartData</code> | The data to attach and generate the chart |
 
 <a name="module_Legend--exports.clearHighlight"></a>
 
@@ -238,10 +225,10 @@ Gets or Sets the width of the legend chart
 | --- | --- | --- | --- |
 | [_x] | <code>number</code> | <code>320</code> | Desired width for the graph in pixels |
 
-<a name="LegendChartData"></a>
+<a name="module_Legend--exports..LegendChartData"></a>
 
-# LegendChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: global typedef  
+### exports~LegendChartData : <code>Array.&lt;Object&gt;</code>
+**Kind**: inner typedef of [<code>exports</code>](#exp_module_Legend--exports)  
 **Properties**
 
 | Name | Type | Description |
