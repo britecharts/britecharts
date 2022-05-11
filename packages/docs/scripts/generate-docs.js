@@ -11,27 +11,31 @@ const jsdoc2md = require('jsdoc-to-markdown');
 const { execSync } = require('child_process');
 const sidebars = require('../sidebars');
 
+// Matches paths of the shape: /package/core/src/charts/bar extracting the package and chart names
+const CHART_REGEX = /\/packages\/([\s\S]*?)\/src\/charts\/([\s\S]*?)\//i;
+
+// Matches paths of the shape: /src/charts/bar and get the chart name
+const SUB_FOLDER_REGEX = /\/src\/charts\/([\s\S]*?)$/i;
+
+const IGNORED_PATHS = [
+    '**/node_modules/**',
+    '**/*.spec.js',
+    '**/*.d.ts',
+    '**/index.js',
+    '**/*.stories.js',
+    '**/*DataBuilder.js',
+    '**/*Data.js',
+];
+
 /**
  * Runs through packages folders looking for JSDoc and generates markdown docs
  */
 function generateDocs() {
     console.log('-= Generating package docs =-');
     // Use glob to get all js/ts files
-    const pathPattern = path.join(
-        __dirname,
-        '../../core/src/**/*.[jt]s?(x)'
-        // '../packages/**/src/**/*.[jt]s?(x)'
-    );
+    const pathPattern = path.join(__dirname, '../../core/src/**/*.[jt]s?(x)');
     const filePaths = glob.sync(pathPattern, {
-        ignore: [
-            '**/node_modules/**',
-            '**/*.spec.js',
-            '**/*.d.ts',
-            '**/index.js',
-            '**/*.stories.js',
-            '**/*DataBuilder.js',
-            '**/*Data.js',
-        ],
+        ignore: IGNORED_PATHS,
     });
 
     // Get the sidebar object
@@ -43,18 +47,14 @@ function generateDocs() {
         const markdown = jsdoc2md.renderSync({
             files: filePath,
             configure: path.join(__dirname, '../jsdoc.conf.json'),
-            // plugin: path.join(__dirname, './template.hbs'),
             'heading-depth': 1,
         });
 
         // if there's markdown, do stuff
         if (markdown && markdown.length > 0) {
             // get the package ID from the file path
-            const matchingExpression = filePath.match(
-                /\/packages\/([\s\S]*?)\/src\/charts\/([\s\S]*?)\//i
-            );
-            const packageId = matchingExpression[1];
-            const chartId = matchingExpression[2];
+            const matchingExpression = filePath.match(CHART_REGEX);
+            const [, packageId, chartId] = matchingExpression;
             const chartName =
                 chartId.charAt(0).toUpperCase() + chartId.slice(1);
 
@@ -66,14 +66,8 @@ function generateDocs() {
             }
 
             // get the sub-folder structure relative to /src/
-            let subPath = path
-                .dirname(filePath)
-                .match(/\/src\/charts\/([\s\S]*?)$/i)
-                ? `${
-                      path
-                          .dirname(filePath)
-                          .match(/\/src\/charts\/([\s\S]*?)$/i)[1]
-                  }`
+            let subPath = path.dirname(filePath).match(SUB_FOLDER_REGEX)
+                ? `${path.dirname(filePath).match(SUB_FOLDER_REGEX)[1]}`
                 : '';
 
             // Get each part of the path, filtering out empty path items
@@ -107,22 +101,6 @@ function generateDocs() {
 
     // Let the user know what step we're on
     console.log('\u001B[32m', '✔️  Docs generated', '\u001B[0m');
-
-    // Let the user know what step we're on
-    // console.log('-= Updating sidebars.js =-');
-
-    // write sidebar file
-    // fs.writeFileSync(
-    //     path.join(__dirname, '../sidebars.js'),
-    //     `module.exports = ${JSON.stringify(sidebars, null, '  ')}`,
-    //     'utf8'
-    // );
-
-    // run prettier on the output json
-    // execSync(`eslint --fix ${path.join(__dirname, '../docs/sidebars.js')}`);
-
-    // Let the user know what step we're on
-    // console.log('\u001B[32m', '✔️  sidebars.js updated', '\u001B[0m');
 }
 
 generateDocs();
