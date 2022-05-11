@@ -23,6 +23,27 @@ const uniq = (arrArg) =>
     arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
 
 /**
+ * Grouped Bar Chart reusable API module that allows us
+ * rendering a multi grouped bar and configurable chart.
+ *
+ * @module Grouped-bar
+ * @tutorial grouped-bar
+ * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
+ *  d3-interpolate, d3-scale, d3-selection, d3-transition
+ *
+ * @example
+ * let groupedBar = GroupedBar();
+ *
+ * groupedBar
+ *     .width(containerWidth);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset.data)
+ *     .call(groupedBar);
+ *
+ */
+
+/**
  * @typdef D3Layout
  * @type function
  */
@@ -44,26 +65,6 @@ const uniq = (arrArg) =>
  * ]
  */
 
-/**
- * Grouped Bar Chart reusable API module that allows us
- * rendering a multi grouped bar and configurable chart.
- *
- * @module Grouped-bar
- * @tutorial grouped-bar
- * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
- *  d3-interpolate, d3-scale, d3-selection, d3-transition
- *
- * @example
- * let groupedBar = GroupedBar();
- *
- * groupedBar
- *     .width(containerWidth);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset.data)
- *     .call(groupedBar);
- *
- */
 export default function module() {
     let margin = {
             top: 40,

@@ -19,7 +19,7 @@ const NUMBER_FORMAT = '.2f';
  * @requires d3-array, d3-ease, d3-format, d3-selection, d3-transition
  *
  * @example
- * var barChart = line(),
+ * const barChart = line(),
  *     miniTooltip = miniTooltip();
  *
  * barChart

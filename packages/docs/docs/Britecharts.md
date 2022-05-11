@@ -1,4 +1,7 @@
-# Britecharts
+---
+ sidebar_position: 1 
+---
+ # Britecharts
 
 > Britecharts makes it easier to build stunning [D3.js][d3]-powered interactive charts with little code.
 

@@ -11,6 +11,28 @@ import { exportChart } from '../helpers/export';
 import { barLoadingMarkup } from '../helpers/load';
 
 /**
+ * Step Chart reusable API class that renders a
+ * simple and configurable step chart.
+ * NOTE: We will be deprecating this chart soon
+ *
+ * @module Step
+ * @tutorial step
+ * @requires d3-array, d3-axis, d3-dispatch, d3-ease, d3-format, d3-scale, d3-selection, d3-transition
+ * @deprecated
+ * @example
+ * const stepChart= step();
+ *
+ * stepChart
+ *     .height(500)
+ *     .width(800);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset)
+ *     .call(stepChart);
+ *
+ */
+
+/**
  * @typedef StepChartData
  * @type Object[]
  *
@@ -28,28 +50,6 @@ import { barLoadingMarkup } from '../helpers/load';
  *         key: 'luminous'
  *     }
  * ]
- */
-
-/**
- * Step Chart reusable API class that renders a
- * simple and configurable step chart.
- * NOTE: We will be deprecating this chart soon
- *
- * @module Step
- * @tutorial step
- * @requires d3-array, d3-axis, d3-dispatch, d3-ease, d3-format, d3-scale, d3-selection, d3-transition
- * @deprecated
- * @example
- * var stepChart= step();
- *
- * stepChart
- *     .height(500)
- *     .width(800);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset)
- *     .call(stepChart);
- *
  */
 
 export default function module() {

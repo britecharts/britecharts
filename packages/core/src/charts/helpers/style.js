@@ -160,14 +160,13 @@ module.exports = (function () {
      */
     const initializeSerializer = () => {
         // Mapping between tag names and css default values lookup tables. This allows to exclude default values in the result.
-        var defaultStylesByTagName = {};
+        const defaultStylesByTagName = {};
 
         // Precompute the lookup tables.
         [].forEach.call(tagNames, (name) => {
             if (!noStyleTags[name]) {
-                defaultStylesByTagName[name] = computeDefaultStyleByTagName(
-                    name
-                );
+                defaultStylesByTagName[name] =
+                    computeDefaultStyleByTagName(name);
             }
         });
 
@@ -175,9 +174,8 @@ module.exports = (function () {
             tagName = tagName.toUpperCase();
 
             if (!defaultStylesByTagName[tagName]) {
-                defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(
-                    tagName
-                );
+                defaultStylesByTagName[tagName] =
+                    computeDefaultStyleByTagName(tagName);
             }
 
             return defaultStylesByTagName[tagName];

@@ -15,6 +15,27 @@ import { donutLoadingMarkup } from '../helpers/load';
 import { motion } from '../helpers/constants';
 
 /**
+ * Reusable Donut Chart API class that renders a
+ * simple and configurable donut chart.
+ *
+ * @module Donut
+ * @tutorial donut
+ * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
+ *
+ * @example
+ * const donutChart = donut();
+ *
+ * donutChart
+ *     .externalRadius(500)
+ *     .internalRadius(200);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset)
+ *     .call(donutChart);
+ *
+ */
+
+/**
  * @typedef DonutChartData
  * @type {Object[]}
  * @property {Number} quantity     Quantity of the group (required)
@@ -37,27 +58,6 @@ import { motion } from '../helpers/constants';
  *         id: 2
  *     }
  * ]
- */
-
-/**
- * Reusable Donut Chart API class that renders a
- * simple and configurable donut chart.
- *
- * @module Donut
- * @tutorial donut
- * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
- *
- * @example
- * var donutChart = donut();
- *
- * donutChart
- *     .externalRadius(500)
- *     .internalRadius(200);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset)
- *     .call(donutChart);
- *
  */
 export default function module() {
     let margin = {

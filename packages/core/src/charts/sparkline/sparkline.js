@@ -20,6 +20,27 @@ const DEFAULT_TITLE_TEXT_STYLE = {
 };
 
 /**
+ * Sparkline Chart reusable API module that allows us
+ * rendering a sparkline configurable chart.
+ *
+ * @module Sparkline
+ * @tutorial sparkline
+ * @requires d3-array, d3-ease, d3-scale, d3-shape, d3-selection, d3-transition
+ *
+ * @example
+ * const sparkLineChart = sparkline();
+ *
+ * sparkLineChart
+ *     .width(200)
+ *     .height(100);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset)
+ *     .call(sparkLineChart);
+ *
+ */
+
+/**
  * @typedef SparklineChartData
  * @type {Object[]}
  * @property {number} value        Value of the group (required)
@@ -38,26 +59,6 @@ const DEFAULT_TITLE_TEXT_STYLE = {
  * ]
  */
 
-/**
- * Sparkline Chart reusable API module that allows us
- * rendering a sparkline configurable chart.
- *
- * @module Sparkline
- * @tutorial sparkline
- * @requires d3-array, d3-ease, d3-scale, d3-shape, d3-selection, d3-transition
- *
- * @example
- * var sparkLineChart = sparkline();
- *
- * sparkLineChart
- *     .width(200)
- *     .height(100);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset)
- *     .call(sparkLineChart);
- *
- */
 export default function module() {
     let margin = {
             left: 5,

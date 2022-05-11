@@ -8,13 +8,13 @@ export function StackedBarDataBuilder(config) {
     this.config = _.defaults({}, config);
 
     this.with3Sources = function () {
-        var attributes = _.extend({}, this.config, jsonThreeSources);
+        const attributes = _.extend({}, this.config, jsonThreeSources);
 
         return new this.Klass(attributes);
     };
 
     this.with2Sources = function () {
-        var attributes = _.extend({}, this.config, jsonTwoSources);
+        const attributes = _.extend({}, this.config, jsonTwoSources);
 
         return new this.Klass(attributes);
     };

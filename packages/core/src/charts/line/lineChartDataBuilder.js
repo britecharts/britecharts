@@ -19,73 +19,73 @@ export function LineDataBuilder(config) {
     this.config = _.defaults({}, config);
 
     this.with5Topics = function () {
-        var attributes = _.extend({}, this.config, jsonFiveTopics);
+        const attributes = _.extend({}, this.config, jsonFiveTopics);
 
         return new this.Klass(attributes);
     };
 
     this.with4Topics = function () {
-        var attributes = _.extend({}, this.config, jsonFourTopics);
+        const attributes = _.extend({}, this.config, jsonFourTopics);
 
         return new this.Klass(attributes);
     };
 
     this.withOneSource = function () {
-        var attributes = _.extend({}, this.config, jsonOneSource);
+        const attributes = _.extend({}, this.config, jsonOneSource);
 
         return new this.Klass(attributes);
     };
 
     this.withSmallValueRange = function () {
-        var attributes = _.extend({}, this.config, jsonSmallValueRange);
+        const attributes = _.extend({}, this.config, jsonSmallValueRange);
 
         return new this.Klass(attributes);
     };
 
     this.withMultiMonthValueRange = function () {
-        var attributes = _.extend({}, this.config, jsonMultiMonthValueRange);
+        const attributes = _.extend({}, this.config, jsonMultiMonthValueRange);
 
         return new this.Klass(attributes);
     };
 
     this.withHourDateRange = function () {
-        var attributes = _.extend({}, this.config, jsonHourDateRange);
+        const attributes = _.extend({}, this.config, jsonHourDateRange);
 
         return new this.Klass(attributes);
     };
 
     this.withAllDatas = function () {
-        var attributes = _.extend({}, this.config, jsonAllDatas);
+        const attributes = _.extend({}, this.config, jsonAllDatas);
 
         return new this.Klass(attributes);
     };
 
     this.withTwoFlatTopics = function () {
-        var attributes = _.extend({}, this.config, jsonTwoTopicsFlat);
+        const attributes = _.extend({}, this.config, jsonTwoTopicsFlat);
 
         return new this.Klass(attributes);
     };
 
     this.withAllZeroes = function () {
-        var attributes = _.extend({}, this.config, jsonAllZeroes);
+        const attributes = _.extend({}, this.config, jsonAllZeroes);
 
         return new this.Klass(attributes);
     };
 
     this.withNegativeValues = function () {
-        var attributes = _.extend({}, this.config, jsonNegativeValues);
+        const attributes = _.extend({}, this.config, jsonNegativeValues);
 
         return new this.Klass(attributes);
     };
 
     this.withOnlyNegativeValues = function () {
-        var attributes = _.extend({}, this.config, jsonOnlyNegativeValues);
+        const attributes = _.extend({}, this.config, jsonOnlyNegativeValues);
 
         return new this.Klass(attributes);
     };
 
     this.withOnlyNonzeroPositiveValues = function () {
-        var attributes = _.extend(
+        const attributes = _.extend(
             {},
             this.config,
             jsonOnlyNonzeroPositiveValues
@@ -95,7 +95,7 @@ export function LineDataBuilder(config) {
     };
 
     this.withNumericKeys = function () {
-        var attributes = _.extend({}, this.config, jsonNumericKeys);
+        const attributes = _.extend({}, this.config, jsonNumericKeys);
 
         return new this.Klass(attributes);
     };

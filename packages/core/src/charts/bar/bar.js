@@ -22,6 +22,27 @@ const PERCENTAGE_FORMAT = '%';
 const NUMBER_FORMAT = ',f';
 
 /**
+ * Bar Chart reusable API class that renders a
+ * simple and configurable bar chart.
+ *
+ * @module Bar
+ * @tutorial bar
+ * @requires d3-array, d3-ease, d3-axis, d3-color, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
+ *
+ * @example
+ * const barChart = bar();
+ *
+ * barChart
+ *     .height(500)
+ *     .width(800);
+ *
+ * d3.select('.css-selector')
+ *     .datum(dataset)
+ *     .call(barChart);
+ *
+ */
+
+/**
  * @typedef BarChartData
  * @type {Object[]}
  * @property {Number} value        Value of the group (required)
@@ -60,27 +81,6 @@ const NUMBER_FORMAT = ',f';
  *     "grouping": [3],
  *     "currency": ["", "\u00a0€"]
  * }
- */
-
-/**
- * Bar Chart reusable API class that renders a
- * simple and configurable bar chart.
- *
- * @module Bar
- * @tutorial bar
- * @requires d3-array, d3-ease, d3-axis, d3-color, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
- *
- * @example
- * var barChart = bar();
- *
- * barChart
- *     .height(500)
- *     .width(800);
- *
- * d3.select('.css-selector')
- *     .datum(dataset)
- *     .call(barChart);
- *
  */
 export default function module() {
     let margin = {

@@ -9,7 +9,6 @@
   "source": {
     "includePattern": ".+\\.js(doc)?$",
     "excludePattern": "(^|\\/|\\\\)_"
-    // "include": ["./README.md"]
   },
   "example-lang": "javascript"
 }

@@ -24,6 +24,26 @@ import { motion } from '../helpers/constants';
 import { gridHorizontal, gridVertical } from '../helpers/grid';
 
 /**
+ * Reusable Scatter Plot API class that renders a
+ * simple and configurable scatter chart.
+ *
+ * @module Scatter-plot
+ * @tutorial scatter-plot
+ * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-ease, d3-scale, d3-selection, d3-shape, d3-voronoi
+ *
+ * @example
+ * let scatterPlot = scatterPlot();
+ *
+ * scatterPlot
+ *     .grid('horizontal')
+ *     .width(500);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset)
+ *     .call(scatterPlot);
+ */
+
+/**
  * @typedef ScatterPlotData
  * @type {Object[]}
  * @property {String} name      Name of the category or topic for data point
@@ -53,26 +73,6 @@ import { gridHorizontal, gridVertical } from '../helpers/grid';
  *         y: 111,
  *     }
  * ]
- */
-
-/**
- * Reusable Scatter Plot API class that renders a
- * simple and configurable scatter chart.
- *
- * @module Scatter-plot
- * @tutorial scatter-plot
- * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-ease, d3-scale, d3-selection, d3-shape, d3-voronoi
- *
- * @example
- * let scatterPlot = scatterPlot();
- *
- * scatterPlot
- *     .grid('horizontal')
- *     .width(500);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset)
- *     .call(scatterPlot);
  */
 export default function module() {
     let margin = {

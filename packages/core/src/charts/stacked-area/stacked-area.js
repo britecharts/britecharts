@@ -33,6 +33,26 @@ const uniq = (arrArg) =>
     arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
 /**
+ * Stacked Area Chart reusable API module that allows us
+ * rendering a multi area and configurable chart.
+ *
+ * @module Stacked-area
+ * @tutorial stacked-area
+ * @requires d3-array, d3-axis, d3-collection, d3-dispatch, d3-ease, d3-scale, d3-shape, d3-selection, d3-transition, d3-time-format
+ *
+ * @example
+ * let stackedArea = stackedArea();
+ *
+ * stackedArea
+ *     .width(containerWidth);
+ *
+ * d3Selection.select('.css-selector')
+ *     .datum(dataset.data)
+ *     .call(stackedArea);
+ *
+ */
+
+/**
  * @typdef D3Layout
  * @type function
  */
@@ -52,26 +72,6 @@ const uniq = (arrArg) =>
  *         value: 0
  *     }
  * ]
- */
-
-/**
- * Stacked Area Chart reusable API module that allows us
- * rendering a multi area and configurable chart.
- *
- * @module Stacked-area
- * @tutorial stacked-area
- * @requires d3-array, d3-axis, d3-collection, d3-dispatch, d3-ease, d3-scale, d3-shape, d3-selection, d3-transition, d3-time-format
- *
- * @example
- * let stackedArea = stackedArea();
- *
- * stackedArea
- *     .width(containerWidth);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset.data)
- *     .call(stackedArea);
- *
  */
 export default function module() {
     let margin = {
@@ -686,7 +686,7 @@ export default function module() {
      */
     function drawDataReferencePoints() {
         // Creates Dots on Data points
-        var points = svg
+        const points = svg
             .select('.chart-group')
             .selectAll('.dots')
             .data(layers)

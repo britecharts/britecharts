@@ -20,25 +20,6 @@ import { uniqueId } from '../helpers/number';
 import { brushLoadingMarkup } from '../helpers/load';
 
 /**
- * @typedef BrushChartData
- * @type {Object[]}
- * @property {Number} value        Value to chart (required)
- * @property {Date} date           Date of the value in ISO8601 format (required)
- *
- * @example
- * [
- *     {
- *         value: 1,
- *         date: '2011-01-06T00:00:00Z'
- *     },
- *     {
- *         value: 2,
- *         date: '2011-01-07T00:00:00Z'
- *     }
- * ]
- */
-
-/**
  * Brush Chart reusable API class that renders a
  * simple and configurable brush chart.
  *
@@ -66,6 +47,25 @@ import { brushLoadingMarkup } from '../helpers/load';
  * d3Selection.select('.css-selector')
  *     .datum(dataset)
  *     .call(brushChart);
+ */
+
+/**
+ * @typedef BrushChartData
+ * @type {Object[]}
+ * @property {Number} value        Value to chart (required)
+ * @property {Date} date           Date of the value in ISO8601 format (required)
+ *
+ * @example
+ * [
+ *     {
+ *         value: 1,
+ *         date: '2011-01-06T00:00:00Z'
+ *     },
+ *     {
+ *         value: 2,
+ *         date: '2011-01-07T00:00:00Z'
+ *     }
+ * ]
  */
 
 export default function module() {
