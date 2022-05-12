@@ -13,7 +13,6 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "docs:readme": "node ./scripts/copy-readme.js",
-    "docs:readmeNotWorking": "echo -e \"--\nid: README\nslug: /\n---\n$ (cat README.md)\" > packages/docs/docs/README.md",
     "docs:api": "node ./scripts/generate-docs.js"
   },
   "dependencies": {

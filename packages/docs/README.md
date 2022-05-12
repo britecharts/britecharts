@@ -1,20 +1,25 @@
-# Website
+# @britecharts/docs
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+> Documentation package to create the documentation site for Britecharts,  built using [Docusaurus 2](https://docusaurus.io/).
 
-### Installation
-
+## Installation
+To install the dependencies, just run:
 ```
 $ yarn
 ```
 
 ### Local Development
-
+To start developing this documentation site, run:
 ```
 $ yarn start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+This command does several things:
+* Copies over the Readme from the root package
+* Generates the API from the `@britecharts/core` chart comments
+* Starts a local development server and opens up a browser window 
+
+Changes in the markdown files of this package and configuration are reflected live without having to restart the server. However, to update the docs with the latest comments from the packages or the readme, you will need to re-run `yarn start`.
 
 ### Build
 
