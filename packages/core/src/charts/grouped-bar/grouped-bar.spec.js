@@ -16,7 +16,7 @@ const differentDatesReducer = (acc, d) => {
     return acc;
 };
 
-describe('Grouped Bar Chart', () => {
+describe('grouped Bar Chart', () => {
     let groupedBarChart, dataset, containerFixture;
 
     beforeEach(() => {
@@ -38,7 +38,7 @@ describe('Grouped Bar Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.grouped-bar').size();
@@ -197,7 +197,7 @@ describe('Grouped Bar Chart', () => {
         });
 
         describe('when grouped bar is animated', () => {
-            it('it renders correct number of layers and bars', () => {
+            it('renders correct number of layers and bars', () => {
                 const expectedNLayers = 4;
                 const nBarsPerLayer = 3;
 
@@ -271,9 +271,9 @@ describe('Grouped Bar Chart', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         // TODO: Review this test with more time, as it fails in Travis only
-        xdescribe('when clicking on the chart', () => {
+        describe.skip('when clicking on the chart', () => {
             it('should trigger a callback', () => {
                 const bar = containerFixture.select('.grouped-bar');
                 const callbackSpy = jest.fn();
@@ -334,7 +334,7 @@ describe('Grouped Bar Chart', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = groupedBarChart.animationDuration(),
                 testAnimationDuration = 2000,

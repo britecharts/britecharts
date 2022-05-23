@@ -13,7 +13,7 @@ const hasClass = (element, className) => {
     return _.contains(element[0][0].classList, className);
 };
 
-describe('Sparkline Chart', () => {
+describe('sparkline Chart', () => {
     let dataset, containerFixture, sparklineChart;
 
     beforeEach(() => {
@@ -35,7 +35,7 @@ describe('Sparkline Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should show a sparkline chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.line').size();
@@ -230,7 +230,7 @@ describe('Sparkline Chart', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = sparklineChart.animationDuration(),
                 testAnimationDuration = 2000,

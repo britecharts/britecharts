@@ -13,10 +13,10 @@ const hasClass = (element, className) => {
     return _.contains(element.node().classList, className);
 };
 
-describe('Line Chart', () => {
+describe('line Chart', () => {
     let dataset, containerFixture, lineChart;
 
-    describe('Render', () => {
+    describe('render', () => {
         describe('when a single line of zeroes', () => {
             beforeEach(() => {
                 const fixture =
@@ -317,7 +317,7 @@ describe('Line Chart', () => {
                             .select('.custom-lines-group text')
                             .text();
 
-                        expect(actualText).toEqual('Testname');
+                        expect(actualText).toBe('Testname');
                     });
                 });
             });
@@ -557,10 +557,8 @@ describe('Line Chart', () => {
                             .split(' ');
 
                         expect(
-                            classes.includes(
-                                'horizontal-grid-line--highlighted'
-                            )
-                        ).toEqual(true);
+                            classes
+                        ).toContain('horizontal-grid-line--highlighted');
                     });
                 });
 
@@ -626,16 +624,16 @@ describe('Line Chart', () => {
                         );
                     });
 
-                    it('The highest Y-axis value is positive', () => {
+                    it('the highest Y-axis value is positive', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick:nth-child(6)');
-                        expect(text.text()).toEqual('10');
+                        expect(text.text()).toBe('10');
                     });
 
-                    it('The lowest Y-axis value is positive', () => {
+                    it('the lowest Y-axis value is positive', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick');
-                        expect(text.text()).toEqual('2');
+                        expect(text.text()).toBe('2');
                     });
                 });
             });
@@ -780,7 +778,7 @@ describe('Line Chart', () => {
                     let xAxis = containerFixture.selectAll('.x-axis-group');
                     let text = xAxis.select('g.tick:last-child');
 
-                    expect(text.text()).toEqual('8.0k');
+                    expect(text.text()).toBe('8.0k');
                 });
             });
 
@@ -805,7 +803,7 @@ describe('Line Chart', () => {
                     let xAxis = containerFixture.selectAll('.x-axis-group');
                     let text = xAxis.select('g.tick:nth-child(2)');
 
-                    expect(text.text()).toEqual('10^1');
+                    expect(text.text()).toBe('10^1');
                 });
             });
         });
@@ -869,10 +867,10 @@ describe('Line Chart', () => {
                         .nodes();
 
                     circles.forEach((circle) => {
-                        expect(circle.getAttribute('class')).toEqual(
+                        expect(circle.getAttribute('class')).toBe(
                             'data-point-mark'
                         );
-                        expect(circle.getAttribute('r')).toEqual('5');
+                        expect(circle.getAttribute('r')).toBe('5');
                         expect(circle.getAttribute('cx')).toBeDefined();
                         expect(circle.getAttribute('cy')).toBeDefined();
                         expect(circle.getAttribute('style')).toBeDefined();
@@ -882,7 +880,7 @@ describe('Line Chart', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         beforeEach(() => {
             const fixture =
                 '<div id="fixture"><div class="test-container"></div></div>';
@@ -911,8 +909,8 @@ describe('Line Chart', () => {
             lineChart.on('customMouseOver', callback);
             container.dispatch('mouseover');
 
-            expect(callback.mock.calls.length).toBe(expectedCalls);
-            expect(callback.mock.calls[0].length).toBe(expectedArguments);
+            expect(callback.mock.calls).toHaveLength(expectedCalls);
+            expect(callback.mock.calls[0]).toHaveLength(expectedArguments);
         });
 
         it('should trigger an event on mouse out', () => {
@@ -924,8 +922,8 @@ describe('Line Chart', () => {
             lineChart.on('customMouseOut', callback);
             container.dispatch('mouseout');
 
-            expect(callback.mock.calls.length).toBe(expectedCalls);
-            expect(callback.mock.calls[0].length).toBe(expectedArguments);
+            expect(callback.mock.calls).toHaveLength(expectedCalls);
+            expect(callback.mock.calls[0]).toHaveLength(expectedArguments);
         });
 
         it('should trigger an event on touchmove', () => {
@@ -937,8 +935,8 @@ describe('Line Chart', () => {
             lineChart.on('customTouchMove', callback);
             container.dispatch('touchmove');
 
-            expect(callback.mock.calls.length).toEqual(expectedCalls);
-            expect(callback.mock.calls[0].length).toEqual(expectedArguments);
+            expect(callback.mock.calls).toHaveLength(expectedCalls);
+            expect(callback.mock.calls[0]).toHaveLength(expectedArguments);
         });
 
         it('should show the overlay when the mouse is hovering', () => {
@@ -978,7 +976,7 @@ describe('Line Chart', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         beforeEach(() => {
             const fixture =
                 '<div id="fixture"><div class="test-container"></div></div>';
@@ -1022,7 +1020,7 @@ describe('Line Chart', () => {
             });
         });
 
-        describe('Export', () => {
+        describe('export', () => {
             it('should have exportChart defined', () => {
                 expect(lineChart.exportChart).toBeDefined();
             });

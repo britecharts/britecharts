@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 
 import tooltip from './mini-tooltip';
 
-describe('Mini Tooltip Component', () => {
+describe('mini Tooltip Component', () => {
     let tooltipChart, containerFixture, dataset;
 
     beforeEach(() => {
@@ -24,7 +24,7 @@ describe('Mini Tooltip Component', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should show a tooltip with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture
@@ -104,7 +104,7 @@ describe('Mini Tooltip Component', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         it('should be visible when required', () => {
             const initialExpected = 'hidden';
             const expected = 'visible';
@@ -144,7 +144,7 @@ describe('Mini Tooltip Component', () => {
         });
     });
 
-    describe('API', function () {
+    describe('aPI', function () {
         it('should provide title getter and setter', () => {
             let current = tooltipChart.title(),
                 expected = 'test',

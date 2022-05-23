@@ -1,4 +1,4 @@
-/* eslint-disable import/no-commonjs */
+/* eslint-disable no-console */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 

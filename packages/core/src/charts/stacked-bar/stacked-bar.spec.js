@@ -15,7 +15,7 @@ const differentStacksReducer = (acc, d) => {
     return acc;
 };
 
-describe('Stacked Bar Chart', () => {
+describe('stacked Bar Chart', () => {
     let stackedBarChart, dataset, containerFixture;
 
     beforeEach(() => {
@@ -37,7 +37,7 @@ describe('Stacked Bar Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.stacked-bar').size();
@@ -200,7 +200,7 @@ describe('Stacked Bar Chart', () => {
         });
 
         describe('when stacked bar is animated', () => {
-            it('it renders correct number of layers and bars', () => {
+            it('renders correct number of layers and bars', () => {
                 const expectedNLayers = 3;
                 const nBarsPerLayer = 4;
 
@@ -274,9 +274,9 @@ describe('Stacked Bar Chart', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         // TODO: Review this test with more time, as it fails in Travis only
-        xdescribe('when clicking on the chart', () => {
+        describe.skip('when clicking on the chart', () => {
             it('should trigger a callback', () => {
                 const chart = containerFixture.select('.stacked-bar');
                 const callbackSpy = jest.fn();
@@ -307,8 +307,8 @@ describe('Stacked Bar Chart', () => {
                 stackedBarChart.on('customMouseOver', callbackSpy);
                 chart.dispatch('mouseover');
 
-                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
-                expect(callbackSpy.mock.calls[0].length).toBe(
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArgumentsCount
                 );
             });
@@ -324,15 +324,15 @@ describe('Stacked Bar Chart', () => {
                 stackedBarChart.on('customMouseOut', callbackSpy);
                 chart.dispatch('mouseout');
 
-                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
-                expect(callbackSpy.mock.calls[0].length).toBe(
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArgumentsCount
                 );
             });
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = stackedBarChart.animationDuration(),
                 testAnimationDuration = 2000,

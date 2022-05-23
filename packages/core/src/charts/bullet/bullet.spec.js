@@ -8,7 +8,7 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Bullet Chart', () => {
+describe('bullet Chart', () => {
     let bulletChart, dataset, containerFixture, dataPoint;
 
     beforeEach(() => {
@@ -29,7 +29,7 @@ describe('Bullet Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.bullet-chart').size();
@@ -79,7 +79,7 @@ describe('Bullet Chart', () => {
                     .nodes();
 
                 measureBars.forEach((measureBar, i) => {
-                    expect(measureBar.getAttribute('class')).toEqual(
+                    expect(measureBar.getAttribute('class')).toBe(
                         `${expectedClass}${i}`
                     );
                     expect(measureBar.getAttribute('fill')).toBeDefined();
@@ -129,7 +129,7 @@ describe('Bullet Chart', () => {
                         .reverse();
 
                     rangeBars.forEach((rangeBar, i) => {
-                        expect(rangeBar.getAttribute('opacity')).toEqual(
+                        expect(rangeBar.getAttribute('opacity')).toBe(
                             `${expectedStartOpacity - i * diff}`
                         );
                     });
@@ -146,7 +146,7 @@ describe('Bullet Chart', () => {
                         .reverse();
 
                     rangeBars.forEach((rangeBar, i) => {
-                        expect(rangeBar.getAttribute('opacity')).toEqual(
+                        expect(rangeBar.getAttribute('opacity')).toBe(
                             `${expectedStartMaxOpacity - i * diff}`
                         );
                     });
@@ -171,7 +171,7 @@ describe('Bullet Chart', () => {
                     .nodes();
 
                 markerLines.forEach((markerLine, i) => {
-                    expect(markerLine.getAttribute('class')).toEqual(
+                    expect(markerLine.getAttribute('class')).toBe(
                         `${expectedClass}${i}`
                     );
                     expect(markerLine.getAttribute('opacity')).toBeDefined();
@@ -252,7 +252,7 @@ describe('Bullet Chart', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide startMaxRangeOpacity getter and setter', () => {
             let previous = bulletChart.startMaxRangeOpacity(),
                 expected = 0.8,

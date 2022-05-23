@@ -1,7 +1,7 @@
 import lineData from './lineChart.fixtures';
 import line from './lineChart';
 
-describe('Line Chart', () => {
+describe('line Chart', () => {
     let anchor;
 
     beforeEach(() => {

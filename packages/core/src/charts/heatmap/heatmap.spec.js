@@ -8,7 +8,7 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Heatmap Chart', () => {
+describe('heatmap Chart', () => {
     let heatmapChart, dataset, containerFixture;
 
     beforeEach(() => {
@@ -29,7 +29,7 @@ describe('Heatmap Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should render a heatmap', () => {
             const expected = 1;
             const actual = containerFixture.select('.heatmap').size();
@@ -139,7 +139,7 @@ describe('Heatmap Chart', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         describe('when hovering a box', () => {
             it('should trigger a callback on mouse over', () => {
                 const box = containerFixture.selectAll('.box:nth-child(1)');
@@ -217,7 +217,7 @@ describe('Heatmap Chart', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = heatmapChart.animationDuration(),
                 testAnimationDuration = 2000,
@@ -282,7 +282,7 @@ describe('Heatmap Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        xit('should provide loadingState getter and setter', () => {
+        it.skip('should provide loadingState getter and setter', () => {
             let previous = heatmapChart.loadingState(),
                 expected = 'test',
                 actual;

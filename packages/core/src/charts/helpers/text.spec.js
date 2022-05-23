@@ -4,7 +4,7 @@ import { wrapText, getApproximateNumberOfLines } from './text';
 
 let containerFixture;
 
-describe('Text Helper', () => {
+describe('text Helper', () => {
     beforeEach(() => {
         const fixture =
             '<div id="fixture"><div class="test-container"></div></div>';

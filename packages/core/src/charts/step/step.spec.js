@@ -8,7 +8,7 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Step Chart', () => {
+describe('step Chart', () => {
     let stepChart, dataset, containerFixture;
 
     beforeEach(() => {
@@ -30,7 +30,7 @@ describe('Step Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.step-chart').size();
@@ -169,7 +169,7 @@ describe('Step Chart', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         describe('when hovering a step', () => {
             it('should trigger a callback', () => {
                 const step = containerFixture.select('.step:nth-child(1)');
@@ -180,8 +180,8 @@ describe('Step Chart', () => {
                 stepChart.on('customMouseOver', callbackSpy);
                 step.dispatch('mouseover');
 
-                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
-                expect(callbackSpy.mock.calls[0].length).toBe(
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArgumentsCount
                 );
             });
@@ -197,8 +197,8 @@ describe('Step Chart', () => {
                 stepChart.on('customMouseMove', callbackSpy);
                 step.dispatch('mousemove');
 
-                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
-                expect(callbackSpy.mock.calls[0].length).toBe(
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArgumentsCount
                 );
             });
@@ -214,15 +214,15 @@ describe('Step Chart', () => {
                 stepChart.on('customMouseOut', callbackSpy);
                 step.dispatch('mouseout');
 
-                expect(callbackSpy.mock.calls.length).toBe(expectedCallCount);
-                expect(callbackSpy.mock.calls[0].length).toBe(
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArgumentsCount
                 );
             });
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide margin getter and setter', () => {
             let defaultMargin = stepChart.margin(),
                 testMargin = { top: 4, right: 4, bottom: 4, left: 4 },

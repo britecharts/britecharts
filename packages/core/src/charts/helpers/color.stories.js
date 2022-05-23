@@ -59,7 +59,7 @@ export const ColorGradients = () => {
 export const SingleColors = () => {
     const container = getCleanContainer();
     const { singleColors } = colors;
-    const className = `js-single-color-container`;
+    const className = 'js-single-color-container';
     const wrapper = document.createElement('div');
     wrapper.classList = className;
     container.appendChild(wrapper);

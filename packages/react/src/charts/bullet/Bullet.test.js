@@ -14,7 +14,7 @@ describe('bullet Chart', () => {
                 it('should throw an error', () => {
                     expect(() => {
                         bullet.create(undefined, bulletData.fullTestData(), {});
-                    }).toThrowError('A root container is required');
+                    }).toThrow('A root container is required');
                 });
             });
 
@@ -24,7 +24,7 @@ describe('bullet Chart', () => {
                         bullet.create(anchor, bulletData.fullTestData(), {
                             test: 'test',
                         });
-                    }).toThrowError('Method not supported by Britechart: test');
+                    }).toThrow('Method not supported by Britechart: test');
                 });
             });
 
@@ -36,7 +36,7 @@ describe('bullet Chart', () => {
                         bullet.create(anchor, bulletData.fullTestData(), {
                             customFakeEvent: callback,
                         });
-                    }).toThrowError(
+                    }).toThrow(
                         'Method not supported by Britechart: customFakeEvent'
                     );
                 });

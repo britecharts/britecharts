@@ -121,17 +121,39 @@
     ]
   },
   "eslintConfig": {
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    },
+    "extends": [
+      "plugin:react/recommended",
+      "plugin:react/jsx-runtime",
+      "plugin:testing-library/react"
+    ],
     "env": {
       "es6": true,
       "browser": true,
-      "jasmine": true,
       "amd": true
     },
+    "root": true,
+    "ignorePatterns": [
+      "*.min.js",
+      "packages/docs/"
+    ],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
       "sourceType": "module",
+      "requireConfigFile": false,
       "ecmaFeatures": {
         "experimentalObjectRestSpread": true
+      },
+      "babelOptions": {
+        "parserOpts": {
+          "plugins": [
+            "jsx"
+          ]
+        }
       }
     },
     "globals": {
@@ -305,14 +327,21 @@
     "babel-loader": "^8.0.0",
     "babel-plugin-async-import": "^2.0.2",
     "concurrently": "^4.1.0",
-    "eslint": "^7.13.0",
+    "eslint": "7.32.0",
+    "eslint-config-next": "12.1.0",
+    "eslint-config-prettier": "8.4.0",
+    "eslint-plugin-jest": "^26.2.2",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-testing-library": "^5.5.0",
     "husky": "^7.0.0",
     "jest": "^27.5.1",
     "jest-canvas-mock": "^2.3.1",
     "jest-environment-jsdom": "^27.5.1",
     "lint-staged": ">=10",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
-    "prettier": "^2.0.5",
+    "prettier": "2.5.1",
+    "prettier-eslint": "13.0.0",
+    "prettier-eslint-cli": "5.0.1",
     "rimraf": "^2.6.3",
     "ts-jest": "^27.1.3"
   },
@@ -327,7 +356,7 @@
     "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
     "lint:js": "yarn run lint",
     "lint:styles": "yarn run stylelint",
-    "lint": "yarn workspaces lint",
+    "lint": "yarn eslint --fix --max-warnings=0 --ext js,jsx ./packages/",
     "posttest": "yarn run format",
     "start": "yarn workspaces foreach -vpiR run start",
     "stylelint:fix": "stylelint 'src/styles/**/*.scss' --fix",

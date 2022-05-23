@@ -1,6 +1,6 @@
 import date from './date';
 
-describe('Date Helper', () => {
+describe('date Helper', () => {
     describe('diffDays', () => {
         it('should return difference between dates', () => {
             const expected = 1;

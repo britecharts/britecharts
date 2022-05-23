@@ -1,6 +1,6 @@
 import { castValueToType } from './type';
 
-describe('Type Helper', () => {
+describe('type Helper', () => {
     it('should cast the type correct to a number', () => {
         const actualCaseOne = castValueToType('127', 'number');
         const expectedCaseOne = 127;

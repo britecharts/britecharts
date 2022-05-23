@@ -8,7 +8,7 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Legend', () => {
+describe('legend', () => {
     let legendChart, dataset, containerFixture;
 
     beforeEach(() => {
@@ -30,7 +30,7 @@ describe('Legend', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should show a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.britechart-legend').size();
@@ -380,7 +380,7 @@ describe('Legend', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide colorSchema getter and setter', () => {
             let previous = legendChart.colorSchema(),
                 expected = ['pink', 'red', 'magenta'],

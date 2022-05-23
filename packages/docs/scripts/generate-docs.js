@@ -86,7 +86,7 @@ function generateDocs() {
                 subPath = subPathArray.join('/');
             }
 
-            const writeDir = path.join(__dirname, `../docs/API/`);
+            const writeDir = path.join(__dirname, '../docs/API/');
 
             // check if the directory exists
             if (!fs.existsSync(writeDir)) {
