@@ -1,6 +1,6 @@
 import { calculatePercent, isInteger } from './number';
 
-describe('Number Helper', () => {
+describe('number Helper', () => {
     it('should return true if its an integer', () => {
         const expected = true;
         const actual = isInteger(3);

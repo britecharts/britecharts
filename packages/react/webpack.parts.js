@@ -1,4 +1,3 @@
-/* eslint-disable import/no-commonjs, line-comment-position */
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');

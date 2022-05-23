@@ -1,4 +1,3 @@
-/* eslint-disable import/no-commonjs */
 module.exports = function (grunt) {
     grunt.renameTask('release', 'bump-version');
     grunt.config.set('bump-version', {

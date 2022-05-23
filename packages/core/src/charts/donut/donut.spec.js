@@ -12,7 +12,7 @@ const buildDataSet = (dataSetName) => {
 
 // loops over donutDataSets array and runs tests for each data-set
 donutDataSets.forEach((datasetName) => {
-    describe('Donut Chart', () => {
+    describe('donut Chart', () => {
         let donutChart, dataset, containerFixture;
 
         beforeEach(() => {
@@ -39,7 +39,7 @@ donutDataSets.forEach((datasetName) => {
             document.body.removeChild(document.getElementById('fixture'));
         });
 
-        describe('Render', () => {
+        describe('render', () => {
             it('should render a chart with minimal requirements', () => {
                 const expected = 1;
                 const actual = containerFixture.select('.donut-chart').size();
@@ -321,7 +321,7 @@ donutDataSets.forEach((datasetName) => {
                     expect(actual).toBe(expected);
                 });
 
-                it('it accepts a custom sorting function', () => {
+                it('accepts a custom sorting function', () => {
                     // a.quantity - b.quantity (ascending order)
                     const expected = 1;
                     const fn = (a, b) => a.quantity - b.quantity;
@@ -406,7 +406,7 @@ donutDataSets.forEach((datasetName) => {
             });
         });
 
-        describe('API', () => {
+        describe('aPI', () => {
             it('should provide animationDuration getter and setter', () => {
                 let defaultAnimationDuration = donutChart.animationDuration(),
                     testAnimationDuration = 2000,
@@ -656,7 +656,7 @@ donutDataSets.forEach((datasetName) => {
             });
         });
 
-        describe('Lifecycle', () => {
+        describe('lifecycle', () => {
             describe('when mouse events are triggered', () => {
                 it('should trigger an event on click', () => {
                     let callback = jest.fn(),
@@ -666,8 +666,8 @@ donutDataSets.forEach((datasetName) => {
 
                     donutChart.on('customClick', callback);
                     firstSlice.dispatch('click');
-                    expect(callback.mock.calls.length).toBe(1);
-                    expect(callback.mock.calls[0].length).toBe(3);
+                    expect(callback.mock.calls).toHaveLength(1);
+                    expect(callback.mock.calls[0]).toHaveLength(3);
                 });
 
                 it('should trigger an event on hover', () => {
@@ -678,8 +678,8 @@ donutDataSets.forEach((datasetName) => {
 
                     donutChart.on('customMouseOver', callback);
                     firstSlice.dispatch('mouseover');
-                    expect(callback.mock.calls.length).toBe(1);
-                    expect(callback.mock.calls[0].length).toBe(3);
+                    expect(callback.mock.calls).toHaveLength(1);
+                    expect(callback.mock.calls[0]).toHaveLength(3);
                 });
 
                 it('should trigger an event on mouse out', () => {
@@ -690,8 +690,8 @@ donutDataSets.forEach((datasetName) => {
 
                     donutChart.on('customMouseOut', callback);
                     firstSlice.dispatch('mouseout');
-                    expect(callback.mock.calls.length).toBe(1);
-                    expect(callback.mock.calls[0].length).toBe(3);
+                    expect(callback.mock.calls).toHaveLength(1);
+                    expect(callback.mock.calls[0]).toHaveLength(3);
                 });
 
                 it('should trigger a callback on mouse move', () => {
@@ -703,12 +703,12 @@ donutDataSets.forEach((datasetName) => {
                     donutChart.on('customMouseMove', callback);
                     firstSlice.dispatch('mousemove');
 
-                    expect(callback.mock.calls.length).toBe(1);
-                    expect(callback.mock.calls[0].length).toBe(3);
+                    expect(callback.mock.calls).toHaveLength(1);
+                    expect(callback.mock.calls[0]).toHaveLength(3);
                 });
             });
 
-            describe('Export chart functionality', () => {
+            describe('export chart functionality', () => {
                 it('should have exportChart defined', () => {
                     expect(donutChart.exportChart).toBeDefined();
                 });

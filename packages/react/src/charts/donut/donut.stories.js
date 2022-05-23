@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 
 import Donut from './Donut';
@@ -46,7 +47,7 @@ export const WithHighlightedLegend = () => {
     const handleMouseOver = (data) => {
         setHighlightedSlice(data.data.id);
     };
-    const handleMouseOut = (data) => {
+    const handleMouseOut = () => {
         setHighlightedSlice(99999);
     };
 

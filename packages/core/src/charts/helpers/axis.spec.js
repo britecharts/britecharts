@@ -7,7 +7,7 @@ const aLineTestDataSet = () => new LineDataBuilder();
 
 let containerFixture;
 
-describe('Axis Helper', () => {
+describe('axis Helper', () => {
     const minuteFormat = '%M m';
     const hourFormat = '%H %p';
     const dayFormat = '%e';

@@ -1,6 +1,6 @@
 import { setDefaultLocale } from './locale';
 
-describe('Locale Helper', () => {
+describe('locale Helper', () => {
     afterEach(() => {
         const USLocale = {
             decimal: '.',

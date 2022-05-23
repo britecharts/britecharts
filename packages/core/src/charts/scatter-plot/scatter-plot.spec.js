@@ -8,7 +8,7 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Scatter Plot', () => {
+describe('scatter Plot', () => {
     let scatterPlot, dataset, containerFixture;
 
     beforeEach(() => {
@@ -29,7 +29,7 @@ describe('Scatter Plot', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.scatter-plot').size();
@@ -204,9 +204,9 @@ describe('Scatter Plot', () => {
                     .nodes();
 
                 circles.forEach((circle) => {
-                    expect(circle.getAttribute('class')).toEqual('data-point');
-                    expect(circle.getAttribute('fill-opacity')).toEqual('0.24');
-                    expect(circle.getAttribute('stroke-opacity')).toEqual('1');
+                    expect(circle.getAttribute('class')).toBe('data-point');
+                    expect(circle.getAttribute('fill-opacity')).toBe('0.24');
+                    expect(circle.getAttribute('stroke-opacity')).toBe('1');
                     expect(circle.getAttribute('fill')).toBeDefined();
                     expect(circle.getAttribute('cx')).toBeDefined();
                     expect(circle.getAttribute('cy')).toBeDefined();
@@ -653,7 +653,7 @@ describe('Scatter Plot', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = scatterPlot.animationDuration(),
                 testAnimationDuration = 2000,
@@ -1005,7 +1005,7 @@ describe('Scatter Plot', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         describe('when clicking on a point', function () {
             it('should trigger a callback on mouse click', () => {
                 const callbackSpy = jest.fn();
@@ -1016,10 +1016,10 @@ describe('Scatter Plot', () => {
                 scatterPlot.on('customClick', callbackSpy);
                 scatterDataPoint.dispatch('click');
 
-                expect(callbackSpy.mock.calls.length).toEqual(
+                expect(callbackSpy.mock.calls).toHaveLength(
                     expectedCallCount
                 );
-                expect(callbackSpy.mock.calls[0].length).toEqual(
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArguments
                 );
             });
@@ -1035,8 +1035,8 @@ describe('Scatter Plot', () => {
                 scatterPlot.on('customMouseOver', callback);
                 container.dispatch('mouseover');
 
-                expect(callback.mock.calls.length).toEqual(expectedCallCount);
-                expect(callback.mock.calls[0].length).toEqual(
+                expect(callback.mock.calls).toHaveLength(expectedCallCount);
+                expect(callback.mock.calls[0]).toHaveLength(
                     expectedArguments
                 );
             });
@@ -1050,8 +1050,8 @@ describe('Scatter Plot', () => {
                 scatterPlot.on('customMouseOut', callback);
                 container.dispatch('mouseout');
 
-                expect(callback.mock.calls.length).toEqual(expectedCallCount);
-                expect(callback.mock.calls[0].length).toEqual(
+                expect(callback.mock.calls).toHaveLength(expectedCallCount);
+                expect(callback.mock.calls[0]).toHaveLength(
                     expectedArguments
                 );
             });
@@ -1065,8 +1065,8 @@ describe('Scatter Plot', () => {
                 scatterPlot.on('customMouseMove', callback);
                 container.dispatch('mousemove');
 
-                expect(callback.mock.calls.length).toEqual(expectedCallCount);
-                expect(callback.mock.calls[0].length).toEqual(
+                expect(callback.mock.calls).toHaveLength(expectedCallCount);
+                expect(callback.mock.calls[0]).toHaveLength(
                     expectedArguments
                 );
             });

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-commonjs */
 module.exports = function (grunt) {
     grunt.config.set('shell', {
         cleanNodeModules: {

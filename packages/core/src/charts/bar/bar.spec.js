@@ -8,7 +8,7 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Bar Chart', () => {
+describe('bar Chart', () => {
     let barChart, dataset, containerFixture;
 
     beforeEach(() => {
@@ -30,7 +30,7 @@ describe('Bar Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should show a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.bar-chart').size();
@@ -184,7 +184,7 @@ describe('Bar Chart', () => {
                 expect(actualOffset).toBe(expectedOffset);
             });
 
-            describe('Locale', () => {
+            describe('locale', () => {
                 it('should show the $ sign as a default currency symbol', () => {
                     const newDataset = buildDataSet('withColors');
 
@@ -201,7 +201,7 @@ describe('Bar Chart', () => {
 
                 // TODO-locale: We need to figure out how to clear the default formatting, as this
                 // test is messing up with the rest of tests
-                xdescribe('when the locale is set to nl-NL', () => {
+                describe.skip('when the locale is set to nl-NL', () => {
                     afterEach(() => {
                         const USLocale = {
                             decimal: '.',
@@ -334,7 +334,7 @@ describe('Bar Chart', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         describe('when orderingFunction is called', () => {
             it('accepts custom descending order function', () => {
                 const orderFunction = (a, b) => b.value - a.value;
@@ -549,7 +549,7 @@ describe('Bar Chart', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = barChart.animationDuration(),
                 testAnimationDuration = 2000,
@@ -582,7 +582,7 @@ describe('Bar Chart', () => {
             barChart.colorSchema(expected);
             actual = barChart.colorSchema();
 
-            expect(previous).toBe(null);
+            expect(previous).toBeNull();
             expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);
         });

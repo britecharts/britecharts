@@ -8,7 +8,7 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Brush Chart', () => {
+describe('brush Chart', () => {
     let brushChart, dataset, containerFixture;
 
     beforeEach(() => {
@@ -29,7 +29,7 @@ describe('Brush Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should show a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.brush-chart').size();
@@ -257,7 +257,7 @@ describe('Brush Chart', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = brushChart.animationDuration(),
                 testAnimationDuration = 2000,

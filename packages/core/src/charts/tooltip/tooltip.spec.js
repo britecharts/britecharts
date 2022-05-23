@@ -10,7 +10,7 @@ const topicColorMap = {
     149: '#4DDB86',
 };
 
-describe('Tooltip Component', () => {
+describe('tooltip Component', () => {
     let tooltipChart, dataset, containerFixture;
 
     beforeEach(() => {
@@ -32,7 +32,7 @@ describe('Tooltip Component', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture
@@ -164,7 +164,7 @@ describe('Tooltip Component', () => {
                 });
             });
 
-            xdescribe('when title is long', () => {
+            describe.skip('when title is long', () => {
                 beforeEach(() => {
                     dataset = [];
                     tooltipChart = tooltip().title(
@@ -238,7 +238,7 @@ describe('Tooltip Component', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         it('should be visible when required', () => {
             const expected = 'visible';
             const expectedDefault = 'hidden';
@@ -492,7 +492,7 @@ describe('Tooltip Component', () => {
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide title getter and setter', () => {
             let current = tooltipChart.title(),
                 expected = 'test',

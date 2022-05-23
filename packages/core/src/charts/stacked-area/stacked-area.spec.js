@@ -12,7 +12,7 @@ const hasClass = (element, className) => {
     return _.contains(element.node().classList, className);
 };
 
-describe('Stacked Area Chart', () => {
+describe('stacked Area Chart', () => {
     let dataset, containerFixture, stackedAreaChart;
 
     beforeEach(() => {
@@ -34,7 +34,7 @@ describe('Stacked Area Chart', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    describe('Render', () => {
+    describe('render', () => {
         it('should show a stacked area chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.stacked-area').size();
@@ -164,7 +164,7 @@ describe('Stacked Area Chart', () => {
                         let yAxis = containerFixture.selectAll('.x-axis-group');
                         let text = yAxis.select('g.tick:last-child');
 
-                        expect(text.text()).toEqual('12M');
+                        expect(text.text()).toBe('12M');
                     });
                 });
 
@@ -185,7 +185,7 @@ describe('Stacked Area Chart', () => {
                         let yAxis = containerFixture.selectAll('.x-axis-group');
                         let text = yAxis.select('g.tick:last-child');
 
-                        expect(text.text()).toEqual('10^7');
+                        expect(text.text()).toBe('10^7');
                     });
                 });
             });
@@ -392,11 +392,11 @@ describe('Stacked Area Chart', () => {
                 containerFixture.datum(dataset).call(stackedAreaChart);
             });
 
-            it('The lowest Y-axis value is negative', () => {
+            it('the lowest Y-axis value is negative', () => {
                 let yAxis = containerFixture.selectAll('.y-axis-group');
                 let text = yAxis.select('g.tick');
 
-                expect(text.text()).toEqual('-15');
+                expect(text.text()).toBe('-15');
             });
 
             it('0-axis is highlighted with an additional class', () => {
@@ -427,7 +427,7 @@ describe('Stacked Area Chart', () => {
                         .selectAll('.y-axis-group')
                         .select('g.tick');
 
-                    expect(firstText.text()).toEqual('-30');
+                    expect(firstText.text()).toBe('-30');
                 });
             });
 
@@ -449,7 +449,7 @@ describe('Stacked Area Chart', () => {
                         .selectAll('.y-axis-group')
                         .select('g.tick:last-child');
 
-                    expect(firstText.text()).toEqual('100');
+                    expect(firstText.text()).toBe('100');
                 });
             });
         });
@@ -510,7 +510,7 @@ describe('Stacked Area Chart', () => {
         });
     });
 
-    describe('Lifecycle', () => {
+    describe('lifecycle', () => {
         it('should show the overlay when the mouse is hovering', () => {
             const container = containerFixture.selectAll('svg');
             const expectedDefaultStyle = 'none';
@@ -550,7 +550,7 @@ describe('Stacked Area Chart', () => {
             expect(actual).toEqual(expected);
             container.dispatch('mouseover');
             actual = hasClass(verticalLine, 'bc-is-active');
-            expect(actual).toEqual(true);
+            expect(actual).toBe(true);
             container.dispatch('mouseout');
             actual = hasClass(verticalLine, 'bc-is-active');
             expect(actual).toEqual(expected);
@@ -565,8 +565,8 @@ describe('Stacked Area Chart', () => {
             stackedAreaChart.on('customMouseOver', callback);
             container.dispatch('mouseover');
 
-            expect(callback.mock.calls.length).toEqual(expectedCallCount);
-            expect(callback.mock.calls[0].length).toEqual(
+            expect(callback.mock.calls).toHaveLength(expectedCallCount);
+            expect(callback.mock.calls[0]).toHaveLength(
                 expectedArgumentCount
             );
         });
@@ -580,8 +580,8 @@ describe('Stacked Area Chart', () => {
             stackedAreaChart.on('customMouseOut', callback);
             container.dispatch('mouseout');
 
-            expect(callback.mock.calls.length).toEqual(expectedCallCount);
-            expect(callback.mock.calls[0].length).toEqual(
+            expect(callback.mock.calls).toHaveLength(expectedCallCount);
+            expect(callback.mock.calls[0]).toHaveLength(
                 expectedArgumentCount
             );
         });
@@ -595,14 +595,14 @@ describe('Stacked Area Chart', () => {
             stackedAreaChart.on('customTouchMove', callback);
             container.dispatch('touchmove');
 
-            expect(callback.mock.calls.length).toEqual(expectedCallCount);
-            expect(callback.mock.calls[0].length).toEqual(
+            expect(callback.mock.calls).toHaveLength(expectedCallCount);
+            expect(callback.mock.calls[0]).toHaveLength(
                 expectedArgumentCount
             );
         });
     });
 
-    describe('API', () => {
+    describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = stackedAreaChart.animationDuration(),
                 testAnimationDuration = 2000,

@@ -5,7 +5,7 @@ import serializeWithStyles from './style';
 const randomColor = 'rgb(222,163,12)';
 let containerFixture, styles, node;
 
-describe('Style Helper', () => {
+describe('style Helper', () => {
     let styledHTML, serializer;
 
     beforeEach(() => {
@@ -50,7 +50,7 @@ describe('Style Helper', () => {
             actual = styledHTML.indexOf(randomColor).length;
 
             expect(styledHTML).not.toBe(node.outerHTML.replace(' ', ''));
-            expect(actual).not.toEqual(0);
+            expect(actual).not.toBe(0);
         });
     });
 });
