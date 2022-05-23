@@ -339,10 +339,14 @@
     "jest-environment-jsdom": "^27.5.1",
     "lint-staged": ">=10",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
+    "postcss": "latest",
     "prettier": "2.5.1",
     "prettier-eslint": "13.0.0",
     "prettier-eslint-cli": "5.0.1",
     "rimraf": "^2.6.3",
+    "stylelint": "latest",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "stylelint-config-standard-scss": "3.0.0",
     "ts-jest": "^27.1.3"
   },
   "scripts": {
@@ -359,8 +363,8 @@
     "lint": "yarn eslint --fix --max-warnings=0 --ext js,jsx ./packages/",
     "posttest": "yarn run format",
     "start": "yarn workspaces foreach -vpiR run start",
-    "stylelint:fix": "stylelint 'src/styles/**/*.scss' --fix",
-    "stylelint": "stylelint 'src/styles/**/*.scss'",
+    "stylelint:fix": "stylelint './packages/core/src/styles/**/*.scss' --fix",
+    "stylelint": "stylelint './packages/core/src/styles/**/*.scss'",
     "prepare": "husky install"
   }
 }
