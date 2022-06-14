@@ -43,21 +43,35 @@ To start contributing to Britecharts, you need to set up your machine to develop
 2. Pull the most recent changes with `git pull --rebase upstream master`
 3. Create a new branch. Branch names should be prefixed with either `fix-`, `feat-` or `ref-` depending on your PR content. Run `git checkout -b [fix|feat|ref]-<your branch name>`
 
-### Running the Documentation and Demos
-To generate the demos and see the library' documentation you would need to:
+### Running the Demos
+To generate the demos you need to:
 
 1. Download and install node
 1. Ensure you have [yarn][yarn] installed as well
 1. Clone the repository with:
     `git clone git@github.com:britecharts/britecharts.git`
-1. Change directory into the repository root and install its dependencies:
+1. Change directory into the repository root (or head to the specific package in the `packages/` folder) and install its dependencies with yarn:
     `yarn`
-1. In the root or the repository folder, run:
+1. In the root or the repository (or package) folder, run:
     `yarn start`
-1. In the root or the repository folder, run:
+1. In the root or the repository (or package) folder, run:
     `yarn run test:watch`
 
-This process generates docs and opens the user interface in a new browser tab. There you can navigate the API of each chart and see some examples under the “Demos” dropdown section. We recommend you to use these demos as your testing platform when modifying the charts.
+This process generates the demos and opens their Storybook interface in a new browser tab. There you can navigate the Demo of each chart and see some examples. We recommend you to use these demos as your testing platform when modifying the charts.
+
+### Running the Documentation
+To generate the documentation you need to:
+
+1. Download and install node
+1. Ensure you have [yarn][yarn] installed as well
+1. Clone the repository with:
+    `git clone git@github.com:britecharts/britecharts.git`
+1. Change directory into the repository root and install its dependencies with yarn:
+    `yarn`
+1. In the root or the repository folder, run:
+    `yarn run docs`
+
+This process generates the documentation from the packages' Readme files, their code and the material in the `@britecharts/docs` package. It also opens the website in a new browser tab.
 
 ## Next Steps
 Once you have your environment set and ready to go, you can check our [Contributor How To Guides][contributorHowTo] to learn how to create a Pull Request, Modify or Create a chart.
@@ -74,7 +88,7 @@ Britecharts is an open project looking to get your contributions (in whatever fo
 
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [issues]: https://github.com/britecharts/britecharts/issues
-[contributorHowTo]: http://britecharts.github.io/britecharts/contributor-how-to-guides.html
-[topicsPage]: http://britecharts.github.io/britecharts/topics-index.html
+[contributorHowTo]: **
+[topicsPage]: **
 [allContributorsBot]: https://allcontributors.org/docs/en/bot/usage
 [good-first-issues]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22
