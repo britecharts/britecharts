@@ -1,16 +1,32 @@
 # @britecharts/react
 
-> `@britecharts-react` is a package that allows you use [Britecharts][britecharts] within [React][react] applications.
+> `@britecharts/react` is a package that allows you use [Britecharts][britecharts] within [React][react] applications.
 
 ## Usage
-`@britecharts-react` components are used just like any other stateless React component. You pass in some props, and it renders a chart:
+`@britecharts/react` components are used just like any other stateless React component. You pass in some props, and it renders a chart:
 
 ```js
+import { Bar } from '@britecharts/react';
+
+const data = [
+    {
+        name: 'Vibrant',
+        value: 2,
+    },
+    {
+        name: 'Opalescent',
+        value: 4,
+    },
+    {
+        name: 'Shining',
+        value: 3,
+    },
+];
+
 <Bar
-    data={barData.with2Entries()}
+    data={data}
     width={400}
-    isHorizontal={true}
-    margin={marginObject}
+    isHorizontal
 >
 ```
 
