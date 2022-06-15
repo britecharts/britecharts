@@ -6,6 +6,7 @@
   "module": "src/charts/index.js",
   "types": "src/typings/index.d.ts",
   "scripts": {
+    "start": "yarn run demo",
     "storybook:build": "build-storybook -c .storybook -o build",
     "demo": "yarn run storybook",
     "storybook": "start-storybook -p 2222"

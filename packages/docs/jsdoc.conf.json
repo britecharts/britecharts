@@ -2,10 +2,7 @@
   "tags": {
     "allowUnknownTags": true
   },
-  "ops": {
-    // "tutorials": "./tutorials",
-    // "demos": "./demos"
-  },
+  "ops": {},
   "source": {
     "includePattern": ".+\\.js(doc)?$",
     "excludePattern": "(^|\\/|\\\\)_"
