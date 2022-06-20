@@ -24,7 +24,7 @@ Britecharts is available as an [NPM module][npmModule] or through CDN links (in 
 - [Code of Conduct][codeOfConduct]
 
 ## Contribute
-Check the [contributing guide][contributingGuide] if you want to help us bringing these in. 
+Check the [contributing guide][contributing] if you want to help us bringing these in. 
 
 [readme]: **
 [homepage]: **
@@ -32,4 +32,4 @@ Check the [contributing guide][contributingGuide] if you want to help us bringin
 [npmModule]: **
 [jsDelivrLib]: **
 [jsDelivrDist]: **
-[contributingGuide]: **
+[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md

@@ -77,7 +77,7 @@ The following components haven't been adapted yet from Britecharts:
 - Mini Tooltips
 - Scatter Plots
 
-Feel free to [send a PR][contributingGuide] if you want them included.
+Feel free to [send a PR][contributing] if you want them included.
 
 ## Installation
 
@@ -97,5 +97,5 @@ Our idea for the short term is to update this package to use TypeScript natively
 
 [britecharts]: https://github.com/britecharts/
 [britecharts-api]: **
-[contributingGuide]: **
+[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
 [d3Slack]: https://d3js.slack.com/
