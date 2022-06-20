@@ -1221,14 +1221,12 @@ if (
                                 h > 1 && o(k),
                                 h > 1 &&
                                     m(
-                                        a
-                                            .slice(0, h - 1)
-                                            .concat({
-                                                value:
-                                                    ' ' === a[h - 2].type
-                                                        ? '*'
-                                                        : '',
-                                            })
+                                        a.slice(0, h - 1).concat({
+                                            value:
+                                                ' ' === a[h - 2].type
+                                                    ? '*'
+                                                    : '',
+                                        })
                                     ).replace(ia, '$1'),
                                 c,
                                 d > h && s(a.slice(h, d)),
