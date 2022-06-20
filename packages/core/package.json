@@ -117,6 +117,7 @@
     "start": "yarn run demo",
     "demo": "start-storybook -p 1111",
     "test": "jest ",
+    "test:watch": "jest --watch",
     "lint": "eslint src/charts/ src/tasks test/ webpack.*.js --cache",
     "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",

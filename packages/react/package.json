@@ -7,6 +7,8 @@
   "types": "src/typings/index.d.ts",
   "scripts": {
     "start": "yarn run demo",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "storybook:build": "build-storybook -c .storybook -o build",
     "demo": "yarn run storybook",
     "storybook": "start-storybook -p 2222"

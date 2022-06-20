@@ -354,6 +354,7 @@
     "clean": "yarn cache clean && rimraf node_modules",
     "demos": "yarn workspaces foreach -p run demo",
     "test": "yarn workspaces foreach -p run test",
+    "test:watch": "yarn workspaces foreach -p run test:watch",
     "docs": "yarn workspace @britecharts/docs start",
     "docs:build": "yarn workspace @britecharts/docs build",
     "format": "prettier --loglevel warn --write \"**/*.js\"",
