@@ -1016,9 +1016,7 @@ describe('scatter Plot', () => {
                 scatterPlot.on('customClick', callbackSpy);
                 scatterDataPoint.dispatch('click');
 
-                expect(callbackSpy.mock.calls).toHaveLength(
-                    expectedCallCount
-                );
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
                 expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArguments
                 );
@@ -1036,9 +1034,7 @@ describe('scatter Plot', () => {
                 container.dispatch('mouseover');
 
                 expect(callback.mock.calls).toHaveLength(expectedCallCount);
-                expect(callback.mock.calls[0]).toHaveLength(
-                    expectedArguments
-                );
+                expect(callback.mock.calls[0]).toHaveLength(expectedArguments);
             });
 
             it('should dispatch customMouseOut event', () => {
@@ -1051,9 +1047,7 @@ describe('scatter Plot', () => {
                 container.dispatch('mouseout');
 
                 expect(callback.mock.calls).toHaveLength(expectedCallCount);
-                expect(callback.mock.calls[0]).toHaveLength(
-                    expectedArguments
-                );
+                expect(callback.mock.calls[0]).toHaveLength(expectedArguments);
             });
 
             it('should dispatch customMouseMove event', () => {
@@ -1066,9 +1060,7 @@ describe('scatter Plot', () => {
                 container.dispatch('mousemove');
 
                 expect(callback.mock.calls).toHaveLength(expectedCallCount);
-                expect(callback.mock.calls[0]).toHaveLength(
-                    expectedArguments
-                );
+                expect(callback.mock.calls[0]).toHaveLength(expectedArguments);
             });
         });
     });

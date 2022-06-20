@@ -566,9 +566,7 @@ describe('stacked Area Chart', () => {
             container.dispatch('mouseover');
 
             expect(callback.mock.calls).toHaveLength(expectedCallCount);
-            expect(callback.mock.calls[0]).toHaveLength(
-                expectedArgumentCount
-            );
+            expect(callback.mock.calls[0]).toHaveLength(expectedArgumentCount);
         });
 
         it('should trigger an event on mouse out', () => {
@@ -581,9 +579,7 @@ describe('stacked Area Chart', () => {
             container.dispatch('mouseout');
 
             expect(callback.mock.calls).toHaveLength(expectedCallCount);
-            expect(callback.mock.calls[0]).toHaveLength(
-                expectedArgumentCount
-            );
+            expect(callback.mock.calls[0]).toHaveLength(expectedArgumentCount);
         });
 
         it('should trigger an event on touchmove', () => {
@@ -596,9 +592,7 @@ describe('stacked Area Chart', () => {
             container.dispatch('touchmove');
 
             expect(callback.mock.calls).toHaveLength(expectedCallCount);
-            expect(callback.mock.calls[0]).toHaveLength(
-                expectedArgumentCount
-            );
+            expect(callback.mock.calls[0]).toHaveLength(expectedArgumentCount);
         });
     });
 

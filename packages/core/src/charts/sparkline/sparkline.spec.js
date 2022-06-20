@@ -141,8 +141,9 @@ describe('sparkline Chart', () => {
 
                 sparklineChart.titleText(expected);
                 containerFixture.datum(dataset).call(sparklineChart);
-                actual = containerFixture.selectAll('.sparkline-text').node()
-                    .textContent;
+                actual = containerFixture
+                    .selectAll('.sparkline-text')
+                    .node().textContent;
 
                 expect(actual).toEqual(expected);
             });
