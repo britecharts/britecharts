@@ -2283,6 +2283,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@csstools/selector-specificity@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@csstools/selector-specificity@npm:2.0.1"
+  peerDependencies:
+    postcss: ^8.3
+    postcss-selector-parser: ^6.0.10
+  checksum: 08ec92e6746c6c23a8baca12805619e8fec9e41c33376272d6fcc4705fe9e35307d1577c2624e71f6fb3ec2d3188de25806b0e3127efd53e41641c3bf297926d
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:^0.5.3":
   version: 0.5.6
   resolution: "@discoveryjs/json-ext@npm:0.5.6"
@@ -8731,14 +8741,14 @@ __metadata:
     jest-environment-jsdom: ^27.5.1
     lint-staged: ">=10"
     optimize-css-assets-webpack-plugin: ^6.0.1
-    postcss: latest
     prettier: 2.5.1
     prettier-eslint: 13.0.0
     prettier-eslint-cli: 5.0.1
     rimraf: ^2.6.3
-    stylelint: latest
+    stylelint: 14.9.1
     stylelint-config-sass-guidelines: ^9.0.1
-    stylelint-config-standard-scss: 3.0.0
+    stylelint-config-standard: ^26.0.0
+    stylelint-config-standard-scss: 4.0.0
     ts-jest: ^27.1.3
   languageName: unknown
   linkType: soft
@@ -10441,10 +10451,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-functions-list@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "css-functions-list@npm:3.0.1"
-  checksum: 8998406f9c6508180dad621bf91cfbf4649d922a57e2e5dd3fd909a2855e29d2f82cf176bd89a7598237b9e989126f8520e21479f2da51f37b1491a38fe72061
+"css-functions-list@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "css-functions-list@npm:3.1.0"
+  checksum: 8a7c9d4ae57cb2f01500263e65a21372048d359ca7aa6430a32a736fe2a421decfebe45e579124b9a158ec68aba2eadcd733e568495a7698240d9607d31f681b
   languageName: node
   linkType: hard
 
@@ -21680,7 +21690,7 @@ phantomjs-polyfill-find@ptim/phantomjs-polyfill-find:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.13, postcss@npm:latest":
+"postcss@npm:^8.4.14":
   version: 8.4.14
   resolution: "postcss@npm:8.4.14"
   dependencies:
@@ -25193,16 +25203,16 @@ phantomjs-polyfill-find@ptim/phantomjs-polyfill-find:
   languageName: node
   linkType: hard
 
-"stylelint-config-recommended-scss@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "stylelint-config-recommended-scss@npm:5.0.2"
+"stylelint-config-recommended-scss@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "stylelint-config-recommended-scss@npm:6.0.0"
   dependencies:
     postcss-scss: ^4.0.2
-    stylelint-config-recommended: ^6.0.0
+    stylelint-config-recommended: ^7.0.0
     stylelint-scss: ^4.0.0
   peerDependencies:
-    stylelint: ^14.0.0
-  checksum: e882bde8a0846c421e2662f9e7a9c2646120c492528f7ad715d927db6954b8a2499476de0792b15f0044217f72c81edc97afc640c5b4d7618a9f96dc7045e4c1
+    stylelint: ^14.4.0
+  checksum: a7254f4e8fc8c25990ad0fade6c3a7e663e867d4f4f92175919de26315a7283e7dd7dc10ef5f7f3a2f7fb76b3aeb5b428c4f3417b2d526868bb9db40c85270b3
   languageName: node
   linkType: hard
 
@@ -25215,12 +25225,21 @@ phantomjs-polyfill-find@ptim/phantomjs-polyfill-find:
   languageName: node
   linkType: hard
 
-"stylelint-config-recommended@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "stylelint-config-recommended@npm:6.0.0"
+"stylelint-config-recommended@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "stylelint-config-recommended@npm:7.0.0"
   peerDependencies:
-    stylelint: ^14.0.0
-  checksum: 103b3c122253a908f91f5728d39eff6fed3866157e29a6e550da051cfc207b0d159b7434e0806126e3c3939e6528a0a1cd5a1cf00b835dd49b3a18ba4a007fa1
+    stylelint: ^14.4.0
+  checksum: 9a60a59effb7565314d6001779a31228d5713b4d13e05e991e6da5f9d0784aacf55bc0fe217010e257a79136753a22ae61e309fb982367ebd4de3316f37eb821
+  languageName: node
+  linkType: hard
+
+"stylelint-config-recommended@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "stylelint-config-recommended@npm:8.0.0"
+  peerDependencies:
+    stylelint: ^14.8.0
+  checksum: 0c5ca94625e5308a7afb8315bb350a2b48f46fdd8d8922dd9a8c2e37b3407f2294794d930726ad6bf2007abcde1abd34084808cf83adf150efe3a643e0eb5ac4
   languageName: node
   linkType: hard
 
@@ -25250,15 +25269,15 @@ phantomjs-polyfill-find@ptim/phantomjs-polyfill-find:
   languageName: node
   linkType: hard
 
-"stylelint-config-standard-scss@npm:3.0.0":
-  version: 3.0.0
-  resolution: "stylelint-config-standard-scss@npm:3.0.0"
+"stylelint-config-standard-scss@npm:4.0.0":
+  version: 4.0.0
+  resolution: "stylelint-config-standard-scss@npm:4.0.0"
   dependencies:
-    stylelint-config-recommended-scss: ^5.0.2
-    stylelint-config-standard: ^24.0.0
+    stylelint-config-recommended-scss: ^6.0.0
+    stylelint-config-standard: ^25.0.0
   peerDependencies:
-    stylelint: ^14.0.0
-  checksum: b9be47e256e28e8f3e31ca51de53fc48d688b264f74d870b97c553cb3f799f3003a458d521644efc4feda0a1345da4e82d0595cfcba540dbb253f12c645234a0
+    stylelint: ^14.4.0
+  checksum: 1f65f8f3c8e5a7706f41d27f5983a88bc4b2cf0d31bd10cc2ef4250eb4a55d46fa4ccac4411c5be57b681a7ddc5c7d0c4c57dfda01769a7b2b41499a16873a12
   languageName: node
   linkType: hard
 
@@ -25273,14 +25292,25 @@ phantomjs-polyfill-find@ptim/phantomjs-polyfill-find:
   languageName: node
   linkType: hard
 
-"stylelint-config-standard@npm:^24.0.0":
-  version: 24.0.0
-  resolution: "stylelint-config-standard@npm:24.0.0"
+"stylelint-config-standard@npm:^25.0.0":
+  version: 25.0.0
+  resolution: "stylelint-config-standard@npm:25.0.0"
   dependencies:
-    stylelint-config-recommended: ^6.0.0
+    stylelint-config-recommended: ^7.0.0
   peerDependencies:
-    stylelint: ^14.0.0
-  checksum: 5993ede913d81410830639db054a7a3f5c87e56254368be45ce876321106fad1c11ee4cb77247049aaf22e283a393dd90d93dec8f796f8f139ed21eb86a9a168
+    stylelint: ^14.4.0
+  checksum: bfd5773f47ea7fcddba972037d6dd32d1fb900c2ca592a313fe1a28df054ef465b11e6e53fe6e87bbf0c356ab33a7a4eecc447cf7a1bd39c9b50c7b4bfb48d81
+  languageName: node
+  linkType: hard
+
+"stylelint-config-standard@npm:^26.0.0":
+  version: 26.0.0
+  resolution: "stylelint-config-standard@npm:26.0.0"
+  dependencies:
+    stylelint-config-recommended: ^8.0.0
+  peerDependencies:
+    stylelint: ^14.9.0
+  checksum: c1fe44df1755bcccc740b385a24acffa922d331d9f9ba39dafad81cc9643e6c1f870abd1ee73b2737d6903e06efb83b2a1ee26d786faef0123fc22e1f09c13fe
   languageName: node
   linkType: hard
 
@@ -25339,6 +25369,56 @@ phantomjs-polyfill-find@ptim/phantomjs-polyfill-find:
   languageName: node
   linkType: hard
 
+"stylelint@npm:14.9.1":
+  version: 14.9.1
+  resolution: "stylelint@npm:14.9.1"
+  dependencies:
+    "@csstools/selector-specificity": ^2.0.1
+    balanced-match: ^2.0.0
+    colord: ^2.9.2
+    cosmiconfig: ^7.0.1
+    css-functions-list: ^3.1.0
+    debug: ^4.3.4
+    execall: ^2.0.0
+    fast-glob: ^3.2.11
+    fastest-levenshtein: ^1.0.12
+    file-entry-cache: ^6.0.1
+    get-stdin: ^8.0.0
+    global-modules: ^2.0.0
+    globby: ^11.1.0
+    globjoin: ^0.1.4
+    html-tags: ^3.2.0
+    ignore: ^5.2.0
+    import-lazy: ^4.0.0
+    imurmurhash: ^0.1.4
+    is-plain-object: ^5.0.0
+    known-css-properties: ^0.25.0
+    mathml-tag-names: ^2.1.3
+    meow: ^9.0.0
+    micromatch: ^4.0.5
+    normalize-path: ^3.0.0
+    picocolors: ^1.0.0
+    postcss: ^8.4.14
+    postcss-media-query-parser: ^0.2.3
+    postcss-resolve-nested-selector: ^0.1.1
+    postcss-safe-parser: ^6.0.0
+    postcss-selector-parser: ^6.0.10
+    postcss-value-parser: ^4.2.0
+    resolve-from: ^5.0.0
+    string-width: ^4.2.3
+    strip-ansi: ^6.0.1
+    style-search: ^0.1.0
+    supports-hyperlinks: ^2.2.0
+    svg-tags: ^1.0.0
+    table: ^6.8.0
+    v8-compile-cache: ^2.3.0
+    write-file-atomic: ^4.0.1
+  bin:
+    stylelint: bin/stylelint.js
+  checksum: 53c65c9a1d0009ba15847905afc34efc2f4820edc989f8c2aeecf6b7873b2de3040a1969761ef0983caca2e773947482962df5c25216cb9e3f21af241675bb50
+  languageName: node
+  linkType: hard
+
 "stylelint@npm:^13.6.0":
   version: 13.13.1
   resolution: "stylelint@npm:13.13.1"
@@ -25394,56 +25474,6 @@ phantomjs-polyfill-find@ptim/phantomjs-polyfill-find:
   bin:
     stylelint: bin/stylelint.js
   checksum: 9dafa8d90f139e0518753546855df149a8770cead6fc31e40fc0b1904f7698a734767b441c0ba44dd694c846491708c6127dd0e5bb6917507ffe230dd40f0b8a
-  languageName: node
-  linkType: hard
-
-"stylelint@npm:latest":
-  version: 14.8.3
-  resolution: "stylelint@npm:14.8.3"
-  dependencies:
-    balanced-match: ^2.0.0
-    colord: ^2.9.2
-    cosmiconfig: ^7.0.1
-    css-functions-list: ^3.0.1
-    debug: ^4.3.4
-    execall: ^2.0.0
-    fast-glob: ^3.2.11
-    fastest-levenshtein: ^1.0.12
-    file-entry-cache: ^6.0.1
-    get-stdin: ^8.0.0
-    global-modules: ^2.0.0
-    globby: ^11.1.0
-    globjoin: ^0.1.4
-    html-tags: ^3.2.0
-    ignore: ^5.2.0
-    import-lazy: ^4.0.0
-    imurmurhash: ^0.1.4
-    is-plain-object: ^5.0.0
-    known-css-properties: ^0.25.0
-    mathml-tag-names: ^2.1.3
-    meow: ^9.0.0
-    micromatch: ^4.0.5
-    normalize-path: ^3.0.0
-    picocolors: ^1.0.0
-    postcss: ^8.4.13
-    postcss-media-query-parser: ^0.2.3
-    postcss-resolve-nested-selector: ^0.1.1
-    postcss-safe-parser: ^6.0.0
-    postcss-selector-parser: ^6.0.10
-    postcss-value-parser: ^4.2.0
-    resolve-from: ^5.0.0
-    specificity: ^0.4.1
-    string-width: ^4.2.3
-    strip-ansi: ^6.0.1
-    style-search: ^0.1.0
-    supports-hyperlinks: ^2.2.0
-    svg-tags: ^1.0.0
-    table: ^6.8.0
-    v8-compile-cache: ^2.3.0
-    write-file-atomic: ^4.0.1
-  bin:
-    stylelint: bin/stylelint.js
-  checksum: b9446b298ddfea7d2c9ad03dd50204b7213b08e2e8eba96b8cf94bd4dddaa6c8fa4b1ecb6b421e35db65c51aed751820e80e4a2b3abeca7103da086d7fd89140
   languageName: node
   linkType: hard
 
