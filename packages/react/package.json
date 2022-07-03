@@ -16,13 +16,13 @@
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@mdx-js/react": "^1.6.22",
-    "@storybook/addon-actions": "^6.4.19",
-    "@storybook/addon-docs": "^6.4.19",
-    "@storybook/addon-essentials": "^6.4.19",
-    "@storybook/addon-interactions": "^6.4.19",
-    "@storybook/addon-links": "^6.4.19",
-    "@storybook/react": "^6.4.19",
-    "@storybook/testing-library": "^0.0.9",
+    "@storybook/addon-actions": "^6.5.9",
+    "@storybook/addon-docs": "^6.5.9",
+    "@storybook/addon-essentials": "^6.5.9",
+    "@storybook/addon-interactions": "^6.5.9",
+    "@storybook/addon-links": "^6.5.9",
+    "@storybook/react": "^6.5.9",
+    "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.2.3"
   },
   "dependencies": {
