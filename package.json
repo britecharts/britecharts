@@ -137,10 +137,6 @@
       "amd": true
     },
     "root": true,
-    "ignorePatterns": [
-      "*.min.js",
-      "packages/docs/"
-    ],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
       "sourceType": "module",

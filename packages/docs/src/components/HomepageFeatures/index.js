@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
@@ -18,8 +19,8 @@ const FeatureList = [
         Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
         description: (
             <>
-                Britechart's codebase is a regular D3.js code you can fork and
-                modify.
+                Britechart&apos;s codebase is a regular D3.js code you can fork
+                and modify.
             </>
         ),
     },
@@ -28,8 +29,8 @@ const FeatureList = [
         Svg: require('@site/static/img/brand/d3/d3-outline.svg').default,
         description: (
             <>
-                Britechart's codebase is simple and conventional D3.js code you
-                can fork and modify.
+                Britechart&apos;s codebase is simple and conventional D3.js code
+                you can fork and modify.
             </>
         ),
     },
