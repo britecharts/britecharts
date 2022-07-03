@@ -1,0 +1,11 @@
+.getstarted {
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+    width: 100%;
+    background-color: #ccf7f6;
+}
+
+[data-theme='dark'] .getstarted {
+    background-color: #003c3f;
+}

@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 const FeatureList = [
     {
         title: 'Reusable and Composable',
-        Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+        Svg: require('@site/static/img/undraw_takeout_boxes.svg').default,
         description: (
             <>
                 Configure your charts to create different looks and behaviors.
@@ -16,7 +16,7 @@ const FeatureList = [
     },
     {
         title: 'Great Design',
-        Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+        Svg: require('@site/static/img/undraw_designer_girl.svg').default,
         description: (
             <>
                 Britechart&apos;s codebase is a regular D3.js code you can fork
@@ -29,8 +29,9 @@ const FeatureList = [
         Svg: require('@site/static/img/brand/d3/d3-outline.svg').default,
         description: (
             <>
-                Britechart&apos;s codebase is simple and conventional D3.js code
-                you can fork and modify.
+                Britechart&apos;s codebase is simple and conventional{' '}
+                <a href="https://d3js.org/">D3.js</a> code you can fork and
+                modify.
             </>
         ),
     },
