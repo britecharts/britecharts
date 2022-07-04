@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 
 # Getting Started Using Britecharts
-Britecharts has been created to help users consume and create D3.js charts. It leverages the *Reusable API*, a code pattern to encapsulate D3.js charts. This pattern produces chart objects that can be configured, reused and composed to build data visualizations.
+We created Britecharts to help users consume and create D3.js charts. It leverages the *Reusable API*, a code pattern to encapsulate D3.js charts. This pattern produces chart objects that can be configured, reused and composed to build data visualizations.
 
 In this tutorial, we will *create a simple data visualization using Britecharts*. You will learn how to load Britecharts, instantiate and configure a chart and plot it within a container with a data set.
 
@@ -12,14 +12,14 @@ To use a Britechart, we need to install the library. In this tutorial, we are go
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/umd/bar.min.js"
+<script src="https://cdn.jsdelivr.net/npm/**@britecharts/core@3.0.0/dist/umd/bar.min.js"
         type="text/javascript"></script>
 ```
 We are going to create a bar chart, so we download the bundle for that individual chart. Note that we also require `d3-selection`. We use this module to create a selection and load the data in the container where we render the chart.
 
 We also need to load the styling of our chart, and we do it similarly by accesing the CDN link:
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css" type="text/css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/css/britecharts.min.css" type="text/css" />
 ```
 
 ## Setting up Container, Dataset and Chart
@@ -105,33 +105,7 @@ Here is all the code inside the `<body>` tag of our HTML file:
     container.datum(barData).call(barChart);
 </script>
 ```
-
-## Making the Chart Responsive
-To make this chart responsive, we want to listen to the browser's resize event. When the event triggers, we obtain the container's width, set it with the accessor and re-draw the chart.
-
-As the resize event triggers multiple times, we probably want to debounce the callback, so it doesn't render too many times. The code would probably look like this:
-```js
-const redrawChart = () => {
-    const newContainerWidth = container.node() ? container.node().getBoundingClientRect().width : false;
-
-    // Setting the new width on the chart
-    barChart.width(newContainerWidth);
-
-    // Rendering the chart again
-    container.call(barChart);
-};
-const throttledRedraw = _.throttle(redrawChart, 200);
-
-window.addEventListener("resize", throttledRedraw);
-
-```
-We would need to load the Lodash or Underscore library; we could do it with a CDN link like:
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"
-            type="text/javascript"/></script>
-```
-
-This logic is not the only way to avoid multiple successive calls. You could also listen to requestAnimationFrame to time the execution of the callback.
+In version 3 of Britecharts, the rendered charts are already responsive, so you can stretch and compress the viewport size to see the chart react.
 
 You can check the full code of this tutorial [in this file][simpleBarChartTutorialHTML] and the [tutorial working here][simpleBarChartTutorial].
 
@@ -143,12 +117,12 @@ To keep on learning more about Britecharts, you can follow our [Composing Your F
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
 [home]: http://britecharts.github.io/britecharts/
-[demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
+[demos]: **/tutorial-kitchen-sink.html
 [contribute]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
-[barChartAPI]: http://britecharts.github.io/britecharts/module-Bar.html
-[barChartDataSchema]: http://britecharts.github.io/britecharts/global.html#BarChartData
-[barChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/simple-bar-chart.png
-[simpleBarChartTutorialHTML]: https://github.com/britecharts/britecharts/blob/master/src/doc/html/tutorial-simple-bar-chart.html
-[simpleBarChartTutorial]: http://britecharts.github.io/britecharts/tutorial-simple-bar-chart.html
-[composingDataviz]: http://britecharts.github.io/britecharts/composing-dataviz.html
-[installingBritecharts]: http://britecharts.github.io/britecharts/installing-britecharts.html
+[barChartAPI]: **/module-Bar.html
+[barChartDataSchema]: **/global.html#BarChartData
+[barChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorial/simple-bar-chart.png
+[simpleBarChartTutorialHTML]: https://github.com/britecharts/britecharts/blob/master/packages/docs/docs/tutorials/html/tutorial-simple-bar-chart.html
+[simpleBarChartTutorial]: **/tutorial-simple-bar-chart.html
+[composingDataviz]: **/composing-dataviz.html
+[installingBritecharts]: **/installing-britecharts.html

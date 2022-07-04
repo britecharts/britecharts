@@ -3,7 +3,7 @@ sidebar_position: 1
 ---
 
 # Tutorials
-Britechart tutorials allow new users to get started and learn the basic procedures and components of the library. They are meant to be a learning experience ideal for newcomers:
+Britechart tutorials allow new users to get started and learn the basic composition and components of the library. They are meant to be a learning experience ideal for newcomers:
 
 * [Getting Started Using Britecharts][gettingStarted]
 * [Installing Britecharts][installingBritecharts]

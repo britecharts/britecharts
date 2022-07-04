@@ -233,21 +233,21 @@ To learn more, you can read our [Styling Britecharts tutorial][stylingBritechart
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
-[gettingStarted]: http://britecharts.github.io/britecharts/getting-started.html
-[stylingBritecharts]: http://britecharts.github.io/britecharts/styling-dataviz.html
-[installingBritecharts]: http://britecharts.github.io/britecharts/installing-britecharts.html
-[lineChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/simple-line-chart.png
-[composingDatavizTutorialHTML]: https://github.com/britecharts/britecharts/blob/master/src/doc/html/tutorial-composing-dataviz.html
-[composingDatavizTutorial]: http://britecharts.github.io/britecharts/tutorial-composing-dataviz.html
-[lineChartAPIReference]: http://britecharts.github.io/britecharts/module-Line.html
-[lineChartDataSchema]: http://britecharts.github.io/britecharts/global.html#LineChartData
-[tooltipAPIReference]: http://britecharts.github.io/britecharts/module-Tooltip.html
-[lineChartTooltipImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/line-chart-tooltip.png
-[legendAPIReference]: http://britecharts.github.io/britecharts/module-Legend.html
-[lineChartLegendImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/line-chart-legend.png
-[brushChartAPIReference]: http://britecharts.github.io/britecharts/module-Brush.html
-[brushChartDataSchema]: http://britecharts.github.io/britecharts/global.html#BrushChartData
-[brushAxisCombinations]: http://britecharts.github.io/britecharts/module-Brush.html#.axisTimeCombinations__anchor
-[brushChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/simple-brush-chart.png
-[lineBrushTooltipLegendImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/line-chart-with-brush-tooltip-legend.png
-[topicsIndex]: http://britecharts.github.io/britecharts/topics-index.html
+[gettingStarted]: ./getting-started.md
+[stylingBritecharts]: ./styling-charts.md
+[installingBritecharts]: ./installing-britecharts.md
+[lineChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorial/simple-line-chart.png
+[composingDatavizTutorialHTML]: https://github.com/britecharts/britecharts/blob/master/packages/docs/docs/tutorials/html/tutorial-composing-dataviz.html
+[composingDatavizTutorial]: ./composing-dataviz.md
+[lineChartAPIReference]: http://britecharts.github.io/britecharts/**module-Line.html
+[lineChartDataSchema]: http://britecharts.github.io/britecharts/**global.html#LineChartData
+[tooltipAPIReference]: http://britecharts.github.io/britecharts/**module-Tooltip.html
+[lineChartTooltipImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorial/line-chart-tooltip.png
+[legendAPIReference]: http://britecharts.github.io/britecharts/**module-Legend.html
+[lineChartLegendImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorial/line-chart-legend.png
+[brushChartAPIReference]: http://britecharts.github.io/britecharts/**module-Brush.html
+[brushChartDataSchema]: http://britecharts.github.io/britecharts/**global.html#BrushChartData
+[brushAxisCombinations]: http://britecharts.github.io/britecharts/**module-Brush.html#.axisTimeCombinations__anchor
+[brushChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorial/simple-brush-chart.png
+[lineBrushTooltipLegendImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorial/line-chart-with-brush-tooltip-legend.png
+[topicsIndex]: ../topics/topics-index.md
