@@ -1,4 +1,4 @@
-@import '../helpers/_variables';
+@import "../helpers/_variables";
 
 $bar-color: desaturate($bc-green, 20%);
 $bar-color-hover: $bc-e-green-600;
@@ -7,7 +7,7 @@ $bar-stroke-width: 0;
 .bar-chart {
     // Bars
     .bar {
-        shape-rendering: crispEdges;
+        shape-rendering: crispedges;
     }
 
     .y-axis-group {

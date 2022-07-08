@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Tutorial - Simple Bar Chart with Britecharts</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css"
+            type="text/css" />
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/britecharts@2/dist/umd/bar.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"
+            type="text/javascript"/></script>
+    </head>
+    <body>
+        <div class="bar-container"></div>
+
+        <script>
+            // Instantiate Bar Chart
+            const barChart = britecharts.bar();
+            const container = d3.select('.bar-container');
+
+            // Create Dataset with proper shape
+            const barData = [
+                { name: 'Luminous', value: 2 },
+                { name: 'Glittering', value: 5 },
+                { name: 'Intense', value: 4 },
+                { name: 'Radiant', value: 3 }
+            ];
+
+            // Configure chart
+            barChart
+                .margin({left: 100})
+                .isHorizontal(true)
+                .height(400)
+                .width(600);
+
+            container.datum(barData).call(barChart);
+
+            const redrawChart = () => {
+                const newContainerWidth = container.node() ? container.node().getBoundingClientRect().width : false;
+
+                // Setting the new width on the chart
+                barChart.width(newContainerWidth);
+
+                // Rendering the chart again
+                container.call(barChart);
+            };
+            const throttledRedraw = _.throttle(redrawChart, 200);
+
+            window.addEventListener("resize", throttledRedraw);
+        </script>
+    </body>
+
+</html>

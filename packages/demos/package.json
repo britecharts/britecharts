@@ -3,7 +3,7 @@
   "packageManager": "yarn@3.2.0",
   "version": "0.0.0",
   "devDependencies": {
-    "@storybook/html": "^6.3.9"
+    "@storybook/html": "^6.5.9"
   },
   "scripts": {
     "storybook:build": "build-storybook -c .storybook -o build",

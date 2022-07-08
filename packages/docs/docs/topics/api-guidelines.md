@@ -10,7 +10,7 @@ The guidelines help developers improve the consistency of the library and lower 
 
 ### General Considerations
 
-Variable and accessor names should be camel cased (eg. "shouldBeCamelCase"), and we try to use only one word that coincide with the internal variable we are using. Variables are nouns, while commands are verbs.
+Variable and accessor names should be camel cased (eg. "shouldBeCamelCase"), and we try to use only one word that is the same as the internal variable we are using. Variables are nouns, while commands are verbs.
 
 For example: _height, width, margin, title_.
 

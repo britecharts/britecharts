@@ -5,7 +5,7 @@ sidebar_position: 5
 # Styling Britecharts
 In the [Getting Started Guide][gettingStarted] and the [Composing Your First Data Visualization tutorial][composingDataviz] we saw how to create and configure Britecharts. We have created beatiful charts, however, users have specific branding and styling needs that want to get in their charts to adapt to their user interfaces.
 
-In this tutorial, we will go over the different options we have to customize Britecharts. You will learn how you can use Britechart's color schemas to change the charts colors or customize your own. We will also see how to override the CSS styles that come with Britecharts and how to update the fonts.
+In this tutorial, we will go over the **different options we have to customize Britechart**s. You will learn how you can use Britechart's color schemas to change the charts colors or customize your own. We will also see how to override the CSS styles that come with Britecharts and how to update the fonts.
 
 ## Applying a color palette
 Let's look at some customization options we have available for Britecharts. The first one is the color schemas and gradients. You can find some of them in our [Color Palettes demo page][colorPalettesDemo].
@@ -38,7 +38,7 @@ container.datum(barData).call(barChart);
 
 Starting with this bar chart, we want to customize the color palette. For that, we first need to load our color schemas by using this script tag:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/umd/colors.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@britecharts/core@**2.10.0/dist/umd/colors.min.js"></script>
 ```
 
 Then, we can set the color schema of the bar chart by doing:
@@ -95,13 +95,13 @@ In this tutorial, you saw how you can use Britecharts' color helper to apply col
 To learn more, you can follow our [Composing Your First Data Visualization tutorial][composingDataviz]. You can also check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
 [home]: http://britecharts.github.io/britecharts/
-[demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
-[gettingStarted]: http://britecharts.github.io/britecharts/getting-started.html
-[composingDataviz]: http://britecharts.github.io/britecharts/composing-dataviz.html
-[colorPalettesDemo]: http://britecharts.github.io/britecharts/tutorial-color.html
-[stylingBritechartsHTML]: https://github.com/britecharts/britecharts/blob/master/src/doc/html/tutorial-styling-britecharts.html
-[stylingBritechartsTutorial]: http://britecharts.github.io/britecharts/tutorial-styling-britecharts.html
-[orangeBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/orange-bar-chart.png
-[redBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/red-bar-chart.png
+[demos]: http://britecharts.github.io/britecharts/**tutorial-kitchen-sink.html
+[gettingStarted]: ./getting-started.md
+[composingDataviz]: ./composing-dataviz.md
+[colorPalettesDemo]: http://britecharts.github.io/britecharts/**tutorial-color.html
+[stylingBritechartsHTML]: https://github.com/britecharts/britecharts/blob/master/packages/docs/docs/tutorials/html/tutorial-styling-britecharts.html
+[stylingBritechartsTutorial]: ./styling-charts.md
+[orangeBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorial/orange-bar-chart.png
+[redBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorials/red-bar-chart.png
 [gFonts]: https://fonts.google.com/
 [svgReference]: https://www.smashingmagazine.com/2014/11/styling-and-animating-svgs-with-css/

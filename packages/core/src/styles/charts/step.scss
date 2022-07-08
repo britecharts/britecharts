@@ -1,14 +1,13 @@
-@import '../helpers/_variables';
+@import "../helpers/_variables";
 
 $step-color: #8fdad8;
 $step-color-hover: #39c2c9;
 
 .step-chart {
-
     // Steps
     .step {
         fill: $step-color;
-        shape-rendering: crispEdges;
+        shape-rendering: crispedges;
         stroke-width: 0;
 
         &:hover {

@@ -1,3 +1,9 @@
 packages/react/src/templates/*.js
-packages/react/src/scripts/plopfile.js
 packages/react/src/scripts
+
+packages/docs/build
+packages/docs/scripts
+packages/docs/docs_build_bk
+packages/docs/doc_bk
+
+*.min.js

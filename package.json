@@ -137,10 +137,6 @@
       "amd": true
     },
     "root": true,
-    "ignorePatterns": [
-      "*.min.js",
-      "packages/docs/"
-    ],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
       "sourceType": "module",
@@ -267,8 +263,8 @@
       "stylelint-scss"
     ],
     "extends": [
-      "stylelint-config-standard",
-      "stylelint-config-sass-guidelines"
+      "stylelint-config-sass-guidelines",
+      "stylelint-config-standard-scss"
     ],
     "rules": {
       "indentation": 4,
@@ -276,6 +272,7 @@
       "no-descending-specificity": null,
       "selector-class-pattern": null,
       "scss/at-import-no-partial-leading-underscore": null,
+      "scss/no-global-function-names": null,
       "max-nesting-depth": 2,
       "at-rule-no-unknown": [
         true,
@@ -339,14 +336,14 @@
     "jest-environment-jsdom": "^27.5.1",
     "lint-staged": ">=10",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
-    "postcss": "latest",
     "prettier": "2.5.1",
     "prettier-eslint": "13.0.0",
     "prettier-eslint-cli": "5.0.1",
     "rimraf": "^2.6.3",
-    "stylelint": "latest",
+    "stylelint": "14.9.1",
     "stylelint-config-sass-guidelines": "^9.0.1",
-    "stylelint-config-standard-scss": "3.0.0",
+    "stylelint-config-standard": "^26.0.0",
+    "stylelint-config-standard-scss": "4.0.0",
     "ts-jest": "^27.1.3"
   },
   "scripts": {
@@ -354,6 +351,7 @@
     "clean": "yarn cache clean && rimraf node_modules",
     "demos": "yarn workspaces foreach -p run demo",
     "test": "yarn workspaces foreach -p run test",
+    "test:watch": "yarn workspaces foreach -p run test:watch",
     "docs": "yarn workspace @britecharts/docs start",
     "docs:build": "yarn workspace @britecharts/docs build",
     "format": "prettier --loglevel warn --write \"**/*.js\"",

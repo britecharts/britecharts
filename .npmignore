@@ -71,4 +71,4 @@ packages/core/node_modules
 # Test helpers
 packages/react/__mocks__
 packages/react/docs
-packages/react/**/*.test.js
+packages/react/**/*.spec.js

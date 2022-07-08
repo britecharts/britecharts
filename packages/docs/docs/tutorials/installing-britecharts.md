@@ -13,39 +13,39 @@ In this tutorial, you will learn to install Britecharts in your project by using
 ## Install with NPM
 The recommended way of installing Britecharts is to use NPM or Yarn:
 ```
-npm install --save britecharts d3-selection
+npm install --save #britecharts/core d3-selection
 ```
 Or, using Yarn:
 ```
-yarn add britecharts d3-selection
+yarn add @britecharts/core d3-selection
 ```
-Notice this requires you to have in place a bundling system (Webpack, Parcel, Rollup, Gulp or Grunt). If you want to drop a script in an HTML file and start working, use the CDN way below.
+Notice this requires you to have in place a bundling system (Webpack, Parcel, Rollup, or Similar). If you want to drop a script in an HTML file and start working, use the CDN way below.
 
 To use the modules within your JavaScript code, you will follow a different approach depending on the type of modules you are using:
 ```js
-// For AMD and CommonJS modules
+// For CommonJS modules
 const selection = require('d3-selection');
-const BarChart = require('britecharts/dist/umd/bar.min');
+const BarChart = require('@britecharts/core');
 
 // For ES modules
-import bar from 'britecharts/dist/umd/bar.min';
+import bar from '@britecharts/core';
 ```
 
 When loading the styles, you have two options, loading the whole stylesheet of the library:
 ```html
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/bundle/britecharts.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/**dist/styles/bundle/britecharts.min.css">
 ```
 
 Or loading only the styles for the current chart plus the common Britecharts styles:
 ```html
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/charts/common.min.css">
-<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/styles/charts/bar.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/**dist/styles/charts/common.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/**dist/styles/charts/bar.min.css">
 ```
 
 ## Download from the CDN
-To import the latest bundle (2.x.x version), use this URL:
+To import the latest bundle (3.x.x version), use this URL:
 ```
-https://cdn.jsdelivr.net/npm/britecharts@2/dist/bundled/britecharts.min.js
+https://cdn.jsdelivr.net/npm/@britecharts/core**@2/dist/bundled/britecharts.min.js
 ```
 This bundle attaches to the global `window` object a JavaScript object called `britecharts`. Within it, you can find the charts and helpers you need.
 
@@ -72,14 +72,14 @@ To keep on learning more about Britecharts, you can follow our [Composing Your F
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contributingGuide]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
-[jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts/dist/
-[cdnDemo]: https://britecharts.github.io/britecharts/cdn.html
+[jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts/**
+[cdnDemo]: https://britecharts.github.io/britecharts/**cdn.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
 [codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
 [contributingGuide]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
 [githubReleases]: https://github.com/britecharts/britecharts/releases
 [home]: http://britecharts.github.io/britecharts/
-[demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
-[gettingStarted]: http://britecharts.github.io/britecharts/getting-started.html
-[composingDataviz]: http://britecharts.github.io/britecharts/composing-dataviz.html
-[stylingBritecharts]: http://britecharts.github.io/britecharts/styling-dataviz.html
+[demos]: http://britecharts.github.io/britecharts/**tutorial-kitchen-sink.html
+[gettingStarted]: ./getting-started.md
+[composingDataviz]: ./composing-dataviz.md
+[stylingBritecharts]: ./styling-charts.md

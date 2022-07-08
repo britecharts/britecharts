@@ -3,7 +3,7 @@ sidebar_position: 4
 ---
 
 # Migration Guide from version 2 to version 3
-In February 2022, we released version 3.0 of Britecharts. The new version fixes many bugs, improves loading and animation performance, and adds minor features. We also introduced many breaking changes to make the component's APIs and data shapes more consistent.
+In July 2022, we released version 3.0 of Britecharts. The new version fixes many bugs, improves loading and animation performance, and adds minor features. We also introduced many breaking changes to make the component's APIs and data shapes more consistent.
 
 We recommend migrating as soon as possible to get all these benefits. For that, we have prepared the following migration guide.
 
@@ -25,12 +25,12 @@ const LineChart = require('britecharts/umd/line.min');
 
 // Version 3
 // As ES modules
-import { bar } from 'britecharts';
-import bar from 'britecharts/dist/umd/bar.min';
+import { bar } from '@britecharts/core';
+import bar from '@britecharts/core/dist/umd/bar.min';
 
 // As CommonJS modules
-const { bar } = require('britecharts');
-const bar = require('britecharts/dist/umd/bar.min');
+const { bar } = require('@britecharts/core');
+const bar = require('@britecharts/core/dist/umd/bar.min');
 
 ```
 You can also check more ways of loading (CommonJS and CDN) in our [Britecharts Test Project](https://github.com/britecharts/britecharts-test-project#usage)
@@ -157,6 +157,7 @@ Most Britecharts' components have animations that you can activate with the 'isA
 We changed many things in the third version of Britecharts; here are some summaries:
 
 ### Breaking Changes
+* New monorepo organization of the code with `@britecharts/core` and `@britecharts/react` as the main packages.
 * Adds ES5 version to bundle.
 * Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.
 * Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar.

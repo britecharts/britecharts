@@ -15,17 +15,17 @@
 | [![Sparkline Chart][sparklinechartimg]][sparklinechartdemo] | [![Legend Chart][legendchartimg]][donutchartdemo] | [![Brush Chart][brushchartimg]][brushchartdemo] |
 
 <div align="center">
-  <a href="https://britecharts.github.io/britecharts/getting-started.html">Quickstart</a>
+  <a href="https://britecharts.github.io/britecharts/getting-started.html">Quickstart*</a>
   <span> · </span>
-  <a href="https://britecharts.github.io/britecharts/tutorials-index.html">Tutorials</a>
+  <a href="https://britecharts.github.io/britecharts/tutorials-index.html">Tutorials*</a>
   <span> · </span>
   <a href="https://britecharts.github.io/britecharts/">Docs</a>
   <span> · </span>
   <a href="https://github.com/britecharts/britecharts-test-project">Test Project</a>
   <span> · </span>
-  <a href="https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html">Kitchen Sink</a>
+  <a href="https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html">Storybook*</a>
   <span> · </span>
-  <a href="https://britecharts.github.io/britecharts/contributor-how-to-guides.html">Contribute</a>
+  <a href="https://britecharts.github.io/britecharts/contributor-how-to-guides.html">Contribute*</a>
   <br />
   Support: <a href="https://twitter.com/britecharts">Twitter</a>, <a href="https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">Issues</a>
   <span> & </span>
@@ -42,7 +42,7 @@ Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][d
 -   🌈 **Great design** - Clean and vivid looks to amaze your users.
 -   ⚙️ **Simple** - The codebase is a regular D3.js code you can fork and modify.
 
-Britecharts [components][kitchen-sink] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
+Britecharts [components][storybook] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
 
 ## Usage
 
@@ -50,7 +50,7 @@ The typical use of Britecharts involves creating a chart using its simple API, t
 
 ```js
     import { select } from 'd3-selection';
-    import { bar } from 'britecharts';
+    import { bar } from '@britecharts/core';
 
     const barChart = bar();
     const barContainer = select('.bar-chart-container');
@@ -63,39 +63,43 @@ The typical use of Britecharts involves creating a chart using its simple API, t
     barContainer.datum(dataset).call(barChart);
 ```
 
+To use Britecharts with React, you will need to use the `@britecharts/react` [package][react-package*]. Also, if you use Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We also include a set of wrappers in `@britecharts/wrappers` that you can use to employ Britecharts with other web frameworks.
+
 ## API
 
 All the components expose **common API methods** like width, height, and margin. Additionally, each component exposes specific methods you can find in the documentation:
 
--   [API][line-docs], [Demo][linechartdemo] Line Chart
--   [API][bar-docs], [Demo][barchartdemo] Bar Chart
--   [API][donut-docs], [Demo][donutchartdemo] Donut Chart
--   [API][stacked-bar-docs], [Demo][stackedbarchartdemo] Stacked Bar Chart
--   [API][grouped-bar-docs], [Demo][groupedbarchartdemo] Grouped Bar Chart
--   [API][bullet-docs], [Demo][bulletchartdemo] Bullet Chart
--   [API][brush-docs], [Demo][brushchartdemo] Brush Chart
--   [API][scatter-docs], [Demo][scatterplotdemo] Scatter Plot
--   [API][sparkline-docs], [Demo][sparklinechartdemo] Sparkline Chart
--   [API][stacked-area-docs], [Demo][stackedareachartdemo] Stacked Area Chart
--   [API][step-docs], [Demo][stepchartdemo] Step Chart
--   [API][mini-tooltip-docs], [Demo][barchartdemo] Mini Tooltip
--   [API][tooltip-docs], [Demo][linechartdemo] Tooltip
--   [API][legend-docs], [Demo][donutchartdemo] Legend
+-   [API][line-docs*], [Demo][linechart-story*] Line Chart
+-   [API][bar-docs*], [Demo][barchart-story*] Bar Chart
+-   [API][donut-docs*], [Demo][donutchart-story*] Donut Chart
+-   [API][stacked-bar-docs*], [Demo][stackedbarchart-story*] Stacked Bar Chart
+-   [API][grouped-bar-docs*], [Demo][groupedbarchart-story*] Grouped Bar Chart
+-   [API][bullet-docs*], [Demo][bulletchart-story*] Bullet Chart
+-   [API][brush-docs*], [Demo][brushchart-story*] Brush Chart
+-   [API][scatter-docs*], [Demo][scatterplot-story*] Scatter Plot
+-   [API][sparkline-docs*], [Demo][sparklinechart-story*] Sparkline Chart
+-   [API][stacked-area-docs*], [Demo][stackedareachart-story*] Stacked Area Chart
+-   [API][step-docs*], [Demo][stepchart-story*] Step Chart
+-   [API][mini-tooltip-docs*], [Demo][barchart-story*] Mini Tooltip
+-   [API][tooltip-docs*], [Demo][linechart-story*] Tooltip
+-   [API][legend-docs*], [Demo][donutchart-story*] Legend
 
 ## Installation
 
-Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][mike-chart]. To use any of the Britecharts modules, you will need to require the chart in your JS file using CommonJS modules, ES modules, or adding a script tag with the `src` pointing to the file. You would also need to load the [d3-selection][d3-selection] submodule to select the chart container.
+Britecharts components are distributed in **UMD modules** and **ES modules**, each one exposing a D3.js component written with the [Reusable API pattern][mike-chart]. To use any of the Britecharts modules, you will need to require the chart in your JS file using CommonJS modules, ES modules, or adding a `<script>` tag with the `src` pointing to the file or CDN bundle. You would also need to load the [d3-selection][d3-selection] submodule to select the chart container.
 
 ```bash
-   npm install --save britecharts d3-selection
+   npm install --save @britecharts/core d3-selection
    # or
-   yarn add britecharts d3-selection
+   yarn add @britecharts/core d3-selection
 ```
+
+Alternatively, you can load Britecharts from our [CDN][cdnhome*] as we do in this [demo][cdndemo*] page or play around in our [CodePen][codependemos] demo projects.
 
 Then, in your JavaScript module file you can now import and use charts:
 
 ```js
-import { bar } from 'britecharts';
+import { bar } from '@britecharts/core';
 import { select } from 'd3-selection';
 
 const barChart = bar();
@@ -117,33 +121,31 @@ barChart
 container.datum(barData).call(barChart);
 ```
 
-Britecharts comes with custom CSS - to load CSS in your HTML file you may include it in the `<head>` tag
+Britecharts comes with a basic set of CSS styles that you would load with a `<link>` tag in your page's `<head>`.
 
 ```html
 <link
     rel="stylesheet"
     href="./node_modules/britecharts/dist/css/britecharts.css"
-/>
+/>*
 ```
 
-Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [JSBin][jsbinsandbox] and [CodePen][codependemos] demo projects. In addition, you have an option to customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to see more options.
+You can customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts*] to get started.
 
 ## See Also
 
--   [Documentation Homepage][docs-homepage]
--   [Getting Started Guide][gettingstarted]
--   [Tutorials][tutorialsindex]
--   [How To Guides][howtoindex]
--   [About Britecharts][topicsindex]
--   [Contributing Guide][contributing-guide]
+-   [Documentation Homepage][docs-homepage*]
+-   [Getting Started Guide][gettingstarted*]
+-   [Tutorials][tutorialsindex*]
+-   [How To Guides][howtoindex*]
+-   [Topics][topicsindex*]
+-   [Contributing Guide][contributing-guide*]
 -   [Github Repo][main-repository]
 -   [Changelog][changelog]
 
 ## Roadmap
 
-This project is in active development. You can check our [plans for the next release][release3project] and our [projects][github-projects] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
-
-If you work with Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We are also preparing a wrapper for [React][britecharts-react], and we will be talking about it on our [twitter][twitter].
+This project is in active development. You can check our [plans for the next release][release4project] and other [projects][github-projects] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
 
 ## Code of Conduct
 
@@ -153,9 +155,7 @@ Britecharts is dedicated to building a welcoming, diverse, and safe community. W
 
 Whether you're helping us fix bugs, improving the docs, or spreading the word, we'd love to have you as part of the Britecharts community!
 
-To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and committers, so if you want to become a part of this project, check the [contributing][contributing-guide] guide and get started today!
-
-Check out our Contributing Guide for ideas on contributing and setup steps for getting our repositories up and running on your local machine.
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and committers, so if you want to become a part of this project, check the [contributing guide][contributing-guide*] for ideas on contributing and get started today!
 
 ## Acknowledgments
 
@@ -206,28 +206,28 @@ Read more in the [license document][britecharts-license]
 [britecharts-license]: https://github.com/britecharts/britecharts/blob/master/LICENSE.md
 [d3-edge]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
 [mastering-d3]: https://www.packtpub.com/web-development/mastering-d3js
-[donut-docs]: https://britecharts.github.io/britecharts/module-Donut.html
-[bar-docs]: https://britecharts.github.io/britecharts/module-Bar.html
-[brush-docs]: https://britecharts.github.io/britecharts/module-Brush.html
-[legend-docs]: https://britecharts.github.io/britecharts/module-Legend.html
-[line-docs]: https://britecharts.github.io/britecharts/module-Line.html
-[mini-tooltip-docs]: https://britecharts.github.io/britecharts/module-Mini-tooltip.html
-[tooltip-docs]: https://britecharts.github.io/britecharts/module-Tooltip.html
-[step-docs]: https://britecharts.github.io/britecharts/module-Step.html
-[sparkline-docs]: https://britecharts.github.io/britecharts/module-Sparkline.html
-[stacked-area-docs]: https://britecharts.github.io/britecharts/module-Stacked-area.html
-[docs-homepage]: https://britecharts.github.io/britecharts/
-[kitchen-sink]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
+[donut-docs*]: https://britecharts.github.io/britecharts/module-Donut.html
+[bar-docs*]: https://britecharts.github.io/britecharts/module-Bar.html
+[brush-docs*]: https://britecharts.github.io/britecharts/module-Brush.html
+[legend-docs*]: https://britecharts.github.io/britecharts/module-Legend.html
+[line-docs*]: https://britecharts.github.io/britecharts/module-Line.html
+[mini-tooltip-docs*]: https://britecharts.github.io/britecharts/module-Mini-tooltip.html
+[tooltip-docs*]: https://britecharts.github.io/britecharts/module-Tooltip.html
+[step-docs*]: https://britecharts.github.io/britecharts/module-Step.html
+[sparkline-docs*]: https://britecharts.github.io/britecharts/module-Sparkline.html
+[stacked-area-docs*]: https://britecharts.github.io/britecharts/module-Stacked-area.html
+[docs-homepage*]: https://britecharts.github.io/britecharts/
+[storybook]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html*
 [main-repository]: https://github.com/britecharts/britecharts
-[gettingstarted]: https://britecharts.github.io/britecharts/getting-started.html
-[contributing-guide]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[gettingstarted*]: https://britecharts.github.io/britecharts/getting-started.html
+[contributing-guide*]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
 [d3-selection]: https://github.com/d3/d3-selection
 [stacked-bar-docs]: https://britecharts.github.io/britecharts/module-Stacked-bar.html
 [grouped-bar-docs]: https://britecharts.github.io/britecharts/module-Grouped-bar.html
 [scatter-docs]: https://britecharts.github.io/britecharts/module-Scatter-plot.html
 [bullet-docs]: https://britecharts.github.io/britecharts/module-Bullet.html
-[cdndemo]: https://britecharts.github.io/britecharts/cdn.html
-[cdnhome]: https://cdn.jsdelivr.net/npm/britecharts/dist/
+[cdndemo*]: https://britecharts.github.io/britecharts/cdn.html
+[cdnhome*]: https://cdn.jsdelivr.net/npm/britecharts/dist/
 [jsbinsandbox]: https://jsbin.com/wativun/3/edit?html,js,output
 [codepensandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
 [codependemos]: https://codepen.io/Britecharts/pens/forked/
@@ -237,19 +237,19 @@ Read more in the [license document][britecharts-license]
 [sunsdribble]: https://dribbble.com/sundai
 [d3slack]: https://d3js.slack.com/messages/tools-britecharts/
 [proposals]: https://github.com/britecharts/britecharts/issues?q=is%3Aopen+label%3A%22Type%3A+Feature%22+sort%3Aupdated-desc
-[release3project]: https://github.com/britecharts/britecharts/projects/2
-[barchartdemo]: https://britecharts.github.io/britecharts/tutorial-bar.html 'Check the Demo'
-[linechartdemo]: https://britecharts.github.io/britecharts/tutorial-line.html 'Check the Demo'
-[donutchartdemo]: https://britecharts.github.io/britecharts/tutorial-donut.html 'Check the Demo'
-[scatterplotdemo]: https://britecharts.github.io/britecharts/tutorial-scatter-plot.html 'Check the Demo'
-[sparklinechartdemo]: https://britecharts.github.io/britecharts/tutorial-sparkline.html 'Check the Demo'
-[stackedareachartdemo]: https://britecharts.github.io/britecharts/tutorial-stacked-area.html 'Check the Demo'
-[stepchartdemo]: https://britecharts.github.io/britecharts/tutorial-step.html 'Check the Demo'
-[brushchartdemo]: https://britecharts.github.io/britecharts/tutorial-brush.html 'Check the Demo'
-[bulletchartdemo]: https://britecharts.github.io/britecharts/tutorial-bullet.html 'Check the Demo'
-[stackedbarchartdemo]: https://britecharts.github.io/britecharts/tutorial-stacked-bar.html 'Check the Demo'
-[groupedbarchartdemo]: https://britecharts.github.io/britecharts/tutorial-grouped-bar.html 'Check the Demo'
-[stackedareademo]: https://britecharts.github.io/britecharts-react/#stacked-area-chart 'Check the Demo'
+[release4project]: https://github.com/britecharts/britecharts/projects/2
+[barchart-story*]: https://britecharts.github.io/britecharts/tutorial-bar.html 'Check the Demo'
+[linechart-story*]: https://britecharts.github.io/britecharts/tutorial-line.html 'Check the Demo'
+[donutchart-story*]: https://britecharts.github.io/britecharts/tutorial-donut.html 'Check the Demo'
+[scatterplot-story*]: https://britecharts.github.io/britecharts/tutorial-scatter-plot.html 'Check the Demo'
+[sparklinechart-story*]: https://britecharts.github.io/britecharts/tutorial-sparkline.html 'Check the Demo'
+[stackedareachart-story*]: https://britecharts.github.io/britecharts/tutorial-stacked-area.html 'Check the Demo'
+[stepchart-story*]: https://britecharts.github.io/britecharts/tutorial-step.html 'Check the Demo'
+[brushchart-story*]: https://britecharts.github.io/britecharts/tutorial-brush.html 'Check the Demo'
+[bulletchart-story*]: https://britecharts.github.io/britecharts/tutorial-bullet.html 'Check the Demo'
+[stackedbarchart-story*]: https://britecharts.github.io/britecharts/tutorial-stacked-bar.html 'Check the Demo'
+[groupedbarchart-story*]: https://britecharts.github.io/britecharts/tutorial-grouped-bar.html 'Check the Demo'
+[stackedarea-story*]: https://britecharts.github.io/britecharts-react/#stacked-area-chart 'Check the Demo'
 [stackedareaimg]: https://raw.githubusercontent.com/britecharts/britecharts-react/master/src/docs/images/thumbnails/stacked-area.png
 [barchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/bar-chart.png
 [linechartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/line-chart.png
@@ -262,10 +262,11 @@ Read more in the [license document][britecharts-license]
 [stackedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
 [groupedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
 [legendchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/legend-chart.png
-[tutorialsindex]: http://britecharts.github.io/britecharts/tutorials-index.html
-[howtoindex]: http://britecharts.github.io/britecharts/how-to-index.html
-[topicsindex]: http://britecharts.github.io/britecharts/topics-index.html
-[stylingbritecharts]: http://britecharts.github.io/britecharts/styling-charts.html
+[tutorialsindex*]: http://britecharts.github.io/britecharts/tutorials-index.html
+[howtoindex*]: http://britecharts.github.io/britecharts/how-to-index.html
+[topicsindex*]: http://britecharts.github.io/britecharts/topics-index.html
+[stylingbritecharts*]: http://britecharts.github.io/britecharts/styling-charts.html
 [code-conduct]: https://github.com/britecharts/britecharts/blob/master/CODE_OF_CONDUCT.md
 [britecharts-react]: https://britecharts.github.io/britecharts-react/
 [github-projects]: https://github.com/britecharts/britecharts/projects
+[react-package*]: https://github.com/britecharts/britecharts/packages/react

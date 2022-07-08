@@ -2,7 +2,7 @@
 .vertical-grid-line,
 .horizontal-grid-line {
     fill: none;
-    shape-rendering: crispEdges;
+    shape-rendering: crispedges;
     stroke: $grey-200;
     stroke-dasharray: 4, 4;
     stroke-width: 1;
@@ -16,7 +16,7 @@
 .extended-y-line,
 .extended-x-line {
     fill: none;
-    shape-rendering: crispEdges;
+    shape-rendering: crispedges;
     stroke: $grey-500;
     stroke-width: 1;
 }

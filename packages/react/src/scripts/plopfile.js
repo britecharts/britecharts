@@ -14,33 +14,28 @@ module.exports = function (plop) {
         actions: [
             {
                 type: 'add',
-                path:
-                    '../charts/{{camelCase componentName}}/{{camelCase componentName}}Chart.test.js',
-                templateFile: '../templates/componentChart.test.js',
+                path: '../charts/{{camelCase componentName}}/{{camelCase componentName}}Chart.spec.js',
+                templateFile: '../templates/componentChart.spec.js',
             },
             {
                 type: 'add',
-                path:
-                    '../charts/{{camelCase componentName}}/{{camelCase componentName}}Chart.js',
+                path: '../charts/{{camelCase componentName}}/{{camelCase componentName}}Chart.js',
                 templateFile: '../templates/componentChart.js',
             },
             {
                 type: 'add',
-                path:
-                    '../charts/{{camelCase componentName}}/{{camelCase componentName}}Chart.fixtures.js',
+                path: '../charts/{{camelCase componentName}}/{{camelCase componentName}}Chart.fixtures.js',
                 templateFile: '../templates/componentChart.fixtures.js',
             },
             {
                 type: 'add',
-                path:
-                    '../charts/{{camelCase componentName}}/{{pascalCase componentName}}.js',
+                path: '../charts/{{camelCase componentName}}/{{pascalCase componentName}}.js',
                 templateFile: '../templates/Component.js',
             },
             {
                 type: 'add',
-                path:
-                    '../charts/{{camelCase componentName}}/{{pascalCase componentName}}.test.js',
-                templateFile: '../templates/Component.test.js',
+                path: '../charts/{{camelCase componentName}}/{{pascalCase componentName}}.spec.js',
+                templateFile: '../templates/Component.spec.js',
             },
             {
                 type: 'add',

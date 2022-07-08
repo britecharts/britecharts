@@ -7,7 +7,7 @@ Our how-to guides are recipes to address specific and critical use cases when wo
 
 ## How to Customize the Chart's Colors
 Follow these steps to customize Britecharts' charts to use different color schemas:
-1. Find out if your chart supports `.colorSchema`, if so, keep on reading
+1. Find out if your chart supports the `.colorSchema()` configuration, if so, keep on reading
 1. Check the [Color Palettes demo page][colorPalettesDemo] and find a palette you like
 1. Import the `colors` helper at the top of your file
 1. Set the color palette with `.colorSchema(colors.colorSchemas.orange)` or with any other color schema
@@ -43,9 +43,9 @@ Remember that for increased accuracy, all date formats in Britecharts should be 
 
 
 [gettingStarted]: http://britecharts.github.io/britecharts/getting-started.html
-[colorPalettesDemo]: http://britecharts.github.io/britecharts/tutorial-color.html
-[colorsHelper]: https://github.com/Golodhros/britecharts/blob/master/src/charts/helpers/color.js
+[colorPalettesDemo]: **
+[colorsHelper]: https://github.com/Golodhros/britecharts/blob/main/packages/core/src/charts/helpers/color.js
 [ISOFormat]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
-[lineChartAPI]: http://britecharts.github.io/britecharts/module-Line.html
+[lineChartAPI]: **
 [timeFormatSpecifiers]: https://github.com/d3/d3-time-format#locale_format
 [timeFormatsBlock]: https://bl.ocks.org/zanarmstrong/ca0adb7e426c12c06a95

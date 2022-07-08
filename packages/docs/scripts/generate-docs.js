@@ -37,6 +37,7 @@ function generateDocs() {
     const filePaths = glob.sync(pathPattern, {
         ignore: IGNORED_PATHS,
     });
+    const writeDir = path.join(__dirname, '../docs/API/');
 
     // Get the sidebar object
     let processingPackageName;
@@ -86,8 +87,6 @@ function generateDocs() {
                 subPath = subPathArray.join('/');
             }
 
-            const writeDir = path.join(__dirname, '../docs/API/');
-
             // check if the directory exists
             if (!fs.existsSync(writeDir)) {
                 // create the directory
@@ -97,6 +96,10 @@ function generateDocs() {
             // write the markdown file
             fs.writeFileSync(`${writeDir}/${fileName}.md`, markdown);
         }
+
+        // Add category metadata
+        const readmeFile = fs.readFileSync('./scripts/_category_.json');
+        fs.writeFileSync(`${writeDir}/_category_.json`, readmeFile);
     });
 
     // Let the user know what step we're on

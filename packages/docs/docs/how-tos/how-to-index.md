@@ -3,9 +3,9 @@ sidebar_position: 1
 ---
 
 # How-To Guides
-The Britecharts how-to guides provide step by step instructions on how to accomplish standardized tasks for the library.
+The Britecharts how-to guides provide step by step instructions on how to accomplish standard tasks for the library.
 
-We have how multiple guides for specific type of users:
+We have multiple guides for specific type of users:
 * [User How-To Guides][userHowTo]
 * [Contributor How-To Guides][contributorHowTo]
 * [Migration from v2 to v3][migrationGuide2to3]

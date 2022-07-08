@@ -80,11 +80,11 @@ For this project, we have followed the approach called ‘Mapping Lifecycle meth
 
 ## See Also
 - [Documentation Homepage][homepage]
-- [Contributing Guide][contributingGuide]
+- [Contributing Guide][contributing]
 - [Code of Conduct][codeOfConduct]
 
 ## Contribute
-If you need to use one of the missing charts, check out our [how-to guide for creating new charts][howtoCreate]. Check also the [contributing guide][contributing guide] if you want to help us bringing these in. 
+If you need to use one of the missing charts, check out our [how-to guide for creating new charts][howtoCreate]. Check also the [contributing guide][contributing] if you want to help us bringing these in. 
 
 Note that the aim of this project is to allow the usage of Britecharts within your React applications. For that, we are ‘wrapping’ Britecharts with `@britecharts/wrappers`. This means that **any new features need to first be implemented on Britecharts**. Only then you could update the props and logic that passes in the configuration.
 
@@ -108,7 +108,7 @@ Our idea for the short term is to update this package to use TypeScript natively
 [jsDelivrLib]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/dist/
 [npmModule]: https://www.npmjs.com/package/britecharts-react
-[contributingGuide]: https://github.com/britecharts/britecharts-react/blob/master/CONTRIBUTING.md
+[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
 [d3Slack]: https://d3js.slack.com/
 [codeOfConduct]: **
 [homepage]: https://britecharts.github.io/britecharts/

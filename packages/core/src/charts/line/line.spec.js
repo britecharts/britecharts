@@ -556,9 +556,9 @@ describe('line Chart', () => {
                             .attr('class')
                             .split(' ');
 
-                        expect(
-                            classes
-                        ).toContain('horizontal-grid-line--highlighted');
+                        expect(classes).toContain(
+                            'horizontal-grid-line--highlighted'
+                        );
                     });
                 });
 

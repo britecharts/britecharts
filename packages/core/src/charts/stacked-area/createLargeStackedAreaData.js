@@ -64,10 +64,10 @@ function formatPrependZero(n) {
 
 function formatDateUTC(_date, isUTC) {
     const time = 'T00:00:00';
-        const d = _date.toUTCString().split(' ');
-        const year = d[3];
-        const month = d[2];
-        const date = d[1];
+    const d = _date.toUTCString().split(' ');
+    const year = d[3];
+    const month = d[2];
+    const date = d[1];
 
     if (isUTC) {
         time = 'T08:00:00Z';
