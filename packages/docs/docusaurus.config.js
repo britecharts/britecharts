@@ -9,11 +9,12 @@ module.exports = {
     tagline: 'Build stunning D3.js-powered interactive charts with little code',
     url: 'https://britecharts.github.io/britecharts',
     baseUrl: '/',
-    onBrokenLinks: 'throw',
+    onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/icons/favicon.ico',
     organizationName: 'britecharts',
-    projectName: 'britecharts', // Usually your repo name.
+    projectName: 'britechartsmy-org.github.io', // Usually your repo name.
+    trailingSlash: false,
 
     presets: [
         [
