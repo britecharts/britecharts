@@ -7,13 +7,14 @@ const lunrSearch = require.resolve('docusaurus-lunr-search');
 module.exports = {
     title: 'Britecharts',
     tagline: 'Build stunning D3.js-powered interactive charts with little code',
-    url: 'https://britecharts.github.io/britecharts',
+    url: 'https://britecharts.github.io',
     baseUrl: '/',
-    onBrokenLinks: 'throw',
+    onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/icons/favicon.ico',
     organizationName: 'britecharts',
-    projectName: 'britecharts', // Usually your repo name.
+    projectName: 'britecharts.github.io', // Usually your repo name.
+    trailingSlash: false,
 
     presets: [
         [
