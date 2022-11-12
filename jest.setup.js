@@ -6,3 +6,6 @@
 //     'getComputedTextLength'
 // ).mockImplementation(() => 200);
 global.Element.prototype.getComputedTextLength = jest.fn(() => 200);
+
+// We don't want to show console.warn logs as we use them for deprecation messages
+jest.spyOn(console, 'warn').mockImplementation(() => {});

@@ -350,6 +350,7 @@
     "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
     "clean": "yarn cache clean && rimraf node_modules",
     "demos": "yarn workspaces foreach -p run demo",
+    "test:ci": "yarn workspaces foreach -p run test",
     "test": "yarn workspaces foreach -p run test",
     "test:watch": "yarn workspaces foreach -p run test:watch",
     "docs": "yarn workspace @britecharts/docs start",

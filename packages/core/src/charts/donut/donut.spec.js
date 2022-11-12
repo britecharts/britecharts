@@ -337,7 +337,7 @@ donutDataSets.forEach((datasetName) => {
                 });
             });
 
-            describe('when centeredTextFunction', () => {
+            describe.skip('when centeredTextFunction', () => {
                 it('is not called, the default function formats text properly', () => {
                     const expectedLabel = 'Shiny';
                     const expectedValue = '20%';

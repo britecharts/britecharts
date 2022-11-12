@@ -304,7 +304,7 @@ describe('legend', () => {
                 expect(actual).toEqual(expected);
             });
 
-            describe('when chart width is not enough for one line', () => {
+            describe.skip('when chart width is not enough for one line', () => {
                 beforeEach(() => {
                     const fixture =
                         '<div id="fixture"><div class="test-container"></div></div>';

@@ -146,7 +146,7 @@ describe('step Chart', () => {
                 const newDataset = buildDataSet('withMediumData');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(stepChart);
+                containerFixture.datum(newDataset).call(stepChart);
                 actual = containerFixture
                     .selectAll('.step-chart')
                     .nodes().length;
@@ -159,7 +159,7 @@ describe('step Chart', () => {
                 const newDataset = buildDataSet('withMediumData');
                 let actual;
 
-                containerFixture.datum(newDataset.data).call(stepChart);
+                containerFixture.datum(newDataset).call(stepChart);
                 actual = containerFixture
                     .selectAll('.step-chart .step')
                     .nodes().length;
@@ -222,7 +222,7 @@ describe('step Chart', () => {
         });
     });
 
-    describe('aPI', () => {
+    describe('API', () => {
         it('should provide margin getter and setter', () => {
             let defaultMargin = stepChart.margin(),
                 testMargin = { top: 4, right: 4, bottom: 4, left: 4 },

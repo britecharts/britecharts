@@ -624,7 +624,7 @@ export default function module() {
      * @private
      */
     function updateContent(dataPoint) {
-        const topics = dataPoint[topicLabel];
+        let topics = dataPoint[topicLabel];
 
         // sort order by topicsOrder array if passed
         if (topicsOrder.length) {

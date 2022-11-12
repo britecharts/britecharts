@@ -5,14 +5,6 @@
   "main": "src/charts/index.js",
   "module": "src/charts/index.js",
   "types": "src/typings/index.d.ts",
-  "scripts": {
-    "start": "yarn run demo",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "storybook:build": "build-storybook -c .storybook -o build",
-    "demo": "yarn run storybook",
-    "storybook": "start-storybook -p 2222"
-  },
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@mdx-js/react": "^1.6.22",
@@ -28,5 +20,13 @@
   "dependencies": {
     "@britecharts/core": "workspace:^",
     "@britecharts/wrappers": "workspace:^"
+  },
+  "scripts": {
+    "start": "yarn run demo",
+    "test": "jest --colors",
+    "test:watch": "jest --watch --colors",
+    "storybook:build": "build-storybook -c .storybook -o build",
+    "demo": "yarn run storybook",
+    "storybook": "start-storybook -p 2222"
   }
 }

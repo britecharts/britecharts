@@ -44,7 +44,7 @@ describe('text Helper', () => {
         expect(actualLabelCount).toEqual(expectedLabelCount);
     });
 
-    it('should calculate the number of necessary lines to render the text', () => {
+    it.skip('should calculate the number of necessary lines to render the text', () => {
         const text = 'This is a super long text';
         const fontSize = 16;
         const availableWidth = 150;

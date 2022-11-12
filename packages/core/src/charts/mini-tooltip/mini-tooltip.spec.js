@@ -17,11 +17,17 @@ describe('mini Tooltip Component', () => {
 
         containerFixture = d3.select('.test-container').append('svg');
         containerFixture.datum(dataset).call(tooltipChart);
+
+        window.SVGElement.prototype.getBBox = () => ({
+            x: 0,
+            y: 0,
+        });
     });
 
     // remove the html fixture from the DOM
     afterEach(() => {
         document.body.removeChild(document.getElementById('fixture'));
+        delete window.SVGElement.prototype.getBBox;
     });
 
     describe('render', () => {
