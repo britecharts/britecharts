@@ -12,12 +12,14 @@ module.exports = {
         '\\.[jt]sx?$': 'babel-jest',
     },
     testEnvironment: 'jsdom',
+    testEnvironmentOptions: {
+        url: 'http://localhost',
+    },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-    testURL: 'http://localhost',
     transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
     testMatch: ['**/*.(spec|test).{js,jsx,ts,tsx}'],
     setupFiles: ['jest-canvas-mock', '<rootDir>/../../jest.setup.js'],
     collectCoverage: true,
-    collectCoverageFrom: ['**/src/**/*.{js,jsx,ts,tsx}'],
+    // collectCoverageFrom: ['**/src/**/*.{js,jsx,ts,tsx}'],
     coverageDirectory: './coverage/',
 };

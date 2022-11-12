@@ -3,8 +3,8 @@ import { legend } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
-} from '../helpers/validation';
-import { applyConfiguration } from '../helpers/configuration';
+} from '../../helpers/validation';
+import { applyConfiguration } from '../../helpers/configuration';
 
 const legendChart = {};
 

@@ -9,7 +9,7 @@ const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
 
 const PATHS = {
-    bundle: path.join(__dirname, 'src/charts/index.js'),
+    bundle: path.join(__dirname, 'src/index.js'),
     charts: path.join(__dirname, 'src/charts'),
     lib: path.join(__dirname, 'lib'),
     build: path.join(__dirname, 'dist'),

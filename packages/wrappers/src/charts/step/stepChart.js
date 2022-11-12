@@ -3,8 +3,8 @@ import { select } from 'd3-selection';
 import {
     validateConfiguration,
     validateContainer,
-} from '../helpers/validation';
-import { applyConfiguration } from '../helpers/configuration';
+} from '../../helpers/validation';
+import { applyConfiguration } from '../../helpers/configuration';
 
 // TODO: Implement the correct loading state(line, bar, and donut are the available options atm)
 

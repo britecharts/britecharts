@@ -641,7 +641,7 @@ export default function module() {
             }, []);
 
             // eslint-disable-next-line no-console
-            console.debug(
+            console.warn(
                 'Lookout! You are using an old data shape (dataByTopic), please use the new flatter version as this one will be deprecated in version 4'
             );
         }

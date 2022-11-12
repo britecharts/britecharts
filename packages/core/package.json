@@ -2,7 +2,7 @@
   "name": "@britecharts/core",
   "packageManager": "yarn@3.2.0",
   "version": "0.0.0",
-  "main": "src/index.js",
+  "main": "dist/umd/bundle/core.bundled.min.js",
   "module": "src/index.js",
   "types": "src/typings/index.d.ts",
   "dependencies": {
@@ -38,18 +38,8 @@
     "file-loader": "^6.2.0",
     "grunt-karma": "2.0.0",
     "istanbul-instrumenter-loader": "3.0.1",
-    "jasmine-core": "3.7.1",
-    "jasmine-jquery": "2.1.1",
-    "karma": "6.3.2",
-    "karma-babel-preprocessor": "8.0.1",
-    "karma-chrome-launcher": "3.1.0",
-    "karma-coverage": "2.0.3",
-    "karma-jasmine": "4.0.1",
-    "karma-sourcemap-loader": "^0.3.8",
-    "karma-webpack": "4.0.2",
     "node-gyp": "8.4.1",
     "node-sass": "6.0.1",
-    "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
     "sass-loader": "6.0.6",
     "style-loader": "0.23.1",
     "stylelint": "^13.6.0",
@@ -65,16 +55,11 @@
     "webpack-fix-style-only-entries": "^0.6.1",
     "webpack-merge": "4.2.1"
   },
+  "browserslist": "> 0.25%, not dead",
   "babel": {
     "presets": [
       [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "chrome": "58",
-            "ie": "11"
-          }
-        }
+        "@babel/preset-env"
       ]
     ],
     "plugins": [
@@ -118,7 +103,7 @@
     "demo": "start-storybook -p 1111",
     "test": "jest --colors",
     "test:watch": "jest --watch --colors",
-    "lint": "eslint src/charts/ src/tasks test/ webpack.*.js --cache",
+    "lint": "eslint src/charts/ webpack.*.js --cache",
     "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:styles": "webpack --env=prodStyles",

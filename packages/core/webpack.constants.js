@@ -35,24 +35,6 @@ exports.CHART_STYLES = {
     common: './src/styles/common.scss',
 };
 
-exports.DEMOS = {
-    'demo-bar': './demos/src/demo-bar.js',
-    'demo-bullet': './demos/src/demo-bullet.js',
-    'demo-brush': './demos/src/demo-brush.js',
-    'demo-donut': './demos/src/demo-donut.js',
-    'demo-color': './demos/src/demo-color.js',
-    'demo-grouped-bar': './demos/src/demo-grouped-bar.js',
-    'demo-heatmap': './demos/src/demo-heatmap.js',
-    'demo-kitchen-sink': './demos/src/demo-kitchen-sink.js',
-    'demo-legend': './demos/src/demo-legend.js',
-    'demo-line': './demos/src/demo-line.js',
-    'demo-scatter-plot': './demos/src/demo-scatter-plot.js',
-    'demo-stacked-area': './demos/src/demo-stacked-area.js',
-    'demo-stacked-bar': './demos/src/demo-stacked-bar.js',
-    'demo-step': './demos/src/demo-step.js',
-    'demo-sparkline': './demos/src/demo-sparkline.js',
-};
-
 exports.PATHS = {
     vendor: path.resolve('./node_modules'),
     bundleIndex: path.resolve('./src/index.js'),

@@ -1,4 +1,4 @@
-import { britechartsCustomEvents } from '../../constants';
+import { britechartsCustomEvents } from '../constants';
 
 const isNotCustomEvent = (configName) =>
     britechartsCustomEvents.indexOf(configName) === -1;
