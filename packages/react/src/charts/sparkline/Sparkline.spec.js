@@ -3,8 +3,7 @@ import { mount } from 'enzyme';
 
 import Sparkline from './Sparkline';
 import sparklineData from './sparklineChart.fixtures';
-
-import sparkline from './sparklineChart';
+import { SparklineWrapper } from '@britecharts/wrappers';
 
 describe('sparkline Chart', () => {
     describe('render', () => {
@@ -12,7 +11,7 @@ describe('sparkline Chart', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(sparkline, 'create');
+                createSpy = jest.spyOn(SparklineWrapper, 'create');
             });
 
             afterEach(() => {
@@ -23,7 +22,7 @@ describe('sparkline Chart', () => {
             it('should call the create method or the chart', () => {
                 const dataSet = sparklineData.with1Source();
 
-                mount(<Sparkline chart={sparkline} data={dataSet} />);
+                mount(<Sparkline chart={SparklineWrapper} data={dataSet} />);
 
                 const expected = 1;
                 const actual = createSpy.mock.calls.length;
@@ -35,7 +34,7 @@ describe('sparkline Chart', () => {
                 const dataSet = sparklineData.with1Source();
 
                 const wrapper = mount(
-                    <Sparkline chart={sparkline} data={dataSet} />
+                    <Sparkline chart={SparklineWrapper} data={dataSet} />
                 );
 
                 const expected = wrapper
@@ -49,7 +48,7 @@ describe('sparkline Chart', () => {
             it('should call the create method or the chart with the configuration object as the second argument', () => {
                 const dataSet = sparklineData.with1Source();
 
-                mount(<Sparkline chart={sparkline} data={dataSet} />);
+                mount(<Sparkline chart={SparklineWrapper} data={dataSet} />);
 
                 const expectedData = dataSet;
                 const actualData = createSpy.mock.calls[0][1];
@@ -63,7 +62,7 @@ describe('sparkline Chart', () => {
 
                 mount(
                     <Sparkline
-                        chart={sparkline}
+                        chart={SparklineWrapper}
                         data={dataSet}
                         width={expected}
                     />
@@ -80,7 +79,7 @@ describe('sparkline Chart', () => {
 
                 mount(
                     <Sparkline
-                        chart={sparkline}
+                        chart={SparklineWrapper}
                         data={dataSet}
                         height={expected}
                     />
@@ -98,7 +97,7 @@ describe('sparkline Chart', () => {
             let updateSpy;
 
             beforeEach(() => {
-                updateSpy = jest.spyOn(sparkline, 'update');
+                updateSpy = jest.spyOn(SparklineWrapper, 'update');
             });
 
             afterEach(() => {
@@ -109,7 +108,7 @@ describe('sparkline Chart', () => {
             it('should call the update method or the chart', () => {
                 const dataSet = sparklineData.with1Source();
                 const wrapper = mount(
-                    <Sparkline chart={sparkline} data={dataSet} />
+                    <Sparkline chart={SparklineWrapper} data={dataSet} />
                 );
 
                 // Changing properties should trigger a componentDidUpdate
@@ -126,7 +125,7 @@ describe('sparkline Chart', () => {
             it('should pass in the new data to the update method', () => {
                 const dataSet = sparklineData.with1Source();
                 const wrapper = mount(
-                    <Sparkline chart={sparkline} data={dataSet} />
+                    <Sparkline chart={SparklineWrapper} data={dataSet} />
                 );
 
                 // Changing properties should trigger a componentDidUpdate
@@ -143,7 +142,7 @@ describe('sparkline Chart', () => {
             it('should pass in the new configuration to the update method', () => {
                 const dataSet = sparklineData.with1Source();
                 const wrapper = mount(
-                    <Sparkline chart={sparkline} data={dataSet} />
+                    <Sparkline chart={SparklineWrapper} data={dataSet} />
                 );
                 const expected = 20;
 
@@ -163,7 +162,7 @@ describe('sparkline Chart', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(sparkline, 'destroy');
+            createSpy = jest.spyOn(SparklineWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -174,7 +173,7 @@ describe('sparkline Chart', () => {
         it('should call the destroy method or the chart', () => {
             const dataSet = sparklineData.with1Source();
             const wrapper = mount(
-                <Sparkline chart={sparkline} data={dataSet} />
+                <Sparkline chart={SparklineWrapper} data={dataSet} />
             );
 
             wrapper.unmount();

@@ -3,8 +3,7 @@ import { mount } from 'enzyme';
 
 import Line from './Line';
 import lineData from './lineChart.fixtures';
-
-import line from './lineChart';
+import { LineWrapper } from '@britecharts/wrappers';
 
 describe('Line', () => {
     let chartData;
@@ -18,7 +17,7 @@ describe('Line', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(line, 'create');
+                createSpy = jest.spyOn(LineWrapper, 'create');
             });
 
             afterEach(() => {
@@ -27,7 +26,7 @@ describe('Line', () => {
             });
 
             it('should call the create method or the chart', () => {
-                mount(<Line chart={line} data={chartData} />);
+                mount(<Line chart={LineWrapper} data={chartData} />);
 
                 const expected = 1;
                 const actual = createSpy.mock.calls.length;
@@ -36,7 +35,9 @@ describe('Line', () => {
             });
 
             it('should call the create method or the chart with the container as the first argument', () => {
-                const wrapper = mount(<Line chart={line} data={chartData} />);
+                const wrapper = mount(
+                    <Line chart={LineWrapper} data={chartData} />
+                );
 
                 const expected = wrapper.find('.line-container').instance();
                 const actual = createSpy.mock.calls[0][0];
@@ -47,7 +48,7 @@ describe('Line', () => {
             it('should call the create method or the chart with the configuration object as the second argument', () => {
                 const dataSet = chartData;
 
-                mount(<Line chart={line} data={dataSet} />);
+                mount(<Line chart={LineWrapper} data={dataSet} />);
 
                 const expectedData = dataSet;
                 const actualData = createSpy.mock.calls[0][1];
@@ -59,7 +60,9 @@ describe('Line', () => {
                 const dataSet = chartData;
                 const expected = 500;
 
-                mount(<Line chart={line} data={dataSet} width={expected} />);
+                mount(
+                    <Line chart={LineWrapper} data={dataSet} width={expected} />
+                );
 
                 const actual = createSpy.mock.calls[0][2].width;
 
@@ -70,7 +73,13 @@ describe('Line', () => {
                 const dataSet = chartData;
                 const expected = 500;
 
-                mount(<Line chart={line} data={dataSet} height={expected} />);
+                mount(
+                    <Line
+                        chart={LineWrapper}
+                        data={dataSet}
+                        height={expected}
+                    />
+                );
 
                 const actual = createSpy.mock.calls[0][2].height;
 
@@ -84,7 +93,7 @@ describe('Line', () => {
             let updateSpy;
 
             beforeEach(() => {
-                updateSpy = jest.spyOn(line, 'update');
+                updateSpy = jest.spyOn(LineWrapper, 'update');
             });
 
             afterEach(() => {
@@ -93,7 +102,9 @@ describe('Line', () => {
             });
 
             it('should call the update method or the chart', () => {
-                const wrapper = mount(<Line chart={line} data={chartData} />);
+                const wrapper = mount(
+                    <Line chart={LineWrapper} data={chartData} />
+                );
 
                 // Changing properties should trigger a componentDidUpdate
                 wrapper.setProps({
@@ -107,7 +118,9 @@ describe('Line', () => {
             });
 
             it('should pass in the new data to the update method', () => {
-                const wrapper = mount(<Line chart={line} data={chartData} />);
+                const wrapper = mount(
+                    <Line chart={LineWrapper} data={chartData} />
+                );
 
                 // Changing properties should trigger a componentDidUpdate
                 wrapper.setProps({
@@ -121,7 +134,9 @@ describe('Line', () => {
             });
 
             it('should pass in the new configuration to the update method', () => {
-                const wrapper = mount(<Line chart={line} data={chartData} />);
+                const wrapper = mount(
+                    <Line chart={LineWrapper} data={chartData} />
+                );
                 const expected = 20;
 
                 // Changing properties should trigger a componentDidUpdate
@@ -140,7 +155,7 @@ describe('Line', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(line, 'destroy');
+            createSpy = jest.spyOn(LineWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -149,7 +164,9 @@ describe('Line', () => {
         });
 
         it('should call the destroy method or the chart', () => {
-            const wrapper = mount(<Line chart={line} data={chartData} />);
+            const wrapper = mount(
+                <Line chart={LineWrapper} data={chartData} />
+            );
 
             wrapper.unmount();
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import Tooltip from './Tooltip';
-import tooltip from './tooltipChart';
+import { TooltipWrapper } from '@britecharts/wrappers';
 
 const FakeChart = () => (
     <div className="metadata-group">
@@ -21,7 +21,7 @@ describe('tooltip', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(tooltip, 'create');
+            createSpy = jest.spyOn(TooltipWrapper, 'create');
         });
 
         afterEach(() => {
@@ -31,7 +31,11 @@ describe('tooltip', () => {
 
         it('should call the create method of the chart', () => {
             mount(
-                <Tooltip chart={tooltip} render={renderFakeChart} data={[]} />
+                <Tooltip
+                    chart={TooltipWrapper}
+                    render={renderFakeChart}
+                    data={[]}
+                />
             );
 
             const expected = 1;
@@ -42,7 +46,11 @@ describe('tooltip', () => {
 
         it('should call the create method or the chart with the container as the first argument', () => {
             const wrapper = mount(
-                <Tooltip chart={tooltip} render={renderFakeChart} data={[]} />
+                <Tooltip
+                    chart={TooltipWrapper}
+                    render={renderFakeChart}
+                    data={[]}
+                />
             );
 
             const expected = wrapper
@@ -56,7 +64,7 @@ describe('tooltip', () => {
         it('should call the create method or the chart with the container as the first argument when no vertical marker is present', () => {
             const wrapper = mount(
                 <Tooltip
-                    chart={tooltip}
+                    chart={TooltipWrapper}
                     render={renderFakeChartNoMarker}
                     data={[]}
                 />
@@ -73,7 +81,7 @@ describe('tooltip', () => {
 
             mount(
                 <Tooltip
-                    chart={tooltip}
+                    chart={TooltipWrapper}
                     locale={expected}
                     render={renderFakeChart}
                     data={[]}
@@ -90,7 +98,7 @@ describe('tooltip', () => {
 
             mount(
                 <Tooltip
-                    chart={tooltip}
+                    chart={TooltipWrapper}
                     title={expected}
                     render={renderFakeChart}
                     data={[]}
@@ -108,7 +116,7 @@ describe('tooltip', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(tooltip, 'update');
+                createSpy = jest.spyOn(TooltipWrapper, 'update');
             });
 
             afterEach(() => {
@@ -119,7 +127,7 @@ describe('tooltip', () => {
             it('should call the update method on the chart', () => {
                 const wrapper = mount(
                     <Tooltip
-                        chart={tooltip}
+                        chart={TooltipWrapper}
                         render={renderFakeChart}
                         data={[]}
                     />
@@ -139,7 +147,7 @@ describe('tooltip', () => {
             it('should pass in the new configuration to the update method', () => {
                 const wrapper = mount(
                     <Tooltip
-                        chart={tooltip}
+                        chart={TooltipWrapper}
                         render={renderFakeChart}
                         data={[]}
                     />
@@ -159,7 +167,7 @@ describe('tooltip', () => {
             it('should pass in the new state to the update method', () => {
                 const wrapper = mount(
                     <Tooltip
-                        chart={tooltip}
+                        chart={TooltipWrapper}
                         render={renderFakeChart}
                         data={[]}
                     />
@@ -182,7 +190,7 @@ describe('tooltip', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(tooltip, 'destroy');
+            createSpy = jest.spyOn(TooltipWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -192,7 +200,11 @@ describe('tooltip', () => {
 
         it('should call the destroy method or the chart', () => {
             const wrapper = mount(
-                <Tooltip chart={tooltip} render={renderFakeChart} data={[]} />
+                <Tooltip
+                    chart={TooltipWrapper}
+                    render={renderFakeChart}
+                    data={[]}
+                />
             );
 
             wrapper.unmount();

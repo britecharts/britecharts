@@ -3,8 +3,7 @@ import { mount } from 'enzyme';
 
 import Legend from './Legend';
 import legendData from './legendChart.fixtures';
-
-import legendChart from './legendChart';
+import { LegendWrapper } from '@britecharts/wrappers';
 
 describe('legend Chart', () => {
     describe('render', () => {
@@ -12,7 +11,7 @@ describe('legend Chart', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(legendChart, 'create');
+                createSpy = jest.spyOn(LegendWrapper, 'create');
             });
 
             afterEach(() => {
@@ -23,7 +22,7 @@ describe('legend Chart', () => {
             it('should call the create method or the chart', () => {
                 mount(
                     <Legend
-                        chart={legendChart}
+                        chart={LegendWrapper}
                         data={legendData.with6Points()}
                     />
                 );
@@ -37,7 +36,7 @@ describe('legend Chart', () => {
             it('should call the create method or the chart with the container as the first argument', () => {
                 const wrapper = mount(
                     <Legend
-                        chart={legendChart}
+                        chart={LegendWrapper}
                         data={legendData.with6Points()}
                     />
                 );
@@ -51,7 +50,7 @@ describe('legend Chart', () => {
             it('should call the create method or the chart with the configuration object as the second argument', () => {
                 const dataSet = legendData.with6Points();
 
-                mount(<Legend chart={legendChart} data={dataSet} />);
+                mount(<Legend chart={LegendWrapper} data={dataSet} />);
 
                 const expectedData = dataSet;
                 const actualData = createSpy.mock.calls[0][1];
@@ -65,7 +64,7 @@ describe('legend Chart', () => {
 
                 mount(
                     <Legend
-                        chart={legendChart}
+                        chart={LegendWrapper}
                         data={dataSet}
                         width={expected}
                     />
@@ -82,7 +81,7 @@ describe('legend Chart', () => {
 
                 mount(
                     <Legend
-                        chart={legendChart}
+                        chart={LegendWrapper}
                         data={dataSet}
                         height={expected}
                     />
@@ -100,7 +99,7 @@ describe('legend Chart', () => {
             let updateSpy;
 
             beforeEach(() => {
-                updateSpy = jest.spyOn(legendChart, 'update');
+                updateSpy = jest.spyOn(LegendWrapper, 'update');
             });
 
             afterEach(() => {
@@ -111,7 +110,7 @@ describe('legend Chart', () => {
             it('should call the update method or the chart', () => {
                 const wrapper = mount(
                     <Legend
-                        chart={legendChart}
+                        chart={LegendWrapper}
                         data={legendData.with6Points()}
                     />
                 );
@@ -130,7 +129,7 @@ describe('legend Chart', () => {
             it('should pass in the new data to the update method', () => {
                 const wrapper = mount(
                     <Legend
-                        chart={legendChart}
+                        chart={LegendWrapper}
                         data={legendData.with6Points()}
                     />
                 );
@@ -149,7 +148,7 @@ describe('legend Chart', () => {
             it('should pass in the new configuration to the update method', () => {
                 const wrapper = mount(
                     <Legend
-                        chart={legendChart}
+                        chart={LegendWrapper}
                         data={legendData.with6Points()}
                     />
                 );
@@ -171,7 +170,7 @@ describe('legend Chart', () => {
         let destroySpy;
 
         beforeEach(() => {
-            destroySpy = jest.spyOn(legendChart, 'destroy');
+            destroySpy = jest.spyOn(LegendWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -181,7 +180,7 @@ describe('legend Chart', () => {
 
         it('should call the destroy method or the chart', () => {
             const wrapper = mount(
-                <Legend chart={legendChart} data={legendData.with6Points()} />
+                <Legend chart={LegendWrapper} data={legendData.with6Points()} />
             );
 
             wrapper.unmount();

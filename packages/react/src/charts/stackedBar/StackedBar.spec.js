@@ -3,8 +3,7 @@ import { mount } from 'enzyme';
 
 import StackedBar from './StackedBar';
 import stackedBarData from './stackedBarChart.fixtures';
-
-import stackedBar from './stackedBarChart';
+import { StackedBarWrapper } from '@britecharts/wrappers';
 
 describe('stacked Bar Chart', () => {
     describe('render', () => {
@@ -12,7 +11,7 @@ describe('stacked Bar Chart', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(stackedBar, 'create');
+                createSpy = jest.spyOn(StackedBarWrapper, 'create');
             });
 
             afterEach(() => {
@@ -23,7 +22,7 @@ describe('stacked Bar Chart', () => {
             it('should call the create method or the chart', () => {
                 mount(
                     <StackedBar
-                        chart={stackedBar}
+                        chart={StackedBarWrapper}
                         data={stackedBarData.with3Sources()}
                     />
                 );
@@ -37,7 +36,7 @@ describe('stacked Bar Chart', () => {
             it('should call the create method or the chart with the container as the first argument', () => {
                 const wrapper = mount(
                     <StackedBar
-                        chart={stackedBar}
+                        chart={StackedBarWrapper}
                         data={stackedBarData.with3Sources()}
                     />
                 );
@@ -53,7 +52,7 @@ describe('stacked Bar Chart', () => {
             it('should call the create method or the chart with the configuration object as the second argument', () => {
                 const dataSet = stackedBarData.with3Sources();
 
-                mount(<StackedBar chart={stackedBar} data={dataSet} />);
+                mount(<StackedBar chart={StackedBarWrapper} data={dataSet} />);
 
                 const expectedData = dataSet;
                 const actualData = createSpy.mock.calls[0][1];
@@ -67,7 +66,7 @@ describe('stacked Bar Chart', () => {
 
                 mount(
                     <StackedBar
-                        chart={stackedBar}
+                        chart={StackedBarWrapper}
                         data={dataSet}
                         width={expected}
                     />
@@ -84,7 +83,7 @@ describe('stacked Bar Chart', () => {
 
                 mount(
                     <StackedBar
-                        chart={stackedBar}
+                        chart={StackedBarWrapper}
                         data={dataSet}
                         height={expected}
                     />
@@ -102,7 +101,7 @@ describe('stacked Bar Chart', () => {
             let updateSpy;
 
             beforeEach(() => {
-                updateSpy = jest.spyOn(stackedBar, 'update');
+                updateSpy = jest.spyOn(StackedBarWrapper, 'update');
             });
 
             afterEach(() => {
@@ -113,7 +112,7 @@ describe('stacked Bar Chart', () => {
             it('should call the update method or the chart', () => {
                 const wrapper = mount(
                     <StackedBar
-                        chart={stackedBar}
+                        chart={StackedBarWrapper}
                         data={stackedBarData.with3Sources()}
                     />
                 );
@@ -132,7 +131,7 @@ describe('stacked Bar Chart', () => {
             it('should pass in the new data to the update method', () => {
                 const wrapper = mount(
                     <StackedBar
-                        chart={stackedBar}
+                        chart={StackedBarWrapper}
                         data={stackedBarData.with3Sources()}
                     />
                 );
@@ -151,7 +150,7 @@ describe('stacked Bar Chart', () => {
             it('should pass in the new configuration to the update method', () => {
                 const wrapper = mount(
                     <StackedBar
-                        chart={stackedBar}
+                        chart={StackedBarWrapper}
                         data={stackedBarData.with3Sources()}
                     />
                 );
@@ -173,7 +172,7 @@ describe('stacked Bar Chart', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(stackedBar, 'destroy');
+            createSpy = jest.spyOn(StackedBarWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -184,7 +183,7 @@ describe('stacked Bar Chart', () => {
         it('should call the destroy method or the chart', () => {
             const wrapper = mount(
                 <StackedBar
-                    chart={stackedBar}
+                    chart={StackedBarWrapper}
                     data={stackedBarData.with3Sources()}
                 />
             );

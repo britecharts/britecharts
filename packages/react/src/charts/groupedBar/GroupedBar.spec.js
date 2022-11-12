@@ -3,8 +3,7 @@ import { mount } from 'enzyme';
 
 import GroupedBar from './GroupedBar';
 import groupedBarData from './groupedBarChart.fixtures';
-
-import groupedBar from './groupedBarChart';
+import { GroupedBarWrapper } from '@britecharts/wrappers';
 
 describe('grouped Bar Chart', () => {
     describe('render', () => {
@@ -12,7 +11,7 @@ describe('grouped Bar Chart', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(groupedBar, 'create');
+                createSpy = jest.spyOn(GroupedBarWrapper, 'create');
             });
 
             afterEach(() => {
@@ -23,7 +22,7 @@ describe('grouped Bar Chart', () => {
             it('should call the create method or the chart', () => {
                 mount(
                     <GroupedBar
-                        chart={groupedBar}
+                        chart={GroupedBarWrapper}
                         data={groupedBarData.with3Groups()}
                     />
                 );
@@ -37,7 +36,7 @@ describe('grouped Bar Chart', () => {
             it('should call the create method or the chart with the container as the first argument', () => {
                 const wrapper = mount(
                     <GroupedBar
-                        chart={groupedBar}
+                        chart={GroupedBarWrapper}
                         data={groupedBarData.with3Groups()}
                     />
                 );
@@ -53,7 +52,7 @@ describe('grouped Bar Chart', () => {
             it('should call the create method or the chart with the configuration object as the second argument', () => {
                 const dataSet = groupedBarData.with3Groups();
 
-                mount(<GroupedBar chart={groupedBar} data={dataSet} />);
+                mount(<GroupedBar chart={GroupedBarWrapper} data={dataSet} />);
 
                 const expectedData = dataSet;
                 const actualData = createSpy.mock.calls[0][1];
@@ -67,7 +66,7 @@ describe('grouped Bar Chart', () => {
 
                 mount(
                     <GroupedBar
-                        chart={groupedBar}
+                        chart={GroupedBarWrapper}
                         data={dataSet}
                         width={expected}
                     />
@@ -84,7 +83,7 @@ describe('grouped Bar Chart', () => {
 
                 mount(
                     <GroupedBar
-                        chart={groupedBar}
+                        chart={GroupedBarWrapper}
                         data={dataSet}
                         height={expected}
                     />
@@ -102,7 +101,7 @@ describe('grouped Bar Chart', () => {
             let updateSpy;
 
             beforeEach(() => {
-                updateSpy = jest.spyOn(groupedBar, 'update');
+                updateSpy = jest.spyOn(GroupedBarWrapper, 'update');
             });
 
             afterEach(() => {
@@ -113,7 +112,7 @@ describe('grouped Bar Chart', () => {
             it('should call the update method or the chart', () => {
                 const wrapper = mount(
                     <GroupedBar
-                        chart={groupedBar}
+                        chart={GroupedBarWrapper}
                         data={groupedBarData.with3Groups()}
                     />
                 );
@@ -132,7 +131,7 @@ describe('grouped Bar Chart', () => {
             it('should pass in the new data to the update method', () => {
                 const wrapper = mount(
                     <GroupedBar
-                        chart={groupedBar}
+                        chart={GroupedBarWrapper}
                         data={groupedBarData.with3Groups()}
                     />
                 );
@@ -151,7 +150,7 @@ describe('grouped Bar Chart', () => {
             it('should pass in the new configuration to the update method', () => {
                 const wrapper = mount(
                     <GroupedBar
-                        chart={groupedBar}
+                        chart={GroupedBarWrapper}
                         data={groupedBarData.with3Groups()}
                     />
                 );
@@ -173,7 +172,7 @@ describe('grouped Bar Chart', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(groupedBar, 'destroy');
+            createSpy = jest.spyOn(GroupedBarWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -184,7 +183,7 @@ describe('grouped Bar Chart', () => {
         it('should call the destroy method or the chart', () => {
             const wrapper = mount(
                 <GroupedBar
-                    chart={groupedBar}
+                    chart={GroupedBarWrapper}
                     data={groupedBarData.with3Groups()}
                 />
             );

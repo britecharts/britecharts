@@ -3,8 +3,7 @@ import { mount } from 'enzyme';
 
 import Step from './Step';
 import stepData from './stepChart.fixtures';
-
-import step from './stepChart';
+import { StepWrapper } from '@britecharts/wrappers';
 
 describe('step Chart', () => {
     describe('render', () => {
@@ -12,7 +11,7 @@ describe('step Chart', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(step, 'create');
+                createSpy = jest.spyOn(StepWrapper, 'create');
             });
 
             afterEach(() => {
@@ -23,7 +22,7 @@ describe('step Chart', () => {
             it('should call the create method or the chart', () => {
                 const dataSet = stepData.firstDataMethod();
 
-                mount(<Step chart={step} data={dataSet} />);
+                mount(<Step chart={StepWrapper} data={dataSet} />);
 
                 const expected = 1;
                 const actual = createSpy.mock.calls.length;
@@ -34,7 +33,9 @@ describe('step Chart', () => {
             it('should call the create method or the chart with the container as the first argument', () => {
                 const dataSet = stepData.firstDataMethod();
 
-                const wrapper = mount(<Step chart={step} data={dataSet} />);
+                const wrapper = mount(
+                    <Step chart={StepWrapper} data={dataSet} />
+                );
 
                 const expected = wrapper.find('.step-container').instance();
                 const actual = createSpy.mock.calls[0][0];
@@ -45,7 +46,7 @@ describe('step Chart', () => {
             it('should call the create method or the chart with the configuration object as the second argument', () => {
                 const dataSet = stepData.firstDataMethod();
 
-                mount(<Step chart={step} data={dataSet} />);
+                mount(<Step chart={StepWrapper} data={dataSet} />);
 
                 const expectedData = dataSet;
                 const actualData = createSpy.mock.calls[0][1];
@@ -57,7 +58,9 @@ describe('step Chart', () => {
                 const dataSet = stepData.firstDataMethod();
                 const expected = 500;
 
-                mount(<Step chart={step} data={dataSet} width={expected} />);
+                mount(
+                    <Step chart={StepWrapper} data={dataSet} width={expected} />
+                );
 
                 const actual = createSpy.mock.calls[0][2].width;
 
@@ -68,7 +71,13 @@ describe('step Chart', () => {
                 const dataSet = stepData.firstDataMethod();
                 const expected = 500;
 
-                mount(<Step chart={step} data={dataSet} height={expected} />);
+                mount(
+                    <Step
+                        chart={StepWrapper}
+                        data={dataSet}
+                        height={expected}
+                    />
+                );
 
                 const actual = createSpy.mock.calls[0][2].height;
 
@@ -82,7 +91,7 @@ describe('step Chart', () => {
             let updateSpy;
 
             beforeEach(() => {
-                updateSpy = jest.spyOn(step, 'update');
+                updateSpy = jest.spyOn(StepWrapper, 'update');
             });
 
             afterEach(() => {
@@ -92,7 +101,9 @@ describe('step Chart', () => {
 
             it('should call the update method or the chart', () => {
                 const dataSet = stepData.firstDataMethod();
-                const wrapper = mount(<Step chart={step} data={dataSet} />);
+                const wrapper = mount(
+                    <Step chart={StepWrapper} data={dataSet} />
+                );
 
                 // Changing properties should trigger a componentDidUpdate
                 wrapper.setProps({
@@ -107,7 +118,9 @@ describe('step Chart', () => {
 
             it('should pass in the new data to the update method', () => {
                 const dataSet = stepData.firstDataMethod();
-                const wrapper = mount(<Step chart={step} data={dataSet} />);
+                const wrapper = mount(
+                    <Step chart={StepWrapper} data={dataSet} />
+                );
 
                 // Changing properties should trigger a componentDidUpdate
                 wrapper.setProps({
@@ -122,7 +135,9 @@ describe('step Chart', () => {
 
             it('should pass in the new configuration to the update method', () => {
                 const dataSet = stepData.firstDataMethod();
-                const wrapper = mount(<Step chart={step} data={dataSet} />);
+                const wrapper = mount(
+                    <Step chart={StepWrapper} data={dataSet} />
+                );
                 const expected = 20;
 
                 // Changing properties should trigger a componentDidUpdate
@@ -141,7 +156,7 @@ describe('step Chart', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(step, 'destroy');
+            createSpy = jest.spyOn(StepWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -151,7 +166,7 @@ describe('step Chart', () => {
 
         it('should call the destroy method or the chart', () => {
             const dataSet = stepData.firstDataMethod();
-            const wrapper = mount(<Step chart={step} data={dataSet} />);
+            const wrapper = mount(<Step chart={StepWrapper} data={dataSet} />);
 
             wrapper.unmount();
 

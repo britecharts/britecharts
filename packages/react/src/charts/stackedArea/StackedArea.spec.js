@@ -3,8 +3,7 @@ import { mount } from 'enzyme';
 
 import StackedArea from './StackedArea';
 import stackedAreaData from './stackedAreaChart.fixtures';
-
-import stackedArea from './stackedAreaChart';
+import { StackedAreaWrapper } from '@britecharts/wrappers';
 
 describe('stacked Area Chart', () => {
     describe('render', () => {
@@ -12,7 +11,7 @@ describe('stacked Area Chart', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(stackedArea, 'create');
+                createSpy = jest.spyOn(StackedAreaWrapper, 'create');
             });
 
             afterEach(() => {
@@ -23,7 +22,7 @@ describe('stacked Area Chart', () => {
             it('should call the create method or the chart', () => {
                 mount(
                     <StackedArea
-                        chart={stackedArea}
+                        chart={StackedAreaWrapper}
                         data={stackedAreaData.with3Sources()}
                     />
                 );
@@ -37,7 +36,7 @@ describe('stacked Area Chart', () => {
             it('should call the create method or the chart with the container as the first argument', () => {
                 const wrapper = mount(
                     <StackedArea
-                        chart={stackedArea}
+                        chart={StackedAreaWrapper}
                         data={stackedAreaData.with3Sources()}
                     />
                 );
@@ -53,7 +52,9 @@ describe('stacked Area Chart', () => {
             it('should call the create method or the chart with the configuration object as the second argument', () => {
                 const dataSet = stackedAreaData.with3Sources();
 
-                mount(<StackedArea chart={stackedArea} data={dataSet} />);
+                mount(
+                    <StackedArea chart={StackedAreaWrapper} data={dataSet} />
+                );
 
                 const expectedData = dataSet;
                 const actualData = createSpy.mock.calls[0][1];
@@ -67,7 +68,7 @@ describe('stacked Area Chart', () => {
 
                 mount(
                     <StackedArea
-                        chart={stackedArea}
+                        chart={StackedAreaWrapper}
                         data={dataSet}
                         width={expected}
                     />
@@ -84,7 +85,7 @@ describe('stacked Area Chart', () => {
 
                 mount(
                     <StackedArea
-                        chart={stackedArea}
+                        chart={StackedAreaWrapper}
                         data={dataSet}
                         height={expected}
                     />
@@ -102,7 +103,7 @@ describe('stacked Area Chart', () => {
             let updateSpy;
 
             beforeEach(() => {
-                updateSpy = jest.spyOn(stackedArea, 'update');
+                updateSpy = jest.spyOn(StackedAreaWrapper, 'update');
             });
 
             afterEach(() => {
@@ -113,7 +114,7 @@ describe('stacked Area Chart', () => {
             it('should call the update method or the chart', () => {
                 const wrapper = mount(
                     <StackedArea
-                        chart={stackedArea}
+                        chart={StackedAreaWrapper}
                         data={stackedAreaData.with3Sources()}
                     />
                 );
@@ -132,7 +133,7 @@ describe('stacked Area Chart', () => {
             it('should pass in the new data to the update method', () => {
                 const wrapper = mount(
                     <StackedArea
-                        chart={stackedArea}
+                        chart={StackedAreaWrapper}
                         data={stackedAreaData.with3Sources()}
                     />
                 );
@@ -151,7 +152,7 @@ describe('stacked Area Chart', () => {
             it('should pass in the new configuration to the update method', () => {
                 const wrapper = mount(
                     <StackedArea
-                        chart={stackedArea}
+                        chart={StackedAreaWrapper}
                         data={stackedAreaData.with3Sources()}
                     />
                 );
@@ -173,7 +174,7 @@ describe('stacked Area Chart', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(stackedArea, 'destroy');
+            createSpy = jest.spyOn(StackedAreaWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -184,7 +185,7 @@ describe('stacked Area Chart', () => {
         it('should call the destroy method or the chart', () => {
             const wrapper = mount(
                 <StackedArea
-                    chart={stackedArea}
+                    chart={StackedAreaWrapper}
                     data={stackedAreaData.with3Sources()}
                 />
             );

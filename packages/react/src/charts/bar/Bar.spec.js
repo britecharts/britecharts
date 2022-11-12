@@ -3,8 +3,7 @@ import { mount } from 'enzyme';
 
 import Bar from './Bar';
 import barData from './barChart.fixtures';
-
-import bar from './barChart';
+import { BarWrapper } from '@britecharts/wrappers';
 
 describe('bar Chart', () => {
     describe('render', () => {
@@ -12,7 +11,7 @@ describe('bar Chart', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(bar, 'create');
+                createSpy = jest.spyOn(BarWrapper, 'create');
             });
 
             afterEach(() => {
@@ -21,7 +20,7 @@ describe('bar Chart', () => {
             });
 
             it('should call the create method or the chart', () => {
-                mount(<Bar chart={bar} data={barData.withLetters()} />);
+                mount(<Bar chart={BarWrapper} data={barData.withLetters()} />);
 
                 const expected = 1;
                 const actual = createSpy.mock.calls.length;
@@ -31,7 +30,7 @@ describe('bar Chart', () => {
 
             it('should call the create method or the chart with the container as the first argument', () => {
                 const wrapper = mount(
-                    <Bar chart={bar} data={barData.withLetters()} />
+                    <Bar chart={BarWrapper} data={barData.withLetters()} />
                 );
 
                 const expected = wrapper.find('.bar-container').instance();
@@ -43,7 +42,7 @@ describe('bar Chart', () => {
             it('should call the create method or the chart with the configuration object as the second argument', () => {
                 const dataSet = barData.withLetters();
 
-                mount(<Bar chart={bar} data={dataSet} />);
+                mount(<Bar chart={BarWrapper} data={dataSet} />);
 
                 const expectedData = dataSet;
                 const actualData = createSpy.mock.calls[0][1];
@@ -55,7 +54,9 @@ describe('bar Chart', () => {
                 const dataSet = barData.withLetters();
                 const expected = 500;
 
-                mount(<Bar chart={bar} data={dataSet} width={expected} />);
+                mount(
+                    <Bar chart={BarWrapper} data={dataSet} width={expected} />
+                );
 
                 const actual = createSpy.mock.calls[0][2].width;
 
@@ -66,7 +67,9 @@ describe('bar Chart', () => {
                 const dataSet = barData.withLetters();
                 const expected = 500;
 
-                mount(<Bar chart={bar} data={dataSet} height={expected} />);
+                mount(
+                    <Bar chart={BarWrapper} data={dataSet} height={expected} />
+                );
 
                 const actual = createSpy.mock.calls[0][2].height;
 
@@ -80,7 +83,7 @@ describe('bar Chart', () => {
             let updateSpy;
 
             beforeEach(() => {
-                updateSpy = jest.spyOn(bar, 'update');
+                updateSpy = jest.spyOn(BarWrapper, 'update');
             });
 
             afterEach(() => {
@@ -90,7 +93,7 @@ describe('bar Chart', () => {
 
             it('should call the update method or the chart', () => {
                 const wrapper = mount(
-                    <Bar chart={bar} data={barData.withLetters()} />
+                    <Bar chart={BarWrapper} data={barData.withLetters()} />
                 );
 
                 // Changing properties should trigger a componentDidUpdate
@@ -106,7 +109,7 @@ describe('bar Chart', () => {
 
             it('should pass in the new data to the update method', () => {
                 const wrapper = mount(
-                    <Bar chart={bar} data={barData.withLetters()} />
+                    <Bar chart={BarWrapper} data={barData.withLetters()} />
                 );
 
                 // Changing properties should trigger a componentDidUpdate
@@ -122,7 +125,7 @@ describe('bar Chart', () => {
 
             it('should pass in the new configuration to the update method', () => {
                 const wrapper = mount(
-                    <Bar chart={bar} data={barData.withLetters()} />
+                    <Bar chart={BarWrapper} data={barData.withLetters()} />
                 );
                 const expected = 20;
 
@@ -142,7 +145,7 @@ describe('bar Chart', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(bar, 'destroy');
+            createSpy = jest.spyOn(BarWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -152,7 +155,7 @@ describe('bar Chart', () => {
 
         it('should call the destroy method or the chart', () => {
             const wrapper = mount(
-                <Bar chart={bar} data={barData.withLetters()} />
+                <Bar chart={BarWrapper} data={barData.withLetters()} />
             );
 
             wrapper.unmount();
