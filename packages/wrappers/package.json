@@ -63,6 +63,7 @@
     "test:watch": "jest --watch --colors",
     "lint:js": "eslint src/charts/ src/helpers webpack.*.js --cache",
     "lint": "yarn run lint:js",
+    "prebuild": "rimraf dist",
     "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig"

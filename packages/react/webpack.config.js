@@ -3,18 +3,17 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
 
 const PATHS = {
-    bundle: path.join(__dirname, 'src/index.js'),
+    bundleIndex: path.join(__dirname, 'src/index.js'),
     charts: path.join(__dirname, 'src/charts'),
-    lib: path.join(__dirname, 'lib'),
-    build: path.join(__dirname, 'dist'),
-    umd: path.join(__dirname, 'lib/umd'),
-    cjs: path.join(__dirname, 'lib/cjs'),
+    dist: path.join(__dirname, 'dist'),
+    build: path.join(__dirname, 'dist/umd/bundle'),
+    umd: path.join(__dirname, 'dist/umd/charts'),
+    cjs: path.join(__dirname, 'dist/cjs/charts'),
 };
 const CHARTS = {
     Bar: `${PATHS.charts}/bar/Bar.js`,
@@ -35,7 +34,6 @@ const commonSplittedConfig = merge([
     {
         entry: CHARTS,
         output: {
-            path: PATHS.lib,
             filename: '[name].js',
         },
         plugins: [
@@ -65,13 +63,13 @@ const developmentConfig = merge([
         port: process.env.PORT,
     }),
     {
+        mode: 'development',
         plugins: [
             // If you require a missing module and then `npm install` it, you still have
             // to restart the development server for Webpack to discover it. This plugin
             // makes the discovery automatic so you don't have to restart.
             // See https://github.com/facebookincubator/create-react-app/issues/186
             new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
-            new DashboardPlugin({ port: process.env.PORT }),
         ],
         output: {
             devtoolModuleFilenameTemplate:
@@ -82,13 +80,15 @@ const developmentConfig = merge([
     parts.generateSourceMaps({ type: 'cheap-module-eval-source-map' }),
 ]);
 
-const libraryUMDConfig = merge([
+const prodChartsConfig = merge([
     commonSplittedConfig,
     {
+        mode: 'production',
+        devtool: 'source-map',
         output: {
             path: PATHS.umd,
             filename: '[name].js',
-            library: ['britecharts-react', '[name]'],
+            library: ['react', '[name]'],
             libraryTarget: 'umd',
             globalObject: 'this',
         },
@@ -98,13 +98,15 @@ const libraryUMDConfig = merge([
     parts.generateSourceMaps({ type: 'source-map' }),
 ]);
 
-const libraryCJSConfig = merge([
+const prodCJSChartsConfig = merge([
     commonSplittedConfig,
     {
+        mode: 'production',
+        devtool: 'source-map',
         output: {
             path: PATHS.cjs,
             filename: '[name].js',
-            library: ['britecharts-react', '[name]'],
+            library: ['react', '[name]'],
             libraryTarget: 'commonjs2',
         },
         externals: parts.externals(),
@@ -113,15 +115,17 @@ const libraryCJSConfig = merge([
     parts.generateSourceMaps({ type: 'source-map' }),
 ]);
 
-const bundleConfig = merge([
+const prodBundleConfig = merge([
     {
+        mode: 'production',
+        devtool: 'source-map',
         entry: {
-            'britecharts-react': PATHS.bundle,
+            react: PATHS.bundleIndex,
         },
         output: {
             path: PATHS.build,
-            filename: 'britecharts-react.min.js',
-            library: ['britecharts-react'],
+            filename: 'react.bundled.min.js',
+            library: ['react'],
             libraryTarget: 'umd',
             globalObject: 'this',
         },
@@ -130,17 +134,28 @@ const bundleConfig = merge([
     parts.generateSourceMaps({ type: 'source-map' }),
     // parts.bundleTreeChart(),
     parts.minifyJavaScript(),
-    parts.copy({
-        from: 'node_modules/britecharts/dist/css/britecharts.min.css',
-        to: 'britecharts-react.min.css',
-    }),
+    // TODO: Figure out this
+    // parts.copy({
+    //     from: 'node_modules/@britecharts/core/dist/styles/bundle/britecharts.min.css',
+    //     to: 'react.min.css',
+    // }),
 ]);
 
 module.exports = (env) => {
     console.log('%%%%%%%% env', env);
 
+    if (env === 'prodBundleConfig') {
+        return prodBundleConfig;
+    }
+    if (env === 'prodChartsConfig') {
+        return prodChartsConfig;
+    }
+    if (env === 'prodCJSChartsConfig') {
+        return prodCJSChartsConfig;
+    }
+
     if (env === 'production') {
-        return [libraryCJSConfig, libraryUMDConfig, bundleConfig];
+        return [prodCJSChartsConfig, prodChartsConfig, prodBundleConfig];
     }
 
     return merge(commonSplittedConfig, developmentConfig);

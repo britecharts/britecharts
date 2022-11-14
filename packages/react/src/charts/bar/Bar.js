@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { BarWrapper } from '@britecharts/wrappers';
 
+// console.log('BarWrapper', BarWrapper);
+
 class Bar extends Component {
     static propTypes = {
         /**

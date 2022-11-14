@@ -143,10 +143,3 @@ exports.aliasD3ToVendorPath = () => ({
         },
     },
 });
-
-exports.devServer = (port) => ({
-    devServer: {
-        host: '0.0.0.0',
-        port,
-    },
-});

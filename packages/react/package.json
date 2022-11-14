@@ -2,9 +2,13 @@
   "name": "@britecharts/react",
   "packageManager": "yarn@3.2.0",
   "version": "0.0.0",
-  "main": "src/index.js",
+  "main": "dist/umd/bundle/react.min.js",
   "module": "src/index.js",
   "types": "src/typings/index.d.ts",
+  "dependencies": {
+    "@britecharts/core": "workspace:^",
+    "@britecharts/wrappers": "workspace:^"
+  },
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@mdx-js/react": "^1.6.22",
@@ -16,12 +20,18 @@
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^4.6.0",
     "enzyme": "3.11.0",
-    "enzyme-adapter-react-16": "1.15.7"
-  },
-  "dependencies": {
-    "@britecharts/core": "workspace:^",
-    "@britecharts/wrappers": "workspace:^"
+    "enzyme-adapter-react-16": "1.15.7",
+    "eslint-webpack-plugin": "2.7.0",
+    "react-dev-utils": "^6.1.1",
+    "uglifyjs-webpack-plugin": "^2.0.1",
+    "webpack": "4.46.0",
+    "webpack-bundle-analyzer": "3.3.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "3.7.2",
+    "webpack-fix-style-only-entries": "^0.6.1",
+    "webpack-merge": "4.1.4"
   },
   "browserslist": "> 0.25%, not dead",
   "babel": {
@@ -51,6 +61,12 @@
     "test:watch": "jest --watch --colors",
     "storybook:build": "build-storybook -c .storybook -o build",
     "demo": "yarn run storybook",
-    "storybook": "start-storybook -p 2222"
+    "storybook": "start-storybook -p 2222",
+    "prebuild": "rimraf dist",
+    "build": "webpack --env=production",
+    "build:bundle": "webpack --env=prodBundleConfig",
+    "build:charts": "webpack --env=prodChartsConfig",
+    "build:charts:umd": "webpack --env=prodChartsConfig",
+    "build:charts:cjs": "webpack --env=prodCJSChartsConfig"
   }
 }

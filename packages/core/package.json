@@ -106,6 +106,7 @@
     "lint": "yarn run lint:js && yarn run lint:styles",
     "lint:js": "eslint src/charts/ webpack.*.js --cache",
     "lint:styles": "stylelint './src/styles/**/*.scss'",
+    "prebuild": "rimraf dist",
     "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:styles": "webpack --env=prodStyles",

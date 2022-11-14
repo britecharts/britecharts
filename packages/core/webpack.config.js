@@ -16,28 +16,6 @@ const testConfig = merge([
     parts.istanbulLoader(),
 ]);
 
-const sandboxConfig = merge([
-    {
-        mode: 'development',
-        devtool: 'cheap-eval-source-map',
-        entry: {
-            sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
-        },
-        resolve: {
-            alias: { charts: path.resolve(__dirname, './src/charts') },
-        },
-        target: 'web',
-        output: {
-            path: path.resolve(__dirname, './sandbox/build'),
-            publicPath: '/assets/',
-            filename: '[name].js',
-        },
-    },
-    parts.babelLoader(),
-    parts.sassLoader(),
-    parts.devServer(8002),
-]);
-
 const CDNBundleConfig = merge([
     {
         mode: 'production',
@@ -177,11 +155,6 @@ module.exports = (env) => {
     if (env === 'test') {
         return testConfig;
     }
-
-    if (env === 'sandbox') {
-        return sandboxConfig;
-    }
-
     if (env === 'prodStyles') {
         return [prodStylesConfig, prodStylesConfigMin];
     }

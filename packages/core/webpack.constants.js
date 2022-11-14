@@ -1,24 +1,32 @@
 const path = require('path');
 
+const PATHS = {
+    vendor: path.resolve('./node_modules'),
+    bundleIndex: path.resolve('./src/index.js'),
+    charts: path.resolve('./src/charts'),
+    styles: path.resolve('./src/styles/britecharts.scss'),
+};
+exports.PATHS = PATHS;
+
 exports.CHARTS = {
-    bar: './src/charts/bar/bar.js',
-    brush: './src/charts/brush/brush.js',
-    bullet: './src/charts/bullet/bullet.js',
-    donut: './src/charts/donut/donut.js',
-    groupedBar: './src/charts/grouped-bar/grouped-bar.js',
-    heatmap: './src/charts/heatmap/heatmap.js',
-    legend: './src/charts/legend/legend.js',
-    line: './src/charts/line/line.js',
-    miniTooltip: './src/charts/mini-tooltip/mini-tooltip.js',
-    scatterPlot: './src/charts/scatter-plot/scatter-plot.js',
-    sparkline: './src/charts/sparkline/sparkline.js',
-    stackedArea: './src/charts/stacked-area/stacked-area.js',
-    stackedBar: './src/charts/stacked-bar/stacked-bar.js',
-    step: './src/charts/step/step.js',
-    tooltip: './src/charts/tooltip/tooltip.js',
-    loading: ['./src/charts/helpers/load.js'],
+    bar: `${PATHS.charts}/bar/bar.js`,
+    brush: `${PATHS.charts}/brush/brush.js`,
+    bullet: `${PATHS.charts}/bullet/bullet.js`,
+    donut: `${PATHS.charts}/donut/donut.js`,
+    groupedBar: `${PATHS.charts}/grouped-bar/grouped-bar.js`,
+    heatmap: `${PATHS.charts}/heatmap/heatmap.js`,
+    legend: `${PATHS.charts}/legend/legend.js`,
+    line: `${PATHS.charts}/line/line.js`,
+    miniTooltip: `${PATHS.charts}/mini-tooltip/mini-tooltip.js`,
+    scatterPlot: `${PATHS.charts}/scatter-plot/scatter-plot.js`,
+    sparkline: `${PATHS.charts}/sparkline/sparkline.js`,
+    stackedArea: `${PATHS.charts}/stacked-area/stacked-area.js`,
+    stackedBar: `${PATHS.charts}/stacked-bar/stacked-bar.js`,
+    step: `${PATHS.charts}/step/step.js`,
+    tooltip: `${PATHS.charts}/tooltip/tooltip.js`,
+    loading: [`${PATHS.charts}/helpers/load.js`],
     // hack to make webpack use colors as an entry point while its also a dependency of the charts above
-    colors: ['./src/charts/helpers/color.js'],
+    colors: [`${PATHS.charts}/helpers/color.js`],
 };
 
 exports.CHART_STYLES = {
@@ -33,11 +41,4 @@ exports.CHART_STYLES = {
     stackedBar: './src/styles/charts/stacked-bar.scss',
     step: './src/styles/charts/step.scss',
     common: './src/styles/common.scss',
-};
-
-exports.PATHS = {
-    vendor: path.resolve('./node_modules'),
-    bundleIndex: path.resolve('./src/index.js'),
-    charts: path.resolve('./src/charts'),
-    styles: path.resolve('./src/styles/britecharts.scss'),
 };
