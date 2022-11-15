@@ -56,7 +56,7 @@
     }
   },
   "scripts": {
-    "start": "yarn run demo",
+    "start": "webpack-dev-server --env=test --open --hot",
     "test": "jest --colors",
     "test:watch": "jest --watch --colors",
     "storybook:build": "build-storybook -c .storybook -o build",

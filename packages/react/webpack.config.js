@@ -57,7 +57,7 @@ const commonSplittedConfig = merge([
     }),
 ]);
 
-const developmentConfig = merge([
+const testConfig = merge([
     parts.devServer({
         host: process.env.HOST,
         port: process.env.PORT,
@@ -144,6 +144,9 @@ const prodBundleConfig = merge([
 module.exports = (env) => {
     console.log('%%%%%%%% env', env);
 
+    if (env === 'test') {
+        return merge(commonSplittedConfig, testConfig);
+    }
     if (env === 'prodBundleConfig') {
         return prodBundleConfig;
     }
@@ -158,5 +161,5 @@ module.exports = (env) => {
         return [prodCJSChartsConfig, prodChartsConfig, prodBundleConfig];
     }
 
-    return merge(commonSplittedConfig, developmentConfig);
+    return merge(commonSplittedConfig, testConfig);
 };
