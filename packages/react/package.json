@@ -45,7 +45,15 @@
       ]
     ],
     "plugins": [
-      "@babel/plugin-proposal-class-properties"
+      "@babel/plugin-proposal-class-properties",
+      [
+        "babel-plugin-module-resolver",
+        {
+          "alias": {
+            "@britecharts/wrappers": "../wrappers/dist/umd/bundle/wrappers.bundled.min.js"
+          }
+        }
+      ]
     ],
     "env": {
       "test": {

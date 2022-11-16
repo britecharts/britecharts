@@ -320,6 +320,7 @@
     "babel-jest": "^29.3.1",
     "babel-loader": "^8.0.0",
     "babel-plugin-async-import": "^2.0.2",
+    "babel-plugin-module-resolver": "^4.1.0",
     "concurrently": "^4.1.0",
     "eslint": "7.32.0",
     "eslint-config-next": "12.1.0",
