@@ -36,7 +36,6 @@
     "eslint-loader": "^2.1.2",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.2.0",
-    "grunt-karma": "2.0.0",
     "istanbul-instrumenter-loader": "3.0.1",
     "node-gyp": "8.4.1",
     "node-sass": "6.0.1",

@@ -3449,7 +3449,6 @@ __metadata:
     eslint-loader: ^2.1.2
     extract-loader: ^5.1.0
     file-loader: ^6.2.0
-    grunt-karma: 2.0.0
     istanbul-instrumenter-loader: 3.0.1
     node-gyp: 8.4.1
     node-sass: 6.0.1
@@ -10377,6 +10376,7 @@ __metadata:
     stylelint-config-standard: ^29.0.0
     stylelint-config-standard-scss: 4.0.0
     ts-jest: ^29.0.3
+    typescript: ^4.9.3
   languageName: unknown
   linkType: soft
 
@@ -16559,18 +16559,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"grunt-karma@npm:2.0.0":
-  version: 2.0.0
-  resolution: "grunt-karma@npm:2.0.0"
-  dependencies:
-    lodash: ^3.10.1
-  peerDependencies:
-    grunt: ">=0.4.x"
-    karma: ^0.13.0 || >= 0.14.0-rc.0
-  checksum: cf8b532e0aca393f303dcb6a8369bd3a84b84e2a1b9de00224fdcde3cb5bc007617c3f78534e1c69ad9f66bb0d18346a2f77303812681bd2e2c4302c4678b0e7
-  languageName: node
-  linkType: hard
-
 "gzip-size@npm:5.0.0":
   version: 5.0.0
   resolution: "gzip-size@npm:5.0.0"
@@ -20186,13 +20174,6 @@ __metadata:
   version: 4.17.15
   resolution: "lodash@npm:4.17.15"
   checksum: bb689bc88c0645b7002a045cdbe32292ae51d5d2a6f6a5272cb5a5ace9b06700bb3d30c6be6ecfae9a70f9c943f60e90765033fc7ff706cf9219374eeda314ad
-  languageName: node
-  linkType: hard
-
-"lodash@npm:^3.10.1":
-  version: 3.10.1
-  resolution: "lodash@npm:3.10.1"
-  checksum: 53065d3712a2fd90b55690c5af19f9625a5bbb2b7876ff76d782ee1dc22618fd4dff191d44a8e165a17b5b81a851c3e884d3b5b25e314422fbe24bb299542685
   languageName: node
   linkType: hard
 
@@ -28636,6 +28617,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^4.9.3":
+  version: 4.9.3
+  resolution: "typescript@npm:4.9.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 17b8f816050b412403e38d48eef0e893deb6be522d6dc7caf105e54a72e34daf6835c447735fd2b28b66784e72bfbf87f627abb4818a8e43d1fa8106396128dc
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@^3.2.1#~builtin<compat/typescript>, typescript@patch:typescript@^3.9.2#~builtin<compat/typescript>, typescript@patch:typescript@^3.9.3#~builtin<compat/typescript>":
   version: 3.9.10
   resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=bda367"
@@ -28653,6 +28644,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 40b493a71747fb89fa70df104e2c4a5e284b43750af5bea024090a5261cefa387f7a9372411b13030f7bf5555cee4275443d08805642ae5c74ef76740854a4c7
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>":
+  version: 4.9.3
+  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=bda367"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ef65c22622d864497d0a0c5db693523329b3284c15fe632e93ad9aa059e8dc38ef3bd767d6f26b1e5ecf9446f49bd0f6c4e5714a2eeaf352805dc002479843d1
   languageName: node
   linkType: hard
 
