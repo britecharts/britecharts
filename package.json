@@ -54,7 +54,9 @@
   },
   "homepage": "http://britecharts.github.io/britecharts/",
   "workspaces": [
-    "packages/**/*"
+    "packages/core",
+    "packages/wrappers",
+    "packages/*"
   ],
   "commitlint": {
     "extends": [
