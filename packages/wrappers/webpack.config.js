@@ -38,6 +38,27 @@ const prodBundleConfig = merge([
     parts.externals(),
 ]);
 
+const prodCJSBundleConfig = merge([
+    {
+        mode: 'production',
+        devtool: 'source-map',
+        entry: {
+            wrappers: constants.PATHS.bundleIndex,
+        },
+        output: {
+            path: path.resolve(__dirname, './dist/cjs/bundle'),
+            filename: 'wrappers.bundled.min.js',
+            library: ['warppers'],
+            libraryTarget: 'commonjs2',
+        },
+    },
+    parts.babelLoader(),
+    parts.aliasD3ToVendorPath(),
+    // parts.bundleTreeChart(8899),
+    parts.noParseD3Vendor(),
+    parts.externals(),
+]);
+
 const prodChartsConfig = merge([
     {
         mode: 'production',
@@ -68,6 +89,9 @@ module.exports = (env) => {
 
     if (env === 'prodBundleConfig') {
         return prodBundleConfig;
+    }
+    if (env === 'prodCJSBundleConfig') {
+        return prodCJSBundleConfig;
     }
     if (env === 'prodChartsConfig') {
         return prodChartsConfig;

@@ -3515,6 +3515,7 @@ __metadata:
     enzyme: 3.11.0
     enzyme-adapter-react-16: 1.15.7
     eslint-webpack-plugin: 2.7.0
+    react: 16.14.0
     react-dev-utils: ^6.1.1
     uglifyjs-webpack-plugin: ^2.0.1
     webpack: 4.46.0
@@ -3523,6 +3524,10 @@ __metadata:
     webpack-dev-server: 3.7.2
     webpack-fix-style-only-entries: ^0.6.1
     webpack-merge: 4.1.4
+  peerDependencies:
+    prop-types: ">=15"
+    react: ">=15"
+    react-dom: ">=15"
   languageName: unknown
   linkType: soft
 

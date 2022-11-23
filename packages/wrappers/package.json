@@ -66,6 +66,7 @@
     "prebuild": "rimraf dist",
     "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
+    "build:bundle:cjs": "webpack --env=prodCJSBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig"
   }
 }
