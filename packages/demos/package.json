@@ -6,9 +6,11 @@
     "@storybook/html": "^6.5.9"
   },
   "scripts": {
-    "build": "build-storybook -c .storybook -o build",
-    "storybook": "start-storybook -p 9999",
+    "build": "build-storybook -c .storybook -o dist",
+    "clean": "rimraf dist",
+    "demo": "yarn storybook",
+    "prebuild": "yarn run clean",
     "start": "yarn storybook",
-    "demo": "yarn storybook"
+    "storybook": "start-storybook -p 9999"
   }
 }

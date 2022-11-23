@@ -128,22 +128,23 @@
     }
   },
   "scripts": {
-    "storybook:build": "build-storybook -c .storybook -o build",
-    "start": "yarn run demo",
-    "demo": "start-storybook -p 1111",
-    "test": "jest --colors",
-    "test:watch": "jest --watch --colors",
-    "lint": "yarn run lint:js && yarn run lint:styles",
-    "lint:js": "eslint src/charts/ webpack.*.js --cache",
-    "lint:styles": "stylelint './src/styles/**/*.scss'",
-    "prebuild": "rimraf dist",
-    "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
-    "build:styles": "webpack --env=prodStyles",
-    "build:chartStyles": "webpack --env=prodChartStyles",
-    "build:charts": "webpack --env=prodChartsConfig",
     "build:cdn:bundle": "webpack --env=CDNBundleConfig",
     "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
-    "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\""
+    "build:charts": "webpack --env=prodChartsConfig",
+    "build:chartStyles": "webpack --env=prodChartStyles",
+    "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
+    "build:styles": "webpack --env=prodStyles",
+    "build": "webpack --env=production",
+    "clean": "rimraf dist",
+    "demo": "start-storybook -p 1111",
+    "lint:js": "eslint src/charts/ webpack.*.js --cache",
+    "lint:styles": "stylelint './src/styles/**/*.scss'",
+    "lint": "yarn run lint:js && yarn run lint:styles",
+    "prebuild": "yarn run clean",
+    "start": "yarn run demo",
+    "storybook:build": "build-storybook -c .storybook -o build",
+    "test:watch": "jest --watch --colors",
+    "test": "jest --colors"
   }
 }

@@ -350,7 +350,7 @@
   "scripts": {
     "build": "yarn workspaces foreach -p run build",
     "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
-    "clean": "yarn cache clean && rimraf node_modules",
+    "clean": "yarn workspaces foreach -p run clean && yarn cache clean && rimraf node_modules && yarn",
     "demos": "yarn workspaces foreach -p run demo",
     "test:ci": "yarn workspaces foreach -p run test",
     "test": "yarn workspaces foreach -p run test",
