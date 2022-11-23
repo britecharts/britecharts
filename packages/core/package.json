@@ -42,10 +42,10 @@
     "node-sass": "6.0.1",
     "sass-loader": "6.0.6",
     "style-loader": "0.23.1",
-    "stylelint": "^13.6.0",
-    "stylelint-config-sass-guidelines": "^7.0.0",
-    "stylelint-config-standard": "^20.0.0",
-    "stylelint-scss": "^3.17.2",
+    "stylelint": "^14.15.0",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "stylelint-config-standard": "^29.0.0",
+    "stylelint-scss": "^4.3.0",
     "typescript": "^3.9.2",
     "underscore": "1.9.1",
     "webpack": "4.46.0",
@@ -96,6 +96,36 @@
         }
       ]
     ]
+  },
+  "stylelint": {
+    "plugins": [
+      "stylelint-scss"
+    ],
+    "extends": [
+      "stylelint-config-sass-guidelines",
+      "stylelint-config-standard-scss"
+    ],
+    "rules": {
+      "indentation": 4,
+      "scss/dollar-variable-colon-space-after": "always",
+      "no-descending-specificity": null,
+      "selector-class-pattern": null,
+      "scss/at-import-no-partial-leading-underscore": null,
+      "scss/no-global-function-names": null,
+      "max-nesting-depth": 2,
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "function",
+            "if",
+            "each",
+            "include",
+            "mixin"
+          ]
+        }
+      ]
+    }
   },
   "scripts": {
     "storybook:build": "build-storybook -c .storybook -o build",
