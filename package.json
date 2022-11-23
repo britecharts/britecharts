@@ -345,6 +345,7 @@
     "ts-jest": "^29.0.3"
   },
   "scripts": {
+    "build": "yarn workspaces foreach -p run build",
     "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
     "clean": "yarn cache clean && rimraf node_modules",
     "demos": "yarn workspaces foreach -p run demo",

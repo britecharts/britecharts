@@ -8,24 +8,30 @@ on:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
+  getNodeVersion:
+    uses: calyptia/.github/.github/workflows/get_node_version.yml@main
+
   deploy:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
-          cache: yarn
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Build website
-        run: yarn docs:build
+          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
+     
+      - name: Use Yarn cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '.yarn/cache'
+          key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn
 
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages 
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

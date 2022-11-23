@@ -20,7 +20,5 @@ module.exports = {
     testMatch: ['**/*.(spec|test).{js,jsx,ts,tsx}'],
     setupFiles: ['jest-canvas-mock', '<rootDir>/../../jest.setup.js'],
     collectCoverage: true,
-    // collectCoverageFrom: ['**/src/**/*.{js,jsx,ts,tsx}'],
-    // testPathIgnorePatterns: ['<rootDir>/packages/react/src/templates/*'],
     coverageDirectory: './coverage/',
 };

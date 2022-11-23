@@ -12,6 +12,7 @@ jobs:
     uses: calyptia/.github/.github/workflows/get_node_version.yml@main
 
   lint:
+    name: Lints Britecharts
     runs-on: ubuntu-latest
     needs: getNodeVersion
     steps:
