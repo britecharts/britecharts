@@ -98,6 +98,6 @@ module.exports = (env) => {
     }
 
     if (env === 'production') {
-        return [prodBundleConfig, prodChartsConfig];
+        return [prodBundleConfig, prodCJSBundleConfig, prodChartsConfig];
     }
 };
