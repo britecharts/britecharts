@@ -29,10 +29,10 @@ Britecharts is available as an [NPM module][npmModule] or through CDN links (in 
 ## Contribute
 Check the [contributing guide][contributing] if you want to help us bringing these in. 
 
-[readme]: **
-[homepage]: **
-[gettingStarted]: **
-[npmModule]: **
+[readme]: /docs/Britecharts
+[homepage]: /
+[gettingStarted]: /docs/tutorials/getting-started
+[npmModule]: https://www.npmjs.com/package/britecharts
 [jsDelivrLib]: **
 [jsDelivrDist]: **
 [contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md

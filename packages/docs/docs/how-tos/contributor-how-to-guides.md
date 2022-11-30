@@ -19,7 +19,7 @@ When you have a branch that you want to contribute back to Britecharts, you need
 7. Create a new PR, filling the [PR template][prtemplate], and adding a link to the original issue filed (if you see "unable to merge", please pull from your upstream and rebase again)
 8. Be patient while you wait for the maintainers to check it :)
 
-If you are new to Open Source, you can learn how to create [Pull Requests here](makeAPR).
+If you are new to Open Source, you can learn how to create [Pull Requests here](makeapr).
 
 ## How to Modify a Chart in @britecharts/core
 

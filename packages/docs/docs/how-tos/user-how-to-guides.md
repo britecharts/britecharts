@@ -46,6 +46,6 @@ Remember that for increased accuracy, all date formats in Britecharts should be 
 [colorPalettesDemo]: **
 [colorsHelper]: https://github.com/Golodhros/britecharts/blob/main/packages/core/src/charts/helpers/color.js
 [ISOFormat]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
-[lineChartAPI]: **
+[lineChartAPI]: /docs/API/line
 [timeFormatSpecifiers]: https://github.com/d3/d3-time-format#locale_format
 [timeFormatsBlock]: https://bl.ocks.org/zanarmstrong/ca0adb7e426c12c06a95
