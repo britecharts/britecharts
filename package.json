@@ -4,8 +4,6 @@
   "version": "0.0.0",
   "description": "D3.js based Modular Charting Library",
   "main": "index.js",
-  "module": "src/index.js",
-  "types": "src/typings/index.d.ts",
   "contributors": [
     {
       "name": "Marcos Iglesias",
@@ -27,10 +25,6 @@
       "name": "Gago",
       "email": "xeroice@gmail.com"
     }
-  ],
-  "sideEffects": [
-    "dist/css/**/*.css",
-    "src/styles/**/*.scss"
   ],
   "repository": {
     "type": "git",

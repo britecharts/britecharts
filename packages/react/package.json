@@ -40,35 +40,6 @@
     "react-dom": ">=15"
   },
   "browserslist": "> 0.25%, not dead",
-  "babel": {
-    "presets": [
-      "@babel/preset-react",
-      [
-        "@babel/preset-env",
-        {
-          "forceAllTransforms": true
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-class-properties",
-      [
-        "babel-plugin-module-resolver",
-        {
-          "alias": {
-            "@britecharts/wrappers": "../wrappers/dist/cjs/bundle/wrappers.bundled.min.js"
-          }
-        }
-      ]
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "@babel/plugin-transform-modules-commonjs"
-        ]
-      }
-    }
-  },
   "scripts": {
     "start": "webpack-dev-server --env=test --open --hot",
     "test": "jest --colors",
