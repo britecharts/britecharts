@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: getNodeVersion
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout 🛎️
+        uses: actions/checkout@main
       - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
         uses: actions/setup-node@v2
         with:
@@ -28,7 +29,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         run: yarn
-      - name: Build packages 🕹
+      - name: Build packages 🔧
         run: yarn build
       - name: Testing Library 🕵️‍♀️
         run: yarn test:ci

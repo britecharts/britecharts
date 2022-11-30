@@ -27,7 +27,8 @@ jobs:
         with:
           path: '.yarn/cache'
           key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn
+      - name: Install dependencies
+        run: yarn
       - name: Linting Styles 🌈
         run: yarn lint:styles
       - name: Linting Code 🗃
