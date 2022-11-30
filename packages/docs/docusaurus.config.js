@@ -91,7 +91,7 @@ module.exports = {
                             },
                             {
                                 label: 'API Reference',
-                                to: '/docs/API',
+                                to: '/docs/API/bar',
                             },
                             {
                                 label: 'How-to Guides',
@@ -107,8 +107,8 @@ module.exports = {
                                 href: 'https://stackoverflow.com/questions/tagged/britecharts',
                             },
                             {
-                                label: 'Discord',
-                                href: 'https://discordapp.com/invite/docusaurus',
+                                label: 'Slack',
+                                href: 'https://slack.com/app_redirect?channel=C7DHB2E72',
                             },
                             {
                                 label: 'Twitter',
