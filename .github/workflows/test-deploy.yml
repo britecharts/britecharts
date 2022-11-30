@@ -27,6 +27,6 @@ jobs:
         with:
           path: '.yarn/cache'
           key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
-
+      - run: yarn
       - name: Test build website
         run: yarn docs:build
