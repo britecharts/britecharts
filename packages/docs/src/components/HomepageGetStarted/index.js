@@ -18,20 +18,24 @@ export default function HomepageGetStarted() {
                             </p>
                             <ul>
                                 <li>
-                                    <a href="">
+                                    <a href="/docs/tutorials/getting-started">
                                         Getting Started Using Britecharts
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="">Installing Britecharts</a>
+                                    <a href="/docs/tutorials/installing-britecharts">
+                                        Installing Britecharts
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="">
+                                    <a href="/docs/tutorials/composing-dataviz">
                                         Composing Your First Data Visualization
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="">Styling Britecharts</a>
+                                    <a href="/docs/tutorials/styling-charts">
+                                        Styling Britecharts
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -47,13 +51,19 @@ export default function HomepageGetStarted() {
                             </p>
                             <ul>
                                 <li>
-                                    <a href="">User How-To Guides</a>
+                                    <a href="/docs/how-tos/user-how-to-guides">
+                                        User How-To Guides
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="">Contributor How-To Guides</a>
+                                    <a href="/docs/how-tos/contributor-how-to-guides">
+                                        Contributor How-To Guides
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="">Migration from v2 to v3</a>
+                                    <a href="/docs/how-tos/migration-guide-2-to-3">
+                                        Migration from v2 to v3
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -69,16 +79,24 @@ export default function HomepageGetStarted() {
                             </p>
                             <ul>
                                 <li>
-                                    <a href="">Code Standards</a>
+                                    <a href="/docs/topics/code-standards">
+                                        Code Standards
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="">API Guildelines</a>
+                                    <a href="/docs/topics/api-guidelines">
+                                        API Guildelines
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="">Code and Project Structure</a>
+                                    <a href="/docs/topics/code-structure">
+                                        Code and Project Structure
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="">Issue and Feature Labels</a>
+                                    <a href="/docs/topics/github-labels">
+                                        Issue and Feature Labels
+                                    </a>
                                 </li>
                             </ul>
                         </div>

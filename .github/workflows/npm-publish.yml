@@ -41,7 +41,8 @@ jobs:
         with:
           node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
           registry-url: https://registry.npmjs.org/
-      - run: yarn
+      - name: Install dependencies
+        run: yarn
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

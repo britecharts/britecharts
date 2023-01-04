@@ -98,7 +98,7 @@ npm i --save @britecharts/core @britecharts/wrappers
 ### Roadmap
 Our idea for the short term is to update this package to use TypeScript natively. [Let us know][d3Slack] if you want to help with it.
 
-[britecharts]: https://github.com/britecharts/
-[britecharts-api]: **
+[britecharts]: /
+[britecharts-api]: /docs/API/bar
 [contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
 [d3Slack]: https://d3js.slack.com/

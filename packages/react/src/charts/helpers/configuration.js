@@ -5,7 +5,10 @@ const isEventConfig = (configName) =>
 const isNotEventConfig = (configName) => !isEventConfig(configName);
 
 const setChartProperty = (chart, configuration, key) => {
-    if (configuration[key] || typeof configuration[key] === 'string') {
+    if (
+        chart[key] &&
+        (configuration[key] || typeof configuration[key] === 'string')
+    ) {
         chart[key](configuration[key]);
     }
 };

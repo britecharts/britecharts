@@ -36,16 +36,15 @@
     "eslint-loader": "^2.1.2",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.2.0",
-    "grunt-karma": "2.0.0",
     "istanbul-instrumenter-loader": "3.0.1",
     "node-gyp": "8.4.1",
     "node-sass": "6.0.1",
     "sass-loader": "6.0.6",
     "style-loader": "0.23.1",
-    "stylelint": "^13.6.0",
-    "stylelint-config-sass-guidelines": "^7.0.0",
-    "stylelint-config-standard": "^20.0.0",
-    "stylelint-scss": "^3.17.2",
+    "stylelint": "^14.15.0",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "stylelint-config-standard": "^29.0.0",
+    "stylelint-scss": "^4.3.0",
     "typescript": "^3.9.2",
     "underscore": "1.9.1",
     "webpack": "4.46.0",
@@ -97,23 +96,54 @@
       ]
     ]
   },
+  "stylelint": {
+    "plugins": [
+      "stylelint-scss"
+    ],
+    "extends": [
+      "stylelint-config-sass-guidelines",
+      "stylelint-config-standard-scss"
+    ],
+    "rules": {
+      "indentation": 4,
+      "scss/dollar-variable-colon-space-after": "always",
+      "no-descending-specificity": null,
+      "selector-class-pattern": null,
+      "scss/at-import-no-partial-leading-underscore": null,
+      "scss/no-global-function-names": null,
+      "max-nesting-depth": 2,
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "function",
+            "if",
+            "each",
+            "include",
+            "mixin"
+          ]
+        }
+      ]
+    }
+  },
   "scripts": {
-    "storybook:build": "build-storybook -c .storybook -o build",
-    "start": "yarn run demo",
-    "demo": "start-storybook -p 1111",
-    "test": "jest --colors",
-    "test:watch": "jest --watch --colors",
-    "lint": "yarn run lint:js && yarn run lint:styles",
-    "lint:js": "eslint src/charts/ webpack.*.js --cache",
-    "lint:styles": "stylelint './src/styles/**/*.scss'",
-    "prebuild": "rimraf dist",
-    "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
-    "build:styles": "webpack --env=prodStyles",
-    "build:chartStyles": "webpack --env=prodChartStyles",
-    "build:charts": "webpack --env=prodChartsConfig",
     "build:cdn:bundle": "webpack --env=CDNBundleConfig",
     "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
-    "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\""
+    "build:charts": "webpack --env=prodChartsConfig",
+    "build:chartStyles": "webpack --env=prodChartStyles",
+    "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
+    "build:styles": "webpack --env=prodStyles",
+    "build": "webpack --env=production",
+    "clean": "rimraf dist",
+    "demo": "start-storybook -p 1111",
+    "lint:js": "eslint src/charts/ webpack.*.js --cache",
+    "lint:styles": "stylelint './src/styles/**/*.scss'",
+    "lint": "yarn run lint:js && yarn run lint:styles",
+    "prebuild": "yarn run clean",
+    "start": "yarn run demo",
+    "storybook:build": "build-storybook -c .storybook -o build",
+    "test:watch": "jest --watch --colors",
+    "test": "jest --colors"
   }
 }

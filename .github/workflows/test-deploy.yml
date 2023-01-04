@@ -8,17 +8,27 @@ on:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
+  getNodeVersion:
+    uses: calyptia/.github/.github/workflows/get_node_version.yml@main
+
   test-deploy:
     name: Test deployment
     runs-on: ubuntu-latest
+    needs: getNodeVersion
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
-          cache: yarn
-
+          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
+      - name: Use Yarn cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '.yarn/cache'
+          key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Test build website
+        run: yarn
+      - name: Test build docs website 📚
         run: yarn docs:build

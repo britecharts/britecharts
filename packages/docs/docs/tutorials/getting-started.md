@@ -119,10 +119,10 @@ If you are excited about Britecharts, want to add more configurable properties o
 [home]: http://britecharts.github.io/britecharts/
 [demos]: **/tutorial-kitchen-sink.html
 [contribute]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
-[barChartAPI]: **/module-Bar.html
-[barChartDataSchema]: **/global.html#BarChartData
+[barChartAPI]: /docs/API/bar
+[barChartDataSchema]: /docs/API/bar#exportsbarchartdata--arrayobject
 [barChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/packages/docs/static/img/tutorial/simple-bar-chart.png
 [simpleBarChartTutorialHTML]: https://github.com/britecharts/britecharts/blob/master/packages/docs/docs/tutorials/html/tutorial-simple-bar-chart.html
 [simpleBarChartTutorial]: **/tutorial-simple-bar-chart.html
-[composingDataviz]: **/composing-dataviz.html
-[installingBritecharts]: **/installing-britecharts.html
+[composingDataviz]: /docs/tutorials/composing-dataviz
+[installingBritecharts]: /docs/tutorials/installing-britecharts

@@ -24,6 +24,7 @@
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.7",
     "eslint-webpack-plugin": "2.7.0",
+    "react": "16.14.0",
     "react-dev-utils": "^6.1.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "4.46.0",
@@ -33,28 +34,12 @@
     "webpack-fix-style-only-entries": "^0.6.1",
     "webpack-merge": "4.1.4"
   },
-  "browserslist": "> 0.25%, not dead",
-  "babel": {
-    "presets": [
-      "@babel/preset-react",
-      [
-        "@babel/preset-env",
-        {
-          "forceAllTransforms": true
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-class-properties"
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "@babel/plugin-transform-modules-commonjs"
-        ]
-      }
-    }
+  "peerDependencies": {
+    "prop-types": ">=15",
+    "react": ">=15",
+    "react-dom": ">=15"
   },
+  "browserslist": "> 0.25%, not dead",
   "scripts": {
     "start": "webpack-dev-server --env=test --open --hot",
     "test": "jest --colors",
@@ -62,7 +47,8 @@
     "storybook:build": "build-storybook -c .storybook -o build",
     "demo": "yarn run storybook",
     "storybook": "start-storybook -p 2222",
-    "prebuild": "rimraf dist",
+    "clean": "rimraf dist",
+    "prebuild": "yarn run clean",
     "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig",

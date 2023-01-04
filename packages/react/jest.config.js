@@ -5,6 +5,7 @@ module.exports = {
     ...configBase,
     displayName: name,
     testPathIgnorePatterns: [
+        '<rootDir>/src/charts(/.*)/(.*).fixtures.js',
         '<rootDir>/node_modules/',
         '<rootDir>/src/templates/',
         '<rootDir>/src/tasks/',

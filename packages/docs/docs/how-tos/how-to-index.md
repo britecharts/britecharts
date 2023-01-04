@@ -14,5 +14,5 @@ You can also check the [Topics page][topicsIndex] to learn more about Britechart
 
 [userHowTo]: ./user-how-to-guides.md
 [contributorHowTo]: ./contributor-how-to-guides.md
-[topicsIndex]: ./topics-index.md
+[topicsIndex]: ../topics/topics-index.md
 [migrationGuide2to3]: ./migration-guide-2-to-3.md
