@@ -6,10 +6,10 @@
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md) [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#toc8__anchor) [![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
 
-| [![Bar Chart][barchartimg]][barchartdemo] | [![Line Chart][linechartimg]][linechartdemo] | [![Donut Chart][donutchartimg]][donutchartdemo] |
+| [![Bar Chart][barchartimg]][barchart-story*] | [![Line Chart][linechartimg]][linechart-story*] | [![Donut Chart][donutchartimg]][donutchart-story*] |
 | --- | --- | --- |
-| [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchartdemo] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachartdemo] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchartdemo] |
-| [![Sparkline Chart][sparklinechartimg]][sparklinechartdemo] | [![Legend Chart][legendchartimg]][donutchartdemo] | [![Brush Chart][brushchartimg]][brushchartdemo] |
+| [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchart-story] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachart-story*] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchart-story*] |
+| [![Sparkline Chart][sparklinechartimg]][sparklinechart-story*] | [![Legend Chart][legendchartimg]][donutchart-story*] | [![Brush Chart][brushchartimg]][brushchart-story*] |
 
 <div align="center">
   <a href="https://britecharts.github.io/britecharts/getting-started.html">Quickstart*</a>
@@ -60,7 +60,7 @@ The typical use of Britecharts involves creating a chart using its simple API, t
     barContainer.datum(dataset).call(barChart);
 ```
 
-To use Britecharts with React, you will need to use the `@britecharts/react` [package][react-package*]. Also, if you use Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We also include a set of wrappers in `@britecharts/wrappers` that you can use to employ Britecharts with other web frameworks.
+To use Britecharts with React, you will need to use the `@britecharts/react` [package][react-package]. Also, if you use Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We also include a set of wrappers in `@britecharts/wrappers` that you can use to employ Britecharts with other web frameworks.
 
 ## API
 
@@ -142,32 +142,34 @@ Britecharts comes with a basic set of CSS styles that you would load with a `<li
 />*
 ```
 
-You can customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts*] to get started.
+You can customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to get started.
 
 ## See Also
 
--   [Documentation Homepage][docs-homepage*]
--   [Getting Started Guide][gettingstarted*]
--   [Tutorials][tutorialsindex*]
--   [How To Guides][howtoindex*]
--   [Topics][topicsindex*]
--   [Contributing Guide][contributing-guide*]
+-   [Documentation Homepage][docs-homepage]
+-   [Getting Started Guide][gettingstarted]
+-   [Tutorials][tutorialsindex]
+-   [How To Guides][howtoindex]
+-   [Topics][topicsindex]
+-   [Contributing Guide][contributing-guide]
 -   [Github Repo][main-repository]
 -   [Changelog][changelog]
 
-## Roadmap
-
-This project is in active development. You can check our [plans for the next release][release4project] and other [projects][github-projects] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
-
-## Code of Conduct
-
-Britecharts is dedicated to building a welcoming, diverse, and safe community. We expect everyone participating in the Britecharts community to abide by our [Code of Conduct][code-conduct]. Please read it and follow it.
+## Community Roadmap
+This project is in active development. We want your input about what is important, for that, add your votes using the 👍 reaction:
+* [Top Feature Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Afeature+)
+* [Documentation Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Adocumentation+)
+* [Top Bugs](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Abug+)
 
 ## How to Contribute
 
 Whether you're helping us fix bugs, improving the docs, or spreading the word, we'd love to have you as part of the Britecharts community!
 
-To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and committers, so if you want to become a part of this project, check the [contributing guide][contributing-guide*] for ideas on contributing and get started today!
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and committers, so if you want to become a part of this project, check the [contributing guide][contributing-guide] for ideas on contributing and get started today!
+
+## Code of Conduct
+
+Britecharts is dedicated to building a welcoming, diverse, and safe community. We expect everyone participating in the Britecharts community to abide by our [Code of Conduct][code-conduct]. Please read it and follow it.
 
 ## Acknowledgments
 
@@ -213,16 +215,16 @@ Read more in the [license document][britecharts-license]
 
 [d3]: https://d3js.org/
 [mike-chart]: https://bost.ocks.org/mike/chart/
-[changelog]: https://github.com/britecharts/britecharts/blob/master/CHANGELOG.md
+[changelog]: https://github.com/britecharts/britecharts/blob/main/CHANGELOG.md
 [license-original]: https://www.apache.org/licenses/LICENSE-2.0
-[britecharts-license]: https://github.com/britecharts/britecharts/blob/master/LICENSE.md
+[britecharts-license]: https://github.com/britecharts/britecharts/blob/main/LICENSE.md
 [d3-edge]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
 [mastering-d3]: https://www.packtpub.com/web-development/mastering-d3js
-[docs-homepage*]: https://britecharts.github.io/britecharts/
+[docs-homepage]: https://britecharts.github.io/britecharts/
 [storybook]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html*
 [main-repository]: https://github.com/britecharts/britecharts
-[gettingstarted*]: https://britecharts.github.io/britecharts/getting-started.html
-[contributing-guide*]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[gettingstarted]: tutorials/getting-started
+[contributing-guide]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [d3-selection]: https://github.com/d3/d3-selection
 [cdndemo*]: https://britecharts.github.io/britecharts/cdn.html
 [cdnhome*]: https://cdn.jsdelivr.net/npm/britecharts/dist/
@@ -260,11 +262,11 @@ Read more in the [license document][britecharts-license]
 [stackedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
 [groupedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
 [legendchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/legend-chart.png
-[tutorialsindex*]: http://britecharts.github.io/britecharts/tutorials-index.html
-[howtoindex*]: http://britecharts.github.io/britecharts/how-to-index.html
-[topicsindex*]: http://britecharts.github.io/britecharts/topics-index.html
-[stylingbritecharts*]: http://britecharts.github.io/britecharts/styling-charts.html
+[tutorialsindex]: tutorials/tutorials-index
+[howtoindex]: how-tos/how-to-index
+[topicsindex]: topics/topics-index
+[stylingbritecharts]: tutorials/styling-charts
 [code-conduct]: https://github.com/britecharts/britecharts/blob/master/CODE_OF_CONDUCT.md
 [britecharts-react]: https://britecharts.github.io/britecharts-react/
 [github-projects]: https://github.com/britecharts/britecharts/projects
-[react-package*]: https://github.com/britecharts/britecharts/packages/react
+[react-package]: packages/react-readme
