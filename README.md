@@ -66,20 +66,35 @@ To use Britecharts with React, you will need to use the `@britecharts/react` [pa
 
 All the components expose **common API methods** like width, height, and margin. Additionally, each component exposes specific methods you can find in the documentation:
 
--   [API][line-docs*], [Demo][linechart-story*] Line Chart
--   [API][bar-docs*], [Demo][barchart-story*] Bar Chart
--   [API][donut-docs*], [Demo][donutchart-story*] Donut Chart
--   [API][stacked-bar-docs*], [Demo][stackedbarchart-story*] Stacked Bar Chart
--   [API][grouped-bar-docs*], [Demo][groupedbarchart-story*] Grouped Bar Chart
--   [API][bullet-docs*], [Demo][bulletchart-story*] Bullet Chart
--   [API][brush-docs*], [Demo][brushchart-story*] Brush Chart
--   [API][scatter-docs*], [Demo][scatterplot-story*] Scatter Plot
--   [API][sparkline-docs*], [Demo][sparklinechart-story*] Sparkline Chart
--   [API][stacked-area-docs*], [Demo][stackedareachart-story*] Stacked Area Chart
--   [API][step-docs*], [Demo][stepchart-story*] Step Chart
--   [API][mini-tooltip-docs*], [Demo][barchart-story*] Mini Tooltip
--   [API][tooltip-docs*], [Demo][linechart-story*] Tooltip
--   [API][legend-docs*], [Demo][donutchart-story*] Legend
+-   [API][line-docs], [Demo][linechart-story*] Line Chart
+-   [API][bar-docs], [Demo][barchart-story*] Bar Chart
+-   [API][donut-docs], [Demo][donutchart-story*] Donut Chart
+-   [API][stacked-bar-docs], [Demo][stackedbarchart-story*] Stacked Bar Chart
+-   [API][grouped-bar-docs], [Demo][groupedbarchart-story*] Grouped Bar Chart
+-   [API][bullet-docs], [Demo][bulletchart-story*] Bullet Chart
+-   [API][brush-docs], [Demo][brushchart-story*] Brush Chart
+-   [API][scatter-docs], [Demo][scatterplot-story*] Scatter Plot
+-   [API][sparkline-docs], [Demo][sparklinechart-story*] Sparkline Chart
+-   [API][stacked-area-docs], [Demo][stackedareachart-story*] Stacked Area Chart
+-   [API][step-docs], [Demo][stepchart-story*] Step Chart
+-   [API][mini-tooltip-docs], [Demo][barchart-story*] Mini Tooltip
+-   [API][tooltip-docs], [Demo][linechart-story*] Tooltip
+-   [API][legend-docs], [Demo][donutchart-story*] Legend
+
+[line-docs]: docs/API/line
+[bar-docs]: docs/API/bar
+[donut-docs]: docs/API/donut
+[stacked-bar-docs]: docs/API/stacked-bar
+[grouped-bar-docs]: docs/API/grouped-bar
+[bullet-docs]: docs/API/bullet
+[brush-docs]: docs/API/brush
+[scatter-docs]: docs/API/scatter-plot
+[sparkline-docs]: docs/API/sparkline
+[stacked-area-docs]: docs/API/stacked-area
+[step-docs]: docs/API/step
+[mini-tooltip-docs]: docs/API/mini-tooltip
+[tooltip-docs]: docs/API/tooltip
+[legend-docs]: docs/API/legend
 
 ## Installation
 
@@ -203,26 +218,12 @@ Read more in the [license document][britecharts-license]
 [britecharts-license]: https://github.com/britecharts/britecharts/blob/master/LICENSE.md
 [d3-edge]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
 [mastering-d3]: https://www.packtpub.com/web-development/mastering-d3js
-[donut-docs*]: https://britecharts.github.io/britecharts/module-Donut.html
-[bar-docs*]: https://britecharts.github.io/britecharts/module-Bar.html
-[brush-docs*]: https://britecharts.github.io/britecharts/module-Brush.html
-[legend-docs*]: https://britecharts.github.io/britecharts/module-Legend.html
-[line-docs*]: https://britecharts.github.io/britecharts/module-Line.html
-[mini-tooltip-docs*]: https://britecharts.github.io/britecharts/module-Mini-tooltip.html
-[tooltip-docs*]: https://britecharts.github.io/britecharts/module-Tooltip.html
-[step-docs*]: https://britecharts.github.io/britecharts/module-Step.html
-[sparkline-docs*]: https://britecharts.github.io/britecharts/module-Sparkline.html
-[stacked-area-docs*]: https://britecharts.github.io/britecharts/module-Stacked-area.html
 [docs-homepage*]: https://britecharts.github.io/britecharts/
 [storybook]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html*
 [main-repository]: https://github.com/britecharts/britecharts
 [gettingstarted*]: https://britecharts.github.io/britecharts/getting-started.html
 [contributing-guide*]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
 [d3-selection]: https://github.com/d3/d3-selection
-[stacked-bar-docs]: https://britecharts.github.io/britecharts/module-Stacked-bar.html
-[grouped-bar-docs]: https://britecharts.github.io/britecharts/module-Grouped-bar.html
-[scatter-docs]: https://britecharts.github.io/britecharts/module-Scatter-plot.html
-[bullet-docs]: https://britecharts.github.io/britecharts/module-Bullet.html
 [cdndemo*]: https://britecharts.github.io/britecharts/cdn.html
 [cdnhome*]: https://cdn.jsdelivr.net/npm/britecharts/dist/
 [jsbinsandbox]: https://jsbin.com/wativun/3/edit?html,js,output
