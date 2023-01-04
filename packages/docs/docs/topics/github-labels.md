@@ -2,7 +2,7 @@
 sidebar_position: 7
 ---
 
-# Issue and Feature Labelling
+# Issue and Feature Labeling
 
 In this document we describe our approach to setting labels to our issues and PRs by using a combination of "status" and "type" based labels. We also describe the PR title prefixes that we apply.
 
