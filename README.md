@@ -81,20 +81,20 @@ All the components expose **common API methods** like width, height, and margin.
 -   [API][tooltip-docs], [Demo][linechart-story*] Tooltip
 -   [API][legend-docs], [Demo][donutchart-story*] Legend
 
-[line-docs]: docs/API/line
-[bar-docs]: docs/API/bar
-[donut-docs]: docs/API/donut
-[stacked-bar-docs]: docs/API/stacked-bar
-[grouped-bar-docs]: docs/API/grouped-bar
-[bullet-docs]: docs/API/bullet
-[brush-docs]: docs/API/brush
-[scatter-docs]: docs/API/scatter-plot
-[sparkline-docs]: docs/API/sparkline
-[stacked-area-docs]: docs/API/stacked-area
-[step-docs]: docs/API/step
-[mini-tooltip-docs]: docs/API/mini-tooltip
-[tooltip-docs]: docs/API/tooltip
-[legend-docs]: docs/API/legend
+[line-docs]: API/line
+[bar-docs]: API/bar
+[donut-docs]: API/donut
+[stacked-bar-docs]: API/stacked-bar
+[grouped-bar-docs]: API/grouped-bar
+[bullet-docs]: API/bullet
+[brush-docs]: API/brush
+[scatter-docs]: API/scatter-plot
+[sparkline-docs]: API/sparkline
+[stacked-area-docs]: API/stacked-area
+[step-docs]: API/step
+[mini-tooltip-docs]: API/mini-tooltip
+[tooltip-docs]: API/tooltip
+[legend-docs]: API/legend
 
 ## Installation
 
