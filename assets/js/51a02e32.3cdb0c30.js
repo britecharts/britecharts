@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_britecharts_docs=self.webpackChunk_britecharts_docs||[]).push([[8412],{8019:e=>{e.exports=JSON.parse('{"permalink":"/britecharts/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

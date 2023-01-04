@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_britecharts_docs=self.webpackChunk_britecharts_docs||[]).push([[5457],{2379:s=>{s.exports=JSON.parse('{"label":"releases","permalink":"/blog/tags/releases","allTagsPath":"/blog/tags","count":1}')}}]);

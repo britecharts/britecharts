@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_britecharts_docs=self.webpackChunk_britecharts_docs||[]).push([[2535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Version 3 is out!","permalink":"/blog/version-3"}]}')}}]);
