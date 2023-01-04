@@ -88,7 +88,7 @@ Britecharts is an open project looking to get your contributions (in whatever fo
 
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [issues]: https://github.com/britecharts/britecharts/issues
-[contributorHowTo]: **
-[topicsPage]: **
+[contributorHowTo]: https://britecharts.github.io/britecharts/docs/how-tos/contributor-how-to-guides
+[topicsPage]: https://britecharts.github.io/britecharts/docs/topics/topics-index
 [allContributorsBot]: https://allcontributors.org/docs/en/bot/usage
 [good-first-issues]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22
