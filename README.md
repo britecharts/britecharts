@@ -75,9 +75,11 @@ They also provide some minimal CSS styling, that can be loaded independently or 
 -   [Bar Chart Tutorial][screencast][Video]
 -   [Release Notes][13]
 
-## Roadmap
-
-This project is in active development. You can check our [plans for the next release][release3project] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
+## Community Roadmap
+This project is in active development. We want your input about what is important, for that, add your votes using the 👍 reaction:
+* [Top Feature Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Afeature+)
+* [Documentation Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Adocumentation+)
+* [Top Bugs](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Abug+)
 
 To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#britecharts** channel. If you want to help, you can check the [contributing][35] guide.
 
