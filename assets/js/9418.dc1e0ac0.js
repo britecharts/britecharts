@@ -1,0 +1,1 @@
+(self.webpackChunk_britecharts_docs=self.webpackChunk_britecharts_docs||[]).push([[9418],{9039:(s,c,e)=>{"use strict";e.d(c,{Z:()=>r});var t=e(8437);const r=t},6316:()=>{}}]);
