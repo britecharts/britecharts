@@ -108,7 +108,7 @@ Our idea for the short term is to update this package to use TypeScript natively
 [jsDelivrLib]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/dist/
 [npmModule]: https://www.npmjs.com/package/britecharts-react
-[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [d3Slack]: https://d3js.slack.com/
 [codeOfConduct]: **
 [homepage]: https://britecharts.github.io/britecharts/

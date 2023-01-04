@@ -7,7 +7,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![test workflow](https://github.com/britecharts/britecharts/actions/workflows/tests.yml/badge.svg)](https://github.com/britecharts/britecharts/actions/workflows/tests.yml) [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/britecharts/britecharts)](https://github.com/britecharts/britecharts/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc) [![](https://data.jsdelivr.com/v1/package/npm/britecharts/badge)](https://www.jsdelivr.com/package/npm/britecharts)
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md) [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#toc8__anchor) [![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md) [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#toc8__anchor) [![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
 
 | [![Bar Chart][barchartimg]][barchartdemo] | [![Line Chart][linechartimg]][linechartdemo] | [![Donut Chart][donutchartimg]][donutchartdemo] |
 | --- | --- | --- |
@@ -15,7 +15,7 @@
 | [![Sparkline Chart][sparklinechartimg]][sparklinechartdemo] | [![Legend Chart][legendchartimg]][donutchartdemo] | [![Brush Chart][brushchartimg]][brushchartdemo] |
 
 <div align="center">
-  <a href="https://britecharts.github.io/britecharts/getting-started.html">Quickstart*</a>
+  <a href="https://britecharts.github.io/britecharts/docs/tutorials/getting-started">Quickstart</a>
   <span> · </span>
   <a href="https://britecharts.github.io/britecharts/tutorials-index.html">Tutorials*</a>
   <span> · </span>
@@ -201,9 +201,9 @@ Read more in the [license document][britecharts-license]
 
 [d3]: https://d3js.org/
 [mike-chart]: https://bost.ocks.org/mike/chart/
-[changelog]: https://github.com/britecharts/britecharts/blob/master/CHANGELOG.md
+[changelog]: https://github.com/britecharts/britecharts/blob/main/CHANGELOG.md
 [license-original]: https://www.apache.org/licenses/LICENSE-2.0
-[britecharts-license]: https://github.com/britecharts/britecharts/blob/master/LICENSE.md
+[britecharts-license]: https://github.com/britecharts/britecharts/blob/main/LICENSE.md
 [d3-edge]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
 [mastering-d3]: https://www.packtpub.com/web-development/mastering-d3js
 [donut-docs*]: https://britecharts.github.io/britecharts/module-Donut.html
@@ -220,7 +220,7 @@ Read more in the [license document][britecharts-license]
 [storybook]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html*
 [main-repository]: https://github.com/britecharts/britecharts
 [gettingstarted*]: https://britecharts.github.io/britecharts/getting-started.html
-[contributing-guide*]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contributing-guide*]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [d3-selection]: https://github.com/d3/d3-selection
 [stacked-bar-docs]: https://britecharts.github.io/britecharts/module-Stacked-bar.html
 [grouped-bar-docs]: https://britecharts.github.io/britecharts/module-Grouped-bar.html
@@ -266,7 +266,7 @@ Read more in the [license document][britecharts-license]
 [howtoindex*]: http://britecharts.github.io/britecharts/how-to-index.html
 [topicsindex*]: http://britecharts.github.io/britecharts/topics-index.html
 [stylingbritecharts*]: http://britecharts.github.io/britecharts/styling-charts.html
-[code-conduct]: https://github.com/britecharts/britecharts/blob/master/CODE_OF_CONDUCT.md
+[code-conduct]: https://github.com/britecharts/britecharts/blob/main/CODE_OF_CONDUCT.md
 [britecharts-react]: https://britecharts.github.io/britecharts-react/
 [github-projects]: https://github.com/britecharts/britecharts/projects
 [react-package*]: https://github.com/britecharts/britecharts/packages/react

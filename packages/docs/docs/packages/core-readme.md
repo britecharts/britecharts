@@ -35,4 +35,4 @@ Check the [contributing guide][contributing] if you want to help us bringing the
 [npmModule]: https://www.npmjs.com/package/britecharts
 [jsDelivrLib]: **
 [jsDelivrDist]: **
-[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md

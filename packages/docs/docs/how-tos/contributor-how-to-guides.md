@@ -61,7 +61,7 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 1. Once you have addressed all the comments and got the green light, the maintainers will merge the PR
 
 [styleguide]: ../topics/api-guidelines.md
-[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [issues]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
-[prtemplate]: https://github.com/britecharts/britecharts/blob/master/.github/PULL_REQUEST_TEMPLATE.md
+[prtemplate]: https://github.com/britecharts/britecharts/blob/main/.github/PULL_REQUEST_TEMPLATE.md
 [makeapr]: http://makeapullrequest.com/

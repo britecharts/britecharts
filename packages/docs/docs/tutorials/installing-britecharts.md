@@ -76,7 +76,7 @@ If you are excited about Britecharts, want to add more configurable properties o
 [cdnDemo]: https://britecharts.github.io/britecharts/**cdn.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
 [codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
-[contributingGuide]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contributingGuide]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [githubReleases]: https://github.com/britecharts/britecharts/releases
 [home]: http://britecharts.github.io/britecharts/
 [demos]: http://britecharts.github.io/britecharts/**tutorial-kitchen-sink.html
