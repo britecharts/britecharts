@@ -8,7 +8,7 @@
 
 | [![Bar Chart][barchartimg]][barchart-story*] | [![Line Chart][linechartimg]][linechart-story*] | [![Donut Chart][donutchartimg]][donutchart-story*] |
 | --- | --- | --- |
-| [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchart-story] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachart-story*] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchart-story*] |
+| [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchart-story*] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachart-story*] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchart-story*] |
 | [![Sparkline Chart][sparklinechartimg]][sparklinechart-story*] | [![Legend Chart][legendchartimg]][donutchart-story*] | [![Brush Chart][brushchartimg]][brushchart-story*] |
 
 <div align="center">
@@ -157,9 +157,9 @@ You can customize CSS using new styles. Check our [Styling Britecharts tutorial]
 
 ## Community Roadmap
 This project is in active development. We want your input about what is important, for that, add your votes using the 👍 reaction:
-* [Top Feature Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Afeature+)
-* [Documentation Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Adocumentation+)
-* [Top Bugs](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Abug+)
+* [Top Feature Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Afeature+-label:status:completed)
+* [Documentation Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Adocumentation+-label:status:completed)
+* [Top Bugs](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Abug+-label:status:completed)
 
 ## How to Contribute
 
