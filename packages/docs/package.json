@@ -29,7 +29,7 @@
     ]
   },
   "scripts": {
-    "build": "docusaurus build",
+    "build": "yarn run docs:readme && yarn run docs:api && docusaurus build",
     "clean": "yarn run clear",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",

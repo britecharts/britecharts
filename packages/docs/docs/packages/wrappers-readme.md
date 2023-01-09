@@ -100,5 +100,5 @@ Our idea for the short term is to update this package to use TypeScript natively
 
 [britecharts]: /
 [britecharts-api]: /docs/API/bar
-[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [d3Slack]: https://d3js.slack.com/

@@ -559,7 +559,7 @@ Docs
 * Updated Readme (thanks @perborgen)
 * Update docs (thanks @nikkistonge)
 * Added license badge to readme
-* Created Code Styleguide document with API Guidelines: https://github.com/britecharts/britecharts/blob/master/CODESTYLEGUIDE.md
+* Created Code Styleguide document with API Guidelines: https://github.com/britecharts/britecharts/blob/main/CODESTYLEGUIDE.md
 * Updated the Contributing guide
 
 

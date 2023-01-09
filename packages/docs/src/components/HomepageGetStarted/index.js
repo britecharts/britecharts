@@ -18,22 +18,22 @@ export default function HomepageGetStarted() {
                             </p>
                             <ul>
                                 <li>
-                                    <a href="/docs/tutorials/getting-started">
+                                    <a href="docs/tutorials/getting-started">
                                         Getting Started Using Britecharts
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/docs/tutorials/installing-britecharts">
+                                    <a href="docs/tutorials/installing-britecharts">
                                         Installing Britecharts
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/docs/tutorials/composing-dataviz">
+                                    <a href="docs/tutorials/composing-dataviz">
                                         Composing Your First Data Visualization
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/docs/tutorials/styling-charts">
+                                    <a href="docs/tutorials/styling-charts">
                                         Styling Britecharts
                                     </a>
                                 </li>
@@ -51,17 +51,17 @@ export default function HomepageGetStarted() {
                             </p>
                             <ul>
                                 <li>
-                                    <a href="/docs/how-tos/user-how-to-guides">
+                                    <a href="docs/how-tos/user-how-to-guides">
                                         User How-To Guides
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/docs/how-tos/contributor-how-to-guides">
+                                    <a href="docs/how-tos/contributor-how-to-guides">
                                         Contributor How-To Guides
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/docs/how-tos/migration-guide-2-to-3">
+                                    <a href="docs/how-tos/migration-guide-2-to-3">
                                         Migration from v2 to v3
                                     </a>
                                 </li>
@@ -79,22 +79,22 @@ export default function HomepageGetStarted() {
                             </p>
                             <ul>
                                 <li>
-                                    <a href="/docs/topics/code-standards">
+                                    <a href="docs/topics/code-standards">
                                         Code Standards
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/docs/topics/api-guidelines">
+                                    <a href="docs/topics/api-guidelines">
                                         API Guildelines
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/docs/topics/code-structure">
+                                    <a href="docs/topics/code-structure">
                                         Code and Project Structure
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/docs/topics/github-labels">
+                                    <a href="docs/topics/github-labels">
                                         Issue and Feature Labels
                                     </a>
                                 </li>

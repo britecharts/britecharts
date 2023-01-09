@@ -42,7 +42,7 @@ console.log('combinations', line.axisTimeCombinations);
 Remember that for increased accuracy, all date formats in Britecharts should be provided in [ISO 8601 Extended Format][ISOFormat].
 
 
-[gettingStarted]: http://britecharts.github.io/britecharts/getting-started.html
+[gettingStarted]: tutorials/getting-started
 [colorPalettesDemo]: **
 [colorsHelper]: https://github.com/Golodhros/britecharts/blob/main/packages/core/src/charts/helpers/color.js
 [ISOFormat]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15

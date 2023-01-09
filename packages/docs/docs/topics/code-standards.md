@@ -26,7 +26,7 @@ This process watches the test and chart files, re-running the tests when those c
 
 ### JSDoc Generated Documentation
 
-JSDoc is an API documentation generator. It allows us to follow a methodology when commenting our code so that later we can automatically generate documentation from these comments. Check its [getting started guide](http://usejsdoc.org/about-getting-started.html) to know more about it.
+JSDoc is an API documentation generator. It allows us to follow a methodology when commenting our code so that later we can automatically generate documentation from these comments. Check its [getting started guide](https://jsdoc.app/about-getting-started.html) to know more about it.
 
 We enforce jsDoc comments in our review process, hence each function should be commented. We require also to be mindful and when we change the code of a function. Please check if comments need to be updated too. This is essential, as our documentation gets generated from these JSDoc comments.
 

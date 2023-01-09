@@ -1,4 +1,4 @@
-name: Test deployment
+name: Test Docs Deployment
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ jobs:
     uses: calyptia/.github/.github/workflows/get_node_version.yml@main
 
   test-deploy:
-    name: Test deployment
+    name: Test docs deployment
     runs-on: ubuntu-latest
     needs: getNodeVersion
     steps:
@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
-      - name: Use Yarn cache
+      - name: Use Yarn cache 🔧
         uses: actions/cache@v2
         id: yarn-cache
         with:
@@ -30,5 +30,5 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         run: yarn
-      - name: Test build docs website 📚
+      - name: Build docs website 📚
         run: yarn docs:build

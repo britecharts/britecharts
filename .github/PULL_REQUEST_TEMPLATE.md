@@ -24,20 +24,10 @@ Include one of these prefixes:
 
 ## Screenshots (if appropriate):
 
-## Types of changes
-
-<!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
-
--   [ ] Refactor (changes the way we code something without changing its functionality)
--   [ ] Bug fix (non-breaking change which fixes an issue)
--   [ ] New feature (non-breaking change which adds functionality)
--   [ ] Breaking change (fix or feature that would cause existing functionality to change)
-
 ## Checklist:
 
 <!--- Review the list before submitting your pull request -->
 <!--- Leave the list intact for the code reviewer's use -->
--   [ ] No commented out code (if required, place // TODO above with explanation)
 -   [ ] Code follows the [API Guidelines](http://britecharts.github.io/britecharts/topics-index.html#toc5__anchor)
 -   [ ] Updated the documentation
 -   [ ] Added tests to cover changes

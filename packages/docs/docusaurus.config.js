@@ -8,7 +8,7 @@ module.exports = {
     title: 'Britecharts',
     tagline: 'Build stunning D3.js-powered interactive charts with little code',
     url: 'https://britecharts.github.io',
-    baseUrl: '/',
+    baseUrl: '/britecharts/',
     onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/icons/favicon.ico',

@@ -10,4 +10,4 @@ You can see [here][demos] the production Storybook deployed.
 If you want to help completing these, check our [contributing guide][contributing] and get started collaborating with Britecharts.
 
 [demos]: **
-[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md

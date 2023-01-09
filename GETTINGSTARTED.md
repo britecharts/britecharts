@@ -120,7 +120,7 @@ If you are excited about Britecharts, want to add more configurable properties o
 
 
 [demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
-[contribute]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[contribute]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [home]: http://britecharts.github.io/britecharts/
 [cdnDemo]: https://britecharts.github.io/britecharts/cdn.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output

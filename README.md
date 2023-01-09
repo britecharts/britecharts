@@ -4,12 +4,12 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![test workflow](https://github.com/britecharts/britecharts/actions/workflows/tests.yml/badge.svg)](https://github.com/britecharts/britecharts/actions/workflows/tests.yml) [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/britecharts/britecharts)](https://github.com/britecharts/britecharts/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc) [![](https://data.jsdelivr.com/v1/package/npm/britecharts/badge)](https://www.jsdelivr.com/package/npm/britecharts)
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md) [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#toc8__anchor) [![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md) [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#toc8__anchor) [![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
 
-| [![Bar Chart][barchartimg]][barchartdemo] | [![Line Chart][linechartimg]][linechartdemo] | [![Donut Chart][donutchartimg]][donutchartdemo] |
+| [![Bar Chart][barchartimg]][barchart-story*] | [![Line Chart][linechartimg]][linechart-story*] | [![Donut Chart][donutchartimg]][donutchart-story*] |
 | --- | --- | --- |
-| [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchartdemo] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachartdemo] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchartdemo] |
-| [![Sparkline Chart][sparklinechartimg]][sparklinechartdemo] | [![Legend Chart][legendchartimg]][donutchartdemo] | [![Brush Chart][brushchartimg]][brushchartdemo] |
+| [![Stacked Bar Chart][stackedbarchartimg]][stackedbarchart-story*] | [![Stacked Area Chart][stackedareachartlargeimg]][stackedareachart-story*] | [![Grouped Bar Chart][groupedbarchartimg]][groupedbarchart-story*] |
+| [![Sparkline Chart][sparklinechartimg]][sparklinechart-story*] | [![Legend Chart][legendchartimg]][donutchart-story*] | [![Brush Chart][brushchartimg]][brushchart-story*] |
 
 <div align="center">
   <a href="https://britecharts.github.io/britecharts/getting-started.html">Quickstart*</a>
@@ -60,26 +60,41 @@ The typical use of Britecharts involves creating a chart using its simple API, t
     barContainer.datum(dataset).call(barChart);
 ```
 
-To use Britecharts with React, you will need to use the `@britecharts/react` [package][react-package*]. Also, if you use Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We also include a set of wrappers in `@britecharts/wrappers` that you can use to employ Britecharts with other web frameworks.
+To use Britecharts with React, you will need to use the `@britecharts/react` [package][react-package]. Also, if you use Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We also include a set of wrappers in `@britecharts/wrappers` that you can use to employ Britecharts with other web frameworks.
 
 ## API
 
 All the components expose **common API methods** like width, height, and margin. Additionally, each component exposes specific methods you can find in the documentation:
 
--   [API][line-docs*], [Demo][linechart-story*] Line Chart
--   [API][bar-docs*], [Demo][barchart-story*] Bar Chart
--   [API][donut-docs*], [Demo][donutchart-story*] Donut Chart
--   [API][stacked-bar-docs*], [Demo][stackedbarchart-story*] Stacked Bar Chart
--   [API][grouped-bar-docs*], [Demo][groupedbarchart-story*] Grouped Bar Chart
--   [API][bullet-docs*], [Demo][bulletchart-story*] Bullet Chart
--   [API][brush-docs*], [Demo][brushchart-story*] Brush Chart
--   [API][scatter-docs*], [Demo][scatterplot-story*] Scatter Plot
--   [API][sparkline-docs*], [Demo][sparklinechart-story*] Sparkline Chart
--   [API][stacked-area-docs*], [Demo][stackedareachart-story*] Stacked Area Chart
--   [API][step-docs*], [Demo][stepchart-story*] Step Chart
--   [API][mini-tooltip-docs*], [Demo][barchart-story*] Mini Tooltip
--   [API][tooltip-docs*], [Demo][linechart-story*] Tooltip
--   [API][legend-docs*], [Demo][donutchart-story*] Legend
+-   [API][line-docs], [Demo][linechart-story*] Line Chart
+-   [API][bar-docs], [Demo][barchart-story*] Bar Chart
+-   [API][donut-docs], [Demo][donutchart-story*] Donut Chart
+-   [API][stacked-bar-docs], [Demo][stackedbarchart-story*] Stacked Bar Chart
+-   [API][grouped-bar-docs], [Demo][groupedbarchart-story*] Grouped Bar Chart
+-   [API][bullet-docs], [Demo][bulletchart-story*] Bullet Chart
+-   [API][brush-docs], [Demo][brushchart-story*] Brush Chart
+-   [API][scatter-docs], [Demo][scatterplot-story*] Scatter Plot
+-   [API][sparkline-docs], [Demo][sparklinechart-story*] Sparkline Chart
+-   [API][stacked-area-docs], [Demo][stackedareachart-story*] Stacked Area Chart
+-   [API][step-docs], [Demo][stepchart-story*] Step Chart
+-   [API][mini-tooltip-docs], [Demo][barchart-story*] Mini Tooltip
+-   [API][tooltip-docs], [Demo][linechart-story*] Tooltip
+-   [API][legend-docs], [Demo][donutchart-story*] Legend
+
+[line-docs]: API/line
+[bar-docs]: API/bar
+[donut-docs]: API/donut
+[stacked-bar-docs]: API/stacked-bar
+[grouped-bar-docs]: API/grouped-bar
+[bullet-docs]: API/bullet
+[brush-docs]: API/brush
+[scatter-docs]: API/scatter-plot
+[sparkline-docs]: API/sparkline
+[stacked-area-docs]: API/stacked-area
+[step-docs]: API/step
+[mini-tooltip-docs]: API/mini-tooltip
+[tooltip-docs]: API/tooltip
+[legend-docs]: API/legend
 
 ## Installation
 
@@ -127,32 +142,34 @@ Britecharts comes with a basic set of CSS styles that you would load with a `<li
 />*
 ```
 
-You can customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts*] to get started.
+You can customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to get started.
 
 ## See Also
 
--   [Documentation Homepage][docs-homepage*]
--   [Getting Started Guide][gettingstarted*]
--   [Tutorials][tutorialsindex*]
--   [How To Guides][howtoindex*]
--   [Topics][topicsindex*]
--   [Contributing Guide][contributing-guide*]
+-   [Documentation Homepage][docs-homepage]
+-   [Getting Started Guide][gettingstarted]
+-   [Tutorials][tutorialsindex]
+-   [How To Guides][howtoindex]
+-   [Topics][topicsindex]
+-   [Contributing Guide][contributing-guide]
 -   [Github Repo][main-repository]
 -   [Changelog][changelog]
 
-## Roadmap
-
-This project is in active development. You can check our [plans for the next release][release4project] and other [projects][github-projects] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
-
-## Code of Conduct
-
-Britecharts is dedicated to building a welcoming, diverse, and safe community. We expect everyone participating in the Britecharts community to abide by our [Code of Conduct][code-conduct]. Please read it and follow it.
+## Community Roadmap
+This project is in active development. We want your input about what is important, for that, add your votes using the 👍 reaction:
+* [Top Feature Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Afeature+-label:status:completed)
+* [Documentation Requests](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Adocumentation+-label:status:completed)
+* [Top Bugs](https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aclosed+sort%3Areactions-%2B1-desc+label%3Atype%3Abug+-label:status:completed)
 
 ## How to Contribute
 
 Whether you're helping us fix bugs, improving the docs, or spreading the word, we'd love to have you as part of the Britecharts community!
 
-To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and committers, so if you want to become a part of this project, check the [contributing guide][contributing-guide*] for ideas on contributing and get started today!
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3slack], in the **#tool-britecharts** channel. We are looking for contributors and committers, so if you want to become a part of this project, check the [contributing guide][contributing-guide] for ideas on contributing and get started today!
+
+## Code of Conduct
+
+Britecharts is dedicated to building a welcoming, diverse, and safe community. We expect everyone participating in the Britecharts community to abide by our [Code of Conduct][code-conduct]. Please read it and follow it.
 
 ## Acknowledgments
 
@@ -198,31 +215,17 @@ Read more in the [license document][britecharts-license]
 
 [d3]: https://d3js.org/
 [mike-chart]: https://bost.ocks.org/mike/chart/
-[changelog]: https://github.com/britecharts/britecharts/blob/master/CHANGELOG.md
+[changelog]: https://github.com/britecharts/britecharts/blob/main/CHANGELOG.md
 [license-original]: https://www.apache.org/licenses/LICENSE-2.0
-[britecharts-license]: https://github.com/britecharts/britecharts/blob/master/LICENSE.md
+[britecharts-license]: https://github.com/britecharts/britecharts/blob/main/LICENSE.md
 [d3-edge]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
 [mastering-d3]: https://www.packtpub.com/web-development/mastering-d3js
-[donut-docs*]: https://britecharts.github.io/britecharts/module-Donut.html
-[bar-docs*]: https://britecharts.github.io/britecharts/module-Bar.html
-[brush-docs*]: https://britecharts.github.io/britecharts/module-Brush.html
-[legend-docs*]: https://britecharts.github.io/britecharts/module-Legend.html
-[line-docs*]: https://britecharts.github.io/britecharts/module-Line.html
-[mini-tooltip-docs*]: https://britecharts.github.io/britecharts/module-Mini-tooltip.html
-[tooltip-docs*]: https://britecharts.github.io/britecharts/module-Tooltip.html
-[step-docs*]: https://britecharts.github.io/britecharts/module-Step.html
-[sparkline-docs*]: https://britecharts.github.io/britecharts/module-Sparkline.html
-[stacked-area-docs*]: https://britecharts.github.io/britecharts/module-Stacked-area.html
-[docs-homepage*]: https://britecharts.github.io/britecharts/
+[docs-homepage]: https://britecharts.github.io/britecharts/
 [storybook]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html*
 [main-repository]: https://github.com/britecharts/britecharts
-[gettingstarted*]: https://britecharts.github.io/britecharts/getting-started.html
-[contributing-guide*]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[gettingstarted]: tutorials/getting-started
+[contributing-guide]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [d3-selection]: https://github.com/d3/d3-selection
-[stacked-bar-docs]: https://britecharts.github.io/britecharts/module-Stacked-bar.html
-[grouped-bar-docs]: https://britecharts.github.io/britecharts/module-Grouped-bar.html
-[scatter-docs]: https://britecharts.github.io/britecharts/module-Scatter-plot.html
-[bullet-docs]: https://britecharts.github.io/britecharts/module-Bullet.html
 [cdndemo*]: https://britecharts.github.io/britecharts/cdn.html
 [cdnhome*]: https://cdn.jsdelivr.net/npm/britecharts/dist/
 [jsbinsandbox]: https://jsbin.com/wativun/3/edit?html,js,output
@@ -259,11 +262,11 @@ Read more in the [license document][britecharts-license]
 [stackedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
 [groupedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
 [legendchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/legend-chart.png
-[tutorialsindex*]: http://britecharts.github.io/britecharts/tutorials-index.html
-[howtoindex*]: http://britecharts.github.io/britecharts/how-to-index.html
-[topicsindex*]: http://britecharts.github.io/britecharts/topics-index.html
-[stylingbritecharts*]: http://britecharts.github.io/britecharts/styling-charts.html
-[code-conduct]: https://github.com/britecharts/britecharts/blob/master/CODE_OF_CONDUCT.md
+[tutorialsindex]: tutorials/tutorials-index
+[howtoindex]: how-tos/how-to-index
+[topicsindex]: topics/topics-index
+[stylingbritecharts]: tutorials/styling-charts
+[code-conduct]: https://github.com/britecharts/britecharts/blob/main/CODE_OF_CONDUCT.md
 [britecharts-react]: https://britecharts.github.io/britecharts-react/
 [github-projects]: https://github.com/britecharts/britecharts/projects
-[react-package*]: https://github.com/britecharts/britecharts/packages/react
+[react-package]: packages/react-readme

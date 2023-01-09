@@ -15,7 +15,7 @@
 <!-- /code_chunk_output -->
 
 ## Reporting an Issue
-The easiest way you can contribute to Britecharts is by creating issues. For that, please use the [issues][issues] section of the Britecharts repository and search for a similar problem. If you don't find it, submit your bug, question, proposal or feature request.
+The easiest way you can contribute to Britecharts is by creating issues. For that, please use the [issues][issues] section of the Britecharts repository and search for a similar problem. If you don't find it, submit your bug, question, proposal or feature request. If you don't find it, submit your bug, question, proposal or feature request. They will remain closed until sufficient interest, e.g. 👍 reactions, has been shown by the community.
 
 In the case of bugs, please be descriptive and, if possible, include a Codepen with the issue happening or add a screenshot of the issue. You can use [this Codepen bug template](https://codepen.io/Britecharts/pen/PRyZNy?editors=1010#0) as a jumping off point.
 
@@ -88,7 +88,7 @@ Britecharts is an open project looking to get your contributions (in whatever fo
 
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [issues]: https://github.com/britecharts/britecharts/issues
-[contributorHowTo]: **
-[topicsPage]: **
+[contributorHowTo]: https://britecharts.github.io/britecharts/docs/how-tos/contributor-how-to-guides
+[topicsPage]: https://britecharts.github.io/britecharts/docs/topics/topics-index
 [allContributorsBot]: https://allcontributors.org/docs/en/bot/usage
 [good-first-issues]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22
