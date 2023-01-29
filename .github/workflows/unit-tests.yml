@@ -30,9 +30,9 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build packages 🔧
-        run: yarn build
-        run: ls /home/runner/work/britecharts/britecharts/packages/wrappers/dist/cjs/bundle
-        run: ls /home/runner/work/britecharts/britecharts/packages/wrappers/dist/cjs/
+        run: yarn build 
+      - run: ls /home/runner/work/britecharts/britecharts/packages/wrappers/dist/cjs/bundle
+      - run: ls /home/runner/work/britecharts/britecharts/packages/wrappers/dist/cjs/
       - name: Testing Library 🕵️‍♀️
         run: yarn test:ci
       - name: Send coverage to codecov
