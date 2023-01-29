@@ -41,6 +41,10 @@
     "data-visualization",
     "interactive-visualizations"
   ],
+  "engines": {
+    "node": ">=16.0.0",
+    "yarn": ">=3.2.0"
+  },
   "author": "Britecharts Team",
   "license": "Apache-2.0",
   "bugs": {
@@ -343,7 +347,12 @@
     "typescript": "^4.9.3"
   },
   "scripts": {
-    "build": "yarn workspaces foreach -p run build",
+    "build:core": "yarn workspace @britecharts/core build",
+    "build:wrappers": "yarn workspace @britecharts/wrappers build",
+    "build:react": "yarn workspace @britecharts/react build",
+    "build:docs": "yarn workspace @britecharts/docs build",
+    "build:demos": "yarn workspace @britecharts/demos build",
+    "build": "yarn run build:core && yarn run build:wrappers && yarn run build:react && yarn run build:docs && yarn run build:demos",
     "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
     "clean": "yarn workspaces foreach -p run clean && yarn cache clean && rimraf node_modules && yarn",
     "demos": "yarn workspaces foreach -p run demo",

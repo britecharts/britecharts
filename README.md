@@ -26,7 +26,7 @@
   <br />
   Support: <a href="https://twitter.com/britecharts">Twitter</a>, <a href="https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">Issues</a>
   <span> & </span>
-  <a href="https://d3js.slack.com/messages/tools-britecharts/">Slack</a>
+  <a href="https://d3js.slack.com/messages/tool-britecharts/">Slack</a>
 </div>
 <br/>
 
@@ -235,7 +235,7 @@ Read more in the [license document][britecharts-license]
 [angularwrapperdemos]: https://colapdev.github.io/ngx-britecharts/
 [twitter]: https://twitter.com/britecharts
 [sunsdribble]: https://dribbble.com/sundai
-[d3slack]: https://d3js.slack.com/messages/tools-britecharts/
+[d3slack]: https://d3js.slack.com/messages/tool-britecharts/
 [proposals]: https://github.com/britecharts/britecharts/issues?q=is%3Aopen+label%3A%22Type%3A+Feature%22+sort%3Aupdated-desc
 [release4project]: https://github.com/britecharts/britecharts/projects/2
 [barchart-story*]: https://britecharts.github.io/britecharts/tutorial-bar.html 'Check the Demo'
