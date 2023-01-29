@@ -3,7 +3,8 @@
   "packageManager": "yarn@3.2.0",
   "version": "0.0.0",
   "devDependencies": {
-    "@storybook/html": "^6.5.9"
+    "@storybook/html": "^6.5.9",
+    "chromatic": "^6.15.0"
   },
   "scripts": {
     "build": "build-storybook -c .storybook -o dist",
@@ -11,6 +12,7 @@
     "demo": "yarn storybook",
     "prebuild": "yarn run clean",
     "start": "yarn storybook",
-    "storybook": "start-storybook -p 9999"
+    "storybook": "start-storybook -p 9999",
+    "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN"
   }
 }
