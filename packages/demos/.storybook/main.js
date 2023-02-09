@@ -23,7 +23,7 @@ module.exports = {
             },
             react: {
                 title: 'Britecharts React',
-                url: 'http://localhost:2222',
+                url: 'https://63e48c5ee9db838c66d19aae-leeufgprvf.chromatic.com',
             },
         };
     },

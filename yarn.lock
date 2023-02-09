@@ -3521,6 +3521,7 @@ __metadata:
     "@storybook/react": ^6.5.9
     "@storybook/testing-library": ^0.0.13
     babel-loader: ^8.2.3
+    chromatic: ^6.15.0
     copy-webpack-plugin: ^4.6.0
     enzyme: 3.11.0
     enzyme-adapter-react-16: 1.15.7
