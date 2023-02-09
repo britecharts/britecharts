@@ -13,10 +13,10 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install dependencies
         run: yarn
-      - name: build core storybook
+      - name: build core storybook 🔧
         run: yarn workspace @britecharts/core demo:build
         # 👇 Adds Chromatic as a step in the workflow
-      - name: Publish to Chromatic
+      - name: Publish core storybook to Chromatic 🚀
         uses: chromaui/action@v1
         # Chromatic GitHub Action options
         with:
@@ -24,10 +24,10 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_TOKEN_CORE }}
           autoAcceptChanges: 'main'
           storybookBuildDir: './packages/core/dist/storybook'
-      - name: build main storybook
+      - name: build main storybook 🔧
         run: yarn workspace @britecharts/demos build
         # 👇 Adds Chromatic as a step in the workflow
-      - name: Publish to Chromatic
+      - name: Publish main storybook to Chromatic 🚀
         uses: chromaui/action@v1
         # Chromatic GitHub Action options
         with:
