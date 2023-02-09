@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install dependencies
         run: yarn
+      - name: Build all packages 🔧
+        run: yarn build 
       - name: build core storybook 🔧
         run: yarn workspace @britecharts/core demo:build
       - name: Publish core storybook to Chromatic 🚀
