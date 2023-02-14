@@ -19,11 +19,11 @@ module.exports = {
         return {
             core: {
                 title: 'Britecharts Core',
-                url: 'https://63e47b02f004ed290364764f-dmivwchyrh.chromatic.com',
+                url: 'https://main--63e47b02f004ed290364764f.chromatic.com',
             },
             react: {
                 title: 'Britecharts React',
-                url: 'https://63e48c5ee9db838c66d19aae-leeufgprvf.chromatic.com',
+                url: 'https://main--63e48c5ee9db838c66d19aae.chromatic.com',
             },
         };
     },
