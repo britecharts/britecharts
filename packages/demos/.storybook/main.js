@@ -8,11 +8,11 @@ module.exports = {
             return {
                 core: {
                     title: 'Britecharts Core',
-                    url: 'http://localhost:1111',
+                    url: 'http://localhost:1001',
                 },
                 react: {
                     title: 'Britecharts React',
-                    url: 'http://localhost:2222',
+                    url: 'http://localhost:1002',
                 },
             };
         }

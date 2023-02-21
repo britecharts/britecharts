@@ -145,7 +145,7 @@
     "lint": "yarn run lint:js && yarn run lint:styles",
     "prebuild": "yarn run clean",
     "start": "yarn run demo",
-    "storybook": "start-storybook -p 1111",
+    "storybook": "start-storybook -p 1001",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors"
   }

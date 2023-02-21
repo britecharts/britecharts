@@ -53,7 +53,7 @@
     "demo": "yarn run storybook",
     "prebuild": "yarn run clean",
     "start": "webpack-dev-server --env=test --open --hot",
-    "storybook": "start-storybook -p 2222",
+    "storybook": "start-storybook -p 1002",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors"
   }

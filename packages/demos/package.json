@@ -13,6 +13,6 @@
     "demo": "yarn storybook",
     "prebuild": "yarn run clean",
     "start": "yarn storybook",
-    "storybook": "start-storybook -p 9999"
+    "storybook": "start-storybook -p 1000"
   }
 }
