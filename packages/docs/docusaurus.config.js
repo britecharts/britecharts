@@ -62,8 +62,7 @@ module.exports = {
                         label: 'API Reference',
                     },
                     {
-                        type: 'doc',
-                        docId: 'storybook',
+                        href: 'https://main--63d6bf7d2876e82fb2534b93.chromatic.com',
                         position: 'left',
                         label: 'StoryBook',
                     },

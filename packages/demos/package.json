@@ -8,11 +8,11 @@
   },
   "scripts": {
     "build": "build-storybook -c .storybook -o dist",
+    "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN",
     "clean": "rimraf dist",
     "demo": "yarn storybook",
     "prebuild": "yarn run clean",
     "start": "yarn storybook",
-    "storybook": "start-storybook -p 9999",
-    "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN"
+    "storybook": "start-storybook -p 1000"
   }
 }

@@ -20,6 +20,7 @@
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.2.3",
+    "chromatic": "^6.15.0",
     "copy-webpack-plugin": "^4.6.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.7",
@@ -41,18 +42,19 @@
   },
   "browserslist": "> 0.25%, not dead",
   "scripts": {
-    "start": "webpack-dev-server --env=test --open --hot",
-    "test": "jest --colors",
-    "test:watch": "jest --watch --colors",
-    "storybook:build": "build-storybook -c .storybook -o build",
-    "demo": "yarn run storybook",
-    "storybook": "start-storybook -p 2222",
-    "clean": "rimraf dist",
-    "prebuild": "yarn run clean",
-    "build": "webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
-    "build:charts": "webpack --env=prodChartsConfig",
+    "build:charts:cjs": "webpack --env=prodCJSChartsConfig",
     "build:charts:umd": "webpack --env=prodChartsConfig",
-    "build:charts:cjs": "webpack --env=prodCJSChartsConfig"
+    "build:charts": "webpack --env=prodChartsConfig",
+    "build": "webpack --env=production",
+    "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_REACT",
+    "clean": "rimraf dist",
+    "demo:build": "build-storybook -c .storybook -o dist/storybook",
+    "demo": "yarn run storybook",
+    "prebuild": "yarn run clean",
+    "start": "webpack-dev-server --env=test --open --hot",
+    "storybook": "start-storybook -p 1002",
+    "test:watch": "jest --watch --colors",
+    "test": "jest --colors"
   }
 }
