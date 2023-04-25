@@ -1,6 +1,13 @@
 module.exports = {
-    stories: ['../src/*.stories.[tj]s'],
-    addons: [],
+    stories: ['../src/**/*.stories.mdx', '../src/*.stories.[tj]s'],
+    addons: [
+        '@storybook/addon-viewport/register',
+        '@storybook/addon-a11y',
+        '@storybook/addon-actions',
+        '@storybook/addon-links',
+        '@storybook/addon-essentials',
+        '@storybook/addon-interactions',
+    ],
 
     // Reference: Storybook composition: https://storybook.js.org/docs/react/sharing/storybook-composition
     refs: (_, { configType }) => {
@@ -8,11 +15,11 @@ module.exports = {
             return {
                 core: {
                     title: 'Britecharts Core',
-                    url: 'http://localhost:1001',
+                    url: 'http://localhost:2001',
                 },
                 react: {
                     title: 'Britecharts React',
-                    url: 'http://localhost:1002',
+                    url: 'http://localhost:2002',
                 },
             };
         }

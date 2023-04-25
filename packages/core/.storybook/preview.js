@@ -8,4 +8,10 @@ addParameters({
         options: {},
     },
     layout: 'fullscreen',
+    options: {
+        storySort: {
+            method: 'alphabetical',
+            order: ['Welcome', ['CHARTS'], 'Changelog'],
+        },
+    },
 });
