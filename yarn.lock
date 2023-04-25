@@ -3433,6 +3433,7 @@ __metadata:
     "@storybook/addon-a11y": ^6.5.9
     "@storybook/addon-actions": ^6.5.9
     "@storybook/addon-console": ^1.2.3
+    "@storybook/addon-docs": ^6.5.9
     "@storybook/addon-viewport": ^6.5.9
     "@storybook/html": ^6.5.9
     "@types/d3-selection": ^1.4.1

@@ -1,44 +1,39 @@
-3.0.0-alpha-6.1.5
------------------
+# Changelog
+
+## 3.0.0-alpha-6.1.5
 * feat: brush extended lines and extended line color fix
 * docs: Readme review, added migration guide
 * build: Upgrade yarn to v3 and node to version 16
 * build: removes grunt-sass and reuses webpack for styling build
 
-3.0.0-alpha-6.1.4
------------------
+## 3.0.0-alpha-6.1.4
 * feat: extended line on brush chart
 * fix: fixes book image on docs
 * fix: extended line color matching ticks
 * docs: adds code of conduct and updates Readme
 * docs: Readme review and contribution updates
 
-3.0.0-alpha-6.1.3
------------------
+## 3.0.0-alpha-6.1.3
 * fix: typings fixes
 
-3.0.0-alpha-6.1.2
------------------
+## 3.0.0-alpha-6.1.2
 * feat: Add hasMinimumValueScale parameter to autoscale Line Chart y-axis
 * fix: step loading and stracked and grouped bar charts tooltip issue mitigation
 * fix: Fixes grouped bar chart animation
 
-3.0.0-alpha-6.1.0
------------------
+## 3.0.0-alpha-6.1.0
 * feat: Added Donut's hasCenterLegend to hide/show center legend
 * fix: line chart animation fix on multiline, fixes demo
 * fix: API generation docs and renaming data types
 * feat: Makes charts responsive by default
 
 
-3.0.0-alpha-6.0.1
------------------
+## 3.0.0-alpha-6.0.1
 * fix - Rework of Line Chart animation
 * refactor - Added grid helper on the rest of charts
 * fix - Cleaned duplicated accessor in Donut Chart
 
-3.0.0-alpha-6
----------------
+## 3.0.0-alpha-6
 * !feature - Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts
 * chore - Updates bar chart to use new grid helper
 * fix - Ordering of the horizontal bar chart elements
@@ -46,80 +41,65 @@
 * feature - Zoom controls for scatter plot
 * chore - Types and husky updates
 
-3.0.0-alpha-5.2
----------------
+## 3.0.0-alpha-5.2
 * chore - Deprecates Travis into Github Actions
 * chore - Removes all critical security warnings due to dependencies
 * chore - Updates karma
 * chore - Changes ubication of tests and data builders
 
-3.0.0-alpha-5.1
----------------
+## 3.0.0-alpha-5.1
 * !feature - Adds ES5 version to bundle
 * fix - Fixes bullet chart issues 
 * fix - Tooltip tweaks
 
-3.0.0-alpha-4
----------------
+## 3.0.0-alpha-4
 * !feature - Removed the 'aspectRatio' configuration chart from line, scatter plot, stacked area, bullet, grouped bar, stacked bar
 * !feature - Changed exportChart to return a promise
 * feature - Allows for fixed window in brush chart with 'isLocked' option
 
-3.0.0-alpha-3
----------------
+## 3.0.0-alpha-3
 * !feature - Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar
 * !fix - Fixes the custom format feature on line and stacked area chart, renaming 'xAxisFormat' into 'xAxisCustomFormat' and  'xAxisCustomFormat' into 'xAxisFormat'. Removes 'axisTimeCombinations'
 * feature - Adds colorMap to bar chart, donut, line, scatter plot, and stacked area
 * feature - Adds 'animationDuration' option to all animated charts
 * feature - Allows brush to have missing data and to be animated
 
-3.0.0-alpha-2.4
----------------
+## 3.0.0-alpha-2.4
 * feature - Adds TypeScript types via declaration files
 * feature - Adds colorMap to legend, grouped bar chart and stacked bar chart
 
-3.0.0-alpha-2.3
----------------
+## 3.0.0-alpha-2.3
 * !feature - renames value formatting functions into 'numberFormat' in grouped bar, stacked bar
 * feature - tooltip on heatmap
 
-3.0.0-alpha-2.2
----------------
+## 3.0.0-alpha-2.2
 * feature - stacked area loading state
 * !fix - text sizes normalization in line and stacked area charts
 * chore - linting and formatting for CSS and JS 
 
-2.18.0
-------
+## 2.18.0
 * feature - time formatter in scatter plot
 
-2.17.6
-------
+## 2.17.6
 * fix - heatmap merge conflict
 
-2.17.5
-------
+## 2.17.5
 * fix - Bullet chart redrawing bug
 
-2.17.4
-------
+## 2.17.4
 * fix - fixes bullet chart not getting the right range
 
-2.17.3
-------
+## 2.17.3
 * feature - Independent marker color for bullet chart
 * docs - split of topics page and fixed links
 
-2.17.2
-------
+## 2.17.2
 * Feature - Smoother animation for mini-tooltip
 
-2.17.1
-------
+## 2.17.1
 * Fix - Sets min yScale range in Line chart
 
-2.17.0
-------
+## 2.17.0
 * Fix - Adds 'fill' none to charts to avoid 'black' chart effect when no CSS is loaded
 * Fix - Updates types on brush
 * Fix - Multi row message on tooltip
@@ -129,38 +109,30 @@
 * Feature - heatmap isAnmated & scatter plot optimizations
 * Docs - Default values to Legend's API, Heatmap and Grouped bar docs
 
-2.16.1
-------
+## 2.16.1
 * Fix - Fixes bar chart bars showing for 0 values
 
-2.16.0
-------
+## 2.16.0
 Features
 * Adds numerical and logarithmic axis for Line Charts
 * Adds the ability to plot horizontal lines on the Line Chart
 * Adds a baseline to the stacked area chart
 
-2.15.0
-------
+## 2.15.0
 * Feature - Support for negative values on stacked area chart (Thanks @ajdani)
 * Fix - Error handling on weird line paths on Firefox (Thanks @shayh)
 
-2.14.6
-------
+## 2.14.6
 * Feature - Added negative values support for line chart (Thanks to Alexey Karpov)
 * Feature - Added 'locale' logic to bar chart (@maikdiepenbroek)
 
-2.13.2
-------
+## 2.13.2
 * Fix - Adds Bullet chart to global bundle
 
-2.13.1 - 2.13.0 - 2.12.1
-------
+## 2.13.1 - 2.13.1
 * Failed bumps, removes ES modules from regular version
 
-2.13.0
-2.13.0
-------
+## 2.13.0
 * Feature - Customizable y labels for Heatmap (@DalerAsrorov)
 * Refactor - Updates Babel to 7.5 (@gagoar)
 * Refactor - Updates Webpack to version 4
@@ -168,8 +140,7 @@ Features
 * Feature - Supports null data points in line charts (@shayh)
 * Fix - Clear tooltip cache before path is redrawn (@shayh)
 
-2.12.0
-------
+## 2.12.0
 * Feature - Updated Sandbox with more charts (Legend, Stacked Bar Chart) and better styling
 * Feature - Doc updates (contributing guide, issue and PR templates, API guidelines)
 * Refactor - Updated all tests to be consistent and follow Test Anywhere Protocol (TAP)
@@ -177,15 +148,13 @@ Features
 * Refactor - Updated Karma and code coverage reports
 * Refactor - Updated to node 12
 
-2.11.0
-------
+## 2.11.0
 * Feature - Disable donut hover effect with hasHoverAnimation. Thanks @DalerAsrorov!
 * Feature - Vertical legend with optional quantities + demo
 * Feature - Changing default Line chart data schema to a flat list. Keeps compatibility with previous "dataByTopic" schema
 * Fix - Fixed Brush chart reload issue
 
-2.10.1
-------
+## 2.10.1
 * Fix - Added Heatmap to bundle
 * Fix - Added bundle analyzer option to the build pipeline
 * Fix - Removing unused nameLabelFormat from stacked bar
@@ -193,15 +162,13 @@ Features
 * Fix - Several Documentation tweaks
 
 
-2.10.0
------
+## 2.10.0
 * Feature - added rounding time interval for brush chart (@danielbater247)
 * Feature - added hasLastHoverSliceHighlighted to donut chart (@DalerAsrorov)
 * Feature - made Stacked area outlines optional (@DalerAsrorov)
 
 
-2.9.8
------
+## 2.9.8
 * Feature - added color palettes demo page (@snazbala)
 * Feature - added docker support for project mantainers (@eb-jorgemaroto)
 * Fix - Apply transitions to bars opacity if chart is animated (@mikerhyssmith)
@@ -209,73 +176,60 @@ Features
 * Fix - Tooltip render error in Firefox (@davegomez)
 * Fix - Stacked Area Chart circle positions when more than 10 areas (@flacoman91)
 
-2.9.7
------
+## 2.9.7
 * Feature - Increase max area limit to 10 (@DalerAsrorov)
 * Fix - Changed handleMouseOut to use computeColor instead of colorMap (@mhammo)
 * Fix - Replace fixture dates to ISO format (@matix-eb)
 
-2.9.6
------
+## 2.9.6
 Maintentance and deployment fixes
 
-2.9.5
------
+## 2.9.5
 * Fix - Drawlines update (@mhammo)
 
-2.9.4
------
+## 2.9.4
 * Fix IE11 Tooltip text (@flacoman91)
 
-2.9.3
------
+## 2.9.3
 * Feature - Heatmap
 * Feature - colorSchema in bullet charts (@DalerAsrorov)
 * Fix - Stacked Bar errors (@DalerAsrorov)
 * Fix - Grouped Bar errors (@DalerAsrorov)
 * Fix - Scatter plot demos link (@DalerAsrorov)
 
-2.9.2
---------------
+## 2.9.2
 * fix for animationDelays for each group of data in Grouped Bar chart (ConstantinoSchillebeeckx)
 * Stacked bar chart not rendering all bars when `isAnimated(true)` (ConstantinoSchillebeeckx)
 
-2.9.1
---------------
+## 2.9.1
 * Feature - implemented x and y axis labels with offsets for Bar (dalerasrorov-eb)
 * Feat - Line chart data points highlight on all data shown (dalerasrorov-eb)
 * Fix - scatter plot crosshair function set status with boolean (dalerasrorov-eb)
 
-2.9.0 - Minor
---------------
+## 2.9.0 - Minor
 * Fix - crosshair labels to be rendered on same level as lines (dalerasrorov-eb)
 * Feature - Scatter Plot trendline based off linear regression formula (dalerasrorov-eb)
 * Docs - added Scatter plot to sandbox (dalerasrorov-eb)
 * Fix - line chart demo if both brush extent range values are null (dalerasrorov-eb)
 
-2.8.9 - Patch
---------------
+## 2.8.9 - Patch
 * Feature - Added filter helper that applies bounce effect to charts circles (dalerasrorov-eb)
 * Fix - do not select tooltip text on frequent click, new class (dalerasrorov-eb)
 
-2.8.8 - Patch
---------------
+## 2.8.8 - Patch
 * Feature - Scatter Plot bounce on click animation (dalerasrorov-eb)
 
-2.8.7 - Patch
---------------
+## 2.8.7 - Patch
 * Feature - custom gradient color schema function for Bar chart (dalerasrorov-eb)
 * Fix - Swap drawing order of area and line for sparkline charts (tobiasdierich)
 * Docs - Give max space to stacked and grouped bars (dalerasrorov-eb)
 * Docs - Allow stack area to take max space (dalerasrorov-eb)
 * Docs - Added bullet chart to Kitchen Sink (dalerasrorov-eb)
 
-2.8.6 - Patch
---------------
+## 2.8.6 - Patch
 * Fix - mini-tooltip render bug in Firefox (dalerasrorov-eb)
 
-2.8.5 - Patch
---------------
+## 2.8.5 - Patch
 * Bullet Chart - visual improvement based off design for measure bars (dalerasrorov-eb)
 * valueFormatter setter and getter in tooltip and mini-tooltip (adrm)
 * Bullet Chart custom title and subtitle via data and chart API (dalerasrorov-eb)
@@ -285,30 +239,25 @@ Maintentance and deployment fixes
 * Add scatter-plot to kitchen sink (dalerasrorov-eb)
 * Attached click handler to svg to react to voronoi polygon (dalerasrorov-eb)
 
-2.8.4 - Patch
---------------
+## 2.8.4 - Patch
 * Fix - scatter plot vertical gridlines use xTicks (dalerasrorov-eb)
 * Update Contributing doc with Codepen bug template (Golodhros)
 * Dispatch customBrushEnd event when clearing selection (namoscato)
 
-2.8.3 - Patch
---------------
+## 2.8.3 - Patch
 * Fix - crosshair lines have a lower priority than tooltip and overlays
 
-2.8.2 - Patch
---------------
+## 2.8.2 - Patch
 * Fix - crosshair lines have a lower priority than tooltip and overlays
 
-2.8.1 - Patch
---------------
+## 2.8.1 - Patch
 * Fix - Fixed label drawing interruptions with mousemove (dalerasrorov-eb)
 * Fix - improved demos and polished Scatter chart code
 * Fix - Fixed crosshair and mouseover event interruptions
 * Feature - scatter plot data point value highlighter
 * Feature - Scatter Plot's voronoi tooltip
 
-2.8.0 - Minor
---------------
+## 2.8.0 - Minor
 Features:
 * Added Stacked Area Chart Loading state
 * Scatter plot axis format and labels
@@ -320,8 +269,7 @@ Fixes:
 * Documentation fix and color selector in scatter plot demo
 * Brush documentation
 
-2.7.0 - Minor
---------------
+## 2.7.0 - Minor
 Features:
 * Scatter plot
 * Margin accessor improved flexibility
@@ -331,8 +279,7 @@ Fixes:
 * Meta tags in docs
 * Data refresh bug
 
-2.6.0 - Minor
---------------
+## 2.6.0 - Minor
 Features:
 * Added customClick to Grouped and Stacked Bar Charts (dalerasrorov-eb)
 * Added title to Sparkline (dalerasrorov-eb)
@@ -351,8 +298,7 @@ Fixes:
 * Fixed Gridlines updates on Bar, Grouped Bar and Stacked Bar charts
 
 
-2.5.1 - Patch
---------------
+## 2.5.1 - Patch
 * Updating bundle paths (Golodhros)
 * Refactoring Helpers (Golodhros)
 * Adding refactorings to PR options and polishing issue template (Golodhros)
@@ -361,15 +307,13 @@ Fixes:
 * Feature - allow ability to configure stacked area curve (dalerasrorov-eb)
 * Feature - new Bar chart API method to highlight bars (dalerasrorov-eb)
 
-2.5.0 - Minor
---------------
+## 2.5.0 - Minor
 * Feature - ability to reverse stacks (sound-matt)
 * Feature - allow ability to switch Bar's hover behavior (dalerasrorov-eb)
 * Eased compilation requirement for ESlint and updated CHANGELOG (dalerasrorov-eb)
 * Feature - added text formatter function to Donut's API (dalerasrorov-eb)
 
-2.4.12 - Patch
---------------
+## 2.4.12 - Patch
 * Added ESlint task to webpack for demos and added critical rules (dalerasrorov-eb)
 * Eliminated mutation of data in cleanData of the Line chart (dalerasrorov-eb)
 * Allow valueFormat to be an empty string  (sound-matt)
@@ -383,8 +327,7 @@ Fixes:
 * Removed .usePercentage for good from BarChart (mrbongiolo)
 * Feature - Added .numberFormat to MiniTooltip (mrbongiolo)
 
-2.4.11 - Minor
---------------
+## 2.4.11 - Minor
 Features:
 * Added loading states (@amber-eb)
 * Added betweenBarsPadding option to bar charts
@@ -396,29 +339,24 @@ Features:
 Bug fixes:
 * Fixed brush drag and drop (@brandon-vaughan)
 
-2.4.9 - Patch
---------------
+## 2.4.9 - Patch
 Features:
 * Added donut chart empty state (@amber-eb)
 * Additional donut configurations (@amber-eb)
 
-2.4.7 - Patch
---------------
+## 2.4.7 - Patch
 Features:
 * Docs build on release
 
-2.4.4 - Patch
---------------
+## 2.4.4 - Patch
 Bug fixes:
 * Added style build to build process
 
-2.4.3 - Patch
---------------
+## 2.4.3 - Patch
 Bug fixes:
 * Defensive check on text helper
 
-2.4.0 - Minor
---------------
+## 2.4.0 - Minor
 Features:
 * Added glow in highlight points of line and area charts
 * Added Donut and line chart number formatting (@DalerAsrorov)
@@ -429,8 +367,7 @@ Bug fixes:
 * Fixes line chart not rendering gradient on unique line constant values
 * Stacked Area x line fix (@jchen-eb)
 
-2.3.2 - Patch
---------------
+## 2.3.2 - Patch
 Features:
 * Added ordering in bar chart (@DalerAsrorov)
 * Added optional axis labels to line chart
@@ -440,25 +377,22 @@ Bug fixes:
 * Fixed Sparkline for multiple instances (@amber-eb)
 * Fixed broken link in docs
 
-2.3.1 - Patch
---------------
+## 2.3.1 - Patch
 Features:
 * Ability to set sort order for donut (@DalerAsrorov)
 * Getter/setter for marginRatio-Legend and tooltipOffset-Stacked Area
 * Tooltip title improvements (@rpheath)
 
-2.2.0
+## 2.2.0
 
-2.1.1 - Patch
---------------
+## 2.1.1 - Patch
 Features:
 * Added barchart padding
 
 Bug fixes:
 * Fixed IE11 tooltip bug
 
-2.1.0 - Minor
----------------------
+## 2.1.0 - Minor
 Features:
 * Added interactivity to highlight points in line and area charts
 * Added skeleton for docs rework
@@ -469,13 +403,11 @@ Bug fixes:
 * Fixed donut slice highlighting
 * Updated cleanData functions to not override custom properties in data
 
-2.0.4 - Patch
----------------------
+## 2.0.4 - Patch
 Bug Fixes:
 * Check for window in export chart file
 
-2.0.3 - Patch
----------------------
+## 2.0.3 - Patch
 Features:
 * Moved into Webpack 3 (thanks @rwholey)
 * Allow empty data on Stacked Area (thanks @jaylumChen)
@@ -488,10 +420,9 @@ Bug Fixes:
 * Fixed data reload on stacked bar chart and grouped bar chart
 * Updated docs, Donut demo and CDN links
 
-2.0.2 - Failed release
+## 2.0.2 - Failed release
 
-2.0.1 - Patch
----------------------
+## 2.0.1 - Patch
 Bug Fixes:
 * Fixed missing transitions on grouped bar chart and stacked area (thanks @martinmanzo)
 * Moved into Yarn (thanks @rwholey)
@@ -507,8 +438,7 @@ Features:
 * Added curve interpolation attribute to line chart (thanks @dylanmoz)
 
 
-[2.0.0][https://github.com/britecharts/britecharts/compare/1.7.2...2.0.0] - Major Release
------------------
+## 2.0.0 - Major Release
 
 Features:
 * Added number format accessor for legend (thanks @martinmanzo)
@@ -563,26 +493,21 @@ Docs
 * Updated the Contributing guide
 
 
-1.7.2 - Patch
----------------------
+## 1.7.2 - Patch
 * Updated dist with new changes
 
-1.7.1 - Patch
----------------------
+## 1.7.1 - Patch
 * Remove find from stacked area, fixing IE11 bug
 
-[1.7.0][https://github.com/britecharts/britecharts/compare/1.7.0...1.6.0] - Minor Release]
----------------------
+## 1.7.0 - Minor Release
 * Put safety check for Intl on uncompatible browsers
 * Finalize addition of new feature date localization
 
-1.6.1 - Patch
----------------------
+## 1.6.1 - Patch
 * Locale added to stacked area and line
 * Stacked bar made it in to the dist bundle
 
-[1.6.0][https://github.com/britecharts/britecharts/compare/1.6.0...1.5.0] - Minor Release
----------------------
+## 1.6.0 - Minor Release
 Features:
 * New Stacked bar chart (thanks @bung87)
 * New Grouped bar chart (thanks @bung87)
@@ -601,13 +526,11 @@ Bug Fixes:
 * Fixed env arguments in Windows (thanks @Tobbe)
 * Ensure data entry is there in Stacked Area (thanks @tgallice)
 
-1.5.3 - Patch
----------------------
+## 1.5.3 - Patch
 Bug Fixes:
 * Fixed release task problem
 
-1.5.2 - Patch
----------------------
+## 1.5.2 - Patch
 Changes:
 * Docs improvements
 * Horizontal legend item wrapping
@@ -617,25 +540,21 @@ Bug Fixes:
 * Fixed bundle export structure
 
 
-1.5.1 - Patch
----------------------
+## 1.5.1 - Patch
 Changes:
 * Several docs improvements
 
-[1.5.0][https://github.com/britecharts/britecharts/compare/1.5.0...1.4.0] - Minor Release
----------------------
+## 1.5.0 - Minor Release
 Changes:
 * Adding Grid options to area and line charts
 * Allow configuration of Y axis ticks on area and line charts
 * Added custom x format and x tick numbers
 
-1.4.8 - Patch
----------------------
+## 1.4.8 - Patch
 Bug Fixes:
 * Removing d3 dependency from legend chart
 
-1.4.7 - Patch
----------------------
+## 1.4.7 - Patch
 Bug Fixes:
 * Fixed css bundle link on docs and demos
 * Fixed broken links on readme
@@ -649,15 +568,13 @@ Changes:
 * Updated getting started guide
 
 
-1.4.6 - Patch
----------------------
+## 1.4.6 - Patch
 Bug Fixes:
 * Fixing Legend colors
 * Fixing brush styles
 
 
-1.4.5 - Patch
----------------------
+## 1.4.5 - Patch
 Bug Fixes:
 * Fixing Docs font
 
@@ -667,8 +584,7 @@ Changes:
 * Normalizing stacked area x axis
 
 
-1.4.4 - Patch
----------------------
+## 1.4.4 - Patch
 Bug Fixes:
 * Fixed stacked area chart input date formatting
 * Changed stacked area chart curve interpolation
@@ -676,8 +592,7 @@ Bug Fixes:
 Changes:
 * Added Travis configuration
 
-1.4.3 - Patch
----------------------
+## 1.4.3 - Patch
 Changes:
 * Updated Brush styling
 * Added tests for export chart
@@ -685,38 +600,31 @@ Changes:
 Bug Fixes:
 * Fixed export chart with unicode characters on title
 
-1.4.2 - Patch
----------------------
+## 1.4.2 - Patch
 Bug Fixes:
 * Updated color selection on bar chart
 
-1.4.1
---------------
+## 1.4.1
 Failed bump
 
-[1.4.0][https://github.com/britecharts/britecharts/compare/1.4.0...1.3.0] - Minor Release
----------------------
+## 1.4.0 - Minor Release
 Changes:
 * Brush on Line Chart Demo
 * Brush date format changes
 * Added colors to bar chart
 
-1.3.4 - Patch
----------------------
+## 1.3.4 - Patch
 Bug Fixes:
 * Stacked Area fix
 * Bar chart axis
 
-1.3.3 - Patch
----------------------
+## 1.3.3 - Patch
 * Update label line wrapping on bar chart
 
-1.3.2, 1.3.1
---------------
+## 1.3.2, 1.3.1
 Failed bumps
 
-[1.3.0][https://github.com/britecharts/britecharts/compare/1.3.0...1.2.0] - Minor Release
----------------------
+## 1.3.0 - Minor Release
 Changes:
 * Logo Update
 * Bar Chart Percentage setting and axis rework
@@ -726,20 +634,17 @@ Changes:
 Bug Fixes:
 * Docs hamburger menu styling
 
-[1.2.0][https://github.com/britecharts/britecharts/compare/1.2.0...1.1.16] - Minor Release
----------------------
+## 1.2.0 - Minor Release
 Changes:
 * Changed data input of Line Chart
 * Added value, key and topic label accessors to line and stacked are charts
 * Updated docs
 * Added ratio setting to Stacked Area Chart
 
-1.1.17, 1.1.18
---------------
+## 1.1.17, 1.1.18
 Failed bumps
 
-[1.1.16][https://github.com/britecharts/britecharts/compare/1.1.16...1.1.15] - Patch
-----------
+## 1.1.16 - Patch
 Bug Fixes:
 
 * Fixing hour format on Tooltip
@@ -750,14 +655,11 @@ docs:
 * Updating docs and configs, and adding bower config to get ready to publish.
 * Updating package, npmignore, readme and cleaning old index.html file
 
-1.1.15
-----------
+## 1.1.15
 Failed bump
 
-1.1.14 - Patch
-----------
+## 1.1.14 - Patch
 Fixed d3Transition dependency
 
-1.1.13
-----------
+## 1.1.13
 Failed bump
