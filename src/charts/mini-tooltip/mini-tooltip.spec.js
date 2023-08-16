@@ -68,7 +68,7 @@ describe('Mini Tooltip Component', () => {
                     value: 10,
                 },
                 [0, 0],
-                [20, 20]
+                [20, 20],
             );
 
             actual = containerFixture
@@ -89,7 +89,7 @@ describe('Mini Tooltip Component', () => {
                     value: expected,
                 },
                 [0, 0],
-                [20, 20]
+                [20, 20],
             );
 
             actual = parseInt(
@@ -97,7 +97,7 @@ describe('Mini Tooltip Component', () => {
                     .select('.britechart-mini-tooltip')
                     .selectAll('.mini-tooltip-value')
                     .text(),
-                10
+                10,
             );
 
             expect(actual).toEqual(expected);
@@ -133,7 +133,7 @@ describe('Mini Tooltip Component', () => {
                     value: 10000000,
                 },
                 [0, 0],
-                [20, 20]
+                [20, 20],
             );
             actual = containerFixture
                 .select('.britechart-mini-tooltip')

@@ -6,7 +6,7 @@ $tick-size: 1;
 .tick {
     line {
         fill: none;
-        shape-rendering: crispEdges;
+        shape-rendering: crispedges;
         stroke: $grey-500;
         stroke-width: $tick-size;
     }

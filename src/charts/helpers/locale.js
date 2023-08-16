@@ -34,7 +34,7 @@ const isValidLocaleDefinition = (locale) => {
     return (
         typeof locale == 'object' &&
         REQUIRED_LOCALE_DEFINITION_KEYS.every((localeKey) =>
-            locale.hasOwnProperty(localeKey)
+            locale.hasOwnProperty(localeKey),
         )
     );
 };

@@ -42,7 +42,7 @@ function createWeeklyHeatmapChart(optionalColorSchema) {
         heatmapContainer.datum(dataset).call(heatmapChart);
 
         tooltipContainer = select(
-            '.js-heatmap-chart-container .heatmap .metadata-group'
+            '.js-heatmap-chart-container .heatmap .metadata-group',
         );
         tooltipContainer.datum([]).call(tooltip);
     }
@@ -66,6 +66,6 @@ if (select('.js-heatmap-chart-container').node()) {
         '.heatmap',
         function (newSchema) {
             createWeeklyHeatmapChart(newSchema);
-        }
+        },
     );
 }

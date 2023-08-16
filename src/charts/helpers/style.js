@@ -141,7 +141,7 @@ module.exports = (function () {
     const computeDefaultStyleByTagName = (tagName) => {
         let defaultStyle = {},
             element = document.body.appendChild(
-                document.createElement(tagName)
+                document.createElement(tagName),
             ),
             computedStyle = window.getComputedStyle(element);
 
@@ -165,9 +165,8 @@ module.exports = (function () {
         // Precompute the lookup tables.
         [].forEach.call(tagNames, (name) => {
             if (!noStyleTags[name]) {
-                defaultStylesByTagName[name] = computeDefaultStyleByTagName(
-                    name
-                );
+                defaultStylesByTagName[name] =
+                    computeDefaultStyleByTagName(name);
             }
         });
 
@@ -175,9 +174,8 @@ module.exports = (function () {
             tagName = tagName.toUpperCase();
 
             if (!defaultStylesByTagName[tagName]) {
-                defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(
-                    tagName
-                );
+                defaultStylesByTagName[tagName] =
+                    computeDefaultStyleByTagName(tagName);
             }
 
             return defaultStylesByTagName[tagName];

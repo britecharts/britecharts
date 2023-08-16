@@ -13,6 +13,10 @@ const hasClass = (element, className) => {
     return _.contains(element.node().classList, className);
 };
 
+function getFormattedValue(value) {
+    return d3.format('0')(value);
+}
+
 describe('Line Chart', () => {
     let dataset, containerFixture, lineChart;
 
@@ -443,24 +447,26 @@ describe('Line Chart', () => {
                     // remove the html fixture from the DOM
                     afterEach(() => {
                         document.body.removeChild(
-                            document.getElementById('fixture')
+                            document.getElementById('fixture'),
                         );
                     });
 
                     it('should not render the x-axis label', () => {
                         const expected = 0;
-                        const actual = containerFixture.selectAll(
-                            '.x-axis-label'
-                        )['_groups'][0].length;
+                        const actual =
+                            containerFixture.selectAll('.x-axis-label')[
+                                '_groups'
+                            ][0].length;
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should not render any axisLabel', () => {
                         const expected = 0;
-                        const actual = containerFixture.selectAll(
-                            '.y-axis-label'
-                        )['_groups'][0].length;
+                        const actual =
+                            containerFixture.selectAll('.y-axis-label')[
+                                '_groups'
+                            ][0].length;
 
                         expect(actual).toEqual(expected);
                     });
@@ -485,24 +491,26 @@ describe('Line Chart', () => {
                     // remove the html fixture from the DOM
                     afterEach(() => {
                         document.body.removeChild(
-                            document.getElementById('fixture')
+                            document.getElementById('fixture'),
                         );
                     });
 
                     it('should render the x-axis label', () => {
                         let expected = 1,
-                            actual = containerFixture.selectAll(
-                                '.x-axis-label'
-                            )['_groups'][0].length;
+                            actual =
+                                containerFixture.selectAll('.x-axis-label')[
+                                    '_groups'
+                                ][0].length;
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should render any axisLabel', () => {
                         let expected = 1,
-                            actual = containerFixture.selectAll(
-                                '.y-axis-label'
-                            )['_groups'][0].length;
+                            actual =
+                                containerFixture.selectAll('.y-axis-label')[
+                                    '_groups'
+                                ][0].length;
 
                         expect(actual).toEqual(expected);
                     });
@@ -525,14 +533,14 @@ describe('Line Chart', () => {
 
                     afterEach(() => {
                         document.body.removeChild(
-                            document.getElementById('fixture')
+                            document.getElementById('fixture'),
                         );
                     });
 
                     it('the lowest Y-axis value is negative', () => {
                         let values = dataset.data.map((d) => d.value);
                         let minValue = Math.min(...values);
-                        let minValueText = '' + minValue;
+                        let minValueText = getFormattedValue(minValue);
 
                         let yAxis = d3.select('.y-axis-group');
                         let text = yAxis.select('g.tick');
@@ -554,8 +562,8 @@ describe('Line Chart', () => {
 
                         expect(
                             classes.includes(
-                                'horizontal-grid-line--highlighted'
-                            )
+                                'horizontal-grid-line--highlighted',
+                            ),
                         ).toEqual(true);
                     });
                 });
@@ -577,14 +585,14 @@ describe('Line Chart', () => {
 
                     afterEach(() => {
                         document.body.removeChild(
-                            document.getElementById('fixture')
+                            document.getElementById('fixture'),
                         );
                     });
 
                     it('the highest Y-axis value is negative', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick:nth-child(8)');
-                        const expected = '-1';
+                        const expected = getFormattedValue(-1);
                         const actual = text.text();
 
                         expect(actual).toEqual(expected);
@@ -593,7 +601,7 @@ describe('Line Chart', () => {
                     it('the lowest Y-axis value is negative', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick');
-                        const expected = '-4';
+                        const expected = getFormattedValue(-4);
                         const actual = text.text();
 
                         expect(actual).toEqual(expected);
@@ -618,7 +626,7 @@ describe('Line Chart', () => {
 
                     afterEach(() => {
                         document.body.removeChild(
-                            document.getElementById('fixture')
+                            document.getElementById('fixture'),
                         );
                     });
 
@@ -654,7 +662,7 @@ describe('Line Chart', () => {
                 // remove the html fixture from the DOM
                 afterEach(() => {
                     document.body.removeChild(
-                        document.getElementById('fixture')
+                        document.getElementById('fixture'),
                     );
                 });
 
@@ -687,7 +695,7 @@ describe('Line Chart', () => {
                 // remove the html fixture from the DOM
                 afterEach(() => {
                     document.body.removeChild(
-                        document.getElementById('fixture')
+                        document.getElementById('fixture'),
                     );
                 });
 
@@ -725,7 +733,7 @@ describe('Line Chart', () => {
                 // remove the html fixture from the DOM
                 afterEach(() => {
                     document.body.removeChild(
-                        document.getElementById('fixture')
+                        document.getElementById('fixture'),
                     );
                 });
 
@@ -734,7 +742,7 @@ describe('Line Chart', () => {
 
                     lines.nodes().forEach((d) => {
                         expect(d.getAttribute('stroke')).toEqual(
-                            colorMap[d.__data__.topic]
+                            colorMap[d.__data__.topic],
                         );
                     });
                 });
@@ -848,7 +856,7 @@ describe('Line Chart', () => {
                 it('data points container renders a circle for each data point', () => {
                     const expected = dataset.dataByDate.reduce(
                         (accum, dataPoint) => accum + dataPoint.topics.length,
-                        0
+                        0,
                     );
                     const actual = containerFixture
                         .select('.data-points-container')
@@ -866,7 +874,7 @@ describe('Line Chart', () => {
 
                     circles.forEach((circle) => {
                         expect(circle.getAttribute('class')).toEqual(
-                            'data-point-mark'
+                            'data-point-mark',
                         );
                         expect(circle.getAttribute('r')).toEqual('5');
                         expect(circle.getAttribute('cx')).toBeDefined();
@@ -935,7 +943,7 @@ describe('Line Chart', () => {
 
             expect(callback.calls.count()).toEqual(expectedCalls);
             expect(callback.calls.allArgs()[0].length).toEqual(
-                expectedArguments
+                expectedArguments,
             );
         });
 

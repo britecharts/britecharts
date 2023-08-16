@@ -1,5 +1,5 @@
 const path = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const parts = require('./webpack.parts');
 const constants = require('./webpack.constants');
@@ -7,7 +7,7 @@ const constants = require('./webpack.constants');
 const demosConfig = merge([
     {
         mode: 'development',
-        devtool: 'cheap-eval-source-map',
+        devtool: 'eval-source-map',
         entry: constants.DEMOS,
         output: {
             path: path.resolve(__dirname, './demos/build/'),
@@ -40,7 +40,7 @@ const demosConfig = merge([
         },
         optimization: {
             minimize: false,
-            namedModules: true,
+            moduleIds: 'named',
         },
     },
     parts.babelLoader(),
@@ -50,6 +50,7 @@ const demosConfig = merge([
 const testConfig = merge([
     {
         mode: 'development',
+        devtool: 'inline-source-map',
         resolve: {
             modules: [path.resolve(__dirname, './src/charts'), 'node_modules'],
         },
@@ -59,10 +60,10 @@ const testConfig = merge([
     parts.istanbulLoader(),
 ]);
 
-const sandboxConfig = merge([
+const sandboxConfig = merge(
     {
         mode: 'development',
-        devtool: 'cheap-eval-source-map',
+        devtool: 'eval-source-map',
         entry: {
             sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
         },
@@ -79,7 +80,7 @@ const sandboxConfig = merge([
     parts.babelLoader(),
     parts.sassLoader(),
     parts.devServer(8002),
-]);
+);
 
 const CDNBundleConfig = merge([
     {
@@ -166,7 +167,7 @@ const prodChartsConfig = merge([
 const devStylesConfig = merge([
     {
         mode: 'development',
-        devtool: 'cheap-eval-source-map',
+        devtool: 'eval-source-map',
         entry: constants.PATHS.styles,
         output: {
             path: path.resolve(__dirname, './demos/styles/'),
@@ -229,38 +230,38 @@ module.exports = (env) => {
     // eslint-disable-next-line no-console
     console.log('%%%%%%%% env', env);
 
-    if (env === 'demos') {
+    if (env.demos) {
         return [demosConfig, devStylesConfig];
     }
 
-    if (env === 'test') {
+    if (env.test) {
         return testConfig;
     }
 
-    if (env === 'sandbox') {
+    if (env.sandbox) {
         return sandboxConfig;
     }
 
-    if (env === 'prodStyles') {
+    if (env.prodStyles) {
         return [prodStylesConfig, prodStylesConfigMin];
     }
-    if (env === 'prodChartStyles') {
+    if (env.prodChartStyles) {
         return [prodChartsStylesConfig, prodChartsStylesConfigMin];
     }
-    if (env === 'prodBundleConfig') {
+    if (env.prodBundleConfig) {
         return prodBundleConfig;
     }
-    if (env === 'prodChartsConfig') {
+    if (env.prodChartsConfig) {
         return prodChartsConfig;
     }
-    if (env === 'CDNBundleConfig') {
+    if (env.CDNBundleConfig) {
         return CDNBundleConfig;
     }
-    if (env === 'CDNChartsBundleConfig') {
+    if (env.CDNChartsBundleConfig) {
         return CDNChartsBundleConfig;
     }
 
-    if (env === 'production') {
+    if (env.production) {
         return [
             prodBundleConfig,
             prodChartsConfig,

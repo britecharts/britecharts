@@ -1,5 +1,5 @@
 import { extent } from 'd3-array';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import { interpolateHcl } from 'd3-interpolate';
 import { dispatch } from 'd3-dispatch';
@@ -85,7 +85,7 @@ export default function module() {
             'customMouseOver',
             'customMouseOut',
             'customMouseMove',
-            'customClick'
+            'customClick',
         ),
         getValue = ({ value }) => value;
 
@@ -167,7 +167,7 @@ export default function module() {
                     value: +value,
                 },
             ],
-            []
+            [],
         );
     }
 
@@ -252,7 +252,7 @@ export default function module() {
 
         dayLabelsGroup.attr(
             'transform',
-            `translate(-${dayLabelWidth}, ${boxSize / 2})`
+            `translate(-${dayLabelWidth}, ${boxSize / 2})`,
         );
     }
 
@@ -279,33 +279,33 @@ export default function module() {
 
         hourLabelsGroup.attr(
             'transform',
-            `translate(${boxSize / 2}, -${hourLabelHeight})`
+            `translate(${boxSize / 2}, -${hourLabelHeight})`,
         );
     }
 
     function handleMouseOver(e, d, boxList, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOver', e, d, mouse(e), [
+        dispatcher.call('customMouseOver', e, d, pointer(e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
     function handleMouseMove(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', e, d, mouse(e), [
+        dispatcher.call('customMouseMove', e, d, pointer(e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
     function handleMouseOut(e, d, boxList, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOut', e, d, mouse(e), [
+        dispatcher.call('customMouseOut', e, d, pointer(e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
     function handleClick(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customClick', e, d, mouse(e), [
+        dispatcher.call('customClick', e, d, pointer(e), [
             chartWidth,
             chartHeight,
         ]);

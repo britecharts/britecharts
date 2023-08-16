@@ -20,6 +20,6 @@ module.exports = function (grunt) {
     grunt.registerTask(
         'docs',
         'Generates docs and triggers server to view them',
-        ['jsdoc:dist', 'sync']
+        ['jsdoc:dist', 'sync'],
     );
 };

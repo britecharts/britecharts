@@ -7,7 +7,7 @@ import * as d3Format from 'd3-format';
 import { easeQuadInOut } from 'd3-ease';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleLinear, scaleBand, scaleOrdinal } from 'd3-scale';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -133,7 +133,7 @@ export default function module() {
             'customMouseOver',
             'customMouseOut',
             'customMouseMove',
-            'customClick'
+            'customClick',
         );
 
     /**
@@ -177,25 +177,25 @@ export default function module() {
     function addMouseEvents() {
         if (shouldShowTooltip()) {
             svg.select('.chart-group')
-                .on('mouseover', function (d) {
-                    handleMouseOver(this, d);
+                .on('mouseover', function (event, d) {
+                    handleMouseOver(this, event, d);
                 })
-                .on('mouseout', function (d) {
-                    handleMouseOut(this, d);
+                .on('mouseout', function (event, d) {
+                    handleMouseOut(this, event, d);
                 })
-                .on('mousemove', function (d) {
-                    handleMouseMove(this, d);
+                .on('mousemove', function (event, d) {
+                    handleMouseMove(this, event, d);
                 })
-                .on('click', function (d) {
-                    handleCustomClick(this, d);
+                .on('click', function (event, d) {
+                    handleCustomClick(this, event, d);
                 });
         }
 
         svg.selectAll('.bar')
-            .on('mouseover', function (d) {
+            .on('mouseover', function (event, d) {
                 handleBarsMouseOver(this, d);
             })
-            .on('mouseout', function (d) {
+            .on('mouseout', function (event, d) {
                 handleBarsMouseOut(this, d);
             });
     }
@@ -210,7 +210,7 @@ export default function module() {
             .selectAll('.tick text')
             .attr(
                 'transform',
-                `translate(${yTickTextOffset['x']}, ${yTickTextOffset['y']})`
+                `translate(${yTickTextOffset['x']}, ${yTickTextOffset['y']})`,
             );
     }
 
@@ -222,7 +222,7 @@ export default function module() {
         if (isHorizontal) {
             xAxis = axisBottom(xScale).ticks(
                 xTicks,
-                locale.format(numberFormat)
+                locale.format(numberFormat),
             );
             yAxis = axisLeft(yScale);
         } else {
@@ -610,7 +610,7 @@ export default function module() {
         animationDelays = range(
             animationDelayStep,
             (groups.length + 1) * animationDelayStep,
-            animationDelayStep
+            animationDelayStep,
         );
         if (isHorizontal) {
             drawHorizontalBars(series);
@@ -629,7 +629,7 @@ export default function module() {
      * @private
      */
     function getMousePosition(event) {
-        return mouse(event);
+        return pointer(event);
     }
 
     /**
@@ -647,14 +647,14 @@ export default function module() {
                 (d2) =>
                     Math.abs(
                         adjustedMouseX >=
-                            xScale(d2[nameLabel]) + xScale2(d2[groupLabel])
+                            xScale(d2[nameLabel]) + xScale2(d2[groupLabel]),
                     ) &&
                     Math.abs(
                         adjustedMouseX -
                             xScale2(d2[groupLabel]) -
                             xScale(d2[nameLabel]) <=
-                            epsilon
-                    )
+                            epsilon,
+                    ),
             );
 
             if (found) {
@@ -682,8 +682,8 @@ export default function module() {
                 (d2) =>
                     Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) &&
                     Math.abs(
-                        adjustedMouseY - yScale(d2[nameLabel]) <= epsilon * 2
-                    )
+                        adjustedMouseY - yScale(d2[nameLabel]) <= epsilon * 2,
+                    ),
             );
 
             if (found) {
@@ -722,8 +722,8 @@ export default function module() {
      * @param  {obj} e the fired event
      * @private
      */
-    function handleMouseMove(e) {
-        let [mouseX, mouseY] = getMousePosition(e),
+    function handleMouseMove(e, event) {
+        let [mouseX, mouseY] = getMousePosition(event),
             dataPoint = isHorizontal
                 ? getNearestDataPoint2(mouseY)
                 : getNearestDataPoint(mouseX),
@@ -748,7 +748,7 @@ export default function module() {
                 dataPoint,
                 nameToColorMap,
                 x,
-                y
+                y,
             );
         }
     }
@@ -757,13 +757,13 @@ export default function module() {
      * Click handler, shows data that was clicked and passes to the user
      * @private
      */
-    function handleCustomClick(e) {
-        let [mouseX, mouseY] = getMousePosition(e);
+    function handleCustomClick(e, event) {
+        let [mouseX, mouseY] = getMousePosition(event);
         let dataPoint = isHorizontal
             ? getNearestDataPoint2(mouseY)
             : getNearestDataPoint(mouseX);
 
-        dispatcher.call('customClick', e, dataPoint, mouse(e));
+        dispatcher.call('customClick', e, dataPoint, pointer(event));
     }
 
     /**
@@ -771,17 +771,17 @@ export default function module() {
      * It also resets the container of the vertical marker
      * @private
      */
-    function handleMouseOut(e, d) {
+    function handleMouseOut(e, event, d) {
         svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-        dispatcher.call('customMouseOut', e, d, mouse(e));
+        dispatcher.call('customMouseOut', e, d, pointer(event));
     }
 
     /**
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d) {
-        dispatcher.call('customMouseOver', e, d, mouse(e));
+    function handleMouseOver(e, event, d) {
+        dispatcher.call('customMouseOver', e, d, pointer(event));
     }
 
     /**
@@ -824,7 +824,7 @@ export default function module() {
     function moveTooltipOriginXY(originXPosition, originYPosition) {
         svg.select('.metadata-group').attr(
             'transform',
-            `translate(${originXPosition},${originYPosition})`
+            `translate(${originXPosition},${originYPosition})`,
         );
     }
 
@@ -858,7 +858,7 @@ export default function module() {
                         total: sum(permute(data.value, groups)),
                         key: data.key,
                     },
-                    data.value
+                    data.value,
                 );
             });
     }

@@ -16,7 +16,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
     let scatterChart = scatterPlot();
     let tooltip = miniTooltip().title('Temperature (C)');
     let scatterPlotContainer = select(
-        '.js-scatter-plot-chart-tooltip-container'
+        '.js-scatter-plot-chart-tooltip-container',
     );
     let containerWidth = scatterPlotContainer.node()
         ? scatterPlotContainer.node().getBoundingClientRect().width
@@ -56,7 +56,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
         tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
 
         tooltipContainer = select(
-            '.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group'
+            '.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group',
         );
         tooltipContainer.datum([]).call(tooltip);
     }
@@ -66,7 +66,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
     let scatterChart = scatterPlot();
     let tooltip = miniTooltip();
     let scatterPlotContainer = select(
-        '.js-scatter-plot-container-with-hollow-circles'
+        '.js-scatter-plot-container-with-hollow-circles',
     );
     let containerWidth = scatterPlotContainer.node()
         ? scatterPlotContainer.node().getBoundingClientRect().width
@@ -99,7 +99,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
         tooltipContainer = select(
-            '.js-scatter-plot-container-with-hollow-circles .scatter-plot .metadata-group'
+            '.js-scatter-plot-container-with-hollow-circles .scatter-plot .metadata-group',
         );
         tooltipContainer.datum([]).call(tooltip);
     }
@@ -125,6 +125,6 @@ if (select('.js-scatter-plot-chart-tooltip-container').node()) {
         '.scatter-plot',
         function (newSchema) {
             createScatterPlotWithSingleSource(newSchema);
-        }
+        },
     );
 }

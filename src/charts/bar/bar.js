@@ -5,7 +5,7 @@ import { color } from 'd3-color';
 import { dispatch } from 'd3-dispatch';
 import * as d3Format from 'd3-format';
 import { scaleLinear, scaleBand } from 'd3-scale';
-import { mouse, select } from 'd3-selection';
+import { pointer, select } from 'd3-selection';
 import 'd3-transition';
 
 import { wrapTextWithEllipses } from '../helpers/text';
@@ -136,8 +136,8 @@ export default function module() {
                 color(
                     chartGradientColors
                         ? chartGradientColors[1]
-                        : nameToColorMap[name]
-                ).darker()
+                        : nameToColorMap[name],
+                ).darker(),
             ),
         orderingFunction,
         // To Deprecate
@@ -159,7 +159,7 @@ export default function module() {
             'customMouseOver',
             'customMouseOut',
             'customMouseMove',
-            'customClick'
+            'customClick',
         ),
         // extractors
         getName = ({ name }) => name,
@@ -240,7 +240,7 @@ export default function module() {
                 'transform',
                 `translate(${margin.left + yAxisPaddingBetweenChart}, ${
                     margin.top
-                })`
+                })`,
             );
 
         svg.append('g').classed('loading-state-group', true);
@@ -342,7 +342,7 @@ export default function module() {
                         ...acc,
                         [name]: colorSchema[i % colorSchema.length],
                     }),
-                    {}
+                    {},
                 );
     }
 
@@ -452,7 +452,7 @@ export default function module() {
 
         svg.selectAll('.y-axis-group .tick text').call(
             wrapText,
-            margin.left - yAxisPaddingBetweenChart
+            margin.left - yAxisPaddingBetweenChart,
         );
 
         drawAxisLabels();
@@ -507,17 +507,31 @@ export default function module() {
             .attr('x', 0)
             .attr('height', yScale.bandwidth())
             .attr('width', ({ value }) => xScale(value))
-            .on('mouseover', function (d, _, barList) {
-                handleMouseOver(this, d, barList, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(
+                    event,
+                    this,
+                    d,
+                    bars.enter().selectAll('.bar'),
+                    chartWidth,
+                    chartHeight,
+                );
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(event, this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function (d, _, barList) {
-                handleMouseOut(this, d, barList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(
+                    event,
+                    this,
+                    d,
+                    bars.enter().selectAll('.bar'),
+                    chartWidth,
+                    chartHeight,
+                );
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(event, this, d, chartWidth, chartHeight);
             })
             .merge(bars)
             .attr('x', 0)
@@ -541,17 +555,31 @@ export default function module() {
             .attr('y', chartHeight)
             .attr('height', yScale.bandwidth())
             .attr('width', ({ value }) => xScale(value))
-            .on('mouseover', function (d, _, barList) {
-                handleMouseOver(this, d, barList, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(
+                    event,
+                    this,
+                    d,
+                    bars.enter().selectAll('.bar'),
+                    chartWidth,
+                    chartHeight,
+                );
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(event, this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function (d, _, barList) {
-                handleMouseOut(this, d, barList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(
+                    event,
+                    this,
+                    d,
+                    bars.enter().selectAll('.bar'),
+                    chartWidth,
+                    chartHeight,
+                );
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(event, this, d, chartWidth, chartHeight);
             });
 
         bars.attr('x', 0)
@@ -579,17 +607,31 @@ export default function module() {
             .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale.bandwidth())
             .attr('height', ({ value }) => chartHeight - yScale(value))
-            .on('mouseover', function (d, _, barList) {
-                handleMouseOver(this, d, barList, chartWidth, chartHeight);
+            .on('mouseover', function (evetn, d) {
+                handleMouseOver(
+                    evetn,
+                    this,
+                    d,
+                    bars.enter().selectAll('.bar'),
+                    chartWidth,
+                    chartHeight,
+                );
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(event, this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function (d, _, barList) {
-                handleMouseOut(this, d, barList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(
+                    event,
+                    this,
+                    d,
+                    bars.enter().selectAll('.bar'),
+                    chartWidth,
+                    chartHeight,
+                );
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(event, this, d, chartWidth, chartHeight);
             })
             .merge(bars)
             .attr('x', ({ name }) => xScale(name))
@@ -617,17 +659,31 @@ export default function module() {
             .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale.bandwidth())
             .attr('height', ({ value }) => chartHeight - yScale(value))
-            .on('mouseover', function (d, _, barList) {
-                handleMouseOver(this, d, barList, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(
+                    event,
+                    this,
+                    d,
+                    bars.enter().selectAll('.bar'),
+                    chartWidth,
+                    chartHeight,
+                );
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(event, this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function (d, _, barList) {
-                handleMouseOut(this, d, barList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(
+                    event,
+                    this,
+                    d,
+                    bars.enter().selectAll('.bar'),
+                    chartWidth,
+                    chartHeight,
+                );
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(event, this, d, chartWidth, chartHeight);
             })
             .merge(bars)
             .attr('x', ({ name }) => xScale(name))
@@ -807,25 +863,27 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOver(e, d, barList, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOver', e, d, mouse(e), [
+    function handleMouseOver(
+        event,
+        element,
+        d,
+        barList,
+        chartWidth,
+        chartHeight,
+    ) {
+        dispatcher.call('customMouseOver', element, d, pointer(event), [
             chartWidth,
             chartHeight,
         ]);
         highlightBarFunction = highlightBarFunction || function () {};
 
         if (hasSingleBarHighlight) {
-            highlightBarFunction(select(e));
+            highlightBarFunction(select(element));
 
             return;
         }
 
-        barList.forEach((barRect) => {
-            if (barRect === e) {
-                return;
-            }
-            highlightBarFunction(select(barRect));
-        });
+        highlightBarFunction(barList.filter((bar) => bar.name !== d.name));
     }
 
     /**
@@ -833,8 +891,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseMove(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', e, d, mouse(e), [
+    function handleMouseMove(event, e, d, chartWidth, chartHeight) {
+        dispatcher.call('customMouseMove', e, d, pointer(event), [
             chartWidth,
             chartHeight,
         ]);
@@ -845,15 +903,20 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOut(e, d, barList, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOut', e, d, mouse(e), [
+    function handleMouseOut(
+        event,
+        element,
+        d,
+        barList,
+        chartWidth,
+        chartHeight,
+    ) {
+        dispatcher.call('customMouseOut', element, d, pointer(event), [
             chartWidth,
             chartHeight,
         ]);
 
-        barList.forEach((barRect) => {
-            select(barRect).attr('fill', ({ name }) => computeColor(name));
-        });
+        barList.attr('fill', (d) => computeColor(d?.name));
     }
 
     /**
@@ -861,8 +924,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleClick(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customClick', e, d, mouse(e), [
+    function handleClick(event, e, d, chartWidth, chartHeight) {
+        dispatcher.call('customClick', e, d, pointer(event), [
             chartWidth,
             chartHeight,
         ]);

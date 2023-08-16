@@ -62,14 +62,14 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-grouped-bar-chart-tooltip-container .metadata-group'
+            '.js-grouped-bar-chart-tooltip-container .metadata-group',
         );
         tooltipContainer.datum([]).call(chartTooltip);
 
         select('#button').on('click', function () {
             groupedBar.exportChart(
                 'grouped-bar.png',
-                'Britecharts Grouped Bar'
+                'Britecharts Grouped Bar',
             );
         });
     }
@@ -157,7 +157,7 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-grouped-bar-chart-fixed-container .metadata-group'
+            '.js-grouped-bar-chart-fixed-container .metadata-group',
         );
         tooltipContainer.datum([]).call(chartTooltip);
     }
@@ -207,6 +207,6 @@ if (select('.js-grouped-bar-chart-tooltip-container').node()) {
     colorSelectorHelper.createColorSelector(
         '.js-color-selector-container',
         '.grouped-bar',
-        creategroupedBarChartWithTooltip
+        creategroupedBarChartWithTooltip,
     );
 }

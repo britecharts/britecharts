@@ -143,6 +143,6 @@ if (select('.js-legend-chart-container').node()) {
     colorSelectorHelper.createColorSelector(
         '.js-color-selector-container',
         '.donut-chart',
-        createDonutChart
+        createDonutChart,
     );
 }

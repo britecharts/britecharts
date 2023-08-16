@@ -23,7 +23,7 @@ describe('Date Helper', () => {
         it('should transform milliseconds to days', () => {
             const expected = 2;
             const actual = date.convertMillisecondsToDays(
-                expected * 24 * 60 * 60 * 1000
+                expected * 24 * 60 * 60 * 1000,
             );
 
             expect(actual).toEqual(expected);

@@ -13,7 +13,7 @@ export default {
     },
     setDataByKey(
         key = throwUndefinedError('setDataByKey', 'key'),
-        data = throwUndefinedError('setDataByKey', 'data')
+        data = throwUndefinedError('setDataByKey', 'data'),
     ) {
         let currentData = this.getData();
 

@@ -42,7 +42,7 @@ describe('Export Helper', () => {
                     .call(
                         legendChart,
                         d3.select('.test-container svg'),
-                        testTitle
+                        testTitle,
                     )
                     .match(testTitle).length;
 
@@ -59,7 +59,7 @@ describe('Export Helper', () => {
                     .call(
                         legendChart,
                         d3.select('.test-container svg'),
-                        testTitle
+                        testTitle,
                     )
                     .match(testTitle).length;
 
@@ -70,7 +70,7 @@ describe('Export Helper', () => {
 
     describe('loadImage', () => {
         it('should return a promise', () => {
-            expect(exportChart.loadImage()).toBeInstanceOf(Promise);
+            expect(exportChart.loadImage(regularHTML)).toBeInstanceOf(Promise);
         });
     });
 
@@ -83,8 +83,8 @@ describe('Export Helper', () => {
 
                 exportChart.createImage(regularHTML, callbackSpy);
                 const actualCalls = callbackSpy.calls.count();
-                const actualArgumentsCount = callbackSpy.calls.allArgs()[0]
-                    .length;
+                const actualArgumentsCount =
+                    callbackSpy.calls.allArgs()[0].length;
 
                 expect(actualCalls).toEqual(expectedCalls);
                 expect(actualArgumentsCount).toEqual(expectedArgumentsCount);
@@ -95,7 +95,7 @@ describe('Export Helper', () => {
                 const expected = `The callback provided should be a function, we got a ${typeof notAFunc} instead.`;
 
                 expect(() =>
-                    exportChart.createImage(regularHTML, notAFunc)
+                    exportChart.createImage(regularHTML, notAFunc),
                 ).toThrow(new Error(expected));
             });
         });
@@ -113,7 +113,7 @@ describe('Export Helper', () => {
                 const image = exportChart.createImage(regularHTML);
                 const actual = exportChart.drawImageOnCanvas(
                     image,
-                    document.createElement('canvas')
+                    document.createElement('canvas'),
                 ).tagName;
 
                 expect(actual).toEqual(expected);
@@ -133,7 +133,7 @@ describe('Export Helper', () => {
                 let image = exportChart.createImage(specialHTML);
                 let actual = exportChart.drawImageOnCanvas(
                     image,
-                    document.createElement('canvas')
+                    document.createElement('canvas'),
                 ).tagName;
 
                 expect(actual).toEqual(expected);

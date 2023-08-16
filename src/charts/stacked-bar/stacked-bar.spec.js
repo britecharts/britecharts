@@ -165,8 +165,9 @@ describe('Stacked Bar Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset).call(stackedBarChart);
-                actual = containerFixture.selectAll('.stacked-bar').nodes()
-                    .length;
+                actual = containerFixture
+                    .selectAll('.stacked-bar')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -190,8 +191,9 @@ describe('Stacked Bar Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset).call(stackedBarChart);
-                actual = containerFixture.selectAll('.stacked-bar .bar').nodes()
-                    .length;
+                actual = containerFixture
+                    .selectAll('.stacked-bar .bar')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -265,7 +267,7 @@ describe('Stacked Bar Chart', () => {
 
                 bars.nodes().forEach((d) => {
                     expect(d.getAttribute('fill')).toEqual(
-                        colorMap[d.__data__.stack]
+                        colorMap[d.__data__.stack],
                     );
                 });
             });
@@ -296,7 +298,7 @@ describe('Stacked Bar Chart', () => {
         describe('when hovering', () => {
             it('mouseover should trigger a callback', () => {
                 const chart = containerFixture.selectAll(
-                    '.stacked-bar .chart-group'
+                    '.stacked-bar .chart-group',
                 );
                 const callbackSpy = jasmine.createSpy('callback');
                 const expectedCallCount = 1;
@@ -307,13 +309,13 @@ describe('Stacked Bar Chart', () => {
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(
-                    expectedArgumentsCount
+                    expectedArgumentsCount,
                 );
             });
 
             it('mouseout should trigger a callback', () => {
                 const chart = containerFixture.selectAll(
-                    '.stacked-bar .chart-group'
+                    '.stacked-bar .chart-group',
                 );
                 const callbackSpy = jasmine.createSpy('callback');
                 const expectedCallCount = 1;
@@ -324,7 +326,7 @@ describe('Stacked Bar Chart', () => {
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(
-                    expectedArgumentsCount
+                    expectedArgumentsCount,
                 );
             });
         });

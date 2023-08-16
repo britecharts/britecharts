@@ -97,7 +97,7 @@ describe('Sparkline Chart', () => {
             const expected = 1;
             const actual = _.filter(
                 containerFixture.selectAll('.area-gradient').nodes(),
-                (f) => f && hasIdWithPrefix(f, 'sparkline-area-gradient')
+                (f) => f && hasIdWithPrefix(f, 'sparkline-area-gradient'),
             ).length;
 
             expect(actual).toEqual(expected);
@@ -114,7 +114,7 @@ describe('Sparkline Chart', () => {
             const expected = 1;
             const actual = _.filter(
                 containerFixture.selectAll('.line-gradient').nodes(),
-                (f) => f && hasIdWithPrefix(f, 'sparkline-line-gradient')
+                (f) => f && hasIdWithPrefix(f, 'sparkline-line-gradient'),
             ).length;
 
             expect(actual).toEqual(expected);
@@ -141,8 +141,9 @@ describe('Sparkline Chart', () => {
 
                 sparklineChart.titleText(expected);
                 containerFixture.datum(dataset).call(sparklineChart);
-                actual = containerFixture.selectAll('.sparkline-text').node()
-                    .textContent;
+                actual = containerFixture
+                    .selectAll('.sparkline-text')
+                    .node().textContent;
 
                 expect(actual).toEqual(expected);
             });
@@ -207,7 +208,7 @@ describe('Sparkline Chart', () => {
                 containerFixture.datum(dataset).call(sparklineChart);
                 const actual = _.filter(
                     containerFixture.selectAll('.clip-path').nodes(),
-                    (f) => f && hasIdWithPrefix(f, 'maskingClip')
+                    (f) => f && hasIdWithPrefix(f, 'maskingClip'),
                 ).length;
 
                 expect(actual).toEqual(expected);

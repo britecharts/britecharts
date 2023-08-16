@@ -65,14 +65,14 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-stacked-bar-chart-tooltip-container .metadata-group'
+            '.js-stacked-bar-chart-tooltip-container .metadata-group',
         );
         tooltipContainer.datum([]).call(chartTooltip);
 
         select('#button').on('click', function () {
             stackedBar.exportChart(
                 'stacked-bar.png',
-                'Britecharts Stacked Bar'
+                'Britecharts Stacked Bar',
             );
         });
     }
@@ -162,7 +162,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-stacked-bar-chart-fixed-container .metadata-group'
+            '.js-stacked-bar-chart-fixed-container .metadata-group',
         );
         tooltipContainer.datum([]).call(chartTooltip);
     }
@@ -212,6 +212,6 @@ if (select('.js-stacked-bar-chart-tooltip-container').node()) {
     colorSelectorHelper.createColorSelector(
         '.js-color-selector-container',
         '.stacked-bar',
-        createStackedBarChartWithTooltip
+        createStackedBarChartWithTooltip,
     );
 }

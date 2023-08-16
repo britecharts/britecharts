@@ -74,7 +74,7 @@ describe('Legend', () => {
 
             lines.each(function (d, index) {
                 expect(
-                    parseInt(d3.select(elements[index]).attr('data-item'), 10)
+                    parseInt(d3.select(elements[index]).attr('data-item'), 10),
                 ).toEqual(dataset[index].id);
             });
         });
@@ -191,7 +191,7 @@ describe('Legend', () => {
 
                 texts.each(function (d, index) {
                     expect(elements[index]).toEqual(
-                        dataset[index]['quantity'] + unit
+                        dataset[index]['quantity'] + unit,
                     );
                 });
             });
@@ -278,8 +278,8 @@ describe('Legend', () => {
                     expect(
                         parseInt(
                             d3.select(elements[index]).attr('data-item'),
-                            10
-                        )
+                            10,
+                        ),
                     ).toEqual(dataset[index].id);
                 });
             });
@@ -324,7 +324,7 @@ describe('Legend', () => {
                 // remove the html fixture from the DOM
                 afterEach(() => {
                     document.body.removeChild(
-                        document.getElementById('fixture')
+                        document.getElementById('fixture'),
                     );
                 });
 

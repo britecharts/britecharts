@@ -49,7 +49,7 @@ const { dataEditor, configEditor } = editorHelpers({
 const charts = Object.keys(defaultConfig);
 const tooltipTypes = Object.keys(tooltipConfigs).reduce(
     (m, i) => ({ ...m, [i]: i }),
-    {}
+    {},
 );
 
 const state = {
@@ -102,7 +102,7 @@ function setInitialData() {
 function setHandlers() {
     d3.select(`.${chartSelectorClass}`).on(
         'change',
-        _handleChartSelectorChange
+        _handleChartSelectorChange,
     );
     d3.select(`.${dataSelectorClass}`).on('change', _handleDataSelectorChange);
 
@@ -112,13 +112,11 @@ function setHandlers() {
     d3.select(`.${configSubmitButtonClass}`).on('click', _handleConfigUpdate);
     d3.select(`.${configResetButtonClass}`).on('click', _handleConfigReset);
 
-    d3.select(`.${configAddTooltipClass}`).on(
-        'click',
-        _handleAddTooltip.bind(null, tooltipTypes.basic)
+    d3.select(`.${configAddTooltipClass}`).on('click', () =>
+        _handleAddTooltip(tooltipTypes.basic),
     );
-    d3.select(`.${configAddMiniTooltipClass}`).on(
-        'click',
-        _handleAddTooltip.bind(null, tooltipTypes.mini)
+    d3.select(`.${configAddMiniTooltipClass}`).on('click', () =>
+        _handleAddTooltip(tooltipTypes.mini),
     );
 }
 
@@ -160,7 +158,7 @@ function setChartSelectorType() {
 function setNewChart(
     chartData = getCurrentData(),
     chartInitString = getCurrentConfig(),
-    chartType = getCurrentType()
+    chartType = getCurrentType(),
 ) {
     domHelpers.removeBriteChartContainer();
     domHelpers.addBritechartContainer();
@@ -177,12 +175,13 @@ function setNewChart(
     try {
         eval(chartInitString);
     } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
     }
 
     d3.select(`.${britechartContainerClass}`).datum(chartData).call(chart);
     d3.select(
-        `.${britechartContainerClass} ${constants.chartConfigs[chartType].tooltipSelector}`
+        `.${britechartContainerClass} ${constants.chartConfigs[chartType].tooltipSelector}`,
     )
         .datum([])
         .call(tip);
@@ -303,7 +302,7 @@ function _handleDataUpdate() {
         freshData = evalDataString(rawData);
     } catch (e) {
         errors.push(
-            new Error('Could not parse the data from the input field', rawData)
+            new Error('Could not parse the data from the input field', rawData),
         );
     }
 

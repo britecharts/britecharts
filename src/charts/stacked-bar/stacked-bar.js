@@ -8,7 +8,7 @@ import { easeQuadInOut } from 'd3-ease';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleOrdinal, scaleBand, scaleLinear } from 'd3-scale';
 import { stack } from 'd3-shape';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -133,7 +133,7 @@ export default function module() {
             'customMouseOver',
             'customMouseOut',
             'customMouseMove',
-            'customClick'
+            'customClick',
         );
 
     /**
@@ -177,17 +177,17 @@ export default function module() {
     function addMouseEvents() {
         if (shouldShowTooltip()) {
             svg.select('.chart-group')
-                .on('mouseover', function (d) {
-                    handleMouseOver(this, d);
+                .on('mouseover', function (event, d) {
+                    handleMouseOver(event, this, d);
                 })
-                .on('mouseout', function (d) {
-                    handleMouseOut(this, d);
+                .on('mouseout', function (event, d) {
+                    handleMouseOut(event, this, d);
                 })
-                .on('mousemove', function (d) {
-                    handleMouseMove(this, d);
+                .on('mousemove', function (event, d) {
+                    handleMouseMove(event, this, d);
                 })
-                .on('click', function (d) {
-                    handleClick(this, d);
+                .on('click', function (event, d) {
+                    handleClick(event, this, d);
                 });
         }
 
@@ -206,7 +206,7 @@ export default function module() {
             .selectAll('.tick text')
             .attr(
                 'transform',
-                `translate(${yTickTextXOffset}, ${yTickTextYOffset})`
+                `translate(${yTickTextXOffset}, ${yTickTextYOffset})`,
             );
     }
 
@@ -218,7 +218,7 @@ export default function module() {
         if (isHorizontal) {
             xAxis = axisBottom(xScale).ticks(
                 xTicks,
-                locale.format(numberFormat)
+                locale.format(numberFormat),
             );
             yAxis = axisLeft(yScale);
         } else {
@@ -596,7 +596,7 @@ export default function module() {
         animationDelays = range(
             animationDelayStep,
             (layers[0].length + 1) * animationDelayStep,
-            animationDelayStep
+            animationDelayStep,
         );
 
         if (isHorizontal) {
@@ -631,7 +631,7 @@ export default function module() {
      * @private
      */
     function getMousePosition(event) {
-        return mouse(event);
+        return pointer(event);
     }
 
     /**
@@ -679,7 +679,7 @@ export default function module() {
      */
     function getYMax() {
         const uniqueDataPoints = new Set(
-            transformedData.map(({ total }) => total)
+            transformedData.map(({ total }) => total),
         );
         const isAllZero =
             uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
@@ -697,7 +697,7 @@ export default function module() {
      */
     function handleBarsMouseOver() {
         select(this).attr('fill', () =>
-            color(select(this.parentNode).attr('fill')).darker()
+            color(select(this.parentNode).attr('fill')).darker(),
         );
     }
 
@@ -714,8 +714,8 @@ export default function module() {
      * and updates metadata related to it
      * @private
      */
-    function handleMouseMove(e) {
-        let [mouseX, mouseY] = getMousePosition(e),
+    function handleMouseMove(event) {
+        let [mouseX, mouseY] = getMousePosition(event),
             dataPoint = isHorizontal
                 ? getNearestDataPoint2(mouseY)
                 : getNearestDataPoint(mouseX),
@@ -736,11 +736,11 @@ export default function module() {
             // Emit event with xPosition for tooltip or similar feature
             dispatcher.call(
                 'customMouseMove',
-                e,
+                event,
                 dataPoint,
                 nameToColorMap,
                 x,
-                y
+                y,
             );
         }
     }
@@ -750,13 +750,13 @@ export default function module() {
      * (or it's nearest point)
      * @private
      */
-    function handleClick(e) {
-        let [mouseX, mouseY] = getMousePosition(e);
+    function handleClick(event, e) {
+        let [mouseX, mouseY] = getMousePosition(event);
         let dataPoint = isHorizontal
             ? getNearestDataPoint2(mouseY)
             : getNearestDataPoint(mouseX);
 
-        dispatcher.call('customClick', e, dataPoint, mouse(e));
+        dispatcher.call('customClick', e, dataPoint, pointer(event));
     }
 
     /**
@@ -764,17 +764,17 @@ export default function module() {
      * It also resets the container of the vertical marker
      * @private
      */
-    function handleMouseOut(e, d) {
+    function handleMouseOut(event, e, d) {
         svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-        dispatcher.call('customMouseOut', e, d, mouse(e));
+        dispatcher.call('customMouseOut', e, d, pointer(event));
     }
 
     /**
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d) {
-        dispatcher.call('customMouseOver', e, d, mouse(e));
+    function handleMouseOver(event, e, d) {
+        dispatcher.call('customMouseOver', e, d, pointer(event));
     }
 
     /**
@@ -800,7 +800,7 @@ export default function module() {
     function moveTooltipOriginXY(originXPosition, originYPosition) {
         svg.select('.metadata-group').attr(
             'transform',
-            `translate(${originXPosition},${originYPosition})`
+            `translate(${originXPosition},${originYPosition})`,
         );
     }
 
@@ -838,7 +838,7 @@ export default function module() {
                         total: sum(permute(data.value, stacks)),
                         key: data.key,
                     },
-                    data.value
+                    data.value,
                 );
             });
     }

@@ -45,7 +45,7 @@ function createBrushChart(optionalColorSchema) {
                 if (brushRangeStart && brushRangeEnd) {
                     const filteredDataByBrushRange = filterData(
                         brushRangeStart,
-                        brushRangeEnd
+                        brushRangeEnd,
                     );
                     createLineChart(colorSchema, filteredDataByBrushRange);
                 } else {
@@ -109,7 +109,7 @@ function createLineChart(optionalColorSchema, optionalData) {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-line-chart-container .metadata-group .hover-marker'
+            '.js-line-chart-container .metadata-group .hover-marker',
         );
         tooltipContainer.datum([]).call(chartTooltip);
     }
@@ -136,17 +136,16 @@ function createLineChartWithSingleLine() {
             .grid('vertical')
             .width(containerWidth)
             .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', function (
-                dataPoint,
-                topicColorMap,
-                dataPointXPosition
-            ) {
-                chartTooltip.update(
-                    dataPoint,
-                    topicColorMap,
-                    dataPointXPosition
-                );
-            })
+            .on(
+                'customMouseMove',
+                function (dataPoint, topicColorMap, dataPointXPosition) {
+                    chartTooltip.update(
+                        dataPoint,
+                        topicColorMap,
+                        dataPointXPosition,
+                    );
+                },
+            )
             .on('customMouseOut', chartTooltip.hide);
 
         container.datum(dataset).call(lineChart2);
@@ -157,7 +156,7 @@ function createLineChartWithSingleLine() {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-single-line-chart-container .metadata-group .vertical-marker-container'
+            '.js-single-line-chart-container .metadata-group .vertical-marker-container',
         );
         tooltipContainer.datum([]).call(chartTooltip);
 
@@ -188,17 +187,16 @@ function createLineChartWithFixedHeight() {
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
-            .on('customMouseMove', function (
-                dataPoint,
-                topicColorMap,
-                dataPointXPosition
-            ) {
-                chartTooltip.update(
-                    dataPoint,
-                    topicColorMap,
-                    dataPointXPosition
-                );
-            })
+            .on(
+                'customMouseMove',
+                function (dataPoint, topicColorMap, dataPointXPosition) {
+                    chartTooltip.update(
+                        dataPoint,
+                        topicColorMap,
+                        dataPointXPosition,
+                    );
+                },
+            )
             .on('customMouseOut', function () {
                 chartTooltip.hide();
             });
@@ -211,7 +209,7 @@ function createLineChartWithFixedHeight() {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-fixed-line-chart-container .metadata-group .hover-marker'
+            '.js-fixed-line-chart-container .metadata-group .hover-marker',
         );
         tooltipContainer.datum([]).call(chartTooltip);
     }
@@ -305,6 +303,6 @@ if (select('.js-line-chart-container').node()) {
             createLineChart(newSchema);
             selectAll('.brush-chart').remove();
             createBrushChart(newSchema);
-        }
+        },
     );
 }

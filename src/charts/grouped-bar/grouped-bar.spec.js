@@ -249,7 +249,7 @@ describe('Grouped Bar Chart', () => {
 
                 bars.nodes().forEach((d) => {
                     expect(d.getAttribute('fill')).toEqual(
-                        colorMap[d.__data__.group]
+                        colorMap[d.__data__.group],
                     );
                 });
             });
@@ -296,7 +296,7 @@ describe('Grouped Bar Chart', () => {
         describe('when hovering', () => {
             it('mouseover should trigger a callback', () => {
                 const chart = containerFixture.selectAll(
-                    '.grouped-bar .chart-group'
+                    '.grouped-bar .chart-group',
                 );
                 const callbackSpy = jasmine.createSpy('callback');
                 const expectedCalls = 1;
@@ -315,7 +315,7 @@ describe('Grouped Bar Chart', () => {
 
             it('mouseout should trigger a callback', () => {
                 const chart = containerFixture.selectAll(
-                    '.grouped-bar .chart-group'
+                    '.grouped-bar .chart-group',
                 );
                 const callbackSpy = jasmine.createSpy('callback');
                 const expectedCalls = 1;

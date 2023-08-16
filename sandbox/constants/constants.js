@@ -117,6 +117,7 @@ export default {
             chartConfig: {
                 width: 500,
                 height: 300,
+                hasCrossHairs: true,
             },
             initialDataType: 'basicScatterPlot',
             tooltipSelector: '.metadata-group .vertical-marker-container',

@@ -54,6 +54,6 @@ if (select('.js-bullet-chart-container').node()) {
         '.bullet-chart',
         function (newSchema) {
             createBulletChart(newSchema);
-        }
+        },
     );
 }

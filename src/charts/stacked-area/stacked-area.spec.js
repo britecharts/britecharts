@@ -133,10 +133,10 @@ describe('Stacked Area Chart', () => {
 
                 it('should render the horizontal grid lines', () => {
                     expect(
-                        containerFixture.select('g.grid.horizontal').empty()
+                        containerFixture.select('g.grid.horizontal').empty(),
                     ).toBeFalsy();
                     expect(
-                        containerFixture.select('g.grid.vertical').empty()
+                        containerFixture.select('g.grid.vertical').empty(),
                     ).toBeTruthy();
                 });
 
@@ -144,16 +144,15 @@ describe('Stacked Area Chart', () => {
                     expect(
                         containerFixture
                             .select('.horizontal-grid-line--highlighted')
-                            .empty()
+                            .empty(),
                     ).toBeTruthy();
                 });
 
                 describe('when x-axis value type is number', () => {
                     beforeEach(function () {
                         dataset = aTestDataSet().withNumericKeys().build();
-                        stackedAreaChart = stackedArea().xAxisValueType(
-                            'number'
-                        );
+                        stackedAreaChart =
+                            stackedArea().xAxisValueType('number');
 
                         containerFixture = d3
                             .select('.test-container')
@@ -204,10 +203,10 @@ describe('Stacked Area Chart', () => {
 
                 it('should render the vertical grid lines', () => {
                     expect(
-                        containerFixture.select('g.grid.horizontal').empty()
+                        containerFixture.select('g.grid.horizontal').empty(),
                     ).toBeTruthy();
                     expect(
-                        containerFixture.select('g.grid.vertical').empty()
+                        containerFixture.select('g.grid.vertical').empty(),
                     ).toBeFalsy();
                 });
             });
@@ -225,10 +224,10 @@ describe('Stacked Area Chart', () => {
 
                 it('should render the vertical grid lines', () => {
                     expect(
-                        containerFixture.select('g.grid.horizontal').empty()
+                        containerFixture.select('g.grid.horizontal').empty(),
                     ).toBeFalsy();
                     expect(
-                        containerFixture.select('g.grid.vertical').empty()
+                        containerFixture.select('g.grid.vertical').empty(),
                     ).toBeFalsy();
                 });
             });
@@ -264,16 +263,20 @@ describe('Stacked Area Chart', () => {
         });
 
         it('should render an area for each category', () => {
-            const expected = _.chain(dataset).pluck('name').unique().value()
-                .length;
+            const expected = _.chain(dataset)
+                .pluck('name')
+                .unique()
+                .value().length;
             const actual = containerFixture.selectAll('.layer').size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should render an area-outline for each category', () => {
-            const expected = _.chain(dataset).pluck('name').unique().value()
-                .length;
+            const expected = _.chain(dataset)
+                .pluck('name')
+                .unique()
+                .value().length;
             const actual = containerFixture.selectAll('.area-outline').size();
 
             expect(actual).toEqual(expected);
@@ -321,7 +324,7 @@ describe('Stacked Area Chart', () => {
 
         it('should be able to render even when data is length 0', () => {
             expect(() =>
-                containerFixture.datum([]).call(stackedAreaChart)
+                containerFixture.datum([]).call(stackedAreaChart),
             ).not.toThrow();
         });
 
@@ -392,15 +395,16 @@ describe('Stacked Area Chart', () => {
             it('The lowest Y-axis value is negative', () => {
                 let yAxis = containerFixture.selectAll('.y-axis-group');
                 let text = yAxis.select('g.tick');
+                const expected = d3.format('0')('-15');
 
-                expect(text.text()).toEqual('-15');
+                expect(text.text()).toEqual(expected);
             });
 
             it('0-axis is highlighted with an additional class', () => {
                 expect(
                     containerFixture
                         .select('.horizontal-grid-line--highlighted')
-                        .empty()
+                        .empty(),
                 ).toBeFalsy();
             });
         });
@@ -424,7 +428,8 @@ describe('Stacked Area Chart', () => {
                         .selectAll('.y-axis-group')
                         .select('g.tick');
 
-                    expect(firstText.text()).toEqual('-30');
+                    const expected = d3.format('0')('-30');
+                    expect(firstText.text()).toEqual(expected);
                 });
             });
 
@@ -480,12 +485,12 @@ describe('Stacked Area Chart', () => {
 
             it('should add the proper color to each stack', () => {
                 const layers = containerFixture.selectAll(
-                    '.stacked-area .layer'
+                    '.stacked-area .layer',
                 );
 
                 layers.nodes().forEach((d) => {
                     expect(d.getAttribute('fill')).toEqual(
-                        colorMap[d.__data__.key]
+                        colorMap[d.__data__.key],
                     );
                 });
             });
@@ -514,11 +519,11 @@ describe('Stacked Area Chart', () => {
             const expectedStyle = 'block';
 
             expect(
-                containerFixture.select('.overlay').style('display')
+                containerFixture.select('.overlay').style('display'),
             ).toEqual(expectedDefaultStyle);
             container.dispatch('mouseover');
             expect(
-                containerFixture.select('.overlay').style('display')
+                containerFixture.select('.overlay').style('display'),
             ).toEqual(expectedStyle);
         });
 
@@ -526,7 +531,7 @@ describe('Stacked Area Chart', () => {
             const expected = true;
             const container = containerFixture.selectAll('svg');
             const verticalLine = d3.select(
-                '.vertical-marker-container .vertical-marker'
+                '.vertical-marker-container .vertical-marker',
             );
             let actual;
 
@@ -539,7 +544,7 @@ describe('Stacked Area Chart', () => {
         it('should hide the vertical marker when the mouse is out', () => {
             const container = containerFixture.selectAll('svg');
             const verticalLine = d3.select(
-                '.vertical-marker-container .vertical-marker'
+                '.vertical-marker-container .vertical-marker',
             );
             const expected = false;
             let actual = hasClass(verticalLine, 'bc-is-active');
@@ -564,7 +569,7 @@ describe('Stacked Area Chart', () => {
 
             expect(callback.calls.count()).toEqual(expectedCallCount);
             expect(callback.calls.allArgs()[0].length).toEqual(
-                expectedArgumentCount
+                expectedArgumentCount,
             );
         });
 
@@ -579,7 +584,7 @@ describe('Stacked Area Chart', () => {
 
             expect(callback.calls.count()).toEqual(expectedCallCount);
             expect(callback.calls.allArgs()[0].length).toEqual(
-                expectedArgumentCount
+                expectedArgumentCount,
             );
         });
 
@@ -594,7 +599,7 @@ describe('Stacked Area Chart', () => {
 
             expect(callback.calls.count()).toEqual(expectedCallCount);
             expect(callback.calls.allArgs()[0].length).toEqual(
-                expectedArgumentCount
+                expectedArgumentCount,
             );
         });
     });

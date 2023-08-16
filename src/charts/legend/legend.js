@@ -213,7 +213,7 @@ export default function module() {
         if (emptySpace > 0) {
             svg.select('g.legend-container-group').attr(
                 'transform',
-                `translate(${newXPosition},0)`
+                `translate(${newXPosition},0)`,
             );
         }
     }
@@ -234,7 +234,7 @@ export default function module() {
         if (emptySpace > 0) {
             svg.select('g.legend-container-group').attr(
                 'transform',
-                `translate(${newXPosition},0)`
+                `translate(${newXPosition},0)`,
             );
         }
     }

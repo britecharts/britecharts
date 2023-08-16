@@ -116,7 +116,7 @@ export const bounceCircleHighlight = (
     el,
     ease,
     radius,
-    bounceRadius = radius * 2
+    bounceRadius = radius * 2,
 ) => {
     const duration = 100;
     const delay = 50;

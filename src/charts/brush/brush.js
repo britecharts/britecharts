@@ -4,7 +4,7 @@ import { brushX } from 'd3-brush';
 import { scaleLinear, scaleTime } from 'd3-scale';
 import { area } from 'd3-shape';
 import { dispatch } from 'd3-dispatch';
-import { select, event } from 'd3-selection';
+import { select } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 
@@ -164,7 +164,7 @@ export default function module() {
             ({ minor, major } = timeAxisHelper.getTimeSeriesAxis(
                 data,
                 width,
-                xAxisFormat
+                xAxisFormat,
             ));
 
             xSubAxis = axisBottom(xScale)
@@ -192,8 +192,8 @@ export default function module() {
                 [0, 0],
                 [chartWidth, chartHeight],
             ])
-            .on('brush', handleBrushStart)
-            .on('end', handleBrushEnd);
+            .on('brush', (event) => handleBrushStart(event))
+            .on('end', (event) => handleBrushEnd(event));
     }
 
     /**
@@ -337,7 +337,7 @@ export default function module() {
             svg.select('.x-axis-group .axis.sub-x')
                 .attr(
                     'transform',
-                    `translate(0, ${chartHeight + monthAxisPadding})`
+                    `translate(0, ${chartHeight + monthAxisPadding})`,
                 )
                 .call(xSubAxis);
         }
@@ -487,7 +487,7 @@ export default function module() {
      *
      * @return {void}
      */
-    function handleBrushStart() {
+    function handleBrushStart(event) {
         const selection = event.selection;
         let newSelection;
 
@@ -497,7 +497,7 @@ export default function module() {
 
         if (isLocked) {
             const lockedSelectionSize = Math.floor(
-                xScale(new Date(dateRange[1])) - xScale(new Date(dateRange[0]))
+                xScale(new Date(dateRange[1])) - xScale(new Date(dateRange[0])),
             );
             const selectedRange = Math.floor(selection[1] - selection[0]);
 
@@ -520,7 +520,7 @@ export default function module() {
         dispatcher.call(
             'customBrushStart',
             this,
-            newSelection.map(xScale.invert)
+            newSelection.map(xScale.invert),
         );
     }
 
@@ -530,7 +530,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleBrushEnd() {
+    function handleBrushEnd(event) {
         if (!event.sourceEvent) {
             return; // Only transition after input.
         }
@@ -542,7 +542,7 @@ export default function module() {
             let dateExtent = selection.map(xScale.invert);
 
             dateExtentRounded = dateExtent.map(
-                timeIntervals[roundingTimeInterval].round
+                timeIntervals[roundingTimeInterval].round,
             );
 
             // If empty when rounded, use floor & ceil instead.
@@ -582,7 +582,7 @@ export default function module() {
             } else {
                 // eslint-disable-next-line no-console
                 console.error(
-                    'dateRange Error: End date should be posterior to startDate!'
+                    'dateRange Error: End date should be posterior to startDate!',
                 );
             }
         }

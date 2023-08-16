@@ -73,7 +73,7 @@ describe('Tooltip Component', () => {
                         ],
                     },
                     topicColorMap,
-                    0
+                    0,
                 );
                 actual = containerFixture
                     .select('.britechart-tooltip')
@@ -104,7 +104,7 @@ describe('Tooltip Component', () => {
                         ],
                     },
                     topicColorMap,
-                    0
+                    0,
                 );
                 actual = containerFixture
                     .select('.britechart-tooltip')
@@ -122,7 +122,7 @@ describe('Tooltip Component', () => {
                     let actual;
 
                     tooltipChart.dateFormat(
-                        tooltipChart.axisTimeCombinations.DAY_MONTH
+                        tooltipChart.axisTimeCombinations.DAY_MONTH,
                     );
                     tooltipChart.update(
                         {
@@ -130,7 +130,7 @@ describe('Tooltip Component', () => {
                             topics: [],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip')
@@ -153,7 +153,7 @@ describe('Tooltip Component', () => {
                             topics: [],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip')
@@ -168,7 +168,7 @@ describe('Tooltip Component', () => {
                 beforeEach(() => {
                     dataset = [];
                     tooltipChart = tooltip().title(
-                        'Super long and exciting Tooltip title'
+                        'Super long and exciting Tooltip title',
                     );
 
                     const fixture =
@@ -184,7 +184,7 @@ describe('Tooltip Component', () => {
 
                 afterEach(() => {
                     document.body.removeChild(
-                        document.getElementById('fixture')
+                        document.getElementById('fixture'),
                     );
                 });
 
@@ -198,7 +198,7 @@ describe('Tooltip Component', () => {
                         actualDividerY2Position;
 
                     tooltipChart.dateFormat(
-                        tooltipChart.axisTimeCombinations.DAY_MONTH
+                        tooltipChart.axisTimeCombinations.DAY_MONTH,
                     );
                     tooltipChart.update(
                         {
@@ -206,7 +206,7 @@ describe('Tooltip Component', () => {
                             topics: [],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
 
                     actualTitle = containerFixture
@@ -225,13 +225,13 @@ describe('Tooltip Component', () => {
                         .attr('y2');
 
                     expect(actualTitle.split(' ').join('')).toEqual(
-                        expectedTitle
+                        expectedTitle,
                     );
                     expect(parseInt(actualDividerY1Position, 10)).toEqual(
-                        expectedDividerYPosition
+                        expectedDividerYPosition,
                     );
                     expect(parseInt(actualDividerY2Position, 10)).toEqual(
-                        expectedDividerYPosition
+                        expectedDividerYPosition,
                     );
                 });
             });
@@ -274,7 +274,7 @@ describe('Tooltip Component', () => {
                             ],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip .tooltip-right-text')
@@ -299,7 +299,7 @@ describe('Tooltip Component', () => {
                             ],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip .tooltip-right-text')
@@ -324,7 +324,7 @@ describe('Tooltip Component', () => {
                             ],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip .tooltip-right-text')
@@ -351,7 +351,7 @@ describe('Tooltip Component', () => {
                             ],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip .tooltip-right-text')
@@ -376,7 +376,7 @@ describe('Tooltip Component', () => {
                             ],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip .tooltip-right-text')
@@ -401,7 +401,7 @@ describe('Tooltip Component', () => {
                             ],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip .tooltip-right-text')
@@ -422,7 +422,7 @@ describe('Tooltip Component', () => {
                                 topics: [],
                             },
                             topicColorMap,
-                            0
+                            0,
                         );
                         actual = containerFixture
                             .select('.britechart-tooltip')
@@ -452,7 +452,7 @@ describe('Tooltip Component', () => {
                             ],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip .tooltip-right-text')
@@ -466,7 +466,7 @@ describe('Tooltip Component', () => {
                     let actual;
 
                     tooltipChart.valueFormatter((value) =>
-                        value.toString().length.toString()
+                        value.toString().length.toString(),
                     );
                     tooltipChart.update(
                         {
@@ -480,7 +480,7 @@ describe('Tooltip Component', () => {
                             ],
                         },
                         topicColorMap,
-                        0
+                        0,
                     );
                     actual = containerFixture
                         .select('.britechart-tooltip .tooltip-right-text')

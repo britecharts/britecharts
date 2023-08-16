@@ -17,7 +17,7 @@ describe('Type Helper', () => {
         const anotherDateString = 'December 17, 2020 01:02:03';
         const actualCaseThree = castValueToType(
             anotherDateString,
-            'invalidInput'
+            'invalidInput',
         );
 
         expect(typeof actualCaseThree).toEqual(typeof expectedCaseThree);

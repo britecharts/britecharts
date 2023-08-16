@@ -5,7 +5,7 @@ import { dispatch } from 'd3-dispatch';
 import { easeQuadInOut } from 'd3-ease';
 import { scaleLinear, scaleTime, scaleLog } from 'd3-scale';
 import { line, area, stackOffsetNone, stackOrderNone, stack } from 'd3-shape';
-import { select, mouse, touch } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 
@@ -130,7 +130,7 @@ export default function module() {
         areaAnimationDelays = range(
             areaAnimationDelayStep,
             maxAreaNumber * areaAnimationDelayStep,
-            areaAnimationDelayStep
+            areaAnimationDelayStep,
         ),
         overlay,
         overlayColor = 'rgba(0, 0, 0, 0)',
@@ -179,7 +179,7 @@ export default function module() {
             'customMouseOut',
             'customMouseMove',
             'customDataEntryClick',
-            'customTouchMove'
+            'customTouchMove',
         );
 
     /**
@@ -226,7 +226,7 @@ export default function module() {
     function addGlowFilter(el) {
         if (!highlightFilter) {
             highlightFilter = createFilterContainer(
-                svg.select('.metadata-group')
+                svg.select('.metadata-group'),
             );
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
@@ -247,14 +247,14 @@ export default function module() {
      * @private
      */
     function addMouseEvents() {
-        svg.on('mouseover', function (d) {
-            handleMouseOver(this, d);
+        svg.on('mouseover', function (event, d) {
+            handleMouseOver(event, this, d);
         })
-            .on('mouseout', function (d) {
-                handleMouseOut(this, d);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(event, this, d);
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(event, this, d);
             });
     }
 
@@ -264,7 +264,7 @@ export default function module() {
      * @private
      */
     function addTouchEvents() {
-        svg.on('touchmove', function (d) {
+        svg.on('touchmove', function (event, d) {
             handleTouchMove(this, d);
         });
     }
@@ -327,7 +327,7 @@ export default function module() {
                     dataSorted,
                     width,
                     xAxisFormat,
-                    locale
+                    locale,
                 ));
 
                 xSubAxis = axisBottom(xScale)
@@ -422,7 +422,7 @@ export default function module() {
 
         let initialTotalsObject = uniq(data.map(getName)).reduce(
             (memo, key) => Object.assign({}, memo, { [key]: 0 }),
-            {}
+            {},
         );
 
         let totals = data.reduce(
@@ -430,7 +430,7 @@ export default function module() {
                 Object.assign({}, memo, {
                     [item.name]: (memo[item.name] += item.value),
                 }),
-            initialTotalsObject
+            initialTotalsObject,
         );
 
         order = topicsOrder || formatOrder(totals);
@@ -507,7 +507,7 @@ export default function module() {
             order.reduce(
                 (memo, topic, index) =>
                     Object.assign({}, memo, { [topic]: colorSchema[index] }),
-                {}
+                {},
             );
     }
 
@@ -574,7 +574,7 @@ export default function module() {
     function createFakeData() {
         const numDays = diffDays(
             emptyDataConfig.minDate,
-            emptyDataConfig.maxDate
+            emptyDataConfig.maxDate,
         );
         const emptyArray = Array.apply(null, Array(numDays));
 
@@ -635,7 +635,7 @@ export default function module() {
             svg.select('.x-axis-group .axis.sub-x')
                 .attr(
                     'transform',
-                    `translate(0, ${chartHeight + monthAxisPadding})`
+                    `translate(0, ${chartHeight + monthAxisPadding})`,
                 )
                 .call(xSubAxis);
         }
@@ -676,7 +676,7 @@ export default function module() {
             .selectAll('.tick text')
             .attr(
                 'transform',
-                `translate(${yTickTextXOffset}, ${yTickTextYOffset})`
+                `translate(${yTickTextXOffset}, ${yTickTextYOffset})`,
             );
     }
 
@@ -701,7 +701,7 @@ export default function module() {
         points
             .selectAll('.dot')
             .data(({ values }, index) =>
-                values.map((point) => ({ index, point }))
+                values.map((point) => ({ index, point })),
             )
             .enter()
             .append('circle')
@@ -790,7 +790,7 @@ export default function module() {
         horizontalGrid.attr('class', (d) =>
             d === 0
                 ? 'grid-line horizontal-grid-line--highlighted'
-                : 'grid-line'
+                : 'grid-line',
         );
     }
 
@@ -1155,7 +1155,7 @@ export default function module() {
      */
     function getNearestDataPoint(mouseX) {
         let points = dataSorted.filter(
-            ({ date }) => Math.abs(xScale(date) - mouseX) <= epsilon
+            ({ date }) => Math.abs(xScale(date) - mouseX) <= epsilon,
         );
 
         if (points.length) {
@@ -1182,7 +1182,7 @@ export default function module() {
     function handleMouseMove(e) {
         epsilon || setEpsilon();
 
-        let [xPosition, yPosition] = d3Selection.mouse(e),
+        let [xPosition, yPosition] = d3Selection.pointer(e),
             dataPoint = getNearestDataPoint(xPosition - margin.left),
             dataPointXPosition;
 
@@ -1199,7 +1199,7 @@ export default function module() {
                 dataPoint,
                 nameToColorMap,
                 dataPointXPosition,
-                yPosition
+                yPosition,
             );
         }
     }
@@ -1212,7 +1212,7 @@ export default function module() {
     function handleMouseMove(e) {
         epsilon || setEpsilon();
 
-        let [xPosition, yPosition] = mouse(e),
+        let [xPosition, yPosition] = pointer(e),
             dataPoint = getNearestDataPoint(xPosition - margin.left),
             dataPointXPosition;
 
@@ -1229,7 +1229,7 @@ export default function module() {
                 dataPoint,
                 nameToColorMap,
                 dataPointXPosition,
-                yPosition
+                yPosition,
             );
         }
     }
@@ -1244,18 +1244,18 @@ export default function module() {
         verticalMarkerLine.classed('bc-is-active', false);
         verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
-        dispatcher.call('customMouseOut', e, d, mouse(e));
+        dispatcher.call('customMouseOut', e, d, pointer(e));
     }
 
     /**
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d) {
+    function handleMouseOver(event, e, d) {
         overlay.style('display', 'block');
         verticalMarkerLine.classed('bc-is-active', true);
 
-        dispatcher.call('customMouseOver', e, d, mouse(e));
+        dispatcher.call('customMouseOver', e, d, pointer(event));
     }
 
     /**
@@ -1263,8 +1263,8 @@ export default function module() {
      * It will only pass the information with the event
      * @private
      */
-    function handleTouchMove(e, d) {
-        dispatcher.call('customTouchMove', e, d, touch(e));
+    function handleTouchMove(event, e, d) {
+        dispatcher.call('customTouchMove', e, d, pointer(event));
     }
 
     /**
@@ -1272,8 +1272,8 @@ export default function module() {
      * It will only pass the information with the event
      * @private
      */
-    function handleHighlightClick(e, d) {
-        dispatcher.call('customDataEntryClick', e, d, mouse(e));
+    function handleHighlightClick(event, e, d) {
+        dispatcher.call('customDataEntryClick', e, d, pointer(event));
     }
 
     /**
@@ -1315,7 +1315,7 @@ export default function module() {
 
             marker.attr(
                 'transform',
-                `translate( ${-highlightCircleSize}, ${yScale(accumulator)} )`
+                `translate( ${-highlightCircleSize}, ${yScale(accumulator)} )`,
             );
         });
     }
@@ -1328,7 +1328,7 @@ export default function module() {
     function moveVerticalMarker(verticalMarkerXPosition) {
         verticalMarkerContainer.attr(
             'transform',
-            `translate(${verticalMarkerXPosition},0)`
+            `translate(${verticalMarkerXPosition},0)`,
         );
     }
 

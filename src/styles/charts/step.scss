@@ -8,7 +8,7 @@ $step-color-hover: #39c2c9;
     // Steps
     .step {
         fill: $step-color;
-        shape-rendering: crispEdges;
+        shape-rendering: crispedges;
         stroke-width: 0;
 
         &:hover {

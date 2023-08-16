@@ -113,7 +113,7 @@ function getVerticalLegendChart(dataset, optionalColorSchema) {
 
     if (containerWidth) {
         select(
-            '.js-vertical-legend-no-quantity-container .britechart-legend'
+            '.js-vertical-legend-no-quantity-container .britechart-legend',
         ).remove();
 
         legendChart.width(containerWidth).height(100);
@@ -159,7 +159,7 @@ function createDonutWithHighlightSliceChart() {
                 delete item.quantity;
 
                 return item;
-            }
+            },
         ),
         legendChart = getVerticalLegendChart(dataNoQuantity),
         donutChart = donut(),
@@ -232,6 +232,6 @@ if (select('.js-donut-chart-container').node()) {
     colorSelectorHelper.createColorSelector(
         '.js-color-selector-container',
         '.donut-chart',
-        createDonutChart
+        createDonutChart,
     );
 }

@@ -1,25 +1,28 @@
-let webpackConfig = require('./webpack.config');
-
-webpackConfig.devtool = 'inline-source-map';
-
 // Karma configuration
+// Generated on Thu Aug 17 2023 09:44:31 GMT+0300 (שעון ישראל (קיץ))
+
 module.exports = function (config) {
     config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
+
         // frameworks to use
-        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine'],
+        // available frameworks: https://www.npmjs.com/search?q=keywords:karma-adapter
+        frameworks: ['jasmine', 'webpack'],
+
         // list of files / patterns to load in the browser
-        files: ['./test/tests_index.js'],
+        files: [{ pattern: './test/tests_index.js', watch: false }],
+
+        // list of files / patterns to exclude
+        exclude: [],
 
         // preprocess matching files before serving them to the browser
-        // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+        // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
         preprocessors: {
             './test/tests_index.js': ['webpack', 'sourcemap'],
         },
 
-        webpack: webpackConfig('test'),
+        webpack: {},
 
         webpackServer: {
             noInfo: true,
@@ -56,36 +59,26 @@ module.exports = function (config) {
         },
 
         plugins: [
-            require('karma-webpack'),
-            require('karma-jasmine'),
-            require('karma-coverage'),
-            require('karma-chrome-launcher'),
-            require('karma-sourcemap-loader'),
+            'karma-webpack',
+            'karma-jasmine',
+            'karma-coverage',
+            'karma-chrome-launcher',
+            'karma-sourcemap-loader',
         ],
-
-        // Setup of babel settings
-        // Check more in: https://github.com/babel/karma-babel-preprocessor
-        babelPreprocessor: {
-            options: {
-                presets: ['es2015'],
-            },
-        },
-
-        check: {
-            global: {
-                excludes: ['src/tests.webpack.js'],
-            },
-        },
 
         // web server port
         port: 9876,
+
         // enable / disable colors in the output (reporters and logs)
         colors: true,
+
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
         logLevel: config.LOG_INFO,
+
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
+
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: ['Chrome', 'ChromeHeadless'],
@@ -93,8 +86,9 @@ module.exports = function (config) {
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
         singleRun: false,
+
         // Concurrency level
-        // how many browser should be started simultaneous
+        // how many browser instances should be started simultaneously
         concurrency: Infinity,
 
         customLaunchers: {

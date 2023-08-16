@@ -349,7 +349,7 @@ export default function module() {
             : tooltipRightWidth;
         tooltipRight.attr(
             'x',
-            tooltipWidth - tooltipRightWidth - 10 - tooltipWidth / 4
+            tooltipWidth - tooltipRightWidth - 10 - tooltipWidth / 4,
         );
 
         tooltipBody
@@ -467,7 +467,7 @@ export default function module() {
      */
     function _sortByTopicsOrder(topics, order = topicsOrder) {
         return order.map(
-            (orderName) => topics.filter(({ name }) => name === orderName)[0]
+            (orderName) => topics.filter(({ name }) => name === orderName)[0],
         );
     }
 
@@ -498,7 +498,7 @@ export default function module() {
         const approximateNumberOfTitleLines = getApproximateNumberOfLines(
             approximateTitle,
             16,
-            tooltipMaxTitleLength
+            tooltipMaxTitleLength,
         );
 
         if (approximateNumberOfTitleLines > 1) {
@@ -596,7 +596,7 @@ export default function module() {
                 const textWidth = getTextWidth(
                     line.join(' '),
                     16,
-                    'Karla, sans-serif'
+                    'Karla, sans-serif',
                 );
 
                 if (textWidth > width) {
@@ -886,7 +886,7 @@ export default function module() {
         dataPoint,
         colorMapping,
         xPosition,
-        yPosition = null
+        yPosition = null,
     ) {
         colorMap = colorMapping;
         updateTooltip(dataPoint, xPosition, yPosition);

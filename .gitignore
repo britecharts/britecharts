@@ -40,7 +40,7 @@ node_modules
 demos/build
 
 # Builds
-sandbox/build
+sandbox/build/
 dist
 docs
 *.tgz

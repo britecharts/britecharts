@@ -366,23 +366,23 @@ export default function module() {
             .style(
                 'font-size',
                 titleTextStyle['font-size'] ||
-                    DEFAULT_TITLE_TEXT_STYLE['font-size']
+                    DEFAULT_TITLE_TEXT_STYLE['font-size'],
             )
             .style('fill', titleTextStyle['fill'] || lineGradient[0])
             .style(
                 'font-family',
                 titleTextStyle['font-family'] ||
-                    DEFAULT_TITLE_TEXT_STYLE['font-family']
+                    DEFAULT_TITLE_TEXT_STYLE['font-family'],
             )
             .style(
                 'font-weight',
                 titleTextStyle['font-weight'] ||
-                    DEFAULT_TITLE_TEXT_STYLE['font-weight']
+                    DEFAULT_TITLE_TEXT_STYLE['font-weight'],
             )
             .style(
                 'font-style',
                 titleTextStyle['font-style'] ||
-                    DEFAULT_TITLE_TEXT_STYLE['font-style']
+                    DEFAULT_TITLE_TEXT_STYLE['font-style'],
             )
             .text(titleText);
     }

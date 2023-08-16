@@ -49,7 +49,7 @@ function createStepChart() {
         tooltip.nameLabel('key');
 
         tooltipContainer = select(
-            '.js-step-chart-container .step-chart .metadata-group'
+            '.js-step-chart-container .step-chart .metadata-group',
         );
         tooltipContainer.datum([]).call(tooltip);
     }
