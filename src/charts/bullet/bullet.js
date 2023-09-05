@@ -251,7 +251,7 @@ export default function module() {
                 'transform',
                 `translate(${translateX}, ${
                     chartHeight + paddingBetweenAxisAndChart
-                })`
+                })`,
             )
             .call(axis);
 

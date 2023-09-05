@@ -7,7 +7,7 @@ import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { scaleOrdinal, scaleTime, scaleLinear, scaleLog } from 'd3-scale';
 import { line } from 'd3-shape';
-import { select, mouse, touch } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -265,7 +265,7 @@ export default function module() {
             'customMouseOut',
             'customMouseMove',
             'customDataEntryClick',
-            'customTouchMove'
+            'customTouchMove',
         );
 
     const acceptNullValue = (value) => (value === null ? null : +value);
@@ -320,7 +320,7 @@ export default function module() {
     function addGlowFilter(el) {
         if (!highlightFilter) {
             highlightFilter = createFilterContainer(
-                svg.select('.metadata-group')
+                svg.select('.metadata-group'),
             );
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
@@ -340,14 +340,14 @@ export default function module() {
      * Adding: mouseover, mouseout and mousemove
      */
     function addMouseEvents() {
-        svg.on('mouseover', function (d) {
-            handleMouseOver(this, d);
+        svg.on('mouseover', function (event, d) {
+            handleMouseOver(event, this, d);
         })
-            .on('mouseout', function (d) {
-                handleMouseOut(this, d);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(event, this, d);
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(event, this, d);
             });
     }
 
@@ -357,7 +357,7 @@ export default function module() {
      * @private
      */
     function addTouchEvents() {
-        svg.on('touchmove', function (d) {
+        svg.on('touchmove', function (event, d) {
             handleTouchMove(this, d);
         });
     }
@@ -433,7 +433,7 @@ export default function module() {
                     dataSorted,
                     width,
                     xAxisFormat,
-                    locale
+                    locale,
                 ));
 
                 xSubAxis = axisBottom(xScale)
@@ -612,7 +612,7 @@ export default function module() {
     function cleanData({ dataByTopic, dataSorted, data }) {
         if (!dataByTopic && !data) {
             throw new Error(
-                'Data needs to have a dataByTopic or data property. See more in http://britecharts.github.io/britecharts/global.html#LineChartData__anchor'
+                'Data needs to have a dataByTopic or data property. See more in http://britecharts.github.io/britecharts/global.html#LineChartData__anchor',
             );
         }
 
@@ -642,7 +642,7 @@ export default function module() {
 
             // eslint-disable-next-line no-console
             console.debug(
-                'Lookout! You are using an old data shape (dataByTopic), please use the new flatter version as this one will be deprecated in version 4'
+                'Lookout! You are using an old data shape (dataByTopic), please use the new flatter version as this one will be deprecated in version 4',
             );
         }
 
@@ -707,7 +707,7 @@ export default function module() {
             paths
                 .attr(
                     'stroke-dasharray',
-                    totalLength + ' ' + strokeDasharrayOffset * totalLength
+                    totalLength + ' ' + strokeDasharrayOffset * totalLength,
                 )
                 .style('will-change', 'stroke-dasharray')
                 .attr('stroke-dashoffset', totalLength)
@@ -732,7 +732,7 @@ export default function module() {
             svg.select('.x-axis-group .axis.sub-x')
                 .attr(
                     'transform',
-                    `translate(0, ${chartHeight + monthAxisPadding})`
+                    `translate(0, ${chartHeight + monthAxisPadding})`,
                 )
                 .call(xSubAxis);
         }
@@ -813,7 +813,7 @@ export default function module() {
             .attr('stroke', (d) =>
                 dataByTopic.length === 1
                     ? `url(#${lineGradientId})`
-                    : getLineColor(d)
+                    : getLineColor(d),
             )
             .attr('fill', 'none');
 
@@ -935,7 +935,7 @@ export default function module() {
         horizontalGrid.attr('class', (d) =>
             d === 0
                 ? 'grid-line horizontal-grid-line--highlighted'
-                : 'grid-line'
+                : 'grid-line',
         );
     }
 
@@ -952,8 +952,9 @@ export default function module() {
         let yValues = customLines.map((line) => line.y);
 
         let getColor = (yValue) => {
-            const definedColor = customLines.find((line) => line.y === yValue)
-                .color;
+            const definedColor = customLines.find(
+                (line) => line.y === yValue,
+            ).color;
 
             if (definedColor) {
                 return definedColor;
@@ -1055,8 +1056,8 @@ export default function module() {
                 getPathYFromX(
                     xScale(new Date(d.topic.date)),
                     d.node,
-                    d.topic.name
-                )
+                    d.topic.name,
+                ),
             );
     }
 
@@ -1138,7 +1139,7 @@ export default function module() {
             nearestDataPoint = findOutNearestDate(
                 dateFromInvertedX,
                 dataEntryForXPosition,
-                previousDataEntryForXPosition
+                previousDataEntryForXPosition,
             );
         } else {
             nearestDataPoint = dataEntryForXPosition;
@@ -1152,8 +1153,8 @@ export default function module() {
      * and updates metadata related to it
      * @private
      */
-    function handleMouseMove(e) {
-        let [xPosition, yPosition] = mouse(e),
+    function handleMouseMove(event, e) {
+        let [xPosition, yPosition] = pointer(event),
             xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
             dataPoint = getNearestDataPoint(xPosition + xPositionOffset),
             dataPointXPosition;
@@ -1171,7 +1172,7 @@ export default function module() {
                 dataPoint,
                 nameToColorMap,
                 dataPointXPosition,
-                yPosition
+                yPosition,
             );
         }
     }
@@ -1181,23 +1182,23 @@ export default function module() {
      * It also resets the container of the vertical marker
      * @private
      */
-    function handleMouseOut(e, d) {
+    function handleMouseOut(event, e, d) {
         overlay.style('display', 'none');
         verticalMarkerLine.classed('bc-is-active', false);
         verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
-        dispatcher.call('customMouseOut', e, d, mouse(e));
+        dispatcher.call('customMouseOut', e, d, pointer(event));
     }
 
     /**
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d) {
+    function handleMouseOver(event, e, d) {
         overlay.style('display', 'block');
         verticalMarkerLine.classed('bc-is-active', true);
 
-        dispatcher.call('customMouseOver', e, d, mouse(e));
+        dispatcher.call('customMouseOver', e, d, pointer(event));
     }
 
     /**
@@ -1206,7 +1207,7 @@ export default function module() {
      * @private
      */
     function handleHighlightClick(e, d) {
-        dispatcher.call('customDataEntryClick', e, d, mouse(e));
+        dispatcher.call('customDataEntryClick', e, d, pointer(e));
     }
 
     /**
@@ -1215,7 +1216,7 @@ export default function module() {
      * @private
      */
     function handleTouchMove(e, d) {
-        dispatcher.call('customTouchMove', e, d, touch(e));
+        dispatcher.call('customTouchMove', e, d, pointer(e));
     }
 
     /**
@@ -1244,7 +1245,7 @@ export default function module() {
             .filter(({ topic }) => !!topic)
             .sort(
                 (a, b) =>
-                    nameToColorMap[a.topic.name] < nameToColorMap[b.topic.name]
+                    nameToColorMap[a.topic.name] < nameToColorMap[b.topic.name],
             );
 
         dataPoint.topics = topicsWithNode.map(({ topic }) => topic);
@@ -1261,7 +1262,7 @@ export default function module() {
                 .style('stroke-width', () =>
                     shouldShowAllDataPoints
                         ? highlightCircleStrokeAll
-                        : highlightCircleStroke
+                        : highlightCircleStroke,
                 )
                 .style('stroke', nameToColorMap[d.name])
                 .style('cursor', 'pointer')
@@ -1279,7 +1280,7 @@ export default function module() {
 
             marker.attr(
                 'transform',
-                `translate( ${-highlightCircleSize}, ${y} )`
+                `translate( ${-highlightCircleSize}, ${y} )`,
             );
         });
     }
@@ -1348,7 +1349,7 @@ export default function module() {
     function moveVerticalMarker(verticalMarkerXPosition) {
         verticalMarkerContainer.attr(
             'transform',
-            `translate(${verticalMarkerXPosition},0)`
+            `translate(${verticalMarkerXPosition},0)`,
         );
     }
 

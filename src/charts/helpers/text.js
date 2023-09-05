@@ -92,7 +92,7 @@ export const wrapTextWithEllipses = function (
     text,
     width,
     xpos = 0,
-    limit = 2
+    limit = 2,
 ) {
     text.each(function () {
         var words, word, line, lineNumber, lineHeight, y, dy, tspan;
@@ -152,7 +152,7 @@ export const wrapTextWithEllipses = function (
 export const getTextWidth = function (
     text,
     fontSize = defaultTextSize,
-    fontFace = defaultFontFace
+    fontFace = defaultFontFace,
 ) {
     let a = document.createElement('canvas'),
         b = a.getContext('2d');
@@ -190,7 +190,7 @@ export const getFontSize = function (node) {
 export const getApproximateNumberOfLines = function (
     title,
     fontSize,
-    maxLength
+    maxLength,
 ) {
     const words = title.split(/\s+/).reverse();
 
@@ -203,7 +203,7 @@ export const getApproximateNumberOfLines = function (
         const textWidth = getTextWidth(
             line.join(' '),
             fontSize,
-            'Karla, sans-serif'
+            'Karla, sans-serif',
         );
 
         if (textWidth > maxLength) {

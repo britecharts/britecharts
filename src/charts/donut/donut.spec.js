@@ -119,7 +119,7 @@ donutDataSets.forEach((datasetName) => {
 
                 slices.each((item, index) => {
                     expect(item.data.percentage).toEqual(
-                        percentStub[datasetName][index]
+                        percentStub[datasetName][index],
                     );
                 });
             });
@@ -152,7 +152,7 @@ donutDataSets.forEach((datasetName) => {
 
                     paths.forEach((d) => {
                         expect(d.getAttribute('fill')).toEqual(
-                            colorMap[d.__data__.data.name]
+                            colorMap[d.__data__.data.name],
                         );
                     });
                 });
@@ -272,8 +272,9 @@ donutDataSets.forEach((datasetName) => {
                     let actual;
 
                     containerFixture.datum(newDataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart').nodes()
-                        .length;
+                    actual = containerFixture
+                        .selectAll('.donut-chart')
+                        .nodes().length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -415,7 +416,7 @@ donutDataSets.forEach((datasetName) => {
                 newAnimationDuration = donutChart.animationDuration();
 
                 expect(defaultAnimationDuration).not.toBe(
-                    testAnimationDuration
+                    testAnimationDuration,
                 );
                 expect(newAnimationDuration).toBe(testAnimationDuration);
             });
@@ -660,7 +661,7 @@ donutDataSets.forEach((datasetName) => {
                 it('should trigger an event on click', () => {
                     let callback = jasmine.createSpy('clickCallback'),
                         firstSlice = containerFixture.select(
-                            '.chart-group .arc path'
+                            '.chart-group .arc path',
                         );
 
                     donutChart.on('customClick', callback);
@@ -672,7 +673,7 @@ donutDataSets.forEach((datasetName) => {
                 it('should trigger an event on hover', () => {
                     let callback = jasmine.createSpy('hoverCallback'),
                         firstSlice = containerFixture.select(
-                            '.chart-group .arc path'
+                            '.chart-group .arc path',
                         );
 
                     donutChart.on('customMouseOver', callback);
@@ -684,7 +685,7 @@ donutDataSets.forEach((datasetName) => {
                 it('should trigger an event on mouse out', () => {
                     let callback = jasmine.createSpy('mouseOutCallback'),
                         firstSlice = containerFixture.select(
-                            '.chart-group .arc path'
+                            '.chart-group .arc path',
                         );
 
                     donutChart.on('customMouseOut', callback);
@@ -696,7 +697,7 @@ donutDataSets.forEach((datasetName) => {
                 it('should trigger a callback on mouse move', () => {
                     let callback = jasmine.createSpy('mouseMoveCallback'),
                         firstSlice = containerFixture.select(
-                            '.chart-group .arc path'
+                            '.chart-group .arc path',
                         );
 
                     donutChart.on('customMouseMove', callback);

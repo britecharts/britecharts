@@ -1,8 +1,6 @@
-const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-    .BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const constants = require('./webpack.constants');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const FixStyleOnlyEntriesPlugin = require('webpack-remove-empty-scripts');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 exports.babelLoader = () => ({
@@ -75,7 +73,10 @@ exports.allStyles = (isMinified = false) => ({
                         loader: 'extract-loader',
                     },
                     {
-                        loader: 'css-loader?-url',
+                        loader: 'css-loader',
+                        options: {
+                            url: false,
+                        },
                     },
                     {
                         loader: 'sass-loader',
@@ -103,7 +104,10 @@ exports.chartStyles = (isMinified = false) => ({
                         loader: 'extract-loader',
                     },
                     {
-                        loader: 'css-loader?-url',
+                        loader: 'css-loader',
+                        options: {
+                            url: false,
+                        },
                     },
                     {
                         loader: 'sass-loader',

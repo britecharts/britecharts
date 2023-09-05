@@ -27,7 +27,7 @@ export default {
         this.createSelectElement(
             `.${chartSelectorContainerClass}`,
             chartSelectorClass,
-            charts
+            charts,
         );
     },
     createDataSelector() {
@@ -37,7 +37,7 @@ export default {
         this.createSelectElement(
             `.${dataSelectorContainerClass}`,
             dataSelectorClass,
-            dataTypes
+            dataTypes,
         );
     },
     createSelectElement(selector, selectClass, optionList) {

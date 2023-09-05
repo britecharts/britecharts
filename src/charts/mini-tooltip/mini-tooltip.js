@@ -178,7 +178,7 @@ export default function module() {
      */
     function getTooltipPosition(
         [mouseX, mouseY],
-        [parentChartWidth, parentChartHeight]
+        [parentChartWidth, parentChartHeight],
     ) {
         let tooltipX, tooltipY;
 
@@ -325,7 +325,7 @@ export default function module() {
     function updatePositionAndSize(mousePosition, parentChartSize) {
         let [tooltipX, tooltipY] = getTooltipPosition(
             mousePosition,
-            parentChartSize
+            parentChartSize,
         );
 
         svg.transition()

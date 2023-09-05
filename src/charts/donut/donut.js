@@ -3,7 +3,7 @@ import { easeCubicInOut } from 'd3-ease';
 import { interpolate } from 'd3-interpolate';
 import { scaleOrdinal } from 'd3-scale';
 import { pie, arc } from 'd3-shape';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -125,7 +125,7 @@ export default function module() {
             'customMouseOver',
             'customMouseOut',
             'customMouseMove',
-            'customClick'
+            'customClick',
         );
 
     /**
@@ -274,8 +274,8 @@ export default function module() {
                     calculatePercent(
                         d[quantityLabel],
                         totalQuantity,
-                        percentageFormat
-                    )
+                        percentageFormat,
+                    ),
             );
 
             return d;
@@ -385,16 +385,16 @@ export default function module() {
             newSlices
                 .merge(slices)
                 .attr('fill', getSliceFill)
-                .on('mouseover', function (d) {
+                .on('mouseover', function (event, d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
-                .on('mousemove', function (d) {
+                .on('mousemove', function (event, d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function (d) {
+                .on('mouseout', function (event, d) {
                     handleMouseOut(this, d, chartWidth, chartHeight);
                 })
-                .on('click', function (d) {
+                .on('click', function (event, d) {
                     handleClick(this, d, chartWidth, chartHeight);
                 })
                 .transition()
@@ -406,16 +406,16 @@ export default function module() {
                 .merge(slices)
                 .attr('fill', getSliceFill)
                 .attr('d', shape)
-                .on('mouseover', function (d) {
+                .on('mouseover', function (event, d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
-                .on('mousemove', function (d) {
+                .on('mousemove', function (event, d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function (d) {
+                .on('mouseout', function (event, d) {
                     handleMouseOut(this, d, chartWidth, chartHeight);
                 })
-                .on('click', function (d) {
+                .on('click', function (event, d) {
                     handleClick(this, d, chartWidth, chartHeight);
                 });
         }
@@ -442,7 +442,7 @@ export default function module() {
      */
     function handleMouseOver(el, d, chartWidth, chartHeight) {
         drawLegend(d);
-        dispatcher.call('customMouseOver', el, d, mouse(el), [
+        dispatcher.call('customMouseOver', el, d, pointer(el), [
             chartWidth,
             chartHeight,
         ]);
@@ -454,13 +454,13 @@ export default function module() {
                 tweenGrowth(
                     lastHighlightedSlice,
                     externalRadius - radiusHoverOffset,
-                    pieHoverTransitionDuration
+                    pieHoverTransitionDuration,
                 );
             }
             if (highlightedSlice && el !== highlightedSlice) {
                 tweenGrowth(
                     highlightedSlice,
-                    externalRadius - radiusHoverOffset
+                    externalRadius - radiusHoverOffset,
                 );
             }
             tweenGrowth(el, externalRadius);
@@ -473,7 +473,7 @@ export default function module() {
      * @private
      */
     function handleMouseMove(el, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', el, d, mouse(el), [
+        dispatcher.call('customMouseMove', el, d, pointer(el), [
             chartWidth,
             chartHeight,
         ]);
@@ -507,7 +507,7 @@ export default function module() {
             tweenGrowth(
                 el,
                 externalRadius - radiusHoverOffset,
-                pieHoverTransitionDuration
+                pieHoverTransitionDuration,
             );
         }
 
@@ -517,7 +517,7 @@ export default function module() {
             lastHighlightedSlice = el;
         }
 
-        dispatcher.call('customMouseOut', el, d, mouse(el), [
+        dispatcher.call('customMouseOut', el, d, pointer(el), [
             chartWidth,
             chartHeight,
         ]);
@@ -529,7 +529,7 @@ export default function module() {
      * @private
      */
     function handleClick(el, d, chartWidth, chartHeight) {
-        dispatcher.call('customClick', el, d, mouse(el), [
+        dispatcher.call('customClick', el, d, pointer(el), [
             chartWidth,
             chartHeight,
         ]);
@@ -550,7 +550,7 @@ export default function module() {
             tweenGrowth(
                 highlightedSlice,
                 externalRadius,
-                pieDrawingTransitionDuration
+                pieDrawingTransitionDuration,
             );
         }
     }

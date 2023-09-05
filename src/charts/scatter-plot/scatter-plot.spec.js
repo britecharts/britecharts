@@ -8,6 +8,35 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
+const eventDetails = {
+    cancelable: false,
+    bubbles: false,
+    details: {
+        isTrusted: true,
+        altKey: false,
+        bubbles: true,
+        button: 0,
+        buttons: 0,
+        clientX: 505,
+        clientY: 405,
+        layerX: 505,
+        layerY: 405,
+        metaKey: false,
+        movementX: 2,
+        movementY: 1,
+        offsetX: 100,
+        offsetY: 100,
+        pageX: 100,
+        pageY: 100,
+        returnValue: true,
+        screenX: 100,
+        screenY: 100,
+        shiftKey: false,
+        x: 100,
+        y: 100,
+    },
+};
+
 describe('Scatter Plot', () => {
     let scatterPlot, dataset, containerFixture;
 
@@ -275,10 +304,10 @@ describe('Scatter Plot', () => {
                 expect(trendline.getAttribute('stroke-width')).toBeDefined();
                 expect(trendline.getAttribute('fill')).toBeDefined();
                 expect(
-                    trendline.getAttribute('stroke-dasharray')
+                    trendline.getAttribute('stroke-dasharray'),
                 ).toBeDefined();
                 expect(
-                    trendline.getAttribute('stroke-dashoffset')
+                    trendline.getAttribute('stroke-dashoffset'),
                 ).toBeDefined();
             });
         });
@@ -301,47 +330,47 @@ describe('Scatter Plot', () => {
                     .node();
 
                 expect(scatterPoint.getAttribute('cursor')).toEqual(
-                    expectedCursor
+                    expectedCursor,
                 );
                 expect(scatterPoint.getAttribute('class')).toEqual(
-                    expectedClass
+                    expectedClass,
                 );
             });
 
             it('should change attribute when a data point is hovered', () => {
                 const expectedCursor = 'pointer';
                 const expectedOpacity = '1';
-                const expectedStroke = '#6aedc7';
+                const expectedStroke = '#ffa71a';
                 const expectedFillOpacity = '0.24';
-                const expectedCx = '39';
-                const expectedCy = '398';
+                const expectedCx = '120';
+                const expectedCy = '180';
                 const expectedFilter = 'url(#highlight-filter)';
                 const container = containerFixture.select('svg');
 
-                container.dispatch('mousemove');
+                container.dispatch('mousemove', eventDetails);
                 const scatterPoint = containerFixture
                     .selectAll('.highlight-circle')
                     .node();
 
                 expect(scatterPoint.getAttribute('cursor')).toEqual(
-                    expectedCursor
+                    expectedCursor,
                 );
                 expect(scatterPoint.getAttribute('opacity')).toEqual(
-                    expectedOpacity
+                    expectedOpacity,
                 );
                 expect(scatterPoint.getAttribute('stroke')).toEqual(
-                    expectedStroke
+                    expectedStroke,
                 );
                 expect(scatterPoint.getAttribute('fill')).toEqual(
-                    expectedStroke
+                    expectedStroke,
                 );
                 expect(scatterPoint.getAttribute('fill-opacity')).toEqual(
-                    expectedFillOpacity
+                    expectedFillOpacity,
                 );
                 expect(scatterPoint.getAttribute('cx')).toEqual(expectedCx);
                 expect(scatterPoint.getAttribute('cy')).toEqual(expectedCy);
                 expect(scatterPoint.getAttribute('filter')).toEqual(
-                    expectedFilter
+                    expectedFilter,
                 );
             });
         });
@@ -373,15 +402,15 @@ describe('Scatter Plot', () => {
 
                     it('crosshair line with respect to x changes attributes', () => {
                         const container = containerFixture.select('svg');
-                        const expectedStroke = '#6aedc7';
+                        const expectedStroke = '#ffa71a';
 
-                        container.dispatch('mousemove');
+                        container.dispatch('mousemove', eventDetails);
                         const scatterPoint = containerFixture
                             .select('line.highlight-x-line')
                             .node();
 
                         expect(scatterPoint.getAttribute('stroke')).toEqual(
-                            expectedStroke
+                            expectedStroke,
                         );
                         expect(scatterPoint.getAttribute('x1')).toBeDefined();
                         expect(scatterPoint.getAttribute('x2')).toBeDefined();
@@ -391,15 +420,15 @@ describe('Scatter Plot', () => {
 
                     it('crosshair line with respect to y changes attributes', () => {
                         const container = containerFixture.select('svg');
-                        const expectedStroke = '#6aedc7';
+                        const expectedStroke = '#ffa71a';
 
-                        container.dispatch('mousemove');
+                        container.dispatch('mousemove', eventDetails);
                         const scatterPoint = containerFixture
                             .select('line.highlight-y-line')
                             .node();
 
                         expect(scatterPoint.getAttribute('stroke')).toEqual(
-                            expectedStroke
+                            expectedStroke,
                         );
                         expect(scatterPoint.getAttribute('x1')).toBeDefined();
                         expect(scatterPoint.getAttribute('x2')).toBeDefined();
@@ -428,18 +457,18 @@ describe('Scatter Plot', () => {
 
                     it('crosshair label with respect to x changes attributes', () => {
                         const container = containerFixture.select('svg');
-                        const expectedFill = '#6aedc7';
+                        const expectedFill = '#ffa71a';
 
-                        container.dispatch('mousemove');
+                        container.dispatch('mousemove', eventDetails);
                         const scatterText = containerFixture
                             .select('text.highlight-x-legend')
                             .node();
 
                         expect(scatterText.getAttribute('fill')).toEqual(
-                            expectedFill
+                            expectedFill,
                         );
                         expect(
-                            scatterText.getAttribute('text-anchor')
+                            scatterText.getAttribute('text-anchor'),
                         ).toBeDefined();
                         expect(scatterText.getAttribute('x')).toBeDefined();
                         expect(scatterText.getAttribute('y')).toBeNull();
@@ -447,18 +476,18 @@ describe('Scatter Plot', () => {
 
                     it('crosshair label with respect to y changes attributes', () => {
                         const container = containerFixture.select('svg');
-                        const expectedFill = '#6aedc7';
+                        const expectedFill = '#ffa71a';
 
-                        container.dispatch('mousemove');
+                        container.dispatch('mousemove', eventDetails);
                         const scatterText = containerFixture
                             .select('text.highlight-y-legend')
                             .node();
 
                         expect(scatterText.getAttribute('fill')).toEqual(
-                            expectedFill
+                            expectedFill,
                         );
                         expect(
-                            scatterText.getAttribute('text-anchor')
+                            scatterText.getAttribute('text-anchor'),
                         ).toBeDefined();
                         expect(scatterText.getAttribute('x')).toBeDefined();
                         expect(scatterText.getAttribute('y')).toBeDefined();
@@ -646,7 +675,7 @@ describe('Scatter Plot', () => {
 
                 circles.forEach((d) => {
                     expect(d.getAttribute('fill')).toEqual(
-                        colorMap[d.__data__.name]
+                        colorMap[d.__data__.name],
                     );
                 });
             });
@@ -1018,7 +1047,7 @@ describe('Scatter Plot', () => {
 
                 expect(callbackSpy.calls.count()).toEqual(expectedCallCount);
                 expect(callbackSpy.calls.allArgs()[0].length).toEqual(
-                    expectedArguments
+                    expectedArguments,
                 );
             });
         });
@@ -1031,11 +1060,11 @@ describe('Scatter Plot', () => {
                 const expectedArguments = 2;
 
                 scatterPlot.on('customMouseOver', callback);
-                container.dispatch('mouseover');
+                container.dispatch('mouseover', eventDetails);
 
                 expect(callback.calls.count()).toEqual(expectedCallCount);
                 expect(callback.calls.allArgs()[0].length).toEqual(
-                    expectedArguments
+                    expectedArguments,
                 );
             });
 
@@ -1050,7 +1079,7 @@ describe('Scatter Plot', () => {
 
                 expect(callback.calls.count()).toEqual(expectedCallCount);
                 expect(callback.calls.allArgs()[0].length).toEqual(
-                    expectedArguments
+                    expectedArguments,
                 );
             });
 
@@ -1065,7 +1094,7 @@ describe('Scatter Plot', () => {
 
                 expect(callback.calls.count()).toEqual(expectedCallCount);
                 expect(callback.calls.allArgs()[0].length).toEqual(
-                    expectedArguments
+                    expectedArguments,
                 );
             });
         });

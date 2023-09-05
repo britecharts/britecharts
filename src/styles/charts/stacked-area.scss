@@ -16,7 +16,7 @@ $outline-stroke-width: 1.2;
 
     .area-outline {
         fill: none;
-        shape-rendering: geometricPrecision;
+        shape-rendering: geometricprecision;
         stroke-width: $outline-stroke-width;
     }
 

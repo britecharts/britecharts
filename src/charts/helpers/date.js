@@ -35,8 +35,8 @@ export const diffDays = (startDate, endDate) => {
     return Math.ceil(
         Math.abs(
             (new Date(startDate).getTime() - new Date(endDate).getTime()) /
-                oneDayInMilliseconds
-        )
+                oneDayInMilliseconds,
+        ),
     );
 };
 

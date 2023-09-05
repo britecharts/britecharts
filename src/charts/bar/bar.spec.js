@@ -312,7 +312,7 @@ describe('Bar Chart', () => {
 
                 bars.nodes().forEach((d) => {
                     expect(d.getAttribute('fill')).toEqual(
-                        colorMap[d.__data__.name]
+                        colorMap[d.__data__.name],
                     );
                 });
             });
@@ -346,8 +346,9 @@ describe('Bar Chart', () => {
 
                 barChart.orderingFunction(orderFunction);
                 containerFixture.call(barChart);
-                actual = containerFixture.selectAll('.bar-chart .bar').node()
-                    .__data__;
+                actual = containerFixture
+                    .selectAll('.bar-chart .bar')
+                    .node().__data__;
 
                 expect(actual.name).toBe(expected.name);
                 expect(actual.value).toBe(expected.value);
@@ -363,8 +364,9 @@ describe('Bar Chart', () => {
 
                 barChart.orderingFunction(orderFunction);
                 containerFixture.call(barChart);
-                actual = containerFixture.selectAll('.bar-chart .bar').node()
-                    .__data__;
+                actual = containerFixture
+                    .selectAll('.bar-chart .bar')
+                    .node().__data__;
 
                 expect(actual.name).toBe(expected.name);
                 expect(actual.value).toBe(expected.value);
@@ -432,12 +434,10 @@ describe('Bar Chart', () => {
 
                 barChart.hasSingleBarHighlight(false);
                 barChart.highlightBarFunction(customHighlightFunction);
-                const barNotHighlighted = containerFixture.selectAll(
-                    '.bar:nth-child(1)'
-                );
-                const barHighlighted = containerFixture.selectAll(
-                    '.bar:nth-child(2)'
-                );
+                const barNotHighlighted =
+                    containerFixture.selectAll('.bar:nth-child(1)');
+                const barHighlighted =
+                    containerFixture.selectAll('.bar:nth-child(2)');
 
                 const beforeHighlightColor = barNotHighlighted.attr('fill');
 
@@ -464,10 +464,10 @@ describe('Bar Chart', () => {
 
                 expect(bar.attr('fill')).toContain(expectedGradientRefStr);
                 expect(gradientStopEl[0].getAttribute('stop-color')).toEqual(
-                    expectedGradientColors[0]
+                    expectedGradientColors[0],
                 );
                 expect(gradientStopEl[1].getAttribute('stop-color')).toEqual(
-                    expectedGradientColors[1]
+                    expectedGradientColors[1],
                 );
             });
         });

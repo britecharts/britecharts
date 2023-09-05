@@ -67,7 +67,7 @@ function createHorizontalBarChart() {
         barContainer.datum(dataset).call(barChart);
 
         tooltipContainer = select(
-            '.js-horizontal-bar-chart-container .bar-chart .metadata-group'
+            '.js-horizontal-bar-chart-container .bar-chart .metadata-group',
         );
         tooltipContainer.datum([]).call(tooltip);
     }

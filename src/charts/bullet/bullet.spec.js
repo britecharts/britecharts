@@ -80,7 +80,7 @@ describe('Bullet Chart', () => {
 
                 measureBars.forEach((measureBar, i) => {
                     expect(measureBar.getAttribute('class')).toEqual(
-                        `${expectedClass}${i}`
+                        `${expectedClass}${i}`,
                     );
                     expect(measureBar.getAttribute('fill')).toBeDefined();
                     expect(measureBar.getAttribute('x')).toBeDefined();
@@ -107,7 +107,7 @@ describe('Bullet Chart', () => {
 
                 rangeBars.forEach((rangeBar, i) => {
                     expect(
-                        rangeBar.getAttribute('class', `${expectedClass}${i}`)
+                        rangeBar.getAttribute('class', `${expectedClass}${i}`),
                     ).toBeDefined();
                     expect(rangeBar.getAttribute('opacity')).toBeDefined();
                     expect(rangeBar.getAttribute('x')).toBeDefined();
@@ -121,7 +121,8 @@ describe('Bullet Chart', () => {
                 let diff = 0.2;
 
                 it('sets correct default range for range bars', () => {
-                    const expectedStartOpacity = bulletChart.startMaxRangeOpacity();
+                    const expectedStartOpacity =
+                        bulletChart.startMaxRangeOpacity();
                     const rangeBars = containerFixture
                         .selectAll('rect.range')
                         .nodes()
@@ -129,7 +130,7 @@ describe('Bullet Chart', () => {
 
                     rangeBars.forEach((rangeBar, i) => {
                         expect(rangeBar.getAttribute('opacity')).toEqual(
-                            `${expectedStartOpacity - i * diff}`
+                            `${expectedStartOpacity - i * diff}`,
                         );
                     });
                 });
@@ -146,7 +147,7 @@ describe('Bullet Chart', () => {
 
                     rangeBars.forEach((rangeBar, i) => {
                         expect(rangeBar.getAttribute('opacity')).toEqual(
-                            `${expectedStartMaxOpacity - i * diff}`
+                            `${expectedStartMaxOpacity - i * diff}`,
                         );
                     });
                 });
@@ -156,8 +157,9 @@ describe('Bullet Chart', () => {
         describe('markers', () => {
             it('should render a marker', () => {
                 let expected = 1;
-                let actual = containerFixture.selectAll('.marker-line').nodes()
-                    .length;
+                let actual = containerFixture
+                    .selectAll('.marker-line')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -170,7 +172,7 @@ describe('Bullet Chart', () => {
 
                 markerLines.forEach((markerLine, i) => {
                     expect(markerLine.getAttribute('class')).toEqual(
-                        `${expectedClass}${i}`
+                        `${expectedClass}${i}`,
                     );
                     expect(markerLine.getAttribute('opacity')).toBeDefined();
                     expect(markerLine.getAttribute('x')).toBeDefined();
@@ -238,13 +240,13 @@ describe('Bullet Chart', () => {
                     .node();
 
                 expect(rangeBar.getAttribute('fill')).toEqual(
-                    expectedRangeColor
+                    expectedRangeColor,
                 );
                 expect(measureBar.getAttribute('fill')).toEqual(
-                    expectedMeasureColor
+                    expectedMeasureColor,
                 );
                 expect(markerLine.getAttribute('stroke')).toEqual(
-                    expectedMarkerColor
+                    expectedMarkerColor,
                 );
             });
         });

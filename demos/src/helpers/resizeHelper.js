@@ -14,5 +14,5 @@ select(window).on(
             cachedWidth = newWidth;
             PubSub.publish('resize');
         }
-    }, debounceDelay)
+    }, debounceDelay),
 );

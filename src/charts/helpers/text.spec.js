@@ -53,7 +53,7 @@ describe('Text Helper', () => {
         const actualNumberOfLines = getApproximateNumberOfLines(
             text,
             fontSize,
-            availableWidth
+            availableWidth,
         );
 
         expect(actualNumberOfLines).toEqual(expectedNumberOfLines);

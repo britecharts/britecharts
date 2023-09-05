@@ -45,11 +45,11 @@ describe('Locale Helper', () => {
         it('should throw an error', () => {
             const invalidLocaleDefinition = {};
             const expected = new Error(
-                'Please pass in a valid locale object definition'
+                'Please pass in a valid locale object definition',
             );
 
             expect(() => setDefaultLocale(invalidLocaleDefinition)).toThrow(
-                expected
+                expected,
             );
         });
     });

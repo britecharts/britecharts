@@ -39,17 +39,16 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
                 console.log('Data entry marker clicked', d, mousePosition);
             })
             .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', function (
-                dataPoint,
-                topicColorMap,
-                dataPointXPosition
-            ) {
-                chartTooltip.update(
-                    dataPoint,
-                    topicColorMap,
-                    dataPointXPosition
-                );
-            })
+            .on(
+                'customMouseMove',
+                function (dataPoint, topicColorMap, dataPointXPosition) {
+                    chartTooltip.update(
+                        dataPoint,
+                        topicColorMap,
+                        dataPointXPosition,
+                    );
+                },
+            )
             .on('customMouseOut', chartTooltip.hide);
 
         if (optionalColorSchema) {
@@ -64,14 +63,14 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-stacked-area-chart-tooltip-container .metadata-group .vertical-marker-container'
+            '.js-stacked-area-chart-tooltip-container .metadata-group .vertical-marker-container',
         );
         tooltipContainer.datum([]).call(chartTooltip);
 
         select('#button').on('click', function () {
             stackedArea.exportChart(
                 'stacked-area.png',
-                'Britecharts Stacked Area'
+                'Britecharts Stacked Area',
             );
         });
     }
@@ -115,7 +114,7 @@ function createStackedAreaChart(optionalColorSchema) {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-stacked-area-chart-fixed-container .metadata-group .vertical-marker-container'
+            '.js-stacked-area-chart-fixed-container .metadata-group .vertical-marker-container',
         );
         tooltipContainer.datum([]).call(chartTooltip);
     }
@@ -172,7 +171,7 @@ function createStackedAreaChartWithSyncedTooltip() {
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select(
-            '.js-stacked-area-chart-tooltip-bis-container .metadata-group .vertical-marker-container'
+            '.js-stacked-area-chart-tooltip-bis-container .metadata-group .vertical-marker-container',
         );
         tooltipContainer.datum([]).call(chartTooltip);
     }
@@ -223,6 +222,6 @@ if (select('.js-stacked-area-chart-tooltip-container').node()) {
     colorSelectorHelper.createColorSelector(
         '.js-color-selector-container',
         '.stacked-area',
-        createStackedAreaChartWithTooltip
+        createStackedAreaChartWithTooltip,
     );
 }

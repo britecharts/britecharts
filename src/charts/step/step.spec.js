@@ -147,8 +147,9 @@ describe('Step Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stepChart);
-                actual = containerFixture.selectAll('.step-chart').nodes()
-                    .length;
+                actual = containerFixture
+                    .selectAll('.step-chart')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -159,8 +160,9 @@ describe('Step Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stepChart);
-                actual = containerFixture.selectAll('.step-chart .step').nodes()
-                    .length;
+                actual = containerFixture
+                    .selectAll('.step-chart .step')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -180,7 +182,7 @@ describe('Step Chart', () => {
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(
-                    expectedArgumentsCount
+                    expectedArgumentsCount,
                 );
             });
         });
@@ -197,7 +199,7 @@ describe('Step Chart', () => {
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(
-                    expectedArgumentsCount
+                    expectedArgumentsCount,
                 );
             });
         });
@@ -214,7 +216,7 @@ describe('Step Chart', () => {
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(
-                    expectedArgumentsCount
+                    expectedArgumentsCount,
                 );
             });
         });

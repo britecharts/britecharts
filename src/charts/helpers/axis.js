@@ -53,7 +53,7 @@ const getAxisSettingsFromTimeSpan = (timeSpan) => {
  */
 const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
     let ticksForWidth = Math.ceil(
-        width / (singleTickWidth + horizontalTickSpacing)
+        width / (singleTickWidth + horizontalTickSpacing),
     );
 
     return dataPointNumber < minEntryNumForDayFormat
@@ -71,7 +71,7 @@ const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
  */
 const getMaxNumOfHorizontalTicksForNumberRanges = (width, dataPointNumber) => {
     let ticksForWidth = Math.ceil(
-        width / (singleTickWidth + horizontalTickSpacing)
+        width / (singleTickWidth + horizontalTickSpacing),
     );
 
     return Math.min(dataPointNumber, ticksForWidth);
@@ -90,7 +90,7 @@ export const getTimeSeriesAxis = (
     dataByDate,
     width,
     settings = null,
-    locale = null
+    locale = null,
 ) => {
     const firstDate = new Date(dataByDate[0].date);
     const lastDate = new Date(dataByDate[dataByDate.length - 1].date);
@@ -112,7 +112,7 @@ export const getTimeSeriesAxis = (
     const majorTickValue = settingsToMajorTickMap[settings];
     const minorTickValue = getMaxNumOfHorizontalTicks(
         width,
-        convertMillisecondsToDays(dateTimeSpan)
+        convertMillisecondsToDays(dateTimeSpan),
     );
 
     return {
@@ -146,7 +146,7 @@ export const getSortedNumberAxis = (dataSorted, width) => {
 
     const minorTickValue = getMaxNumOfHorizontalTicksForNumberRanges(
         width,
-        timeSpan
+        timeSpan,
     );
 
     return {

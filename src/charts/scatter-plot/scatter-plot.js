@@ -6,7 +6,7 @@ import * as d3Format from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { scaleSqrt, scaleOrdinal, scaleLinear } from 'd3-scale';
 import { curveBasis, line } from 'd3-shape';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import { voronoi } from 'd3-voronoi';
 import { zoom as d3Zoom, zoomTransform } from 'd3-zoom';
 import 'd3-transition';
@@ -159,7 +159,7 @@ export default function module() {
             'customClick',
             'customMouseMove',
             'customMouseOver',
-            'customMouseOut'
+            'customMouseOut',
         ),
         getName = ({ name }) => name,
         getPointData = ({ data }) => data;
@@ -206,17 +206,17 @@ export default function module() {
      * @private
      */
     function addMouseEvents() {
-        svg.on('mousemove', function (d) {
-            handleMouseMove(this, d);
+        svg.on('mousemove', function (event) {
+            handleMouseMove(event, this);
         })
-            .on('mouseover', function (d) {
-                handleMouseOver(this, d);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(event, this, d);
             })
-            .on('mouseout', function (d) {
-                handleMouseOut(this, d);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(event, this, d);
             })
-            .on('click', function () {
-                handleClick(this);
+            .on('click', function (event) {
+                handleClick(event, this);
             });
     }
 
@@ -488,7 +488,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function updateChartAfterZoom(data, index, elements) {
+    function updateChartAfterZoom(event, data, index, elements) {
         //update scale
         const transform = zoomTransform(elements[0]);
         xScale = transform.rescaleX(xOriginalScale);
@@ -621,7 +621,7 @@ export default function module() {
                 .attr('stroke-width', circleStrokeWidth)
                 .style('stroke', (d) => nameToColorMap[d.name])
                 .attr('fill', (d) =>
-                    hasHollowCircles ? hollowColor : nameToColorMap[d.name]
+                    hasHollowCircles ? hollowColor : nameToColorMap[d.name],
                 )
                 .attr('fill-opacity', circleOpacity)
                 .attr('r', (d) => areaScale(d.y))
@@ -636,7 +636,7 @@ export default function module() {
                 .attr('stroke-width', circleStrokeWidth)
                 .style('stroke', (d) => nameToColorMap[d.name])
                 .attr('fill', (d) =>
-                    hasHollowCircles ? hollowColor : nameToColorMap[d.name]
+                    hasHollowCircles ? hollowColor : nameToColorMap[d.name],
                 )
                 .attr('fill-opacity', circleOpacity)
                 .attr('r', (d) => areaScale(d.y))
@@ -697,7 +697,7 @@ export default function module() {
             .attr('class', 'highlight-x-legend')
             .attr(
                 'transform',
-                `translate(0, ${chartHeight - highlightTextLegendOffset})`
+                `translate(0, ${chartHeight - highlightTextLegendOffset})`,
             )
             .attr('x', xScale(data.x) - areaScale(data.y) / 2)
             .text(`${getXAxisFormat()(data.x)}`);
@@ -761,8 +761,8 @@ export default function module() {
      * @param {SVGHtmlElement} svg
      * @private
      */
-    function getClosestPoint(svg) {
-        let mousePos = mouse(svg);
+    function getClosestPoint(event) {
+        let mousePos = pointer(event);
 
         mousePos[0] -= margin.left;
         mousePos[1] -= margin.top;
@@ -790,8 +790,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseMove(e) {
-        const closestPoint = getClosestPoint(e);
+    function handleMouseMove(event, e) {
+        const closestPoint = getClosestPoint(event);
         const pointData = getPointData(closestPoint);
 
         if (hasCrossHairs) {
@@ -800,7 +800,7 @@ export default function module() {
 
         highlightDataPoint(pointData);
 
-        dispatcher.call('customMouseMove', e, pointData, mouse(e), [
+        dispatcher.call('customMouseMove', e, pointData, pointer(event), [
             chartWidth,
             chartHeight,
         ]);
@@ -811,8 +811,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOver(e, d) {
-        dispatcher.call('customMouseOver', e, d, mouse(e));
+    function handleMouseOver(event, e, d) {
+        dispatcher.call('customMouseOver', e, d, pointer(event));
     }
 
     /**
@@ -820,13 +820,13 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOut(e, d) {
+    function handleMouseOut(event, e, d) {
         removePointHighlight();
 
         if (hasCrossHairs) {
             showCrossHairComponentsWithLabels(false);
         }
-        dispatcher.call('customMouseOut', e, d, mouse(e));
+        dispatcher.call('customMouseOut', e, d, pointer(event));
     }
 
     /**
@@ -834,13 +834,13 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleClick(e) {
-        const closestPoint = getClosestPoint(e);
+    function handleClick(event, e) {
+        const closestPoint = getClosestPoint(event);
         const d = getPointData(closestPoint);
 
         handleClickAnimation(d);
 
-        dispatcher.call('customClick', e, d, mouse(e), [
+        dispatcher.call('customClick', e, d, pointer(e), [
             chartWidth,
             chartHeight,
         ]);
@@ -857,7 +857,7 @@ export default function module() {
             highlightCircle,
             ease,
             areaScale(dataPoint.y),
-            areaScale(dataPoint.y * 2)
+            areaScale(dataPoint.y * 2),
         );
     }
 
@@ -873,7 +873,7 @@ export default function module() {
 
         if (!highlightFilter) {
             highlightFilter = createFilterContainer(
-                svg.select('.metadata-group')
+                svg.select('.metadata-group'),
             );
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }

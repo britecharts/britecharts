@@ -24,7 +24,7 @@
 .vertical-grid-line,
 .horizontal-grid-line {
   fill: none;
-  shape-rendering: crispEdges;
+  shape-rendering: crispedges;
   stroke: #eff2f5;
   stroke-dasharray: 4, 4;
   stroke-width: 1; }
@@ -36,13 +36,13 @@
 .extended-y-line,
 .extended-x-line {
   fill: none;
-  shape-rendering: crispEdges;
+  shape-rendering: crispedges;
   stroke: #adb0b6;
   stroke-width: 1; }
 
 .tick line {
   fill: none;
-  shape-rendering: crispEdges;
+  shape-rendering: crispedges;
   stroke: #adb0b6;
   stroke-width: 1; }
 
@@ -96,7 +96,7 @@
   transition: opacity 0.2s ease-out; }
 
 .bar-chart .bar {
-  shape-rendering: crispEdges; }
+  shape-rendering: crispedges; }
 
 .bar-chart .y-axis-group text {
   font-size: 14px; }
@@ -127,7 +127,7 @@
   display: none; }
 
 .line-chart .custom-line {
-  shape-rendering: crispEdges;
+  shape-rendering: crispedges;
   stroke-width: 1; }
 
 .line-chart .custom-line-annotation {
@@ -173,7 +173,7 @@
 
 .stacked-area .area-outline {
   fill: none;
-  shape-rendering: geometricPrecision;
+  shape-rendering: geometricprecision;
   stroke-width: 1.2; }
 
 .stacked-area .data-point-highlighter {
@@ -205,7 +205,7 @@
 
 .step-chart .step {
   fill: #8fdad8;
-  shape-rendering: crispEdges;
+  shape-rendering: crispedges;
   stroke-width: 0; }
   .step-chart .step:hover {
     fill: #39c2c9; }
@@ -235,7 +235,7 @@
   display: none; }
 
 .bullet-chart .marker-line {
-  shape-rendering: crispEdges; }
+  shape-rendering: crispedges; }
 
 .bullet-chart .axis-group path {
   display: none; }

@@ -88,7 +88,7 @@ export function LineDataBuilder(config) {
         var attributes = _.extend(
             {},
             this.config,
-            jsonOnlyNonzeroPositiveValues
+            jsonOnlyNonzeroPositiveValues,
         );
 
         return new this.Klass(attributes);

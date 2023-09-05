@@ -1,4 +1,4 @@
-import { select, event } from 'd3-selection';
+import { select } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 // import PubSub from 'pubsub-js';
 
@@ -133,7 +133,7 @@ if (select('.js-brush-chart-container').node()) {
             ? brushContainer.node().getBoundingClientRect().width
             : false;
         const missingDataBrushContainer = select(
-            '.js-other-brush-chart-container'
+            '.js-other-brush-chart-container',
         );
         const missingDataContainerWidth = missingDataBrushContainer.node()
             ? missingDataBrushContainer.node().getBoundingClientRect().width
@@ -152,11 +152,11 @@ if (select('.js-brush-chart-container').node()) {
     // Redraw charts on window resize
     // PubSub.subscribe('resize', redrawCharts);
 
-    select('#clear-selection').on('click', function (e) {
+    select('#clear-selection').on('click', function (event) {
         brushChart.dateRange([null, null]);
         event.preventDefault();
     });
-    select('#other-clear-selection').on('click', function (e) {
+    select('#other-clear-selection').on('click', function (event) {
         missingDataBrushChart.dateRange([null, null]);
         event.preventDefault();
     });

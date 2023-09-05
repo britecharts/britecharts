@@ -76,7 +76,7 @@ function gridBase(orient, scale) {
             // Get the appropriate function to position the lines, based on scale type
             // Pass a duplicate scale to ensure position values are fixed until grid updated
             position = (scale.bandwidth ? positionCenter : positionNumber)(
-                scale.copy()
+                scale.copy(),
             ),
             // Set parameter to ensure correct line offset positions for inverted ranges
             k = range[range.length - 1] >= range[0] ? 1 : -1,
@@ -90,7 +90,7 @@ function gridBase(orient, scale) {
                 initContainer
                     .enter()
                     .append('g')
-                    .attr('class', classArr.asList())
+                    .attr('class', classArr.asList()),
             ),
             // Set up line selections
             line = container.selectAll('line').data(values, scale).order(),

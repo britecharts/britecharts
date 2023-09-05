@@ -46,7 +46,7 @@ describe('Axis Helper', () => {
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
                     oneDayDataSet.dataByDate,
-                    300
+                    300,
                 ));
             });
 
@@ -76,7 +76,7 @@ describe('Axis Helper', () => {
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
                     lessThanOneMonthDataSet.dataByDate,
-                    300
+                    300,
                 ));
             });
 
@@ -106,7 +106,7 @@ describe('Axis Helper', () => {
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
                     twoYearsDataSet.dataByDate,
-                    300
+                    300,
                 ));
             });
 
@@ -139,7 +139,7 @@ describe('Axis Helper', () => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
                     oneDayDataSet.dataByDate,
                     300,
-                    'minute-hour'
+                    'minute-hour',
                 ));
             });
 
@@ -163,7 +163,7 @@ describe('Axis Helper', () => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
                     oneDayDataSet.dataByDate,
                     300,
-                    'hour-daymonth'
+                    'hour-daymonth',
                 ));
             });
 
@@ -187,7 +187,7 @@ describe('Axis Helper', () => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
                     oneDayDataSet.dataByDate,
                     300,
-                    'day-month'
+                    'day-month',
                 ));
             });
 
@@ -211,7 +211,7 @@ describe('Axis Helper', () => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
                     oneDayDataSet.dataByDate,
                     300,
-                    'month-year'
+                    'month-year',
                 ));
             });
 
@@ -241,7 +241,7 @@ describe('Axis Helper', () => {
             beforeEach(() => {
                 minor = timeAxis.getSortedNumberAxis(
                     numericalAxisDataSet.dataSorted,
-                    300
+                    300,
                 );
             });
 

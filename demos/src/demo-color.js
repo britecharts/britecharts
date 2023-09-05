@@ -7,7 +7,7 @@ function createColors() {
 
     Object.keys(colorSchemas).forEach((colorPalette) => {
         const paletteDiv = document.getElementById(
-            `js-palette-${colorPalette}`
+            `js-palette-${colorPalette}`,
         );
 
         paletteDiv.style.display = 'flex';
@@ -28,14 +28,13 @@ function createGradients() {
 
     Object.keys(colorGradients).forEach((colorGradient) => {
         const gradientDiv = document.getElementById(
-            `js-gradient-${colorGradient}`
+            `js-gradient-${colorGradient}`,
         );
 
         gradientDiv.style.display = 'flex';
 
-        let [gradientStartColor, gradientEndColor] = colorGradients[
-            colorGradient
-        ];
+        let [gradientStartColor, gradientEndColor] =
+            colorGradients[colorGradient];
         const div = document.createElement('div');
 
         div.style.width = '900px';
@@ -49,7 +48,7 @@ function createGradients() {
 function createSingleColors() {
     const { singleColors } = colors;
     const colorsDiv = document.getElementsByClassName(
-        'js-single-color-container'
+        'js-single-color-container',
     )[0];
 
     colorsDiv.style.display = 'flex';
