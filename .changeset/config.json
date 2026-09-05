@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "fixed": [
+    [
+      "@britecharts/core",
+      "@britecharts/wrappers",
+      "@britecharts/react"
+    ]
+  ],
+  "linked": [],
+  "ignore": ["@britecharts/docs", "@britecharts/demos"]
+}

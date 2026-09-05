@@ -1,60 +1,74 @@
 name: Storybook Deployment to Chromatic
 
-# Event for the workflow
-on: push
+# Was `on: push` for every branch, which spent a Chromatic snapshot on every
+# commit anywhere in the repo.
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-# List of jobs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
-  getNodeVersion:
-    uses: calyptia/.github/.github/workflows/get_node_version.yml@main
-
   chromatic-deployment:
     name: Deploy to Chromatic
     runs-on: ubuntu-latest
-    needs: getNodeVersion
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
         with:
+          # Chromatic needs the full history to work out the baseline build.
           fetch-depth: 0
-      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
 
-      - name: Use Yarn cache
-        uses: actions/cache@v2
-        id: yarn-cache
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
         with:
-          path: '.yarn/cache'
-          key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
+          node-version-file: '.nvmrc'
+          cache: yarn
+
       - name: Install dependencies
-        run: yarn
+        run: yarn install --immutable
+
       - name: Build all packages 🔧
-        run: yarn build 
-      - name: build core storybook 🔧
+        run: |
+          yarn build:core
+          yarn build:wrappers
+          yarn build:react
+
+      - name: Build core storybook 🔧
         run: yarn workspace @britecharts/core demo:build
+
       - name: Publish core storybook to Chromatic 🚀
-        uses: chromaui/action@v1
-        # Chromatic GitHub Action options
+        uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_TOKEN_CORE }}
           autoAcceptChanges: 'main'
           storybookBuildDir: './packages/core/dist/storybook'
-      - name: build react storybook 🔧
+
+      - name: Build react storybook 🔧
         run: yarn workspace @britecharts/react demo:build
+
       - name: Publish react storybook to Chromatic 🚀
-        uses: chromaui/action@v1
-        # Chromatic GitHub Action options
+        uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_TOKEN_REACT }}
           autoAcceptChanges: 'main'
           storybookBuildDir: './packages/react/dist/storybook'
-      - name: build main storybook 🔧
+
+      - name: Build main storybook 🔧
         run: yarn workspace @britecharts/demos build
+
       - name: Publish main storybook to Chromatic 🚀
-        uses: chromaui/action@v1
-        # Chromatic GitHub Action options
+        uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           autoAcceptChanges: 'main'

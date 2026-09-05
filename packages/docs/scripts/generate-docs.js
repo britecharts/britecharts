@@ -30,7 +30,7 @@ const IGNORED_PATHS = [
 /**
  * Runs through packages folders looking for JSDoc and generates markdown docs
  */
-function generateDocs() {
+async function generateDocs() {
     console.log('-= Generating package docs =-');
     // Use glob to get all js/ts files
     const pathPattern = path.join(__dirname, '../../core/src/**/*.[jt]s?(x)');
@@ -43,9 +43,10 @@ function generateDocs() {
     let processingPackageName;
 
     // grab all js files
-    filePaths.forEach((filePath) => {
-        // Generate markdown from JSDoc comments
-        const markdown = jsdoc2md.renderSync({
+    for (const filePath of filePaths) {
+        // Generate markdown from JSDoc comments.
+        // jsdoc-to-markdown dropped renderSync in v8, so this is awaited.
+        const markdown = await jsdoc2md.render({
             files: filePath,
             configure: path.join(__dirname, '../jsdoc.conf.json'),
             'heading-depth': 1,
@@ -100,11 +101,16 @@ function generateDocs() {
         // Add category metadata
         const readmeFile = fs.readFileSync('./scripts/_category_.json');
         fs.writeFileSync(`${writeDir}/_category_.json`, readmeFile);
-    });
+    }
 
     // Let the user know what step we're on
     console.log('\u001B[32m', '✔️  Docs generated', '\u001B[0m');
 }
 
-generateDocs();
-process.exit(0);
+generateDocs().then(
+    () => process.exit(0),
+    (error) => {
+        console.error(error);
+        process.exit(1);
+    }
+);
