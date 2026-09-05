@@ -3,38 +3,72 @@ name: Unit Tests
 on:
   push:
     branches:
-      - master 
       - main
+      - master
   pull_request:
 
-jobs:
-  getNodeVersion:
-    uses: gagoar/ts-node-template/.github/workflows/get_node_version.yml@main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
+permissions:
+  contents: read
+
+jobs:
   unit-test:
+    name: Test
     runs-on: ubuntu-latest
-    needs: getNodeVersion
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@main
-      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
-        uses: actions/setup-node@v2
+        uses: actions/checkout@v7
+
+      # Corepack has to be on before setup-node, which shells out to yarn to
+      # locate the cache folder. The version comes from `packageManager` in
+      # package.json, so CI and local always agree.
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
         with:
-          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
-      - name: Use Yarn cache
-        uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: '.yarn/cache'
-          key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
+          node-version-file: '.nvmrc'
+          cache: yarn
+
       - name: Install dependencies
-        run: yarn
-      - name: Build packages 🔧
-        run: yarn build 
+        run: yarn install --immutable
+
+      # No build step: specs resolve sibling workspaces to their source, so
+      # the suites run against a clean checkout.
       - name: Testing Library 🕵️‍♀️
         run: yarn test:ci
-      - name: Send coverage to codecov
-        uses: codecov/codecov-action@v2
+
+      - name: Send coverage to Codecov
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v7
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build packages 🔧
+        run: |
+          yarn build:core
+          yarn build:wrappers
+          yarn build:react

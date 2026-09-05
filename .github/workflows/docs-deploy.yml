@@ -4,48 +4,41 @@ on:
   push:
     branches:
       - main
-    # Review gh actions docs if you want to further define triggers, paths, etc
-    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: write
 
 jobs:
-  getNodeVersion:
-    uses: calyptia/.github/.github/workflows/get_node_version.yml@main
-
   deploy:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    needs: getNodeVersion
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
-      - name: Setting node version to ${{ needs.getNodeVersion.outputs.node_version }}
-        uses: actions/setup-node@v2
+        uses: actions/checkout@v7
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
         with:
-          node-version: '${{ needs.getNodeVersion.outputs.node_version }}'
-     
-      - name: Use Yarn cache 🔧
-        uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: '.yarn/cache'
-          key: ${{ runner.os }}-yarn-${{ needs.getNodeVersion.outputs.node_version }}-${{ hashFiles('**/yarn.lock') }}
+          node-version-file: '.nvmrc'
+          cache: yarn
+
       - name: Install dependencies
-        run: yarn
+        run: yarn install --immutable
+
       - name: Build docs website 📚
         run: yarn docs:build
 
-      # Popular action to deploy to GitHub Pages:
-      # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
       - name: Deploy to GitHub Pages 🚀
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # Build output to publish to the `gh-pages` branch:
           publish_dir: ./packages/docs/build
-          # The following lines assign commit authorship to the official
-          # GH-Actions bot for deploys to `gh-pages` branch:
-          # https://github.com/actions/checkout/issues/13#issuecomment-724415212
-          # The GH actions bot is used by default if you didn't specify the two fields.
-          # You can swap them out with your own user credentials.
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
