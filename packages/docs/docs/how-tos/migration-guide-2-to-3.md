@@ -152,6 +152,28 @@ The published bundles treat every `d3-*` module as an external, so they are not 
 
 The two d3 modules Britecharts used that are now deprecated upstream, `d3-collection` and `d3-voronoi`, have been replaced internally by `d3-array` and `d3-delaunay`. They are no longer dependencies.
 
+9. Move off the 'dataByTopic' line chart data shape
+
+The line chart still accepts the `dataByTopic` array it required up to 2.10.1, but that shape is **deprecated as of 3.0.0 and will be removed in 4.0.0**. Passing it logs a deprecation warning.
+
+```js
+// Deprecated
+lineChart.datum({
+    dataByTopic: [
+        { topicName: 'San Francisco', topic: 123, dates: [{ date: '2017-01-16T16:00:00-08:00', value: 1 }] }
+    ]
+});
+
+// Version 3 onwards
+lineChart.datum({
+    data: [
+        { topicName: 'San Francisco', name: 123, date: '2017-01-16T16:00:00-08:00', value: 1 }
+    ]
+});
+```
+
+The flat shape is a single array with one entry per point, rather than points nested under each topic. Britecharts groups it internally, so nothing else about how you configure the chart changes.
+
 ### New features
 1. Start using TypeScript with Britecharts.
 

@@ -75,7 +75,9 @@ import { gridHorizontal, gridVertical } from '../helpers/grid';
  */
 
 /**
- * Former data standard, it is currently calculated internally if not passed
+ * Former data standard, it is currently calculated internally if not passed.
+ * @deprecated since 3.0.0. Passing a `dataByTopic` array still works, but it
+ * will be removed in 4.0.0 -- use the flat `data` shape in {@link LineChartData}.
  * @typedef LineChartDataByTopic
  * @type {object}
  * @property {string} topicName    Topic name (required)
@@ -135,7 +137,8 @@ import { gridHorizontal, gridVertical } from '../helpers/grid';
 /**
  * The data shape for the line chart.
  * Note that up to version 2.10.1, this required a "dataByTopic" array described on LineChartDataByTopic.
- * The "dataByTopic" schema still works, but we prefer a flat dataset as described here.
+ * That shape is deprecated as of 3.0.0 and will be removed in 4.0.0; it still
+ * works for now, but new code should use the flat dataset described here.
  * @typedef LineChartData
  * @type {object}
  * @property {LineChartFlatData[]} data  Data values to chart (required)
@@ -642,7 +645,7 @@ export default function module() {
 
             // eslint-disable-next-line no-console
             console.warn(
-                'Lookout! You are using an old data shape (dataByTopic), please use the new flatter version as this one will be deprecated in version 4'
+                '[britecharts] The `dataByTopic` data shape is deprecated as of 3.0.0 and will be removed in 4.0.0. Pass a flat `data` array instead: https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3'
             );
         }
 
