@@ -1,7 +1,6 @@
 {
   "name": "@britecharts/wrappers",
-  "packageManager": "yarn@3.2.0",
-  "version": "0.0.0",
+  "version": "3.0.0-beta.0",
   "main": "dist/umd/bundle/wrappers.bundled.min.js",
   "module": "src/index.js",
   "dependencies": {
@@ -9,6 +8,9 @@
     "d3-selection": "^1.4.1"
   },
   "devDependencies": {
+    "eslint": "7.32.0",
+    "jest": "^29.3.1",
+    "rimraf": "^2.6.3",
     "webpack": "4.46.0",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "^3.3.12",
@@ -68,6 +70,6 @@
     "lint": "yarn run lint:js",
     "prebuild": "yarn run clean",
     "test:watch": "jest --watch --colors",
-    "test": "jest --colors"
+    "test": "jest --colors --coverage"
   }
 }

@@ -1,12 +1,13 @@
 {
   "name": "@britecharts/demos",
-  "packageManager": "yarn@3.2.0",
   "version": "0.0.0",
+  "private": true,
   "devDependencies": {
     "@storybook/addons": "^6.5.9",
     "@storybook/html": "^6.5.9",
     "@storybook/theming": "^6.5.9",
-    "chromatic": "^6.15.0"
+    "chromatic": "^6.15.0",
+    "rimraf": "^2.6.3"
   },
   "scripts": {
     "build": "build-storybook -c .storybook -o dist",

@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+require('../../scripts/patch-webpack4-md4');
+
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 

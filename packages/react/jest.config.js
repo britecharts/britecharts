@@ -12,6 +12,13 @@ module.exports = {
         '<rootDir>/build/',
         '<rootDir>/lib/',
     ],
+    // Resolve sibling workspaces to their source. babel.config.js aliases
+    // @britecharts/wrappers to a built bundle for the webpack build; under
+    // test that alias is switched off so these mappings apply instead.
+    moduleNameMapper: {
+        '^@britecharts/core$': '<rootDir>/../core/src/index.js',
+        '^@britecharts/wrappers$': '<rootDir>/../wrappers/src/index.js',
+    },
     setupFiles: ['jest-canvas-mock'],
     setupFilesAfterEnv: ['./jest.setup.js'],
 };

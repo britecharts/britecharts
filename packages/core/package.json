@@ -1,7 +1,6 @@
 {
   "name": "@britecharts/core",
-  "packageManager": "yarn@3.2.0",
-  "version": "0.0.0",
+  "version": "3.0.0-beta.0",
   "main": "dist/umd/bundle/core.bundled.min.js",
   "module": "src/index.js",
   "types": "src/typings/index.d.ts",
@@ -35,13 +34,16 @@
     "css-minimizer-webpack-plugin": "^3.4.1",
     "d3": "^5.16.0",
     "es-check": "^6.0.0",
+    "eslint": "7.32.0",
     "eslint-loader": "^2.1.2",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.2.0",
     "istanbul-instrumenter-loader": "3.0.1",
+    "jest": "^29.3.1",
     "node-gyp": "8.4.1",
-    "node-sass": "6.0.1",
-    "sass-loader": "6.0.6",
+    "rimraf": "^2.6.3",
+    "sass": "^1.104.0",
+    "sass-loader": "^10.5.2",
     "style-loader": "0.23.1",
     "stylelint": "^14.15.0",
     "stylelint-config-sass-guidelines": "^9.0.1",
@@ -148,6 +150,6 @@
     "start": "yarn run demo",
     "storybook": "start-storybook -p 2001",
     "test:watch": "jest --watch --colors",
-    "test": "jest --colors"
+    "test": "jest --colors --coverage"
   }
 }

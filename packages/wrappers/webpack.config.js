@@ -1,3 +1,5 @@
+require('../../scripts/patch-webpack4-md4');
+
 const path = require('path');
 const merge = require('webpack-merge');
 
