@@ -129,5 +129,17 @@
     "storybook": "start-storybook -p 2001",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors --coverage"
-  }
+  },
+  "files": [
+    "dist/umd",
+    "dist/cdn",
+    "dist/styles",
+    "src",
+    "!**/*.map",
+    "!src/**/*.spec.js",
+    "!src/**/*.stories.js",
+    "!src/**/*.stories.mdx",
+    "!src/**/*DataBuilder.js",
+    "!src/**/*.fixtures.js"
+  ]
 }

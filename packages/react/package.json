@@ -1,7 +1,7 @@
 {
   "name": "@britecharts/react",
   "version": "3.0.0-beta.0",
-  "main": "dist/umd/bundle/react.min.js",
+  "main": "dist/umd/bundle/react.bundled.min.js",
   "module": "src/index.js",
   "types": "src/typings/index.d.ts",
   "dependencies": {
@@ -58,5 +58,20 @@
     "storybook": "start-storybook -p 2002",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors --coverage"
-  }
+  },
+  "files": [
+    "dist/umd",
+    "dist/cjs",
+    "src",
+    "!**/*.map",
+    "!src/templates",
+    "!src/tasks",
+    "!src/scripts",
+    "!src/docs",
+    "!src/**/*.spec.js",
+    "!src/**/*.stories.js",
+    "!src/**/*.stories.mdx",
+    "!src/**/*DataBuilder.js",
+    "!src/**/*.fixtures.js"
+  ]
 }

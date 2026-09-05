@@ -45,5 +45,15 @@
     "prebuild": "yarn run clean",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors --coverage"
-  }
+  },
+  "files": [
+    "dist",
+    "src",
+    "!**/*.map",
+    "!src/**/*.spec.js",
+    "!src/**/*.stories.js",
+    "!src/**/*.stories.mdx",
+    "!src/**/*DataBuilder.js",
+    "!src/**/*.fixtures.js"
+  ]
 }
