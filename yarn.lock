@@ -3522,10 +3522,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@britecharts/demos@workspace:packages/demos"
   dependencies:
+    "@storybook/addon-a11y": ^6.5.9
+    "@storybook/addon-actions": ^6.5.9
+    "@storybook/addon-console": ^1.2.3
+    "@storybook/addon-docs": ^6.5.9
+    "@storybook/addon-essentials": ^6.5.9
+    "@storybook/addon-interactions": ^6.5.9
+    "@storybook/addon-links": ^6.5.9
+    "@storybook/addon-viewport": ^6.5.9
     "@storybook/addons": ^6.5.9
     "@storybook/html": ^6.5.9
     "@storybook/theming": ^6.5.9
     chromatic: ^6.15.0
+    raw-loader: ^4.0.2
     rimraf: ^2.6.3
   languageName: unknown
   linkType: soft
