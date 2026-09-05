@@ -4,7 +4,7 @@ import { dispatch } from 'd3-dispatch';
 import { easeQuadInOut } from 'd3-ease';
 import { format } from 'd3-format';
 import { scaleLinear, scaleBand } from 'd3-scale';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -306,14 +306,14 @@ export default function module() {
             .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale.bandwidth())
             .attr('height', (d) => chartHeight - yScale(d.value))
-            .on('mouseover', function (d) {
-                handleMouseOver(this, d, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(this, d, chartWidth, chartHeight, event);
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
-            .on('mouseout', function (d) {
-                handleMouseOut(this, d, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(this, d, chartWidth, chartHeight, event);
             })
             .merge(steps)
             .transition()
@@ -380,8 +380,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOver(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOver', e, d, mouse(e), [
+    function handleMouseOver(e, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseOver', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
@@ -392,8 +392,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseMove(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', e, d, mouse(e), [
+    function handleMouseMove(e, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseMove', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
@@ -404,8 +404,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOut(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOut', e, d, mouse(e), [
+    function handleMouseOut(e, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseOut', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);

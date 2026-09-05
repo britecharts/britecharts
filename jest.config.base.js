@@ -20,7 +20,11 @@ module.exports = {
         url: 'http://localhost',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-    transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+    // d3 v2+ ships ESM only, so those packages have to go through Babel
+    // rather than being skipped along with the rest of node_modules.
+    transformIgnorePatterns: [
+        '[/\\\\]node_modules[/\\\\](?!(d3|d3-[a-z-]+|internmap|delaunator|robust-predicates)[/\\\\]).+\\.(js|jsx)$',
+    ],
     testMatch: ['**/*.(spec|test).{js,jsx,ts,tsx}'],
     // Resolved from this file rather than <rootDir>, so the config works both
     // at the repo root and inside a package, where <rootDir> differs.

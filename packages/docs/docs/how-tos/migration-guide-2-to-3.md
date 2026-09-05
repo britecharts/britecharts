@@ -136,6 +136,22 @@ lineChart
     .height(50)
 ```
 
+7. Expect the typographic minus sign in negative axis labels
+
+Britecharts v3 runs on the current d3 modules, and d3-format changed its default minus sign from the ASCII hyphen (`-`, U+002D) to the typographic minus (`−`, U+2212). Negative values on axes and in tooltips now render with the latter.
+
+Nothing to change unless you assert on that text — snapshot tests and string comparisons against axis labels will need updating. If you would rather keep the ASCII hyphen, set it through a value locale:
+
+```js
+lineChart.valueLocale({ minus: '-' });
+```
+
+8. Provide the d3 modules yourself if you use the UMD builds
+
+The published bundles treat every `d3-*` module as an external, so they are not included. Britecharts v3 requires the d3 v7 generation of these packages; if you load Britecharts from a CDN alongside your own d3, upgrade d3 to v7 at the same time.
+
+The two d3 modules Britecharts used that are now deprecated upstream, `d3-collection` and `d3-voronoi`, have been replaced internally by `d3-array` and `d3-delaunay`. They are no longer dependencies.
+
 ### New features
 1. Start using TypeScript with Britecharts.
 

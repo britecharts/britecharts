@@ -3,7 +3,7 @@ import { easeCubicInOut } from 'd3-ease';
 import { interpolate } from 'd3-interpolate';
 import { scaleOrdinal } from 'd3-scale';
 import { pie, arc } from 'd3-shape';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -385,17 +385,17 @@ export default function module() {
             newSlices
                 .merge(slices)
                 .attr('fill', getSliceFill)
-                .on('mouseover', function (d) {
-                    handleMouseOver(this, d, chartWidth, chartHeight);
+                .on('mouseover', function (event, d) {
+                    handleMouseOver(this, d, chartWidth, chartHeight, event);
                 })
-                .on('mousemove', function (d) {
-                    handleMouseMove(this, d, chartWidth, chartHeight);
+                .on('mousemove', function (event, d) {
+                    handleMouseMove(this, d, chartWidth, chartHeight, event);
                 })
-                .on('mouseout', function (d) {
-                    handleMouseOut(this, d, chartWidth, chartHeight);
+                .on('mouseout', function (event, d) {
+                    handleMouseOut(this, d, chartWidth, chartHeight, event);
                 })
-                .on('click', function (d) {
-                    handleClick(this, d, chartWidth, chartHeight);
+                .on('click', function (event, d) {
+                    handleClick(this, d, chartWidth, chartHeight, event);
                 })
                 .transition()
                 .ease(ease)
@@ -406,17 +406,17 @@ export default function module() {
                 .merge(slices)
                 .attr('fill', getSliceFill)
                 .attr('d', shape)
-                .on('mouseover', function (d) {
-                    handleMouseOver(this, d, chartWidth, chartHeight);
+                .on('mouseover', function (event, d) {
+                    handleMouseOver(this, d, chartWidth, chartHeight, event);
                 })
-                .on('mousemove', function (d) {
-                    handleMouseMove(this, d, chartWidth, chartHeight);
+                .on('mousemove', function (event, d) {
+                    handleMouseMove(this, d, chartWidth, chartHeight, event);
                 })
-                .on('mouseout', function (d) {
-                    handleMouseOut(this, d, chartWidth, chartHeight);
+                .on('mouseout', function (event, d) {
+                    handleMouseOut(this, d, chartWidth, chartHeight, event);
                 })
-                .on('click', function (d) {
-                    handleClick(this, d, chartWidth, chartHeight);
+                .on('click', function (event, d) {
+                    handleClick(this, d, chartWidth, chartHeight, event);
                 });
         }
 
@@ -440,9 +440,9 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOver(el, d, chartWidth, chartHeight) {
+    function handleMouseOver(el, d, chartWidth, chartHeight, event) {
         drawLegend(d);
-        dispatcher.call('customMouseOver', el, d, mouse(el), [
+        dispatcher.call('customMouseOver', el, d, pointer(event, el), [
             chartWidth,
             chartHeight,
         ]);
@@ -472,8 +472,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseMove(el, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', el, d, mouse(el), [
+    function handleMouseMove(el, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseMove', el, d, pointer(event, el), [
             chartWidth,
             chartHeight,
         ]);
@@ -484,7 +484,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOut(el, d, chartWidth, chartHeight) {
+    function handleMouseOut(el, d, chartWidth, chartHeight, event) {
         cleanLegend();
 
         // When there is a fixed highlighted slice,
@@ -517,7 +517,7 @@ export default function module() {
             lastHighlightedSlice = el;
         }
 
-        dispatcher.call('customMouseOut', el, d, mouse(el), [
+        dispatcher.call('customMouseOut', el, d, pointer(event, el), [
             chartWidth,
             chartHeight,
         ]);
@@ -528,8 +528,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleClick(el, d, chartWidth, chartHeight) {
-        dispatcher.call('customClick', el, d, mouse(el), [
+    function handleClick(el, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customClick', el, d, pointer(event, el), [
             chartWidth,
             chartHeight,
         ]);

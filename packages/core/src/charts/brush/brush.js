@@ -4,7 +4,7 @@ import { brushX } from 'd3-brush';
 import { scaleLinear, scaleTime } from 'd3-scale';
 import { area } from 'd3-shape';
 import { dispatch } from 'd3-dispatch';
-import { select, event } from 'd3-selection';
+import { select } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 
@@ -487,7 +487,7 @@ export default function module() {
      *
      * @return {void}
      */
-    function handleBrushStart() {
+    function handleBrushStart(event) {
         const selection = event.selection;
         let newSelection;
 
@@ -530,7 +530,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleBrushEnd() {
+    function handleBrushEnd(event) {
         if (!event.sourceEvent) {
             return; // Only transition after input.
         }

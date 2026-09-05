@@ -5,7 +5,7 @@
   "module": "src/index.js",
   "dependencies": {
     "@britecharts/core": "workspace:^",
-    "d3-selection": "^1.4.1"
+    "d3-selection": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "7.32.0",
