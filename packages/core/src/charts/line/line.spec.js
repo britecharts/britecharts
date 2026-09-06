@@ -538,7 +538,10 @@ describe('line Chart', () => {
                         let minValue = Math.min(...values);
                         // d3-format renders negatives with U+2212 MINUS SIGN,
                         // where JS String() gives an ASCII hyphen.
-                        let minValueText = String(minValue).replace('-', '\u2212');
+                        let minValueText = String(minValue).replace(
+                            '-',
+                            '\u2212'
+                        );
 
                         let yAxis = d3.select('.y-axis-group');
                         let text = yAxis.select('g.tick');
@@ -909,7 +912,7 @@ describe('line Chart', () => {
             const expectedArguments = 2;
 
             lineChart.on('customMouseOver', callback);
-            container.dispatch('mouseover');
+            container.dispatch('mouseenter');
 
             expect(callback.mock.calls).toHaveLength(expectedCalls);
             expect(callback.mock.calls[0]).toHaveLength(expectedArguments);
@@ -922,7 +925,7 @@ describe('line Chart', () => {
             const expectedArguments = 2;
 
             lineChart.on('customMouseOut', callback);
-            container.dispatch('mouseout');
+            container.dispatch('mouseleave');
 
             expect(callback.mock.calls).toHaveLength(expectedCalls);
             expect(callback.mock.calls[0]).toHaveLength(expectedArguments);
@@ -948,7 +951,7 @@ describe('line Chart', () => {
             let actual = containerFixture.select('.overlay').style('display');
 
             expect(actual).toEqual(expectedInitial);
-            container.dispatch('mouseover');
+            container.dispatch('mouseenter');
             actual = containerFixture.select('.overlay').style('display');
 
             expect(actual).toEqual(expected);
@@ -960,7 +963,7 @@ describe('line Chart', () => {
             const verticalLine = d3.select('.hover-marker line');
             let actual;
 
-            container.dispatch('mouseover');
+            container.dispatch('mouseenter');
             actual = hasClass(verticalLine, 'bc-is-active');
 
             expect(actual).toEqual(expected);
@@ -971,9 +974,9 @@ describe('line Chart', () => {
             const verticalLine = d3.select('.hover-marker line');
 
             expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
-            container.dispatch('mouseover');
+            container.dispatch('mouseenter');
             expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
-            container.dispatch('mouseout');
+            container.dispatch('mouseleave');
             expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
         });
     });

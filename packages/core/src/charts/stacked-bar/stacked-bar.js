@@ -175,11 +175,14 @@ export default function module() {
      */
     function addMouseEvents() {
         if (shouldShowTooltip()) {
-            svg.select('.chart-group')
-                .on('mouseover', function (event, d) {
-                    handleMouseOver(this, d, event);
-                })
-                .on('mouseout', function (event, d) {
+            // Listen on the svg, not on `.chart-group`: a <g> has no geometry
+            // of its own, so it only receives events where its children are --
+            // the gaps between bars and the empty space above them would be dead.
+            // This is also the node getMousePosition measures against.
+            svg.on('mouseenter', function (event, d) {
+                handleMouseOver(this, d, event);
+            })
+                .on('mouseleave', function (event, d) {
                     handleMouseOut(this, d, event);
                 })
                 .on('mousemove', function (event, d) {

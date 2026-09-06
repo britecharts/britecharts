@@ -314,10 +314,10 @@ export default function module() {
      * Adding: mouseover, mouseout and mousemove
      */
     function addMouseEvents() {
-        svg.on('mouseover', function (event, d) {
+        svg.on('mouseenter', function (event, d) {
             handleMouseOver(this, d, event);
         })
-            .on('mouseout', function (event, d) {
+            .on('mouseleave', function (event, d) {
                 handleMouseOut(this, d, event);
             })
             .on('mousemove', function (event, d) {

@@ -297,15 +297,13 @@ describe('stacked Bar Chart', () => {
 
         describe('when hovering', () => {
             it('mouseover should trigger a callback', () => {
-                const chart = containerFixture.selectAll(
-                    '.stacked-bar .chart-group'
-                );
+                const chart = containerFixture.selectAll('.stacked-bar');
                 const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
                 stackedBarChart.on('customMouseOver', callbackSpy);
-                chart.dispatch('mouseover');
+                chart.dispatch('mouseenter');
 
                 expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
                 expect(callbackSpy.mock.calls[0]).toHaveLength(
@@ -314,15 +312,13 @@ describe('stacked Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback', () => {
-                const chart = containerFixture.selectAll(
-                    '.stacked-bar .chart-group'
-                );
+                const chart = containerFixture.selectAll('.stacked-bar');
                 const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
                 stackedBarChart.on('customMouseOut', callbackSpy);
-                chart.dispatch('mouseout');
+                chart.dispatch('mouseleave');
 
                 expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
                 expect(callbackSpy.mock.calls[0]).toHaveLength(

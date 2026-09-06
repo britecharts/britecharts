@@ -519,7 +519,7 @@ describe('stacked Area Chart', () => {
             expect(
                 containerFixture.select('.overlay').style('display')
             ).toEqual(expectedDefaultStyle);
-            container.dispatch('mouseover');
+            container.dispatch('mouseenter');
             expect(
                 containerFixture.select('.overlay').style('display')
             ).toEqual(expectedStyle);
@@ -533,7 +533,7 @@ describe('stacked Area Chart', () => {
             );
             let actual;
 
-            container.dispatch('mouseover');
+            container.dispatch('mouseenter');
             actual = hasClass(verticalLine, 'bc-is-active');
 
             expect(actual).toEqual(expected);
@@ -548,10 +548,10 @@ describe('stacked Area Chart', () => {
             let actual = hasClass(verticalLine, 'bc-is-active');
 
             expect(actual).toEqual(expected);
-            container.dispatch('mouseover');
+            container.dispatch('mouseenter');
             actual = hasClass(verticalLine, 'bc-is-active');
             expect(actual).toBe(true);
-            container.dispatch('mouseout');
+            container.dispatch('mouseleave');
             actual = hasClass(verticalLine, 'bc-is-active');
             expect(actual).toEqual(expected);
         });
@@ -563,7 +563,7 @@ describe('stacked Area Chart', () => {
             const expectedArgumentCount = 2;
 
             stackedAreaChart.on('customMouseOver', callback);
-            container.dispatch('mouseover');
+            container.dispatch('mouseenter');
 
             expect(callback.mock.calls).toHaveLength(expectedCallCount);
             expect(callback.mock.calls[0]).toHaveLength(expectedArgumentCount);
@@ -576,7 +576,7 @@ describe('stacked Area Chart', () => {
             const expectedArgumentCount = 2;
 
             stackedAreaChart.on('customMouseOut', callback);
-            container.dispatch('mouseout');
+            container.dispatch('mouseleave');
 
             expect(callback.mock.calls).toHaveLength(expectedCallCount);
             expect(callback.mock.calls[0]).toHaveLength(expectedArgumentCount);

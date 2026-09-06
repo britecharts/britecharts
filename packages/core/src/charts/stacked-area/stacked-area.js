@@ -246,10 +246,10 @@ export default function module() {
      * @private
      */
     function addMouseEvents() {
-        svg.on('mouseover', function (event, d) {
+        svg.on('mouseenter', function (event, d) {
             handleMouseOver(this, d, event);
         })
-            .on('mouseout', function (event, d) {
+            .on('mouseleave', function (event, d) {
                 handleMouseOut(this, d, event);
             })
             .on('mousemove', function (event, d) {
