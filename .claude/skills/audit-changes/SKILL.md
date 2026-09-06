@@ -1,7 +1,6 @@
 ---
 name: audit-changes
 description: Use when validating changes during development in the Britecharts monorepo — runs lint, styles lint, related Jest tests, and format checks over the changed files, and fixes all errors until validation passes
-disable-model-invocation: true
 ---
 
 # Audit Changes

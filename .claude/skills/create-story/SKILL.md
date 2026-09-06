@@ -1,7 +1,6 @@
 ---
 name: create-story
 description: Use when you need to create Storybook stories for a Britecharts chart — dispatches the story-agent, which handles both the core (vanilla D3/HTML) and react story styles
-disable-model-invocation: true
 ---
 
 # Create Story

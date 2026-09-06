@@ -1,7 +1,6 @@
 ---
 name: code-review
 description: Use when reviewing Britecharts branch changes or unstaged changes for logic errors, unclear intent, and chart-API correctness before merging or committing
-disable-model-invocation: true
 ---
 
 # Code Review

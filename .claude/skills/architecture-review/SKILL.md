@@ -1,7 +1,6 @@
 ---
 name: architecture-review
 description: Use when reviewing Britecharts branch changes for architectural compliance — package layering, chart/helper boundaries, core→wrappers→react API parity, declared dependencies, and SCSS structure
-disable-model-invocation: true
 ---
 
 # Architecture Review

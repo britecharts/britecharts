@@ -1,7 +1,6 @@
 ---
 name: create-unit-test
 description: Use when you need to create, run, update, or debug Jest unit tests in the Britecharts monorepo — dispatches the ut-agent, which knows the core/wrappers/react spec styles
-disable-model-invocation: true
 ---
 
 # Create Unit Test
