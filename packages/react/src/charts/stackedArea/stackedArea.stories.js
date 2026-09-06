@@ -16,9 +16,10 @@ export const WithTooltip = () => {
         <StackedArea data={data} width={800} {...props} />
     );
 
-    return (
-        <Tooltip data={data} render={renderStackedArea} topicLabel="values" />
-    );
+    // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
+    // it creates the tooltip, and passing it again re-runs the deprecated setter
+    // on every mouse move.
+    return <Tooltip data={data} render={renderStackedArea} title="Tooltip" />;
 };
 
 export const WithMouseEventsOnConsole = () => {

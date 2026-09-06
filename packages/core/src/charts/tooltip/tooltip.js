@@ -80,7 +80,11 @@ export default function module() {
         circularMarkerRadius = 4,
         ttTextX = 0,
         ttTextY = 37,
-        textHeight,
+        // Fallback for the getBBox() guard below: roughly one line of the 12px
+        // tooltip text. Without it the first measurement that comes back 0 makes
+        // textHeight undefined, and every height derived from it NaN.
+        defaultTextHeight = 14,
+        textHeight = defaultTextHeight,
         entryLineLimit = 3,
         initialTooltipBodyYPosition = 37,
         additionalTooltipTitleHeight = 0,
@@ -334,12 +338,13 @@ export default function module() {
             .style('fill', tooltipTextColor)
             .text(tooltipRightText);
 
-        // IE11 give us sometimes a height of 0 when hovering on top of the vertical marker
-        // This hack fixes it for some cases, but it doesn't work in multiline (they won't wrap)
-        // Let's remove this once we stop supporting IE11
-        textHeight = elementText.node().getBBox().height
-            ? elementText.node().getBBox().height
-            : textHeight;
+        // A height of 0 comes back when the node cannot be measured: IE11 does it
+        // when hovering over the vertical marker, and any browser does it while
+        // the tooltip is still hidden. Keep the last usable measurement instead,
+        // which is seeded with defaultTextHeight so it is never undefined.
+        const measuredTextHeight = elementText.node().getBBox().height;
+
+        textHeight = measuredTextHeight || textHeight;
 
         tooltipHeight += textHeight + tooltipTextLinePadding;
         // update the width if it exists because IE renders the elements
