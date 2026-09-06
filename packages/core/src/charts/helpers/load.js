@@ -195,16 +195,12 @@ export const bulletLoadingMarkup = `
             viewBox="0 0 711 325"
         >
             ${linearGradient}
-            <g fill="#EFF2F5">
-                <rect x="0" y="60" width="150" height="18" rx="2" />
-                <rect x="0" y="88" width="96" height="12" rx="2" />
-            </g>
-            <g transform="translate(0 140)">
+            <g transform="translate(0 118)">
                 <rect width="711" height="64" rx="2" fill="#EFF2F5" />
                 <rect y="18" width="430" height="28" rx="2" fill="#C3C6CF" />
                 <rect x="556" y="8" width="6" height="48" rx="2" fill="#C3C6CF" />
             </g>
-            <g fill="#EFF2F5" transform="translate(0 224)">
+            <g fill="#EFF2F5" transform="translate(0 202)">
                 <rect x="0" width="34" height="10" rx="2" />
                 <rect x="169" width="34" height="10" rx="2" />
                 <rect x="338" width="34" height="10" rx="2" />
