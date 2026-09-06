@@ -316,7 +316,7 @@
     "build:react": "yarn workspace @britecharts/react build",
     "build:wrappers": "yarn workspace @britecharts/wrappers build",
     "changeset": "changeset",
-    "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
+    "check": "yarn run lint:styles && yarn run lint:js && yarn run test:ci",
     "clean": "yarn workspaces foreach -p run clean && yarn cache clean && rimraf node_modules && yarn",
     "demos": "concurrently -k -n core,react,shell -c cyan,magenta,green \"yarn run demos:core\" \"yarn run demos:react\" \"yarn run demos:shell\"",
     "demos:core": "yarn workspace @britecharts/core run demo",

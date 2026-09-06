@@ -92,3 +92,6 @@ packages/docs/.env.production.local
 packages/docs/npm-debug.log*
 packages/docs/yarn-debug.log*
 packages/docs/yarn-error.log*
+
+# Local review/plan output (from the /code-review skill)
+plan/
