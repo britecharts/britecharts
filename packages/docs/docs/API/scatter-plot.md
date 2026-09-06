@@ -33,6 +33,7 @@ d3Selection.select('.css-selector')
             * [.hasHollowCircles(_x)](#module_Scatter-plot--exports.hasHollowCircles) ⇒ <code>boolean</code> \| <code>module</code>
             * [.hasTrendline(_x)](#module_Scatter-plot--exports.hasTrendline) ⇒ <code>boolean</code> \| <code>module</code>
             * [.enableZoom(_x)](#module_Scatter-plot--exports.enableZoom) ⇒ <code>boolean</code> \| <code>module</code>
+            * [.isLoading(_flag)](#module_Scatter-plot--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.height(_x)](#module_Scatter-plot--exports.height) ⇒ <code>Number</code> \| <code>module</code>
             * [.highlightTextLegendOffset(_x)](#module_Scatter-plot--exports.highlightTextLegendOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.isAnimated(_x)](#module_Scatter-plot--exports.isAnimated) ⇒ <code>boolean</code> \| <code>module</code>
@@ -254,6 +255,23 @@ If true, zoom event handling will be added to the chart.
 | --- | --- | --- | --- |
 | _x | <code>boolean</code> | <code>false</code> | Choose whether chart should support zoom controls |
 
+<a name="module_Scatter-plot--exports.isLoading"></a>
+
+### exports.isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
+Gets or Sets the loading state of the chart
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _flag | <code>boolean</code> | Desired value for the loading state |
+
+**Example**  
+```js
+chart.isLoading(true)
+```
 <a name="module_Scatter-plot--exports.height"></a>
 
 ### exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>

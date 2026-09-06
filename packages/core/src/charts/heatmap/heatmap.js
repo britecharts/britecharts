@@ -6,6 +6,7 @@ import { dispatch } from 'd3-dispatch';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
+import { heatmapLoadingMarkup } from '../helpers/load';
 import colorHelper from '../helpers/color';
 import { hoursHuman, motion } from '../helpers/constants';
 
@@ -59,6 +60,7 @@ export default function module() {
         },
         width = 780,
         height = 270,
+        isLoading = false,
         svg,
         data,
         chartWidth,
@@ -103,8 +105,14 @@ export default function module() {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
 
-            buildScales();
             buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
+            buildScales();
             drawDayLabels();
             drawHourLabels();
             drawBoxes();
@@ -133,6 +141,24 @@ export default function module() {
     }
 
     /**
+     * Cleans the loading state
+     * @return {void}
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
+    }
+
+    /**
+     * Draws the loading state
+     * @return {void}
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(heatmapLoadingMarkup);
+    }
+
+    /**
      * Builds containers for the chart, the axis and a wrapper for all of them
      * Also applies the Margin convention
      * @return {void}
@@ -143,6 +169,8 @@ export default function module() {
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('chart-group', true);
         container.append('g').classed('day-labels-group', true);
@@ -183,7 +211,6 @@ export default function module() {
             .interpolate(interpolateHcl);
     }
 
-
     /**
      * Returns the sibling box nodes of the given element. d3 v6 dropped
      * the third `nodes` argument that used to be passed to event handlers,
@@ -215,13 +242,27 @@ export default function module() {
             .style('stroke', boxBorderColor)
             .style('stroke-width', boxBorderSize)
             .on('mouseover', function (event, d) {
-                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOver(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('mousemove', function (event, d) {
                 handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
             .on('mouseout', function (event, d) {
-                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOut(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('click', function (event, d) {
                 handleClick(this, d, chartWidth, chartHeight, event);
@@ -379,6 +420,22 @@ export default function module() {
      */
     exports.exportChart = function (filename, title) {
         exportChart.call(exports, svg, filename, title);
+    };
+
+    /**
+     * Gets or Sets the loading state of the chart
+     * @param  {boolean} _flag          Desired value for the loading state
+     * @return {boolean | module}       Current loading state flag or Chart module to chain calls
+     * @public
+     * @example chart.isLoading(true)
+     */
+    exports.isLoading = function (_flag) {
+        if (!arguments.length) {
+            return isLoading;
+        }
+        isLoading = _flag;
+
+        return this;
     };
 
     /**

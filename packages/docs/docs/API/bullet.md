@@ -24,6 +24,7 @@ d3Selection.select('.css-selector')
             * [.customTitle(_x)](#module_Bullet--exports.customTitle) ⇒ <code>String</code> \| <code>module</code>
             * [.customSubtitle(_x)](#module_Bullet--exports.customSubtitle) ⇒ <code>String</code> \| <code>module</code>
             * [.exportChart(filename, title)](#module_Bullet--exports.exportChart) ⇒ <code>Promise</code>
+            * [.isLoading(_flag)](#module_Bullet--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.height(_x)](#module_Bullet--exports.height) ⇒ <code>Number</code> \| <code>module</code>
             * [.isReverse(_x)](#module_Bullet--exports.isReverse) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Bullet--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
@@ -112,6 +113,23 @@ Chart exported to png and a download action is fired
 | filename | <code>String</code> | File title for the resulting picture |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
+<a name="module_Bullet--exports.isLoading"></a>
+
+### exports.isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
+Gets or Sets the loading state of the chart
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _flag | <code>boolean</code> | Desired value for the loading state |
+
+**Example**  
+```js
+chart.isLoading(true)
+```
 <a name="module_Bullet--exports.height"></a>
 
 ### exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>

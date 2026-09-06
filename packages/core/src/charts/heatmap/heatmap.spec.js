@@ -330,4 +330,47 @@ describe('heatmap Chart', () => {
             expect(actual).toBe(expected);
         });
     });
+
+    describe('loading state', () => {
+        it('should provide isLoading getter and setter', () => {
+            let previous = heatmapChart.isLoading(),
+                expected = true,
+                actual;
+
+            heatmapChart.isLoading(expected);
+            actual = heatmapChart.isLoading();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should render the loading state when isLoading is true', () => {
+            const expected = 1;
+
+            heatmapChart.isLoading(true);
+            containerFixture.datum([]).call(heatmapChart);
+
+            const actual = containerFixture
+                .select('.heatmap-load-state')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should remove the loading state once data arrives', () => {
+            const expected = 0;
+
+            heatmapChart.isLoading(true);
+            containerFixture.datum([]).call(heatmapChart);
+
+            heatmapChart.isLoading(false);
+            containerFixture.datum(dataset).call(heatmapChart);
+
+            const actual = containerFixture
+                .select('.heatmap-load-state')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+    });
 });

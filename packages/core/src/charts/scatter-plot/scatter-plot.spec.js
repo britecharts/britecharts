@@ -1064,4 +1064,47 @@ describe('scatter Plot', () => {
             });
         });
     });
+
+    describe('loading state', () => {
+        it('should provide isLoading getter and setter', () => {
+            let previous = scatterPlot.isLoading(),
+                expected = true,
+                actual;
+
+            scatterPlot.isLoading(expected);
+            actual = scatterPlot.isLoading();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should render the loading state when isLoading is true', () => {
+            const expected = 1;
+
+            scatterPlot.isLoading(true);
+            containerFixture.datum([]).call(scatterPlot);
+
+            const actual = containerFixture
+                .select('.scatter-plot-load-state')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should remove the loading state once data arrives', () => {
+            const expected = 0;
+
+            scatterPlot.isLoading(true);
+            containerFixture.datum([]).call(scatterPlot);
+
+            scatterPlot.isLoading(false);
+            containerFixture.datum(dataset).call(scatterPlot);
+
+            const actual = containerFixture
+                .select('.scatter-plot-load-state')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+    });
 });

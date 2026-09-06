@@ -93,4 +93,21 @@ export const WithIncreasedAreaAndHollowCircles = () => {
     return container;
 };
 
+export const WithLoadingState = () => {
+    const container = getCleanContainer();
+    const scatterPlotContainer = select(container);
+    const scatterChart = scatterPlot();
+    const containerWidth = scatterPlotContainer.node()
+        ? scatterPlotContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        scatterChart.width(containerWidth).isLoading(true);
+
+        scatterPlotContainer.datum([]).call(scatterChart);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/ScatterPlot' };

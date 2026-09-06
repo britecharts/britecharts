@@ -36,4 +36,21 @@ export const WithWeeklyElements = () => {
     return container;
 };
 
+export const WithLoadingState = () => {
+    const container = getCleanContainer();
+    const heatmapContainer = select(container);
+    const heatmapChart = heatmap();
+    const containerWidth = heatmapContainer.node()
+        ? heatmapContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        heatmapChart.width(containerWidth).isLoading(true);
+
+        heatmapContainer.datum([]).call(heatmapChart);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/Heatmap' };

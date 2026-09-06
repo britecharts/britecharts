@@ -24,6 +24,7 @@ d3Selection.select('.css-selector')
             * [.boxSize(_x)](#module_Heatmap--exports.boxSize) ⇒ <code>Number</code> \| <code>module</code>
             * [.colorSchema(_x)](#module_Heatmap--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
             * [.exportChart(filename, title)](#module_Heatmap--exports.exportChart)
+            * [.isLoading(_flag)](#module_Heatmap--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.height(_x)](#module_Heatmap--exports.height) ⇒ <code>Number</code> \| <code>module</code>
             * [.isAnimated(_x)](#module_Heatmap--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Heatmap--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
@@ -97,6 +98,23 @@ Chart exported to png and a download action is fired
 | filename | <code>String</code> | File title for the resulting picture |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
+<a name="module_Heatmap--exports.isLoading"></a>
+
+### exports.isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
+Gets or Sets the loading state of the chart
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _flag | <code>boolean</code> | Desired value for the loading state |
+
+**Example**  
+```js
+chart.isLoading(true)
+```
 <a name="module_Heatmap--exports.height"></a>
 
 ### exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
