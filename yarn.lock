@@ -3463,6 +3463,7 @@ __metadata:
     babel-loader: ^8.2.3
     chromatic: ^6.15.0
     copy-webpack-plugin: ^4.6.0
+    css-loader: ^3.0.0
     enzyme: 3.11.0
     enzyme-adapter-react-16: 1.15.7
     eslint: 7.32.0
@@ -3471,6 +3472,9 @@ __metadata:
     react: 16.14.0
     react-dev-utils: ^6.1.1
     rimraf: ^2.6.3
+    sass: ^1.104.0
+    sass-loader: ^10.5.2
+    style-loader: ^0.23.1
     uglifyjs-webpack-plugin: ^2.0.1
     webpack: 4.46.0
     webpack-bundle-analyzer: 3.3.2
@@ -12897,7 +12901,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^3.6.0":
+"css-loader@npm:^3.0.0, css-loader@npm:^3.6.0":
   version: 3.6.0
   resolution: "css-loader@npm:3.6.0"
   dependencies:
@@ -28290,7 +28294,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"style-loader@npm:0.23.1":
+"style-loader@npm:0.23.1, style-loader@npm:^0.23.1":
   version: 0.23.1
   resolution: "style-loader@npm:0.23.1"
   dependencies:
