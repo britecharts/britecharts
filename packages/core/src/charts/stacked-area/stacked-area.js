@@ -1177,13 +1177,12 @@ export default function module() {
         epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
     }
 
-
     /**
      * MouseMove handler, calculates the nearest dataPoint to the cursor
      * and updates metadata related to it
      * @private
      */
-    function handleMouseMove(e) {
+    function handleMouseMove(e, d, event) {
         epsilon || setEpsilon();
 
         let [xPosition, yPosition] = pointer(event, e),
