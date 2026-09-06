@@ -119,37 +119,6 @@ describe('line Chart', () => {
             });
         });
 
-        describe('when updating data - dataByTopic structure', () => {
-            describe('when new data is passed', () => {
-                it('should update the data in the container', () => {
-                    const firstDataSet = lineData.dataByTopic.a;
-                    const secondDataSet = lineData.dataByTopic.b;
-                    const chart = line.create(anchor, firstDataSet, {});
-
-                    line.update(anchor, secondDataSet, {}, chart);
-
-                    const expected = secondDataSet.length;
-                    const actual = anchor.__data__.length;
-
-                    expect(actual).toEqual(expected);
-                });
-            });
-
-            describe('when new data is not passed', () => {
-                it('should keep the data in the container', () => {
-                    const dataSet = lineData.dataByTopic.a;
-                    const chart = line.create(anchor, dataSet, {});
-
-                    line.update(anchor, dataSet, {}, chart);
-
-                    const expected = dataSet.length;
-                    const actual = anchor.__data__.length;
-
-                    expect(actual).toEqual(expected);
-                });
-            });
-        });
-
         describe('when updating configuration', () => {
             describe('when new configuration is passed', () => {
                 it('should update the configuration in the chart', () => {

@@ -55,7 +55,6 @@ d3Selection.select('.css-selector')
         * _inner_
             * [~D3Selection](#module_Line--exports..D3Selection) : <code>Array.&lt;Array&gt;</code>
             * [~LineChartFlatData](#module_Line--exports..LineChartFlatData) : <code>object</code>
-            * [~LineChartDataByTopic](#module_Line--exports..LineChartDataByTopic) : <code>object</code>
             * [~LineChartDataSorted](#module_Line--exports..LineChartDataSorted) : <code>Array.&lt;object&gt;</code>
             * [~LineChartData](#module_Line--exports..LineChartData) : <code>object</code>
 
@@ -562,37 +561,6 @@ line.xAxisValueType('numeric').xAxisScale('logarithmic')
     }
 ]
 ```
-<a name="module_Line--exports..LineChartDataByTopic"></a>
-
-### exports~LineChartDataByTopic : <code>object</code>
-Former data standard, it is currently calculated internally if not passed
-
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| topicName | <code>string</code> | Topic name (required) |
-| topic | <code>number</code> | Topic identifier (required) |
-| dates | <code>Array.&lt;object&gt;</code> | All date entries with values for that topic in ISO8601 format (required) |
-
-**Example**  
-```js
-{
-    topicName: 'San Francisco',
-    topic: 123,
-    dates: [
-        {
-            date: '2017-01-16T16:00:00-08:00',
-            value: 1
-        },
-        {
-            date: '2017-01-16T17:00:00-08:00',
-            value: 2
-        }
-    ]
-}
-```
 <a name="module_Line--exports..LineChartDataSorted"></a>
 
 ### exports~LineChartDataSorted : <code>Array.&lt;object&gt;</code>
@@ -636,8 +604,8 @@ The Data Sorted is calculated internally in the chart in order to pass it to our
 
 ### exports~LineChartData : <code>object</code>
 The data shape for the line chart.
-Note that up to version 2.10.1, this required a "dataByTopic" array described on LineChartDataByTopic.
-The "dataByTopic" schema still works, but we prefer a flat dataset as described here.
+Up to version 2.10.1 this required a "dataByTopic" array. That shape was
+removed in 3.0.0 -- pass the flat dataset described here instead.
 
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
 **Properties**

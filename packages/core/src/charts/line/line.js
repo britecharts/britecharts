@@ -75,33 +75,6 @@ import { gridHorizontal, gridVertical } from '../helpers/grid';
  */
 
 /**
- * Former data standard, it is currently calculated internally if not passed.
- * @deprecated since 3.0.0. Passing a `dataByTopic` array still works, but it
- * will be removed in 4.0.0 -- use the flat `data` shape in {@link LineChartData}.
- * @typedef LineChartDataByTopic
- * @type {object}
- * @property {string} topicName    Topic name (required)
- * @property {number} topic        Topic identifier (required)
- * @property {object[]} dates      All date entries with values for that topic in ISO8601 format (required)
- *
- * @example
- * {
- *     topicName: 'San Francisco',
- *     topic: 123,
- *     dates: [
- *         {
- *             date: '2017-01-16T16:00:00-08:00',
- *             value: 1
- *         },
- *         {
- *             date: '2017-01-16T17:00:00-08:00',
- *             value: 2
- *         }
- *     ]
- * }
- */
-
-/**
  * The Data Sorted is calculated internally in the chart in order to pass it to our tooltips
  * @typedef LineChartDataSorted
  * @type {object[]}
@@ -136,9 +109,8 @@ import { gridHorizontal, gridVertical } from '../helpers/grid';
 
 /**
  * The data shape for the line chart.
- * Note that up to version 2.10.1, this required a "dataByTopic" array described on LineChartDataByTopic.
- * That shape is deprecated as of 3.0.0 and will be removed in 4.0.0; it still
- * works for now, but new code should use the flat dataset described here.
+ * Up to version 2.10.1 this required a "dataByTopic" array. That shape was
+ * removed in 3.0.0 -- pass the flat dataset described here instead.
  * @typedef LineChartData
  * @type {object}
  * @property {LineChartFlatData[]} data  Data values to chart (required)
@@ -608,46 +580,25 @@ export default function module() {
 
     /**
      * Parses dates and values into JS Date objects and numbers
-     * @param  {obj} dataByTopic        Raw data grouped by topic
-     * @return {obj}                    Parsed data with dataByTopic and dataSorted
+     * @param  {LineChartData} _data    Chart data with a flat `data` array
+     * @return {obj}                    Parsed data, grouped by topic and by date
      */
-    function cleanData({ dataByTopic, dataSorted, data }) {
-        if (!dataByTopic && !data) {
+    function cleanData({ dataSorted, data }) {
+        if (!data) {
             throw new Error(
-                'Data needs to have a dataByTopic or data property. See more in http://britecharts.github.io/britecharts/global.html#LineChartData__anchor'
+                'Data needs to have a data property. See more in https://britecharts.github.io/britecharts/docs/API/line'
             );
         }
 
-        // If dataByTopic or data are not present, we generate them
-        if (!dataByTopic) {
-            // nest() replaced by d3-array's groups(), which returns
-            // [key, values] pairs. String() keeps nest's key coercion.
-            dataByTopic = groups(data, (d) =>
-                String(getVariableTopicName(d))
-            ).map(([key, values]) => ({
-                topic: values[0]['name'],
-                topicName: key,
-                dates: values,
-            }));
-        } else {
-            data = dataByTopic.reduce((accum, topic) => {
-                topic.dates.forEach((date) => {
-                    accum.push({
-                        topicName: topic[topicNameLabel],
-                        name: topic[topicLabel],
-                        date: date[dateLabel],
-                        value: date[valueLabel],
-                    });
-                });
-
-                return accum;
-            }, []);
-
-            // eslint-disable-next-line no-console
-            console.warn(
-                '[britecharts] The `dataByTopic` data shape is deprecated as of 3.0.0 and will be removed in 4.0.0. Pass a flat `data` array instead: https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3'
-            );
-        }
+        // Group the flat data by topic for the internal accessors.
+        // String() keeps the key coercion d3-collection's nest() used to do.
+        let dataByTopic = groups(data, (d) =>
+            String(getVariableTopicName(d))
+        ).map(([key, values]) => ({
+            topic: values[0]['name'],
+            topicName: key,
+            dates: values,
+        }));
 
         // Nest data by date or number and format
         dataSorted = groups(data, (d) => String(getDate(d))).map(

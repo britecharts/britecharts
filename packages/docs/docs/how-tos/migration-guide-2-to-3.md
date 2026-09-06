@@ -152,27 +152,49 @@ The published bundles treat every `d3-*` module as an external, so they are not 
 
 The two d3 modules Britecharts used that are now deprecated upstream, `d3-collection` and `d3-voronoi`, have been replaced internally by `d3-array` and `d3-delaunay`. They are no longer dependencies.
 
-9. Move off the 'dataByTopic' line chart data shape
+9. Replace the 'dataByTopic' line chart data shape
 
-The line chart still accepts the `dataByTopic` array it required up to 2.10.1, but that shape is **deprecated as of 3.0.0 and will be removed in 4.0.0**. Passing it logs a deprecation warning.
+The line chart no longer accepts the `dataByTopic` array it required up to 2.10.1. It has taken a flat `data` array since then, and that is now the only shape it accepts. Passing `dataByTopic` throws.
 
 ```js
-// Deprecated
+// Version 2
 lineChart.datum({
     dataByTopic: [
-        { topicName: 'San Francisco', topic: 123, dates: [{ date: '2017-01-16T16:00:00-08:00', value: 1 }] }
+        {
+            topicName: 'San Francisco',
+            topic: 123,
+            dates: [
+                { date: '2017-01-16T16:00:00-08:00', value: 1 },
+                { date: '2017-01-17T16:00:00-08:00', value: 2 }
+            ]
+        }
     ]
 });
 
-// Version 3 onwards
+// Version 3
 lineChart.datum({
     data: [
-        { topicName: 'San Francisco', name: 123, date: '2017-01-16T16:00:00-08:00', value: 1 }
+        { topicName: 'San Francisco', name: 123, date: '2017-01-16T16:00:00-08:00', value: 1 },
+        { topicName: 'San Francisco', name: 123, date: '2017-01-17T16:00:00-08:00', value: 2 }
     ]
 });
 ```
 
-The flat shape is a single array with one entry per point, rather than points nested under each topic. Britecharts groups it internally, so nothing else about how you configure the chart changes.
+One entry per point instead of points nested under each topic, and the topic identifier moves from `topic` to `name`. Britecharts groups the data internally, so nothing else about how you configure the chart changes.
+
+If you have data in the old shape, this converts it:
+
+```js
+const toFlatData = ({ dataByTopic }) =>
+    dataByTopic.flatMap((topic) =>
+        topic.dates.map(({ date, value }) => ({
+            topicName: topic.topicName,
+            name: topic.topic,
+            date,
+            value,
+        }))
+    );
+```
 
 ### New features
 1. Start using TypeScript with Britecharts.
