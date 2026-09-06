@@ -1054,7 +1054,24 @@ export default function module() {
      * @private
      */
     function findLongestPath(acc, path) {
-        return acc > path.pathLength ? acc : path.pathLength;
+        const length = getPathLength(path);
+
+        return acc > length ? acc : length;
+    }
+
+    /**
+     * Measures a path. `pathLength` is the SVGAnimatedNumber reflecting the
+     * *attribute* of the same name, never the computed length — reading it
+     * yields NaN in arithmetic and false in comparisons. getTotalLength() is the
+     * geometry API, and is absent in jsdom.
+     * @param {SVGElement} path  Path to measure
+     * @returns {number}         Length of the path, 0 when it cannot be measured
+     * @private
+     */
+    function getPathLength(path) {
+        return typeof path.getTotalLength === 'function'
+            ? path.getTotalLength()
+            : 0;
     }
 
     /**
@@ -1258,7 +1275,7 @@ export default function module() {
         const maxIterations = 100;
 
         let lengthStart = 0;
-        let lengthEnd = path.pathLength;
+        let lengthEnd = getPathLength(path);
         let point;
 
         try {

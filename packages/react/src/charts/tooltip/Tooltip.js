@@ -157,17 +157,12 @@ export default class Tooltip extends React.Component {
     constructor(props) {
         super(props);
 
-        if (props.render) {
-            this.childChart = props.render({
-                data: props.data,
-                createTooltip: this.createTooltip,
-                customMouseMove: this.handleMouseMove.bind(this),
-                customMouseOut: this.handleMouseOut.bind(this),
-                customMouseOver: this.handleMouseOver.bind(this),
-            });
-        }
-
         this.setRef = this.setRef.bind(this);
+        this.renderChildChart = this.renderChildChart.bind(this);
+
+        if (props.render) {
+            this.childChart = this.renderChildChart(props);
+        }
     }
 
     state = {
@@ -183,16 +178,14 @@ export default class Tooltip extends React.Component {
     }
 
     componentDidUpdate() {
-        const { data, chart, render } = this.props;
+        const { chart } = this.props;
         const tooltipWithMarkerContainer = this.rootNode.querySelector(
             tooltipContainerWithMarkerSelector
         );
         const tooltipContainer = this.rootNode.querySelector(
             tooltipContainerSelector
         );
-        this.childChart = render({
-            data,
-        });
+        this.childChart = this.renderChildChart(this.props);
 
         if (tooltipWithMarkerContainer || tooltipContainer) {
             this.chart = chart.update(
@@ -263,6 +256,27 @@ export default class Tooltip extends React.Component {
 
     setRef(componentNode) {
         this.rootNode = componentNode;
+    }
+
+    /**
+     * Builds the chart being wrapped, handing it everything it needs to drive
+     * the tooltip. Both the constructor and componentDidUpdate go through here:
+     * re-rendering the child with only `data`, as this used to, left the chart
+     * with no mouse handlers and no way to recreate the tooltip after the first
+     * interaction.
+     * @param {Object} props    Props to build the child chart from
+     * @return {ReactElement}   The chart to render inside the wrapper
+     */
+    renderChildChart(props) {
+        const { data, render } = props;
+
+        return render({
+            data,
+            createTooltip: this.createTooltip,
+            customMouseMove: this.handleMouseMove.bind(this),
+            customMouseOut: this.handleMouseOut.bind(this),
+            customMouseOver: this.handleMouseOver.bind(this),
+        });
     }
 
     createTooltip = () => {
