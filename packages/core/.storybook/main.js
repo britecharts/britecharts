@@ -6,6 +6,13 @@ const path = require('path');
 
 module.exports = {
     stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.[tj]s'],
+    // Storybook only serves stories.json behind this flag, and the demos
+    // package composes this Storybook as a ref -- without it the nested
+    // Storybook shows up empty.
+    features: {
+        buildStoriesJson: true,
+    },
+
     addons: [
         '@storybook/addon-viewport/register',
         '@storybook/addon-a11y',

@@ -7,6 +7,12 @@ module.exports = {
         '../src/**/*.stories.mdx',
         '../src/**/*.stories.@(js|jsx|ts|tsx)',
     ],
+    // Storybook only serves stories.json behind this flag, and the demos
+    // package composes this Storybook as a ref -- without it the nested
+    // Storybook shows up empty.
+    features: {
+        buildStoriesJson: true,
+    },
     addons: [
         '@storybook/addon-viewport/register',
         '@storybook/addon-a11y',
