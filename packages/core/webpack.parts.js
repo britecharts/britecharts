@@ -79,6 +79,23 @@ exports.allStyles = (isMinified = false) => ({
                     },
                     {
                         loader: 'sass-loader',
+                        options: {
+                            // These styles still use @import, global built-ins and
+                            // desaturate(). Migrating them to @use and color.adjust is
+                            // tracked separately; until then silence the warnings rather
+                            // than print several hundred lines on every build.
+                            sassOptions: {
+                                silenceDeprecations: [
+                                    'import',
+                                    'global-builtin',
+                                    'color-functions',
+                                    // sass-loader 10 uses the legacy JS API,
+                                    // which Dart Sass 2 removes. Moving off it
+                                    // needs webpack 5, so it goes with Vite.
+                                    'legacy-js-api',
+                                ],
+                            },
+                        },
                     },
                 ],
             },
@@ -107,6 +124,23 @@ exports.chartStyles = (isMinified = false) => ({
                     },
                     {
                         loader: 'sass-loader',
+                        options: {
+                            // These styles still use @import, global built-ins and
+                            // desaturate(). Migrating them to @use and color.adjust is
+                            // tracked separately; until then silence the warnings rather
+                            // than print several hundred lines on every build.
+                            sassOptions: {
+                                silenceDeprecations: [
+                                    'import',
+                                    'global-builtin',
+                                    'color-functions',
+                                    // sass-loader 10 uses the legacy JS API,
+                                    // which Dart Sass 2 removes. Moving off it
+                                    // needs webpack 5, so it goes with Vite.
+                                    'legacy-js-api',
+                                ],
+                            },
+                        },
                     },
                 ],
             },

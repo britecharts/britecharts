@@ -36,5 +36,7 @@ export const WithHorizontalDirectionAndColorSchema = () => {
 };
 
 export const WithLoadingState = () => {
-    return <Bar data={null} shouldShowLoadingState={true} />;
+    const data = [];
+
+    return <Bar data={data} isLoading={true} />;
 };

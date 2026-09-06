@@ -7,6 +7,19 @@ import { BarWrapper } from '@britecharts/wrappers';
 
 describe('bar Chart', () => {
     describe('render', () => {
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const wrapper = mount(<Bar data={[]} isLoading={true} />);
+
+                const expected = 1;
+                const actual = wrapper
+                    .render()
+                    .find('.bar-load-state').length;
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
         describe('when data passed in', () => {
             let createSpy;
 

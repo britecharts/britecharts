@@ -29,7 +29,28 @@ module.exports = {
         // outside this package, so the rule has to cover both.
         config.module.rules.push({
             test: /\.scss$/,
-            use: ['style-loader', 'css-loader', 'sass-loader'],
+            use: [
+                'style-loader',
+                'css-loader',
+                {
+                    loader: 'sass-loader',
+                    options: {
+                        // These styles still use @import, global built-ins and
+                        // desaturate(); sass-loader 10 also uses the legacy JS
+                        // API. Migrating is tracked separately -- until then,
+                        // silence the warnings rather than print several
+                        // hundred lines on every build.
+                        sassOptions: {
+                            silenceDeprecations: [
+                                'import',
+                                'global-builtin',
+                                'color-functions',
+                                'legacy-js-api',
+                            ],
+                        },
+                    },
+                },
+            ],
             include: [
                 path.resolve(__dirname, '../'),
                 path.resolve(__dirname, '../../core'),
