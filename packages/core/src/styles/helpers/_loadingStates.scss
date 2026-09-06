@@ -2,11 +2,10 @@ $animation-duration: 1.5s;
 $animation-from: -100%;
 $animation-to: 100%;
 
-.line-load-state .chart-filter,
-.stacked-area-load-state .chart-filter,
-.brush-load-state .chart-filter,
-.donut-load-state .chart-filter,
-.bar-load-state .chart-filter {
+// Every loading skeleton carries the `load-state` class, so matching on that
+// rather than enumerating each chart means a new skeleton animates without
+// needing a rule added here. The sparkline's was missing from the old list.
+.load-state .chart-filter {
     animation: swipe $animation-duration linear infinite forwards;
     will-change: transform;
 }
