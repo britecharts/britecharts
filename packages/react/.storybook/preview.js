@@ -1,8 +1,6 @@
-import { addParameters } from '@storybook/react';
-import '@storybook/addon-console';
 import '../../core/src/styles/britecharts.scss';
 
-addParameters({
+export const parameters = {
     a11y: {
         config: {},
         options: {},
@@ -14,4 +12,4 @@ addParameters({
             order: ['Welcome', ['CHARTS'], 'Changelog'],
         },
     },
-});
+};

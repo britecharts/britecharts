@@ -1,8 +1,4 @@
-import { addParameters } from '@storybook/html';
-import '@storybook/addon-console';
-// import '../src/global.css';
-
-addParameters({
+export const parameters = {
     a11y: {
         config: {},
         options: {},
@@ -14,4 +10,4 @@ addParameters({
             order: ['Introduction', 'Changelog'],
         },
     },
-});
+};

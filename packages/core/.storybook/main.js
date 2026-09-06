@@ -1,32 +1,34 @@
-// Storybook runs its own webpack 4 instance, which never loads this
-// package's webpack.config.js -- so the md4 shim has to be applied here too.
-require('../../../scripts/patch-webpack4-md4');
-
 const path = require('path');
 
+/**
+ * Yarn does not always hoist a workspace's Storybook packages to the root, and
+ * Storybook resolves presets relative to its own install rather than to this
+ * config -- so a nested copy fails with "Cannot find module .../preset". Naming
+ * them by absolute path makes resolution start here instead, which is what
+ * Storybook's own monorepo setup generates.
+ */
+const getAbsolutePath = (value) =>
+    path.dirname(require.resolve(path.join(value, 'package.json')));
+
 module.exports = {
-    stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.[tj]s'],
-    // Storybook only serves stories.json behind this flag, and the demos
-    // package composes this Storybook as a ref -- without it the nested
-    // Storybook shows up empty.
-    features: {
-        buildStoriesJson: true,
+    stories: ['../src/**/*.mdx', '../src/**/*.stories.[tj]s'],
+    framework: {
+        name: getAbsolutePath('@storybook/html-webpack5'),
+        options: {},
     },
-
     addons: [
-        '@storybook/addon-viewport/register',
-        '@storybook/addon-a11y',
-        '@storybook/addon-actions',
-        '@storybook/addon-links',
-        '@storybook/addon-essentials',
-        '@storybook/addon-interactions',
+        getAbsolutePath('@storybook/addon-essentials'),
+        getAbsolutePath('@storybook/addon-a11y'),
+        getAbsolutePath('@storybook/addon-links'),
+        getAbsolutePath('@storybook/addon-interactions'),
     ],
-    webpackFinal: async (config, { configType }) => {
-        // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
-        // You can change the configuration based on that.
-        // 'PRODUCTION' is used when building the static version of storybook.
-
-        // Make whatever fine-grained changes you need
+    docs: {
+        autodocs: 'tag',
+    },
+    core: {
+        disableTelemetry: true,
+    },
+    webpackFinal: async (config) => {
         config.module.rules.push({
             test: /\.scss$/,
             use: [
@@ -36,10 +38,10 @@ module.exports = {
                     loader: 'sass-loader',
                     options: {
                         // These styles still use @import, global built-ins and
-                        // desaturate(); sass-loader 10 also uses the legacy JS
-                        // API. Migrating is tracked separately -- until then,
-                        // silence the warnings rather than print several
-                        // hundred lines on every build.
+                        // desaturate(); sass-loader also uses the legacy JS API.
+                        // Migrating is tracked separately -- until then, silence
+                        // the warnings rather than print several hundred lines
+                        // on every build.
                         sassOptions: {
                             silenceDeprecations: [
                                 'import',
@@ -51,10 +53,9 @@ module.exports = {
                     },
                 },
             ],
-            include: path.resolve(__dirname, '../'),
+            include: [path.resolve(__dirname, '../')],
         });
 
-        // Return the altered config
         return config;
     },
 };
