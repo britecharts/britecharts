@@ -10,7 +10,6 @@ exports.CHARTS = {
     sparkline: './src/charts/sparkline/sparklineChart.js',
     stackedArea: './src/charts/stackedArea/stackedAreaChart.js',
     stackedBar: './src/charts/stackedBar/stackedBarChart.js',
-    step: './src/charts/step/stepChart.js',
     tooltip: './src/charts/tooltip/tooltipChart.js',
 };
 

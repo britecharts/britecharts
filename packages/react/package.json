@@ -29,6 +29,8 @@
     "jest": "^29.3.1",
     "react": "16.14.0",
     "react-dev-utils": "^6.1.1",
+    "react-dom": "16.14.0",
+    "require-from-string": "^2.0.2",
     "rimraf": "^2.6.3",
     "sass": "^1.104.0",
     "sass-loader": "^10.5.2",

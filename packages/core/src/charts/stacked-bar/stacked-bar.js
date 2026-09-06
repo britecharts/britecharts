@@ -175,11 +175,14 @@ export default function module() {
      */
     function addMouseEvents() {
         if (shouldShowTooltip()) {
-            svg.select('.chart-group')
-                .on('mouseover', function (event, d) {
-                    handleMouseOver(this, d, event);
-                })
-                .on('mouseout', function (event, d) {
+            // Listen on the svg, not on `.chart-group`: a <g> has no geometry
+            // of its own, so it only receives events where its children are --
+            // the gaps between bars and the empty space above them would be dead.
+            // This is also the node getMousePosition measures against.
+            svg.on('mouseenter', function (event, d) {
+                handleMouseOver(this, d, event);
+            })
+                .on('mouseleave', function (event, d) {
                     handleMouseOut(this, d, event);
                 })
                 .on('mousemove', function (event, d) {
@@ -629,8 +632,22 @@ export default function module() {
      * @return {Number}       Position on the x axis of the mouse
      * @private
      */
+    /**
+     * Returns the mouse position relative to the chart's svg root.
+     *
+     * The listeners live on `.chart-group`, which is already translated by the
+     * margins, but getNearestDataPoint subtracts the margin itself -- so the
+     * coordinates have to come from the svg root, not from the node the event
+     * fired on. Passing the event as its own container (the previous
+     * `pointer(event, event)`) made d3 read `clientX` off a non-event and throw
+     * "Failed to set the 'x' property on 'SVGPoint'".
+     *
+     * @param {Event} event  The d3 v6 event handed to the handler
+     * @return {Number[]}    [x, y] in the svg's coordinate space
+     * @private
+     */
     function getMousePosition(event) {
-        return pointer(event, event);
+        return pointer(event, svg.node());
     }
 
     /**
@@ -714,7 +731,7 @@ export default function module() {
      * @private
      */
     function handleMouseMove(e, d, event) {
-        let [mouseX, mouseY] = getMousePosition(e),
+        let [mouseX, mouseY] = getMousePosition(event),
             dataPoint = isHorizontal
                 ? getNearestDataPoint2(mouseY)
                 : getNearestDataPoint(mouseX),
@@ -750,7 +767,7 @@ export default function module() {
      * @private
      */
     function handleClick(e, d, event) {
-        let [mouseX, mouseY] = getMousePosition(e);
+        let [mouseX, mouseY] = getMousePosition(event);
         let dataPoint = isHorizontal
             ? getNearestDataPoint2(mouseY)
             : getNearestDataPoint(mouseX);

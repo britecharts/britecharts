@@ -295,9 +295,7 @@ describe('grouped Bar Chart', () => {
 
         describe('when hovering', () => {
             it('mouseover should trigger a callback', () => {
-                const chart = containerFixture.selectAll(
-                    '.grouped-bar .chart-group'
-                );
+                const chart = containerFixture.selectAll('.grouped-bar');
                 const callbackSpy = jest.fn();
                 const expectedCalls = 1;
                 const expectedArguments = 2;
@@ -305,7 +303,7 @@ describe('grouped Bar Chart', () => {
                 let actualArgumentsNumber;
 
                 groupedBarChart.on('customMouseOver', callbackSpy);
-                chart.dispatch('mouseover');
+                chart.dispatch('mouseenter');
                 actualCalls = callbackSpy.mock.calls.length;
                 actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 
@@ -314,9 +312,7 @@ describe('grouped Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback', () => {
-                const chart = containerFixture.selectAll(
-                    '.grouped-bar .chart-group'
-                );
+                const chart = containerFixture.selectAll('.grouped-bar');
                 const callbackSpy = jest.fn();
                 const expectedCalls = 1;
                 const expectedArguments = 2;
@@ -324,7 +320,7 @@ describe('grouped Bar Chart', () => {
                 let actualArgumentsNumber;
 
                 groupedBarChart.on('customMouseOut', callbackSpy);
-                chart.dispatch('mouseout');
+                chart.dispatch('mouseleave');
                 actualCalls = callbackSpy.mock.calls.length;
                 actualArgumentsNumber = callbackSpy.mock.calls[0].length;
 

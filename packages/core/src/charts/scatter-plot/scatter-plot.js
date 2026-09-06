@@ -549,7 +549,13 @@ export default function module() {
             .attr('stroke-width', trendLineStrokWidth)
             .attr('fill', 'none');
 
-        const totalLength = trendLinePath.node().pathLength;
+        // pathLength is the SVGAnimatedNumber for the attribute, not the
+        // computed length; getTotalLength() is the geometry API.
+        const trendLineNode = trendLinePath.node();
+        const totalLength =
+            typeof trendLineNode.getTotalLength === 'function'
+                ? trendLineNode.getTotalLength()
+                : 0;
 
         trendLinePath
             .attr('stroke-dasharray', `${totalLength} ${totalLength}`)

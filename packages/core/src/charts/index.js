@@ -11,7 +11,6 @@ export { default as scatterPlot } from './scatter-plot/scatter-plot';
 export { default as sparkline } from './sparkline/sparkline';
 export { default as stackedArea } from './stacked-area/stacked-area';
 export { default as stackedBar } from './stacked-bar/stacked-bar';
-export { default as step } from './step/step';
 export { default as tooltip } from './tooltip/tooltip';
 
 export { default as axis } from './helpers/axis';

@@ -47,7 +47,6 @@ The complete set of components is in progress; the following components are curr
 - Stacked Area charts [(API)][stackedAreaChartAPI]
 - Stacked Bar charts [(API)][stackedBarChartAPI]
 - Tooltips [(API)][tooltipAPI]
-- Step charts [(API)][stepChartAPI]
 - Legends [(API)][legendAPI]
 
 The following components haven't been adapted yet from Britecharts:
@@ -74,6 +73,16 @@ npm i --save @britecharts/core @britecharts/wrappers @britecharts/react
 Britecharts-React is available as an [NPM module][npmModule] or through CDN links (in [different formats][jsDelivrLib] or a [bundle][jsDelivrDist]).
 
 You can also use individual bundles in UMD format (`dist/umd/`), CommonJS format (`lib/cjs`), and tree-shaking-enabling ES2015 modules (`lib/esm`) to add to your bundle. You can see more on our [test project][testProject].
+
+### Supported React versions
+
+`peerDependencies` allows `react` and `react-dom` `>=15`, and the components
+themselves use no API newer than that. Be aware, though, that the test suite
+still runs on Enzyme, whose last adapter targets React 16 — so **React 16 is the
+only version covered by our tests**. React 17, 18 and 19 are expected to work
+and are not known to break, but that is not something we verify on every commit.
+If you hit a version-specific problem, please open an issue; it helps us
+prioritise moving the specs to React Testing Library.
 
 ## Acknowledgments
 For this project, we have followed the approach called ‘Mapping Lifecycle methods’ based on [Nicholas Hery's article][integration-article]. We want to recognize all the contributors in the parent project [Britecharts][britecharts].
@@ -102,7 +111,6 @@ Our idea for the short term is to update this package to use TypeScript natively
 [stackedAreaChartAPI]: **
 [stackedBarChartAPI]: **
 [tooltipAPI]: **
-[stepChartAPI]: **
 [legendAPI]: **
 [bulletAPI]: **
 [jsDelivrLib]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/

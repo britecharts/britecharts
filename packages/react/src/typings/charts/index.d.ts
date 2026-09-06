@@ -7,5 +7,4 @@ export { default as Line, LineProps } from './Line';
 export { default as Sparkline, SparklineProps } from './Sparkline';
 export { default as StackedArea, StackedAreaProps } from './StackedArea';
 export { default as StackedBar, StackedBarProps } from './StackedBar';
-export { default as Step, StepProps } from './Step';
 export { default as Tooltip, TooltipProps } from './Tooltip';

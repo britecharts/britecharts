@@ -89,6 +89,41 @@ describe('tooltip Component', () => {
                 expect(actual).toEqual(expected);
             });
 
+            it('should keep a numeric background height when the text cannot be measured', () => {
+                // getBBox() is stubbed here without a height, which is what a
+                // browser reports while the tooltip is still hidden. The height
+                // must fall back to a number rather than becoming NaN.
+                let actual;
+
+                tooltipChart.update(
+                    {
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: '5',
+                                topicName: 'San Francisco',
+                            },
+                            {
+                                name: 60,
+                                value: '10',
+                                topicName: 'Chicago',
+                            },
+                        ],
+                    },
+                    topicColorMap,
+                    0
+                );
+                actual = containerFixture
+                    .select('.britechart-tooltip')
+                    .select('.tooltip-background')
+                    .attr('height');
+
+                expect(actual).not.toEqual('NaN');
+                expect(Number.isFinite(+actual)).toBe(true);
+                expect(+actual).toBeGreaterThan(0);
+            });
+
             it('should add a circle', () => {
                 const expected = 2;
                 let actual;

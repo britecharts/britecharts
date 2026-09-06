@@ -3,7 +3,7 @@
 # Mini-tooltip
 Mini Tooltip Component reusable API class that renders a
 simple and configurable tooltip element for Britechart's
-bar and step chart.
+bar chart.
 
 **Requires**: <code>module:d3-array,</code>  
 **Example**  
@@ -65,7 +65,7 @@ Hides the tooltip
 Gets or Sets data's nameLabel
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Mini-tooltip--exports)  
-**Returns**: <code>text</code> \| <code>module</code> - nameLabel or Step Chart module to chain calls  
+**Returns**: <code>text</code> \| <code>module</code> - nameLabel or Mini Tooltip module to chain calls  
 **Access**: public  
 
 | Param | Type | Description |
@@ -147,7 +147,7 @@ Updates the position and content of the tooltip
 Gets or Sets data's valueLabel
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Mini-tooltip--exports)  
-**Returns**: <code>text</code> \| <code>module</code> - valueLabel or Step Chart module to chain calls  
+**Returns**: <code>text</code> \| <code>module</code> - valueLabel or Mini Tooltip module to chain calls  
 **Access**: public  
 
 | Param | Type | Description |

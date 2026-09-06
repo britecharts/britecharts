@@ -7,7 +7,6 @@ export { default as LineWrapper } from './charts/line/lineChart.js';
 export { default as SparklineWrapper } from './charts/sparkline/sparklineChart';
 export { default as StackedAreaWrapper } from './charts/stackedArea/stackedAreaChart.js';
 export { default as StackedBarWrapper } from './charts/stackedBar/stackedBarChart.js';
-export { default as StepWrapper } from './charts/step/stepChart.js';
 
 export { default as TooltipWrapper } from './charts/tooltip/tooltipChart.js';
 
