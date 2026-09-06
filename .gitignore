@@ -59,7 +59,10 @@ node_modules
 
 dist
 /docs
-demos
+# Anchored: a bare `demos` also matched packages/demos, so anything added
+# there was silently untracked -- which is how packages/demos/src went
+# missing and broke the composed Storybook build.
+/demos
 
 # Core package
 packages/core/sandbox/build

@@ -6,3 +6,8 @@ packages/react/dist
 packages/react/lib
 packages/react/node_modules
 packages/react/src/templates
+
+# Stylelint owns SCSS. Prettier rewrites @import "..." to single quotes,
+# which the string-quotes rule then rejects, so running it over these files
+# leaves the styles unlintable.
+*.scss

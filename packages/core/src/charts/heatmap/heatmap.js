@@ -1,5 +1,5 @@
 import { extent } from 'd3-array';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import { interpolateHcl } from 'd3-interpolate';
 import { dispatch } from 'd3-dispatch';
@@ -183,6 +183,19 @@ export default function module() {
             .interpolate(interpolateHcl);
     }
 
+
+    /**
+     * Returns the sibling box nodes of the given element. d3 v6 dropped
+     * the third `nodes` argument that used to be passed to event handlers,
+     * so the list is derived from the DOM instead.
+     * @param  {SVGElement} node  The element the event fired on
+     * @return {SVGElement[]}     Its siblings, including itself
+     * @private
+     */
+    function siblingNodes(node) {
+        return select(node.parentNode).selectAll('.box').nodes();
+    }
+
     /**
      * Draws the boxes of the heatmap
      */
@@ -201,17 +214,17 @@ export default function module() {
             .style('fill', boxInitialColor)
             .style('stroke', boxBorderColor)
             .style('stroke-width', boxBorderSize)
-            .on('mouseover', function (d, index, boxList) {
-                handleMouseOver(this, d, boxList, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
-            .on('mouseout', function (d, index, boxList) {
-                handleMouseOut(this, d, boxList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(this, d, chartWidth, chartHeight, event);
             });
 
         if (isAnimated) {
@@ -284,29 +297,29 @@ export default function module() {
         );
     }
 
-    function handleMouseOver(e, d, boxList, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOver', e, d, mouse(e), [
+    function handleMouseOver(e, d, boxList, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseOver', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
-    function handleMouseMove(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', e, d, mouse(e), [
+    function handleMouseMove(e, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseMove', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
-    function handleMouseOut(e, d, boxList, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOut', e, d, mouse(e), [
+    function handleMouseOut(e, d, boxList, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseOut', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
-    function handleClick(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customClick', e, d, mouse(e), [
+    function handleClick(e, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customClick', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);

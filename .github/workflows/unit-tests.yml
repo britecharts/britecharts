@@ -68,7 +68,4 @@ jobs:
         run: yarn install --immutable
 
       - name: Build packages 🔧
-        run: |
-          yarn build:core
-          yarn build:wrappers
-          yarn build:react
+        run: yarn build:packages

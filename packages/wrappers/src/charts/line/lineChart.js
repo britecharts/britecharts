@@ -25,10 +25,7 @@ lineChart.create = (el, data, configuration = {}) => {
 lineChart.update = (el, data, configuration = {}, chart) => {
     const container = select(el);
     // TODO: Review this with Version 4
-    const shouldUpdateData =
-        data &&
-        ((data.data && data.data.length) ||
-            (data.dataByTopic && data.dataByTopic.length));
+    const shouldUpdateData = data && data.data && data.data.length;
 
     validateContainer(container);
     validateConfiguration(chart, configuration);

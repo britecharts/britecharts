@@ -1,6 +1,6 @@
 import { addParameters } from '@storybook/react';
 import '@storybook/addon-console';
-import '../../core/dist/styles/bundle/britecharts.css';
+import '../../core/src/styles/britecharts.scss';
 
 addParameters({
     a11y: {

@@ -136,6 +136,66 @@ lineChart
     .height(50)
 ```
 
+7. Expect the typographic minus sign in negative axis labels
+
+Britecharts v3 runs on the current d3 modules, and d3-format changed its default minus sign from the ASCII hyphen (`-`, U+002D) to the typographic minus (`−`, U+2212). Negative values on axes and in tooltips now render with the latter.
+
+Nothing to change unless you assert on that text — snapshot tests and string comparisons against axis labels will need updating. If you would rather keep the ASCII hyphen, set it through a value locale:
+
+```js
+lineChart.valueLocale({ minus: '-' });
+```
+
+8. Provide the d3 modules yourself if you use the UMD builds
+
+The published bundles treat every `d3-*` module as an external, so they are not included. Britecharts v3 requires the d3 v7 generation of these packages; if you load Britecharts from a CDN alongside your own d3, upgrade d3 to v7 at the same time.
+
+The two d3 modules Britecharts used that are now deprecated upstream, `d3-collection` and `d3-voronoi`, have been replaced internally by `d3-array` and `d3-delaunay`. They are no longer dependencies.
+
+9. Replace the 'dataByTopic' line chart data shape
+
+The line chart no longer accepts the `dataByTopic` array it required up to 2.10.1. It has taken a flat `data` array since then, and that is now the only shape it accepts. Passing `dataByTopic` throws.
+
+```js
+// Version 2
+lineChart.datum({
+    dataByTopic: [
+        {
+            topicName: 'San Francisco',
+            topic: 123,
+            dates: [
+                { date: '2017-01-16T16:00:00-08:00', value: 1 },
+                { date: '2017-01-17T16:00:00-08:00', value: 2 }
+            ]
+        }
+    ]
+});
+
+// Version 3
+lineChart.datum({
+    data: [
+        { topicName: 'San Francisco', name: 123, date: '2017-01-16T16:00:00-08:00', value: 1 },
+        { topicName: 'San Francisco', name: 123, date: '2017-01-17T16:00:00-08:00', value: 2 }
+    ]
+});
+```
+
+One entry per point instead of points nested under each topic, and the topic identifier moves from `topic` to `name`. Britecharts groups the data internally, so nothing else about how you configure the chart changes.
+
+If you have data in the old shape, this converts it:
+
+```js
+const toFlatData = ({ dataByTopic }) =>
+    dataByTopic.flatMap((topic) =>
+        topic.dates.map(({ date, value }) => ({
+            topicName: topic.topicName,
+            name: topic.topic,
+            date,
+            value,
+        }))
+    );
+```
+
 ### New features
 1. Start using TypeScript with Britecharts.
 

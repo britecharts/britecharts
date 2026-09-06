@@ -536,7 +536,9 @@ describe('line Chart', () => {
                     it('the lowest Y-axis value is negative', () => {
                         let values = dataset.data.map((d) => d.value);
                         let minValue = Math.min(...values);
-                        let minValueText = '' + minValue;
+                        // d3-format renders negatives with U+2212 MINUS SIGN,
+                        // where JS String() gives an ASCII hyphen.
+                        let minValueText = String(minValue).replace('-', '\u2212');
 
                         let yAxis = d3.select('.y-axis-group');
                         let text = yAxis.select('g.tick');
@@ -586,7 +588,7 @@ describe('line Chart', () => {
                     it('the highest Y-axis value is negative', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick:nth-child(8)');
-                        const expected = '-1';
+                        const expected = '−1';
                         const actual = text.text();
 
                         expect(actual).toEqual(expected);
@@ -595,7 +597,7 @@ describe('line Chart', () => {
                     it('the lowest Y-axis value is negative', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick');
-                        const expected = '-4';
+                        const expected = '−4';
                         const actual = text.text();
 
                         expect(actual).toEqual(expected);

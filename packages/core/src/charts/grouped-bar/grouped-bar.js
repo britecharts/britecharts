@@ -1,13 +1,12 @@
-import { max, range, permute, sum } from 'd3-array';
+import { max, range, permute, rollups, sum } from 'd3-array';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { color } from 'd3-color';
-import { nest } from 'd3-collection';
 import { dispatch } from 'd3-dispatch';
 import * as d3Format from 'd3-format';
 import { easeQuadInOut } from 'd3-ease';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleLinear, scaleBand, scaleOrdinal } from 'd3-scale';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -178,26 +177,26 @@ export default function module() {
     function addMouseEvents() {
         if (shouldShowTooltip()) {
             svg.select('.chart-group')
-                .on('mouseover', function (d) {
-                    handleMouseOver(this, d);
+                .on('mouseover', function (event, d) {
+                    handleMouseOver(this, d, event);
                 })
-                .on('mouseout', function (d) {
-                    handleMouseOut(this, d);
+                .on('mouseout', function (event, d) {
+                    handleMouseOut(this, d, event);
                 })
-                .on('mousemove', function (d) {
-                    handleMouseMove(this, d);
+                .on('mousemove', function (event, d) {
+                    handleMouseMove(this, d, event);
                 })
-                .on('click', function (d) {
-                    handleCustomClick(this, d);
+                .on('click', function (event, d) {
+                    handleCustomClick(this, d, event);
                 });
         }
 
         svg.selectAll('.bar')
-            .on('mouseover', function (d) {
-                handleBarsMouseOver(this, d);
+            .on('mouseover', function (event, d) {
+                handleBarsMouseOver(this, d, event);
             })
-            .on('mouseout', function (d) {
-                handleBarsMouseOut(this, d);
+            .on('mouseout', function (event, d) {
+                handleBarsMouseOut(this, d, event);
             });
     }
 
@@ -630,7 +629,7 @@ export default function module() {
      * @private
      */
     function getMousePosition(event) {
-        return mouse(event);
+        return pointer(event, event);
     }
 
     /**
@@ -703,7 +702,7 @@ export default function module() {
      * @param  {obj} d data of bar
      * @return {void}
      */
-    function handleBarsMouseOver(e, d) {
+    function handleBarsMouseOver(e, d, event) {
         select(e).attr('fill', () => color(nameToColorMap[d.group]).darker());
     }
 
@@ -713,7 +712,7 @@ export default function module() {
      * @param  {obj} d data of bar
      * @return {void}
      */
-    function handleBarsMouseOut(e, d) {
+    function handleBarsMouseOut(e, d, event) {
         select(e).attr('fill', () => nameToColorMap[d.group]);
     }
 
@@ -723,7 +722,7 @@ export default function module() {
      * @param  {obj} e the fired event
      * @private
      */
-    function handleMouseMove(e) {
+    function handleMouseMove(e, d, event) {
         let [mouseX, mouseY] = getMousePosition(e),
             dataPoint = isHorizontal
                 ? getNearestDataPoint2(mouseY)
@@ -758,13 +757,13 @@ export default function module() {
      * Click handler, shows data that was clicked and passes to the user
      * @private
      */
-    function handleCustomClick(e) {
+    function handleCustomClick(e, d, event) {
         let [mouseX, mouseY] = getMousePosition(e);
         let dataPoint = isHorizontal
             ? getNearestDataPoint2(mouseY)
             : getNearestDataPoint(mouseX);
 
-        dispatcher.call('customClick', e, dataPoint, mouse(e));
+        dispatcher.call('customClick', e, dataPoint, pointer(event, e));
     }
 
     /**
@@ -772,17 +771,17 @@ export default function module() {
      * It also resets the container of the vertical marker
      * @private
      */
-    function handleMouseOut(e, d) {
+    function handleMouseOut(e, d, event) {
         svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-        dispatcher.call('customMouseOut', e, d, mouse(e));
+        dispatcher.call('customMouseOut', e, d, pointer(event, e));
     }
 
     /**
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d) {
-        dispatcher.call('customMouseOver', e, d, mouse(e));
+    function handleMouseOver(e, d, event) {
+        dispatcher.call('customMouseOver', e, d, pointer(event, e));
     }
 
     /**
@@ -836,9 +835,12 @@ export default function module() {
     function prepareData(data) {
         groups = uniq(data.map(getGroup));
 
-        transformedData = nest()
-            .key(getName)
-            .rollup(function (values) {
+        // d3-collection's nest() is gone; rollups() is the d3-array
+        // equivalent, returning [key, value] pairs rather than objects.
+        // The key accessor is String()-wrapped to keep nest's coercion.
+        transformedData = rollups(
+            data,
+            function (values) {
                 let ret = {};
 
                 values.forEach((entry) => {
@@ -850,8 +852,10 @@ export default function module() {
                 ret.values = values;
 
                 return ret;
-            })
-            .entries(data)
+            },
+            (d) => String(getName(d))
+        )
+            .map(([key, value]) => ({ key, value }))
             .map(function (data) {
                 return Object.assign(
                     {},

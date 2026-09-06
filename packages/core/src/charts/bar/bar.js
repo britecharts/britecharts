@@ -5,7 +5,7 @@ import { color } from 'd3-color';
 import { dispatch } from 'd3-dispatch';
 import * as d3Format from 'd3-format';
 import { scaleLinear, scaleBand } from 'd3-scale';
-import { mouse, select } from 'd3-selection';
+import { pointer, select } from 'd3-selection';
 import 'd3-transition';
 
 import { wrapTextWithEllipses } from '../helpers/text';
@@ -438,6 +438,19 @@ export default function module() {
         svg.select('.loading-state-group svg').remove();
     }
 
+
+    /**
+     * Returns the sibling bar nodes of the given element. d3 v6 dropped
+     * the third `nodes` argument that used to be passed to event handlers,
+     * so the list is derived from the DOM instead.
+     * @param  {SVGElement} node  The element the event fired on
+     * @return {SVGElement[]}     Its siblings, including itself
+     * @private
+     */
+    function siblingNodes(node) {
+        return select(node.parentNode).selectAll('.bar').nodes();
+    }
+
     /**
      * Draws the x and y axis on the svg object within their
      * respective groups
@@ -507,17 +520,17 @@ export default function module() {
             .attr('x', 0)
             .attr('height', yScale.bandwidth())
             .attr('width', ({ value }) => xScale(value))
-            .on('mouseover', function (d, _, barList) {
-                handleMouseOver(this, d, barList, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
-            .on('mouseout', function (d, _, barList) {
-                handleMouseOut(this, d, barList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(this, d, chartWidth, chartHeight, event);
             })
             .merge(bars)
             .attr('x', 0)
@@ -541,17 +554,17 @@ export default function module() {
             .attr('y', chartHeight)
             .attr('height', yScale.bandwidth())
             .attr('width', ({ value }) => xScale(value))
-            .on('mouseover', function (d, _, barList) {
-                handleMouseOver(this, d, barList, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
-            .on('mouseout', function (d, _, barList) {
-                handleMouseOut(this, d, barList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(this, d, chartWidth, chartHeight, event);
             });
 
         bars.attr('x', 0)
@@ -579,17 +592,17 @@ export default function module() {
             .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale.bandwidth())
             .attr('height', ({ value }) => chartHeight - yScale(value))
-            .on('mouseover', function (d, _, barList) {
-                handleMouseOver(this, d, barList, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
-            .on('mouseout', function (d, _, barList) {
-                handleMouseOut(this, d, barList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(this, d, chartWidth, chartHeight, event);
             })
             .merge(bars)
             .attr('x', ({ name }) => xScale(name))
@@ -617,17 +630,17 @@ export default function module() {
             .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale.bandwidth())
             .attr('height', ({ value }) => chartHeight - yScale(value))
-            .on('mouseover', function (d, _, barList) {
-                handleMouseOver(this, d, barList, chartWidth, chartHeight);
+            .on('mouseover', function (event, d) {
+                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+            .on('mousemove', function (event, d) {
+                handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
-            .on('mouseout', function (d, _, barList) {
-                handleMouseOut(this, d, barList, chartWidth, chartHeight);
+            .on('mouseout', function (event, d) {
+                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
             })
-            .on('click', function (d) {
-                handleClick(this, d, chartWidth, chartHeight);
+            .on('click', function (event, d) {
+                handleClick(this, d, chartWidth, chartHeight, event);
             })
             .merge(bars)
             .attr('x', ({ name }) => xScale(name))
@@ -807,8 +820,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOver(e, d, barList, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOver', e, d, mouse(e), [
+    function handleMouseOver(e, d, barList, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseOver', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
@@ -833,8 +846,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseMove(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', e, d, mouse(e), [
+    function handleMouseMove(e, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseMove', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
@@ -845,8 +858,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOut(e, d, barList, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOut', e, d, mouse(e), [
+    function handleMouseOut(e, d, barList, chartWidth, chartHeight, event) {
+        dispatcher.call('customMouseOut', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
@@ -861,8 +874,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleClick(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customClick', e, d, mouse(e), [
+    function handleClick(e, d, chartWidth, chartHeight, event) {
+        dispatcher.call('customClick', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);

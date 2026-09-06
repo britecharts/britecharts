@@ -396,7 +396,7 @@ describe('stacked Area Chart', () => {
                 let yAxis = containerFixture.selectAll('.y-axis-group');
                 let text = yAxis.select('g.tick');
 
-                expect(text.text()).toBe('-15');
+                expect(text.text()).toBe('−15');
             });
 
             it('0-axis is highlighted with an additional class', () => {
@@ -427,7 +427,7 @@ describe('stacked Area Chart', () => {
                         .selectAll('.y-axis-group')
                         .select('g.tick');
 
-                    expect(firstText.text()).toBe('-30');
+                    expect(firstText.text()).toBe('−30');
                 });
             });
 

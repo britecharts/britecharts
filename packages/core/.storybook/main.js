@@ -6,6 +6,13 @@ const path = require('path');
 
 module.exports = {
     stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.[tj]s'],
+    // Storybook only serves stories.json behind this flag, and the demos
+    // package composes this Storybook as a ref -- without it the nested
+    // Storybook shows up empty.
+    features: {
+        buildStoriesJson: true,
+    },
+
     addons: [
         '@storybook/addon-viewport/register',
         '@storybook/addon-a11y',
@@ -22,7 +29,28 @@ module.exports = {
         // Make whatever fine-grained changes you need
         config.module.rules.push({
             test: /\.scss$/,
-            use: ['style-loader', 'css-loader', 'sass-loader'],
+            use: [
+                'style-loader',
+                'css-loader',
+                {
+                    loader: 'sass-loader',
+                    options: {
+                        // These styles still use @import, global built-ins and
+                        // desaturate(); sass-loader 10 also uses the legacy JS
+                        // API. Migrating is tracked separately -- until then,
+                        // silence the warnings rather than print several
+                        // hundred lines on every build.
+                        sassOptions: {
+                            silenceDeprecations: [
+                                'import',
+                                'global-builtin',
+                                'color-functions',
+                                'legacy-js-api',
+                            ],
+                        },
+                    },
+                },
+            ],
             include: path.resolve(__dirname, '../'),
         });
 

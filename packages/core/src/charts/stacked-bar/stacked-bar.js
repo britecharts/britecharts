@@ -1,14 +1,13 @@
-import { max, sum, range, permute } from 'd3-array';
+import { max, sum, range, permute, rollups } from 'd3-array';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { color } from 'd3-color';
-import { nest } from 'd3-collection';
 import { dispatch } from 'd3-dispatch';
 import * as d3Format from 'd3-format';
 import { easeQuadInOut } from 'd3-ease';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleOrdinal, scaleBand, scaleLinear } from 'd3-scale';
 import { stack } from 'd3-shape';
-import { select, mouse } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -177,17 +176,17 @@ export default function module() {
     function addMouseEvents() {
         if (shouldShowTooltip()) {
             svg.select('.chart-group')
-                .on('mouseover', function (d) {
-                    handleMouseOver(this, d);
+                .on('mouseover', function (event, d) {
+                    handleMouseOver(this, d, event);
                 })
-                .on('mouseout', function (d) {
-                    handleMouseOut(this, d);
+                .on('mouseout', function (event, d) {
+                    handleMouseOut(this, d, event);
                 })
-                .on('mousemove', function (d) {
-                    handleMouseMove(this, d);
+                .on('mousemove', function (event, d) {
+                    handleMouseMove(this, d, event);
                 })
-                .on('click', function (d) {
-                    handleClick(this, d);
+                .on('click', function (event, d) {
+                    handleClick(this, d, event);
                 });
         }
 
@@ -631,7 +630,7 @@ export default function module() {
      * @private
      */
     function getMousePosition(event) {
-        return mouse(event);
+        return pointer(event, event);
     }
 
     /**
@@ -714,7 +713,7 @@ export default function module() {
      * and updates metadata related to it
      * @private
      */
-    function handleMouseMove(e) {
+    function handleMouseMove(e, d, event) {
         let [mouseX, mouseY] = getMousePosition(e),
             dataPoint = isHorizontal
                 ? getNearestDataPoint2(mouseY)
@@ -750,13 +749,13 @@ export default function module() {
      * (or it's nearest point)
      * @private
      */
-    function handleClick(e) {
+    function handleClick(e, d, event) {
         let [mouseX, mouseY] = getMousePosition(e);
         let dataPoint = isHorizontal
             ? getNearestDataPoint2(mouseY)
             : getNearestDataPoint(mouseX);
 
-        dispatcher.call('customClick', e, dataPoint, mouse(e));
+        dispatcher.call('customClick', e, dataPoint, pointer(event, e));
     }
 
     /**
@@ -764,17 +763,17 @@ export default function module() {
      * It also resets the container of the vertical marker
      * @private
      */
-    function handleMouseOut(e, d) {
+    function handleMouseOut(e, d, event) {
         svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-        dispatcher.call('customMouseOut', e, d, mouse(e));
+        dispatcher.call('customMouseOut', e, d, pointer(event, e));
     }
 
     /**
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d) {
-        dispatcher.call('customMouseOver', e, d, mouse(e));
+    function handleMouseOver(e, d, event) {
+        dispatcher.call('customMouseOver', e, d, pointer(event, e));
     }
 
     /**
@@ -815,9 +814,10 @@ export default function module() {
             stacks = stacks.reverse();
         }
 
-        transformedData = nest()
-            .key(getName)
-            .rollup(function (values) {
+        // See the grouped-bar chart: nest() replaced by rollups().
+        transformedData = rollups(
+            data,
+            function (values) {
                 let ret = {};
 
                 values.forEach((entry) => {
@@ -829,8 +829,10 @@ export default function module() {
                 ret.values = values;
 
                 return ret;
-            })
-            .entries(data)
+            },
+            (d) => String(getName(d))
+        )
+            .map(([key, value]) => ({ key, value }))
             .map(function (data) {
                 return Object.assign(
                     {},
