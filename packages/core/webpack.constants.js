@@ -22,7 +22,6 @@ exports.CHARTS = {
     sparkline: `${PATHS.charts}/sparkline/sparkline.js`,
     stackedArea: `${PATHS.charts}/stacked-area/stacked-area.js`,
     stackedBar: `${PATHS.charts}/stacked-bar/stacked-bar.js`,
-    step: `${PATHS.charts}/step/step.js`,
     tooltip: `${PATHS.charts}/tooltip/tooltip.js`,
     loading: [`${PATHS.charts}/helpers/load.js`],
     // hack to make webpack use colors as an entry point while its also a dependency of the charts above
@@ -39,6 +38,5 @@ exports.CHART_STYLES = {
     sparkline: './src/styles/charts/sparkline.scss',
     stackedArea: './src/styles/charts/stacked-area.scss',
     stackedBar: './src/styles/charts/stacked-bar.scss',
-    step: './src/styles/charts/step.scss',
     common: './src/styles/common.scss',
 };

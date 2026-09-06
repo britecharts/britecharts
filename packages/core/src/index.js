@@ -11,7 +11,6 @@ import scatterPlot from './charts/scatter-plot/scatter-plot.js';
 import groupedBar from './charts/grouped-bar/grouped-bar.js';
 import stackedBar from './charts/stacked-bar/stacked-bar.js';
 import heatmap from './charts/heatmap/heatmap.js';
-import step from './charts/step/step.js';
 import brush from './charts/brush/brush.js';
 import bullet from './charts/bullet/bullet.js';
 import colors from './charts/helpers/color.js';
@@ -30,7 +29,6 @@ export {
     groupedBar,
     stackedBar,
     heatmap,
-    step,
     brush,
     bullet,
     colors,
@@ -50,7 +48,6 @@ const britecharts = {
     groupedBar,
     stackedBar,
     heatmap,
-    step,
     brush,
     bullet,
     colors,

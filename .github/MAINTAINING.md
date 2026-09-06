@@ -1,5 +1,6 @@
 # Maintaining Guide
 > Information for Britecharts maintainers
+
 As maintainers of the project, this is our guide. Most of the steps and guidelines in the [Contributing](./CONTRIBUTING.md) document apply here, including how to set up your environment, write code to fit the code style, run tests, craft commits and manage branches.
 
 Beyond this, this document provides some details that would be too low-level for contributors.

@@ -7,7 +7,6 @@ export { default as Line } from './charts/line/Line.js';
 export { default as Sparkline } from './charts/sparkline/Sparkline';
 export { default as StackedArea } from './charts/stackedArea/StackedArea.js';
 export { default as StackedBar } from './charts/stackedBar/StackedBar.js';
-export { default as Step } from './charts/step/Step.js';
 
 export { default as Tooltip } from './charts/tooltip/Tooltip.js';
 

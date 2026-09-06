@@ -79,7 +79,6 @@ All the components expose **common API methods** like width, height, and margin.
 -   [API][scatter-docs], [Demo][scatterplot-story] Scatter Plot
 -   [API][sparkline-docs], [Demo][sparklinechart-story] Sparkline Chart
 -   [API][stacked-area-docs], [Demo][stackedareachart-story] Stacked Area Chart
--   [API][step-docs], [Demo][stepchart-story] Step Chart
 -   [API][mini-tooltip-docs], [Demo][barchart-story] Mini Tooltip
 -   [API][tooltip-docs], [Demo][linechart-story] Tooltip
 -   [API][legend-docs], [Demo][donutchart-story] Legend
@@ -94,7 +93,6 @@ All the components expose **common API methods** like width, height, and margin.
 [scatter-docs]: API/scatter-plot
 [sparkline-docs]: API/sparkline
 [stacked-area-docs]: API/stacked-area
-[step-docs]: API/step
 [mini-tooltip-docs]: API/mini-tooltip
 [tooltip-docs]: API/tooltip
 [legend-docs]: API/legend
@@ -247,7 +245,6 @@ Read more in the [license document][britecharts-license]
 [scatterplot-story]: https://britecharts.github.io/britecharts/docs/API/scatter-plot 'Check the API reference'
 [sparklinechart-story]: https://britecharts.github.io/britecharts/docs/API/sparkline 'Check the API reference'
 [stackedareachart-story]: https://britecharts.github.io/britecharts/docs/API/stacked-area 'Check the API reference'
-[stepchart-story]: https://britecharts.github.io/britecharts/docs/API/step 'Check the API reference'
 [brushchart-story]: https://britecharts.github.io/britecharts/docs/API/brush 'Check the API reference'
 [bulletchart-story]: https://britecharts.github.io/britecharts/docs/API/bullet 'Check the API reference'
 [stackedbarchart-story]: https://britecharts.github.io/britecharts/docs/API/stacked-bar 'Check the API reference'
@@ -260,7 +257,6 @@ Read more in the [license document][britecharts-license]
 [sparklinechartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/sparkline-chart.png
 [stackedareachartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-area-chart.png
 [stackedareachartlargeimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-area-chart-large.png
-[stepchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/sparkline-chart.png
 [brushchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/brush-chart.png
 [stackedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
 [groupedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png

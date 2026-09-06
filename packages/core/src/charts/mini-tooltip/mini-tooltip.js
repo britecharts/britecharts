@@ -12,7 +12,7 @@ const NUMBER_FORMAT = '.2f';
 /**
  * Mini Tooltip Component reusable API class that renders a
  * simple and configurable tooltip element for Britechart's
- * bar and step chart.
+ * bar chart.
  *
  * @module Mini-tooltip
  * @tutorial bar
@@ -367,7 +367,7 @@ export default function module() {
     /**
      * Gets or Sets data's nameLabel
      * @param  {text} _x Desired nameLabel
-     * @return { text | module} nameLabel or Step Chart module to chain calls
+     * @return { text | module} nameLabel or Mini Tooltip module to chain calls
      * @public
      * @deprecated
      */
@@ -456,7 +456,7 @@ export default function module() {
     /**
      * Gets or Sets data's valueLabel
      * @param  {text} _x        Desired valueLabel
-     * @return {text | module}  valueLabel or Step Chart module to chain calls
+     * @return {text | module}  valueLabel or Mini Tooltip module to chain calls
      * @public
      * @deprecated
      */

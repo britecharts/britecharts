@@ -648,7 +648,7 @@ export default function module() {
     }
 
     /**
-     * Creates a masking clip that would help us fake an animation if the
+     * Animates the lines by drawing their paths from start to end, if the
      * proper flag is true
      *
      * @return {void}
