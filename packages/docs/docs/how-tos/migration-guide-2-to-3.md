@@ -3,9 +3,15 @@ sidebar_position: 4
 ---
 
 # Migration Guide from version 2 to version 3
-In July 2022, we released version 3.0 of Britecharts. The new version fixes many bugs, improves loading and animation performance, and adds minor features. We also introduced many breaking changes to make the component's APIs and data shapes more consistent.
+:::note
+Version 3.0 has not been released yet — this guide describes the migration ahead
+of it, and is kept up to date as the release takes shape. Until 3.0 ships, the
+current release is `britecharts@2.18.2` on npm.
+:::
 
-We recommend migrating as soon as possible to get all these benefits. For that, we have prepared the following migration guide.
+Version 3.0 of Britecharts fixes many bugs, improves loading and animation performance, and adds minor features. It also introduces breaking changes that make the components' APIs and data shapes more consistent, and moves the library to the `@britecharts` scope on npm.
+
+When it lands, we recommend migrating as soon as possible to get all these benefits. For that, we have prepared the following migration guide.
 
 ## Migration Steps
 Most of the migration tasks involve changing accessor names, but there are also changes in how we load the modules. Follow these steps to get your application updated in no time:
