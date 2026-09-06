@@ -25,6 +25,11 @@ module.exports = {
     docs: {
         autodocs: 'tag',
     },
+    // The docs site's brand assets, so the sidebar logo and the favicon are
+    // literally the same files the documentation uses.
+    staticDirs: [{ from: '../../docs/static/img', to: '/img' }],
+    managerHead: (head) =>
+        `${head}<link rel="icon" href="/img/icons/favicon.ico" />`,
     core: {
         disableTelemetry: true,
     },
