@@ -138,6 +138,112 @@ export const brushLoadingMarkup = `
         </svg>
     `;
 
+/**
+ * Builds the heatmap's grid of placeholder boxes. Generated rather than written
+ * out so the skeleton stays readable -- it is 60 rects.
+ * @private
+ */
+const heatmapLoadingBoxes = () => {
+    const columns = 12;
+    const rows = 5;
+    const size = 46;
+    const gap = 10;
+    const boxes = [];
+
+    for (let row = 0; row < rows; row++) {
+        for (let column = 0; column < columns; column++) {
+            boxes.push(
+                `<rect x="${column * (size + gap)}" y="${
+                    row * (size + gap)
+                }" width="${size}" height="${size}" rx="2" fill="#C3C6CF" />`
+            );
+        }
+    }
+
+    return boxes.join('\n                ');
+};
+
+export const heatmapLoadingMarkup = `
+        <svg
+            class="load-state heatmap-load-state"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 711 325"
+        >
+            ${linearGradient}
+            <g transform="translate(45 45)">
+                ${heatmapLoadingBoxes()}
+            </g>
+            <g fill="#EFF2F5">
+                <rect x="0" y="57" width="30" height="10" rx="2" />
+                <rect x="0" y="113" width="30" height="10" rx="2" />
+                <rect x="0" y="169" width="30" height="10" rx="2" />
+                <rect x="0" y="225" width="30" height="10" rx="2" />
+                <rect x="0" y="281" width="30" height="10" rx="2" />
+                <rect x="45" y="20" width="46" height="10" rx="2" />
+                <rect x="213" y="20" width="46" height="10" rx="2" />
+                <rect x="381" y="20" width="46" height="10" rx="2" />
+                <rect x="549" y="20" width="46" height="10" rx="2" />
+            </g>
+            <rect class="chart-filter" fill="url(#lgrad)" x="-100%" y="0" width="300%" height="100%"></rect>
+        </svg>
+    `;
+
+export const bulletLoadingMarkup = `
+        <svg
+            class="load-state bullet-load-state"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 711 325"
+        >
+            ${linearGradient}
+            <g transform="translate(0 118)">
+                <rect width="711" height="64" rx="2" fill="#EFF2F5" />
+                <rect y="18" width="430" height="28" rx="2" fill="#C3C6CF" />
+                <rect x="556" y="8" width="6" height="48" rx="2" fill="#C3C6CF" />
+            </g>
+            <g fill="#EFF2F5" transform="translate(0 202)">
+                <rect x="0" width="34" height="10" rx="2" />
+                <rect x="169" width="34" height="10" rx="2" />
+                <rect x="338" width="34" height="10" rx="2" />
+                <rect x="507" width="34" height="10" rx="2" />
+                <rect x="677" width="34" height="10" rx="2" />
+            </g>
+            <rect class="chart-filter" fill="url(#lgrad)" x="-100%" y="0" width="300%" height="100%"></rect>
+        </svg>
+    `;
+
+export const scatterPlotLoadingMarkup = `
+        <svg
+            class="load-state scatter-plot-load-state"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 711 325"
+        >
+            ${linearGradient}
+            <g stroke="#EFF2F5" stroke-dasharray="4 4">
+                <path d="M0 40.5L711 40.5M0 110.5L711 110.5M0 180.5L711 180.5M0 250.5L711 250.5" />
+            </g>
+            <g fill="#C3C6CF">
+                <circle cx="62" cy="232" r="12" />
+                <circle cx="118" cy="188" r="18" />
+                <circle cx="171" cy="246" r="9" />
+                <circle cx="214" cy="141" r="14" />
+                <circle cx="263" cy="205" r="21" />
+                <circle cx="319" cy="97" r="11" />
+                <circle cx="352" cy="169" r="16" />
+                <circle cx="408" cy="223" r="10" />
+                <circle cx="447" cy="126" r="19" />
+                <circle cx="502" cy="182" r="13" />
+                <circle cx="549" cy="71" r="15" />
+                <circle cx="587" cy="214" r="9" />
+                <circle cx="631" cy="152" r="17" />
+                <circle cx="676" cy="199" r="11" />
+            </g>
+            <g stroke="#EFF2F5" stroke-width="2">
+                <path d="M0 290.5L711 290.5" />
+            </g>
+            <rect class="chart-filter" fill="url(#lgrad)" x="-100%" y="0" width="300%" height="100%"></rect>
+        </svg>
+    `;
+
 export default {
     linearGradient,
     barLoadingMarkup,
@@ -146,4 +252,7 @@ export default {
     brushLoadingMarkup,
     sparkLineLoadingMarkup,
     stackedAreaLoadingMarkup,
+    bulletLoadingMarkup,
+    heatmapLoadingMarkup,
+    scatterPlotLoadingMarkup,
 };

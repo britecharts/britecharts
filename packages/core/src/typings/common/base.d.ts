@@ -47,6 +47,8 @@ export interface BaseAPI<T> {
     colorSchema(schema: ColorsSchemasType): T & BaseAPI<T>;
     /** Gets or Sets the height of the chart */
     height(height?: number): T & BaseAPI<T>;
+    /** Gets or Sets the loading state of the chart */
+    isLoading(isLoading?: boolean): T & BaseAPI<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
     margin(margin?: ChartMarginParams): T & BaseAPI<T>;
     /** Gets or Sets the width of the chart */

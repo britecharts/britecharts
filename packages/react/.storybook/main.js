@@ -1,32 +1,56 @@
-// Storybook runs its own webpack 4 instance, which never loads this
-// package's webpack.config.js -- so the md4 shim has to be applied here too.
-require('../../../scripts/patch-webpack4-md4');
-
 const path = require('path');
 
+/**
+ * Yarn does not always hoist a workspace's Storybook packages to the root, and
+ * Storybook resolves presets relative to its own install rather than to this
+ * config -- so a nested copy fails with "Cannot find module .../preset". Naming
+ * them by absolute path makes resolution start here instead, which is what
+ * Storybook's own monorepo setup generates.
+ */
+const getAbsolutePath = (value) =>
+    path.dirname(require.resolve(path.join(value, 'package.json')));
+
 module.exports = {
-    stories: [
-        '../src/**/*.stories.mdx',
-        '../src/**/*.stories.@(js|jsx|ts|tsx)',
-    ],
-    // Storybook only serves stories.json behind this flag, and the demos
-    // package composes this Storybook as a ref -- without it the nested
-    // Storybook shows up empty.
-    features: {
-        buildStoriesJson: true,
+    stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+    framework: {
+        name: getAbsolutePath('@storybook/react-webpack5'),
+        options: {},
     },
     addons: [
-        '@storybook/addon-viewport/register',
-        '@storybook/addon-a11y',
-        '@storybook/addon-actions',
-        '@storybook/addon-links',
-        '@storybook/addon-essentials',
-        '@storybook/addon-interactions',
+        getAbsolutePath('@storybook/addon-essentials'),
+        getAbsolutePath('@storybook/addon-a11y'),
+        getAbsolutePath('@storybook/addon-links'),
+        getAbsolutePath('@storybook/addon-interactions'),
     ],
-    framework: '@storybook/react',
+    docs: {
+        autodocs: 'tag',
+    },
+    // The docs site's brand assets, so the sidebar logo and the favicon are
+    // literally the same files the documentation uses.
+    staticDirs: [{ from: '../../docs/static/img', to: '/img' }],
+    managerHead: (head) =>
+        `${head}<link rel="icon" href="/img/icons/favicon.ico" />`,
+    core: {
+        disableTelemetry: true,
+    },
     webpackFinal: async (config) => {
-        // The preview pulls in the core package's Sass source, which lives
-        // outside this package, so the rule has to cover both.
+        // Storybook's React preset is installed nested in this workspace rather
+        // than hoisted, and its babel-loader rule does not reach these stories
+        // from there -- they arrive at webpack with only the CSF and
+        // export-order loaders applied, so JSX fails to parse. Declaring the
+        // rule here compiles them with this package's own babel config,
+        // whatever Yarn does with the hoisting.
+        config.module.rules.push({
+            test: /\.[jt]sx?$/,
+            exclude: /node_modules/,
+            use: {
+                loader: require.resolve('babel-loader'),
+                options: {
+                    configFile: path.resolve(__dirname, '../babel.config.js'),
+                },
+            },
+        });
+
         config.module.rules.push({
             test: /\.scss$/,
             use: [
@@ -36,10 +60,10 @@ module.exports = {
                     loader: 'sass-loader',
                     options: {
                         // These styles still use @import, global built-ins and
-                        // desaturate(); sass-loader 10 also uses the legacy JS
-                        // API. Migrating is tracked separately -- until then,
-                        // silence the warnings rather than print several
-                        // hundred lines on every build.
+                        // desaturate(); sass-loader also uses the legacy JS API.
+                        // Migrating is tracked separately -- until then, silence
+                        // the warnings rather than print several hundred lines
+                        // on every build.
                         sassOptions: {
                             silenceDeprecations: [
                                 'import',

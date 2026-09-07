@@ -389,4 +389,43 @@ describe('bullet Chart', () => {
             expect(actual).toBe(expected);
         });
     });
+
+    describe('loading state', () => {
+        it('should provide isLoading getter and setter', () => {
+            let previous = bulletChart.isLoading(),
+                expected = true,
+                actual;
+
+            bulletChart.isLoading(expected);
+            actual = bulletChart.isLoading();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should render the loading state when isLoading is true', () => {
+            const expected = 1;
+
+            bulletChart.isLoading(true);
+            containerFixture.datum([]).call(bulletChart);
+
+            const actual = containerFixture.select('.bullet-load-state').size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should remove the loading state once data arrives', () => {
+            const expected = 0;
+
+            bulletChart.isLoading(true);
+            containerFixture.datum([]).call(bulletChart);
+
+            bulletChart.isLoading(false);
+            containerFixture.datum(dataPoint).call(bulletChart);
+
+            const actual = containerFixture.select('.bullet-load-state').size();
+
+            expect(actual).toEqual(expected);
+        });
+    });
 });

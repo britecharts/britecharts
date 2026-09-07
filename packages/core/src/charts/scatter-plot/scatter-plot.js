@@ -12,6 +12,7 @@ import { zoom as d3Zoom, zoomTransform } from 'd3-zoom';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
+import { scatterPlotLoadingMarkup } from '../helpers/load';
 import colorHelper from '../helpers/color';
 import {
     createFilterContainer,
@@ -83,6 +84,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
+        isLoading = false,
         nameToColorMap = null,
         dataPoints,
         xKey = 'x',
@@ -181,8 +183,14 @@ export default function module() {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
 
-            buildScales();
             buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
+            buildScales();
             buildAxis(localeFormatter);
             buildVoronoi();
             drawAxis();
@@ -238,6 +246,24 @@ export default function module() {
     }
 
     /**
+     * Cleans the loading state
+     * @return {void}
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
+    }
+
+    /**
+     * Draws the loading state
+     * @return {void}
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(scatterPlotLoadingMarkup);
+    }
+
+    /**
      * Builds containers for the chart, including the chart axis,
      * chart, and metadata groups.
      * @return {void}
@@ -250,6 +276,8 @@ export default function module() {
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
         container.append('g').classed('grid-lines-group', true);
+        svg.append('g').classed('loading-state-group', true);
+
         container.append('g').classed('chart-group', true);
         container
             .append('g')
@@ -1198,6 +1226,22 @@ export default function module() {
             return enableZoom;
         }
         enableZoom = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the loading state of the chart
+     * @param  {boolean} _flag          Desired value for the loading state
+     * @return {boolean | module}       Current loading state flag or Chart module to chain calls
+     * @public
+     * @example chart.isLoading(true)
+     */
+    exports.isLoading = function (_flag) {
+        if (!arguments.length) {
+            return isLoading;
+        }
+        isLoading = _flag;
 
         return this;
     };

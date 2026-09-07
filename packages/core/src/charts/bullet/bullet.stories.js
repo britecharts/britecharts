@@ -71,4 +71,21 @@ export const AlignedAsDashboard = () => {
     return container;
 };
 
+export const WithLoadingState = () => {
+    const container = getCleanContainer();
+    const bulletContainer = select(container);
+    const bulletChart = bullet();
+    const containerWidth = bulletContainer.node()
+        ? bulletContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        bulletChart.width(containerWidth).isLoading(true);
+
+        bulletContainer.datum([]).call(bulletChart);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/Bullet' };

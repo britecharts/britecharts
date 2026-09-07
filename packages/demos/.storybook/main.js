@@ -1,19 +1,40 @@
-// Storybook runs its own webpack 4 instance, which never loads this
-// package's webpack.config.js -- so the md4 shim has to be applied here too.
-require('../../../scripts/patch-webpack4-md4');
+const path = require('path');
+
+/**
+ * Yarn does not always hoist a workspace's Storybook packages to the root, and
+ * Storybook resolves presets relative to its own install rather than to this
+ * config -- so a nested copy fails with "Cannot find module .../preset". Naming
+ * them by absolute path makes resolution start here instead, which is what
+ * Storybook's own monorepo setup generates.
+ */
+const getAbsolutePath = (value) =>
+    path.dirname(require.resolve(path.join(value, 'package.json')));
 
 module.exports = {
-    stories: ['../src/**/*.stories.mdx', '../src/*.stories.[tj]s'],
+    stories: ['../src/**/*.mdx', '../src/*.stories.[tj]s'],
+    framework: {
+        name: getAbsolutePath('@storybook/html-webpack5'),
+        options: {},
+    },
     addons: [
-        '@storybook/addon-viewport/register',
-        '@storybook/addon-a11y',
-        '@storybook/addon-actions',
-        '@storybook/addon-links',
-        '@storybook/addon-essentials',
-        '@storybook/addon-interactions',
+        getAbsolutePath('@storybook/addon-essentials'),
+        getAbsolutePath('@storybook/addon-a11y'),
+        getAbsolutePath('@storybook/addon-links'),
+        getAbsolutePath('@storybook/addon-interactions'),
     ],
+    docs: {
+        autodocs: 'tag',
+    },
+    // The docs site's brand assets, so the sidebar logo and the favicon are
+    // literally the same files the documentation uses.
+    staticDirs: [{ from: '../../docs/static/img', to: '/img' }],
+    managerHead: (head) =>
+        `${head}<link rel="icon" href="/img/icons/favicon.ico" />`,
+    core: {
+        disableTelemetry: true,
+    },
 
-    // Reference: Storybook composition: https://storybook.js.org/docs/react/sharing/storybook-composition
+    // Reference: https://storybook.js.org/docs/sharing/storybook-composition
     refs: (_, { configType }) => {
         if (configType === 'DEVELOPMENT') {
             return {
@@ -27,6 +48,7 @@ module.exports = {
                 },
             };
         }
+
         return {
             core: {
                 title: 'Britecharts Core',

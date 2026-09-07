@@ -5,6 +5,7 @@ import { select } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
+import { bulletLoadingMarkup } from '../helpers/load';
 import colorHelper from '../helpers/color';
 
 /**
@@ -55,6 +56,7 @@ export default function module() {
         },
         width = 960,
         height = 150,
+        isLoading = false,
         chartWidth,
         chartHeight,
         xScale,
@@ -105,6 +107,17 @@ export default function module() {
         _selection.each(function (_data) {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
+
+            // The loading state stands in for data that has not arrived, so it
+            // has to be drawn before cleanData(), which expects a real datum
+            // with ranges, measures and markers.
+            buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
             ({ title, subtitle, ranges, measures, markers } = cleanData(_data));
 
             if (hasTitle()) {
@@ -112,7 +125,6 @@ export default function module() {
             }
 
             buildScales();
-            buildSVG(this);
             buildAxis();
             drawBullet();
             drawTitles();
@@ -132,6 +144,24 @@ export default function module() {
     }
 
     /**
+     * Cleans the loading state
+     * @return {void}
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
+    }
+
+    /**
+     * Draws the loading state
+     * @return {void}
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(bulletLoadingMarkup);
+    }
+
+    /**
      * Builds containers for the chart, the axis and a wrapper for all of them
      * Also applies the Margin convention
      * @return {void}
@@ -142,6 +172,8 @@ export default function module() {
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('chart-group', true);
         container.append('g').classed('axis-group', true);
@@ -462,6 +494,22 @@ export default function module() {
      */
     exports.exportChart = function (filename, title) {
         return exportChart.call(exports, svg, filename, title);
+    };
+
+    /**
+     * Gets or Sets the loading state of the chart
+     * @param  {boolean} _flag          Desired value for the loading state
+     * @return {boolean | module}       Current loading state flag or Chart module to chain calls
+     * @public
+     * @example chart.isLoading(true)
+     */
+    exports.isLoading = function (_flag) {
+        if (!arguments.length) {
+            return isLoading;
+        }
+        isLoading = _flag;
+
+        return this;
     };
 
     /**
