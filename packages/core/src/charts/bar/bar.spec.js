@@ -979,4 +979,47 @@ describe('bar Chart', () => {
             expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
         });
     });
+
+    describe('when the data has negative values', () => {
+        it('should render every bar with a non-negative height', () => {
+            const negativeData = [
+                { name: 'Shiny', value: 12 },
+                { name: 'Blazing', value: -8 },
+                { name: 'Radiant', value: -14 },
+            ];
+
+            containerFixture.datum(negativeData).call(barChart);
+
+            const heights = containerFixture
+                .selectAll('.bar')
+                .nodes()
+                .map((node) => parseFloat(node.getAttribute('height')));
+
+            expect(heights).toHaveLength(negativeData.length);
+            heights.forEach((height) => {
+                expect(height).toBeGreaterThanOrEqual(0);
+            });
+        });
+
+        it('should draw positive and negative bars on either side of a shared baseline', () => {
+            const negativeData = [
+                { name: 'Shiny', value: 12 },
+                { name: 'Radiant', value: -14 },
+            ];
+
+            containerFixture.datum(negativeData).call(barChart);
+
+            const [positive, negative] = containerFixture
+                .selectAll('.bar')
+                .nodes()
+                .map((node) => ({
+                    y: parseFloat(node.getAttribute('y')),
+                    height: parseFloat(node.getAttribute('height')),
+                }));
+
+            // the positive bar grows up from the baseline, the negative one down
+            expect(positive.y + positive.height).toBeCloseTo(negative.y);
+            expect(negative.height).toBeGreaterThan(positive.height);
+        });
+    });
 });

@@ -10,6 +10,7 @@ import 'd3-transition';
 
 import { wrapTextWithEllipses } from '../helpers/text';
 import { exportChart } from '../helpers/export';
+import { getBaselineExtent, getValueDomain } from '../helpers/domain';
 import colorHelper from '../helpers/color';
 import { barLoadingMarkup } from '../helpers/load';
 import { uniqueId } from '../helpers/number';
@@ -294,11 +295,11 @@ export default function module() {
      * @private
      */
     function buildScales() {
-        let percentageAxis = getPercentageAxis();
+        let valueDomain = getValueAxisDomain();
 
         if (isHorizontal) {
             xScale = scaleLinear()
-                .domain([0, percentageAxis])
+                .domain(valueDomain)
                 .rangeRound([0, chartWidth]);
 
             yScale = scaleBand()
@@ -312,7 +313,7 @@ export default function module() {
                 .padding(betweenBarsPadding);
 
             yScale = scaleLinear()
-                .domain([0, percentageAxis])
+                .domain(valueDomain)
                 .rangeRound([chartHeight, 0]);
         }
 
@@ -438,7 +439,6 @@ export default function module() {
         svg.select('.loading-state-group svg').remove();
     }
 
-
     /**
      * Returns the sibling bar nodes of the given element. d3 v6 dropped
      * the third `nodes` argument that used to be passed to event handlers,
@@ -517,26 +517,40 @@ export default function module() {
             .append('rect')
             .classed('bar', true)
             .attr('y', chartHeight)
-            .attr('x', 0)
+            .attr('x', ({ value }) => getBaselineExtent(xScale, value).start)
             .attr('height', yScale.bandwidth())
-            .attr('width', ({ value }) => xScale(value))
+            .attr('width', ({ value }) => getBaselineExtent(xScale, value).size)
             .on('mouseover', function (event, d) {
-                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOver(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('mousemove', function (event, d) {
                 handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
             .on('mouseout', function (event, d) {
-                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOut(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('click', function (event, d) {
                 handleClick(this, d, chartWidth, chartHeight, event);
             })
             .merge(bars)
-            .attr('x', 0)
+            .attr('x', ({ value }) => getBaselineExtent(xScale, value).start)
             .attr('y', ({ name }) => yScale(name))
             .attr('height', yScale.bandwidth())
-            .attr('width', ({ value }) => xScale(value))
+            .attr('width', ({ value }) => getBaselineExtent(xScale, value).size)
             .attr('fill', ({ name }) => computeColor(name));
     }
 
@@ -550,24 +564,38 @@ export default function module() {
         bars.enter()
             .append('rect')
             .classed('bar', true)
-            .attr('x', 0)
+            .attr('x', ({ value }) => getBaselineExtent(xScale, value).start)
             .attr('y', chartHeight)
             .attr('height', yScale.bandwidth())
-            .attr('width', ({ value }) => xScale(value))
+            .attr('width', ({ value }) => getBaselineExtent(xScale, value).size)
             .on('mouseover', function (event, d) {
-                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOver(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('mousemove', function (event, d) {
                 handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
             .on('mouseout', function (event, d) {
-                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOut(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('click', function (event, d) {
                 handleClick(this, d, chartWidth, chartHeight, event);
             });
 
-        bars.attr('x', 0)
+        bars.attr('x', ({ value }) => getBaselineExtent(xScale, value).start)
             .attr('y', ({ name }) => yScale(name))
             .attr('height', yScale.bandwidth())
             .attr('fill', ({ name }) => computeColor(name))
@@ -575,7 +603,10 @@ export default function module() {
             .duration(animationDuration)
             .delay(interBarDelay)
             .ease(ease)
-            .attr('width', ({ value }) => xScale(value));
+            .attr(
+                'width',
+                ({ value }) => getBaselineExtent(xScale, value).size
+            );
     }
 
     /**
@@ -589,17 +620,34 @@ export default function module() {
             .append('rect')
             .classed('bar', true)
             .attr('x', chartWidth)
-            .attr('y', ({ value }) => yScale(value))
+            .attr('y', ({ value }) => getBaselineExtent(yScale, value).start)
             .attr('width', xScale.bandwidth())
-            .attr('height', ({ value }) => chartHeight - yScale(value))
+            .attr(
+                'height',
+                ({ value }) => getBaselineExtent(yScale, value).size
+            )
             .on('mouseover', function (event, d) {
-                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOver(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('mousemove', function (event, d) {
                 handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
             .on('mouseout', function (event, d) {
-                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOut(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('click', function (event, d) {
                 handleClick(this, d, chartWidth, chartHeight, event);
@@ -612,8 +660,11 @@ export default function module() {
             .duration(animationDuration)
             .delay(interBarDelay)
             .ease(ease)
-            .attr('y', ({ value }) => yScale(value))
-            .attr('height', ({ value }) => chartHeight - yScale(value));
+            .attr('y', ({ value }) => getBaselineExtent(yScale, value).start)
+            .attr(
+                'height',
+                ({ value }) => getBaselineExtent(yScale, value).size
+            );
     }
 
     /**
@@ -627,26 +678,46 @@ export default function module() {
             .append('rect')
             .classed('bar', true)
             .attr('x', chartWidth)
-            .attr('y', ({ value }) => yScale(value))
+            .attr('y', ({ value }) => getBaselineExtent(yScale, value).start)
             .attr('width', xScale.bandwidth())
-            .attr('height', ({ value }) => chartHeight - yScale(value))
+            .attr(
+                'height',
+                ({ value }) => getBaselineExtent(yScale, value).size
+            )
             .on('mouseover', function (event, d) {
-                handleMouseOver(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOver(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('mousemove', function (event, d) {
                 handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
             .on('mouseout', function (event, d) {
-                handleMouseOut(this, d, siblingNodes(this), chartWidth, chartHeight, event);
+                handleMouseOut(
+                    this,
+                    d,
+                    siblingNodes(this),
+                    chartWidth,
+                    chartHeight,
+                    event
+                );
             })
             .on('click', function (event, d) {
                 handleClick(this, d, chartWidth, chartHeight, event);
             })
             .merge(bars)
             .attr('x', ({ name }) => xScale(name))
-            .attr('y', ({ value }) => yScale(value))
+            .attr('y', ({ value }) => getBaselineExtent(yScale, value).start)
             .attr('width', xScale.bandwidth())
-            .attr('height', ({ value }) => chartHeight - yScale(value))
+            .attr(
+                'height',
+                ({ value }) => getBaselineExtent(yScale, value).size
+            )
             .attr('fill', ({ name }) => computeColor(name));
     }
 
@@ -886,16 +957,11 @@ export default function module() {
      * @return {number} Calculated percentageAxis
      * @private
      */
-    function getPercentageAxis() {
-        const uniqueDataPoints = new Set(data.map(getValue));
-        const allZeroes =
-            uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
-
-        if (allZeroes) {
-            return percentageAxisToMaxRatio;
-        }
-
-        return Math.min(percentageAxisToMaxRatio * max(data, getValue));
+    function getValueAxisDomain() {
+        return getValueDomain(data.map(getValue), {
+            ratio: percentageAxisToMaxRatio,
+            emptyDomainMax: percentageAxisToMaxRatio,
+        });
     }
 
     // API

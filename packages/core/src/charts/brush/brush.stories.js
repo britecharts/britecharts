@@ -92,4 +92,22 @@ export const WithLoadingState = () => {
     return container;
 };
 
+export const WithNegativeValues = () => {
+    const container = getCleanContainer();
+    const brushContainer = select(container);
+    const brushChart = brush();
+    const containerWidth = brushContainer.node()
+        ? brushContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withNegativeValues().build();
+
+    if (containerWidth) {
+        brushChart.width(containerWidth).height(200).isAnimated(true);
+
+        brushContainer.datum(dataset).call(brushChart);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/Brush' };

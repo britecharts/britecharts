@@ -1,4 +1,4 @@
-import { extent, max } from 'd3-array';
+import { extent } from 'd3-array';
 import { axisBottom } from 'd3-axis';
 import { brushX } from 'd3-brush';
 import { scaleLinear, scaleTime } from 'd3-scale';
@@ -16,6 +16,7 @@ import {
     motion,
     curveMap,
 } from '../helpers/constants';
+import { getValueDomain } from '../helpers/domain';
 import { uniqueId } from '../helpers/number';
 import { brushLoadingMarkup } from '../helpers/load';
 
@@ -260,7 +261,7 @@ export default function module() {
             .range([0, chartWidth]);
 
         yScale = scaleLinear()
-            .domain([0, max(data, getValue)])
+            .domain(getValueDomain(data.map(getValue)))
             .range([chartHeight, 0]);
     }
 
@@ -358,7 +359,7 @@ export default function module() {
         brushArea = area()
             .defined(({ value }) => !isNaN(parseInt(value, 10)))
             .x(({ date }) => xScale(date))
-            .y0(chartHeight)
+            .y0(yScale(0))
             .y1(({ value }) => yScale(value))
             .curve(curveMap[areaCurve]);
 

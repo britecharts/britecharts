@@ -164,4 +164,22 @@ export const WithLoadingState = () => {
     return container;
 };
 
+export const WithNegativeValues = () => {
+    const container = getCleanContainer();
+    const groupedBarContainer = select(container);
+    const containerWidth = groupedBarContainer.node()
+        ? groupedBarContainer.node().getBoundingClientRect().width
+        : false;
+    const groupedBar = groupedBarChart();
+    const dataset = aTestDataSet().withNegativeValues().build();
+
+    if (containerWidth) {
+        groupedBar.isAnimated(true).width(containerWidth).height(400);
+
+        groupedBarContainer.datum(dataset).call(groupedBar);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/GroupedBar' };

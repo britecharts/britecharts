@@ -1,4 +1,4 @@
-import { max, sum, range, permute, rollups } from 'd3-array';
+import { sum, range, permute, rollups } from 'd3-array';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { color } from 'd3-color';
 import { dispatch } from 'd3-dispatch';
@@ -6,11 +6,12 @@ import * as d3Format from 'd3-format';
 import { easeQuadInOut } from 'd3-ease';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleOrdinal, scaleBand, scaleLinear } from 'd3-scale';
-import { stack } from 'd3-shape';
+import { stack, stackOffsetDiverging } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
+import { getValueDomain } from '../helpers/domain';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import colorHelper from '../helpers/color';
 import { barLoadingMarkup } from '../helpers/load';
@@ -125,7 +126,7 @@ export default function module() {
         getName = (data) => data[nameLabel],
         getValue = (data) => data[valueLabel],
         getStack = (data) => data[stackLabel],
-        getValOrDefaultToZero = (val) => (isNaN(val) || val < 0 ? 0 : val),
+        getValOrDefaultToZero = (val) => (isNaN(val) ? 0 : val),
         isAnimated = false,
         // events
         dispatcher = dispatch(
@@ -159,8 +160,8 @@ export default function module() {
                 return;
             }
             cleanLoadingState();
-            buildScales();
             buildLayers();
+            buildScales();
             drawGridLines();
             buildAxis(localeFormatter);
             drawAxis();
@@ -261,7 +262,7 @@ export default function module() {
      * @private
      */
     function buildLayers() {
-        let stack3 = stack().keys(stacks),
+        let stack3 = stack().keys(stacks).offset(stackOffsetDiverging),
             dataInitial = transformedData.map((item) => {
                 let ret = {};
 
@@ -280,11 +281,11 @@ export default function module() {
      * @private
      */
     function buildScales() {
-        let yMax = getYMax();
+        let valueDomain = getValueAxisDomain();
 
         if (isHorizontal) {
             xScale = scaleLinear()
-                .domain([0, yMax])
+                .domain(valueDomain)
                 .rangeRound([0, chartWidth - 1]);
             // 1 pix for edge tick
 
@@ -299,7 +300,7 @@ export default function module() {
                 .padding(betweenBarsPadding);
 
             yScale = scaleLinear()
-                .domain([0, yMax])
+                .domain(valueDomain)
                 .rangeRound([chartHeight, 0])
                 .nice();
         }
@@ -474,7 +475,7 @@ export default function module() {
                 .ease(ease)
                 .tween('attr.width', horizontalBarsTween);
         } else {
-            bars.attr('width', (d) => xScale(d[1] - d[0]));
+            bars.attr('width', (d) => xScale(d[1]) - xScale(d[0]));
         }
     }
 
@@ -693,18 +694,18 @@ export default function module() {
      * @return {number} Calculated yMax
      * @private
      */
-    function getYMax() {
-        const uniqueDataPoints = new Set(
-            transformedData.map(({ total }) => total)
+    function getValueAxisDomain() {
+        // The axis has to cover both ends of every stacked segment, which with
+        // negatives is not the same as the largest total.
+        const bounds = layers.reduce(
+            (acc, layer) => [
+                ...acc,
+                ...layer.map(([lower, upper]) => [lower, upper]).flat(),
+            ],
+            []
         );
-        const isAllZero =
-            uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
 
-        if (isAllZero) {
-            return 1;
-        } else {
-            return max(transformedData.map(({ total }) => total));
-        }
+        return getValueDomain(bounds.filter((value) => !isNaN(value)));
     }
 
     /**
@@ -800,7 +801,7 @@ export default function module() {
      */
     function horizontalBarsTween(d) {
         let node = select(this),
-            i = interpolateRound(0, xScale(d[1] - d[0])),
+            i = interpolateRound(0, xScale(d[1]) - xScale(d[0])),
             j = interpolateNumber(0, 1);
 
         return function (t) {

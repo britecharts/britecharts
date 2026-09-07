@@ -635,4 +635,47 @@ describe('stacked Bar Chart', () => {
             expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
         });
     });
+
+    describe('when the data has negative values', () => {
+        it('should render every segment with a non-negative height', () => {
+            const negativeData = [
+                { name: '2011-01-05', stack: 'vivid', value: 5 },
+                { name: '2011-01-05', stack: 'sparkling', value: -4 },
+                { name: '2011-01-06', stack: 'vivid', value: -3 },
+                { name: '2011-01-06', stack: 'sparkling', value: 7 },
+            ];
+
+            containerFixture.datum(negativeData).call(stackedBarChart);
+
+            const heights = containerFixture
+                .selectAll('.bar')
+                .nodes()
+                .map((node) => parseFloat(node.getAttribute('height')));
+
+            expect(heights.length).toBeGreaterThan(0);
+            heights.forEach((height) => {
+                expect(height).toBeGreaterThanOrEqual(0);
+            });
+        });
+
+        it('should stack negative segments below the baseline', () => {
+            const negativeData = [
+                { name: '2011-01-05', stack: 'vivid', value: 5 },
+                { name: '2011-01-05', stack: 'sparkling', value: -4 },
+            ];
+
+            containerFixture.datum(negativeData).call(stackedBarChart);
+
+            const [positive, negative] = containerFixture
+                .selectAll('.bar')
+                .nodes()
+                .map((node) => ({
+                    y: parseFloat(node.getAttribute('y')),
+                    height: parseFloat(node.getAttribute('height')),
+                }));
+
+            // the positive segment grows up from zero, the negative one down
+            expect(positive.y + positive.height).toBeCloseTo(negative.y);
+        });
+    });
 });

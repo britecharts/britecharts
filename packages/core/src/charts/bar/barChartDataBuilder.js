@@ -5,6 +5,21 @@ export function BarDataBuilder(config) {
 
     this.config = _.defaults({}, config);
 
+    this.withNegativeValues = function () {
+        const attributes = _.extend({}, this.config, {
+            data: [
+                { name: 'Shiny', value: 12 },
+                { name: 'Blazing', value: -8 },
+                { name: 'Dazzling', value: 5 },
+                { name: 'Radiant', value: -14 },
+                { name: 'Sparkling', value: 9 },
+                { name: 'Gleaming', value: -3 },
+            ],
+        });
+
+        return new this.Klass(attributes);
+    };
+
     this.withLettersFrequency = function () {
         const attributes = _.extend({}, this.config, {
             data: [

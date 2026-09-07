@@ -1,0 +1,844 @@
+{
+    "data": [
+        {
+            "day": 0,
+            "hour": 0,
+            "value": -10
+        },
+        {
+            "day": 0,
+            "hour": 1,
+            "value": -7
+        },
+        {
+            "day": 0,
+            "hour": 2,
+            "value": -4
+        },
+        {
+            "day": 0,
+            "hour": 3,
+            "value": -1
+        },
+        {
+            "day": 0,
+            "hour": 4,
+            "value": 2
+        },
+        {
+            "day": 0,
+            "hour": 5,
+            "value": 5
+        },
+        {
+            "day": 0,
+            "hour": 6,
+            "value": 8
+        },
+        {
+            "day": 0,
+            "hour": 7,
+            "value": -10
+        },
+        {
+            "day": 0,
+            "hour": 8,
+            "value": -7
+        },
+        {
+            "day": 0,
+            "hour": 9,
+            "value": -4
+        },
+        {
+            "day": 0,
+            "hour": 10,
+            "value": -1
+        },
+        {
+            "day": 0,
+            "hour": 11,
+            "value": 2
+        },
+        {
+            "day": 0,
+            "hour": 12,
+            "value": 5
+        },
+        {
+            "day": 0,
+            "hour": 13,
+            "value": 8
+        },
+        {
+            "day": 0,
+            "hour": 14,
+            "value": -10
+        },
+        {
+            "day": 0,
+            "hour": 15,
+            "value": -7
+        },
+        {
+            "day": 0,
+            "hour": 16,
+            "value": -4
+        },
+        {
+            "day": 0,
+            "hour": 17,
+            "value": -1
+        },
+        {
+            "day": 0,
+            "hour": 18,
+            "value": 2
+        },
+        {
+            "day": 0,
+            "hour": 19,
+            "value": 5
+        },
+        {
+            "day": 0,
+            "hour": 20,
+            "value": 8
+        },
+        {
+            "day": 0,
+            "hour": 21,
+            "value": -10
+        },
+        {
+            "day": 0,
+            "hour": 22,
+            "value": -7
+        },
+        {
+            "day": 0,
+            "hour": 23,
+            "value": -4
+        },
+        {
+            "day": 1,
+            "hour": 0,
+            "value": -3
+        },
+        {
+            "day": 1,
+            "hour": 1,
+            "value": 0
+        },
+        {
+            "day": 1,
+            "hour": 2,
+            "value": 3
+        },
+        {
+            "day": 1,
+            "hour": 3,
+            "value": 6
+        },
+        {
+            "day": 1,
+            "hour": 4,
+            "value": 9
+        },
+        {
+            "day": 1,
+            "hour": 5,
+            "value": -9
+        },
+        {
+            "day": 1,
+            "hour": 6,
+            "value": -6
+        },
+        {
+            "day": 1,
+            "hour": 7,
+            "value": -3
+        },
+        {
+            "day": 1,
+            "hour": 8,
+            "value": 0
+        },
+        {
+            "day": 1,
+            "hour": 9,
+            "value": 3
+        },
+        {
+            "day": 1,
+            "hour": 10,
+            "value": 6
+        },
+        {
+            "day": 1,
+            "hour": 11,
+            "value": 9
+        },
+        {
+            "day": 1,
+            "hour": 12,
+            "value": -9
+        },
+        {
+            "day": 1,
+            "hour": 13,
+            "value": -6
+        },
+        {
+            "day": 1,
+            "hour": 14,
+            "value": -3
+        },
+        {
+            "day": 1,
+            "hour": 15,
+            "value": 0
+        },
+        {
+            "day": 1,
+            "hour": 16,
+            "value": 3
+        },
+        {
+            "day": 1,
+            "hour": 17,
+            "value": 6
+        },
+        {
+            "day": 1,
+            "hour": 18,
+            "value": 9
+        },
+        {
+            "day": 1,
+            "hour": 19,
+            "value": -9
+        },
+        {
+            "day": 1,
+            "hour": 20,
+            "value": -6
+        },
+        {
+            "day": 1,
+            "hour": 21,
+            "value": -3
+        },
+        {
+            "day": 1,
+            "hour": 22,
+            "value": 0
+        },
+        {
+            "day": 1,
+            "hour": 23,
+            "value": 3
+        },
+        {
+            "day": 2,
+            "hour": 0,
+            "value": 4
+        },
+        {
+            "day": 2,
+            "hour": 1,
+            "value": 7
+        },
+        {
+            "day": 2,
+            "hour": 2,
+            "value": 10
+        },
+        {
+            "day": 2,
+            "hour": 3,
+            "value": -8
+        },
+        {
+            "day": 2,
+            "hour": 4,
+            "value": -5
+        },
+        {
+            "day": 2,
+            "hour": 5,
+            "value": -2
+        },
+        {
+            "day": 2,
+            "hour": 6,
+            "value": 1
+        },
+        {
+            "day": 2,
+            "hour": 7,
+            "value": 4
+        },
+        {
+            "day": 2,
+            "hour": 8,
+            "value": 7
+        },
+        {
+            "day": 2,
+            "hour": 9,
+            "value": 10
+        },
+        {
+            "day": 2,
+            "hour": 10,
+            "value": -8
+        },
+        {
+            "day": 2,
+            "hour": 11,
+            "value": -5
+        },
+        {
+            "day": 2,
+            "hour": 12,
+            "value": -2
+        },
+        {
+            "day": 2,
+            "hour": 13,
+            "value": 1
+        },
+        {
+            "day": 2,
+            "hour": 14,
+            "value": 4
+        },
+        {
+            "day": 2,
+            "hour": 15,
+            "value": 7
+        },
+        {
+            "day": 2,
+            "hour": 16,
+            "value": 10
+        },
+        {
+            "day": 2,
+            "hour": 17,
+            "value": -8
+        },
+        {
+            "day": 2,
+            "hour": 18,
+            "value": -5
+        },
+        {
+            "day": 2,
+            "hour": 19,
+            "value": -2
+        },
+        {
+            "day": 2,
+            "hour": 20,
+            "value": 1
+        },
+        {
+            "day": 2,
+            "hour": 21,
+            "value": 4
+        },
+        {
+            "day": 2,
+            "hour": 22,
+            "value": 7
+        },
+        {
+            "day": 2,
+            "hour": 23,
+            "value": 10
+        },
+        {
+            "day": 3,
+            "hour": 0,
+            "value": -10
+        },
+        {
+            "day": 3,
+            "hour": 1,
+            "value": -7
+        },
+        {
+            "day": 3,
+            "hour": 2,
+            "value": -4
+        },
+        {
+            "day": 3,
+            "hour": 3,
+            "value": -1
+        },
+        {
+            "day": 3,
+            "hour": 4,
+            "value": 2
+        },
+        {
+            "day": 3,
+            "hour": 5,
+            "value": 5
+        },
+        {
+            "day": 3,
+            "hour": 6,
+            "value": 8
+        },
+        {
+            "day": 3,
+            "hour": 7,
+            "value": -10
+        },
+        {
+            "day": 3,
+            "hour": 8,
+            "value": -7
+        },
+        {
+            "day": 3,
+            "hour": 9,
+            "value": -4
+        },
+        {
+            "day": 3,
+            "hour": 10,
+            "value": -1
+        },
+        {
+            "day": 3,
+            "hour": 11,
+            "value": 2
+        },
+        {
+            "day": 3,
+            "hour": 12,
+            "value": 5
+        },
+        {
+            "day": 3,
+            "hour": 13,
+            "value": 8
+        },
+        {
+            "day": 3,
+            "hour": 14,
+            "value": -10
+        },
+        {
+            "day": 3,
+            "hour": 15,
+            "value": -7
+        },
+        {
+            "day": 3,
+            "hour": 16,
+            "value": -4
+        },
+        {
+            "day": 3,
+            "hour": 17,
+            "value": -1
+        },
+        {
+            "day": 3,
+            "hour": 18,
+            "value": 2
+        },
+        {
+            "day": 3,
+            "hour": 19,
+            "value": 5
+        },
+        {
+            "day": 3,
+            "hour": 20,
+            "value": 8
+        },
+        {
+            "day": 3,
+            "hour": 21,
+            "value": -10
+        },
+        {
+            "day": 3,
+            "hour": 22,
+            "value": -7
+        },
+        {
+            "day": 3,
+            "hour": 23,
+            "value": -4
+        },
+        {
+            "day": 4,
+            "hour": 0,
+            "value": -3
+        },
+        {
+            "day": 4,
+            "hour": 1,
+            "value": 0
+        },
+        {
+            "day": 4,
+            "hour": 2,
+            "value": 3
+        },
+        {
+            "day": 4,
+            "hour": 3,
+            "value": 6
+        },
+        {
+            "day": 4,
+            "hour": 4,
+            "value": 9
+        },
+        {
+            "day": 4,
+            "hour": 5,
+            "value": -9
+        },
+        {
+            "day": 4,
+            "hour": 6,
+            "value": -6
+        },
+        {
+            "day": 4,
+            "hour": 7,
+            "value": -3
+        },
+        {
+            "day": 4,
+            "hour": 8,
+            "value": 0
+        },
+        {
+            "day": 4,
+            "hour": 9,
+            "value": 3
+        },
+        {
+            "day": 4,
+            "hour": 10,
+            "value": 6
+        },
+        {
+            "day": 4,
+            "hour": 11,
+            "value": 9
+        },
+        {
+            "day": 4,
+            "hour": 12,
+            "value": -9
+        },
+        {
+            "day": 4,
+            "hour": 13,
+            "value": -6
+        },
+        {
+            "day": 4,
+            "hour": 14,
+            "value": -3
+        },
+        {
+            "day": 4,
+            "hour": 15,
+            "value": 0
+        },
+        {
+            "day": 4,
+            "hour": 16,
+            "value": 3
+        },
+        {
+            "day": 4,
+            "hour": 17,
+            "value": 6
+        },
+        {
+            "day": 4,
+            "hour": 18,
+            "value": 9
+        },
+        {
+            "day": 4,
+            "hour": 19,
+            "value": -9
+        },
+        {
+            "day": 4,
+            "hour": 20,
+            "value": -6
+        },
+        {
+            "day": 4,
+            "hour": 21,
+            "value": -3
+        },
+        {
+            "day": 4,
+            "hour": 22,
+            "value": 0
+        },
+        {
+            "day": 4,
+            "hour": 23,
+            "value": 3
+        },
+        {
+            "day": 5,
+            "hour": 0,
+            "value": 4
+        },
+        {
+            "day": 5,
+            "hour": 1,
+            "value": 7
+        },
+        {
+            "day": 5,
+            "hour": 2,
+            "value": 10
+        },
+        {
+            "day": 5,
+            "hour": 3,
+            "value": -8
+        },
+        {
+            "day": 5,
+            "hour": 4,
+            "value": -5
+        },
+        {
+            "day": 5,
+            "hour": 5,
+            "value": -2
+        },
+        {
+            "day": 5,
+            "hour": 6,
+            "value": 1
+        },
+        {
+            "day": 5,
+            "hour": 7,
+            "value": 4
+        },
+        {
+            "day": 5,
+            "hour": 8,
+            "value": 7
+        },
+        {
+            "day": 5,
+            "hour": 9,
+            "value": 10
+        },
+        {
+            "day": 5,
+            "hour": 10,
+            "value": -8
+        },
+        {
+            "day": 5,
+            "hour": 11,
+            "value": -5
+        },
+        {
+            "day": 5,
+            "hour": 12,
+            "value": -2
+        },
+        {
+            "day": 5,
+            "hour": 13,
+            "value": 1
+        },
+        {
+            "day": 5,
+            "hour": 14,
+            "value": 4
+        },
+        {
+            "day": 5,
+            "hour": 15,
+            "value": 7
+        },
+        {
+            "day": 5,
+            "hour": 16,
+            "value": 10
+        },
+        {
+            "day": 5,
+            "hour": 17,
+            "value": -8
+        },
+        {
+            "day": 5,
+            "hour": 18,
+            "value": -5
+        },
+        {
+            "day": 5,
+            "hour": 19,
+            "value": -2
+        },
+        {
+            "day": 5,
+            "hour": 20,
+            "value": 1
+        },
+        {
+            "day": 5,
+            "hour": 21,
+            "value": 4
+        },
+        {
+            "day": 5,
+            "hour": 22,
+            "value": 7
+        },
+        {
+            "day": 5,
+            "hour": 23,
+            "value": 10
+        },
+        {
+            "day": 6,
+            "hour": 0,
+            "value": -10
+        },
+        {
+            "day": 6,
+            "hour": 1,
+            "value": -7
+        },
+        {
+            "day": 6,
+            "hour": 2,
+            "value": -4
+        },
+        {
+            "day": 6,
+            "hour": 3,
+            "value": -1
+        },
+        {
+            "day": 6,
+            "hour": 4,
+            "value": 2
+        },
+        {
+            "day": 6,
+            "hour": 5,
+            "value": 5
+        },
+        {
+            "day": 6,
+            "hour": 6,
+            "value": 8
+        },
+        {
+            "day": 6,
+            "hour": 7,
+            "value": -10
+        },
+        {
+            "day": 6,
+            "hour": 8,
+            "value": -7
+        },
+        {
+            "day": 6,
+            "hour": 9,
+            "value": -4
+        },
+        {
+            "day": 6,
+            "hour": 10,
+            "value": -1
+        },
+        {
+            "day": 6,
+            "hour": 11,
+            "value": 2
+        },
+        {
+            "day": 6,
+            "hour": 12,
+            "value": 5
+        },
+        {
+            "day": 6,
+            "hour": 13,
+            "value": 8
+        },
+        {
+            "day": 6,
+            "hour": 14,
+            "value": -10
+        },
+        {
+            "day": 6,
+            "hour": 15,
+            "value": -7
+        },
+        {
+            "day": 6,
+            "hour": 16,
+            "value": -4
+        },
+        {
+            "day": 6,
+            "hour": 17,
+            "value": -1
+        },
+        {
+            "day": 6,
+            "hour": 18,
+            "value": 2
+        },
+        {
+            "day": 6,
+            "hour": 19,
+            "value": 5
+        },
+        {
+            "day": 6,
+            "hour": 20,
+            "value": 8
+        },
+        {
+            "day": 6,
+            "hour": 21,
+            "value": -10
+        },
+        {
+            "day": 6,
+            "hour": 22,
+            "value": -7
+        },
+        {
+            "day": 6,
+            "hour": 23,
+            "value": -4
+        }
+    ]
+}
