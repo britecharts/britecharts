@@ -3337,7 +3337,6 @@ __metadata:
     "@babel/core": ^7.17.5
     "@storybook/addon-a11y": 8.6.14
     "@storybook/addon-essentials": 8.6.14
-    "@storybook/addon-interactions": 8.6.14
     "@storybook/addon-links": 8.6.14
     "@storybook/html-webpack5": 8.6.14
     "@storybook/manager-api": 8.6.14
@@ -3403,7 +3402,6 @@ __metadata:
     "@babel/core": ^7.17.5
     "@storybook/addon-a11y": 8.6.14
     "@storybook/addon-essentials": 8.6.14
-    "@storybook/addon-interactions": 8.6.14
     "@storybook/addon-links": 8.6.14
     "@storybook/html-webpack5": 8.6.14
     "@storybook/manager-api": 8.6.14
@@ -3446,7 +3444,6 @@ __metadata:
     "@mdx-js/react": ^1.6.22
     "@storybook/addon-a11y": 8.6.14
     "@storybook/addon-essentials": 8.6.14
-    "@storybook/addon-interactions": 8.6.14
     "@storybook/addon-links": 8.6.14
     "@storybook/manager-api": 8.6.14
     "@storybook/react-webpack5": 8.6.14
@@ -5669,21 +5666,6 @@ __metadata:
   peerDependencies:
     storybook: ^8.6.14
   checksum: 31c625deebb285350e5b79685843d19c6aecab4a2004990067877997c4bfd822252cc12838280c20b04658f8abe57b4b0932348d3b2f88134afa1313d2169125
-  languageName: node
-  linkType: hard
-
-"@storybook/addon-interactions@npm:8.6.14":
-  version: 8.6.14
-  resolution: "@storybook/addon-interactions@npm:8.6.14"
-  dependencies:
-    "@storybook/global": ^5.0.0
-    "@storybook/instrumenter": 8.6.14
-    "@storybook/test": 8.6.14
-    polished: ^4.2.2
-    ts-dedent: ^2.2.0
-  peerDependencies:
-    storybook: ^8.6.14
-  checksum: 18e94b1adc4a79405e03403824c7bbebddd0728826afc096ceb4d406a8e343fecbdd44f0d2c275adbaca4ff35462453e1c984cb65f49ec50cd5f22cda52ad588
   languageName: node
   linkType: hard
 
@@ -27732,7 +27714,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-dedent@npm:^2.0.0, ts-dedent@npm:^2.2.0":
+"ts-dedent@npm:^2.0.0":
   version: 2.2.0
   resolution: "ts-dedent@npm:2.2.0"
   checksum: 93ed8f7878b6d5ed3c08d99b740010eede6bccfe64bce61c5a4da06a2c17d6ddbb80a8c49c2d15251de7594a4f93ffa21dd10e7be75ef66a4dc9951b4a94e2af

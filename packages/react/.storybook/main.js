@@ -20,7 +20,6 @@ module.exports = {
         getAbsolutePath('@storybook/addon-essentials'),
         getAbsolutePath('@storybook/addon-a11y'),
         getAbsolutePath('@storybook/addon-links'),
-        getAbsolutePath('@storybook/addon-interactions'),
     ],
     docs: {
         autodocs: 'tag',
@@ -40,9 +39,21 @@ module.exports = {
         // export-order loaders applied, so JSX fails to parse. Declaring the
         // rule here compiles them with this package's own babel config,
         // whatever Yarn does with the hoisting.
+        //
+        // It is scoped by `include` rather than `exclude: /node_modules/`, and
+        // that matters: Storybook generates its entry module, storybook-stories.js,
+        // at the root of this package, so a node_modules-only exclusion sweeps it
+        // in too. That entry is `async`, this package's babel config sets
+        // `forceAllTransforms`, and nothing loads regeneratorRuntime -- so
+        // compiling it crashed the whole preview with `regeneratorRuntime is not
+        // defined` before a single story rendered. Storybook's own entry is
+        // Storybook's to compile.
         config.module.rules.push({
             test: /\.[jt]sx?$/,
-            exclude: /node_modules/,
+            include: [
+                path.resolve(__dirname, '../src'),
+                path.resolve(__dirname),
+            ],
             use: {
                 loader: require.resolve('babel-loader'),
                 options: {
