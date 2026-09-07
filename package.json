@@ -322,7 +322,7 @@
     "demos:core": "yarn workspace @britecharts/core run demo",
     "demos:demos": "concurrently -k -n core,react,shell -c cyan,magenta,green \"yarn run demos:core\" \"yarn run demos:react\" \"yarn run demos:shell\"",
     "demos:react": "yarn workspace @britecharts/react run demo",
-    "demos:shell": "yarn workspace @britecharts/demos run demo",
+    "demos:shell": "node scripts/wait-for-storybook-refs.js http://localhost:2001/iframe.html http://localhost:2002/iframe.html -- yarn workspace @britecharts/demos run demo",
     "docs": "yarn workspace @britecharts/docs start",
     "docs:build": "yarn workspace @britecharts/docs build",
     "format": "prettier --loglevel warn --write \"**/*.js\"",
