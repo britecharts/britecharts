@@ -51,4 +51,25 @@ export const WithLoadingState = () => {
     return container;
 };
 
+export const WithNegativeValues = () => {
+    const container = getCleanContainer();
+    const sparklineChart = sparkline();
+    const sparklineContainer = select(container);
+    const containerWidth = sparklineContainer.node()
+        ? sparklineContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withNegativeValues().build();
+
+    if (containerWidth) {
+        sparklineChart
+            .isAnimated(true)
+            .height(containerWidth / 4)
+            .width(containerWidth);
+
+        sparklineContainer.datum(dataset).call(sparklineChart);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/Sparkline' };

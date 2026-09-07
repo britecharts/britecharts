@@ -257,6 +257,32 @@ describe('brush Chart', () => {
         });
     });
 
+    describe('when the data has negative values', () => {
+        it('should draw the area across a zero baseline', () => {
+            const negativeDataset = buildDataSet('withNegativeValues');
+
+            containerFixture
+                .datum(negativeDataset)
+                .call(brushChart.isAnimated(false));
+
+            // the path alternates x,y pairs, so every odd number is a y
+            const yCoordinates = containerFixture
+                .select('.brush-area')
+                .attr('d')
+                .replace(/[A-Za-z]/g, ' ')
+                .trim()
+                .split(/[\s,]+/)
+                .map(Number)
+                .filter((_coordinate, index) => index % 2 === 1);
+            // the area closes along its baseline, so the last y is where zero sits
+            const baseline = yCoordinates[yCoordinates.length - 1];
+
+            yCoordinates.forEach((y) => expect(Number.isFinite(y)).toBe(true));
+            expect(Math.min(...yCoordinates)).toBeLessThan(baseline);
+            expect(Math.max(...yCoordinates)).toBeGreaterThan(baseline);
+        });
+    });
+
     describe('aPI', () => {
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = brushChart.animationDuration(),

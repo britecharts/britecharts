@@ -2,11 +2,18 @@ import _ from 'underscore';
 import jsonShortData from './brushShortData.json';
 import jsonSimpleData from './brushData.json';
 import jsonMissingData from './brushMissingData.json';
+import brushDataNegativeValues from './brushDataNegativeValues.json';
 
 export function BrushDataBuilder(config) {
     this.Klass = BrushDataBuilder;
 
     this.config = _.defaults({}, config);
+
+    this.withNegativeValues = function () {
+        const attributes = _.extend({}, this.config, brushDataNegativeValues);
+
+        return new this.Klass(attributes);
+    };
 
     this.withSimpleData = function () {
         const attributes = _.extend({}, this.config, jsonSimpleData);

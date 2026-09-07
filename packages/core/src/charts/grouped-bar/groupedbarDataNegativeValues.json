@@ -1,0 +1,44 @@
+{
+    "data": [
+        {
+            "group": "Gains",
+            "value": 3,
+            "name": "2011-01-05"
+        },
+        {
+            "group": "Losses",
+            "value": -5,
+            "name": "2011-01-05"
+        },
+        {
+            "group": "Gains",
+            "value": -4,
+            "name": "2011-01-06"
+        },
+        {
+            "group": "Losses",
+            "value": 7,
+            "name": "2011-01-06"
+        },
+        {
+            "group": "Gains",
+            "value": 6,
+            "name": "2011-01-07"
+        },
+        {
+            "group": "Losses",
+            "value": -3,
+            "name": "2011-01-07"
+        },
+        {
+            "group": "Gains",
+            "value": -2,
+            "name": "2011-01-08"
+        },
+        {
+            "group": "Losses",
+            "value": 4,
+            "name": "2011-01-08"
+        }
+    ]
+}

@@ -169,4 +169,47 @@ export const WithLoadingState = () => {
     return container;
 };
 
+export const WithNegativeValues = () => {
+    const container = getCleanContainer();
+    const barChart = bar();
+    const barContainer = select(container);
+    const containerWidth = barContainer.node()
+        ? barContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withNegativeValues().build();
+
+        barChart.isAnimated(true).width(containerWidth).height(400);
+
+        barContainer.datum(dataset).call(barChart);
+    }
+
+    return container;
+};
+
+export const WithNegativeValuesHorizontal = () => {
+    const container = getCleanContainer();
+    const barChart = bar();
+    const barContainer = select(container);
+    const containerWidth = barContainer.node()
+        ? barContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withNegativeValues().build();
+
+        barChart
+            .isAnimated(true)
+            .isHorizontal(true)
+            .margin({ left: 100, right: 40, top: 40, bottom: 40 })
+            .width(containerWidth)
+            .height(400);
+
+        barContainer.datum(dataset).call(barChart);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/Bar' };

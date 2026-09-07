@@ -1,0 +1,64 @@
+{
+    "data": [
+        {
+            "name": "Temperature delta",
+            "x": -12.4,
+            "y": -30
+        },
+        {
+            "name": "Temperature delta",
+            "x": -8.1,
+            "y": 45
+        },
+        {
+            "name": "Temperature delta",
+            "x": -4.6,
+            "y": -12
+        },
+        {
+            "name": "Temperature delta",
+            "x": -1.2,
+            "y": 28
+        },
+        {
+            "name": "Temperature delta",
+            "x": 2.5,
+            "y": -40
+        },
+        {
+            "name": "Temperature delta",
+            "x": 5.9,
+            "y": 15
+        },
+        {
+            "name": "Temperature delta",
+            "x": 9.3,
+            "y": -22
+        },
+        {
+            "name": "Temperature delta",
+            "x": 12.8,
+            "y": 52
+        },
+        {
+            "name": "Temperature delta",
+            "x": 16.1,
+            "y": -8
+        },
+        {
+            "name": "Temperature delta",
+            "x": 19.7,
+            "y": 36
+        },
+        {
+            "name": "Temperature delta",
+            "x": 23.2,
+            "y": -55
+        },
+        {
+            "name": "Temperature delta",
+            "x": 26.6,
+            "y": 18
+        }
+    ]
+}

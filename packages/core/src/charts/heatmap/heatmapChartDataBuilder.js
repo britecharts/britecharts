@@ -2,11 +2,18 @@ import _ from 'underscore';
 
 import jsonWeeklyBis from './heatmapWeeklyBis.json';
 import jsonWeekly from './heatmapWeekly.json';
+import heatmapNegativeValues from './heatmapNegativeValues.json';
 
 export function HeatmapDataBuilder(config) {
     this.Klass = HeatmapDataBuilder;
 
     this.config = _.defaults({}, config);
+
+    this.withNegativeValues = function () {
+        const attributes = _.extend({}, this.config, heatmapNegativeValues);
+
+        return new this.Klass(attributes);
+    };
 
     this.withWeeklyData = function () {
         const attributes = _.extend({}, this.config, jsonWeekly);

@@ -621,4 +621,46 @@ describe('grouped Bar Chart', () => {
             expect(actual).toBe(expected);
         });
     });
+
+    describe('when the data has negative values', () => {
+        it('should render every bar with a non-negative height', () => {
+            const negativeData = [
+                { name: '2011-01-05', group: 'Gains', value: 6 },
+                { name: '2011-01-05', group: 'Losses', value: -4 },
+                { name: '2011-01-06', group: 'Gains', value: -2 },
+                { name: '2011-01-06', group: 'Losses', value: 8 },
+            ];
+
+            containerFixture.datum(negativeData).call(groupedBarChart);
+
+            const heights = containerFixture
+                .selectAll('.bar')
+                .nodes()
+                .map((node) => parseFloat(node.getAttribute('height')));
+
+            expect(heights.length).toBeGreaterThan(0);
+            heights.forEach((height) => {
+                expect(height).toBeGreaterThanOrEqual(0);
+            });
+        });
+
+        it('should draw positive and negative bars on either side of a shared baseline', () => {
+            const negativeData = [
+                { name: '2011-01-05', group: 'Gains', value: 6 },
+                { name: '2011-01-05', group: 'Losses', value: -4 },
+            ];
+
+            containerFixture.datum(negativeData).call(groupedBarChart);
+
+            const [positive, negative] = containerFixture
+                .selectAll('.bar')
+                .nodes()
+                .map((node) => ({
+                    y: parseFloat(node.getAttribute('y')),
+                    height: parseFloat(node.getAttribute('height')),
+                }));
+
+            expect(positive.y + positive.height).toBeCloseTo(negative.y);
+        });
+    });
 });

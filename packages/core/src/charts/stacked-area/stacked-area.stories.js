@@ -175,4 +175,26 @@ export const WithLoadingState = () => {
     return container;
 };
 
+export const WithNegativeValues = () => {
+    const container = getCleanContainer();
+    const stackedAreaChart = stackedArea();
+    const stackedAreaContainer = select(container);
+    const containerWidth = stackedAreaContainer.node()
+        ? stackedAreaContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withNegativeValues().build();
+
+    if (containerWidth) {
+        stackedAreaChart
+            .isAnimated(true)
+            .grid('horizontal')
+            .width(containerWidth)
+            .height(400);
+
+        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/StackedArea' };

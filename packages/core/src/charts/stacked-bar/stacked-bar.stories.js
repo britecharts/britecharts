@@ -165,4 +165,26 @@ export const WithLoadingState = () => {
     return container;
 };
 
+export const WithNegativeValues = () => {
+    const container = getCleanContainer();
+    const stackedBar = stackedBarChart();
+    const stackedBarContainer = select(container);
+    const containerWidth = stackedBarContainer.node()
+        ? stackedBarContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withNegativeValues().build();
+
+    if (containerWidth) {
+        stackedBar
+            .isAnimated(true)
+            .grid('horizontal')
+            .width(containerWidth)
+            .height(400);
+
+        stackedBarContainer.datum(dataset).call(stackedBar);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/StackedBar' };

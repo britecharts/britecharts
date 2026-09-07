@@ -110,4 +110,22 @@ export const WithLoadingState = () => {
     return container;
 };
 
+export const WithNegativeValues = () => {
+    const container = getCleanContainer();
+    const scatterPlotContainer = select(container);
+    const scatterChart = scatterPlot();
+    const containerWidth = scatterPlotContainer.node()
+        ? scatterPlotContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withNegativeValues().build();
+
+    if (containerWidth) {
+        scatterChart.isAnimated(true).width(containerWidth).height(400);
+
+        scatterPlotContainer.datum(dataset).call(scatterChart);
+    }
+
+    return container;
+};
+
 export default { title: 'Charts/ScatterPlot' };

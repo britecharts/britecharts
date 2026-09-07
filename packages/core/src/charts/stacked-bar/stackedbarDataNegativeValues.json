@@ -1,0 +1,64 @@
+{
+    "data": [
+        {
+            "stack": "vivid",
+            "value": 5,
+            "name": "2011-01-05"
+        },
+        {
+            "stack": "sparkling",
+            "value": -4,
+            "name": "2011-01-05"
+        },
+        {
+            "stack": "sunny",
+            "value": 3,
+            "name": "2011-01-05"
+        },
+        {
+            "stack": "vivid",
+            "value": 8,
+            "name": "2011-01-06"
+        },
+        {
+            "stack": "sparkling",
+            "value": -2,
+            "name": "2011-01-06"
+        },
+        {
+            "stack": "sunny",
+            "value": -5,
+            "name": "2011-01-06"
+        },
+        {
+            "stack": "vivid",
+            "value": 3,
+            "name": "2011-01-07"
+        },
+        {
+            "stack": "sparkling",
+            "value": -7,
+            "name": "2011-01-07"
+        },
+        {
+            "stack": "sunny",
+            "value": 4,
+            "name": "2011-01-07"
+        },
+        {
+            "stack": "vivid",
+            "value": 6,
+            "name": "2011-01-08"
+        },
+        {
+            "stack": "sparkling",
+            "value": -3,
+            "name": "2011-01-08"
+        },
+        {
+            "stack": "sunny",
+            "value": 2,
+            "name": "2011-01-08"
+        }
+    ]
+}

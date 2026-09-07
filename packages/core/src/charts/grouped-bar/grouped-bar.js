@@ -10,6 +10,7 @@ import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
+import { getBaselineExtent, getValueDomain } from '../helpers/domain';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import colorHelper from '../helpers/color';
 import { barLoadingMarkup } from '../helpers/load';
@@ -282,11 +283,11 @@ export default function module() {
      * @private
      */
     function buildScales() {
-        let yMax = getYMax();
+        let valueDomain = getValueAxisDomain();
 
         if (isHorizontal) {
             xScale = scaleLinear()
-                .domain([0, yMax])
+                .domain(valueDomain)
                 .rangeRound([0, chartWidth - 1]);
             // 1 pix for edge tick
 
@@ -310,7 +311,7 @@ export default function module() {
                 .padding(betweenGroupsPadding);
 
             yScale = scaleLinear()
-                .domain([0, yMax])
+                .domain(valueDomain)
                 .rangeRound([chartHeight, 0])
                 .nice();
         }
@@ -513,7 +514,7 @@ export default function module() {
             .enter()
             .append('rect')
             .classed('bar', true)
-            .attr('x', 1)
+            .attr('x', (d) => getBaselineExtent(xScale, getValue(d)).start)
             .attr('y', (d) => yScale2(getGroup(d)))
             .attr('height', yScale2.bandwidth())
             .attr('fill', ({ group }) => nameToColorMap[group]);
@@ -526,7 +527,10 @@ export default function module() {
                 .ease(ease)
                 .tween('attr.width', horizontalBarsTween);
         } else {
-            bars.attr('width', (d) => xScale(getValue(d)));
+            bars.attr(
+                'width',
+                (d) => getBaselineExtent(xScale, getValue(d)).size
+            );
         }
     }
 
@@ -568,7 +572,7 @@ export default function module() {
             .append('rect')
             .classed('bar', true)
             .attr('x', (d) => xScale2(getGroup(d)))
-            .attr('y', ({ value }) => yScale(value))
+            .attr('y', ({ value }) => getBaselineExtent(yScale, value).start)
             .attr('width', xScale2.bandwidth)
             .attr('fill', ({ group }) => nameToColorMap[group]);
 
@@ -580,7 +584,10 @@ export default function module() {
                 .ease(ease)
                 .tween('attr.height', verticalBarsTween);
         } else {
-            bars.attr('height', (d) => chartHeight - yScale(getValue(d)));
+            bars.attr(
+                'height',
+                (d) => getBaselineExtent(yScale, getValue(d)).size
+            );
         }
     }
 
@@ -807,12 +814,14 @@ export default function module() {
      * @return {void}
      */
     function horizontalBarsTween(d) {
+        const { start, size } = getBaselineExtent(xScale, getValue(d));
         const node = select(this);
-        const i = interpolateRound(0, xScale(getValue(d)));
+        const x = interpolateRound(xScale(0), start);
+        const i = interpolateRound(0, size);
         const j = interpolateNumber(0, 1);
 
         return function (t) {
-            node.attr('width', i(t)).style('opacity', j(t));
+            node.attr('x', x(t)).attr('width', i(t)).style('opacity', j(t));
         };
     }
 
@@ -821,16 +830,8 @@ export default function module() {
      * @return {number} Calculated yMax
      * @private
      */
-    function getYMax() {
-        const uniqueDataPoints = new Set(data.map(getValue));
-        const isAllZero =
-            uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
-
-        if (isAllZero) {
-            return 1;
-        } else {
-            return max(data.map(getValue));
-        }
+    function getValueAxisDomain() {
+        return getValueDomain(data.map(getValue));
     }
 
     /**
@@ -901,9 +902,10 @@ export default function module() {
      * @return {void}
      */
     function verticalBarsTween(d) {
+        const { start, size } = getBaselineExtent(yScale, getValue(d));
         let node = select(this),
-            i = interpolateRound(0, chartHeight - yScale(getValue(d))),
-            y = interpolateRound(chartHeight, yScale(getValue(d))),
+            i = interpolateRound(0, size),
+            y = interpolateRound(yScale(0), start),
             j = interpolateNumber(0, 1);
 
         return function (t) {
