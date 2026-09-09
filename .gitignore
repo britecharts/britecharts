@@ -99,3 +99,6 @@ plan/
 # Integration package: packed tarballs and installed consumers
 packages/integration/.tarballs
 packages/integration/.consumers
+packages/integration/consumers/*/public/vendor
+packages/integration/test-results
+packages/integration/playwright-report

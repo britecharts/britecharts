@@ -1,8 +1,10 @@
 name: Integration Tests
 
-# Builds the packages, packs them the way the release does, and checks what
-# would ship. Required on main: the Changesets "version packages" PR gets it
-# too, which makes it the last gate before release.yml publishes.
+# Builds the packages, packs them the way the release does, installs them into
+# consumer projects and checks what ships: tarball contents, require() paths,
+# and the consumer pages in Chromium. Required on main: the Changesets
+# "version packages" PR gets it too, which makes it the last gate before
+# release.yml publishes.
 on:
   push:
     branches:
@@ -36,8 +38,34 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      # Chromium is ~100 MB; cache it by the Playwright version so a bump is
+      # the only thing that re-downloads it. install-deps is what actually
+      # differs between runners, so it always runs.
+      - name: Read the Playwright version
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      - name: Install Chromium
+        run: yarn workspace @britecharts/integration playwright install --with-deps chromium
+
       - name: Build packages 🔧
         run: yarn build:packages
 
-      - name: Pack and check what ships 📦
+      # pack → npm-install the consumers from the tarballs → tarball contents
+      # → require() paths → Playwright over the consumer pages
+      - name: Pack, install the consumers and test what ships 📦
         run: yarn test:integration
+
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: packages/integration/test-results
+          retention-days: 7

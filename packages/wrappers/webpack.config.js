@@ -28,9 +28,12 @@ const prodBundleConfig = merge([
         output: {
             path: path.resolve(__dirname, './dist/umd/bundle'),
             filename: 'wrappers.bundled.min.js',
+            // src/index.js has named exports only, so the bundle exposes the
+            // namespace; libraryExport: 'default' here made require() return
+            // undefined.
             library: ['wrappers'],
-            libraryExport: 'default',
             libraryTarget: 'umd',
+            globalObject: 'this',
         },
     },
     parts.babelLoader(),
@@ -50,7 +53,7 @@ const prodCJSBundleConfig = merge([
         output: {
             path: path.resolve(__dirname, './dist/cjs/bundle'),
             filename: 'wrappers.bundled.min.js',
-            library: ['warppers'],
+            library: ['wrappers'],
             libraryTarget: 'commonjs2',
         },
     },
@@ -72,6 +75,7 @@ const prodChartsConfig = merge([
             library: ['wrappers', '[name]'],
             libraryExport: 'default',
             libraryTarget: 'umd',
+            globalObject: 'this',
         },
     },
     parts.babelLoader(),

@@ -6,7 +6,7 @@ import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { scaleOrdinal, scaleTime, scaleLinear, scaleLog } from 'd3-scale';
 import { line } from 'd3-shape';
-import { select, pointer, touch } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';

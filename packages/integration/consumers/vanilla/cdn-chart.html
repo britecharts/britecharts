@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>C2 · CDN per-chart file via script tag</title>
+    <link rel="stylesheet" href="/src/page.css">
+    <link rel="stylesheet" href="/vendor/styles/charts/common.min.css">
+    <link rel="stylesheet" href="/vendor/styles/charts/bar.min.css">
+    <script src="/vendor/d3-selection.min.js"></script>
+    <script src="/vendor/cdn/charts/bar.cdn.min.js"></script>
+</head>
+<body>
+    <h1>C2 · CDN per-chart file via script tag</h1>
+    <div class="bar-container"></div>
+    <script>
+        var barData = [
+            { name: "Luminous", value: 2 },
+            { name: "Glittering", value: 5 },
+            { name: "Intense", value: 4 },
+            { name: "Radiant", value: 3 },
+        ];
+        var barChart = core.bar()
+            .margin({ left: 100 })
+            .isHorizontal(true)
+            .height(400)
+            .width(600);
+
+        d3.select(".bar-container").datum(barData).call(barChart);
+    </script>
+</body>
+</html>

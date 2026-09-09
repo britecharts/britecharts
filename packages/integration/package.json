@@ -4,12 +4,18 @@
   "private": true,
   "description": "Consumer-side integration tests: packs core, wrappers and react the way the release does and checks what ships",
   "scripts": {
-    "clean": "rimraf .tarballs .consumers",
+    "clean": "rimraf .tarballs consumers/*/node_modules consumers/*/public/vendor consumers/*/dist test-results",
     "pack": "node scripts/pack.js",
+    "install:consumers": "node scripts/install-consumers.js",
+    "start": "BRITECHARTS_SOURCE=1 vite --config consumers/vanilla/vite.config.js --open",
     "test:tarballs": "node --test tests/tarball.test.js",
-    "test:integration": "yarn run pack && yarn run test:tarballs"
+    "test:require": "node --test tests/require.test.js",
+    "test:browser": "playwright test",
+    "test:integration": "yarn run pack && yarn run install:consumers && yarn run test:tarballs && yarn run test:require && yarn run test:browser"
   },
   "devDependencies": {
-    "rimraf": "^2.6.3"
+    "@playwright/test": "^1.63.0",
+    "rimraf": "^2.6.3",
+    "vite": "^8.2.2"
   }
 }
