@@ -41,22 +41,21 @@
     "build:bundle:cjs": "webpack --env=prodCJSBundleConfig",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig",
-    "build": "webpack --env=production",
+    "build": "yarn run clean && webpack --env=production",
     "clean": "rimraf dist",
     "lint:js": "eslint src/charts/ src/helpers webpack.*.js --cache",
     "lint": "yarn run lint:js",
-    "prebuild": "yarn run clean",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors --coverage"
   },
   "files": [
-    "dist",
-    "src",
+    "dist/**",
+    "src/**",
     "!**/*.map",
-    "!src/**/*.spec.js",
-    "!src/**/*.stories.js",
-    "!src/**/*.stories.mdx",
-    "!src/**/*DataBuilder.js",
-    "!src/**/*.fixtures.js"
+    "!**/*.spec.js",
+    "!**/*.stories.js",
+    "!**/*.stories.mdx",
+    "!**/*DataBuilder.js",
+    "!**/*.fixtures.js"
   ]
 }

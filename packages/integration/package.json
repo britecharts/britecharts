@@ -1,0 +1,15 @@
+{
+  "name": "@britecharts/integration",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Consumer-side integration tests: packs core, wrappers and react the way the release does and checks what ships",
+  "scripts": {
+    "clean": "rimraf .tarballs .consumers",
+    "pack": "node scripts/pack.js",
+    "test:tarballs": "node --test tests/tarball.test.js",
+    "test:integration": "yarn run pack && yarn run test:tarballs"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.3"
+  }
+}

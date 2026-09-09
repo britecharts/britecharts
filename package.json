@@ -1,6 +1,6 @@
 {
   "name": "britecharts",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.8.7",
   "version": "0.0.0",
   "description": "D3.js based Modular Charting Library",
   "main": "index.js",
@@ -339,6 +339,7 @@
     "stylelint:fix": "stylelint './packages/core/src/styles/**/*.scss' --fix",
     "test": "yarn workspaces foreach -p run test",
     "test:ci": "yarn workspaces foreach -p run test",
+    "test:integration": "yarn workspace @britecharts/integration test:integration",
     "test:watch": "yarn workspaces foreach -p run test:watch",
     "version-packages": "changeset version"
   },

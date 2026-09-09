@@ -120,7 +120,7 @@
     "build:chartStyles": "webpack --env=prodChartStyles",
     "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
     "build:styles": "webpack --env=prodStyles",
-    "build": "webpack --env=production",
+    "build": "yarn run clean && webpack --env=production",
     "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_CORE",
     "clean": "rimraf dist",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
@@ -128,22 +128,21 @@
     "lint:js": "eslint src/charts/ webpack.*.js --cache",
     "lint:styles": "stylelint './src/styles/**/*.scss'",
     "lint": "yarn run lint:js && yarn run lint:styles",
-    "prebuild": "yarn run clean",
     "start": "yarn run demo",
     "storybook": "storybook dev -p 2001 --exact-port",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors --coverage"
   },
   "files": [
-    "dist/umd",
-    "dist/cdn",
-    "dist/styles",
-    "src",
+    "dist/umd/**",
+    "dist/cdn/**",
+    "dist/styles/**",
+    "src/**",
     "!**/*.map",
-    "!src/**/*.spec.js",
-    "!src/**/*.stories.js",
-    "!src/**/*.stories.mdx",
-    "!src/**/*DataBuilder.js",
-    "!src/**/*.fixtures.js"
+    "!**/*.spec.js",
+    "!**/*.stories.js",
+    "!**/*.stories.mdx",
+    "!**/*DataBuilder.js",
+    "!**/*.fixtures.js"
   ]
 }
