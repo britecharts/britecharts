@@ -13,5 +13,9 @@
     ]
   ],
   "linked": [],
-  "ignore": ["@britecharts/docs", "@britecharts/demos"]
+  "ignore": [
+    "@britecharts/docs",
+    "@britecharts/demos",
+    "@britecharts/integration"
+  ]
 }

@@ -37,11 +37,6 @@ const commonSplittedConfig = merge([
         output: {
             filename: '[name].js',
         },
-        plugins: [
-            new HtmlWebpackPlugin({
-                title: 'Webpack demo',
-            }),
-        ],
         externals: {
             'react/addons': true,
             'react/lib/ExecutionEnvironment': true,
@@ -66,6 +61,9 @@ const testConfig = merge([
     {
         mode: 'development',
         plugins: [
+            new HtmlWebpackPlugin({
+                title: 'Webpack demo',
+            }),
             // If you require a missing module and then `npm install` it, you still have
             // to restart the development server for Webpack to discover it. This plugin
             // makes the discovery automatic so you don't have to restart.
