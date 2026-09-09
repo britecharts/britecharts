@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Britecharts vanilla consumer</title>
+    <link rel="stylesheet" href="/src/page.css">
+</head>
+<body>
+    <h1>Britecharts vanilla consumer</h1>
+    <p>One page per way of loading <code>@britecharts/core</code>. The Playwright
+    suite in <code>tests/browser.spec.js</code> visits each one.</p>
+    <ul>
+        <li><a href="/cdn-bundle.html">C1 · CDN bundle via script tag</a></li>
+        <li><a href="/cdn-chart.html">C2 · CDN per-chart file via script tag</a></li>
+        <li><a href="/umd-bundle.html">C3 · UMD bundle (package main) through a bundler</a></li>
+        <li><a href="/umd-chart.html">C4 · per-chart UMD build through a bundler</a></li>
+        <li><a href="/esm-bundle.html">C5 · ES modules (package module entry)</a></li>
+        <li><a href="/esm-chart.html">C6 · per-chart ES module by source path</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "britecharts-vanilla-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A plain-JavaScript consumer of @britecharts/core, installed from the packed tarball the way a user would install it from npm",
+  "dependencies": {
+    "@britecharts/core": "file:../../.tarballs/core.tgz",
+    "@britecharts/wrappers": "file:../../.tarballs/wrappers.tgz",
+    "d3-selection": "^3.0.0"
+  }
+}

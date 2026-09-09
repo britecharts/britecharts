@@ -4,7 +4,7 @@ import { dispatch } from 'd3-dispatch';
 import { easeQuadInOut } from 'd3-ease';
 import { scaleLinear, scaleTime, scaleLog } from 'd3-scale';
 import { line, area, stackOffsetNone, stackOrderNone, stack } from 'd3-shape';
-import { select, pointer, touch } from 'd3-selection';
+import { select, pointer } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 
