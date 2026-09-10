@@ -5,6 +5,7 @@
   "module": "src/index.js",
   "types": "src/typings/index.d.ts",
   "dependencies": {
+    "@types/d3-selection": "^3.0.0",
     "base-64": "^0.1.0",
     "d3-array": "^3.2.4",
     "d3-axis": "^3.0.0",
@@ -31,7 +32,6 @@
     "@storybook/html-webpack5": "8.6.14",
     "@storybook/manager-api": "8.6.14",
     "@storybook/theming": "8.6.14",
-    "@types/d3-selection": "^1.4.1",
     "@typescript-eslint/parser": "^4.6.1",
     "babel-loader": "^8.2.3",
     "babel-plugin-istanbul": "^6.0.0",
@@ -144,5 +144,16 @@
     "!**/*.stories.mdx",
     "!**/*DataBuilder.js",
     "!**/*.fixtures.js"
-  ]
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/typings/index.d.ts",
+      "import": "./src/index.js",
+      "require": "./dist/umd/bundle/core.bundled.min.js",
+      "default": "./dist/umd/bundle/core.bundled.min.js"
+    },
+    "./dist/*": "./dist/*",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  }
 }

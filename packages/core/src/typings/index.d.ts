@@ -12,5 +12,6 @@ export * from './charts/sparkline-chart';
 export * from './charts/stacked-area';
 export * from './charts/stacked-bar-chart';
 export * from './charts/tooltip';
+export * from './common/local';
 export * from './helpers/colors';
 export * from './helpers/constants';

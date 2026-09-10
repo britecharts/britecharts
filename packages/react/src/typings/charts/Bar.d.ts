@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { LocalObject } from 'britecharts/src/typings/common/local';
+import { LocalObject } from '@britecharts/core';
 
 export interface BarChartProps {
     /**

@@ -81,5 +81,16 @@
     "!**/*.stories.mdx",
     "!**/*DataBuilder.js",
     "!**/*.fixtures.js"
-  ]
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/typings/index.d.ts",
+      "import": "./dist/umd/bundle/react.bundled.min.js",
+      "require": "./dist/umd/bundle/react.bundled.min.js",
+      "default": "./dist/umd/bundle/react.bundled.min.js"
+    },
+    "./dist/*": "./dist/*",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  }
 }

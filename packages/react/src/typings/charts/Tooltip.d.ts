@@ -94,7 +94,7 @@ export interface TooltipProps {
      * Gets or Sets the `xAxisValueType` of the data. Choose between 'date' and 'number'.
      * When set to number, the x-Axis values won't be parsed as dates anymore, but as numbers.
      */
-    xAxisValueType: 'date' | 'nunber';
+    xAxisValueType: 'date' | 'number';
 
     /**
      * Internally used, do not overwrite.

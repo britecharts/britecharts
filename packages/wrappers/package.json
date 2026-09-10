@@ -57,5 +57,15 @@
     "!**/*.stories.mdx",
     "!**/*DataBuilder.js",
     "!**/*.fixtures.js"
-  ]
+  ],
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./dist/umd/bundle/wrappers.bundled.min.js",
+      "default": "./dist/umd/bundle/wrappers.bundled.min.js"
+    },
+    "./dist/*": "./dist/*",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  }
 }

@@ -26,14 +26,22 @@ yarn test:integration     # from the repo root; needs Chromium once:
    consumer is a real project installed the way a user would install it, so
    dependency declarations are tested too, not only file contents.
 3. **Tier 1 · `tests/tarball.test.js`** — for each tarball, an allow-list of
-   globs that must be present, a deny-list that must be absent, and a check
-   that `main`, `module` and `types` point at files that exist and that no
-   `workspace:` range survived packing.
+   globs that must be present, a deny-list that must be absent, a check that
+   `main`, `module` and `types` point at files that exist and that no
+   `workspace:` range survived packing, then [publint] and [attw] with a
+   short, commented waiver list (all three waivers share one cause: the
+   packages have no `"type"` field, so Node reads the ES module sources as
+   CommonJS; real ESM output arrives with the Vite build).
 4. **Tier 2 · `tests/require.test.js`** — `require()` of the package `main`,
    every per-chart UMD build and the wrappers CommonJS bundle, resolved from
    the installed consumer. No browser, no bundler: this is what Node, Jest
    and CommonJS bundlers do.
-5. **Tier 3 · `tests/browser.spec.js`** — Playwright builds
+5. **Tier 2 · `tests/types.test.js`** — `tsc --noEmit` over
+   `consumers/typescript` under `moduleResolution: node` and `bundler`,
+   with `skipLibCheck` off so the library's own `.d.ts` files are checked.
+   Every chart factory, every React component's props, and one
+   `@ts-expect-error` per API so a typing cannot regress to `any` unnoticed.
+6. **Tier 3 · `tests/browser.spec.js`** — Playwright builds
    `consumers/vanilla` with Vite, serves it, and visits one page per
    consumption path (CDN script tags, UMD through a bundler, ES modules).
    Each page must draw the chart, have the stylesheet applied, and produce no
@@ -41,6 +49,9 @@ yarn test:integration     # from the repo root; needs Chromium once:
 
 Tiers 1 and 2 use Node's built-in test runner (`*.test.js`); tier 3 is
 Playwright (`*.spec.js`).
+
+[publint]: https://publint.dev
+[attw]: https://arethetypeswrong.github.io
 
 ## Local loop for chart work
 
@@ -69,3 +80,7 @@ build. Paths under `dist/` still come from the last installed tarball.
   esbuild consumer of the ES module entry.
 - UMD builds emitted with `window` as the global object, unloadable in Node.
 - `require('@britecharts/wrappers')` returning `undefined`.
+- The React typings importing from the unscoped v2 package name, so they
+  never resolved; `@types/d3-selection` missing from core's dependencies;
+  three typings that rejected valid calls (`on()` handlers,
+  `highlightBarFunction`, `clearHighlight`) and a `'nunber'` literal.

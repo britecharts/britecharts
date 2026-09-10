@@ -58,7 +58,7 @@ export interface BarChartAPI
      * highlight effect on a bar is darkening the highlighted bar(s) color.
      */
     highlightBarFunction(
-        highlightFunc: (bar: BarSelection) => void | null
+        highlightFunc: ((bar: BarSelection) => void) | null
     ): BarChartModule;
     /** Gets or Sets the horizontal direction of the chart */
     isHorizontal(isHorizontal?: boolean): BarChartModule;
