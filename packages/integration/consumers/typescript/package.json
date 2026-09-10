@@ -1,0 +1,17 @@
+{
+  "name": "britecharts-typescript-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A TypeScript consumer of the published typings: every chart factory, its Module type, the colors helper, and every React component's props. Compiled, never run.",
+  "dependencies": {
+    "@britecharts/core": "file:../../.tarballs/core.tgz",
+    "@britecharts/react": "file:../../.tarballs/react.tgz",
+    "@britecharts/wrappers": "file:../../.tarballs/wrappers.tgz",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.0.0"
+  }
+}

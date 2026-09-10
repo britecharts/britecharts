@@ -10,11 +10,14 @@
     "start": "BRITECHARTS_SOURCE=1 vite --config consumers/vanilla/vite.config.js --open",
     "test:tarballs": "node --test tests/tarball.test.js",
     "test:require": "node --test tests/require.test.js",
+    "test:types": "node --test tests/types.test.js",
     "test:browser": "playwright test",
-    "test:integration": "yarn run pack && yarn run install:consumers && yarn run test:tarballs && yarn run test:require && yarn run test:browser"
+    "test:integration": "yarn run pack && yarn run install:consumers && yarn run test:tarballs && yarn run test:require && yarn run test:types && yarn run test:browser"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@playwright/test": "^1.63.0",
+    "publint": "^0.3.24",
     "rimraf": "^2.6.3",
     "vite": "^8.2.2"
   }

@@ -59,9 +59,9 @@ export interface BaseAPI<T> {
 export interface InteractiveChartAPI<T> {
     on(
         eventName: string,
-        callback: (...args: unknown[]) => void
+        callback: (...args: any[]) => void
     ): T & InteractiveChartAPI<T>;
-    on(eventName: string): (...args: unknown[]) => void;
+    on(eventName: string): (...args: any[]) => void;
 }
 
 export interface ChartDimensionsAPI<T> {

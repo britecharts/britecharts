@@ -5,11 +5,31 @@
 // one, or a build config silently dropping an output directory, does.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { execFileSync } = require('node:child_process');
+const { execFileSync, spawnSync } = require('node:child_process');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 
 const TARBALLS = path.resolve(__dirname, '..', '.tarballs');
+
+// publint and attw findings we accept, each with the reason. Everything else
+// they report fails the test.
+//
+// The three below share one root cause: the packages have no "type" field,
+// so Node reads src/*.js as CommonJS even though the files are ES modules.
+// Bundlers (the `import` condition's real audience), CommonJS consumers and
+// TypeScript's node10/bundler resolutions are all unaffected, and Node 20.19+
+// detects the syntax at runtime. Node ESM (`import` from a Node script) is
+// not a supported consumer of a browser charting library; proper ESM output
+// arrives with the Vite build (H22), which retires all three waivers.
+const WAIVED_PUBLINT = new Set([
+    'FILE_INVALID_FORMAT', // src/*.js is ESM in a CommonJS package
+    'EXPORTS_TYPES_INVALID_FORMAT', // the .d.ts serving the import condition is read as CJS
+]);
+const WAIVED_ATTW = new Set([
+    'UnexpectedModuleSyntax', // same: ESM syntax in a file Node treats as CJS
+    'NamedExports', // Node ESM cannot see named exports on the webpack UMD bundle
+]);
 
 // Things that must never ship from any package.
 const COMMON_DENY = [
@@ -173,6 +193,48 @@ for (const [name, { allow, deny }] of Object.entries(PACKAGES)) {
                     `${field} points at ${manifest[field]}, which is not in the tarball`
                 );
             }
+        });
+
+        await t.test('passes publint (errors, and warnings not waived)', async () => {
+            const { publint } = await import('publint');
+            const { formatMessage } = await import('publint/utils');
+            const tarball = fs.readFileSync(path.join(TARBALLS, `${name}.tgz`));
+            const { messages, pkg } = await publint({ pack: { tarball } });
+            const failing = messages
+                .filter((m) => m.type === 'error' || (m.type === 'warning' && !WAIVED_PUBLINT.has(m.code)))
+                .map((m) => `${m.type} ${m.code}: ${formatMessage(m, pkg ?? manifest)}`);
+
+            assert.deepEqual(failing, []);
+        });
+
+        await t.test('passes attw (problems not waived)', () => {
+            if (!manifest.types) {
+                return; // nothing for attw to check
+            }
+            // attw exits non-zero when it finds problems, and a process that
+            // exits with a pipe on stdout loses everything past 64 KB. A file
+            // is written synchronously, so the report goes there.
+            const reportFile = path.join(os.tmpdir(), `attw-${name}-${process.pid}.json`);
+            const fd = fs.openSync(reportFile, 'w');
+            const result = spawnSync(
+                'yarn',
+                ['attw', path.join(TARBALLS, `${name}.tgz`), '--format', 'json'],
+                { cwd: path.resolve(__dirname, '..'), stdio: ['ignore', fd, 'pipe'], encoding: 'utf8' }
+            );
+            fs.closeSync(fd);
+            let report;
+            try {
+                report = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
+            } catch {
+                assert.fail(`attw produced no JSON (exit ${result.status}):\n${result.stderr}`);
+            } finally {
+                fs.rmSync(reportFile, { force: true });
+            }
+            const problems = Object.entries(report.problems ?? {})
+                .filter(([kind]) => !WAIVED_ATTW.has(kind))
+                .map(([kind, list]) => `${kind}: ${JSON.stringify(list)}`);
+
+            assert.deepEqual(problems, []);
         });
 
         await t.test('is publishable', () => {
