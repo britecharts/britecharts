@@ -60,7 +60,9 @@ module.exports = {
                         label: 'API Reference',
                     },
                     {
-                        href: 'https://main--63d6bf7d2876e82fb2534b93.chromatic.com',
+                        // Deployed next to the docs by docs-deploy.yml; pathname:// keeps
+                        // Docusaurus from treating it as a route of its own.
+                        href: 'pathname:///storybook/',
                         position: 'left',
                         label: 'StoryBook',
                     },

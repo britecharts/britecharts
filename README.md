@@ -20,7 +20,7 @@
   <span> · </span>
   <a href="https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers">Test Projects</a>
   <span> · </span>
-  <a href="https://britecharts.github.io/britecharts/docs/tutorials/tutorials-index">Storybook</a>
+  <a href="https://britecharts.github.io/britecharts/storybook/">Storybook</a>
   <span> · </span>
   <a href="https://britecharts.github.io/britecharts/docs/how-tos/contributor-how-to-guides">Contribute</a>
   <br />

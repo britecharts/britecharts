@@ -35,6 +35,22 @@ jobs:
       - name: Build docs website 📚
         run: yarn docs:build
 
+      # The Storybooks live under /storybook/ on the same site: the composed
+      # shell at /storybook/, and the two it references at /storybook/core
+      # and /storybook/react. Same origin, so composition needs no CORS and
+      # no login -- which is what publishing them to Chromatic could not give.
+      - name: Build packages 🔧
+        run: yarn build:packages
+
+      - name: Build the Storybooks 📖
+        run: |
+          yarn workspace @britecharts/core demo:build
+          yarn workspace @britecharts/react demo:build
+          yarn workspace @britecharts/demos build
+
+      - name: Add the Storybooks to the site
+        run: node scripts/compose-site.js
+
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v4
         with:
