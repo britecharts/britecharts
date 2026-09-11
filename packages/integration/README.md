@@ -42,10 +42,12 @@ yarn test:integration     # from the repo root; needs Chromium once:
    Every chart factory, every React component's props, and one
    `@ts-expect-error` per API so a typing cannot regress to `any` unnoticed.
 6. **Tier 3 · `tests/browser.spec.js`** — Playwright builds
-   `consumers/vanilla` with Vite, serves it, and visits one page per
-   consumption path (CDN script tags, UMD through a bundler, ES modules).
-   Each page must draw the chart, have the stylesheet applied, and produce no
-   console errors, page errors or failed requests.
+   `consumers/vanilla` and `consumers/react` with Vite, serves each, and
+   visits one page per consumption path (CDN script tags, UMD through a
+   bundler, ES modules; the React package and its per-component builds on
+   React 19 under StrictMode). Each page must draw the chart, have the
+   stylesheet applied, and produce no console errors, page errors or failed
+   requests — on the React pages, no console warnings either.
 
 Tiers 1 and 2 use Node's built-in test runner (`*.test.js`); tier 3 is
 Playwright (`*.spec.js`).
@@ -56,7 +58,8 @@ Playwright (`*.spec.js`).
 ## Local loop for chart work
 
 ```sh
-yarn workspace @britecharts/integration start
+yarn workspace @britecharts/integration start          # vanilla pages
+yarn workspace @britecharts/integration start:react    # React pages
 ```
 
 Opens the vanilla consumer's pages with the bare `@britecharts/core` imports
@@ -84,3 +87,6 @@ build. Paths under `dist/` still come from the last installed tarball.
   never resolved; `@types/d3-selection` missing from core's dependencies;
   three typings that rejected valid calls (`on()` handlers,
   `highlightBarFunction`, `clearHighlight`) and a `'nunber'` literal.
+- The React UMD bundle carrying its own React 16 (rejected by React 17+),
+  and the per-component builds exporting `{ default }` where core's export
+  the module.

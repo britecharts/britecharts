@@ -61,3 +61,34 @@ test('W · require("@britecharts/wrappers") and its CommonJS bundle', () => {
         }
     }
 });
+
+// --- @britecharts/react, resolved from the React consumer ---------------
+
+const REACT_CONSUMER = path.resolve(__dirname, '..', 'consumers', 'react');
+const requireFromReact = createRequire(path.join(REACT_CONSUMER, 'package.json'));
+
+const REACT_COMPONENTS = [
+    'Bar', 'Bullet', 'Donut', 'GroupedBar', 'Legend', 'Line', 'Sparkline',
+    'StackedArea', 'StackedBar', 'Tooltip',
+];
+
+test('R1 · require("@britecharts/react") resolves main to the UMD bundle', () => {
+    const react = requireFromReact('@britecharts/react');
+
+    for (const name of REACT_COMPONENTS) {
+        assert.equal(typeof react[name], 'function', `bundle lacks ${name}`);
+    }
+    assert.equal(typeof react.axisTimeCombinations, 'object');
+    assert.equal(typeof react.ResponsiveContainer, 'function');
+});
+
+test('R3/R4 · every per-component CJS and UMD build can be required', () => {
+    for (const name of REACT_COMPONENTS) {
+        for (const flavour of ['cjs', 'umd']) {
+            const component = requireFromReact(`@britecharts/react/dist/${flavour}/charts/${name}.js`);
+
+            // The module is the component, as with core's per-chart builds.
+            assert.equal(typeof component, 'function', `${flavour}/charts/${name}.js is not the component`);
+        }
+    }
+});

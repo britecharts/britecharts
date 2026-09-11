@@ -75,7 +75,7 @@ npm i --save @britecharts/core @britecharts/wrappers @britecharts/react
 
 Britecharts-React is available as an [NPM module][npmModule] or through CDN links (in [different formats][jsDelivrLib] or a [bundle][jsDelivrDist]).
 
-You can also use individual bundles in UMD format (`dist/umd/`), CommonJS format (`lib/cjs`), and tree-shaking-enabling ES2015 modules (`lib/esm`) to add to your bundle. You can see more on our [test project][testProject].
+Each component is also published on its own, in UMD format (`dist/umd/charts/<Component>.js`) and CommonJS format (`dist/cjs/charts/<Component>.js`); in both the module *is* the component, so `require('@britecharts/react/dist/cjs/charts/Donut.js')` returns `Donut`. The [React consumer][testProject] in the integration package shows every way of loading it, and is what CI runs.
 
 ### Supported React versions
 
@@ -123,6 +123,6 @@ Our idea for the short term is to update this package to use TypeScript natively
 [d3Slack]: https://d3js.slack.com/
 [codeOfConduct]: **
 [homepage]: https://britecharts.github.io/britecharts/
-[testProject]: https://github.com/Golodhros/britecharts-react-test-project
+[testProject]: https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers/react
 [howtoCreate]: https://github.com/britecharts/britecharts-react/blob/master/CONTRIBUTING.md#creating-a-new-chart
 [britecharts-react]: https://github.com/britecharts/britecharts-react/
