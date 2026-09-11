@@ -59,6 +59,17 @@ To generate the demos you need to:
 
 This process generates the demos and opens their Storybook interface in a new browser tab. There you can navigate the Demo of each chart and see some examples. We recommend you to use these demos as your testing platform when modifying the charts.
 
+### Running the Integration Tests
+The unit tests check the charts; the integration package checks what ships. It packs the three publishable packages the way the release does, installs them into small consumer projects (plain JavaScript, TypeScript and React) with npm, and then checks the tarball contents, `require()` paths, the typings and, with Playwright, that every way of loading a chart renders in a browser:
+
+```
+yarn build:packages
+yarn workspace @britecharts/integration playwright install chromium   # once
+yarn test:integration
+```
+
+It runs on every pull request as the **Integration** check. See [its README](../packages/integration/README.md) for the tiers and for how to add a consumption path, and `yarn workspace @britecharts/integration start` for a dev server over the consumer pages that uses the workspace source.
+
 ### Running the Documentation
 To generate the documentation you need to:
 

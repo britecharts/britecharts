@@ -5,6 +5,16 @@ As maintainers of the project, this is our guide. Most of the steps and guidelin
 
 Beyond this, this document provides some details that would be too low-level for contributors.
 
+## Releasing
+
+Versioning is owned by [Changesets](../.changeset): every change to a publishable package lands with a changeset file, and the **Release** workflow keeps a "Version Packages" pull request open on `main`. Merging that pull request is the release; the same workflow then publishes through `yarn npm publish`.
+
+Three things to know:
+
+- **Integration is a required check on `main`.** It packs the packages with Yarn's packer, installs them into consumer projects and tests them, so the "Version Packages" pull request cannot merge with a broken tarball, a broken `require()` path, broken typings or a chart that does not render. Keep it required.
+- **Yarn's packer is the authoritative one.** `yarn npm publish` is what ships, and it does not read the `files` field the way `npm pack` does (see the `exports`/`files` comments in each package.json). Never verify publish contents with `npm pack`.
+- **After a publish, check what actually shipped.** The **Smoke test the published packages** workflow runs on its own after every successful Release run and installs the consumers from the npm registry, with the CDN page loading from jsDelivr. It can also be started by hand from the Actions tab for any version or dist-tag. A red run there means users are affected now.
+
 ## Issue triage
 
 The triage and issue managing process will look like this:

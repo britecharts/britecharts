@@ -15,6 +15,7 @@ const pages = [
     'umd-chart',
     'esm-bundle',
     'esm-chart',
+    'cdn-jsdelivr', // published version only; see the page
 ];
 
 // BRITECHARTS_SOURCE=1 (the `start` script) points the bare specifiers at

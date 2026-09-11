@@ -28,5 +28,8 @@ Review findings are written to `plan/`, which is gitignored.
   `master` line, so diffs must name `main` explicitly.
 - There is no type-check step in this repo; the `.d.ts` typings are hand-written
   and unchecked, which is why several of these files call out typings drift.
-- Never run the root `yarn test` in tooling — its `posttest` hook runs
-  `yarn format` across every `.js` file. Use `yarn test:ci`.
+- Use `yarn test:ci`, not the root `yarn test`, in tooling. (`test` carries a
+  `posttest` format hook; Yarn Berry does not run such hooks today, but keep to
+  the script that never will.)
+- `yarn test:integration` needs `yarn build:packages` first and Chromium
+  installed once (`yarn workspace @britecharts/integration playwright install chromium`).

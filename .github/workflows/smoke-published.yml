@@ -1,0 +1,104 @@
+name: Smoke test the published packages
+
+# The Integration workflow tests what *would* ship, from local tarballs. This
+# one tests what *did* ship: the consumers are installed from the npm registry
+# and the CDN page loads from jsDelivr. It is the only workflow whose
+# assertions touch the network, so it is never part of the PR job.
+#
+# Runs after every successful Release run (which publishes when the
+# "Version Packages" PR is merged; when Release only updated that PR the
+# version on main is usually already published and gets re-tested, or is not
+# published yet and the job says so and stops). Also runs on demand for any
+# version or dist-tag.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version or dist-tag of @britecharts/* to test (e.g. 3.0.0-beta.1, latest)'
+        required: true
+        default: latest
+  workflow_run:
+    workflows: ['Release']
+    types: [completed]
+
+concurrency:
+  group: smoke-published
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Smoke test
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v7
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Resolve the version to test
+        id: version
+        env:
+          REQUESTED: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
+        run: |
+          requested="${REQUESTED:-$(node -p "require('./packages/core/package.json').version")}"
+          resolved="$(npm view "@britecharts/core@${requested}" version --json 2>/dev/null | node -e '
+            let s = ""; process.stdin.on("data", (d) => (s += d)).on("end", () => {
+              try { const v = JSON.parse(s); console.log(Array.isArray(v) ? v.at(-1) : v); } catch { console.log(""); }
+            });')"
+          if [ -z "$resolved" ]; then
+            echo "::notice::@britecharts/core@${requested} is not on the registry; nothing to smoke test."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Testing @britecharts/*@${resolved}"
+            echo "version=${resolved}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Read the Playwright version
+        if: steps.version.outputs.skip != 'true'
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        if: steps.version.outputs.skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      - name: Install Chromium
+        if: steps.version.outputs.skip != 'true'
+        run: yarn workspace @britecharts/integration playwright install --with-deps chromium
+
+      # No pack step: the consumers install @britecharts/*@<version> from npm.
+      # The tarball tier is skipped for the same reason; the require, types
+      # and browser tiers run unchanged, plus the jsDelivr page.
+      - name: Test the published packages 🌐
+        if: steps.version.outputs.skip != 'true'
+        env:
+          BRITECHARTS_SOURCE: registry
+          BRITECHARTS_VERSION: ${{ steps.version.outputs.version }}
+          VITE_BRITECHARTS_VERSION: ${{ steps.version.outputs.version }}
+          SMOKE_REGISTRY: '1'
+        run: yarn workspace @britecharts/integration test:published
+
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces-published
+          path: packages/integration/test-results
+          retention-days: 7

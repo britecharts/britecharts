@@ -12,6 +12,7 @@ from npm. One HTML page per consumption path:
 | `umd-chart.html` | `dist/umd/charts/bar.min.js` through Vite |
 | `esm-bundle.html` | `import { bar } from '@britecharts/core'` (the package `module` entry) |
 | `esm-chart.html` | `import bar from '@britecharts/core/src/charts/bar/bar.js'` |
+| `cdn-jsdelivr.html` | the published bundle from jsDelivr; only run by `smoke-published.yml` against a released version |
 
 Stylesheets are covered across the pages: the CSS bundle via a `<link>` and via
 a JS import, and the per-chart `common` + `bar` files both ways too.

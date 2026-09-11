@@ -18,6 +18,7 @@ const PAGES = [
     ['C4', `${VANILLA}/umd-chart.html`, 'per-chart UMD build through a bundler', { bars: true }],
     ['C5', `${VANILLA}/esm-bundle.html`, 'ES modules (package module entry)', { bars: true }],
     ['C6', `${VANILLA}/esm-chart.html`, 'per-chart ES module by source path', { bars: true }],
+    ['CDN', `${VANILLA}/cdn-jsdelivr.html`, 'published version: CDN bundle from jsDelivr', { bars: true, published: true }],
     ['R1–R2', `${REACT}/package.html`, 'React 19: named imports from @britecharts/react', { donut: true, line: true, react: true }],
     ['R3', `${REACT}/cjs-chart.html`, 'React 19: per-component CommonJS build', { donut: true, react: true }],
     ['R4', `${REACT}/umd-chart.html`, 'React 19: per-component UMD build', { donut: true, react: true }],
@@ -25,6 +26,11 @@ const PAGES = [
 
 for (const [id, url, how, expects] of PAGES) {
     test(`${id} · ${how}`, async ({ page }) => {
+        test.skip(
+            Boolean(expects.published) && !process.env.SMOKE_REGISTRY,
+            'needs a published version; run by smoke-published.yml'
+        );
+
         const problems = [];
 
         page.on('console', (message) => {
