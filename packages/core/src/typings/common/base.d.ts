@@ -106,7 +106,7 @@ export interface TimeSeriesChartAPI<T> {
      *     chart.xAxisFormat(chart.axisTimeCombinations.HOUR_DAY)
      */
     axisTimeCombinations: {
-        [key in keyof typeof AxisTimeCombination]: key;
+        readonly [key in keyof typeof AxisTimeCombination]: (typeof AxisTimeCombination)[key];
     };
     /**
      * Pass language tag for the tooltip to localize the date.
@@ -128,5 +128,7 @@ export interface TimeSeriesChartAPI<T> {
      * * @example
      *     chart.xAxisCustomFormat(chart.axisTimeCombinations.HOUR_DAY)
      */
-    xAxisFormat(format?: TimeSeriesChartAPI<T>['axisTimeCombinations']): T & TimeSeriesChartAPI<T>;
+    xAxisFormat(
+        format?: AxisTimeCombination | `${AxisTimeCombination}`
+    ): T & TimeSeriesChartAPI<T>;
 }

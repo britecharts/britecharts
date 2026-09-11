@@ -32,7 +32,7 @@ const LineChart = require('britecharts/umd/line.min');
 // Version 3
 // As ES modules
 import { bar } from '@britecharts/core';
-import bar from '@britecharts/core/dist/umd/bar.min';
+import bar from '@britecharts/core/dist/umd/charts/bar.min.js';
 
 // As CommonJS modules
 const { bar } = require('@britecharts/core');
