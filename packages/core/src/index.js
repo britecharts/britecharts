@@ -2,7 +2,6 @@ import bar from './charts/bar/bar.js';
 import donut from './charts/donut/donut.js';
 import legend from './charts/legend/legend.js';
 import line from './charts/line/line.js';
-import loadingStates from './charts/helpers/load.js';
 import tooltip from './charts/tooltip/tooltip.js';
 import miniTooltip from './charts/mini-tooltip/mini-tooltip.js';
 import sparkline from './charts/sparkline/sparkline.js';
@@ -14,13 +13,17 @@ import heatmap from './charts/heatmap/heatmap.js';
 import brush from './charts/brush/brush.js';
 import bullet from './charts/bullet/bullet.js';
 import colors from './charts/helpers/color.js';
+import { axisTimeCombinations } from './charts/helpers/constants.js';
+
+// The public constants. Deliberately a curated subset of helpers/constants:
+// the rest (curve maps, time intervals, gradient ids) is internal.
+const constants = { axisTimeCombinations };
 
 export {
     bar,
     donut,
     legend,
     line,
-    loadingStates,
     tooltip,
     miniTooltip,
     sparkline,
@@ -32,6 +35,7 @@ export {
     brush,
     bullet,
     colors,
+    constants,
 };
 
 const britecharts = {
@@ -39,7 +43,6 @@ const britecharts = {
     donut,
     legend,
     line,
-    loadingStates,
     tooltip,
     miniTooltip,
     sparkline,
@@ -51,6 +54,7 @@ const britecharts = {
     brush,
     bullet,
     colors,
+    constants,
 };
 
 export default britecharts;

@@ -11,11 +11,13 @@ const path = require('node:path');
 const CONSUMER = path.resolve(__dirname, '..', 'consumers', 'vanilla');
 const requireFromConsumer = createRequire(path.join(CONSUMER, 'package.json'));
 
-// What core/src/index.js exports; the bundle must expose the same names.
+// The public API of @britecharts/core, frozen for 3.0.0 (audit decision 11):
+// the 14 charts, `colors` and `constants`. The bundle must expose exactly
+// these names, no more and no fewer.
 const CORE_EXPORTS = [
-    'bar', 'brush', 'bullet', 'colors', 'donut', 'groupedBar', 'heatmap',
-    'legend', 'line', 'loadingStates', 'miniTooltip', 'scatterPlot',
-    'sparkline', 'stackedArea', 'stackedBar', 'tooltip',
+    'bar', 'brush', 'bullet', 'colors', 'constants', 'donut', 'groupedBar',
+    'heatmap', 'legend', 'line', 'miniTooltip', 'scatterPlot', 'sparkline',
+    'stackedArea', 'stackedBar', 'tooltip',
 ];
 const CORE_UMD_CHARTS = [
     'bar', 'brush', 'bullet', 'colors', 'donut', 'groupedBar', 'heatmap',
