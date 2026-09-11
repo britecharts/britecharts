@@ -95,7 +95,6 @@ export default function module() {
         tickPadding = 5,
         hollowColor = '#fff',
         grid = null,
-        baseLine,
         maskGridLines,
         delaunayMesh,
         xAxis,
@@ -605,29 +604,10 @@ export default function module() {
         const grid = gridVertical(xScale)
             .range([0, chartHeight])
             .hideEdges('first')
-            .ticks(xTicks);
+            .ticks(xTicks)
+            .extendedLine(xAxisPadding.bottom);
 
         grid(svg.select('.grid-lines-group'));
-
-        drawVerticalExtendedLine();
-    }
-
-    /**
-     * Draws a vertical line to extend y-axis till the edges
-     * @return {void}
-     */
-    function drawVerticalExtendedLine() {
-        baseLine = svg
-            .select('.grid-lines-group')
-            .selectAll('line.extended-y-line')
-            .data([0])
-            .enter()
-            .append('line')
-            .attr('class', 'extended-y-line')
-            .attr('y1', xAxisPadding.bottom)
-            .attr('y2', chartHeight)
-            .attr('x1', 0)
-            .attr('x2', 0);
     }
 
     /**
@@ -755,25 +735,6 @@ export default function module() {
     }
 
     /**
-     * Draws a vertical line to extend x-axis till the edges
-     * @return {void}
-     * @private
-     */
-    function drawHorizontalExtendedLine() {
-        baseLine = svg
-            .select('.grid-lines-group')
-            .selectAll('line.extended-x-line')
-            .data([0])
-            .enter()
-            .append('line')
-            .attr('class', 'extended-x-line')
-            .attr('x1', xAxisPadding.left)
-            .attr('x2', chartWidth)
-            .attr('y1', chartHeight)
-            .attr('y2', chartHeight);
-    }
-
-    /**
      * Draw horizontal gridles of the chart
      * These gridlines are parallel to x-axis
      * @return {void}
@@ -783,11 +744,10 @@ export default function module() {
         const grid = gridHorizontal(yScale)
             .range([0, chartWidth])
             .hideEdges('first')
-            .ticks(yTicks);
+            .ticks(yTicks)
+            .extendedLine(xAxisPadding.left);
 
         grid(svg.select('.grid-lines-group'));
-
-        drawHorizontalExtendedLine();
     }
 
     /**

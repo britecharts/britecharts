@@ -1,5 +1,21 @@
-// TODO: Document d3 objects rather than using *
-// TODO: Add bi-directional accessors for 2d grid, and determine naming (H/V vs. X/Y)
+/**
+ * A d3 scale with a numeric range: continuous (`scaleLinear`, `scaleTime`, ...)
+ * or band (`scaleBand`, `scalePoint`). Band scales are recognised through
+ * `bandwidth()` and their lines are centred on the band.
+ * @typedef {function} GridScale
+ */
+
+/**
+ * A d3 selection to render into, or a d3 transition on one. Given a
+ * transition, entering and exiting lines fade and slide between positions.
+ * @typedef {Object} GridContext
+ */
+
+// Naming: H and V describe the lines a grid draws -- horizontal lines come
+// from the y-scale's ticks, vertical lines from the x-scale's -- while X and Y
+// name scales and axes. So gridHorizontal(yScale) draws horizontal lines, and
+// on the 2D grid ticksH() sets the ticks of the horizontal lines, which are
+// taken from scaleY().
 
 const { scaleLinear } = require('d3-scale');
 const { classArray } = require('./classes');
@@ -21,7 +37,7 @@ const DIR = {
 /**
  * Higher order function that returns the default positioning function for continuous scales
  * The +0.5 avoids anti-aliasing artifacts
- * @param {*} scale - Scale for positioning
+ * @param {GridScale} scale - Scale for positioning
  * @return {function}
  * @private
  */
@@ -32,7 +48,7 @@ function positionNumber(scale) {
 /**
  * Higher order function that returns the positioning function for bandwidth scales
  * Also adjusted for anti-aliasing
- * @param {*} scale - Scale for positioning
+ * @param {GridScale} scale - Scale for positioning
  * @return {function}
  * @private
  */
@@ -49,7 +65,7 @@ function positionCenter(scale) {
 /**
  * Constructor for a one-dimensional grid helper
  * @param {string} orient - orientation string to define the direction
- * @param {*} scale - d3 scale for the grid's ticks
+ * @param {GridScale} scale - d3 scale for the grid's ticks
  * @return {gridBaseGenerator}
  * @private
  */
@@ -60,6 +76,8 @@ function gridBase(orient, scale) {
         hideEdges = false,
         ticks = null,
         tickValues = null,
+        extendedLine = null,
+        highlight = null,
         // Create a class array helper for producing class lists
         classArr = classArray(COMPONENT_CLASSNAME, orient),
         // Manage horizontal and vertical directions by setting the a parameter
@@ -69,7 +87,7 @@ function gridBase(orient, scale) {
 
     /**
      * Generator function for one-dimensional grid
-     * @param {*} context - d3 selection or transition to use as the container
+     * @param {GridContext} context - d3 selection or transition to use as the container
      */
     function gridBaseGenerator(context) {
         let values = getValues(),
@@ -93,11 +111,21 @@ function gridBase(orient, scale) {
                     .attr('class', classArr.asList())
             ),
             // Set up line selections
-            line = container.selectAll('line').data(values, scale).order(),
+            // Scoped to the grid lines: the extended line shares the container
+            line = container
+                .selectAll('line.grid-line')
+                .data(values, scale)
+                .order(),
             lineExit = line.exit(),
             lineEnter = line.enter().append('line').attr('class', 'grid-line');
 
-        line = line.merge(lineEnter);
+        line = line
+            .merge(lineEnter)
+            .attr('class', (d) =>
+                highlight !== null && d === highlight
+                    ? `grid-line ${orient}-grid-line--highlighted`
+                    : 'grid-line'
+            );
 
         // Run animations only if grid was called on a transition
         if (context !== selection) {
@@ -140,6 +168,8 @@ function gridBase(orient, scale) {
             .attr(y + '1', (d) => position(d))
             .attr(y + '2', (d) => position(d));
 
+        drawExtendedLine(container, k);
+
         // Attach the positioning function as a property of the container element
         // This stores it for future use as the starting point for the lineEnter transition
         // Cannot use arrow function as this must refer to the element
@@ -149,6 +179,35 @@ function gridBase(orient, scale) {
     }
 
     // HELPERS
+
+    /**
+     * Draws (or removes) the extended line: the axis baseline, a solid line
+     * at the start of the scale's own range, spanning the grid's range. It is
+     * inset from the start of that range by the extendedLine offset, which is
+     * where a chart leaves room for its axis labels.
+     * @param {GridContext} container - the grid's container group
+     * @param {number} k - 1 or -1, the direction of the range
+     * @private
+     */
+    function drawExtendedLine(container, k) {
+        const className = `extended-${x}-line`;
+        const extended = container
+            .selectAll(`line.${className}`)
+            .data(extendedLine === null ? [] : [null]);
+        const at = +scale.range()[0];
+
+        extended.exit().remove();
+
+        extended
+            .enter()
+            .append('line')
+            .attr('class', className)
+            .merge(extended)
+            .attr(x + '1', +range[0] + k * extendedLine)
+            .attr(x + '2', +range[range.length - 1])
+            .attr(y + '1', at)
+            .attr(y + '2', at);
+    }
 
     /**
      * Extract the tick values and adjust for edge hiding
@@ -194,8 +253,8 @@ function gridBase(orient, scale) {
     /**
      * Gets or sets the scale
      * Scale applies the ticks to the grid
-     * @param {*} [_] - d3 scale instance
-     * @return {*|gridBaseGenerator}
+     * @param {GridScale} [_] - d3 scale instance
+     * @return {GridScale|gridBaseGenerator}
      * @public
      */
     gridBaseGenerator.scale = function (_) {
@@ -212,7 +271,7 @@ function gridBase(orient, scale) {
      * Governs the underlying length and positioning of the grid lines relative to the container
      * Should usually be set to the output range from the orthogonal scale in a 2D chart
      * @param {number[]} [_] - Array representing the output range
-     * @return {*|gridBaseGenerator}
+     * @return {number[]|gridBaseGenerator}
      * @public
      */
     gridBaseGenerator.range = function (_) {
@@ -228,7 +287,7 @@ function gridBase(orient, scale) {
      * Gets or sets the start offset
      * Start offset is the distance before the start position of the scale's range that the grid will render
      * @param {number} [_] - Offset in px
-     * @return {*|gridBaseGenerator}
+     * @return {GridScale|gridBaseGenerator}
      * @public
      */
     gridBaseGenerator.offsetStart = function (_) {
@@ -244,7 +303,7 @@ function gridBase(orient, scale) {
      * Gets or sets the end offset
      * End offset is the distance after the end position of the scale's range that the grid will render
      * @param {number} [_] - Offset in px
-     * @return {*|gridBaseGenerator}
+     * @return {GridScale|gridBaseGenerator}
      * @public
      */
     gridBaseGenerator.offsetEnd = function (_) {
@@ -306,13 +365,54 @@ function gridBase(orient, scale) {
         return gridBaseGenerator;
     };
 
+    /**
+     * Gets or sets the extended line offset
+     * The extended line is the axis baseline: a solid line at the start of the
+     * scale's range, spanning the grid's range. A number draws it, inset by
+     * that many px from the start of the range (room for the axis labels);
+     * null, the default, draws none. The line carries the class
+     * `extended-x-line` on a horizontal grid and `extended-y-line` on a
+     * vertical one.
+     * @param {number|null} [_] - Inset in px, or null for no line
+     * @return {number|null|gridBaseGenerator}
+     * @public
+     */
+    gridBaseGenerator.extendedLine = function (_) {
+        if (!arguments.length) {
+            return extendedLine;
+        }
+        extendedLine = _;
+
+        return gridBaseGenerator;
+    };
+
+    /**
+     * Gets or sets the highlighted tick value
+     * The grid line drawn at this value (typically 0, when the data crosses it)
+     * also gets the class `horizontal-grid-line--highlighted` or
+     * `vertical-grid-line--highlighted`. Only a line that exists is
+     * highlighted, so the value must be one of the ticks. null, the default,
+     * highlights nothing.
+     * @param {number|Date|string|null} [_] - Tick value to highlight, or null
+     * @return {number|Date|string|null|gridBaseGenerator}
+     * @public
+     */
+    gridBaseGenerator.highlight = function (_) {
+        if (!arguments.length) {
+            return highlight;
+        }
+        highlight = _;
+
+        return gridBaseGenerator;
+    };
+
     return gridBaseGenerator;
 }
 
 /**
  * Constructor for a two-dimensional grid helper
- * @param {*} scaleX - d3 scale for the grid's x direction
- * @param {*} scaleY - d3 scale for the grid's y direction
+ * @param {GridScale} scaleX - d3 scale for the grid's x direction
+ * @param {GridScale} scaleY - d3 scale for the grid's y direction
  * @return {gridGenerator}
  * @memberof Grid
  * @alias module:Grid.grid
@@ -333,7 +433,7 @@ export function grid(scaleX, scaleY) {
 
     /**
      * Generator function for two-dimensional grid
-     * @param {*} context - d3 selection or transition to use as the container
+     * @param {GridContext} context - d3 selection or transition to use as the container
      */
     function gridGenerator(context) {
         direction === DIRECTION_FULL || direction === DIRECTION_HORIZONTAL
@@ -352,8 +452,8 @@ export function grid(scaleX, scaleY) {
     /**
      * Gets or sets the x-scale
      * X-scale applies ticks to the vertical grid and range to the horizontal grid
-     * @param {*} [_] - d3 scale instance
-     * @return {*|gridGenerator}
+     * @param {GridScale} [_] - d3 scale instance
+     * @return {GridScale|gridGenerator}
      * @public
      */
     gridGenerator.scaleX = function (_) {
@@ -369,8 +469,8 @@ export function grid(scaleX, scaleY) {
     /**
      * Gets or sets the y-scale
      * Y-scale applies ticks to the horizontal grid and range to the vertical grid
-     * @param {*} [_] - d3 scale instance
-     * @return {*|gridGenerator}
+     * @param {GridScale} [_] - d3 scale instance
+     * @return {GridScale|gridGenerator}
      * @public
      */
     gridGenerator.scaleY = function (_) {
@@ -661,12 +761,76 @@ export function grid(scaleX, scaleY) {
         return gridGenerator;
     };
 
+    /**
+     * Gets or sets the extended line offset of the horizontal grid
+     * See gridHorizontal's extendedLine
+     * @param {number|null} [_] - Inset in px, or null for no line
+     * @return {number|null|gridGenerator}
+     * @public
+     */
+    gridGenerator.extendedLineH = function (_) {
+        if (!arguments.length) {
+            return gridH.extendedLine();
+        }
+        gridH.extendedLine(_);
+
+        return gridGenerator;
+    };
+
+    /**
+     * Gets or sets the extended line offset of the vertical grid
+     * See gridVertical's extendedLine
+     * @param {number|null} [_] - Inset in px, or null for no line
+     * @return {number|null|gridGenerator}
+     * @public
+     */
+    gridGenerator.extendedLineV = function (_) {
+        if (!arguments.length) {
+            return gridV.extendedLine();
+        }
+        gridV.extendedLine(_);
+
+        return gridGenerator;
+    };
+
+    /**
+     * Gets or sets the highlighted tick value of the horizontal grid
+     * See gridHorizontal's highlight
+     * @param {number|Date|string|null} [_] - Tick value to highlight, or null
+     * @return {number|Date|string|null|gridGenerator}
+     * @public
+     */
+    gridGenerator.highlightH = function (_) {
+        if (!arguments.length) {
+            return gridH.highlight();
+        }
+        gridH.highlight(_);
+
+        return gridGenerator;
+    };
+
+    /**
+     * Gets or sets the highlighted tick value of the vertical grid
+     * See gridVertical's highlight
+     * @param {number|Date|string|null} [_] - Tick value to highlight, or null
+     * @return {number|Date|string|null|gridGenerator}
+     * @public
+     */
+    gridGenerator.highlightV = function (_) {
+        if (!arguments.length) {
+            return gridV.highlight();
+        }
+        gridV.highlight(_);
+
+        return gridGenerator;
+    };
+
     return gridGenerator;
 }
 
 /**
  * Constructor for a horizontal grid helper
- * @param {*} scale - d3 scale to initialize the grid
+ * @param {GridScale} scale - d3 scale to initialize the grid
  * @return {gridBaseGenerator}
  * @public
  * @memberof Grid
@@ -685,7 +849,7 @@ export function gridHorizontal(scale) {
 
 /**
  * Constructor for a vertical grid helper
- * @param {*} scale - d3 scale to initialize the grid
+ * @param {GridScale} scale - d3 scale to initialize the grid
  * @return {gridBaseGenerator}
  * @public
  * @memberof Grid
@@ -705,6 +869,11 @@ export function gridVertical(scale) {
 /**
  * Reusable Grid component helper that renders either a vertical, horizontal or full grid, and that
  * will usually be used inside charts. It could also be used as a standalone component to use on custom charts.
+ *
+ * Naming: H and V describe the lines a grid draws, X and Y name scales.
+ * gridHorizontal(yScale) draws horizontal lines from the y-scale's ticks; on
+ * the 2D grid, ticksH() sets the ticks of the horizontal lines (from scaleY())
+ * and ticksV() those of the vertical lines (from scaleX()).
  * @module Grid
  * @requires d3-scale
  * @exports gridHorizontal
