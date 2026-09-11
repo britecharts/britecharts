@@ -48,14 +48,23 @@ module.exports = {
             };
         }
 
+        // Production: the three Storybooks are deployed together under
+        // /storybook/ on the docs site (see .github/workflows/docs-deploy.yml
+        // and scripts/compose-site.js), so the refs are same-origin -- no
+        // CORS, no login wall. Chromatic still receives core and react for
+        // visual review, but nothing public points at it.
+        const base =
+            process.env.STORYBOOK_REFS_BASE ||
+            'https://britecharts.github.io/britecharts/storybook';
+
         return {
             core: {
                 title: 'Britecharts Core',
-                url: 'https://main--63e47b02f004ed290364764f.chromatic.com',
+                url: `${base}/core`,
             },
             react: {
                 title: 'Britecharts React',
-                url: 'https://main--63e48c5ee9db838c66d19aae.chromatic.com',
+                url: `${base}/react`,
             },
         };
     },

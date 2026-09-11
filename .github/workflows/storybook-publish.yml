@@ -1,5 +1,11 @@
-name: Storybook Deployment to Chromatic
+name: Visual tests on Chromatic
 
+# Publishes the core and react Storybooks to Chromatic for visual review. The
+# composed demos Storybook is only *built* here, as a check: it has no stories
+# of its own (two MDX pages and two composition refs, which Chromatic never
+# snapshots), so Chromatic rejected it on every run with "Cannot run a build
+# with no stories". It is hosted on GitHub Pages instead, by docs-deploy.yml.
+#
 # Was `on: push` for every branch, which spent a Chromatic snapshot on every
 # commit anywhere in the repo.
 on:
@@ -61,12 +67,5 @@ jobs:
           autoAcceptChanges: 'main'
           storybookBuildDir: './packages/react/dist/storybook'
 
-      - name: Build main storybook 🔧
+      - name: Build the composed storybook (check only) 🔧
         run: yarn workspace @britecharts/demos build
-
-      - name: Publish main storybook to Chromatic 🚀
-        uses: chromaui/action@v18
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          autoAcceptChanges: 'main'
-          storybookBuildDir: './packages/demos/dist'

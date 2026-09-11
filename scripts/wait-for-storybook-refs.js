@@ -16,7 +16,7 @@
  * webpack build happened to finish first.
  *
  * Waiting here makes local behave the way production already does, where the
- * refs are Chromatic URLs that are always up.
+ * refs are the GitHub Pages copies deployed with the docs, always up.
  *
  * Usage: node scripts/wait-for-storybook-refs.js <url>... -- <command> [args]
  */
@@ -77,7 +77,9 @@ const waitForAll = async () => {
             // shell still works on its own, the missing refs just will not load.
             console.warn(
                 `[refs] gave up waiting for ${[...pending].join(', ')} after ` +
-                    `${TIMEOUT_MS / 1000}s -- starting anyway, those refs will ` +
+                    `${
+                        TIMEOUT_MS / 1000
+                    }s -- starting anyway, those refs will ` +
                     `not load`
             );
             break;
