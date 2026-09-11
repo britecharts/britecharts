@@ -55,6 +55,22 @@ Playwright (`*.spec.js`).
 [publint]: https://publint.dev
 [attw]: https://arethetypeswrong.github.io
 
+## After a release: the published packages
+
+`yarn test:published` runs the same require, types and browser tiers, but
+with the consumers installed from the npm registry instead of the tarballs,
+plus a page that loads the CDN bundle from jsDelivr:
+
+```sh
+BRITECHARTS_SOURCE=registry BRITECHARTS_VERSION=3.0.0-beta.1 \
+VITE_BRITECHARTS_VERSION=3.0.0-beta.1 SMOKE_REGISTRY=1 \
+yarn workspace @britecharts/integration test:published
+```
+
+The **Smoke test the published packages** workflow does this on its own after
+every successful Release run, and can be started from the Actions tab for any
+version or dist-tag. It is the only test that touches the network.
+
 ## Local loop for chart work
 
 ```sh

@@ -21,7 +21,7 @@
   <span> · </span>
   <a href="https://britecharts.github.io/britecharts/">Docs</a>
   <span> · </span>
-  <a href="https://github.com/britecharts/britecharts-test-project">Test Project</a>
+  <a href="https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers">Test Projects</a>
   <span> · </span>
   <a href="https://britecharts.github.io/britecharts/docs/tutorials/tutorials-index">Storybook</a>
   <span> · </span>

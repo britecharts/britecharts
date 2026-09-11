@@ -39,7 +39,7 @@ const { bar } = require('@britecharts/core');
 const bar = require('@britecharts/core/dist/umd/bar.min');
 
 ```
-You can also check more ways of loading (CommonJS and CDN) in our [Britecharts Test Project](https://github.com/britecharts/britecharts-test-project#usage)
+You can also check more ways of loading (CommonJS, UMD and CDN) in the [vanilla consumer](https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers/vanilla) of our integration tests, which CI runs against every change
 
 2. Change how you show loading states
 

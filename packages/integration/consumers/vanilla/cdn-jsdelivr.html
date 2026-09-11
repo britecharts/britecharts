@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CDN · published bundle from jsDelivr</title>
+    <link rel="stylesheet" href="/src/page.css">
+    <!-- Only meaningful for a published version: smoke-published.yml sets
+         VITE_BRITECHARTS_VERSION, and tests/browser.spec.js skips this page
+         otherwise. Nothing else in the suite touches the network. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@britecharts/core@%VITE_BRITECHARTS_VERSION%/dist/styles/bundle/britecharts.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/d3-selection@3/dist/d3-selection.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@britecharts/core@%VITE_BRITECHARTS_VERSION%/dist/cdn/bundle/core.cdn.min.js"></script>
+</head>
+<body>
+    <h1>CDN · published bundle from jsDelivr</h1>
+    <div class="bar-container"></div>
+    <script>
+        var barData = [
+            { name: "Luminous", value: 2 },
+            { name: "Glittering", value: 5 },
+            { name: "Intense", value: 4 },
+            { name: "Radiant", value: 3 },
+        ];
+        var barChart = core.bar()
+            .margin({ left: 100 })
+            .isHorizontal(true)
+            .height(400)
+            .width(600);
+
+        d3.select(".bar-container").datum(barData).call(barChart);
+    </script>
+</body>
+</html>

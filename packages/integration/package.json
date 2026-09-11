@@ -13,7 +13,8 @@
     "test:require": "node --test tests/require.test.js",
     "test:types": "node --test tests/types.test.js",
     "test:browser": "playwright test",
-    "test:integration": "yarn run pack && yarn run install:consumers && yarn run test:tarballs && yarn run test:require && yarn run test:types && yarn run test:browser"
+    "test:integration": "yarn run pack && yarn run install:consumers && yarn run test:tarballs && yarn run test:require && yarn run test:types && yarn run test:browser",
+    "test:published": "yarn run install:consumers && yarn run test:require && yarn run test:types && yarn run test:browser"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
