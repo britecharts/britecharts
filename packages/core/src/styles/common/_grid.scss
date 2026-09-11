@@ -8,7 +8,8 @@
     stroke-width: 1;
 }
 
-.horizontal-grid-line--highlighted {
+.horizontal-grid-line--highlighted,
+.vertical-grid-line--highlighted {
     stroke: $grey-700;
     stroke-dasharray: 2, 2;
 }
