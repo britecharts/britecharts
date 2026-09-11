@@ -275,8 +275,7 @@ describe('stacked Bar Chart', () => {
     });
 
     describe('lifecycle', () => {
-        // TODO: Review this test with more time, as it fails in Travis only
-        describe.skip('when clicking on the chart', () => {
+        describe('when clicking on the chart', () => {
             it('should trigger a callback', () => {
                 const chart = containerFixture.select('.stacked-bar');
                 const callbackSpy = jest.fn();
