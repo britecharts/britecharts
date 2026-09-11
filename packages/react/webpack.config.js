@@ -88,6 +88,9 @@ const prodChartsConfig = merge([
             path: PATHS.umd,
             filename: '[name].js',
             library: ['react', '[name]'],
+            // The component itself, not { default: Component }; same shape as
+            // core's per-chart builds.
+            libraryExport: 'default',
             libraryTarget: 'umd',
             globalObject: 'this',
         },
@@ -106,6 +109,9 @@ const prodCJSChartsConfig = merge([
             path: PATHS.cjs,
             filename: '[name].js',
             library: ['react', '[name]'],
+            // The component itself, not { default: Component }; same shape as
+            // core's per-chart builds.
+            libraryExport: 'default',
             libraryTarget: 'commonjs2',
         },
         externals: parts.externals(),
@@ -128,6 +134,9 @@ const prodBundleConfig = merge([
             libraryTarget: 'umd',
             globalObject: 'this',
         },
+        // Without this the bundle carried its own React 16, which React 17+
+        // rejects at render time. The per-chart builds always had it.
+        externals: parts.externals(),
     },
     parts.babelLoader(),
     parts.generateSourceMaps({ type: 'source-map' }),

@@ -1,0 +1,14 @@
+{
+  "name": "britecharts-react-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A React 19 consumer of @britecharts/react, installed from the packed tarballs the way a user would install it from npm",
+  "dependencies": {
+    "@britecharts/core": "file:../../.tarballs/core.tgz",
+    "@britecharts/react": "file:../../.tarballs/react.tgz",
+    "@britecharts/wrappers": "file:../../.tarballs/wrappers.tgz",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
