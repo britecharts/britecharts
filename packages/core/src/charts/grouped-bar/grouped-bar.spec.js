@@ -293,38 +293,78 @@ describe('grouped Bar Chart', () => {
         });
 
         describe('when hovering', () => {
-            it('mouseover should trigger a callback', () => {
-                const chart = containerFixture.selectAll('.grouped-bar');
+            // The chart listens on its svg, but the tooltip events are for
+            // the bars only: a move over a bar (bubbling up to the svg) is
+            // a mouse over; the empty space around the bars is not.
+            const overABar = () =>
+                containerFixture
+                    .select('.bar')
+                    .dispatch('mousemove', { bubbles: true });
+            const overTheEmptySpace = () =>
+                containerFixture.select('.grouped-bar').dispatch('mousemove');
+
+            it('mouseover should trigger a callback when the pointer reaches a bar', () => {
                 const callbackSpy = jest.fn();
-                const expectedCalls = 1;
-                const expectedArguments = 2;
-                let actualCalls;
-                let actualArgumentsNumber;
+                const expectedCallCount = 1;
+                const expectedArgumentsCount = 2;
 
                 groupedBarChart.on('customMouseOver', callbackSpy);
-                chart.dispatch('mouseenter');
-                actualCalls = callbackSpy.mock.calls.length;
-                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
+                overABar();
+                overABar();
 
-                expect(actualCalls).toEqual(expectedCalls);
-                expect(actualArgumentsNumber).toEqual(expectedArguments);
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
+                    expectedArgumentsCount
+                );
             });
 
-            it('mouseout should trigger a callback', () => {
-                const chart = containerFixture.selectAll('.grouped-bar');
+            it('mouseover should not trigger a callback over the empty space of the chart', () => {
                 const callbackSpy = jest.fn();
-                const expectedCalls = 1;
-                const expectedArguments = 2;
-                let actualCalls;
-                let actualArgumentsNumber;
+                const expectedCallCount = 0;
+
+                groupedBarChart.on('customMouseOver', callbackSpy);
+                containerFixture.select('.grouped-bar').dispatch('mouseenter');
+                overTheEmptySpace();
+
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+            });
+
+            it('mouseout should trigger a callback when the pointer leaves the bars for the empty space', () => {
+                const callbackSpy = jest.fn();
+                const expectedCallCount = 1;
+                const expectedArgumentsCount = 2;
 
                 groupedBarChart.on('customMouseOut', callbackSpy);
-                chart.dispatch('mouseleave');
-                actualCalls = callbackSpy.mock.calls.length;
-                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
+                overABar();
+                overTheEmptySpace();
+                overTheEmptySpace();
 
-                expect(actualCalls).toEqual(expectedCalls);
-                expect(actualArgumentsNumber).toEqual(expectedArguments);
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
+                    expectedArgumentsCount
+                );
+            });
+
+            it('mouseout should trigger a callback when the pointer leaves the chart from a bar', () => {
+                const callbackSpy = jest.fn();
+                const expectedCallCount = 1;
+
+                groupedBarChart.on('customMouseOut', callbackSpy);
+                overABar();
+                containerFixture.select('.grouped-bar').dispatch('mouseleave');
+
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+            });
+
+            it('mouseout should not trigger a callback when the bars were never hovered', () => {
+                const callbackSpy = jest.fn();
+                const expectedCallCount = 0;
+
+                groupedBarChart.on('customMouseOut', callbackSpy);
+                containerFixture.select('.grouped-bar').dispatch('mouseenter');
+                containerFixture.select('.grouped-bar').dispatch('mouseleave');
+
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
             });
         });
     });

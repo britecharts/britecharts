@@ -90,6 +90,9 @@ export default function module() {
         percentageAxisToMaxRatio = 1,
         colorSchema = colorHelper.colorSchemas.britecharts,
         nameToColorMap = null,
+        // Whether the pointer is over one of the bars (not the empty space
+        // of the chart), which is when the tooltip events are dispatched
+        isPointerOverBars = false,
         colorScale,
         layers,
         ease = easeQuadInOut,
@@ -693,6 +696,22 @@ export default function module() {
      * @private
      */
     function handleMouseMove(e, d, event) {
+        // The listener is on the svg, so it sees every move; the tooltip
+        // is only for the bars, not the empty space around them. Entering
+        // a bar from that space is a mouse over; leaving the bars for it
+        // is a mouse out.
+        if (!isPointerOverBar(event)) {
+            if (isPointerOverBars) {
+                handleMouseOut(e, d, event);
+            }
+
+            return;
+        }
+
+        if (!isPointerOverBars) {
+            handleMouseOver(e, d, event);
+        }
+
         let [mouseX, mouseY] = getMousePosition(event),
             dataPoint = isHorizontal
                 ? getNearestDataPoint2(mouseY)
@@ -740,6 +759,10 @@ export default function module() {
      * @private
      */
     function handleMouseOut(e, d, event) {
+        if (!isPointerOverBars) {
+            return;
+        }
+        isPointerOverBars = false;
         svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
         dispatcher.call('customMouseOut', e, d, pointer(event, e));
     }
@@ -749,7 +772,21 @@ export default function module() {
      * @private
      */
     function handleMouseOver(e, d, event) {
+        if (isPointerOverBars || !isPointerOverBar(event)) {
+            return;
+        }
+        isPointerOverBars = true;
         dispatcher.call('customMouseOver', e, d, pointer(event, e));
+    }
+
+    /**
+     * Whether a pointer event happened over one of the bars
+     * @param  {Event} event    The pointer event, listened on the svg
+     * @return {Boolean}
+     * @private
+     */
+    function isPointerOverBar(event) {
+        return !!event && !!event.target && select(event.target).classed('bar');
     }
 
     /**

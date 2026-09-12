@@ -142,6 +142,33 @@ describe('mini Tooltip Component', () => {
             expect(actual).toEqual(expected);
         });
 
+        it('should fade out when hidden, staying visible meanwhile', () => {
+            const settle = () =>
+                new Promise((resolve) => setTimeout(resolve, 300));
+
+            tooltipChart.show({ name: 'Bar', value: 12 }, [10, 20]);
+
+            return settle()
+                .then(() => {
+                    tooltipChart.hide();
+
+                    expect(
+                        containerFixture
+                            .select('.britechart-mini-tooltip')
+                            .style('visibility')
+                    ).toEqual('visible');
+
+                    return settle();
+                })
+                .then(() => {
+                    expect(
+                        containerFixture
+                            .select('.britechart-mini-tooltip')
+                            .style('visibility')
+                    ).toEqual('hidden');
+                });
+        });
+
         it('should be visible when required', () => {
             const initialExpected = 'hidden';
             const expected = 'visible';

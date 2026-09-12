@@ -295,14 +295,24 @@ describe('stacked Bar Chart', () => {
         });
 
         describe('when hovering', () => {
-            it('mouseover should trigger a callback', () => {
-                const chart = containerFixture.selectAll('.stacked-bar');
+            // The chart listens on its svg, but the tooltip events are for
+            // the bars only: a move over a bar (bubbling up to the svg) is
+            // a mouse over; the empty space around the bars is not.
+            const overABar = () =>
+                containerFixture
+                    .select('.bar')
+                    .dispatch('mousemove', { bubbles: true });
+            const overTheEmptySpace = () =>
+                containerFixture.select('.stacked-bar').dispatch('mousemove');
+
+            it('mouseover should trigger a callback when the pointer reaches a bar', () => {
                 const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
                 stackedBarChart.on('customMouseOver', callbackSpy);
-                chart.dispatch('mouseenter');
+                overABar();
+                overABar();
 
                 expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
                 expect(callbackSpy.mock.calls[0]).toHaveLength(
@@ -310,19 +320,53 @@ describe('stacked Bar Chart', () => {
                 );
             });
 
-            it('mouseout should trigger a callback', () => {
-                const chart = containerFixture.selectAll('.stacked-bar');
+            it('mouseover should not trigger a callback over the empty space of the chart', () => {
+                const callbackSpy = jest.fn();
+                const expectedCallCount = 0;
+
+                stackedBarChart.on('customMouseOver', callbackSpy);
+                containerFixture.select('.stacked-bar').dispatch('mouseenter');
+                overTheEmptySpace();
+
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+            });
+
+            it('mouseout should trigger a callback when the pointer leaves the bars for the empty space', () => {
                 const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
                 stackedBarChart.on('customMouseOut', callbackSpy);
-                chart.dispatch('mouseleave');
+                overABar();
+                overTheEmptySpace();
+                overTheEmptySpace();
 
                 expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
                 expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArgumentsCount
                 );
+            });
+
+            it('mouseout should trigger a callback when the pointer leaves the chart from a bar', () => {
+                const callbackSpy = jest.fn();
+                const expectedCallCount = 1;
+
+                stackedBarChart.on('customMouseOut', callbackSpy);
+                overABar();
+                containerFixture.select('.stacked-bar').dispatch('mouseleave');
+
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+            });
+
+            it('mouseout should not trigger a callback when the bars were never hovered', () => {
+                const callbackSpy = jest.fn();
+                const expectedCallCount = 0;
+
+                stackedBarChart.on('customMouseOut', callbackSpy);
+                containerFixture.select('.stacked-bar').dispatch('mouseenter');
+                containerFixture.select('.stacked-bar').dispatch('mouseleave');
+
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
             });
         });
     });

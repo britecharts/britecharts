@@ -289,6 +289,80 @@ describe('tooltip Component', () => {
     });
 
     describe('lifecycle', () => {
+        const settle = () => new Promise((resolve) => setTimeout(resolve, 300));
+        const aDataPoint = (names) => ({
+            date: '2015-08-05T07:00:00.000Z',
+            topics: names.map((name, index) => ({
+                name,
+                topicName: name,
+                value: index + 1,
+            })),
+        });
+
+        it('should fade out when hidden, staying visible meanwhile', () => {
+            tooltipChart.show();
+            tooltipChart.update(aDataPoint(['a']), topicColorMap, 0, 0);
+
+            return settle()
+                .then(() => {
+                    tooltipChart.hide();
+
+                    expect(
+                        containerFixture
+                            .select('.britechart-tooltip')
+                            .style('visibility')
+                    ).toEqual('visible');
+
+                    return settle();
+                })
+                .then(() => {
+                    expect(
+                        containerFixture
+                            .select('.britechart-tooltip')
+                            .style('visibility')
+                    ).toEqual('hidden');
+                });
+        });
+
+        it('should stay shown when called on its container again', () => {
+            tooltipChart.show();
+            tooltipChart.update(aDataPoint(['a']), topicColorMap, 0, 0);
+            containerFixture.call(tooltipChart);
+
+            const expected = 'visible';
+            const actual = containerFixture
+                .select('.britechart-tooltip')
+                .style('visibility');
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should keep the same row nodes across updates', () => {
+            tooltipChart.update(aDataPoint(['a', 'b']), topicColorMap, 0, 0);
+
+            const before = containerFixture.selectAll('.tooltip-entry').nodes();
+
+            tooltipChart.update(aDataPoint(['a', 'b']), topicColorMap, 10, 0);
+
+            const after = containerFixture.selectAll('.tooltip-entry').nodes();
+
+            expect(after).toEqual(before);
+            expect(after.length).toEqual(2);
+        });
+
+        it('should drop the rows of topics that are gone', () => {
+            tooltipChart.update(aDataPoint(['a', 'b']), topicColorMap, 0, 0);
+            tooltipChart.update(aDataPoint(['b']), topicColorMap, 0, 0);
+
+            const expected = ['b'];
+            const actual = containerFixture
+                .selectAll('.tooltip-left-text')
+                .nodes()
+                .map((node) => node.textContent);
+
+            expect(actual).toEqual(expected);
+        });
+
         it('should be visible when required', () => {
             const expected = 'visible';
             const expectedDefault = 'hidden';

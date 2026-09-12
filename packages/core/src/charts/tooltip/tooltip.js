@@ -1,4 +1,3 @@
-import { easeQuadInOut } from 'd3-ease';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
@@ -13,6 +12,7 @@ import {
 } from '../helpers/number';
 import { getTextWidth, getApproximateNumberOfLines } from '../helpers/text';
 import { measureFrame, originOf, translateOf } from './frame';
+import { chaseDuration, ease, prepareToShow, fadeIn, fadeOut } from './motion';
 import { place } from './place';
 
 /**
@@ -96,10 +96,10 @@ export default function module() {
         initialTooltipTextXPosition = -22,
         tooltipTextLinePadding = 5,
         tooltipRightWidth,
-        // Animations
-        mouseChaseDuration = 200,
-        fadeInDuration = 100,
-        ease = easeQuadInOut,
+        // Whether show() has been called and hide() has not
+        isShown = false,
+        // Whether the next update is the first since show(), and fades in
+        isEntering = false,
         circleYOffset = 8,
         colorMap,
         titleFillColor = '#6D717A',
@@ -172,21 +172,13 @@ export default function module() {
 
             buildContainerGroups();
             drawTooltip();
+
+            // Hidden by default. Only on the first build: the wrappers call
+            // the tooltip on its container again on every update, and a
+            // hide there would make the box fade in again on every move
+            exports.hide();
         }
         svg.transition().attr('width', width).attr('height', height);
-
-        // Hidden by default
-        exports.hide();
-    }
-
-    /**
-     * Resets the tooltipBody content
-     * @return void
-     * @private
-     */
-    function cleanContent() {
-        tooltipBody.selectAll('text').remove();
-        tooltipBody.selectAll('circle').remove();
     }
 
     /**
@@ -328,67 +320,95 @@ export default function module() {
     }
 
     /**
-     * Draws the data entries inside the tooltip for a given topic
-     * @param  {Object} topic Topic to extract data from
+     * Builds the nodes of one row of the tooltip: the colour dot, the
+     * topic's name on the left and its value on the right. Positions and
+     * text are set by layoutEntry on every update.
+     * @param  {Selection} entry    The row's group, just entered
      * @return void
      * @private
      */
-    function updateTopicContent(topic) {
-        let name = topic[nameLabel],
-            tooltipRight,
-            tooltipLeftText,
-            tooltipRightText,
-            elementText;
+    function buildEntry(entry) {
+        entry
+            .append('circle')
+            .classed('tooltip-circle', true)
+            .attr('cx', -tooltipWidth / 4 + 30)
+            .attr('cy', circleYOffset)
+            .attr('r', circularMarkerRadius)
+            .style('stroke-width', 1);
 
-        tooltipLeftText = topic.topicName || name;
-        tooltipRightText = getValueText(topic);
-
-        elementText = tooltipBody
+        entry
             .append('text')
             .classed('tooltip-left-text', true)
             .attr('dy', '1em')
             .attr('x', ttTextX)
-            .attr('y', ttTextY)
-            .style('fill', tooltipTextColor)
-            .text(tooltipLeftText)
-            .call(textWrap, tooltipMaxTopicLength, initialTooltipTextXPosition);
+            .attr('y', 0)
+            .style('fill', tooltipTextColor);
 
-        tooltipRight = tooltipBody
+        entry
             .append('text')
             .classed('tooltip-right-text', true)
             .attr('dy', '1em')
-            .attr('x', ttTextX)
-            .attr('y', ttTextY)
-            .style('fill', tooltipTextColor)
-            .text(tooltipRightText);
+            .attr('y', 0)
+            .style('fill', tooltipTextColor);
+    }
+
+    /**
+     * Lays out one row of the tooltip for a topic. Rows are kept across
+     * updates (see updateContent), so a text is only re-set, re-wrapped and
+     * re-measured when it changed; the row goes to its y through its
+     * group's transform.
+     * @param  {Selection} entry    The row's group
+     * @param  {Object} topic       Topic to extract data from
+     * @return void
+     * @private
+     */
+    function layoutEntry(entry, topic) {
+        const name = topic[nameLabel];
+        const leftText = topic.topicName || name;
+        const rightText = getValueText(topic);
+        const left = entry.select('.tooltip-left-text');
+        const right = entry.select('.tooltip-right-text');
+
+        entry.attr('transform', `translate(${ttTextX}, ${ttTextY})`);
+
+        if (left.attr('data-text') !== leftText) {
+            left.attr('data-text', leftText)
+                .text(leftText)
+                .call(
+                    textWrap,
+                    tooltipMaxTopicLength,
+                    initialTooltipTextXPosition
+                );
+        }
+
+        if (right.attr('data-text') !== rightText) {
+            right.attr('data-text', rightText).text(rightText);
+
+            // A width of 0 comes back while the tooltip is hidden; keep the
+            // last usable one, as with the height below
+            const measuredWidth = right.node().getBBox().width;
+
+            if (measuredWidth) {
+                right.attr('data-width', measuredWidth);
+                tooltipRightWidth = measuredWidth;
+            }
+        }
+
+        const rightWidth =
+            parseFloat(right.attr('data-width')) || tooltipRightWidth || 0;
+
+        right.attr('x', tooltipWidth - rightWidth - 10 - tooltipWidth / 4);
 
         // A height of 0 comes back when the node cannot be measured: IE11 does it
         // when hovering over the vertical marker, and any browser does it while
         // the tooltip is still hidden. Keep the last usable measurement instead,
         // which is seeded with defaultTextHeight so it is never undefined.
-        const measuredTextHeight = elementText.node().getBBox().height;
+        const measuredTextHeight = left.node().getBBox().height;
 
         textHeight = measuredTextHeight || textHeight;
-
         tooltipHeight += textHeight + tooltipTextLinePadding;
-        // update the width if it exists because IE renders the elements
-        // too slow and cant figure out the width?
-        tooltipRightWidth = tooltipRight.node().getBBox().width
-            ? tooltipRight.node().getBBox().width
-            : tooltipRightWidth;
-        tooltipRight.attr(
-            'x',
-            tooltipWidth - tooltipRightWidth - 10 - tooltipWidth / 4
-        );
 
-        tooltipBody
-            .append('circle')
-            .classed('tooltip-circle', true)
-            .attr('cx', -tooltipWidth / 4 + 30)
-            .attr('cy', ttTextY + circleYOffset)
-            .attr('r', circularMarkerRadius)
-            .style('fill', colorMap[name])
-            .style('stroke-width', 1);
+        entry.select('.tooltip-circle').style('fill', colorMap[name]);
 
         ttTextY += textHeight + 7;
     }
@@ -405,10 +425,10 @@ export default function module() {
         const { x, y, origin } = getTooltipPosition([xPosition, yPosition]);
         const group = svg.selectAll('.tooltip-group');
 
-        svg.transition()
-            .duration(fadeInDuration)
-            .ease(ease)
-            .style('opacity', 1);
+        if (isEntering) {
+            fadeIn(svg);
+            isEntering = false;
+        }
 
         tooltipBackground
             .attr('width', tooltipWidth)
@@ -439,7 +459,7 @@ export default function module() {
 
         group
             .transition()
-            .duration(mouseChaseDuration)
+            .duration(chaseDuration)
             .ease(ease)
             .attr('transform', `translate(${x}, ${y})`);
     }
@@ -594,23 +614,34 @@ export default function module() {
     }
 
     /**
-     * Hides the tooltip
+     * Fades the tooltip out and hides it
      * @return {void}
      * @private
      */
     function hideTooltip() {
-        svg.interrupt().style('visibility', 'hidden');
+        if (!isShown) {
+            return;
+        }
+        isShown = false;
+        isEntering = false;
+        fadeOut(svg);
     }
 
     /**
-     * Shows the tooltip updating it's content
+     * Shows the tooltip; it fades in with its first update
      * @return {void}
      * @private
      */
     function showTooltip() {
-        // A fade still running from the last update is stopped, so it
-        // cannot reveal the box before the first update fills it
-        svg.interrupt().style('visibility', 'visible').style('opacity', 0);
+        // Already showing: nothing to do, and no new fade -- the wrappers
+        // call show() before every update
+        if (isShown) {
+            return;
+        }
+        isShown = true;
+        // Transparent until the first update fills it, which fades it in
+        isEntering = true;
+        prepareToShow(svg);
     }
 
     /**
@@ -687,10 +718,30 @@ export default function module() {
             topics = _sortByAlpha(topics);
         }
 
-        cleanContent();
         updateTitle(dataPoint);
         resetSizeAndPositionPointers();
-        topics.forEach(updateTopicContent);
+
+        // One row per topic, kept across updates so the pointer moving
+        // over the chart re-sets text and positions instead of rebuilding
+        // every node
+        const entries = tooltipBody
+            .selectAll('.tooltip-entry')
+            .data(topics.filter(Boolean), (topic) => topic[nameLabel]);
+
+        entries.exit().remove();
+
+        const entered = entries
+            .enter()
+            .append('g')
+            .classed('tooltip-entry', true)
+            .call(buildEntry);
+
+        entered
+            .merge(entries)
+            .order()
+            .each(function (topic) {
+                layoutEntry(select(this), topic);
+            });
     }
 
     /**

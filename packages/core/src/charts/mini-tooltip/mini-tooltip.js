@@ -1,5 +1,4 @@
 import { max } from 'd3-array';
-import { easeQuadInOut } from 'd3-ease';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import 'd3-transition';
@@ -7,6 +6,13 @@ import 'd3-transition';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import { isDefined } from '../helpers/type';
 import { measureFrame, originOf } from '../tooltip/frame';
+import {
+    chaseDuration,
+    ease,
+    prepareToShow,
+    fadeIn,
+    fadeOut,
+} from '../tooltip/motion';
 import { place } from '../tooltip/place';
 
 const NUMBER_FORMAT = '.2f';
@@ -55,8 +61,10 @@ export default function module() {
         valueLabel = 'value',
         nameLabel = 'name',
         // Animations
-        fadeInDuration = 200,
-        ease = easeQuadInOut,
+        // Whether show() has been called and hide() has not
+        isShown = false,
+        // Whether the next update is the first since show(), and fades in
+        isEntering = false,
         // tooltip
         tooltipBackground,
         backgroundBorderRadius = 2,
@@ -126,11 +134,12 @@ export default function module() {
                 .attr('pointer-events', 'none');
 
             buildContainerGroups();
+
+            // Hidden by default. Only on the first build, so calling the
+            // tooltip on its container again does not hide it
+            svg.style('visibility', 'hidden');
         }
         svg.transition().attr('width', width).attr('height', height);
-
-        // Hidden by default
-        exports.hide();
     }
 
     /**
@@ -210,30 +219,42 @@ export default function module() {
     }
 
     /**
-     * Hides the tooltip
+     * Fades the tooltip out and hides it
      * @return {void}
      * @private
      */
     function hideTooltip() {
-        svg.interrupt().style('visibility', 'hidden');
+        if (!isShown) {
+            return;
+        }
+        isShown = false;
+        isEntering = false;
+        fadeOut(svg);
     }
 
     /**
      * Shows the tooltip. With a data point it renders and places it at once;
-     * without one it shows empty until the first update. Either way a fade
-     * still running from the last update is stopped first, so it cannot
-     * reveal the box before its content is right.
+     * without one it shows empty until the first update. It fades in with
+     * that first update; shown again while already showing, it only
+     * updates.
      * @param  {Object} [dataPoint]     Data point from the chart
      * @param  {Number[]} [position]    [x, y] of the pointer in the chart
      * @return {void}
      * @private
      */
     function showTooltip(dataPoint, position) {
-        svg.interrupt().style('visibility', 'visible').style('opacity', 0);
+        const wasShown = isShown;
+
+        if (!wasShown) {
+            isShown = true;
+            // Transparent until the first update fills it, which fades it in
+            isEntering = true;
+            prepareToShow(svg);
+        }
 
         if (dataPoint) {
             updateTooltip(dataPoint, position);
-        } else {
+        } else if (!wasShown) {
             updateContent();
         }
     }
@@ -310,10 +331,14 @@ export default function module() {
     function updatePositionAndSize(mousePosition) {
         let [tooltipX, tooltipY] = getTooltipPosition(mousePosition);
 
+        if (isEntering) {
+            fadeIn(svg);
+            isEntering = false;
+        }
+
         svg.transition()
-            .duration(fadeInDuration)
+            .duration(chaseDuration)
             .ease(ease)
-            .style('opacity', 1)
             .attr('height', chartHeight + margin.top + margin.bottom)
             .attr('width', chartWidth + margin.left + margin.right)
             .attr('transform', `translate(${tooltipX},${tooltipY})`);
