@@ -1,7 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { act } from 'react-dom/test-utils';
+
 import Tooltip from './Tooltip';
+import Line from '../line/Line';
+import lineData from '../line/lineChart.fixtures';
 import { TooltipWrapper } from '@britecharts/wrappers';
 
 const FakeChart = () => (
@@ -211,6 +215,62 @@ describe('tooltip', () => {
 
             const expected = 1;
             const actual = createSpy.mock.calls.length;
+
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('driven by a chart', () => {
+        // The chart re-renders on every tooltip state change and asks the
+        // wrapper to create the tooltip again; there must still be one.
+        const renderLine = (props) => <Line {...props} />;
+        const dataPoint = {
+            date: '2017-01-16T16:00:00-08:00',
+            topics: [{ name: 'a', value: 1, topicName: 'A' }],
+        };
+        const colorMap = { A: '#000' };
+
+        it('should keep a single tooltip in the chart while the pointer moves', () => {
+            const wrapper = mount(
+                <Tooltip
+                    data={lineData.oneSet()}
+                    render={renderLine}
+                    topicLabel="topics"
+                />
+            );
+            const tooltip = wrapper.find(Tooltip).instance();
+
+            // One render per event, as real pointer events arrive
+            act(() => tooltip.handleMouseOver());
+            [10, 30, 50].forEach((x) => {
+                act(() => tooltip.handleMouseMove(dataPoint, colorMap, x, 20));
+            });
+            wrapper.update();
+
+            const expected = 1;
+            const actual = wrapper
+                .getDOMNode()
+                .querySelectorAll('.britechart-tooltip').length;
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should keep a single tooltip when the chart receives new props', () => {
+            const wrapper = mount(
+                <Tooltip
+                    data={lineData.oneSet()}
+                    render={renderLine}
+                    topicLabel="topics"
+                />
+            );
+
+            wrapper.setProps({ title: 'One' });
+            wrapper.setProps({ title: 'Two' });
+
+            const expected = 1;
+            const actual = wrapper
+                .getDOMNode()
+                .querySelectorAll('.britechart-tooltip').length;
 
             expect(actual).toEqual(expected);
         });

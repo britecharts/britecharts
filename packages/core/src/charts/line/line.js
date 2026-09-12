@@ -1063,9 +1063,12 @@ export default function module() {
      * @private
      */
     function handleMouseMove(e, d, event) {
+        // The listener is on the root svg, so the pointer arrives in svg
+        // coordinates; everything the chart draws (the tooltip included)
+        // lives inside the margin-translated container, hence the offsets.
         let [xPosition, yPosition] = pointer(event, e),
-            xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
-            dataPoint = getNearestDataPoint(xPosition + xPositionOffset),
+            dataPoint = getNearestDataPoint(xPosition - margin.left),
+            pointerYPosition = yPosition - margin.top,
             dataPointXPosition;
 
         if (dataPoint) {
@@ -1081,7 +1084,7 @@ export default function module() {
                 dataPoint,
                 nameToColorMap,
                 dataPointXPosition,
-                yPosition
+                pointerYPosition
             );
         }
     }

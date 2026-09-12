@@ -35,7 +35,7 @@ d3Selection.select('.metadata-group .mini-tooltip-container')
         * [.valueFormatter(_x)](#module_Mini-tooltip--exports.valueFormatter) ⇒ <code>function</code> \| <code>module</code>
         * [.show()](#module_Mini-tooltip--exports.show) ⇒ <code>Module</code>
         * [.title(_x)](#module_Mini-tooltip--exports.title) ⇒ <code>string</code> \| <code>module</code>
-        * [.update(dataPoint, mousePosition, chartSize)](#module_Mini-tooltip--exports.update) ⇒ <code>module</code>
+        * [.update(dataPoint, mousePosition, [chartSize])](#module_Mini-tooltip--exports.update) ⇒ <code>module</code>
         * ~~[.valueLabel(_x)](#module_Mini-tooltip--exports.valueLabel) ⇒ <code>text</code> \| <code>module</code>~~
 
 <a name="exp_module_Mini-tooltip--exports"></a>
@@ -127,17 +127,20 @@ Gets or Sets the title of the tooltip
 
 <a name="module_Mini-tooltip--exports.update"></a>
 
-### exports.update(dataPoint, mousePosition, chartSize) ⇒ <code>module</code>
-Updates the position and content of the tooltip
+### exports.update(dataPoint, mousePosition, [chartSize]) ⇒ <code>module</code>
+Updates the position and content of the tooltip. The charts dispatch
+these with `customMouseMove`, so `chart.on('customMouseMove', tooltip.update)`
+is all the wiring needed.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Mini-tooltip--exports)  
 **Returns**: <code>module</code> - Current component  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | dataPoint | <code>Object</code> | Datapoint of the hovered element |
-| mousePosition | <code>Array</code> | Mouse position relative to the parent chart [x, y] |
-| chartSize | <code>Array</code> | Parent chart size [x, y] |
+| mousePosition | <code>Array</code> | Mouse position relative to the chart's drawing area, [x, y] |
+| [chartSize] | <code>Array</code> | Ignored; the tooltip measures the chart itself. Kept so                                  the charts' existing `customMouseMove` payload still fits |
 
 <a name="module_Mini-tooltip--exports.valueLabel"></a>
 

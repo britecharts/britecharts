@@ -16,6 +16,7 @@ const pages = [
     'esm-bundle',
     'esm-chart',
     'cdn-jsdelivr', // published version only; see the page
+    'hover', // every tooltip attachment point, for tests/hover.spec.js
 ];
 
 // BRITECHARTS_SOURCE=1 (the `start` script) points the bare specifiers at

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>H · hover: every tooltip attachment point</title>
+        <link rel="stylesheet" href="/src/page.css" />
+        <style>
+            .charts {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+            .chart {
+                flex: 0 0 auto;
+            }
+            .chart h2 {
+                font: 14px/1.4 sans-serif;
+                margin: 0 0 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>H · hover: every tooltip attachment point</h1>
+        <p>
+            One chart per way a tooltip is attached; tests/hover.spec.js moves a
+            real pointer over each and checks the box stays inside the chart.
+        </p>
+        <div class="charts">
+            <div class="chart">
+                <h2>line + tooltip</h2>
+                <div class="hover-line"></div>
+            </div>
+            <div class="chart">
+                <h2>stacked area + tooltip</h2>
+                <div class="hover-stacked-area"></div>
+            </div>
+            <div class="chart">
+                <h2>stacked bar + tooltip</h2>
+                <div class="hover-stacked-bar"></div>
+            </div>
+            <div class="chart">
+                <h2>grouped bar + tooltip</h2>
+                <div class="hover-grouped-bar"></div>
+            </div>
+            <div class="chart">
+                <h2>bar + mini tooltip</h2>
+                <div class="hover-bar"></div>
+            </div>
+            <div class="chart">
+                <h2>scatter plot + mini tooltip</h2>
+                <div class="hover-scatter-plot"></div>
+            </div>
+            <div class="chart">
+                <h2>heatmap + mini tooltip</h2>
+                <div class="hover-heatmap"></div>
+            </div>
+        </div>
+        <script type="module" src="/src/hover.js"></script>
+    </body>
+</html>

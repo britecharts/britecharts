@@ -29,11 +29,15 @@ export interface MiniTooltipAPI {
     hide(): void;
     /** Shows the tooltip */
     show(): void;
-    /** Updates the position and content of the tooltip */
+    /**
+     * Updates the position and content of the tooltip. The chart size is
+     * accepted for compatibility with what the charts dispatch, but ignored:
+     * the tooltip measures the chart it is drawn in.
+     */
     update(
         dataPoint: MiniTooltipDataShape,
         mousePosition: MousePosition,
-        chartSize: ChartSize
+        chartSize?: ChartSize
     ): void;
     /** Gets or Sets the number format for the value displayed on the tooltip */
     numberFormat(format?: string): MiniTooltipModule;
