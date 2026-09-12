@@ -19,16 +19,15 @@ const SETTLE_MS = 300;
 // to land where the chart resolves a data point, which differs per chart:
 //   svg          — anywhere over the svg: five points, corners and centre
 //                  (line snaps to the nearest date; scatter to the nearest point)
-//   band <sel>   — the x of the first, middle and last matching shapes, at
-//                  the top, centre and bottom of the svg (the charts that
-//                  listen on the svg but only resolve a point within a band)
 //   span <sel>   — the left edge, a data point and the right edge of the
 //                  first matching shape, at the top, centre and bottom of
 //                  the svg (stacked area resolves a point only within half a
 //                  step of a date, and its area path runs from the first
 //                  date to the last)
 //   shape <sel>  — inside the first, middle and last matching shapes (the
-//                  charts that listen on the shapes themselves)
+//                  charts whose tooltip is for their shapes only: bar,
+//                  scatter and heatmap listen on the shapes; stacked and
+//                  grouped bar listen on the svg but only over a bar)
 const CHARTS = [
     ['line + tooltip', '.hover-line', 'svg', '.britechart-tooltip'],
     [
@@ -40,13 +39,13 @@ const CHARTS = [
     [
         'stacked bar + tooltip',
         '.hover-stacked-bar',
-        'band rect.bar',
+        'shape rect.bar',
         '.britechart-tooltip',
     ],
     [
         'grouped bar + tooltip',
         '.hover-grouped-bar',
-        'band rect.bar',
+        'shape rect.bar',
         '.britechart-tooltip',
     ],
     [
@@ -118,18 +117,6 @@ async function hoverPoints(container, frame, target) {
     const centreX = ({ x, width }) => x + width / 2;
     const centre = (box) => [centreX(box), box.y + box.height / 2];
     const [first, middle, last] = boxes;
-
-    if (strategy === 'band') {
-        return [
-            [centreX(first), top],
-            centre(first),
-            [centreX(first), bottom],
-            centre(middle),
-            [centreX(last), top],
-            centre(last),
-            [centreX(last), bottom],
-        ];
-    }
 
     const topOf = (box) => [centreX(box), box.y + INSET];
     const bottomOf = (box) => [centreX(box), box.y + box.height - INSET];
@@ -256,5 +243,41 @@ for (const [name, selector, target, tooltipSelector] of CHARTS) {
         await expect(tooltip).toBeHidden();
 
         expect(problems).toEqual([]);
+    });
+}
+
+// The stacked and grouped bar charts listen on their svg, so they could
+// show a tooltip for the whole band; the policy is bars only, the empty
+// space above and between them shows nothing.
+for (const [name, selector] of [
+    ['stacked bar', '.hover-stacked-bar'],
+    ['grouped bar', '.hover-grouped-bar'],
+]) {
+    test(`H · ${name} shows the tooltip over the bars only`, async ({
+        page,
+    }) => {
+        await page.goto(URL);
+
+        const container = page.locator(selector);
+        const svg = container.locator('svg').first();
+        const tooltip = container.locator('.britechart-tooltip');
+
+        await svg.scrollIntoViewIfNeeded();
+
+        const frame = await svg.boundingBox();
+        const bar = await container.locator('rect.bar').first().boundingBox();
+        const barX = bar.x + bar.width / 2;
+        const aboveTheBar = frame.y + INSET;
+
+        await page.mouse.move(frame.x - 40, frame.y - 40);
+        await page.mouse.move(barX, aboveTheBar, { steps: 4 });
+        await page.waitForTimeout(SETTLE_MS);
+        await expect(tooltip, 'above the bar').toBeHidden();
+
+        await page.mouse.move(barX, bar.y + bar.height / 2, { steps: 4 });
+        await expect(tooltip, 'over the bar').toBeVisible();
+
+        await page.mouse.move(barX, aboveTheBar, { steps: 4 });
+        await expect(tooltip, 'back above the bar').toBeHidden();
     });
 }
