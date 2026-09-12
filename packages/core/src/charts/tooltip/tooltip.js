@@ -165,6 +165,9 @@ export default function module() {
             svg = select(container)
                 .append('g')
                 .classed('britechart britechart-tooltip', true)
+                // Never between the pointer and the chart: a tooltip that
+                // caught the pointer would end the hover that shows it
+                .attr('pointer-events', 'none')
                 .style('visibility', 'hidden');
 
             buildContainerGroups();
@@ -596,7 +599,7 @@ export default function module() {
      * @private
      */
     function hideTooltip() {
-        svg.style('visibility', 'hidden');
+        svg.interrupt().style('visibility', 'hidden');
     }
 
     /**
@@ -605,7 +608,9 @@ export default function module() {
      * @private
      */
     function showTooltip() {
-        svg.style('visibility', 'visible').style('opacity', 0);
+        // A fade still running from the last update is stopped, so it
+        // cannot reveal the box before the first update fills it
+        svg.interrupt().style('visibility', 'visible').style('opacity', 0);
     }
 
     /**

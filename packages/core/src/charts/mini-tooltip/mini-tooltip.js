@@ -119,7 +119,11 @@ export default function module() {
         if (!svg) {
             svg = select(container)
                 .append('g')
-                .classed('britechart britechart-mini-tooltip', true);
+                .classed('britechart britechart-mini-tooltip', true)
+                // Never between the pointer and the shape underneath: the
+                // charts listen on their shapes, and a tooltip that caught
+                // the pointer would hide itself with a mouseout
+                .attr('pointer-events', 'none');
 
             buildContainerGroups();
         }
@@ -211,18 +215,27 @@ export default function module() {
      * @private
      */
     function hideTooltip() {
-        svg.style('visibility', 'hidden');
+        svg.interrupt().style('visibility', 'hidden');
     }
 
     /**
-     * Shows the tooltip updating it's content
-     * @param  {Object} dataPoint Data point from the chart
+     * Shows the tooltip. With a data point it renders and places it at once;
+     * without one it shows empty until the first update. Either way a fade
+     * still running from the last update is stopped first, so it cannot
+     * reveal the box before its content is right.
+     * @param  {Object} [dataPoint]     Data point from the chart
+     * @param  {Number[]} [position]    [x, y] of the pointer in the chart
      * @return {void}
      * @private
      */
-    function showTooltip() {
-        updateContent();
-        svg.style('visibility', 'visible').style('opacity', 0);
+    function showTooltip(dataPoint, position) {
+        svg.interrupt().style('visibility', 'visible').style('opacity', 0);
+
+        if (dataPoint) {
+            updateTooltip(dataPoint, position);
+        } else {
+            updateContent();
+        }
     }
 
     /**
@@ -232,7 +245,7 @@ export default function module() {
      * @private
      */
     function updateContent(dataPoint = {}) {
-        let value = dataPoint[valueLabel] || '',
+        let value = dataPoint[valueLabel],
             name = dataPoint[nameLabel] || '',
             lineHeight = textSize * textLineHeight,
             valueLineHeight = valueTextSize * valueTextLineHeight,
@@ -385,12 +398,18 @@ export default function module() {
     };
 
     /**
-     * Shows the tooltip
-     * @return {Module} Tooltip module to chain calls
+     * Shows the tooltip. The charts dispatch `customMouseOver` with the
+     * hovered data point and the pointer position, so
+     * `chart.on('customMouseOver', tooltip.show)` shows it with the right
+     * content straight away; called with no arguments it shows empty until
+     * the first `update`.
+     * @param  {Object} [dataPoint]         Datapoint of the hovered element
+     * @param  {Array} [mousePosition]      Mouse position relative to the chart's drawing area, [x, y]
+     * @return {module}                     Current component
      * @public
      */
-    exports.show = function () {
-        showTooltip();
+    exports.show = function (dataPoint, mousePosition) {
+        showTooltip(dataPoint, mousePosition);
 
         return this;
     };

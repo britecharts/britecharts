@@ -39,6 +39,15 @@ describe('tooltip Component', () => {
     });
 
     describe('render', () => {
+        it('should not catch pointer events, so the chart under it keeps them', () => {
+            const expected = 'none';
+            const actual = containerFixture
+                .select('.britechart-tooltip')
+                .attr('pointer-events');
+
+            expect(actual).toEqual(expected);
+        });
+
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture

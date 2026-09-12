@@ -27,8 +27,12 @@ type MiniTooltipFormattingFunction = (value: number) => number;
 export interface MiniTooltipAPI {
     /** Hides the tooltip */
     hide(): void;
-    /** Shows the tooltip */
-    show(): void;
+    /**
+     * Shows the tooltip. With the hovered data point and pointer position,
+     * as the charts dispatch them on `customMouseOver`, it renders and
+     * places the tooltip at once.
+     */
+    show(dataPoint?: MiniTooltipDataShape, mousePosition?: MousePosition): void;
     /**
      * Updates the position and content of the tooltip. The chart size is
      * accepted for compatibility with what the charts dispatch, but ignored:

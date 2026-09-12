@@ -33,7 +33,7 @@ d3Selection.select('.metadata-group .mini-tooltip-container')
         * ~~[.nameLabel(_x)](#module_Mini-tooltip--exports.nameLabel) ⇒ <code>text</code> \| <code>module</code>~~
         * [.numberFormat(_x)](#module_Mini-tooltip--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
         * [.valueFormatter(_x)](#module_Mini-tooltip--exports.valueFormatter) ⇒ <code>function</code> \| <code>module</code>
-        * [.show()](#module_Mini-tooltip--exports.show) ⇒ <code>Module</code>
+        * [.show([dataPoint], [mousePosition])](#module_Mini-tooltip--exports.show) ⇒ <code>module</code>
         * [.title(_x)](#module_Mini-tooltip--exports.title) ⇒ <code>string</code> \| <code>module</code>
         * [.update(dataPoint, mousePosition, [chartSize])](#module_Mini-tooltip--exports.update) ⇒ <code>module</code>
         * ~~[.valueLabel(_x)](#module_Mini-tooltip--exports.valueLabel) ⇒ <code>text</code> \| <code>module</code>~~
@@ -106,12 +106,22 @@ tooltipChart.valueFormatter(value => value.toString().length.toString())
 ```
 <a name="module_Mini-tooltip--exports.show"></a>
 
-### exports.show() ⇒ <code>Module</code>
-Shows the tooltip
+### exports.show([dataPoint], [mousePosition]) ⇒ <code>module</code>
+Shows the tooltip. The charts dispatch `customMouseOver` with the
+hovered data point and the pointer position, so
+`chart.on('customMouseOver', tooltip.show)` shows it with the right
+content straight away; called with no arguments it shows empty until
+the first `update`.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Mini-tooltip--exports)  
-**Returns**: <code>Module</code> - Tooltip module to chain calls  
+**Returns**: <code>module</code> - Current component  
 **Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [dataPoint] | <code>Object</code> | Datapoint of the hovered element |
+| [mousePosition] | <code>Array</code> | Mouse position relative to the chart's drawing area, [x, y] |
+
 <a name="module_Mini-tooltip--exports.title"></a>
 
 ### exports.title(_x) ⇒ <code>string</code> \| <code>module</code>
