@@ -135,10 +135,6 @@ export default function module() {
         verticalMarkerContainer,
         verticalMarkerLine,
         epsilon,
-        dataPoints = {},
-        pointsSize = 1.5,
-        pointsColor = '#c0c6cc',
-        pointsBorderColor = '#ffffff',
         isAnimated = false,
         ease = easeQuadInOut,
         areaAnimationDuration = motion.duration,
@@ -679,49 +675,6 @@ export default function module() {
     }
 
     /**
-     * Creates SVG dot elements for each data entry and draws them
-     * TODO: Plug
-     */
-    function drawDataReferencePoints() {
-        // Creates Dots on Data points
-        const points = svg
-            .select('.chart-group')
-            .selectAll('.dots')
-            .data(layers)
-            .enter()
-            .append('g')
-            .attr('class', 'dots')
-            .attr('d', ({ values }) => areaShape(values))
-            .attr('clip-path', 'url(#clip)');
-
-        // Processes the points
-        // TODO: Optimize this code
-        points
-            .selectAll('.dot')
-            .data(({ values }, index) =>
-                values.map((point) => ({ index, point }))
-            )
-            .enter()
-            .append('circle')
-            .attr('class', 'dot')
-            .attr('r', () => pointsSize)
-            .attr('fill', () => pointsColor)
-            .attr('stroke-width', '0')
-            .attr('stroke', pointsBorderColor)
-            .attr('transform', function (d) {
-                let { point } = d;
-                let key = xScale(point.date);
-
-                dataPoints[key] = dataPoints[key] || [];
-                dataPoints[key].push(d);
-
-                let { date, y, y0 } = point;
-
-                return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
-            });
-    }
-
-    /**
      * Draws grid lines on the background of the chart
      * @return void
      */
@@ -1127,8 +1080,12 @@ export default function module() {
     function handleMouseMove(e, d, event) {
         epsilon || setEpsilon();
 
+        // The listener is on the root svg, so the pointer arrives in svg
+        // coordinates; everything the chart draws (the tooltip included)
+        // lives inside the margin-translated container, hence the offsets.
         let [xPosition, yPosition] = pointer(event, e),
             dataPoint = getNearestDataPoint(xPosition - margin.left),
+            pointerYPosition = yPosition - margin.top,
             dataPointXPosition;
 
         if (dataPoint) {
@@ -1144,7 +1101,7 @@ export default function module() {
                 dataPoint,
                 nameToColorMap,
                 dataPointXPosition,
-                yPosition
+                pointerYPosition
             );
         }
     }

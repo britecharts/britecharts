@@ -19,8 +19,8 @@ lineChart
     .on('customMouseOver', function() {
          tooltip.show();
     })
-    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-         tooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition, mouseYPosition) {
+         tooltip.update(dataPoint, topicColorMap, dataPointXPosition, mouseYPosition);
     })
     .on('customMouseOut', function() {
          tooltip.hide();
@@ -49,10 +49,10 @@ d3Selection.select('.metadata-group .hover-marker')
         * [.shouldShowDateInTitle(_x)](#module_Tooltip--exports.shouldShowDateInTitle) ⇒ <code>Boolean</code> \| <code>module</code>
         * [.show()](#module_Tooltip--exports.show) ⇒ <code>module</code>
         * [.title(_x)](#module_Tooltip--exports.title) ⇒ <code>String</code> \| <code>module</code>
-        * [.tooltipOffset(tooltipOffset)](#module_Tooltip--exports.tooltipOffset) ⇒ <code>Object</code> \| <code>module</code>
+        * [.tooltipOffset(_x)](#module_Tooltip--exports.tooltipOffset) ⇒ <code>Object</code> \| <code>module</code>
         * [.topicsOrder(_x)](#module_Tooltip--exports.topicsOrder) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
         * ~~[.topicLabel(_x)](#module_Tooltip--exports.topicLabel) ⇒ <code>String</code> \| <code>module</code>~~
-        * [.update(dataPoint, colorMapping, position)](#module_Tooltip--exports.update) ⇒ <code>Module</code>
+        * [.update(dataPoint, colorMapping, xPosition, [yPosition])](#module_Tooltip--exports.update) ⇒ <code>Module</code>
         * ~~[.valueLabel(_x)](#module_Tooltip--exports.valueLabel) ⇒ <code>String</code> \| <code>module</code>~~
         * [.xAxisValueType([_x])](#module_Tooltip--exports.xAxisValueType) ⇒ <code>String</code> \| <code>module</code>
 
@@ -228,17 +228,23 @@ Gets or Sets the title of the tooltip (to only show the date, set a blank title)
 
 <a name="module_Tooltip--exports.tooltipOffset"></a>
 
-### exports.tooltipOffset(tooltipOffset) ⇒ <code>Object</code> \| <code>module</code>
-Pass an override for the offset of your tooltip
+### exports.tooltipOffset(_x) ⇒ <code>Object</code> \| <code>module</code>
+Gets or Sets an offset, in pixels, applied to the point the tooltip is
+placed next to: `x` moves the anchor along the chart, `y` moves the box
+up (negative) or down. The box still stays inside the chart.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
-**Returns**: <code>Object</code> \| <code>module</code> - Current tooltipOffset  
+**Returns**: <code>Object</code> \| <code>module</code> - Current tooltipOffset or module to chain calls  
 **Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| tooltipOffset | <code>Object</code> | Object representing the X and Y offsets |
+| _x | <code>Object</code> | Object with the x and y offsets |
 
+**Example**  
+```js
+tooltip.tooltipOffset({ x: 0, y: -20 })
+```
 <a name="module_Tooltip--exports.topicsOrder"></a>
 
 ### exports.topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
@@ -269,8 +275,10 @@ Gets or Sets the topicLabel of the data
 
 <a name="module_Tooltip--exports.update"></a>
 
-### exports.update(dataPoint, colorMapping, position) ⇒ <code>Module</code>
-Updates the position and content of the tooltip
+### exports.update(dataPoint, colorMapping, xPosition, [yPosition]) ⇒ <code>Module</code>
+Updates the position and content of the tooltip. The positions are the
+ones the charts dispatch with `customMouseMove`: the hovered data
+point's x and the pointer's y, relative to the chart's drawing area.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>Module</code> - Tooltip module to chain calls  
@@ -280,7 +288,8 @@ Updates the position and content of the tooltip
 | --- | --- | --- |
 | dataPoint | <code>Object</code> | Datapoint to represent |
 | colorMapping | <code>Object</code> | Color scheme of the topics |
-| position | <code>Number</code> | X-scale position in pixels |
+| xPosition | <code>Number</code> | X position to anchor the tooltip to, in pixels |
+| [yPosition] | <code>Number</code> | Y position to anchor the tooltip to, in pixels |
 
 <a name="module_Tooltip--exports.valueLabel"></a>
 

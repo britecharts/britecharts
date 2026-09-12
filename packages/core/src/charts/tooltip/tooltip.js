@@ -12,6 +12,8 @@ import {
     isInteger,
 } from '../helpers/number';
 import { getTextWidth, getApproximateNumberOfLines } from '../helpers/text';
+import { measureFrame, originOf, translateOf } from './frame';
+import { place } from './place';
 
 /**
  * Tooltip Component reusable API class that renders a
@@ -34,8 +36,8 @@ import { getTextWidth, getApproximateNumberOfLines } from '../helpers/text';
  *     .on('customMouseOver', function() {
  *          tooltip.show();
  *     })
- *     .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
- *          tooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+ *     .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition, mouseYPosition) {
+ *          tooltip.update(dataPoint, topicColorMap, dataPointXPosition, mouseYPosition);
  *     })
  *     .on('customMouseOut', function() {
  *          tooltip.hide();
@@ -64,12 +66,15 @@ export default function module() {
         valueFormat = null,
         // tooltip
         tooltipBackground,
+        tooltipBackgroundX = 0,
         tooltipOffset = {
-            y: -55,
             x: 0,
+            y: 0,
         },
+        tooltipGap = 12,
         tooltipMaxTopicLength = 170,
         tooltipMaxTitleLength = 230,
+        tooltipGroupOrigin = null,
         tooltipTextContainer,
         tooltipBody,
         tooltipTitle,
@@ -92,7 +97,7 @@ export default function module() {
         tooltipTextLinePadding = 5,
         tooltipRightWidth,
         // Animations
-        mouseChaseDuration = 100,
+        mouseChaseDuration = 200,
         fadeInDuration = 100,
         ease = easeQuadInOut,
         circleYOffset = 8,
@@ -160,6 +165,9 @@ export default function module() {
             svg = select(container)
                 .append('g')
                 .classed('britechart britechart-tooltip', true)
+                // Never between the pointer and the chart: a tooltip that
+                // caught the pointer would end the hover that shows it
+                .attr('pointer-events', 'none')
                 .style('visibility', 'hidden');
 
             buildContainerGroups();
@@ -187,7 +195,7 @@ export default function module() {
      * @private
      */
     function drawTooltip() {
-        const textStartX = -tooltipWidth / 4 + tooltipContentPadding;
+        tooltipBackgroundX = -tooltipWidth / 4 + tooltipContentPadding;
 
         tooltipTextContainer = svg
             .selectAll('.tooltip-group')
@@ -197,7 +205,7 @@ export default function module() {
         tooltipBackground = tooltipTextContainer
             .append('rect')
             .classed('tooltip-background', true)
-            .attr('x', textStartX)
+            .attr('x', tooltipBackgroundX)
             .attr('y', 0)
             .attr('width', tooltipWidth)
             .attr('height', tooltipHeight)
@@ -246,32 +254,48 @@ export default function module() {
     }
 
     /**
-     * Calculates the desired position for the tooltip
-     * @param  {Number} mouseX             Current horizontal mouse position
-     * @param  {Number} mouseY             Current vertical mouse position
-     * @return {Number[]}                  X and Y position
+     * Works out where to draw the box for an anchor point.
+     *
+     * The anchor arrives in the coordinate space of the parent of the
+     * element this tooltip was called on -- a chart's `.metadata-group`,
+     * or the container group that holds it -- which is the space every chart
+     * dispatches in. The chart's size is not passed in: the tooltip lives
+     * inside the chart's svg, so it measures its own frame (see frame.js),
+     * then keeps the box inside it (see place.js), flipping to the other side
+     * of the anchor when there is no room and sliding vertically at the edges.
+     *
+     * @param  {Number} anchorX     Horizontal anchor, usually the data point's x
+     * @param  {Number} anchorY     Vertical anchor, usually the pointer's y
+     * @return {Object}             { x, y } translate() for the tooltip group and
+     *                              the origin the group is measured from
      * @private
      */
-    function getTooltipPosition([mouseX, mouseY]) {
-        let tooltipX, tooltipY;
+    function getTooltipPosition([anchorX, anchorY]) {
+        const container = svg.node().parentNode;
+        const [parentX, parentY] = originOf(container.parentNode);
+        // Measured from the parent of the group that gets translated, so
+        // the current position never feeds into the next one.
+        const {
+            width,
+            height,
+            origin: [groupX, groupY],
+        } = measureFrame(svg.select('.tooltip-container-group').node());
+        const { x, y } = place({
+            anchor: [
+                parentX + (anchorX || 0) + tooltipOffset.x,
+                parentY + (anchorY || 0),
+            ],
+            size: [tooltipWidth, tooltipHeight],
+            frame: { width, height },
+            gap: tooltipGap,
+            offsetY: tooltipOffset.y,
+        });
 
-        // show tooltip to the right
-        if (mouseX - tooltipWidth < 0) {
-            // Tooltip on the right
-            tooltipX = tooltipWidth - 185;
-        } else {
-            // Tooltip on the left
-            tooltipX = -215;
-        }
-
-        if (mouseY) {
-            tooltipY = tooltipOffset.y;
-            // tooltipY = mouseY + tooltipOffset.y;
-        } else {
-            tooltipY = tooltipOffset.y;
-        }
-
-        return [tooltipX, tooltipY];
+        return {
+            x: x - groupX - tooltipBackgroundX,
+            y: y - groupY,
+            origin: [groupX, groupY],
+        };
     }
 
     /**
@@ -370,16 +394,16 @@ export default function module() {
     }
 
     /**
-     * Updates size and position of tooltip depending on the side of the chart we are in
-     * TODO: This needs a refactor, following the mini-tooltip code.
+     * Updates the size of the tooltip and moves it next to the anchor
      *
      * @param  {Number} xPosition DataPoint's x position in the chart
-     * @param  {Number} xPosition DataPoint's y position in the chart
+     * @param  {Number} yPosition Pointer's y position in the chart
      * @return void
      * @private
      */
     function updatePositionAndSize(xPosition, yPosition) {
-        let [tooltipX, tooltipY] = getTooltipPosition([xPosition, yPosition]);
+        const { x, y, origin } = getTooltipPosition([xPosition, yPosition]);
+        const group = svg.selectAll('.tooltip-group');
 
         svg.transition()
             .duration(fadeInDuration)
@@ -390,11 +414,34 @@ export default function module() {
             .attr('width', tooltipWidth)
             .attr('height', tooltipHeight);
 
-        svg.selectAll('.tooltip-group')
+        // The box eases towards each new position, the same delayed follow
+        // as the mini tooltip. The charts move the container this tooltip
+        // lives in (the vertical marker) instantly to each data point, so
+        // before easing, the group is shifted by the same amount the
+        // container just moved: the box stays where it is on screen and
+        // the ease runs in chart space, instead of jumping with the marker
+        // and easing back.
+        if (tooltipGroupOrigin) {
+            const [currentX, currentY] = translateOf(group.node());
+            const shiftX = origin[0] - tooltipGroupOrigin[0];
+            const shiftY = origin[1] - tooltipGroupOrigin[1];
+
+            if (shiftX || shiftY) {
+                group
+                    .interrupt()
+                    .attr(
+                        'transform',
+                        `translate(${currentX - shiftX}, ${currentY - shiftY})`
+                    );
+            }
+        }
+        tooltipGroupOrigin = origin;
+
+        group
             .transition()
             .duration(mouseChaseDuration)
             .ease(ease)
-            .attr('transform', `translate(${tooltipX}, ${tooltipY})`);
+            .attr('transform', `translate(${x}, ${y})`);
     }
 
     /**
@@ -552,7 +599,7 @@ export default function module() {
      * @private
      */
     function hideTooltip() {
-        svg.style('visibility', 'hidden');
+        svg.interrupt().style('visibility', 'hidden');
     }
 
     /**
@@ -561,7 +608,9 @@ export default function module() {
      * @private
      */
     function showTooltip() {
-        svg.style('visibility', 'visible').style('opacity', 0);
+        // A fade still running from the last update is stopped, so it
+        // cannot reveal the box before the first update fills it
+        svg.interrupt().style('visibility', 'visible').style('opacity', 0);
     }
 
     /**
@@ -833,10 +882,13 @@ export default function module() {
     };
 
     /**
-     * Pass an override for the offset of your tooltip
-     * @param  {Object} tooltipOffset  Object representing the X and Y offsets
-     * @return {Object | module}       Current tooltipOffset
+     * Gets or Sets an offset, in pixels, applied to the point the tooltip is
+     * placed next to: `x` moves the anchor along the chart, `y` moves the box
+     * up (negative) or down. The box still stays inside the chart.
+     * @param  {Object} _x          Object with the x and y offsets
+     * @return {Object | module}    Current tooltipOffset or module to chain calls
      * @public
+     * @example tooltip.tooltipOffset({ x: 0, y: -20 })
      */
     exports.tooltipOffset = function (_x) {
         if (!arguments.length) {
@@ -880,10 +932,13 @@ export default function module() {
     };
 
     /**
-     * Updates the position and content of the tooltip
+     * Updates the position and content of the tooltip. The positions are the
+     * ones the charts dispatch with `customMouseMove`: the hovered data
+     * point's x and the pointer's y, relative to the chart's drawing area.
      * @param  {Object} dataPoint       Datapoint to represent
      * @param  {Object} colorMapping    Color scheme of the topics
-     * @param  {Number} position        X-scale position in pixels
+     * @param  {Number} xPosition       X position to anchor the tooltip to, in pixels
+     * @param  {Number} [yPosition]     Y position to anchor the tooltip to, in pixels
      * @return {Module}                 Tooltip module to chain calls
      * @public
      */

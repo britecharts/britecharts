@@ -13,6 +13,24 @@ export const WithWeeklyElements = () => {
     const container = getCleanContainer();
     const heatmapContainer = select(container);
     const heatmapChart = heatmap();
+    const containerWidth = heatmapContainer.node()
+        ? heatmapContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withWeeklyData().build();
+
+    if (containerWidth) {
+        heatmapChart.boxSize(30).isAnimated(true);
+
+        heatmapContainer.datum(dataset).call(heatmapChart);
+    }
+
+    return container;
+};
+
+export const WithTooltip = () => {
+    const container = getCleanContainer();
+    const heatmapContainer = select(container);
+    const heatmapChart = heatmap();
     const tooltip = miniTooltip().title('Tooltip Title');
     const containerWidth = heatmapContainer.node()
         ? heatmapContainer.node().getBoundingClientRect().width
@@ -48,24 +66,6 @@ export const WithLoadingState = () => {
         heatmapChart.width(containerWidth).isLoading(true);
 
         heatmapContainer.datum([]).call(heatmapChart);
-    }
-
-    return container;
-};
-
-export const WithNegativeValues = () => {
-    const container = getCleanContainer();
-    const heatmapContainer = select(container);
-    const heatmapChart = heatmap();
-    const containerWidth = heatmapContainer.node()
-        ? heatmapContainer.node().getBoundingClientRect().width
-        : false;
-    const dataset = aTestDataSet().withNegativeValues().build();
-
-    if (containerWidth) {
-        heatmapChart.boxSize(30).isAnimated(true).width(containerWidth);
-
-        heatmapContainer.datum(dataset).call(heatmapChart);
     }
 
     return container;

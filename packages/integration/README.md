@@ -48,6 +48,13 @@ yarn test:integration     # from the repo root; needs Chromium once:
    React 19 under StrictMode). Each page must draw the chart, have the
    stylesheet applied, and produce no console errors, page errors or failed
    requests — on the React pages, no console warnings either.
+   `tests/hover.spec.js` runs on the same server against `hover.html`, one
+   chart per way a tooltip is attached (line, stacked area, stacked bar and
+   grouped bar with the tooltip; bar, scatter plot and heatmap with the mini
+   tooltip): a real pointer visits the corners and the middle of each chart,
+   and the tooltip has to stay inside the svg every time, with no `NaN`
+   attribute anywhere. It is the only place hover geometry is tested; the
+   unit specs run under jsdom, which has none.
 
 Tiers 1 and 2 use Node's built-in test runner (`*.test.js`); tier 3 is
 Playwright (`*.spec.js`).

@@ -111,6 +111,37 @@ describe('mini Tooltip Component', () => {
     });
 
     describe('lifecycle', () => {
+        it('should not catch pointer events, so the chart under it keeps them', () => {
+            const expected = 'none';
+            const actual = containerFixture
+                .select('.britechart-mini-tooltip')
+                .attr('pointer-events');
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render the data point it is shown with', () => {
+            tooltipChart.show({ name: 'Bar', value: 12 }, [10, 20]);
+
+            const expected = '12.00';
+            const actual = containerFixture
+                .select('.mini-tooltip-value')
+                .text();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render no value when shown without a data point', () => {
+            tooltipChart.show();
+
+            const expected = 0;
+            const actual = containerFixture
+                .selectAll('.mini-tooltip-value')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
         it('should be visible when required', () => {
             const initialExpected = 'hidden';
             const expected = 'visible';

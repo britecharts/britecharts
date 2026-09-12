@@ -8,6 +8,7 @@ import { axisTimeCombinations as combinations } from '../constants';
 const tooltipContainerWithMarkerSelector =
     '.metadata-group .vertical-marker-container';
 const tooltipContainerSelector = '.metadata-group';
+const tooltipSelector = '.britechart-tooltip';
 
 export default class Tooltip extends React.Component {
     static propTypes = {
@@ -159,10 +160,6 @@ export default class Tooltip extends React.Component {
 
         this.setRef = this.setRef.bind(this);
         this.renderChildChart = this.renderChildChart.bind(this);
-
-        if (props.render) {
-            this.childChart = this.renderChildChart(props);
-        }
     }
 
     state = {
@@ -179,17 +176,11 @@ export default class Tooltip extends React.Component {
 
     componentDidUpdate() {
         const { chart } = this.props;
-        const tooltipWithMarkerContainer = this.rootNode.querySelector(
-            tooltipContainerWithMarkerSelector
-        );
-        const tooltipContainer = this.rootNode.querySelector(
-            tooltipContainerSelector
-        );
-        this.childChart = this.renderChildChart(this.props);
+        const tooltipContainer = this.getTooltipContainer();
 
-        if (tooltipWithMarkerContainer || tooltipContainer) {
+        if (tooltipContainer && this.chart) {
             this.chart = chart.update(
-                tooltipWithMarkerContainer || tooltipContainer,
+                tooltipContainer,
                 this.getChartConfiguration(),
                 this.state,
                 this.chart
@@ -259,11 +250,26 @@ export default class Tooltip extends React.Component {
     }
 
     /**
+     * The chart's group the tooltip is drawn into: the vertical marker
+     * container when the chart has one (line, stacked area), otherwise the
+     * metadata group
+     * @return {Element|null}
+     */
+    getTooltipContainer() {
+        if (!this.rootNode) {
+            return null;
+        }
+
+        return (
+            this.rootNode.querySelector(tooltipContainerWithMarkerSelector) ||
+            this.rootNode.querySelector(tooltipContainerSelector)
+        );
+    }
+
+    /**
      * Builds the chart being wrapped, handing it everything it needs to drive
-     * the tooltip. Both the constructor and componentDidUpdate go through here:
-     * re-rendering the child with only `data`, as this used to, left the chart
-     * with no mouse handlers and no way to recreate the tooltip after the first
-     * interaction.
+     * the tooltip: the data and the three mouse handlers, plus createTooltip
+     * for the chart to call once it has drawn (or redrawn) its groups.
      * @param {Object} props    Props to build the child chart from
      * @return {ReactElement}   The chart to render inside the wrapper
      */
@@ -279,25 +285,43 @@ export default class Tooltip extends React.Component {
         });
     }
 
+    /**
+     * Draws the tooltip into the chart. The charts call this again after
+     * every update of their own, so it only creates a tooltip when the
+     * container does not hold one already -- otherwise every pointer move
+     * would add another
+     */
     createTooltip = () => {
         const { chart } = this.props;
+        const tooltipContainer = this.getTooltipContainer();
 
-        const tooltipWithMarkerContainer = this.rootNode.querySelector(
-            tooltipContainerWithMarkerSelector
-        );
-        const tooltipContainer = this.rootNode.querySelector(
-            tooltipContainerSelector
-        );
-
-        if (tooltipWithMarkerContainer || tooltipContainer) {
-            this.chart = chart.create(
-                tooltipWithMarkerContainer || tooltipContainer,
-                this.getChartConfiguration()
-            );
+        if (!tooltipContainer) {
+            return;
         }
+
+        if (this.chart && tooltipContainer.querySelector(tooltipSelector)) {
+            return;
+        }
+
+        this.chart = chart.create(
+            tooltipContainer,
+            this.getChartConfiguration()
+        );
     };
 
     render() {
+        const { props } = this;
+
+        // The wrapped chart is built from the props only, so a tooltip state
+        // change (every pointer move) re-renders this component but hands
+        // the chart the same element and React leaves it alone. Rebuilding
+        // it here on every render would make the chart redraw itself on
+        // each move.
+        if (props.render && props !== this.childChartProps) {
+            this.childChart = this.renderChildChart(props);
+            this.childChartProps = props;
+        }
+
         return (
             <div className="tooltip-chart-wrapper" ref={this.setRef}>
                 {this.childChart}

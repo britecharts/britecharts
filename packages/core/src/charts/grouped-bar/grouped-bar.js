@@ -716,14 +716,11 @@ export default function module() {
             y;
 
         if (dataPoint) {
-            // Move verticalMarker to that datapoint
-            if (isHorizontal) {
-                x = mouseX - margin.left;
-                y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
-            } else {
-                x = xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]);
-                y = mouseY - margin.bottom;
-            }
+            // The tooltip follows the pointer, like on every other chart.
+            // The pointer is measured on the root svg; the tooltip lives in
+            // the margin-translated container, hence the offsets.
+            x = mouseX - margin.left;
+            y = mouseY - margin.top;
             moveTooltipOriginXY(x, y);
 
             // Emit event with xPosition for tooltip or similar feature

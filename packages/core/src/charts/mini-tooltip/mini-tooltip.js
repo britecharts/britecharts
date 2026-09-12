@@ -6,6 +6,8 @@ import 'd3-transition';
 
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import { isDefined } from '../helpers/type';
+import { measureFrame, originOf } from '../tooltip/frame';
+import { place } from '../tooltip/place';
 
 const NUMBER_FORMAT = '.2f';
 
@@ -59,10 +61,7 @@ export default function module() {
         tooltipBackground,
         backgroundBorderRadius = 2,
         tooltipTextContainer,
-        tooltipOffset = {
-            y: 0,
-            x: 20,
-        },
+        tooltipGap = 12,
         // Fonts
         textSize = 14,
         textLineHeight = 1.5,
@@ -120,7 +119,11 @@ export default function module() {
         if (!svg) {
             svg = select(container)
                 .append('g')
-                .classed('britechart britechart-mini-tooltip', true);
+                .classed('britechart britechart-mini-tooltip', true)
+                // Never between the pointer and the shape underneath: the
+                // charts listen on their shapes, and a tooltip that caught
+                // the pointer would hide itself with a mouseout
+                .attr('pointer-events', 'none');
 
             buildContainerGroups();
         }
@@ -160,77 +163,50 @@ export default function module() {
      * @private
      */
     function getMaxLengthLine(...texts) {
+        // getBBox() comes back empty while the tooltip is hidden and under
+        // jsdom; a missing width must not turn into a NaN attribute.
         let textSizes = texts
             .filter((x) => !!x)
-            .map((x) => x.node().getBBox().width);
+            .map((x) => x.node().getBBox().width || 0);
 
-        return max(textSizes);
+        return max(textSizes) || 0;
     }
 
     /**
-     * Calculates the desired position for the tooltip
-     * @param  {Number} mouseX             Current horizontal mouse position
-     * @param  {Number} mouseY             Current vertical mouse position
-     * @param  {Number} parentChartWidth   Parent's chart width
-     * @param  {Number} parentChartHeight  Parent's chart height
-     * @return {Number[]}                  X and Y position
+     * Works out where to draw the box for the pointer position.
+     *
+     * The position arrives in the coordinate space of the parent of the
+     * element this tooltip was called on -- the chart's `.metadata-group`
+     * -- which is the space every chart dispatches its pointer in. The
+     * chart's size is not needed: the tooltip lives inside the chart's svg,
+     * so it measures its own frame (see ../tooltip/frame.js) and keeps the
+     * box inside it (see ../tooltip/place.js), flipping to the other side of
+     * the pointer when there is no room and sliding vertically at the edges.
+     *
+     * @param  {Number} mouseX      Current horizontal mouse position
+     * @param  {Number} mouseY      Current vertical mouse position
+     * @return {Number[]}           translate() for the tooltip
      * @private
      */
-    function getTooltipPosition(
-        [mouseX, mouseY],
-        [parentChartWidth, parentChartHeight]
-    ) {
-        let tooltipX, tooltipY;
+    function getTooltipPosition([mouseX, mouseY]) {
+        const container = svg.node().parentNode;
+        const [parentX, parentY] = originOf(container.parentNode);
+        const {
+            width,
+            height,
+            origin: [containerX, containerY],
+        } = measureFrame(container);
+        const { x, y } = place({
+            anchor: [parentX + (mouseX || 0), parentY + (mouseY || 0)],
+            size: [
+                chartWidth + margin.left + margin.right,
+                chartHeight + margin.top + margin.bottom,
+            ],
+            frame: { width, height },
+            gap: tooltipGap,
+        });
 
-        if (hasEnoughHorizontalRoom(parentChartWidth, mouseX)) {
-            tooltipX = mouseX + tooltipOffset.x;
-        } else {
-            tooltipX = mouseX - chartWidth - tooltipOffset.x - margin.right;
-        }
-
-        if (hasEnoughVerticalRoom(parentChartHeight, mouseY)) {
-            tooltipY = mouseY + tooltipOffset.y;
-        } else {
-            tooltipY = mouseY - chartHeight - tooltipOffset.y - margin.bottom;
-        }
-
-        return [tooltipX, tooltipY];
-    }
-
-    /**
-     * Checks if the mouse is over the bounds of the parent chart
-     * @param  {Number}  chartWidth Parent's chart
-     * @param  {Number}  positionX  Mouse position
-     * @return {Boolean}            If the mouse position allows space for the tooltip
-     * @private
-     */
-    function hasEnoughHorizontalRoom(parentChartWidth, positionX) {
-        return (
-            parentChartWidth -
-                margin.left -
-                margin.right -
-                chartWidth -
-                positionX >
-            0
-        );
-    }
-
-    /**
-     * Checks if the mouse is over the bounds of the parent chart
-     * @param  {Number}  chartWidth Parent's chart
-     * @param  {Number}  positionX  Mouse position
-     * @return {Boolean}            If the mouse position allows space for the tooltip
-     * @private
-     */
-    function hasEnoughVerticalRoom(parentChartHeight, positionY) {
-        return (
-            parentChartHeight -
-                margin.top -
-                margin.bottom -
-                chartHeight -
-                positionY >
-            0
-        );
+        return [x - containerX, y - containerY];
     }
 
     /**
@@ -239,18 +215,27 @@ export default function module() {
      * @private
      */
     function hideTooltip() {
-        svg.style('visibility', 'hidden');
+        svg.interrupt().style('visibility', 'hidden');
     }
 
     /**
-     * Shows the tooltip updating it's content
-     * @param  {Object} dataPoint Data point from the chart
+     * Shows the tooltip. With a data point it renders and places it at once;
+     * without one it shows empty until the first update. Either way a fade
+     * still running from the last update is stopped first, so it cannot
+     * reveal the box before its content is right.
+     * @param  {Object} [dataPoint]     Data point from the chart
+     * @param  {Number[]} [position]    [x, y] of the pointer in the chart
      * @return {void}
      * @private
      */
-    function showTooltip() {
-        updateContent();
-        svg.style('visibility', 'visible').style('opacity', 0);
+    function showTooltip(dataPoint, position) {
+        svg.interrupt().style('visibility', 'visible').style('opacity', 0);
+
+        if (dataPoint) {
+            updateTooltip(dataPoint, position);
+        } else {
+            updateContent();
+        }
     }
 
     /**
@@ -260,7 +245,7 @@ export default function module() {
      * @private
      */
     function updateContent(dataPoint = {}) {
-        let value = dataPoint[valueLabel] || '',
+        let value = dataPoint[valueLabel],
             name = dataPoint[nameLabel] || '',
             lineHeight = textSize * textLineHeight,
             valueLineHeight = valueTextSize * valueTextLineHeight,
@@ -317,16 +302,13 @@ export default function module() {
     }
 
     /**
-     * Updates size and position of tooltip depending on the side of the chart we are in
-     * @param  {Object} dataPoint DataPoint of the tooltip
+     * Updates the size of the tooltip and moves it next to the pointer
+     * @param  {Number[]} mousePosition   [x, y] of the pointer in the chart
      * @return void
      * @private
      */
-    function updatePositionAndSize(mousePosition, parentChartSize) {
-        let [tooltipX, tooltipY] = getTooltipPosition(
-            mousePosition,
-            parentChartSize
-        );
+    function updatePositionAndSize(mousePosition) {
+        let [tooltipX, tooltipY] = getTooltipPosition(mousePosition);
 
         svg.transition()
             .duration(fadeInDuration)
@@ -344,13 +326,14 @@ export default function module() {
     /**
      * Updates tooltip content, size and position
      *
-     * @param  {Object} dataPoint Current datapoint to show info about
+     * @param  {Object} dataPoint       Current datapoint to show info about
+     * @param  {Number[]} position      [x, y] of the pointer in the chart
      * @return void
      * @private
      */
-    function updateTooltip(dataPoint, position, chartSize) {
+    function updateTooltip(dataPoint, position) {
         updateContent(dataPoint);
-        updatePositionAndSize(position, chartSize);
+        updatePositionAndSize(position);
     }
 
     /**
@@ -415,12 +398,18 @@ export default function module() {
     };
 
     /**
-     * Shows the tooltip
-     * @return {Module} Tooltip module to chain calls
+     * Shows the tooltip. The charts dispatch `customMouseOver` with the
+     * hovered data point and the pointer position, so
+     * `chart.on('customMouseOver', tooltip.show)` shows it with the right
+     * content straight away; called with no arguments it shows empty until
+     * the first `update`.
+     * @param  {Object} [dataPoint]         Datapoint of the hovered element
+     * @param  {Array} [mousePosition]      Mouse position relative to the chart's drawing area, [x, y]
+     * @return {module}                     Current component
      * @public
      */
-    exports.show = function () {
-        showTooltip();
+    exports.show = function (dataPoint, mousePosition) {
+        showTooltip(dataPoint, mousePosition);
 
         return this;
     };
@@ -441,14 +430,18 @@ export default function module() {
     };
 
     /**
-     * Updates the position and content of the tooltip
+     * Updates the position and content of the tooltip. The charts dispatch
+     * these with `customMouseMove`, so `chart.on('customMouseMove', tooltip.update)`
+     * is all the wiring needed.
      * @param  {Object} dataPoint       Datapoint of the hovered element
-     * @param  {Array} mousePosition    Mouse position relative to the parent chart [x, y]
-     * @param  {Array} chartSize        Parent chart size [x, y]
+     * @param  {Array} mousePosition    Mouse position relative to the chart's drawing area, [x, y]
+     * @param  {Array} [chartSize]      Ignored; the tooltip measures the chart itself. Kept so
+     *                                  the charts' existing `customMouseMove` payload still fits
      * @return {module}                 Current component
+     * @public
      */
-    exports.update = function (dataPoint, mousePosition, chartSize) {
-        updateTooltip(dataPoint, mousePosition, chartSize);
+    exports.update = function (dataPoint, mousePosition) {
+        updateTooltip(dataPoint, mousePosition);
 
         return this;
     };
