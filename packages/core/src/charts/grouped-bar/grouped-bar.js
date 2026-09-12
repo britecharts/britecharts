@@ -759,12 +759,24 @@ export default function module() {
      * @private
      */
     function handleCustomClick(e, d, event) {
+        // Like the hover, clicks are for the bars only
+        if (!isPointerOverBar(event)) {
+            return;
+        }
+
         let [mouseX, mouseY] = getMousePosition(event);
         let dataPoint = isHorizontal
             ? getNearestDataPoint2(mouseY)
             : getNearestDataPoint(mouseX);
 
-        dispatcher.call('customClick', e, dataPoint, pointer(event, e));
+        // The rect carries the clicked bar's own entry (group, name, value)
+        dispatcher.call(
+            'customClick',
+            e,
+            dataPoint,
+            pointer(event, e),
+            select(event.target).datum()
+        );
     }
 
     /**

@@ -807,10 +807,26 @@ export default function module() {
 
         highlightDataPoint(pointData);
 
-        dispatcher.call('customMouseMove', e, pointData, pointer(event, e), [
-            chartWidth,
-            chartHeight,
-        ]);
+        dispatcher.call(
+            'customMouseMove',
+            e,
+            pointData,
+            getPointPosition(pointData),
+            [chartWidth, chartHeight]
+        );
+    }
+
+    /**
+     * Where a point is drawn, in the coordinate space of the chart's
+     * drawing area -- the space the tooltip lives in. The tooltip is
+     * anchored to the point itself rather than to the pointer, so it sits
+     * beside the point and stays put while the pointer moves within it.
+     * @param  {Object} pointData   The point, with x and y in data units
+     * @return {Number[]}           [x, y] in pixels
+     * @private
+     */
+    function getPointPosition(pointData) {
+        return [xScale(pointData.x), yScale(pointData.y)];
     }
 
     /**
@@ -819,7 +835,14 @@ export default function module() {
      * @private
      */
     function handleMouseOver(e, d, event) {
-        dispatcher.call('customMouseOver', e, d, pointer(event, e));
+        const pointData = getPointData(getClosestPoint(e, event));
+
+        dispatcher.call(
+            'customMouseOver',
+            e,
+            pointData,
+            getPointPosition(pointData)
+        );
     }
 
     /**

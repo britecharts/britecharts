@@ -15,7 +15,8 @@ const INSET = 4;
 // Both tooltips move over a short transition; let it settle before measuring.
 const SETTLE_MS = 300;
 
-// [name, container, where the pointer goes, tooltip root]. The pointer has
+// [name, container, where the pointer goes, tooltip root, and optionally
+// the anchor the tooltip must not cover]. The pointer has
 // to land where the chart resolves a data point, which differs per chart:
 //   svg          — anywhere over the svg: five points, corners and centre
 //                  (line snaps to the nearest date; scatter to the nearest point)
@@ -59,6 +60,9 @@ const CHARTS = [
         '.hover-scatter-plot',
         'svg',
         '.britechart-mini-tooltip',
+        // The tooltip is anchored to the hovered point and must never
+        // cover it (#923)
+        'circle.highlight-circle',
     ],
     [
         'heatmap + mini tooltip',
@@ -151,7 +155,13 @@ function nanAttributes(container) {
     );
 }
 
-for (const [name, selector, target, tooltipSelector] of CHARTS) {
+for (const [
+    name,
+    selector,
+    target,
+    tooltipSelector,
+    anchorSelector,
+] of CHARTS) {
     test(`H · ${name} stays inside the chart`, async ({ page }) => {
         const problems = [];
 
@@ -236,6 +246,43 @@ for (const [name, selector, target, tooltipSelector] of CHARTS) {
                 `${where}: bottom edge`
             ).toBeLessThanOrEqual(frame.y + frame.height + 1);
             expect(await nanAttributes(container), where).toEqual([]);
+
+            if (anchorSelector) {
+                // The anchor's geometry, not its bounding box: a glow filter
+                // makes the box much bigger than the point itself.
+                const anchor = await container
+                    .locator(anchorSelector)
+                    .evaluate((el) => {
+                        const matrix = el.getScreenCTM();
+                        const centre = new DOMPoint(
+                            Number(el.getAttribute('cx')),
+                            Number(el.getAttribute('cy'))
+                        ).matrixTransform(matrix);
+
+                        return {
+                            x: centre.x,
+                            y: centre.y,
+                            r: Number(el.getAttribute('r')) * matrix.a,
+                        };
+                    });
+                const nearestX = Math.max(
+                    box.x,
+                    Math.min(anchor.x, box.x + box.width)
+                );
+                const nearestY = Math.max(
+                    box.y,
+                    Math.min(anchor.y, box.y + box.height)
+                );
+                const distance = Math.hypot(
+                    anchor.x - nearestX,
+                    anchor.y - nearestY
+                );
+
+                expect(
+                    distance,
+                    `${where}: covers the hovered point`
+                ).toBeGreaterThanOrEqual(anchor.r);
+            }
         }
 
         // Leaving the chart hides it again.

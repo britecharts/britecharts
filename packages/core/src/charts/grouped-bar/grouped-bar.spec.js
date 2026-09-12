@@ -273,22 +273,31 @@ describe('grouped Bar Chart', () => {
 
     describe('lifecycle', () => {
         describe('when clicking on the chart', () => {
-            it('should trigger a callback', () => {
-                const bar = containerFixture.select('.grouped-bar');
+            it('should trigger a callback with the column, the pointer and the clicked bar', () => {
                 const callbackSpy = jest.fn();
-                const expectedCalls = 1;
-                const expectedArguments = 2;
-                let actualCalls;
-                let actualArgumentsNumber;
+                const expectedCallCount = 1;
+                const expectedArgumentsCount = 3;
 
                 groupedBarChart.on('customClick', callbackSpy);
-                bar.dispatch('click');
+                containerFixture
+                    .select('rect.bar')
+                    .dispatch('click', { bubbles: true });
 
-                actualCalls = callbackSpy.mock.calls.length;
-                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
+                    expectedArgumentsCount
+                );
+                expect(callbackSpy.mock.calls[0][2]).toBeDefined();
+            });
 
-                expect(actualCalls).toEqual(expectedCalls);
-                expect(actualArgumentsNumber).toEqual(expectedArguments);
+            it('should not trigger a callback when the empty space of the chart is clicked', () => {
+                const callbackSpy = jest.fn();
+                const expectedCallCount = 0;
+
+                groupedBarChart.on('customClick', callbackSpy);
+                containerFixture.select('.grouped-bar').dispatch('click');
+
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
             });
         });
 

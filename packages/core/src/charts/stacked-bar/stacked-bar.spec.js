@@ -276,21 +276,31 @@ describe('stacked Bar Chart', () => {
 
     describe('lifecycle', () => {
         describe('when clicking on the chart', () => {
-            it('should trigger a callback', () => {
-                const chart = containerFixture.select('.stacked-bar');
+            it('should trigger a callback with the column, the pointer and the clicked bar', () => {
                 const callbackSpy = jest.fn();
                 const expectedCallCount = 1;
-                const expectedArgumentsCount = 2;
-                let actualCalls;
-                let actualArgumentsNumber;
+                const expectedArgumentsCount = 3;
 
                 stackedBarChart.on('customClick', callbackSpy);
-                chart.dispatch('click');
-                actualCalls = callbackSpy.mock.calls.length;
-                actualArgumentsNumber = callbackSpy.mock.calls[0].length;
+                containerFixture
+                    .select('rect.bar')
+                    .dispatch('click', { bubbles: true });
 
-                expect(actualCalls).toEqual(expectedCallCount);
-                expect(actualArgumentsNumber).toEqual(expectedArgumentsCount);
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
+                expect(callbackSpy.mock.calls[0]).toHaveLength(
+                    expectedArgumentsCount
+                );
+                expect(callbackSpy.mock.calls[0][2]).toBeDefined();
+            });
+
+            it('should not trigger a callback when the empty space of the chart is clicked', () => {
+                const callbackSpy = jest.fn();
+                const expectedCallCount = 0;
+
+                stackedBarChart.on('customClick', callbackSpy);
+                containerFixture.select('.stacked-bar').dispatch('click');
+
+                expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
             });
         });
 

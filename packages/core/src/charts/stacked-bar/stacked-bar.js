@@ -13,6 +13,7 @@ import 'd3-transition';
 import { exportChart } from '../helpers/export';
 import { getValueDomain } from '../helpers/domain';
 import { dataKeyDeprecationMessage } from '../helpers/project';
+import { isDefined } from '../helpers/type';
 import colorHelper from '../helpers/color';
 import { barLoadingMarkup } from '../helpers/load';
 import { setDefaultLocale } from '../helpers/locale';
@@ -745,12 +746,62 @@ export default function module() {
      * @private
      */
     function handleClick(e, d, event) {
+        // Like the hover, clicks are for the bars only
+        if (!isPointerOverBar(event)) {
+            return;
+        }
+
         let [mouseX, mouseY] = getMousePosition(event);
         let dataPoint = isHorizontal
             ? getNearestDataPoint2(mouseY)
             : getNearestDataPoint(mouseX);
 
-        dispatcher.call('customClick', e, dataPoint, pointer(event, e));
+        dispatcher.call(
+            'customClick',
+            e,
+            dataPoint,
+            pointer(event, e),
+            getSegment(event.target)
+        );
+    }
+
+    /**
+     * The data of one bar (one segment of a stack): its stack's name, its
+     * value and the key of the column it belongs to. The rect's layer
+     * carries the stack's name; the column is the rect's position within
+     * the layer, which follows the order of the data (the stacked point
+     * itself carries the column as `data` when d3 bound it)
+     * @param  {Element} bar    The clicked rect
+     * @return {Object | undefined}
+     * @private
+     */
+    function getSegment(bar) {
+        const layerNode = bar.parentNode;
+        const layer = layerNode ? select(layerNode).datum() : null;
+
+        if (!layer || !isDefined(layer.key)) {
+            return undefined;
+        }
+
+        const point = select(bar).datum();
+        const column =
+            point && point.data
+                ? point.data
+                : transformedData[
+                      Array.from(layerNode.querySelectorAll('.bar')).indexOf(
+                          bar
+                      )
+                  ];
+
+        if (!column) {
+            return undefined;
+        }
+
+        return {
+            name: layer.key,
+            value: column[layer.key],
+            key: column.key,
+        };
     }
 
     /**

@@ -1,0 +1,5 @@
+---
+'@britecharts/core': patch
+---
+
+The scatter plot's tooltip is anchored to the hovered point, in the chart's own coordinate space, so it sits beside the point and never covers it (#923); it used to be placed from root-svg coordinates and landed a margin's worth off. The tooltip's `xAxisValueType` gains `'category'`, which shows the key as it is, and `'auto'`, now the default, which shows a date as a date, a number as a number and anything else as it is, so a category key no longer titles the tooltip "NaN" (#825); `'date'` and `'number'` still force a type. When the data point has no field named by `dateLabel`, the title falls back to its `key` (what the stacked and grouped bar charts dispatch) or its `date`. A new `maxEntries` accessor (default 12) folds the rows past it into a "+n more" row, so a tooltip with many topics keeps a height that fits in the chart (#788). The stacked bar and grouped bar charts dispatch `customClick` only when a bar is clicked, and pass the clicked bar's own data as a third argument, after the column and the pointer position (#864).
