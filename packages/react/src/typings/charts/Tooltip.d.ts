@@ -91,10 +91,16 @@ export interface TooltipProps {
     valueLabel?: string;
 
     /**
-     * Gets or Sets the `xAxisValueType` of the data. Choose between 'date' and 'number'.
-     * When set to number, the x-Axis values won't be parsed as dates anymore, but as numbers.
+     * Gets or Sets the most rows the tooltip shows; past that, the last row reads "+n more".
+     * 0 shows every row. Default 12.
      */
-    xAxisValueType: 'date' | 'number';
+    maxEntries?: number;
+
+    /**
+     * Gets or Sets how the key of the data point is shown in the title: 'date', 'number',
+     * 'category' (as it is), or 'auto' (the default), which picks one per key.
+     */
+    xAxisValueType?: 'auto' | 'date' | 'number' | 'category';
 
     /**
      * Internally used, do not overwrite.

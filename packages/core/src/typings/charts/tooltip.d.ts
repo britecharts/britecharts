@@ -88,10 +88,17 @@ export interface TooltipAPI {
     /** Gets or Sets the valueLabel of the data */
     valueLabel(label?: string): TooltipModule;
     /**
-     * Gets or Sets the `xAxisValueType` of the data. Choose between 'date' and 'number'. When set to
-     * number, the x-Axis values won't be parsed as dates anymore, but as numbers.
+     * Gets or Sets the most rows the tooltip shows; past that, the last row reads "+n more".
+     * 0 shows every row. Default 12.
+     */
+    maxEntries(limit?: number): TooltipModule;
+    /**
+     * Gets or Sets how the key of the data point is shown in the title: 'date', 'number',
+     * 'category' (as it is), or 'auto' (the default), which picks one per key.
      * */
-    xAxisValueType(type?: 'date' | 'number'): TooltipModule;
+    xAxisValueType(
+        type?: 'auto' | 'date' | 'number' | 'category'
+    ): TooltipModule;
 }
 
 export type TooltipModule = ChartModuleSelection<TooltipDataShape[]> &

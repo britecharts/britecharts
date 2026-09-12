@@ -50,6 +50,7 @@ d3Selection.select('.metadata-group .hover-marker')
         * [.show()](#module_Tooltip--exports.show) ⇒ <code>module</code>
         * [.title(_x)](#module_Tooltip--exports.title) ⇒ <code>String</code> \| <code>module</code>
         * [.tooltipOffset(_x)](#module_Tooltip--exports.tooltipOffset) ⇒ <code>Object</code> \| <code>module</code>
+        * [.maxEntries([_x])](#module_Tooltip--exports.maxEntries) ⇒ <code>Number</code> \| <code>module</code>
         * [.topicsOrder(_x)](#module_Tooltip--exports.topicsOrder) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
         * ~~[.topicLabel(_x)](#module_Tooltip--exports.topicLabel) ⇒ <code>String</code> \| <code>module</code>~~
         * [.update(dataPoint, colorMapping, xPosition, [yPosition])](#module_Tooltip--exports.update) ⇒ <code>Module</code>
@@ -115,7 +116,10 @@ tooltip.dateCustomFormat('%H:%M %p')
 ### ~~exports.dateLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
 ***Deprecated***
 
-Gets or Sets the dateLabel of the data
+Gets or Sets the dateLabel of the data: the field of the data point
+shown in the title. When the data point has no such field, its `key`
+(what the stacked and grouped bar charts dispatch) or its `date` is
+used, so the default works for every chart.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current dateLabel or Chart module to chain calls  
@@ -245,6 +249,25 @@ up (negative) or down. The box still stays inside the chart.
 ```js
 tooltip.tooltipOffset({ x: 0, y: -20 })
 ```
+<a name="module_Tooltip--exports.maxEntries"></a>
+
+### exports.maxEntries([_x]) ⇒ <code>Number</code> \| <code>module</code>
+Gets or Sets the most rows the tooltip shows. Past that, the last row
+reads "+n more" instead, so the box keeps a height that fits in the
+chart. 0 shows every row.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Returns**: <code>Number</code> \| <code>module</code> - Current maxEntries or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [_x] | <code>Number</code> | <code>12</code> | Most rows to show |
+
+**Example**  
+```js
+tooltip.maxEntries(6)
+```
 <a name="module_Tooltip--exports.topicsOrder"></a>
 
 ### exports.topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
@@ -309,14 +332,23 @@ Gets or Sets the valueLabel of the data
 <a name="module_Tooltip--exports.xAxisValueType"></a>
 
 ### exports.xAxisValueType([_x]) ⇒ <code>String</code> \| <code>module</code>
-Gets or Sets the `xAxisValueType` of the data. Choose between 'date' and 'number'. When set to
-number, the x-Axis values won't be parsed as dates anymore, but as numbers.
+Gets or Sets how the key of the data point is shown in the title:
+'date' formats it as a date, 'number' as a number, 'category' shows
+it as it is, and 'auto' (the default) picks one per key -- a Date or
+a string that parses as one is a date, a number or a numeric string
+is a number, anything else is a category. Set 'date' for keys that
+happen to parse as numbers, or 'category' for names that happen to
+parse as dates.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
-**Returns**: <code>String</code> \| <code>module</code> - Current keyType or Chart module to chain calls  
+**Returns**: <code>String</code> \| <code>module</code> - Current xAxisValueType or Chart module to chain calls  
 **Access**: public  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [_x] | <code>String</code> | <code>&#x27;date&#x27;</code> | Desired keyType |
+| [_x] | <code>String</code> | <code>&#x27;auto&#x27;</code> | 'auto', 'date', 'number' or 'category' |
 
+**Example**  
+```js
+tooltip.xAxisValueType('category')
+```

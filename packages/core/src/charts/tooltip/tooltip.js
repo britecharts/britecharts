@@ -11,9 +11,13 @@ import {
     isInteger,
 } from '../helpers/number';
 import { getTextWidth, getApproximateNumberOfLines } from '../helpers/text';
+import { isDefined } from '../helpers/type';
 import { measureFrame, originOf, translateOf } from './frame';
 import { chaseDuration, ease, prepareToShow, fadeIn, fadeOut } from './motion';
 import { place } from './place';
+
+// Key of the row that stands for the topics past maxEntries
+const MORE_ROW_KEY = '__more__';
 
 /**
  * Tooltip Component reusable API class that renders a
@@ -110,7 +114,9 @@ export default function module() {
         nameLabel = 'name',
         topicLabel = 'topics',
         defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
-        xAxisValueType = 'date',
+        xAxisValueType = 'auto',
+        // Rows shown before the rest are folded into a "+n more" row
+        maxEntries = 12,
         dateFormat = null,
         dateCustomFormat = null,
         topicsOrder = [],
@@ -364,8 +370,11 @@ export default function module() {
      */
     function layoutEntry(entry, topic) {
         const name = topic[nameLabel];
-        const leftText = topic.topicName || name;
-        const rightText = getValueText(topic);
+        const isMoreRow = !!topic.isMoreRow;
+        const leftText = isMoreRow
+            ? `+${topic.hiddenCount} more`
+            : topic.topicName || name;
+        const rightText = isMoreRow ? '' : getValueText(topic);
         const left = entry.select('.tooltip-left-text');
         const right = entry.select('.tooltip-right-text');
 
@@ -408,7 +417,10 @@ export default function module() {
         textHeight = measuredTextHeight || textHeight;
         tooltipHeight += textHeight + tooltipTextLinePadding;
 
-        entry.select('.tooltip-circle').style('fill', colorMap[name]);
+        entry
+            .select('.tooltip-circle')
+            .style('display', isMoreRow ? 'none' : null)
+            .style('fill', isMoreRow ? null : colorMap[name]);
 
         ttTextY += textHeight + 7;
     }
@@ -471,11 +483,72 @@ export default function module() {
      * @private
      */
     function formatKey(key) {
-        if (xAxisValueType === 'number') {
+        if (!isDefined(key)) {
+            return '';
+        }
+
+        const type =
+            xAxisValueType === 'auto' ? detectKeyType(key) : xAxisValueType;
+
+        if (type === 'number') {
             return Number(key);
         }
 
+        if (type === 'category') {
+            return String(key);
+        }
+
         return formatDate(new Date(key));
+    }
+
+    /**
+     * Works out how to show a key when xAxisValueType is 'auto': a Date or
+     * a string that parses as one is a date, a number or a numeric string
+     * is a number, anything else (a category name) is shown as it is
+     * @param  {Date | Number | String} key   Key of the data point
+     * @return {'date' | 'number' | 'category'}
+     * @private
+     */
+    function detectKeyType(key) {
+        if (key instanceof Date) {
+            return 'date';
+        }
+
+        if (typeof key === 'number') {
+            return 'number';
+        }
+
+        const text = String(key).trim();
+
+        if (text !== '' && Number.isFinite(Number(text))) {
+            return 'number';
+        }
+
+        if (Number.isFinite(Date.parse(text))) {
+            return 'date';
+        }
+
+        return 'category';
+    }
+
+    /**
+     * The key of a data point: the configured dateLabel, or, when the point
+     * has no such field, its `key` (what the stacked and grouped bar charts
+     * dispatch) or its `date`
+     * @param  {Object} dataPoint   The hovered data point
+     * @return {Date | Number | String | undefined}
+     * @private
+     */
+    function getKey(dataPoint) {
+        if (isDefined(dataPoint[dateLabel])) {
+            return dataPoint[dateLabel];
+        }
+
+        if (isDefined(dataPoint.key)) {
+            return dataPoint.key;
+        }
+
+        return dataPoint.date;
     }
 
     /**
@@ -586,7 +659,7 @@ export default function module() {
      * @private
      */
     function updateTitle(dataPoint) {
-        const textTitle = getTooltipTitle(dataPoint[dateLabel]);
+        const textTitle = getTooltipTitle(getKey(dataPoint));
 
         tooltipTitle
             .text(textTitle)
@@ -603,7 +676,7 @@ export default function module() {
         let formattedDate = formatKey(date);
 
         if (textTitle.length) {
-            if (shouldShowDateInTitle) {
+            if (shouldShowDateInTitle && formattedDate !== '') {
                 textTitle = `${textTitle} - ${formattedDate}`;
             }
         } else {
@@ -718,6 +791,22 @@ export default function module() {
             topics = _sortByAlpha(topics);
         }
 
+        topics = topics.filter(Boolean);
+
+        // Past maxEntries the last row says how many are not shown, so the
+        // box keeps a height that fits in the chart
+        if (maxEntries > 0 && topics.length > maxEntries) {
+            const shown = topics.slice(0, maxEntries - 1);
+
+            topics = shown.concat([
+                {
+                    [nameLabel]: MORE_ROW_KEY,
+                    isMoreRow: true,
+                    hiddenCount: topics.length - shown.length,
+                },
+            ]);
+        }
+
         updateTitle(dataPoint);
         resetSizeAndPositionPointers();
 
@@ -726,7 +815,7 @@ export default function module() {
         // every node
         const entries = tooltipBody
             .selectAll('.tooltip-entry')
-            .data(topics.filter(Boolean), (topic) => topic[nameLabel]);
+            .data(topics, (topic) => topic[nameLabel]);
 
         entries.exit().remove();
 
@@ -800,7 +889,10 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the dateLabel of the data
+     * Gets or Sets the dateLabel of the data: the field of the data point
+     * shown in the title. When the data point has no such field, its `key`
+     * (what the stacked and grouped bar charts dispatch) or its `date` is
+     * used, so the default works for every chart.
      * @param  {String} _x          Desired dateLabel
      * @return {String | module}   Current dateLabel or Chart module to chain calls
      * @public
@@ -951,6 +1043,24 @@ export default function module() {
     };
 
     /**
+     * Gets or Sets the most rows the tooltip shows. Past that, the last row
+     * reads "+n more" instead, so the box keeps a height that fits in the
+     * chart. 0 shows every row.
+     * @param  {Number} [_x=12]      Most rows to show
+     * @return {Number | module}    Current maxEntries or Chart module to chain calls
+     * @public
+     * @example tooltip.maxEntries(6)
+     */
+    exports.maxEntries = function (_x) {
+        if (!arguments.length) {
+            return maxEntries;
+        }
+        maxEntries = _x;
+
+        return this;
+    };
+
+    /**
      * Pass an override for the ordering of your tooltip
      * @param  {String[]} _x           Array of the names of your tooltip items
      * @return {String[] | module}    Current overrideOrder or Chart module to chain calls
@@ -1023,11 +1133,17 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the `xAxisValueType` of the data. Choose between 'date' and 'number'. When set to
-     * number, the x-Axis values won't be parsed as dates anymore, but as numbers.
-     * @param  {String} [_x='date']     Desired keyType
-     * @return {String | module}        Current keyType or Chart module to chain calls
+     * Gets or Sets how the key of the data point is shown in the title:
+     * 'date' formats it as a date, 'number' as a number, 'category' shows
+     * it as it is, and 'auto' (the default) picks one per key -- a Date or
+     * a string that parses as one is a date, a number or a numeric string
+     * is a number, anything else is a category. Set 'date' for keys that
+     * happen to parse as numbers, or 'category' for names that happen to
+     * parse as dates.
+     * @param  {String} [_x='auto']     'auto', 'date', 'number' or 'category'
+     * @return {String | module}        Current xAxisValueType or Chart module to chain calls
      * @public
+     * @example tooltip.xAxisValueType('category')
      */
     exports.xAxisValueType = function (_x) {
         if (!arguments.length) {

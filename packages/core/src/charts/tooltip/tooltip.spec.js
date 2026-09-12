@@ -288,6 +288,123 @@ describe('tooltip Component', () => {
         });
     });
 
+    describe('title key', () => {
+        const titleOf = () => containerFixture.select('.tooltip-title').text();
+
+        beforeEach(() => {
+            // No title, so the text is the formatted key alone
+            tooltipChart.title('');
+        });
+        const pointWith = (key) => ({
+            date: key,
+            topics: [{ name: 'a', topicName: 'a', value: 1 }],
+        });
+
+        it('should show a date key as a date by default', () => {
+            tooltipChart.update(
+                pointWith('2015-08-05T07:00:00.000Z'),
+                topicColorMap,
+                0
+            );
+
+            expect(titleOf()).toEqual('Aug 05, 2015');
+        });
+
+        it('should show a category key as it is by default', () => {
+            tooltipChart.update(pointWith('Chicago'), topicColorMap, 0);
+
+            expect(titleOf()).toEqual('Chicago');
+        });
+
+        it('should show a numeric key as a number by default', () => {
+            tooltipChart.update(pointWith('42'), topicColorMap, 0);
+
+            expect(titleOf()).toEqual('42');
+        });
+
+        it('should show a category key as it is when told so, even if it parses as a date', () => {
+            tooltipChart.xAxisValueType('category');
+            tooltipChart.update(pointWith('2015'), topicColorMap, 0);
+
+            expect(titleOf()).toEqual('2015');
+        });
+
+        it('should fall back to the key field of the data point', () => {
+            tooltipChart.update(
+                {
+                    key: 'Chicago',
+                    topics: [{ name: 'a', topicName: 'a', value: 1 }],
+                },
+                topicColorMap,
+                0
+            );
+
+            expect(titleOf()).toEqual('Chicago');
+        });
+
+        it('should show only the title when the data point has no key', () => {
+            tooltipChart.title('Sales');
+            tooltipChart.update(
+                { topics: [{ name: 'a', topicName: 'a', value: 1 }] },
+                topicColorMap,
+                0
+            );
+
+            expect(titleOf()).toEqual('Sales');
+        });
+    });
+
+    describe('many rows', () => {
+        const pointWithRows = (count) => ({
+            date: '2015-08-05T07:00:00.000Z',
+            topics: Array.from({ length: count }, (_, index) => ({
+                name: `topic-${String(index).padStart(2, '0')}`,
+                topicName: `Topic ${index}`,
+                value: index,
+            })),
+        });
+        const rowTexts = () =>
+            containerFixture
+                .selectAll('.tooltip-left-text')
+                .nodes()
+                .map((node) => node.textContent);
+
+        it('should show every row up to maxEntries', () => {
+            tooltipChart.update(pointWithRows(12), topicColorMap, 0);
+
+            expect(rowTexts()).toHaveLength(12);
+        });
+
+        it('should fold the rows past maxEntries into a "+n more" row', () => {
+            tooltipChart.update(pointWithRows(20), topicColorMap, 0);
+
+            const texts = rowTexts();
+
+            expect(texts).toHaveLength(12);
+            expect(texts[11]).toEqual('+9 more');
+            expect(
+                containerFixture
+                    .selectAll('.tooltip-entry')
+                    .filter(function () {
+                        return (
+                            d3
+                                .select(this)
+                                .select('.tooltip-circle')
+                                .style('display') === 'none'
+                        );
+                    })
+                    .size()
+            ).toEqual(1);
+        });
+
+        it('should show every row when maxEntries is 0', () => {
+            tooltipChart.maxEntries(0);
+            tooltipChart.update(pointWithRows(20), topicColorMap, 0);
+
+            expect(rowTexts()).toHaveLength(20);
+        });
+    });
+
     describe('lifecycle', () => {
         const settle = () => new Promise((resolve) => setTimeout(resolve, 300));
         const aDataPoint = (names) => ({
@@ -761,10 +878,21 @@ describe('tooltip Component', () => {
             expect(actual).toBe(expected);
         });
 
-        it('default of xAxisValueType should be "date"', () => {
-            let current = tooltipChart.xAxisValueType();
+        it('default of xAxisValueType should be "auto"', () => {
+            const expected = 'auto';
+            const actual = tooltipChart.xAxisValueType();
 
-            expect(current).toBe('date');
+            expect(actual).toEqual(expected);
+        });
+
+        it('should provide maxEntries getter and setter', () => {
+            const defaultMaxEntries = tooltipChart.maxEntries();
+            const expected = 6;
+
+            tooltipChart.maxEntries(expected);
+
+            expect(defaultMaxEntries).toEqual(12);
+            expect(tooltipChart.maxEntries()).toEqual(expected);
         });
     });
 });
