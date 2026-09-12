@@ -198,6 +198,8 @@ for (const [name, selector, target, tooltipSelector] of CHARTS) {
         // tooltip is shown before the first move.
         await page.mouse.move(frame.x - 40, frame.y - 40);
 
+        let isFirstPoint = true;
+
         for (const [x, y] of points) {
             const where = `pointer at (${Math.round(x - frame.x)}, ${Math.round(
                 y - frame.y
@@ -205,6 +207,24 @@ for (const [name, selector, target, tooltipSelector] of CHARTS) {
 
             await page.mouse.move(x, y, { steps: 4 });
             await expect(tooltip, where).toBeVisible();
+
+            // The tooltip fades in once, when it is shown; an update must
+            // not fade it again, and crossing from one shape to the next
+            // (a hide and a show within one event) must not blink. So from
+            // the second point on it is still opaque straight after the
+            // move, rather than climbing back up from transparent.
+            if (!isFirstPoint) {
+                const opacity = await tooltip.evaluate(
+                    (el) => getComputedStyle(el).opacity
+                );
+
+                expect(
+                    Number(opacity),
+                    `${where}: faded again on update`
+                ).toBeGreaterThan(0.8);
+            }
+            isFirstPoint = false;
+
             await page.waitForTimeout(SETTLE_MS);
 
             // A tooltip that threw while updating is still "visible", just
