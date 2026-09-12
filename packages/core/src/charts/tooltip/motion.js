@@ -13,11 +13,20 @@ import { easeQuadInOut } from 'd3-ease';
 import { select } from 'd3-selection';
 import 'd3-transition';
 
-/** Milliseconds for a fade in or out */
+/**
+ * Milliseconds for a fade in or out
+ * @private
+ */
 export const fadeDuration = 200;
-/** Milliseconds for the box to reach a new position or size */
+/**
+ * Milliseconds for the box to reach a new position or size
+ * @private
+ */
 export const chaseDuration = 200;
-/** Easing for every tooltip transition */
+/**
+ * Easing for every tooltip transition
+ * @private
+ */
 export const ease = easeQuadInOut;
 
 const FADE = 'tooltip-fade';
@@ -31,7 +40,10 @@ const FADE = 'tooltip-fade';
  * @private
  */
 export function prepareToShow(selection) {
-    const isFadingOut = selection.style('visibility') === 'visible';
+    // The inline style, not the computed one: the tooltip sets it itself,
+    // so it reads 'visible' only between a show and the end of a fade out
+    const node = selection.node();
+    const isFadingOut = !!node && node.style.visibility === 'visible';
 
     selection.interrupt(FADE).style('visibility', 'visible');
 
