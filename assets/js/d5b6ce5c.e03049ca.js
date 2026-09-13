@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_britecharts_docs||=[]).push([[278],{1708(e){e.exports=JSON.parse('{"tags":[{"label":"Releases","permalink":"/britecharts/blog/tags/releases","description":"Britecharts releases and what is in them","count":1}]}')}}]);

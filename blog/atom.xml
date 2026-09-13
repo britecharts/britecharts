@@ -2,34 +2,49 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://britecharts.github.io/britecharts/blog</id>
     <title>Britecharts Blog</title>
-    <updated>2022-03-25T00:00:00.000Z</updated>
+    <updated>2026-09-13T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://britecharts.github.io/britecharts/blog"/>
     <subtitle>Britecharts Blog</subtitle>
     <icon>https://britecharts.github.io/britecharts/img/icons/favicon.ico</icon>
     <entry>
-        <title type="html"><![CDATA[Version 3 is out!]]></title>
-        <id>https://britecharts.github.io/britecharts/blog/version-3</id>
-        <link href="https://britecharts.github.io/britecharts/blog/version-3"/>
-        <updated>2022-03-25T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Docusaurus blogging features are powered by the blog plugin.]]></summary>
-        <content type="html"><![CDATA[<p><a href="https://docusaurus.io/docs/blog" target="_blank" rel="noopener noreferrer" class="">Docusaurus blogging features</a> are powered by the <a href="https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog" target="_blank" rel="noopener noreferrer" class="">blog plugin</a>.</p>
-<p>Simply add Markdown files (or folders) to the <code>blog</code> directory.</p>
-<p>Regular blog authors can be added to <code>authors.yml</code>.</p>
-<p>The blog post date can be extracted from filenames, such as:</p>
+        <title type="html"><![CDATA[Britecharts 3.0 beta]]></title>
+        <id>https://britecharts.github.io/britecharts/blog/britecharts-3-beta</id>
+        <link href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta"/>
+        <updated>2026-09-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Britecharts 3.0 is in beta, and it is a new set of packages: @britecharts/core for the charts, @britecharts/react for the React components, and @britecharts/wrappers, the layer the React components are built on and the seam for other frameworks.]]></summary>
+        <content type="html"><![CDATA[<p>Britecharts 3.0 is in beta, and it is a new set of packages: <code>@britecharts/core</code> for the charts, <code>@britecharts/react</code> for the React components, and <code>@britecharts/wrappers</code>, the layer the React components are built on and the seam for other frameworks.</p>
+<div class="language-sh codeBlockContainer_ZGJx theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_kX1v"><pre tabindex="0" class="prism-code language-sh codeBlock_TAPP thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_AdAo"><div class="token-line" style="color:#393A34"><span class="token plain">npm install @britecharts/core@beta</span><br></div></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_SAay" id="what-is-new">What is new<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta#what-is-new" class="hash-link" aria-label="Direct link to What is new" title="Direct link to What is new" translate="no">​</a></h2>
 <ul>
-<li class=""><code>2019-05-30-welcome.md</code></li>
-<li class=""><code>2019-05-30-welcome/index.md</code></li>
+<li class=""><strong>Modern modules.</strong> Built on the current d3 modules, shipped as ES modules, CommonJS, UMD and CDN builds, with an <code>exports</code> map and TypeScript typings for every chart. Vite, Rollup, esbuild and webpack all work out of the box.</li>
+<li class=""><strong>One tooltip.</strong> <code>tooltip</code> and <code>miniTooltip</code> are one component that never gets cut off at the chart's edges, follows the pointer smoothly and works the same way on every chart.</li>
+<li class=""><strong>Negative values</strong> on the bar, stacked bar, grouped bar and brush charts, stacking down from zero.</li>
+<li class=""><strong>Loading states</strong> for every chart, <code>colorMap</code> to name the colour of each category, <code>animationDuration</code> on every animated chart, and charts that are responsive by default.</li>
+<li class=""><strong>React 19</strong> is tested: the React package is installed into a React 19 project under <code>StrictMode</code> on every change.</li>
 </ul>
-<p>A blog post folder can be convenient to co-locate blog post images:</p>
-<p><img decoding="async" loading="lazy" alt="Docusaurus Plushie" src="https://britecharts.github.io/britecharts/assets/images/docusaurus-plushie-banner-a60f7593abca1e3eef26a9afa244e4fb.jpeg" width="1500" height="500" class="img__Ss2"></p>
-<p>The blog supports tags as well!</p>
-<p><strong>And if you don't want a blog</strong>: just delete this directory, and use <code>blog: false</code> in your Docusaurus config.</p>
-<p>Use a <code>&lt;!--</code> <code>truncate</code> <code>--&gt;</code> comment to limit blog post size in the list view.</p>]]></content>
+<h2 class="anchor anchorTargetStickyNavbar_SAay" id="moving-from-version-2">Moving from version 2<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta#moving-from-version-2" class="hash-link" aria-label="Direct link to Moving from version 2" title="Direct link to Moving from version 2" translate="no">​</a></h2>
+<p>Most of the work is renaming: the <a class="" href="https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3">migration guide</a> walks through every breaking change with a before and after for each. The ones you will hit first:</p>
+<ol>
+<li class=""><strong>Imports.</strong> The charts are named exports of <code>@britecharts/core</code> (<code>import { bar } from '@britecharts/core'</code>) instead of files under <code>britecharts/dist/umd</code>. The CommonJS, UMD and CDN paths are in the guide too.</li>
+<li class=""><strong>Loading states.</strong> <code>loadingState()</code> is gone; render the chart with <code>isLoading(true)</code> and a dataset, empty or not.</li>
+<li class=""><strong>Renamed accessors.</strong> <code>locale</code> is <code>valueLocale</code> on the bar, grouped bar, stacked bar and scatter plot; the value formatters of the grouped and stacked bar are <code>numberFormat</code>; the line and stacked area swap <code>xAxisFormat</code> and <code>xAxisCustomFormat</code> back to what their names say; <code>aspectRatio</code> is removed.</li>
+<li class=""><strong>Tooltips.</strong> The line, stacked area, stacked bar and grouped bar charts now dispatch <code>customMouseMove</code> the same way every other chart does, as <code>(dataPoint, [x, y], [width, height], colorMap)</code>. If you drive <code>tooltip.update</code> yourself, it still accepts the old argument order and warns once.</li>
+<li class=""><strong><code>exportChart</code></strong> returns a promise.</li>
+</ol>
+<p>Version 2 ends at 2.18.4 and will not be updated.</p>
+<h2 class="anchor anchorTargetStickyNavbar_SAay" id="where-to-start">Where to start<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta#where-to-start" class="hash-link" aria-label="Direct link to Where to start" title="Direct link to Where to start" translate="no">​</a></h2>
+<ul>
+<li class="">The <a class="" href="https://britecharts.github.io/britecharts/docs/tutorials/installing-britecharts">installation</a> and <a class="" href="https://britecharts.github.io/britecharts/docs/tutorials/getting-started">getting started</a> tutorials build a first chart from scratch, and <a class="" href="https://britecharts.github.io/britecharts/docs/tutorials/styling-charts">styling charts</a> covers themes and CSS.</li>
+<li class="">The <a class="" href="https://britecharts.github.io/britecharts/docs/API/bar">API reference</a> has a page per chart and one for the <a class="" href="https://britecharts.github.io/britecharts/docs/API/tooltip">tooltip</a>.</li>
+<li class="">The <a href="https://britecharts.github.io/britecharts/storybook/" target="_blank" rel="noopener noreferrer" class="">Storybook</a> shows every chart, in core and in React, with its options live.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_SAay" id="tell-us-what-breaks">Tell us what breaks<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta#tell-us-what-breaks" class="hash-link" aria-label="Direct link to Tell us what breaks" title="Direct link to Tell us what breaks" translate="no">​</a></h2>
+<p>The beta is there to find what we missed. Open an <a href="https://github.com/britecharts/britecharts/issues" target="_blank" rel="noopener noreferrer" class="">issue</a> with the chart, the data and what you expected. And if you would like to help keep Britecharts going, the <a href="https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="">contributing guide</a> is the place to start: we are looking for maintainers.</p>]]></content>
         <author>
             <name>Marcos Iglesias Valle</name>
             <uri>https://github.com/golodhros</uri>
         </author>
-        <category label="releases" term="releases"/>
+        <category label="Releases" term="Releases"/>
     </entry>
 </feed>

@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_britecharts_docs||=[]).push([[7472],{5513(t){t.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Britecharts 3.0 beta","permalink":"/britecharts/blog/britecharts-3-beta","unlisted":false,"date":"2026-09-13T00:00:00.000Z"}]}')}}]);
