@@ -34,16 +34,7 @@ export const WithTooltip = () => {
                 console.log('Data entry marker clicked', d, mousePosition);
             })
             .on('customMouseOver', chartTooltip.show)
-            .on(
-                'customMouseMove',
-                function (dataPoint, topicColorMap, dataPointXPosition) {
-                    chartTooltip.update(
-                        dataPoint,
-                        topicColorMap,
-                        dataPointXPosition
-                    );
-                }
-            )
+            .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
 
         stackedAreaContainer.datum(dataset).call(stackedAreaChart);

@@ -77,7 +77,6 @@ Doing nothing at the moment. Thinking about removing it as the users already hav
 The following components haven't been adapted yet from Britecharts:
 - Brush charts
 - Heatmaps
-- Mini Tooltips
 - Scatter Plots
 
 Feel free to [send a PR][contributing] if you want them included.

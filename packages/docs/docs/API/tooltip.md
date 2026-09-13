@@ -1,38 +1,59 @@
 <a name="module_Tooltip"></a>
 
 # Tooltip
-Tooltip Component reusable API class that renders a
-simple and configurable tooltip element for Britechart's
-line chart or stacked area chart.
+Tooltip component: one box, drawn inside the chart's svg, that follows the
+pointer and shows what it is over. It renders a **list** (a title and one
+row per topic, with a colour dot, the topic's name and its value) for the
+multi-value charts -- line, stacked area, stacked bar and grouped bar --
+or a **single value** (a title, the element's name and a big value) for
+the single-value charts -- bar, scatter plot, heatmap and donut. By
+default it picks the layout from the data point it is given; `layout()`
+forces one. `miniTooltip` is this component with the single layout, an
+empty title and a `.2f` number format.
+
+The tooltip keeps itself inside the chart: it measures the svg it is drawn
+in, sits beside its anchor, flips to the other side when there is no room
+and slides so it is never cut off. It fades in when shown, fades out when
+hidden and eases towards each new position.
+
+Every chart dispatches the same three events, so wiring is always
+`chart.on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide)`.
+What they carry, and where to `.call()` the tooltip:
+
+| Chart | `customMouseOver` | `customMouseMove` | anchor `[x, y]` | attach to |
+| --- | --- | --- | --- | --- |
+| line, stacked area | `(data, [x, y])` | `(dataPoint, [x, y], [width, height], colorMap)` | the hovered date's x, the pointer's y | `.metadata-group .vertical-marker-container` |
+| stacked bar, grouped bar | `(data, [x, y])` | `(dataPoint, [x, y], [width, height], colorMap)` | the pointer, over a bar only | `.metadata-group` |
+| bar, heatmap, donut | `(dataPoint, [x, y], [width, height])` | `(dataPoint, [x, y], [width, height])` | the pointer, over a shape only | `.metadata-group` |
+| scatter plot | `(dataPoint, [x, y])` | `(dataPoint, [x, y], [width, height])` | the hovered point | `.metadata-group` |
+
+Positions are in pixels relative to the chart's drawing area (inside the
+margins). The chart's size is accepted and ignored: the tooltip measures
+the chart itself. The line and stacked area charts dispatch nothing while
+narrower than `tooltipThreshold` (480 px by default).
 
 **Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
 const lineChart = line(),
-    tooltip = tooltip();
+    chartTooltip = tooltip();
 
-tooltip
+chartTooltip
     .title('Tooltip title');
 
 lineChart
     .width(500)
-    .on('customMouseOver', function() {
-         tooltip.show();
-    })
-    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition, mouseYPosition) {
-         tooltip.update(dataPoint, topicColorMap, dataPointXPosition, mouseYPosition);
-    })
-    .on('customMouseOut', function() {
-         tooltip.hide();
-    });
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
 
 d3Selection.select('.css-selector')
     .datum(dataset)
     .call(lineChart);
 
-d3Selection.select('.metadata-group .hover-marker')
+d3Selection.select('.metadata-group .vertical-marker-container')
     .datum([])
-    .call(tooltip);
+    .call(chartTooltip);
 ```
 
 * [Tooltip](#module_Tooltip)
@@ -47,13 +68,14 @@ d3Selection.select('.metadata-group .hover-marker')
         * [.numberFormat(_x)](#module_Tooltip--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
         * [.valueFormatter(_x)](#module_Tooltip--exports.valueFormatter) ⇒ <code>function</code> \| <code>module</code>
         * [.shouldShowDateInTitle(_x)](#module_Tooltip--exports.shouldShowDateInTitle) ⇒ <code>Boolean</code> \| <code>module</code>
-        * [.show()](#module_Tooltip--exports.show) ⇒ <code>module</code>
+        * [.show([dataPoint], [position])](#module_Tooltip--exports.show) ⇒ <code>module</code>
         * [.title(_x)](#module_Tooltip--exports.title) ⇒ <code>String</code> \| <code>module</code>
         * [.tooltipOffset(_x)](#module_Tooltip--exports.tooltipOffset) ⇒ <code>Object</code> \| <code>module</code>
+        * [.layout([_x])](#module_Tooltip--exports.layout) ⇒ <code>String</code> \| <code>module</code>
         * [.maxEntries([_x])](#module_Tooltip--exports.maxEntries) ⇒ <code>Number</code> \| <code>module</code>
         * [.topicsOrder(_x)](#module_Tooltip--exports.topicsOrder) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
         * ~~[.topicLabel(_x)](#module_Tooltip--exports.topicLabel) ⇒ <code>String</code> \| <code>module</code>~~
-        * [.update(dataPoint, colorMapping, xPosition, [yPosition])](#module_Tooltip--exports.update) ⇒ <code>Module</code>
+        * [.update(dataPoint, position, [chartSize], [colorMap])](#module_Tooltip--exports.update) ⇒ <code>module</code>
         * ~~[.valueLabel(_x)](#module_Tooltip--exports.valueLabel) ⇒ <code>String</code> \| <code>module</code>~~
         * [.xAxisValueType([_x])](#module_Tooltip--exports.xAxisValueType) ⇒ <code>String</code> \| <code>module</code>
 
@@ -211,12 +233,21 @@ Gets or Sets shouldShowDateInTitle
 
 <a name="module_Tooltip--exports.show"></a>
 
-### exports.show() ⇒ <code>module</code>
-Shows the tooltip
+### exports.show([dataPoint], [position]) ⇒ <code>module</code>
+Shows the tooltip. Given the hovered data point and its position, as
+the single-value charts dispatch them on `customMouseOver`, it renders
+and places the tooltip at once; otherwise it shows empty until the
+first `update`, which is what the multi-value charts need.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>module</code> - Tooltip module to chain calls  
 **Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [dataPoint] | <code>Object</code> | Data point to render |
+| [position] | <code>Array.&lt;Number&gt;</code> | [x, y] to anchor the tooltip to, in pixels |
+
 <a name="module_Tooltip--exports.title"></a>
 
 ### exports.title(_x) ⇒ <code>String</code> \| <code>module</code>
@@ -248,6 +279,30 @@ up (negative) or down. The box still stays inside the chart.
 **Example**  
 ```js
 tooltip.tooltipOffset({ x: 0, y: -20 })
+```
+<a name="module_Tooltip--exports.layout"></a>
+
+### exports.layout([_x]) ⇒ <code>String</code> \| <code>module</code>
+Gets or Sets the layout: 'list' shows the title and one row per topic,
+with a colour dot, the topic's name and its value (the multi-value
+charts: line, stacked area, stacked bar and grouped bar); 'single'
+shows the title, the name and a big value (the single-value charts:
+bar, scatter plot, heatmap and donut -- what `miniTooltip` renders);
+'auto', the default, picks by the data point: a list when it carries
+an array under the topic label, a single value otherwise. Set before
+the tooltip is drawn.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Returns**: <code>String</code> \| <code>module</code> - Current layout or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [_x] | <code>String</code> | <code>&#x27;auto&#x27;</code> | 'auto', 'list' or 'single' |
+
+**Example**  
+```js
+tooltip.layout('single')
 ```
 <a name="module_Tooltip--exports.maxEntries"></a>
 
@@ -298,22 +353,31 @@ Gets or Sets the topicLabel of the data
 
 <a name="module_Tooltip--exports.update"></a>
 
-### exports.update(dataPoint, colorMapping, xPosition, [yPosition]) ⇒ <code>Module</code>
-Updates the position and content of the tooltip. The positions are the
-ones the charts dispatch with `customMouseMove`: the hovered data
-point's x and the pointer's y, relative to the chart's drawing area.
+### exports.update(dataPoint, position, [chartSize], [colorMap]) ⇒ <code>module</code>
+Updates the content and position of the tooltip. The arguments are
+what every chart dispatches with `customMouseMove`, so
+`chart.on('customMouseMove', tooltip.update)` is all the wiring
+needed: the data point, its anchor `[x, y]` in pixels relative to the
+chart's drawing area, the chart's size (ignored; the tooltip measures
+the chart itself) and, from the multi-value charts, the map of topic
+names to colours. The order the multi-value charts used before 3.0,
+`update(dataPoint, colorMap, x, y)`, still works and warns once.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
-**Returns**: <code>Module</code> - Tooltip module to chain calls  
+**Returns**: <code>module</code> - Tooltip module to chain calls  
 **Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| dataPoint | <code>Object</code> | Datapoint to represent |
-| colorMapping | <code>Object</code> | Color scheme of the topics |
-| xPosition | <code>Number</code> | X position to anchor the tooltip to, in pixels |
-| [yPosition] | <code>Number</code> | Y position to anchor the tooltip to, in pixels |
+| dataPoint | <code>Object</code> | Data point to render |
+| position | <code>Array.&lt;Number&gt;</code> | [x, y] to anchor the tooltip to, in pixels |
+| [chartSize] | <code>Array.&lt;Number&gt;</code> | [width, height] of the chart; ignored |
+| [colorMap] | <code>Object</code> | Topic name to colour, for the list layout |
 
+**Example**  
+```js
+chart.on('customMouseMove', tooltip.update)
+```
 <a name="module_Tooltip--exports.valueLabel"></a>
 
 ### ~~exports.valueLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~

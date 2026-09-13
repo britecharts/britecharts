@@ -202,6 +202,29 @@ const toFlatData = ({ dataByTopic }) =>
     );
 ```
 
+10. Update custom tooltip handlers on the line, stacked area, stacked bar and grouped bar charts
+
+Every chart now dispatches `customMouseMove` with the same payload: the hovered data point, its anchor `[x, y]` in pixels relative to the chart's drawing area, the chart's `[width, height]`, and, from these four charts, the map of topic names to colours. Before, they dispatched `(dataPoint, colorMap, x, y)`. If you wire the tooltip directly, nothing changes; a handler of your own that reads the arguments by position has to take the new order. `tooltip.update` still accepts the old order in 3.x and warns once.
+
+```js
+// Version 2
+lineChart.on('customMouseMove', function (dataPoint, colorMap, x, y) {
+    chartTooltip.update(dataPoint, colorMap, x, y);
+    trackHover(dataPoint, x);
+});
+
+// Version 3
+lineChart.on('customMouseMove', function (dataPoint, [x, y], size, colorMap) {
+    chartTooltip.update(dataPoint, [x, y], size, colorMap);
+    trackHover(dataPoint, x);
+});
+
+// Either version
+lineChart.on('customMouseMove', chartTooltip.update);
+```
+
+With that, `tooltip` and `miniTooltip` are one component: `tooltip` shows a list or a single value by the shape of the data point (or as told by `layout`), and `miniTooltip` is `tooltip().layout('single').title('').numberFormat('.2f')`. The tooltip now keeps itself inside the chart, follows the pointer (the stacked and grouped bar charts show it over a bar only), and its `tooltipOffset` default is `{ x: 0, y: 0 }` (it was `{ x: 0, y: -55 }`, for a placement that no longer exists). `xAxisValueType` defaults to `'auto'`, which shows dates as dates, numbers as numbers and category names as they are; set `'date'` or `'number'` to force one, as before. In React, `Tooltip`'s `customMouseMove` callback receives the new order, and `Tooltip` now wraps the bar, scatter plot and heatmap charts too.
+
 ### New features
 1. Start using TypeScript with Britecharts.
 
@@ -219,6 +242,10 @@ One common request of our users was to specify the colors for each category on t
 
 Most Britecharts' components have animations that you can activate with the 'isAnimated' configuration. Since version 3, you can also set the duration of those animations in milliseconds with the 'animationDuration' accessor.
 
+5. Rely on one tooltip for every chart
+
+`tooltip` renders the line, stacked area, stacked bar and grouped bar charts' lists and the bar, scatter plot, heatmap and donut charts' single values; `maxEntries` caps the rows, `layout` forces a layout, `xAxisValueType('category')` shows a category key as it is. `customClick` on the stacked and grouped bar charts carries the clicked bar's own data as a third argument.
+
 ## Summary of Changes
 We changed many things in the third version of Britecharts; here are some summaries:
 
@@ -231,6 +258,9 @@ We changed many things in the third version of Britecharts; here are some summar
 * Renames value formatting functions into 'numberFormat' in the grouped bar and stacked bar charts.
 * Removed the 'aspectRatio' configuration chart from the line, scatter plot, stacked area, bullet, grouped bar, stacked bar.
 * Changed 'exportChart' to return a promise.
+* The line, stacked area, stacked bar and grouped bar charts dispatch 'customMouseMove' as `(dataPoint, [x, y], [width, height], colorMap)`, the same payload as every other chart; `tooltip.update` still accepts the old `(dataPoint, colorMap, x, y)` order and warns once. React's `Tooltip` passes the new order to its 'customMouseMove' callback.
+* The tooltip's 'tooltipOffset' defaults to `{ x: 0, y: 0 }` and 'xAxisValueType' to 'auto'.
+* The stacked and grouped bar charts show the tooltip, and dispatch 'customClick', only over a bar.
 
 ### New Feature Changes
 * Added TypeScript types via declaration files
@@ -246,11 +276,16 @@ We changed many things in the third version of Britecharts; here are some summar
 * Added Donut's hasCenterLegend to hide/show center legend
 * Added Stacked Area loading state
 * Added tooltip on the heatmap
+* One tooltip component for every chart: 'tooltip' renders a list or a single value by the data's shape ('layout' forces one), 'miniTooltip' is its single-value preset, and React's 'Tooltip' wraps the bar, scatter plot and heatmap charts too
+* The tooltip keeps itself inside the chart (flips and slides at the edges), follows the pointer, fades in and out and eases towards each position, and updates its rows in place
+* Tooltip: 'xAxisValueType' gains 'category' and 'auto', 'maxEntries' caps the rows with a "+n more" row, 'show' takes the hovered point
+* The stacked and grouped bar charts' 'customClick' carries the clicked bar's data
 
 ### Bug Fixes
 * Fixes all critical security warnings due to dependencies
 * Fixes step chart loading
 * Mitigates the stacked and grouped bar charts tooltip issues
+* Tooltips no longer get cut off at the chart's edges, wobble across close data points, blink when crossing bars, or catch the pointer; the scatter plot's sits beside its point and a category key no longer titles it "NaN"
 * Improved Grouped bar chart animation
 * Line chart animation fix on multiline
 * Ordering of the horizontal bar chart elements

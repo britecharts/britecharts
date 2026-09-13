@@ -1095,13 +1095,15 @@ export default function module() {
             // Add data points highlighting
             highlightDataPoints(dataPoint);
             // Emit event with xPosition for tooltip or similar feature
+            // The same payload as every chart: the data point, its anchor,
+            // the chart's size and the topic colours
             dispatcher.call(
                 'customMouseMove',
                 e,
                 dataPoint,
-                nameToColorMap,
-                dataPointXPosition,
-                pointerYPosition
+                [dataPointXPosition, pointerYPosition],
+                [chartWidth, chartHeight],
+                nameToColorMap
             );
         }
     }

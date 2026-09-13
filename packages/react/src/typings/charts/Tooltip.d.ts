@@ -91,6 +91,12 @@ export interface TooltipProps {
     valueLabel?: string;
 
     /**
+     * Gets or Sets the layout: 'list' (title and one row per topic), 'single' (title,
+     * name and a big value) or 'auto' (the default: by the data point's shape).
+     */
+    layout?: 'auto' | 'list' | 'single';
+
+    /**
      * Gets or Sets the most rows the tooltip shows; past that, the last row reads "+n more".
      * 0 shows every row. Default 12.
      */
@@ -124,25 +130,22 @@ export interface TooltipProps {
     data: { [s: string]: any } | any[];
 
     /**
-     * Internally used, do not overwrite.
-     *
-     * @ignore
+     * Called after the tooltip updates, with what the chart dispatches on
+     * customMouseMove: the data point, its anchor [x, y], the chart's size and,
+     * from the multi-value charts, the topic colours.
      */
-    customMouseMove?: Function;
+    customMouseMove?: (
+        dataPoint: object,
+        position: [number, number],
+        size?: [number, number],
+        topicColorMap?: Record<string, string>
+    ) => void;
 
-    /**
-     * Internally used, do not overwrite.
-     *
-     * @ignore
-     */
-    customMouseOut?: Function;
+    /** Called after the tooltip hides, when the pointer leaves the chart */
+    customMouseOut?: () => void;
 
-    /**
-     * Internally used, do not overwrite.
-     *
-     * @ignore
-     */
-    customMouseOver?: Function;
+    /** Called after the tooltip shows, when the pointer enters the chart */
+    customMouseOver?: () => void;
 }
 
 export default class Tooltip extends Component<TooltipProps> {}

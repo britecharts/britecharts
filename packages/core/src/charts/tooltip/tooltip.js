@@ -1,3 +1,4 @@
+import { max } from 'd3-array';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
@@ -19,41 +20,65 @@ import { place } from './place';
 // Key of the row that stands for the topics past maxEntries
 const MORE_ROW_KEY = '__more__';
 
+// The legacy update(dataPoint, colorMap, x, y) order is warned about once
+let hasWarnedLegacyOrder = false;
+
 /**
- * Tooltip Component reusable API class that renders a
- * simple and configurable tooltip element for Britechart's
- * line chart or stacked area chart.
+ * Tooltip component: one box, drawn inside the chart's svg, that follows the
+ * pointer and shows what it is over. It renders a **list** (a title and one
+ * row per topic, with a colour dot, the topic's name and its value) for the
+ * multi-value charts -- line, stacked area, stacked bar and grouped bar --
+ * or a **single value** (a title, the element's name and a big value) for
+ * the single-value charts -- bar, scatter plot, heatmap and donut. By
+ * default it picks the layout from the data point it is given; `layout()`
+ * forces one. `miniTooltip` is this component with the single layout, an
+ * empty title and a `.2f` number format.
+ *
+ * The tooltip keeps itself inside the chart: it measures the svg it is drawn
+ * in, sits beside its anchor, flips to the other side when there is no room
+ * and slides so it is never cut off. It fades in when shown, fades out when
+ * hidden and eases towards each new position.
+ *
+ * Every chart dispatches the same three events, so wiring is always
+ * `chart.on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide)`.
+ * What they carry, and where to `.call()` the tooltip:
+ *
+ * | Chart | `customMouseOver` | `customMouseMove` | anchor `[x, y]` | attach to |
+ * | --- | --- | --- | --- | --- |
+ * | line, stacked area | `(data, [x, y])` | `(dataPoint, [x, y], [width, height], colorMap)` | the hovered date's x, the pointer's y | `.metadata-group .vertical-marker-container` |
+ * | stacked bar, grouped bar | `(data, [x, y])` | `(dataPoint, [x, y], [width, height], colorMap)` | the pointer, over a bar only | `.metadata-group` |
+ * | bar, heatmap, donut | `(dataPoint, [x, y], [width, height])` | `(dataPoint, [x, y], [width, height])` | the pointer, over a shape only | `.metadata-group` |
+ * | scatter plot | `(dataPoint, [x, y])` | `(dataPoint, [x, y], [width, height])` | the hovered point | `.metadata-group` |
+ *
+ * Positions are in pixels relative to the chart's drawing area (inside the
+ * margins). The chart's size is accepted and ignored: the tooltip measures
+ * the chart itself. The line and stacked area charts dispatch nothing while
+ * narrower than `tooltipThreshold` (480 px by default).
  *
  * @module Tooltip
  * @tutorial tooltip
- * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
+ * @requires d3-array, d3-format, d3-selection, d3-time-format, d3-transition
  *
  * @example
  * const lineChart = line(),
- *     tooltip = tooltip();
+ *     chartTooltip = tooltip();
  *
- * tooltip
+ * chartTooltip
  *     .title('Tooltip title');
  *
  * lineChart
  *     .width(500)
- *     .on('customMouseOver', function() {
- *          tooltip.show();
- *     })
- *     .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition, mouseYPosition) {
- *          tooltip.update(dataPoint, topicColorMap, dataPointXPosition, mouseYPosition);
- *     })
- *     .on('customMouseOut', function() {
- *          tooltip.hide();
- *     });
+ *     .on('customMouseOver', chartTooltip.show)
+ *     .on('customMouseMove', chartTooltip.update)
+ *     .on('customMouseOut', chartTooltip.hide);
  *
  * d3Selection.select('.css-selector')
  *     .datum(dataset)
  *     .call(lineChart);
  *
- * d3Selection.select('.metadata-group .hover-marker')
+ * d3Selection.select('.metadata-group .vertical-marker-container')
  *     .datum([])
- *     .call(tooltip);
+ *     .call(chartTooltip);
  *
  */
 export default function module() {
@@ -117,6 +142,25 @@ export default function module() {
         xAxisValueType = 'auto',
         // Rows shown before the rest are folded into a "+n more" row
         maxEntries = 12,
+        // 'list' (title + one row per topic), 'single' (title, name and a
+        // big value, the mini tooltip) or 'auto' (by the data point's shape)
+        layout = 'auto',
+        // The layout the last data point was rendered with
+        activeLayout = 'list',
+        // Single layout: the group its lines go in, its measured box, and
+        // its type
+        tooltipSingle,
+        singleWidth = 0,
+        singleHeight = 0,
+        singlePadding = 12,
+        singleTextSize = 14,
+        singleTextLineHeight = 1.5,
+        singleValueTextSize = 27,
+        singleValueTextLineHeight = 1.18,
+        singleTitleFillColor = '#666a73',
+        singleNameTextFillColor = '#666a73',
+        singleValueTextFillColor = '#45494E',
+        singleValueTextWeight = 200,
         dateFormat = null,
         dateCustomFormat = null,
         topicsOrder = [],
@@ -170,7 +214,11 @@ export default function module() {
         if (!svg) {
             svg = select(container)
                 .append('g')
-                .classed('britechart britechart-tooltip', true)
+                .classed('britechart', true)
+                // The single layout keeps the mini tooltip's class, so the
+                // stylesheet and any selector written for it still apply
+                .classed('britechart-tooltip', layout !== 'single')
+                .classed('britechart-mini-tooltip', layout === 'single')
                 // Never between the pointer and the chart: a tooltip that
                 // caught the pointer would end the hover that shows it
                 .attr('pointer-events', 'none')
@@ -223,7 +271,66 @@ export default function module() {
             .classed('tooltip-body', true)
             .style('fill', textFillColor);
 
+        tooltipSingle = tooltipTextContainer
+            .append('g')
+            .classed('tooltip-single', true)
+            .style('display', 'none');
+
         updateTooltipTitleYPosition();
+    }
+
+    /**
+     * The rendered size of a text node. Zeros when it cannot be measured:
+     * jsdom returns nothing, a hidden tooltip returns zeros in a browser,
+     * and a node outside an svg (the React tests draw into a div) has no
+     * getBBox at all
+     * @param  {Element} node   A text node
+     * @return {{ width: Number, height: Number }}
+     * @private
+     */
+    function measure(node) {
+        const box = node && node.getBBox ? node.getBBox() : null;
+
+        return {
+            width: (box && box.width) || 0,
+            height: (box && box.height) || 0,
+        };
+    }
+
+    /**
+     * The layout a data point is rendered with: the configured one, or by
+     * its shape when 'auto' -- a list when it carries an array under the
+     * topic label, a single value otherwise
+     * @param  {Object} dataPoint   The hovered data point
+     * @return {'list' | 'single'}
+     * @private
+     */
+    function resolveLayout(dataPoint) {
+        if (layout !== 'auto') {
+            return layout;
+        }
+
+        return dataPoint && Array.isArray(dataPoint[topicLabel])
+            ? 'list'
+            : 'single';
+    }
+
+    /**
+     * The box the active layout draws: its size and where its left edge
+     * sits relative to the tooltip group's origin
+     * @return {{ width: Number, height: Number, x: Number }}
+     * @private
+     */
+    function getBox() {
+        if (activeLayout === 'single') {
+            return { width: singleWidth, height: singleHeight, x: 0 };
+        }
+
+        return {
+            width: tooltipWidth,
+            height: tooltipHeight,
+            x: tooltipBackgroundX,
+        };
     }
 
     /**
@@ -278,19 +385,20 @@ export default function module() {
             height,
             origin: [groupX, groupY],
         } = measureFrame(svg.select('.tooltip-container-group').node());
+        const box = getBox();
         const { x, y } = place({
             anchor: [
                 parentX + (anchorX || 0) + tooltipOffset.x,
                 parentY + (anchorY || 0),
             ],
-            size: [tooltipWidth, tooltipHeight],
+            size: [box.width, box.height],
             frame: { width, height },
             gap: tooltipGap,
             offsetY: tooltipOffset.y,
         });
 
         return {
-            x: x - groupX - tooltipBackgroundX,
+            x: x - groupX - box.x,
             y: y - groupY,
             origin: [groupX, groupY],
         };
@@ -395,7 +503,7 @@ export default function module() {
 
             // A width of 0 comes back while the tooltip is hidden; keep the
             // last usable one, as with the height below
-            const measuredWidth = right.node().getBBox().width;
+            const measuredWidth = measure(right.node()).width;
 
             if (measuredWidth) {
                 right.attr('data-width', measuredWidth);
@@ -412,7 +520,7 @@ export default function module() {
         // when hovering over the vertical marker, and any browser does it while
         // the tooltip is still hidden. Keep the last usable measurement instead,
         // which is seeded with defaultTextHeight so it is never undefined.
-        const measuredTextHeight = left.node().getBBox().height;
+        const measuredTextHeight = measure(left.node()).height;
 
         textHeight = measuredTextHeight || textHeight;
         tooltipHeight += textHeight + tooltipTextLinePadding;
@@ -442,9 +550,12 @@ export default function module() {
             isEntering = false;
         }
 
+        const box = getBox();
+
         tooltipBackground
-            .attr('width', tooltipWidth)
-            .attr('height', tooltipHeight);
+            .attr('x', box.x)
+            .attr('width', box.width)
+            .attr('height', box.height);
 
         // The box eases towards each new position, the same delayed follow
         // as the mini tooltip. The charts move the container this tooltip
@@ -639,7 +750,7 @@ export default function module() {
      * @private
      */
     function updateTooltipTitleYPosition() {
-        const approximateTitle = getTooltipTitle(Date.now());
+        const approximateTitle = getTooltipTitle(new Date());
         const approximateNumberOfTitleLines = getApproximateNumberOfLines(
             approximateTitle,
             16,
@@ -683,7 +794,8 @@ export default function module() {
             textTitle = formattedDate;
         }
 
-        return textTitle;
+        // A number key comes back as a number
+        return String(textTitle);
     }
 
     /**
@@ -705,16 +817,31 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function showTooltip() {
-        // Already showing: nothing to do, and no new fade -- the wrappers
-        // call show() before every update
-        if (isShown) {
-            return;
+    function showTooltip(dataPoint, position) {
+        // Already showing: no new fade -- the wrappers call show() before
+        // every update
+        if (!isShown) {
+            isShown = true;
+            // Transparent until the first update fills it, which fades it in
+            isEntering = true;
+            prepareToShow(svg);
         }
-        isShown = true;
-        // Transparent until the first update fills it, which fades it in
-        isEntering = true;
-        prepareToShow(svg);
+
+        // The single-value charts dispatch the hovered point and its
+        // position on mouse over; the multi-value ones dispatch their whole
+        // dataset, which is not a point to render
+        if (
+            dataPoint &&
+            typeof dataPoint === 'object' &&
+            !Array.isArray(dataPoint) &&
+            Array.isArray(position)
+        ) {
+            updateTooltip(dataPoint, position[0], position[1]);
+        } else if (isEntering) {
+            // Nothing to render yet: the title alone, as the mini tooltip
+            // always did, until the first update
+            updateContent({});
+        }
     }
 
     /**
@@ -782,7 +909,101 @@ export default function module() {
      * @private
      */
     function updateContent(dataPoint) {
-        let topics = dataPoint[topicLabel];
+        activeLayout = resolveLayout(dataPoint);
+
+        if (activeLayout === 'single') {
+            renderSingle(dataPoint);
+        } else {
+            renderList(dataPoint);
+        }
+    }
+
+    /**
+     * Draws the single-value layout: the title, the name and a big value,
+     * one line each, the box sized to the widest line
+     * @param  {Object} dataPoint   The hovered data point, with a name and a value
+     * @return void
+     * @private
+     */
+    function renderSingle(dataPoint = {}) {
+        const value = dataPoint[valueLabel];
+        const name = dataPoint[nameLabel] || '';
+        const lineHeight = singleTextSize * singleTextLineHeight;
+        const valueLineHeight = singleValueTextSize * singleValueTextLineHeight;
+        const lines = [];
+        let y = 0;
+
+        tooltipTitle.style('display', 'none');
+        tooltipBody.style('display', 'none');
+        tooltipSingle
+            .style('display', null)
+            .attr('transform', `translate(${singlePadding}, ${singlePadding})`);
+        tooltipSingle.selectAll('text').remove();
+
+        if (title) {
+            lines.push(
+                tooltipSingle
+                    .append('text')
+                    .classed('mini-tooltip-title', true)
+                    .attr('dy', '1em')
+                    .attr('y', y)
+                    .style('fill', singleTitleFillColor)
+                    .style('font-size', singleTextSize)
+                    .text(title)
+            );
+            y += lineHeight;
+        }
+
+        if (name) {
+            lines.push(
+                tooltipSingle
+                    .append('text')
+                    .classed('mini-tooltip-name', true)
+                    .attr('dy', '1em')
+                    .attr('y', y)
+                    .style('fill', singleNameTextFillColor)
+                    .style('font-size', singleTextSize)
+                    .text(name)
+            );
+            y += lineHeight;
+        }
+
+        if (isDefined(value)) {
+            lines.push(
+                tooltipSingle
+                    .append('text')
+                    .classed('mini-tooltip-value', true)
+                    .attr('dy', '1em')
+                    .attr('y', y)
+                    .style('fill', singleValueTextFillColor)
+                    .style('font-size', singleValueTextSize)
+                    .style('font-weight', singleValueTextWeight)
+                    .text(getFormattedValue(value))
+            );
+            y += valueLineHeight;
+        }
+
+        // getBBox() comes back empty while the tooltip is hidden and under
+        // jsdom; a missing width must not turn into a NaN attribute
+        const textWidth =
+            max(lines.map((line) => measure(line.node()).width)) || 0;
+
+        singleWidth = textWidth + 2 * singlePadding;
+        singleHeight = y + 2 * singlePadding;
+    }
+
+    /**
+     * Draws the list layout: the title and one row per topic
+     * @param  {Object} dataPoint   The hovered data point, with its topics
+     * @return void
+     * @private
+     */
+    function renderList(dataPoint) {
+        let topics = dataPoint[topicLabel] || [];
+
+        tooltipTitle.style('display', null);
+        tooltipBody.style('display', null);
+        tooltipSingle.style('display', 'none');
 
         // sort order by topicsOrder array if passed
         if (topicsOrder.length) {
@@ -999,12 +1220,17 @@ export default function module() {
     };
 
     /**
-     * Shows the tooltip
+     * Shows the tooltip. Given the hovered data point and its position, as
+     * the single-value charts dispatch them on `customMouseOver`, it renders
+     * and places the tooltip at once; otherwise it shows empty until the
+     * first `update`, which is what the multi-value charts need.
+     * @param  {Object} [dataPoint]     Data point to render
+     * @param  {Number[]} [position]    [x, y] to anchor the tooltip to, in pixels
      * @return {module} Tooltip module to chain calls
      * @public
      */
-    exports.show = function () {
-        showTooltip();
+    exports.show = function (dataPoint, position) {
+        showTooltip(dataPoint, position);
 
         return this;
     };
@@ -1038,6 +1264,29 @@ export default function module() {
             return tooltipOffset;
         }
         tooltipOffset = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the layout: 'list' shows the title and one row per topic,
+     * with a colour dot, the topic's name and its value (the multi-value
+     * charts: line, stacked area, stacked bar and grouped bar); 'single'
+     * shows the title, the name and a big value (the single-value charts:
+     * bar, scatter plot, heatmap and donut -- what `miniTooltip` renders);
+     * 'auto', the default, picks by the data point: a list when it carries
+     * an array under the topic label, a single value otherwise. Set before
+     * the tooltip is drawn.
+     * @param  {String} [_x='auto']     'auto', 'list' or 'single'
+     * @return {String | module}        Current layout or Chart module to chain calls
+     * @public
+     * @example tooltip.layout('single')
+     */
+    exports.layout = function (_x) {
+        if (!arguments.length) {
+            return layout;
+        }
+        layout = _x;
 
         return this;
     };
@@ -1093,24 +1342,60 @@ export default function module() {
     };
 
     /**
-     * Updates the position and content of the tooltip. The positions are the
-     * ones the charts dispatch with `customMouseMove`: the hovered data
-     * point's x and the pointer's y, relative to the chart's drawing area.
-     * @param  {Object} dataPoint       Datapoint to represent
-     * @param  {Object} colorMapping    Color scheme of the topics
-     * @param  {Number} xPosition       X position to anchor the tooltip to, in pixels
-     * @param  {Number} [yPosition]     Y position to anchor the tooltip to, in pixels
-     * @return {Module}                 Tooltip module to chain calls
+     * Updates the content and position of the tooltip. The arguments are
+     * what every chart dispatches with `customMouseMove`, so
+     * `chart.on('customMouseMove', tooltip.update)` is all the wiring
+     * needed: the data point, its anchor `[x, y]` in pixels relative to the
+     * chart's drawing area, the chart's size (ignored; the tooltip measures
+     * the chart itself) and, from the multi-value charts, the map of topic
+     * names to colours. The order the multi-value charts used before 3.0,
+     * `update(dataPoint, colorMap, x, y)`, still works and warns once.
+     * @param  {Object} dataPoint       Data point to render
+     * @param  {Number[]} position      [x, y] to anchor the tooltip to, in pixels
+     * @param  {Number[]} [chartSize]   [width, height] of the chart; ignored
+     * @param  {Object} [colorMap]      Topic name to colour, for the list layout
+     * @return {module}                 Tooltip module to chain calls
      * @public
+     * @example chart.on('customMouseMove', tooltip.update)
      */
-    exports.update = function (
-        dataPoint,
-        colorMapping,
-        xPosition,
-        yPosition = null
-    ) {
-        colorMap = colorMapping;
-        updateTooltip(dataPoint, xPosition, yPosition);
+    exports.update = function (dataPoint, position, chartSize, colorMapping) {
+        let anchor = position;
+        let colors = colorMapping;
+
+        if (
+            !Array.isArray(position) &&
+            position &&
+            typeof position === 'object'
+        ) {
+            // update(dataPoint, colorMap, x, y): the order before 3.0
+            colors = position;
+            anchor = [chartSize, colorMapping];
+
+            if (!hasWarnedLegacyOrder) {
+                hasWarnedLegacyOrder = true;
+                // eslint-disable-next-line no-console
+                console.warn(
+                    'tooltip.update(dataPoint, colorMap, x, y) is deprecated: the charts now dispatch (dataPoint, [x, y], [width, height], colorMap), which update() takes as they come. The old order still works in 3.x.'
+                );
+            }
+        } else if (
+            !Array.isArray(chartSize) &&
+            chartSize &&
+            typeof chartSize === 'object'
+        ) {
+            // update(dataPoint, [x, y], colorMap)
+            colors = chartSize;
+        }
+
+        if (colors) {
+            colorMap = colors;
+        }
+
+        updateTooltip(
+            dataPoint,
+            anchor ? anchor[0] : undefined,
+            anchor ? anchor[1] : undefined
+        );
 
         return this;
     };
