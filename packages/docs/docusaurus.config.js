@@ -114,11 +114,7 @@ module.exports = {
                         items: [
                             {
                                 label: 'Stack Overflow',
-                                href: 'https://stackoverflow.com/questions/tagged/britecharts',
-                            },
-                            {
-                                label: 'Slack',
-                                href: 'https://slack.com/app_redirect?channel=C7DHB2E72',
+                                href: 'https://stackoverflow.com/search?q=britecharts',
                             },
                             {
                                 label: 'Twitter',
