@@ -1,6 +1,9 @@
-<a name="module_Brush"></a>
+---
+title: Brush
+---
 
-# Brush
+<a name="module_Brush" id="module_Brush"></a>
+
 Brush Chart reusable API class that renders a
 simple and configurable brush chart.
 
@@ -45,7 +48,7 @@ d3Selection.select('.css-selector')
             * [~DateExtent](#module_Brush--exports..DateExtent) : <code>Array.&lt;Date&gt;</code>
             * [~eventCallback](#module_Brush--exports..eventCallback) : <code>function</code>
 
-<a name="exp_module_Brush--exports"></a>
+<a name="exp_module_Brush--exports" id="exp_module_Brush--exports"></a>
 
 ## exports(_selection, _data) ⏏
 This function creates the graph using the selection as container
@@ -57,9 +60,9 @@ This function creates the graph using the selection as container
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
 | _data | <code>BrushChartData</code> | The data to attach and generate the chart |
 
-<a name="module_Brush--exports.axisTimeCombinations"></a>
+<a name="module_Brush--exports.axisTimeCombinations" id="module_Brush--exports.axisTimeCombinations"></a>
 
-### exports.axisTimeCombinations
+## exports.axisTimeCombinations
 Exposes the constants to be used to force the x axis to respect a certain granularity
 current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
@@ -68,9 +71,9 @@ current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 ```js
 brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
 ```
-<a name="module_Brush--exports.animationDuration"></a>
+<a name="module_Brush--exports.animationDuration" id="module_Brush--exports.animationDuration"></a>
 
-### exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the area animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -81,9 +84,9 @@ Gets or Sets the duration of the area animation
 | --- | --- | --- | --- |
 | _x | <code>Number</code> | <code>1200</code> | Desired animation duration for the graph |
 
-<a name="module_Brush--exports.areaCurve"></a>
+<a name="module_Brush--exports.areaCurve" id="module_Brush--exports.areaCurve"></a>
 
-### exports.areaCurve([_x]) ⇒ <code>String</code> \| <code>module</code>
+## exports.areaCurve([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the area curve of the stacked area.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -98,9 +101,9 @@ Gets or Sets the area curve of the stacked area.
 ```js
 brushChart.areaCurve('step')
 ```
-<a name="module_Brush--exports.dateRange"></a>
+<a name="module_Brush--exports.dateRange" id="module_Brush--exports.dateRange"></a>
 
-### exports.dateRange([_x]) ⇒ <code>dateRange</code> \| <code>module</code>
+## exports.dateRange([_x]) ⇒ <code>dateRange</code> \| <code>module</code>
 Gets or Sets the dateRange for the selected part of the brush
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -111,9 +114,9 @@ Gets or Sets the dateRange for the selected part of the brush
 | --- | --- | --- | --- |
 | [_x] | <code>Array.&lt;String&gt;</code> | <code>[null, null]</code> | Desired dateRange for the graph |
 
-<a name="module_Brush--exports.gradient"></a>
+<a name="module_Brush--exports.gradient" id="module_Brush--exports.gradient"></a>
 
-### exports.gradient([_x]) ⇒ <code>String</code> \| <code>Module</code>
+## exports.gradient([_x]) ⇒ <code>String</code> \| <code>Module</code>
 Gets or Sets the gradient of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -124,9 +127,9 @@ Gets or Sets the gradient of the chart
 | --- | --- | --- | --- |
 | [_x] | <code>Array.&lt;String&gt;</code> | <code>colorHelper.colorGradients.greenBlue</code> | Desired gradient for the graph |
 
-<a name="module_Brush--exports.height"></a>
+<a name="module_Brush--exports.height" id="module_Brush--exports.height"></a>
 
-### exports.height(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.height(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -137,9 +140,9 @@ Gets or Sets the height of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the graph |
 
-<a name="module_Brush--exports.isAnimated"></a>
+<a name="module_Brush--exports.isAnimated" id="module_Brush--exports.isAnimated"></a>
 
-### exports.isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## exports.isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -150,9 +153,9 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 | --- | --- | --- |
 | _x | <code>Boolean</code> | = false     Desired animation flag |
 
-<a name="module_Brush--exports.isLoading"></a>
+<a name="module_Brush--exports.isLoading" id="module_Brush--exports.isLoading"></a>
 
-### exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -163,9 +166,9 @@ Gets or Sets the loading state of the chart
 | --- | --- | --- |
 | flag | <code>boolean</code> | Desired value for the loading state |
 
-<a name="module_Brush--exports.isLocked"></a>
+<a name="module_Brush--exports.isLocked" id="module_Brush--exports.isLocked"></a>
 
-### exports.isLocked(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## exports.isLocked(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isLocked property of the brush, enforcing the initial brush size set with dateRange
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -176,9 +179,9 @@ Gets or Sets the isLocked property of the brush, enforcing the initial brush siz
 | --- | --- | --- |
 | _x | <code>Boolean</code> | = false     Whether the brush window is locked, requires a value set with '.dateRange` when true |
 
-<a name="module_Brush--exports.locale"></a>
+<a name="module_Brush--exports.locale" id="module_Brush--exports.locale"></a>
 
-### exports.locale(_x) ⇒ <code>String</code> \| <code>Module</code>
+## exports.locale(_x) ⇒ <code>String</code> \| <code>Module</code>
 Pass language tag for the tooltip to localize the date.
 Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
@@ -190,9 +193,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 | --- | --- | --- |
 | _x | <code>String</code> | Must be a language tag (BCP 47) like 'en-US' or 'fr-FR' |
 
-<a name="module_Brush--exports.margin"></a>
+<a name="module_Brush--exports.margin" id="module_Brush--exports.margin"></a>
 
-### exports.margin(_x) ⇒ <code>Object</code> \| <code>Module</code>
+## exports.margin(_x) ⇒ <code>Object</code> \| <code>Module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -203,9 +206,9 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>Object</code> | Margin object to get/set |
 
-<a name="module_Brush--exports.on"></a>
+<a name="module_Brush--exports.on" id="module_Brush--exports.on"></a>
 
-### exports.on(typenames, [callback]) ⇒ [<code>exports</code>](#exp_module_Brush--exports)
+## exports.on(typenames, [callback]) ⇒ [<code>exports</code>](#exp_module_Brush--exports)
 Adds, removes, or gets the callback for the specified typenames.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -217,9 +220,9 @@ Adds, removes, or gets the callback for the specified typenames.
 | typenames | <code>String</code> | One or more event type names, delimited by a space |
 | [callback] | [<code>eventCallback</code>](#module_Brush--exports..eventCallback) | Callback to register |
 
-<a name="module_Brush--exports.width"></a>
+<a name="module_Brush--exports.width" id="module_Brush--exports.width"></a>
 
-### exports.width(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.width(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -230,9 +233,9 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the graph |
 
-<a name="module_Brush--exports.xAxisCustomFormat"></a>
+<a name="module_Brush--exports.xAxisCustomFormat" id="module_Brush--exports.xAxisCustomFormat"></a>
 
-### exports.xAxisCustomFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
+## exports.xAxisCustomFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x format
 It requires a `xAxisFormat` of 'custom' in order to work.
 
@@ -244,9 +247,9 @@ It requires a `xAxisFormat` of 'custom' in order to work.
 | --- | --- | --- |
 | _x | <code>String</code> | Desired format for x axis, one of the d3.js date formats [here](https://github.com/d3/d3-time-format#locale_format) |
 
-<a name="module_Brush--exports.xAxisFormat"></a>
+<a name="module_Brush--exports.xAxisFormat" id="module_Brush--exports.xAxisFormat"></a>
 
-### exports.xAxisFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
+## exports.xAxisFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x axis grouping
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -261,9 +264,9 @@ Exposes the ability to force the chart to show a certain x axis grouping
 ```js
 brushChart.xAxisCustomFormat(brushChart.axisTimeCombinations.HOUR_DAY)
 ```
-<a name="module_Brush--exports.xTicks"></a>
+<a name="module_Brush--exports.xTicks" id="module_Brush--exports.xTicks"></a>
 
-### exports.xTicks([_x]) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.xTicks([_x]) ⇒ <code>Number</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
 NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 how many and where the ticks will appear.
@@ -276,9 +279,9 @@ how many and where the ticks will appear.
 | --- | --- | --- | --- |
 | [_x] | <code>Number</code> | <code></code> | Desired number of x axis ticks (multiple of 2, 5 or 10) |
 
-<a name="module_Brush--exports.roundingTimeInterval"></a>
+<a name="module_Brush--exports.roundingTimeInterval" id="module_Brush--exports.roundingTimeInterval"></a>
 
-### exports.roundingTimeInterval([_x]) ⇒ <code>roundingTimeInterval</code> \| <code>Module</code>
+## exports.roundingTimeInterval([_x]) ⇒ <code>roundingTimeInterval</code> \| <code>Module</code>
 Gets or Sets the rounding time interval of the selection boundary
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -298,23 +301,23 @@ timeWeek, utcWeek, timeSunday, utcSunday, timeMonday, utcMonday, timeTuesday, ut
 utcWednesday, timeThursday, utcThursday, timeFriday, utcFriday, timeSaturday, utcSaturday, timeMonth, utcMonth,
 timeYear and utcYear.
 ```
-<a name="event_customBrushStart"></a>
+<a name="event_customBrushStart" id="event_customBrushStart"></a>
 
-### "customBrushStart"
+## "customBrushStart"
 Event indicating when the brush moves
 
 **Kind**: event emitted by [<code>exports</code>](#exp_module_Brush--exports)  
 **See**: [d3-brush:on(brush)](https://github.com/d3/d3-brush#brush_on)  
-<a name="event_customBrushEnd"></a>
+<a name="event_customBrushEnd" id="event_customBrushEnd"></a>
 
-### "customBrushEnd"
+## "customBrushEnd"
 Event indicating the end of a brush gesture
 
 **Kind**: event emitted by [<code>exports</code>](#exp_module_Brush--exports)  
 **See**: [d3-brush:on(end)](https://github.com/d3/d3-brush#brush_on)  
-<a name="module_Brush--exports..BrushChartData"></a>
+<a name="module_Brush--exports..BrushChartData" id="module_Brush--exports..BrushChartData"></a>
 
-### exports~BrushChartData : <code>Array.&lt;Object&gt;</code>
+## exports~BrushChartData : <code>Array.&lt;Object&gt;</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Brush--exports)  
 **Properties**
 
@@ -336,9 +339,9 @@ Event indicating the end of a brush gesture
     }
 ]
 ```
-<a name="module_Brush--exports..DateExtent"></a>
+<a name="module_Brush--exports..DateExtent" id="module_Brush--exports..DateExtent"></a>
 
-### exports~DateExtent : <code>Array.&lt;Date&gt;</code>
+## exports~DateExtent : <code>Array.&lt;Date&gt;</code>
 Date range
 
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Brush--exports)  
@@ -350,9 +353,9 @@ Date range
 | 0 | <code>Date</code> | Lower bound date selection |
 | 1 | <code>Date</code> | Upper bound date selection |
 
-<a name="module_Brush--exports..eventCallback"></a>
+<a name="module_Brush--exports..eventCallback" id="module_Brush--exports..eventCallback"></a>
 
-### exports~eventCallback : <code>function</code>
+## exports~eventCallback : <code>function</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Brush--exports)  
 
 | Param | Type | Description |

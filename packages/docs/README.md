@@ -1,6 +1,6 @@
 # @britecharts/docs
 
-> Documentation package to create the [documentation site][homepage] for Britecharts, built using [Docusaurus 2](https://docusaurus.io/).
+> Documentation package to create the [documentation site][homepage] for Britecharts, built using [Docusaurus 3](https://docusaurus.io/).
 
 ## Usage
 `@britecharts/docs` will extract the updated docs from the other packages when running `yarn start`. 

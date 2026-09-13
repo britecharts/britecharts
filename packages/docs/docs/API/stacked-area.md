@@ -1,6 +1,9 @@
-<a name="module_Stacked-area"></a>
+---
+title: Stacked Area
+---
 
-# Stacked-area
+<a name="module_Stacked-area" id="module_Stacked-area"></a>
+
 Stacked Area Chart reusable API module that allows us
 rendering a multi area and configurable chart.
 
@@ -54,7 +57,7 @@ d3Selection.select('.css-selector')
         * _inner_
             * [~AreaChartData](#module_Stacked-area--exports..AreaChartData) : <code>Array.&lt;Object&gt;</code>
 
-<a name="exp_module_Stacked-area--exports"></a>
+<a name="exp_module_Stacked-area--exports" id="exp_module_Stacked-area--exports"></a>
 
 ## exports(_selection, _data) ⏏
 This function creates the graph using the selection and data provided
@@ -66,9 +69,9 @@ This function creates the graph using the selection and data provided
 | _selection | <code>D3Selection</code> | A d3 selection that represents the container(s) where the chart(s) will be rendered |
 | _data | <code>AreaChartData</code> | The data to attach and generate the chart |
 
-<a name="module_Stacked-area--exports.axisTimeCombinations"></a>
+<a name="module_Stacked-area--exports.axisTimeCombinations" id="module_Stacked-area--exports.axisTimeCombinations"></a>
 
-### exports.axisTimeCombinations
+## exports.axisTimeCombinations
 Exposes the constants to be used to force the x axis to respect a certain granularity
 current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
@@ -77,9 +80,9 @@ current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 ```js
 area.xAxisCustomFormat(area.axisTimeCombinations.HOUR_DAY)
 ```
-<a name="module_Stacked-area--exports.animationDuration"></a>
+<a name="module_Stacked-area--exports.animationDuration" id="module_Stacked-area--exports.animationDuration"></a>
 
-### exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the area animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -90,9 +93,9 @@ Gets or Sets the duration of the area animation
 | --- | --- | --- | --- |
 | _x | <code>Number</code> | <code>1200</code> | Desired animation duration for the graph |
 
-<a name="module_Stacked-area--exports.areaCurve"></a>
+<a name="module_Stacked-area--exports.areaCurve" id="module_Stacked-area--exports.areaCurve"></a>
 
-### exports.areaCurve([_x]) ⇒ <code>String</code> \| <code>module</code>
+## exports.areaCurve([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the area curve of the stacked area.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -107,9 +110,9 @@ Gets or Sets the area curve of the stacked area.
 ```js
 stackedArea.areaCurve('step')
 ```
-<a name="module_Stacked-area--exports.areaOpacity"></a>
+<a name="module_Stacked-area--exports.areaOpacity" id="module_Stacked-area--exports.areaOpacity"></a>
 
-### exports.areaOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.areaOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -120,9 +123,9 @@ Gets or Sets the opacity of the stacked areas in the chart (all of them will hav
 | --- | --- | --- |
 | _x | <code>Number</code> | Opacity to get/set |
 
-<a name="module_Stacked-area--exports.colorMap"></a>
+<a name="module_Stacked-area--exports.colorMap" id="module_Stacked-area--exports.colorMap"></a>
 
-### exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
+## exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -137,9 +140,9 @@ Gets or Sets the colorMap of the chart
 ```js
 stackedArea.colorMap({name: 'colorHex', name2: 'colorString'})
 ```
-<a name="module_Stacked-area--exports.colorSchema"></a>
+<a name="module_Stacked-area--exports.colorSchema" id="module_Stacked-area--exports.colorSchema"></a>
 
-### exports.colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## exports.colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -150,9 +153,9 @@ Gets or Sets the colorSchema of the chart
 | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | Desired colorSchema for the graph |
 
-<a name="module_Stacked-area--exports.dateLabel"></a>
+<a name="module_Stacked-area--exports.dateLabel" id="module_Stacked-area--exports.dateLabel"></a>
 
-### ~~exports.dateLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
+## ~~exports.dateLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the dateLabel of the chart
@@ -165,9 +168,9 @@ Gets or Sets the dateLabel of the chart
 | --- | --- | --- |
 | _x | <code>String</code> | Desired dateLabel for the graph |
 
-<a name="module_Stacked-area--exports.emptyDataConfig"></a>
+<a name="module_Stacked-area--exports.emptyDataConfig" id="module_Stacked-area--exports.emptyDataConfig"></a>
 
-### exports.emptyDataConfig(_x) ⇒ <code>Object</code> \| <code>module</code>
+## exports.emptyDataConfig(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the emptyDataConfig of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -178,9 +181,9 @@ Gets or Sets the emptyDataConfig of the chart
 | --- | --- | --- |
 | _x | <code>Object</code> | emptyDataConfig object to get/set |
 
-<a name="module_Stacked-area--exports.grid"></a>
+<a name="module_Stacked-area--exports.grid" id="module_Stacked-area--exports.grid"></a>
 
-### exports.grid(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.grid(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the grid mode
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -191,9 +194,9 @@ Gets or Sets the grid mode
 | --- | --- | --- |
 | _x | <code>String</code> | Desired mode for the grid ('vertical'|'horizontal'|'full') |
 
-<a name="module_Stacked-area--exports.hasOutline"></a>
+<a name="module_Stacked-area--exports.hasOutline" id="module_Stacked-area--exports.hasOutline"></a>
 
-### exports.hasOutline(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## exports.hasOutline(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Enables or disables the outline at the top of the areas
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -204,9 +207,9 @@ Enables or disables the outline at the top of the areas
 | --- | --- | --- |
 | _x | <code>Boolean</code> | = true   Whether if the areas in the chart have an outline at the top |
 
-<a name="module_Stacked-area--exports.height"></a>
+<a name="module_Stacked-area--exports.height" id="module_Stacked-area--exports.height"></a>
 
-### exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -217,9 +220,9 @@ Gets or Sets the height of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the graph |
 
-<a name="module_Stacked-area--exports.isAnimated"></a>
+<a name="module_Stacked-area--exports.isAnimated" id="module_Stacked-area--exports.isAnimated"></a>
 
-### exports.isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## exports.isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -230,9 +233,9 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 | --- | --- | --- |
 | _x | <code>Boolean</code> | = false     Desired animation flag |
 
-<a name="module_Stacked-area--exports.keyLabel"></a>
+<a name="module_Stacked-area--exports.keyLabel" id="module_Stacked-area--exports.keyLabel"></a>
 
-### ~~exports.keyLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
+## ~~exports.keyLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the keyLabel of the chart
@@ -245,9 +248,9 @@ Gets or Sets the keyLabel of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired keyLabel for the graph |
 
-<a name="module_Stacked-area--exports.margin"></a>
+<a name="module_Stacked-area--exports.margin" id="module_Stacked-area--exports.margin"></a>
 
-### exports.margin(_x) ⇒ <code>Object</code> \| <code>module</code>
+## exports.margin(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -258,9 +261,9 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>Object</code> | Margin object to get/set |
 
-<a name="module_Stacked-area--exports.tooltipThreshold"></a>
+<a name="module_Stacked-area--exports.tooltipThreshold" id="module_Stacked-area--exports.tooltipThreshold"></a>
 
-### exports.tooltipThreshold(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.tooltipThreshold(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
@@ -272,9 +275,9 @@ NOTE: This could also depend on the aspect ratio
 | --- | --- | --- |
 | _x | <code>Number</code> | Minimum width of the graph |
 
-<a name="module_Stacked-area--exports.topicsOrder"></a>
+<a name="module_Stacked-area--exports.topicsOrder" id="module_Stacked-area--exports.topicsOrder"></a>
 
-### exports.topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## exports.topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Pass an override for the ordering of the topics
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -285,9 +288,9 @@ Pass an override for the ordering of the topics
 | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | Array of the names of your tooltip items |
 
-<a name="module_Stacked-area--exports.isLoading"></a>
+<a name="module_Stacked-area--exports.isLoading" id="module_Stacked-area--exports.isLoading"></a>
 
-### exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -298,9 +301,9 @@ Gets or Sets the loading state of the chart
 | --- | --- | --- |
 | flag | <code>boolean</code> | Desired value for the loading state |
 
-<a name="module_Stacked-area--exports.locale"></a>
+<a name="module_Stacked-area--exports.locale" id="module_Stacked-area--exports.locale"></a>
 
-### exports.locale(_x) ⇒ <code>String</code> \| <code>Module</code>
+## exports.locale(_x) ⇒ <code>String</code> \| <code>Module</code>
 Pass language tag for the tooltip to localize the date.
 Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
@@ -313,9 +316,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 | --- | --- | --- |
 | _x | <code>String</code> | A language tag (BCP 47) like 'en-US' or 'fr-FR' |
 
-<a name="module_Stacked-area--exports.exportChart"></a>
+<a name="module_Stacked-area--exports.exportChart" id="module_Stacked-area--exports.exportChart"></a>
 
-### exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exports.exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -327,9 +330,9 @@ Chart exported to png and a download action is fired
 | filename | <code>String</code> | File title for the resulting picture |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
-<a name="module_Stacked-area--exports.on"></a>
+<a name="module_Stacked-area--exports.on" id="module_Stacked-area--exports.on"></a>
 
-### exports.on() ⇒ <code>module</code>
+## exports.on() ⇒ <code>module</code>
 Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut,
@@ -338,9 +341,9 @@ customDataEntryClick and customTouchMove
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>module</code> - Stacked Area  
 **Access**: public  
-<a name="module_Stacked-area--exports.valueLabel"></a>
+<a name="module_Stacked-area--exports.valueLabel" id="module_Stacked-area--exports.valueLabel"></a>
 
-### ~~exports.valueLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
+## ~~exports.valueLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the valueLabel of the chart
@@ -353,9 +356,9 @@ Gets or Sets the valueLabel of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired valueLabel for the graph |
 
-<a name="module_Stacked-area--exports.width"></a>
+<a name="module_Stacked-area--exports.width" id="module_Stacked-area--exports.width"></a>
 
-### exports.width(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -366,9 +369,9 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the graph |
 
-<a name="module_Stacked-area--exports.xAxisCustomFormat"></a>
+<a name="module_Stacked-area--exports.xAxisCustomFormat" id="module_Stacked-area--exports.xAxisCustomFormat"></a>
 
-### exports.xAxisCustomFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
+## exports.xAxisCustomFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x format
 It requires a `xAxisFormat` of 'custom' in order to work.
 NOTE: localization not supported
@@ -385,9 +388,9 @@ NOTE: localization not supported
 ```js
 stackedArea.xAxisCustomFormat(stackedArea.axisTimeCombinations.HOUR_DAY)
 ```
-<a name="module_Stacked-area--exports.xAxisFormat"></a>
+<a name="module_Stacked-area--exports.xAxisFormat" id="module_Stacked-area--exports.xAxisFormat"></a>
 
-### exports.xAxisFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
+## exports.xAxisFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x axis grouping
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -402,9 +405,9 @@ Exposes the ability to force the chart to show a certain x axis grouping
 ```js
 stackedArea.xAxisCustomFormat(stackedArea.axisTimeCombinations.HOUR_DAY)
 ```
-<a name="module_Stacked-area--exports.xAxisValueType"></a>
+<a name="module_Stacked-area--exports.xAxisValueType" id="module_Stacked-area--exports.xAxisValueType"></a>
 
-### exports.xAxisValueType([_x]) ⇒ <code>string</code> \| <code>module</code>
+## exports.xAxisValueType([_x]) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the `xAxisValueType`.
 Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
 be dates anymore, but can be arbitrary numbers.
@@ -421,9 +424,9 @@ be dates anymore, but can be arbitrary numbers.
 ```js
 stackedArea.xAxisValueType('numeric')
 ```
-<a name="module_Stacked-area--exports.xAxisScale"></a>
+<a name="module_Stacked-area--exports.xAxisScale" id="module_Stacked-area--exports.xAxisScale"></a>
 
-### exports.xAxisScale([_x]) ⇒ <code>string</code> \| <code>module</code>
+## exports.xAxisScale([_x]) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the `xAxisScale`.
 Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
 'number' as well, otherwise it won't influence the visualization.
@@ -440,9 +443,9 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 ```js
 stackedArea.xAxisValueType('numeric').xAxisScale('logarithmic')
 ```
-<a name="module_Stacked-area--exports.xTicks"></a>
+<a name="module_Stacked-area--exports.xTicks" id="module_Stacked-area--exports.xTicks"></a>
 
-### exports.xTicks(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.xTicks(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
 NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 how many and where the ticks will appear.
@@ -455,9 +458,9 @@ how many and where the ticks will appear.
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired number of x axis ticks (multiple of 2, 5 or 10) |
 
-<a name="module_Stacked-area--exports.yAxisLabel"></a>
+<a name="module_Stacked-area--exports.yAxisLabel" id="module_Stacked-area--exports.yAxisLabel"></a>
 
-### exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the y-axis label of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -472,9 +475,9 @@ Gets or Sets the y-axis label of the chart
 ```js
 stackedArea.yAxisLabel('Ticket Sales')
 ```
-<a name="module_Stacked-area--exports.yAxisLabelOffset"></a>
+<a name="module_Stacked-area--exports.yAxisLabelOffset" id="module_Stacked-area--exports.yAxisLabelOffset"></a>
 
-### exports.yAxisLabelOffset([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## exports.yAxisLabelOffset([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
@@ -490,9 +493,9 @@ The method accepts both positive and negative values.
 ```js
 stackedArea.yAxisLabelOffset(-55)
 ```
-<a name="module_Stacked-area--exports.yTicks"></a>
+<a name="module_Stacked-area--exports.yTicks" id="module_Stacked-area--exports.yTicks"></a>
 
-### exports.yTicks([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## exports.yTicks([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the y axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
@@ -503,9 +506,9 @@ Gets or Sets the number of ticks of the y axis on the chart
 | --- | --- | --- | --- |
 | [_x] | <code>Number</code> | <code>5</code> | Desired vertical ticks |
 
-<a name="module_Stacked-area--exports.yAxisBaseline"></a>
+<a name="module_Stacked-area--exports.yAxisBaseline" id="module_Stacked-area--exports.yAxisBaseline"></a>
 
-### exports.yAxisBaseline([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## exports.yAxisBaseline([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the yAxisBaseline - this is the y-value where the area starts from in y-direction
 (default is 0). Change this value if you don't want to start your area from y=0.
 
@@ -521,9 +524,9 @@ Gets or Sets the yAxisBaseline - this is the y-value where the area starts from 
 ```js
 stackedArea.yAxisBaseline(20)
 ```
-<a name="module_Stacked-area--exports..AreaChartData"></a>
+<a name="module_Stacked-area--exports..AreaChartData" id="module_Stacked-area--exports..AreaChartData"></a>
 
-### exports~AreaChartData : <code>Array.&lt;Object&gt;</code>
+## exports~AreaChartData : <code>Array.&lt;Object&gt;</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Stacked-area--exports)  
 **Properties**
 

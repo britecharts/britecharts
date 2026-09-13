@@ -1,6 +1,9 @@
-<a name="module_Sparkline"></a>
+---
+title: Sparkline
+---
 
-# Sparkline
+<a name="module_Sparkline" id="module_Sparkline"></a>
+
 Sparkline Chart reusable API module that allows us
 rendering a sparkline configurable chart.
 
@@ -37,7 +40,7 @@ d3Selection.select('.css-selector')
         * _inner_
             * [~SparklineChartData](#module_Sparkline--exports..SparklineChartData) : <code>Array.&lt;Object&gt;</code>
 
-<a name="exp_module_Sparkline--exports"></a>
+<a name="exp_module_Sparkline--exports" id="exp_module_Sparkline--exports"></a>
 
 ## exports(_selection, _data) ⏏
 This function creates the graph using the selection and data provided
@@ -49,9 +52,9 @@ This function creates the graph using the selection and data provided
 | _selection | <code>D3Selection</code> | A d3 selection that represents the container(s) where the chart(s) will be rendered |
 | _data | <code>SparklineChartData</code> | The data to attach and generate the chart |
 
-<a name="module_Sparkline--exports.animationDuration"></a>
+<a name="module_Sparkline--exports.animationDuration" id="module_Sparkline--exports.animationDuration"></a>
 
-### exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
@@ -62,9 +65,9 @@ Gets or Sets the duration of the animation
 | --- | --- | --- | --- |
 | _x | <code>number</code> | <code>1200</code> | Desired animation duration for the graph |
 
-<a name="module_Sparkline--exports.areaGradient"></a>
+<a name="module_Sparkline--exports.areaGradient" id="module_Sparkline--exports.areaGradient"></a>
 
-### exports.areaGradient(_x) ⇒ <code>areaGradient</code> \| <code>module</code>
+## exports.areaGradient(_x) ⇒ <code>areaGradient</code> \| <code>module</code>
 Gets or Sets the areaGradient of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
@@ -75,9 +78,9 @@ Gets or Sets the areaGradient of the chart
 | --- | --- | --- |
 | _x | <code>Array.&lt;string&gt;</code> | = ['#F5FDFF', '#F6FEFC']   Desired areaGradient for the graph |
 
-<a name="module_Sparkline--exports.dateLabel"></a>
+<a name="module_Sparkline--exports.dateLabel" id="module_Sparkline--exports.dateLabel"></a>
 
-### ~~exports.dateLabel(_x) ⇒ <code>dateLabel</code> \| <code>module</code>~~
+## ~~exports.dateLabel(_x) ⇒ <code>dateLabel</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the dateLabel of the chart
@@ -90,9 +93,9 @@ Gets or Sets the dateLabel of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired dateLabel for the graph |
 
-<a name="module_Sparkline--exports.exportChart"></a>
+<a name="module_Sparkline--exports.exportChart" id="module_Sparkline--exports.exportChart"></a>
 
-### exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exports.exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
@@ -104,9 +107,9 @@ Chart exported to png and a download action is fired
 | filename | <code>string</code> | File title for the resulting picture |
 | title | <code>string</code> | Title to add at the top of the exported picture |
 
-<a name="module_Sparkline--exports.height"></a>
+<a name="module_Sparkline--exports.height" id="module_Sparkline--exports.height"></a>
 
-### exports.height(_x) ⇒ <code>height</code> \| <code>module</code>
+## exports.height(_x) ⇒ <code>height</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
@@ -117,9 +120,9 @@ Gets or Sets the height of the chart
 | --- | --- | --- | --- |
 | _x | <code>number</code> | <code>30</code> | Desired height for the graph |
 
-<a name="module_Sparkline--exports.isAnimated"></a>
+<a name="module_Sparkline--exports.isAnimated" id="module_Sparkline--exports.isAnimated"></a>
 
-### exports.isAnimated(_x) ⇒ <code>isAnimated</code> \| <code>module</code>
+## exports.isAnimated(_x) ⇒ <code>isAnimated</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
 By default this is 'false'
 
@@ -131,9 +134,9 @@ By default this is 'false'
 | --- | --- | --- | --- |
 | _x | <code>boolean</code> | <code>false</code> | Desired animation flag |
 
-<a name="module_Sparkline--exports.lineGradient"></a>
+<a name="module_Sparkline--exports.lineGradient" id="module_Sparkline--exports.lineGradient"></a>
 
-### exports.lineGradient(_x) ⇒ <code>lineGradient</code> \| <code>module</code>
+## exports.lineGradient(_x) ⇒ <code>lineGradient</code> \| <code>module</code>
 Gets or Sets the lineGradient of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
@@ -144,9 +147,9 @@ Gets or Sets the lineGradient of the chart
 | --- | --- | --- |
 | _x | <code>Array.&lt;string&gt;</code> | = colorHelper.colorGradients.greenBlue     Desired lineGradient for the graph |
 
-<a name="module_Sparkline--exports.isLoading"></a>
+<a name="module_Sparkline--exports.isLoading" id="module_Sparkline--exports.isLoading"></a>
 
-### exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
@@ -157,9 +160,9 @@ Gets or Sets the loading state of the chart
 | --- | --- | --- |
 | flag | <code>boolean</code> | Desired value for the loading state |
 
-<a name="module_Sparkline--exports.margin"></a>
+<a name="module_Sparkline--exports.margin" id="module_Sparkline--exports.margin"></a>
 
-### exports.margin(_x) ⇒ <code>object</code> \| <code>module</code>
+## exports.margin(_x) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
@@ -170,9 +173,9 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>object</code> | Margin object to get/set |
 
-<a name="module_Sparkline--exports.titleText"></a>
+<a name="module_Sparkline--exports.titleText" id="module_Sparkline--exports.titleText"></a>
 
-### exports.titleText(_x) ⇒ <code>string</code> \| <code>module</code>
+## exports.titleText(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the text of the title at the top of sparkline.
 To style the title, use the titleTextStyle method below.
 
@@ -184,9 +187,9 @@ To style the title, use the titleTextStyle method below.
 | --- | --- | --- |
 | _x | <code>string</code> | = null   String to set |
 
-<a name="module_Sparkline--exports.titleTextStyle"></a>
+<a name="module_Sparkline--exports.titleTextStyle" id="module_Sparkline--exports.titleTextStyle"></a>
 
-### exports.titleTextStyle(_x) ⇒ <code>Object</code> \| <code>module</code>
+## exports.titleTextStyle(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the text style object of the title at the top of sparkline.
 Using this method, you can set font-family, font-size, font-weight, font-style,
 and color (fill). The default text font settings:
@@ -227,9 +230,9 @@ sparkline.titleTextStyle({
    'fill': 'lightblue'
 })
 ```
-<a name="module_Sparkline--exports.valueLabel"></a>
+<a name="module_Sparkline--exports.valueLabel" id="module_Sparkline--exports.valueLabel"></a>
 
-### ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
+## ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the valueLabel of the chart
@@ -242,9 +245,9 @@ Gets or Sets the valueLabel of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired valueLabel for the graph |
 
-<a name="module_Sparkline--exports.width"></a>
+<a name="module_Sparkline--exports.width" id="module_Sparkline--exports.width"></a>
 
-### exports.width(_x) ⇒ <code>width</code> \| <code>module</code>
+## exports.width(_x) ⇒ <code>width</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
@@ -255,9 +258,9 @@ Gets or Sets the width of the chart
 | --- | --- | --- | --- |
 | _x | <code>number</code> | <code>100</code> | Desired width for the graph |
 
-<a name="module_Sparkline--exports..SparklineChartData"></a>
+<a name="module_Sparkline--exports..SparklineChartData" id="module_Sparkline--exports..SparklineChartData"></a>
 
-### exports~SparklineChartData : <code>Array.&lt;Object&gt;</code>
+## exports~SparklineChartData : <code>Array.&lt;Object&gt;</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Sparkline--exports)  
 **Properties**
 

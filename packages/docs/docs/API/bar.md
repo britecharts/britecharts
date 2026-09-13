@@ -1,6 +1,9 @@
-<a name="module_Bar"></a>
+---
+title: Bar
+---
 
-# Bar
+<a name="module_Bar" id="module_Bar"></a>
+
 Bar Chart reusable API class that renders a
 simple and configurable bar chart.
 
@@ -59,7 +62,7 @@ d3.select('.css-selector')
             * [~BarChartData](#module_Bar--exports..BarChartData) : <code>Array.&lt;Object&gt;</code>
             * [~LocaleObject](#module_Bar--exports..LocaleObject) : <code>Object</code>
 
-<a name="exp_module_Bar--exports"></a>
+<a name="exp_module_Bar--exports" id="exp_module_Bar--exports"></a>
 
 ## exports(_selection, _data) ⏏
 This function creates the graph using the selection as container
@@ -71,9 +74,9 @@ This function creates the graph using the selection as container
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
 | _data | <code>BarChartData</code> | The data to attach and generate the chart |
 
-<a name="module_Bar--exports.animationDuration"></a>
+<a name="module_Bar--exports.animationDuration" id="module_Bar--exports.animationDuration"></a>
 
-### exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -84,9 +87,9 @@ Gets or Sets the duration of the animation
 | --- | --- | --- | --- |
 | _x | <code>Number</code> | <code>1200</code> | Desired animation duration for the graph |
 
-<a name="module_Bar--exports.betweenBarsPadding"></a>
+<a name="module_Bar--exports.betweenBarsPadding" id="module_Bar--exports.betweenBarsPadding"></a>
 
-### exports.betweenBarsPadding(_x) ⇒ <code>padding</code> \| <code>module</code>
+## exports.betweenBarsPadding(_x) ⇒ <code>padding</code> \| <code>module</code>
 Gets or Sets the padding of the chart (Default is 0.1)
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -97,9 +100,9 @@ Gets or Sets the padding of the chart (Default is 0.1)
 | --- | --- | --- |
 | _x | <code>Number</code> \| <code>module</code> | Padding value to get/set |
 
-<a name="module_Bar--exports.chartGradient"></a>
+<a name="module_Bar--exports.chartGradient" id="module_Bar--exports.chartGradient"></a>
 
-### exports.chartGradient(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## exports.chartGradient(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the gradient colors of a bar in the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -110,9 +113,9 @@ Gets or Sets the gradient colors of a bar in the chart
 | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | Desired color gradient for the line (array of two hexadecimal numbers) |
 
-<a name="module_Bar--exports.colorMap"></a>
+<a name="module_Bar--exports.colorMap" id="module_Bar--exports.colorMap"></a>
 
-### exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
+## exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -127,9 +130,9 @@ Gets or Sets the colorMap of the chart
 ```js
 barChart.colorMap({name: 'colorHex', name2: 'colorString'})
 ```
-<a name="module_Bar--exports.colorSchema"></a>
+<a name="module_Bar--exports.colorSchema" id="module_Bar--exports.colorSchema"></a>
 
-### exports.colorSchema(_x) ⇒ <code>colorSchema</code> \| <code>module</code>
+## exports.colorSchema(_x) ⇒ <code>colorSchema</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -140,9 +143,9 @@ Gets or Sets the colorSchema of the chart
 | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | Desired colorSchema for the graph |
 
-<a name="module_Bar--exports.enableLabels"></a>
+<a name="module_Bar--exports.enableLabels" id="module_Bar--exports.enableLabels"></a>
 
-### exports.enableLabels([_x]) ⇒ <code>Boolean</code> \| <code>module</code>
+## exports.enableLabels([_x]) ⇒ <code>Boolean</code> \| <code>module</code>
 If true, adds labels at the end of the bars
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -153,9 +156,9 @@ If true, adds labels at the end of the bars
 | --- | --- | --- |
 | [_x] | <code>Boolean</code> | <code>false</code> | 
 
-<a name="module_Bar--exports.exportChart"></a>
+<a name="module_Bar--exports.exportChart" id="module_Bar--exports.exportChart"></a>
 
-### exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exports.exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -167,9 +170,9 @@ Chart exported to png and a download action is fired
 | filename | <code>String</code> | File title for the resulting picture |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
-<a name="module_Bar--exports.hasPercentage"></a>
+<a name="module_Bar--exports.hasPercentage" id="module_Bar--exports.hasPercentage"></a>
 
-### exports.hasPercentage(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.hasPercentage(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasPercentage status
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -180,9 +183,9 @@ Gets or Sets the hasPercentage status
 | --- | --- | --- |
 | _x | <code>boolean</code> | Should use percentage as value format |
 
-<a name="module_Bar--exports.hasSingleBarHighlight"></a>
+<a name="module_Bar--exports.hasSingleBarHighlight" id="module_Bar--exports.hasSingleBarHighlight"></a>
 
-### exports.hasSingleBarHighlight(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.hasSingleBarHighlight(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasSingleBarHighlight status.
 If the value is true (default), only the hovered bar is considered to
 be highlighted and will be darkened by default. If the value is false,
@@ -198,9 +201,9 @@ remove it completely, use highlightBarFunction instead.
 | --- | --- | --- |
 | _x | <code>boolean</code> | Should highlight the hovered bar |
 
-<a name="module_Bar--exports.height"></a>
+<a name="module_Bar--exports.height" id="module_Bar--exports.height"></a>
 
-### exports.height(_x) ⇒ <code>height</code> \| <code>module</code>
+## exports.height(_x) ⇒ <code>height</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -211,9 +214,9 @@ Gets or Sets the height of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired width for the graph |
 
-<a name="module_Bar--exports.highlightBarFunction"></a>
+<a name="module_Bar--exports.highlightBarFunction" id="module_Bar--exports.highlightBarFunction"></a>
 
-### exports.highlightBarFunction(_x) ⇒ <code>highlightBarFunction</code> \| <code>module</code>
+## exports.highlightBarFunction(_x) ⇒ <code>highlightBarFunction</code> \| <code>module</code>
 Gets or Sets the highlightBarFunction function. The callback passed to
 this function returns a bar selection from the bar chart. Use this function
 if you want to apply a custom behavior to the highlighted bar on hover.
@@ -235,9 +238,9 @@ highlight effect on a bar is darkening the highlighted bar(s) color.
 barChart.highlightBarFunction(bar => bar.attr('fill', 'blue'))
 barChart.highlightBarFunction(null) // will disable the default highlight effect
 ```
-<a name="module_Bar--exports.isAnimated"></a>
+<a name="module_Bar--exports.isAnimated" id="module_Bar--exports.isAnimated"></a>
 
-### exports.isAnimated(_x) ⇒ <code>isAnimated</code> \| <code>module</code>
+## exports.isAnimated(_x) ⇒ <code>isAnimated</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
 By default this is 'false'
 
@@ -249,9 +252,9 @@ By default this is 'false'
 | --- | --- | --- |
 | _x | <code>Boolean</code> | Desired animation flag |
 
-<a name="module_Bar--exports.isHorizontal"></a>
+<a name="module_Bar--exports.isHorizontal" id="module_Bar--exports.isHorizontal"></a>
 
-### exports.isHorizontal(_x) ⇒ <code>isHorizontal</code> \| <code>module</code>
+## exports.isHorizontal(_x) ⇒ <code>isHorizontal</code> \| <code>module</code>
 Gets or Sets the horizontal direction of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -262,9 +265,9 @@ Gets or Sets the horizontal direction of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired horizontal direction for the graph |
 
-<a name="module_Bar--exports.labelsMargin"></a>
+<a name="module_Bar--exports.labelsMargin" id="module_Bar--exports.labelsMargin"></a>
 
-### exports.labelsMargin([_x]) ⇒ <code>number</code> \| <code>module</code>
+## exports.labelsMargin([_x]) ⇒ <code>number</code> \| <code>module</code>
 Offset between end of bar and start of the percentage bars
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -275,9 +278,9 @@ Offset between end of bar and start of the percentage bars
 | --- | --- | --- | --- |
 | [_x] | <code>number</code> | <code>7</code> | Margin offset from end of bar |
 
-<a name="module_Bar--exports.labelsNumberFormat"></a>
+<a name="module_Bar--exports.labelsNumberFormat" id="module_Bar--exports.labelsNumberFormat"></a>
 
-### exports.labelsNumberFormat([_x]) ⇒ <code>string</code> \| <code>module</code>
+## exports.labelsNumberFormat([_x]) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the labels number format
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -288,9 +291,9 @@ Gets or Sets the labels number format
 | --- | --- | --- | --- |
 | [_x] | <code>string</code> | <code>&quot;\&quot;,f\&quot;&quot;</code> | desired label number format for the bar chart |
 
-<a name="module_Bar--exports.labelsSize"></a>
+<a name="module_Bar--exports.labelsSize" id="module_Bar--exports.labelsSize"></a>
 
-### exports.labelsSize([_x]) ⇒ <code>number</code> \| <code>module</code>
+## exports.labelsSize([_x]) ⇒ <code>number</code> \| <code>module</code>
 Get or Sets the labels text size
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -301,9 +304,9 @@ Get or Sets the labels text size
 | --- | --- | --- | --- |
 | [_x] | <code>number</code> | <code>12</code> | label font size |
 
-<a name="module_Bar--exports.isLoading"></a>
+<a name="module_Bar--exports.isLoading" id="module_Bar--exports.isLoading"></a>
 
-### exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -314,9 +317,9 @@ Gets or Sets the loading state of the chart
 | --- | --- | --- |
 | flag | <code>boolean</code> | Desired value for the loading state |
 
-<a name="module_Bar--exports.margin"></a>
+<a name="module_Bar--exports.margin" id="module_Bar--exports.margin"></a>
 
-### exports.margin(_x) ⇒ <code>margin</code> \| <code>module</code>
+## exports.margin(_x) ⇒ <code>margin</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -327,9 +330,9 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>object</code> | Margin object to get/set |
 
-<a name="module_Bar--exports.nameLabel"></a>
+<a name="module_Bar--exports.nameLabel" id="module_Bar--exports.nameLabel"></a>
 
-### ~~exports.nameLabel(_x) ⇒ <code>number</code> \| <code>module</code>~~
+## ~~exports.nameLabel(_x) ⇒ <code>number</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the nameLabel of the chart
@@ -342,9 +345,9 @@ Gets or Sets the nameLabel of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired nameLabel for the graph |
 
-<a name="module_Bar--exports.numberFormat"></a>
+<a name="module_Bar--exports.numberFormat" id="module_Bar--exports.numberFormat"></a>
 
-### exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the bar chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -355,9 +358,9 @@ Gets or Sets the number format of the bar chart
 | --- | --- | --- |
 | _x | <code>string</code> | = ',f'     Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
-<a name="module_Bar--exports.on"></a>
+<a name="module_Bar--exports.on" id="module_Bar--exports.on"></a>
 
-### exports.on() ⇒ <code>module</code>
+## exports.on() ⇒ <code>module</code>
 Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
@@ -365,9 +368,9 @@ customMouseOver, customMouseMove, customMouseOut, and customClick
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
 **Returns**: <code>module</code> - Bar Chart  
 **Access**: public  
-<a name="module_Bar--exports.percentageAxisToMaxRatio"></a>
+<a name="module_Bar--exports.percentageAxisToMaxRatio" id="module_Bar--exports.percentageAxisToMaxRatio"></a>
 
-### exports.percentageAxisToMaxRatio(_x) ⇒ <code>ratio</code> \| <code>module</code>
+## exports.percentageAxisToMaxRatio(_x) ⇒ <code>ratio</code> \| <code>module</code>
 Configurable extension of the x axis. If your max point was 50% you might want to show x axis to 60%, pass 1.2
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -378,9 +381,9 @@ Configurable extension of the x axis. If your max point was 50% you might want t
 | --- | --- | --- |
 | _x | <code>number</code> | ratio to max data point to add to the x axis |
 
-<a name="module_Bar--exports.shouldReverseColorList"></a>
+<a name="module_Bar--exports.shouldReverseColorList" id="module_Bar--exports.shouldReverseColorList"></a>
 
-### exports.shouldReverseColorList(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.shouldReverseColorList(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets whether the color list should be reversed or not
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -391,9 +394,9 @@ Gets or Sets whether the color list should be reversed or not
 | --- | --- | --- |
 | _x | <code>boolean</code> | Should reverse the color list |
 
-<a name="module_Bar--exports.orderingFunction"></a>
+<a name="module_Bar--exports.orderingFunction" id="module_Bar--exports.orderingFunction"></a>
 
-### exports.orderingFunction(_x) ⇒ <code>function</code> \| <code>Module</code>
+## exports.orderingFunction(_x) ⇒ <code>function</code> \| <code>Module</code>
 Changes the order of items given the custom function
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -404,9 +407,9 @@ Changes the order of items given the custom function
 | --- | --- | --- |
 | _x | <code>function</code> | A custom function that sets logic for ordering |
 
-<a name="module_Bar--exports.valueLabel"></a>
+<a name="module_Bar--exports.valueLabel" id="module_Bar--exports.valueLabel"></a>
 
-### ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
+## ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the valueLabel of the chart
@@ -419,9 +422,9 @@ Gets or Sets the valueLabel of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired valueLabel for the graph |
 
-<a name="module_Bar--exports.valueLocale"></a>
+<a name="module_Bar--exports.valueLocale" id="module_Bar--exports.valueLocale"></a>
 
-### exports.valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
+## exports.valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
@@ -438,9 +441,9 @@ Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the
 barChart
  .valueLocale({thousands: '.', grouping: [3], currency: ["$", ""], decimal: "."})
 ```
-<a name="module_Bar--exports.width"></a>
+<a name="module_Bar--exports.width" id="module_Bar--exports.width"></a>
 
-### exports.width(_x) ⇒ <code>width</code> \| <code>module</code>
+## exports.width(_x) ⇒ <code>width</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -451,9 +454,9 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired width for the graph |
 
-<a name="module_Bar--exports.xAxisLabel"></a>
+<a name="module_Bar--exports.xAxisLabel" id="module_Bar--exports.xAxisLabel"></a>
 
-### exports.xAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.xAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the text of the xAxisLabel on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -464,9 +467,9 @@ Gets or Sets the text of the xAxisLabel on the chart
 | --- | --- | --- |
 | _x | <code>String</code> | Desired text for the label |
 
-<a name="module_Bar--exports.xAxisLabelOffset"></a>
+<a name="module_Bar--exports.xAxisLabelOffset" id="module_Bar--exports.xAxisLabelOffset"></a>
 
-### exports.xAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.xAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the xAxisLabel on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -477,9 +480,9 @@ Gets or Sets the offset of the xAxisLabel on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired offset for the label |
 
-<a name="module_Bar--exports.xTicks"></a>
+<a name="module_Bar--exports.xTicks" id="module_Bar--exports.xTicks"></a>
 
-### exports.xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the x axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -490,9 +493,9 @@ Gets or Sets the number of ticks of the x axis on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 5          Desired horizontal ticks |
 
-<a name="module_Bar--exports.yAxisLabel"></a>
+<a name="module_Bar--exports.yAxisLabel" id="module_Bar--exports.yAxisLabel"></a>
 
-### exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the text of the yAxisLabel on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -503,9 +506,9 @@ Gets or Sets the text of the yAxisLabel on the chart
 | --- | --- | --- |
 | _x | <code>String</code> | Desired text for the label |
 
-<a name="module_Bar--exports.yAxisLabelOffset"></a>
+<a name="module_Bar--exports.yAxisLabelOffset" id="module_Bar--exports.yAxisLabelOffset"></a>
 
-### exports.yAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.yAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the yAxisLabel on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -516,9 +519,9 @@ Gets or Sets the offset of the yAxisLabel on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired offset for the label |
 
-<a name="module_Bar--exports.yAxisPaddingBetweenChart"></a>
+<a name="module_Bar--exports.yAxisPaddingBetweenChart" id="module_Bar--exports.yAxisPaddingBetweenChart"></a>
 
-### exports.yAxisPaddingBetweenChart(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.yAxisPaddingBetweenChart(_x) ⇒ <code>Number</code> \| <code>module</code>
 Space between y axis and chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -529,9 +532,9 @@ Space between y axis and chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 10     Space between y axis and chart |
 
-<a name="module_Bar--exports.yTicks"></a>
+<a name="module_Bar--exports.yTicks" id="module_Bar--exports.yTicks"></a>
 
-### exports.yTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.yTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of vertical ticks on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
@@ -542,9 +545,9 @@ Gets or Sets the number of vertical ticks on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 6         Desired number of vertical ticks for the graph |
 
-<a name="module_Bar--exports..BarChartData"></a>
+<a name="module_Bar--exports..BarChartData" id="module_Bar--exports..BarChartData"></a>
 
-### exports~BarChartData : <code>Array.&lt;Object&gt;</code>
+## exports~BarChartData : <code>Array.&lt;Object&gt;</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Bar--exports)  
 **Properties**
 
@@ -566,9 +569,9 @@ Gets or Sets the number of vertical ticks on the chart
     }
 ]
 ```
-<a name="module_Bar--exports..LocaleObject"></a>
+<a name="module_Bar--exports..LocaleObject" id="module_Bar--exports..LocaleObject"></a>
 
-### exports~LocaleObject : <code>Object</code>
+## exports~LocaleObject : <code>Object</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Bar--exports)  
 **Properties**
 

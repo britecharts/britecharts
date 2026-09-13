@@ -1,5 +1,4 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const { themes: prismThemes } = require('prism-react-renderer');
 const lunrSearch = require.resolve('docusaurus-lunr-search');
 
 // With JSDoc @type annotations, IDEs can provide config autocompletion
@@ -12,7 +11,17 @@ module.exports = {
     // A broken internal link fails the build. External links are checked by
     // scripts/check-links.mjs (the Link check workflow) against the built site.
     onBrokenLinks: 'throw',
-    onBrokenMarkdownLinks: 'throw',
+    onBrokenAnchors: 'throw',
+    markdown: {
+        // `.md` pages -- the generated API reference and the copied READMEs
+        // among them -- are plain CommonMark; only `.mdx` gets MDX's JSX
+        // parsing, which would trip over the `{`, `<` and comments those
+        // files legitimately contain.
+        format: 'detect',
+        hooks: {
+            onBrokenMarkdownLinks: 'throw',
+        },
+    },
     favicon: 'img/icons/favicon.ico',
     organizationName: 'britecharts',
     projectName: 'britecharts.github.io', // Usually your repo name.
@@ -134,8 +143,8 @@ module.exports = {
                 copyright: `Copyright © ${new Date().getFullYear()} Britecharts`,
             },
             prism: {
-                theme: lightCodeTheme,
-                darkTheme: darkCodeTheme,
+                theme: prismThemes.github,
+                darkTheme: prismThemes.dracula,
             },
         }),
 
