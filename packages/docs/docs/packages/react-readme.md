@@ -102,25 +102,25 @@ Note that the aim of this project is to allow the usage of Britecharts within yo
 ### Roadmap
 Our idea for the short term is to update this package to use TypeScript natively. For that, we already have an initial version that we need to polish and reproduce. [Let us know][d3Slack] if you want to help with it.
 
-[react]: https://facebook.github.io/react/
+[react]: https://react.dev/
 [integration-article]: http://nicolashery.com/integrating-d3js-visualizations-in-a-react-app/
-[storybook]: **
-[barChartAPI]: **
-[groupedBarChartAPI]: **
-[donutChartAPI]: **
-[lineChartAPI]: **
-[sparklineChartAPI]: **
-[stackedAreaChartAPI]: **
-[stackedBarChartAPI]: **
+[storybook]: https://britecharts.github.io/britecharts/storybook/react/
+[barChartAPI]: https://britecharts.github.io/britecharts/docs/API/bar
+[groupedBarChartAPI]: https://britecharts.github.io/britecharts/docs/API/grouped-bar
+[donutChartAPI]: https://britecharts.github.io/britecharts/docs/API/donut
+[lineChartAPI]: https://britecharts.github.io/britecharts/docs/API/line
+[sparklineChartAPI]: https://britecharts.github.io/britecharts/docs/API/sparkline
+[stackedAreaChartAPI]: https://britecharts.github.io/britecharts/docs/API/stacked-area
+[stackedBarChartAPI]: https://britecharts.github.io/britecharts/docs/API/stacked-bar
 [tooltipAPI]: https://britecharts.github.io/britecharts/docs/API/tooltip
-[legendAPI]: **
-[bulletAPI]: **
+[legendAPI]: https://britecharts.github.io/britecharts/docs/API/legend
+[bulletAPI]: https://britecharts.github.io/britecharts/docs/API/bullet
 [jsDelivrLib]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/dist/
 [npmModule]: https://www.npmjs.com/package/britecharts-react
 [contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [d3Slack]: https://d3js.slack.com/
-[codeOfConduct]: **
+[codeOfConduct]: https://github.com/britecharts/britecharts/blob/main/CODE_OF_CONDUCT.md
 [homepage]: https://britecharts.github.io/britecharts/
 [testProject]: https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers/react
 [howtoCreate]: https://github.com/britecharts/britecharts-react/blob/master/CONTRIBUTING.md#creating-a-new-chart

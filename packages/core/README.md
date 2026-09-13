@@ -29,7 +29,7 @@ Check the [contributing guide][contributing] if you want to help us bringing the
 [readme]: https://britecharts.github.io/britecharts/docs/Britecharts
 [homepage]: https://britecharts.github.io/britecharts/
 [gettingStarted]: https://britecharts.github.io/britecharts/docs/tutorials/getting-started
-[npmModule]: **
-[jsDelivrLib]: **
-[jsDelivrDist]: **
+[npmModule]: https://www.npmjs.com/package/@britecharts/core
+[jsDelivrLib]: https://cdn.jsdelivr.net/npm/@britecharts/core/dist/
+[jsDelivrDist]: https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js
 [contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md

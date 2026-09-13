@@ -34,6 +34,15 @@ $ yarn build
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
+### Checking links
+
+```
+$ yarn docs:build
+$ yarn docs:links
+```
+
+A broken *internal* link already fails `yarn build`, since Docusaurus is set to throw on one. `docs:links` serves the built site and follows every link on every page, the external ones included, and fails on any that is broken. The **Link check** workflow runs it on every pull request, on `main`, and once a week, because links rot with nothing changing on our side. The few hosts it skips, and why, are listed at the top of `scripts/check-links.mjs`.
+
 ### Deployment*
 
 Using SSH:
@@ -50,5 +59,5 @@ $ GIT_USER=<Your GitHub username> yarn deploy
 
 If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
 
-[homepage]: **
+[homepage]: https://britecharts.github.io/britecharts/
 [contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md

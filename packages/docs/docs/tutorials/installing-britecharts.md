@@ -33,19 +33,19 @@ import bar from '@britecharts/core';
 
 When loading the styles, you have two options, loading the whole stylesheet of the library:
 ```html
-<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/**dist/styles/bundle/britecharts.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/dist/styles/bundle/britecharts.min.css">
 ```
 
 Or loading only the styles for the current chart plus the common Britecharts styles:
 ```html
-<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/**dist/styles/charts/common.min.css">
-<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/**dist/styles/charts/bar.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/dist/styles/charts/common.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/@britecharts/core/dist/styles/charts/bar.min.css">
 ```
 
 ## Download from the CDN
 To import the latest bundle (3.x.x version), use this URL:
 ```
-https://cdn.jsdelivr.net/npm/@britecharts/core**@2/dist/bundled/britecharts.min.js
+https://cdn.jsdelivr.net/npm/@britecharts/core@3/dist/cdn/bundle/core.cdn.min.js
 ```
 This bundle attaches to the global `window` object a JavaScript object called `britecharts`. Within it, you can find the charts and helpers you need.
 
@@ -72,14 +72,14 @@ To keep on learning more about Britecharts, you can follow our [Composing Your F
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contributingGuide]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
-[jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts/**
-[cdnDemo]: https://britecharts.github.io/britecharts/**cdn.html
+[jsDelivrDist]: https://cdn.jsdelivr.net/npm/@britecharts/core/dist/
+[cdnDemo]: https://github.com/britecharts/britecharts/blob/main/packages/integration/consumers/vanilla/cdn-jsdelivr.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
 [codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
 [contributingGuide]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [githubReleases]: https://github.com/britecharts/britecharts/releases
-[home]: http://britecharts.github.io/britecharts/
-[demos]: http://britecharts.github.io/britecharts/**tutorial-kitchen-sink.html
+[home]: https://britecharts.github.io/britecharts/
+[demos]: https://britecharts.github.io/britecharts/storybook/
 [gettingStarted]: ./getting-started.md
 [composingDataviz]: ./composing-dataviz.md
 [stylingBritecharts]: ./styling-charts.md

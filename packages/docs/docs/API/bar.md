@@ -353,7 +353,7 @@ Gets or Sets the number format of the bar chart
 
 | Param | Type | Description |
 | --- | --- | --- |
-| _x | <code>string</code> | = ',f'     Desired numberFormat for the chart. See examples [here](https://observablehq.com/@d3/d3-format) |
+| _x | <code>string</code> | = ',f'     Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
 <a name="module_Bar--exports.on"></a>
 

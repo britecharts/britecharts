@@ -262,7 +262,7 @@ Gets or Sets the numberFormat of the chart
 
 | Param | Type | Description |
 | --- | --- | --- |
-| _x | <code>String</code> | = ',f'     Desired numberFormat for the graph. See examples [here](https://observablehq.com/@d3/d3-format) |
+| _x | <code>String</code> | = ',f'     Desired numberFormat for the graph. See examples [here](https://d3js.org/d3-format) |
 
 <a name="module_Stacked-bar--exports.on"></a>
 

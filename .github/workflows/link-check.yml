@@ -1,0 +1,50 @@
+name: Link check
+
+# Broken links are this project's most persistent recurring failure: the docs
+# moved hosts twice, and every move left dead links behind. Docusaurus fails
+# the build on a broken internal link; this job builds the site, serves it
+# and follows every link on every page, external ones included. The weekly
+# run catches links that rot with nothing changing on our side.
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: Check every link on the docs site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v7
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build docs website 📚
+        run: yarn docs:build
+
+      - name: Check links 🔗
+        run: yarn docs:links

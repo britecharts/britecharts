@@ -38,7 +38,7 @@ container.datum(barData).call(barChart);
 
 Starting with this bar chart, we want to customize the color palette. For that, we first need to load our color schemas by using this script tag:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@britecharts/core@**2.10.0/dist/umd/colors.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@britecharts/core@3/dist/umd/charts/colors.min.js"></script>
 ```
 
 Then, we can set the color schema of the bar chart by doing:
@@ -94,14 +94,14 @@ In this tutorial, you saw how you can use Britecharts' color helper to apply col
 
 To learn more, you can follow our [Composing Your First Data Visualization tutorial][composingDataviz]. You can also check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
-[home]: http://britecharts.github.io/britecharts/
-[demos]: http://britecharts.github.io/britecharts/**tutorial-kitchen-sink.html
+[home]: https://britecharts.github.io/britecharts/
+[demos]: https://britecharts.github.io/britecharts/storybook/
 [gettingStarted]: ./getting-started.md
 [composingDataviz]: ./composing-dataviz.md
-[colorPalettesDemo]: http://britecharts.github.io/britecharts/**tutorial-color.html
+[colorPalettesDemo]: https://britecharts.github.io/britecharts/storybook/core/?path=/story/attributes-colors--color-schemas
 [stylingBritechartsHTML]: https://github.com/britecharts/britecharts/blob/main/packages/docs/docs/tutorials/html/tutorial-styling-britecharts.html
 [stylingBritechartsTutorial]: ./styling-charts.md
 [orangeBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/orange-bar-chart.png
-[redBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorials/red-bar-chart.png
+[redBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/red-bar-chart.png
 [gFonts]: https://fonts.google.com/
 [svgReference]: https://www.smashingmagazine.com/2014/11/styling-and-animating-svgs-with-css/

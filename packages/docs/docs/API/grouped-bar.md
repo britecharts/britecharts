@@ -262,7 +262,7 @@ Gets or Sets the numberFormat of the chart
 
 | Param | Type | Description |
 | --- | --- | --- |
-| _x | <code>Array.&lt;string&gt;</code> | = ',f'     Desired numberFormat for the chart. See examples [here](https://observablehq.com/@d3/d3-format) |
+| _x | <code>Array.&lt;string&gt;</code> | = ',f'     Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
 <a name="module_Grouped-bar--exports.on"></a>
 
