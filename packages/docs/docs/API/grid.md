@@ -1,33 +1,10 @@
-# Modules
+---
+title: Grid helpers
+---
 
-<dl>
-<dt><a href="#module_Grid">Grid</a></dt>
-<dd><p>Reusable Grid component helper that renders either a vertical, horizontal or full grid, and that
-will usually be used inside charts. It could also be used as a standalone component to use on custom charts.</p>
-<p>Naming: H and V describe the lines a grid draws, X and Y name scales.
-gridHorizontal(yScale) draws horizontal lines from the y-scale&#39;s ticks; on
-the 2D grid, ticksH() sets the ticks of the horizontal lines (from scaleY())
-and ticksV() those of the vertical lines (from scaleX()).</p>
-</dd>
-</dl>
+<a name="module_Grid" id="module_Grid"></a>
 
-# Typedefs
-
-<dl>
-<dt><a href="#GridScale">GridScale</a> : <code>function</code></dt>
-<dd><p>A d3 scale with a numeric range: continuous (<code>scaleLinear</code>, <code>scaleTime</code>, ...)
-or band (<code>scaleBand</code>, <code>scalePoint</code>). Band scales are recognised through
-<code>bandwidth()</code> and their lines are centred on the band.</p>
-</dd>
-<dt><a href="#GridContext">GridContext</a> : <code>Object</code></dt>
-<dd><p>A d3 selection to render into, or a d3 transition on one. Given a
-transition, entering and exiting lines fade and slide between positions.</p>
-</dd>
-</dl>
-
-<a name="module_Grid"></a>
-
-# Grid
+## Grid
 Reusable Grid component helper that renders either a vertical, horizontal or full grid, and that
 will usually be used inside charts. It could also be used as a standalone component to use on custom charts.
 
@@ -43,7 +20,7 @@ and ticksV() those of the vertical lines (from scaleX()).
     * [.gridHorizontal(scale)](#module_Grid.gridHorizontal) ⇒ <code>gridBaseGenerator</code>
     * [.gridVertical(scale)](#module_Grid.gridVertical) ⇒ <code>gridBaseGenerator</code>
 
-<a name="module_Grid.grid"></a>
+<a name="module_Grid.grid" id="module_Grid.grid"></a>
 
 ## Grid.grid(scaleX, scaleY) ⇒ <code>gridGenerator</code>
 Constructor for a two-dimensional grid helper
@@ -64,7 +41,7 @@ const grid = grid(xScale, yScale)
 
     grid(svg.select('.grid-lines-group'));
 ```
-<a name="module_Grid.gridHorizontal"></a>
+<a name="module_Grid.gridHorizontal" id="module_Grid.gridHorizontal"></a>
 
 ## Grid.gridHorizontal(scale) ⇒ <code>gridBaseGenerator</code>
 Constructor for a horizontal grid helper
@@ -85,7 +62,7 @@ const grid = gridHorizontal(yScale)
 
     grid(svg.select('.grid-lines-group'));
 ```
-<a name="module_Grid.gridVertical"></a>
+<a name="module_Grid.gridVertical" id="module_Grid.gridVertical"></a>
 
 ## Grid.gridVertical(scale) ⇒ <code>gridBaseGenerator</code>
 Constructor for a vertical grid helper
@@ -106,17 +83,17 @@ const grid = gridVertical(xScale)
 
     grid(svg.select('.grid-lines-group'));
 ```
-<a name="GridScale"></a>
+<a name="GridScale" id="GridScale"></a>
 
-# GridScale : <code>function</code>
+## GridScale : <code>function</code>
 A d3 scale with a numeric range: continuous (`scaleLinear`, `scaleTime`, ...)
 or band (`scaleBand`, `scalePoint`). Band scales are recognised through
 `bandwidth()` and their lines are centred on the band.
 
 **Kind**: global typedef  
-<a name="GridContext"></a>
+<a name="GridContext" id="GridContext"></a>
 
-# GridContext : <code>Object</code>
+## GridContext : <code>Object</code>
 A d3 selection to render into, or a d3 transition on one. Given a
 transition, entering and exiting lines fade and slide between positions.
 

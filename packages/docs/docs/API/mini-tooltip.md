@@ -1,6 +1,9 @@
-<a name="module_Mini-tooltip"></a>
+---
+title: Mini Tooltip
+---
 
-# Mini-tooltip
+<a name="module_Mini-tooltip" id="module_Mini-tooltip"></a>
+
 Mini Tooltip: the single-value preset of the [Tooltip](./tooltip.md)
 component. It renders a title, the hovered element's name and its value
 on one line each, for the bar, scatter plot, heatmap and donut charts, and

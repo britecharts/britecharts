@@ -1,6 +1,9 @@
-<a name="module_Tooltip"></a>
+---
+title: Tooltip
+---
 
-# Tooltip
+<a name="module_Tooltip" id="module_Tooltip"></a>
+
 Tooltip component: one box, drawn inside the chart's svg, that follows the
 pointer and shows what it is over. It renders a **list** (a title and one
 row per topic, with a colour dot, the topic's name and its value) for the
@@ -79,7 +82,7 @@ d3Selection.select('.metadata-group .vertical-marker-container')
         * ~~[.valueLabel(_x)](#module_Tooltip--exports.valueLabel) ⇒ <code>String</code> \| <code>module</code>~~
         * [.xAxisValueType([_x])](#module_Tooltip--exports.xAxisValueType) ⇒ <code>String</code> \| <code>module</code>
 
-<a name="exp_module_Tooltip--exports"></a>
+<a name="exp_module_Tooltip--exports" id="exp_module_Tooltip--exports"></a>
 
 ## exports(_selection, _data) ⏏
 This function creates the graph using the selection as container
@@ -91,9 +94,9 @@ This function creates the graph using the selection as container
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
 | _data | <code>Object</code> | The data to attach and generate the chart |
 
-<a name="module_Tooltip--exports.axisTimeCombinations"></a>
+<a name="module_Tooltip--exports.axisTimeCombinations" id="module_Tooltip--exports.axisTimeCombinations"></a>
 
-### exports.axisTimeCombinations
+## exports.axisTimeCombinations
 constants to be used to force the x axis to respect a certain granularity
 current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
@@ -102,9 +105,9 @@ current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
 ```js
 tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
 ```
-<a name="module_Tooltip--exports.dateFormat"></a>
+<a name="module_Tooltip--exports.dateFormat" id="module_Tooltip--exports.dateFormat"></a>
 
-### exports.dateFormat(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.dateFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes the ability to force the tooltip to use a certain date format
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -115,9 +118,9 @@ Exposes the ability to force the tooltip to use a certain date format
 | --- | --- | --- |
 | _x | <code>String</code> | Desired format |
 
-<a name="module_Tooltip--exports.dateCustomFormat"></a>
+<a name="module_Tooltip--exports.dateCustomFormat" id="module_Tooltip--exports.dateCustomFormat"></a>
 
-### exports.dateCustomFormat(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.dateCustomFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes the ability to use a custom date format
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -133,9 +136,9 @@ Exposes the ability to use a custom date format
 tooltip.dateFormat(tooltip.axisTimeCombinations.CUSTOM);
 tooltip.dateCustomFormat('%H:%M %p')
 ```
-<a name="module_Tooltip--exports.dateLabel"></a>
+<a name="module_Tooltip--exports.dateLabel" id="module_Tooltip--exports.dateLabel"></a>
 
-### ~~exports.dateLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
+## ~~exports.dateLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the dateLabel of the data: the field of the data point
@@ -151,17 +154,17 @@ used, so the default works for every chart.
 | --- | --- | --- |
 | _x | <code>String</code> | Desired dateLabel |
 
-<a name="module_Tooltip--exports.hide"></a>
+<a name="module_Tooltip--exports.hide" id="module_Tooltip--exports.hide"></a>
 
-### exports.hide() ⇒ <code>module</code>
+## exports.hide() ⇒ <code>module</code>
 Hides the tooltip
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>module</code> - Tooltip module to chain calls  
 **Access**: public  
-<a name="module_Tooltip--exports.locale"></a>
+<a name="module_Tooltip--exports.locale" id="module_Tooltip--exports.locale"></a>
 
-### exports.locale(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.locale(_x) ⇒ <code>String</code> \| <code>module</code>
 Pass locale for the tooltip to render the date in
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -172,9 +175,9 @@ Pass locale for the tooltip to render the date in
 | --- | --- | --- |
 | _x | <code>String</code> | Must be a locale tag like 'en-US' or 'fr-FR' |
 
-<a name="module_Tooltip--exports.nameLabel"></a>
+<a name="module_Tooltip--exports.nameLabel" id="module_Tooltip--exports.nameLabel"></a>
 
-### ~~exports.nameLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
+## ~~exports.nameLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the nameLabel of the data
@@ -187,9 +190,9 @@ Gets or Sets the nameLabel of the data
 | --- | --- | --- |
 | _x | <code>String</code> | Desired nameLabel |
 
-<a name="module_Tooltip--exports.numberFormat"></a>
+<a name="module_Tooltip--exports.numberFormat" id="module_Tooltip--exports.numberFormat"></a>
 
-### exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format for the value displayed on the tooltip
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -200,9 +203,9 @@ Gets or Sets the number format for the value displayed on the tooltip
 | --- | --- | --- |
 | _x | <code>string</code> | Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
-<a name="module_Tooltip--exports.valueFormatter"></a>
+<a name="module_Tooltip--exports.valueFormatter" id="module_Tooltip--exports.valueFormatter"></a>
 
-### exports.valueFormatter(_x) ⇒ <code>function</code> \| <code>module</code>
+## exports.valueFormatter(_x) ⇒ <code>function</code> \| <code>module</code>
 Gets or Sets the formatter function for the value displayed on the tooltip.
 Setting this property makes the tooltip ignore numberFormat.
 
@@ -218,9 +221,9 @@ Setting this property makes the tooltip ignore numberFormat.
 ```js
 tooltipChart.valueFormatter(value => value.toString().length.toString())
 ```
-<a name="module_Tooltip--exports.shouldShowDateInTitle"></a>
+<a name="module_Tooltip--exports.shouldShowDateInTitle" id="module_Tooltip--exports.shouldShowDateInTitle"></a>
 
-### exports.shouldShowDateInTitle(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## exports.shouldShowDateInTitle(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets shouldShowDateInTitle
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -231,9 +234,9 @@ Gets or Sets shouldShowDateInTitle
 | --- | --- | --- |
 | _x | <code>Boolean</code> | Desired value |
 
-<a name="module_Tooltip--exports.show"></a>
+<a name="module_Tooltip--exports.show" id="module_Tooltip--exports.show"></a>
 
-### exports.show([dataPoint], [position]) ⇒ <code>module</code>
+## exports.show([dataPoint], [position]) ⇒ <code>module</code>
 Shows the tooltip. Given the hovered data point and its position, as
 the single-value charts dispatch them on `customMouseOver`, it renders
 and places the tooltip at once; otherwise it shows empty until the
@@ -248,9 +251,9 @@ first `update`, which is what the multi-value charts need.
 | [dataPoint] | <code>Object</code> | Data point to render |
 | [position] | <code>Array.&lt;Number&gt;</code> | [x, y] to anchor the tooltip to, in pixels |
 
-<a name="module_Tooltip--exports.title"></a>
+<a name="module_Tooltip--exports.title" id="module_Tooltip--exports.title"></a>
 
-### exports.title(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.title(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the title of the tooltip (to only show the date, set a blank title)
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -261,9 +264,9 @@ Gets or Sets the title of the tooltip (to only show the date, set a blank title)
 | --- | --- | --- |
 | _x | <code>String</code> | Desired title |
 
-<a name="module_Tooltip--exports.tooltipOffset"></a>
+<a name="module_Tooltip--exports.tooltipOffset" id="module_Tooltip--exports.tooltipOffset"></a>
 
-### exports.tooltipOffset(_x) ⇒ <code>Object</code> \| <code>module</code>
+## exports.tooltipOffset(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets an offset, in pixels, applied to the point the tooltip is
 placed next to: `x` moves the anchor along the chart, `y` moves the box
 up (negative) or down. The box still stays inside the chart.
@@ -280,9 +283,9 @@ up (negative) or down. The box still stays inside the chart.
 ```js
 tooltip.tooltipOffset({ x: 0, y: -20 })
 ```
-<a name="module_Tooltip--exports.layout"></a>
+<a name="module_Tooltip--exports.layout" id="module_Tooltip--exports.layout"></a>
 
-### exports.layout([_x]) ⇒ <code>String</code> \| <code>module</code>
+## exports.layout([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the layout: 'list' shows the title and one row per topic,
 with a colour dot, the topic's name and its value (the multi-value
 charts: line, stacked area, stacked bar and grouped bar); 'single'
@@ -304,9 +307,9 @@ the tooltip is drawn.
 ```js
 tooltip.layout('single')
 ```
-<a name="module_Tooltip--exports.maxEntries"></a>
+<a name="module_Tooltip--exports.maxEntries" id="module_Tooltip--exports.maxEntries"></a>
 
-### exports.maxEntries([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## exports.maxEntries([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the most rows the tooltip shows. Past that, the last row
 reads "+n more" instead, so the box keeps a height that fits in the
 chart. 0 shows every row.
@@ -323,9 +326,9 @@ chart. 0 shows every row.
 ```js
 tooltip.maxEntries(6)
 ```
-<a name="module_Tooltip--exports.topicsOrder"></a>
+<a name="module_Tooltip--exports.topicsOrder" id="module_Tooltip--exports.topicsOrder"></a>
 
-### exports.topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## exports.topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Pass an override for the ordering of your tooltip
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -336,9 +339,9 @@ Pass an override for the ordering of your tooltip
 | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | Array of the names of your tooltip items |
 
-<a name="module_Tooltip--exports.topicLabel"></a>
+<a name="module_Tooltip--exports.topicLabel" id="module_Tooltip--exports.topicLabel"></a>
 
-### ~~exports.topicLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
+## ~~exports.topicLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the topicLabel of the data
@@ -351,9 +354,9 @@ Gets or Sets the topicLabel of the data
 | --- | --- | --- |
 | _x | <code>String</code> | Desired topicLabel |
 
-<a name="module_Tooltip--exports.update"></a>
+<a name="module_Tooltip--exports.update" id="module_Tooltip--exports.update"></a>
 
-### exports.update(dataPoint, position, [chartSize], [colorMap]) ⇒ <code>module</code>
+## exports.update(dataPoint, position, [chartSize], [colorMap]) ⇒ <code>module</code>
 Updates the content and position of the tooltip. The arguments are
 what every chart dispatches with `customMouseMove`, so
 `chart.on('customMouseMove', tooltip.update)` is all the wiring
@@ -378,9 +381,9 @@ names to colours. The order the multi-value charts used before 3.0,
 ```js
 chart.on('customMouseMove', tooltip.update)
 ```
-<a name="module_Tooltip--exports.valueLabel"></a>
+<a name="module_Tooltip--exports.valueLabel" id="module_Tooltip--exports.valueLabel"></a>
 
-### ~~exports.valueLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
+## ~~exports.valueLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the valueLabel of the data
@@ -393,9 +396,9 @@ Gets or Sets the valueLabel of the data
 | --- | --- | --- |
 | _x | <code>String</code> | Desired valueLabel |
 
-<a name="module_Tooltip--exports.xAxisValueType"></a>
+<a name="module_Tooltip--exports.xAxisValueType" id="module_Tooltip--exports.xAxisValueType"></a>
 
-### exports.xAxisValueType([_x]) ⇒ <code>String</code> \| <code>module</code>
+## exports.xAxisValueType([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets how the key of the data point is shown in the title:
 'date' formats it as a date, 'number' as a number, 'category' shows
 it as it is, and 'auto' (the default) picks one per key -- a Date or

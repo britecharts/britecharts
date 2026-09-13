@@ -1,6 +1,9 @@
-<a name="module_Line"></a>
+---
+title: Line
+---
 
-# Line
+<a name="module_Line" id="module_Line"></a>
+
 Line Chart reusable API module that allows us
 rendering a multi line and configurable chart.
 
@@ -58,7 +61,7 @@ d3Selection.select('.css-selector')
             * [~LineChartDataSorted](#module_Line--exports..LineChartDataSorted) : <code>Array.&lt;object&gt;</code>
             * [~LineChartData](#module_Line--exports..LineChartData) : <code>object</code>
 
-<a name="exp_module_Line--exports"></a>
+<a name="exp_module_Line--exports" id="exp_module_Line--exports"></a>
 
 ## exports(_selection, _data) ⏏
 This function creates the graph using the selection and data provided
@@ -70,9 +73,9 @@ This function creates the graph using the selection and data provided
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
 | _data | <code>LineChartData</code> | The data to attach and generate the chart |
 
-<a name="module_Line--exports.axisTimeCombinations"></a>
+<a name="module_Line--exports.axisTimeCombinations" id="module_Line--exports.axisTimeCombinations"></a>
 
-### exports.axisTimeCombinations
+## exports.axisTimeCombinations
 Exposes the constants to be used to force the x axis to respect a certain granularity
 current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
@@ -81,9 +84,9 @@ current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 ```js
 line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
 ```
-<a name="module_Line--exports.animationDuration"></a>
+<a name="module_Line--exports.animationDuration" id="module_Line--exports.animationDuration"></a>
 
-### exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -94,9 +97,9 @@ Gets or Sets the duration of the animation
 | --- | --- | --- | --- |
 | _x | <code>number</code> | <code>1200</code> | Desired animation duration for the graph |
 
-<a name="module_Line--exports.xAxisLabel"></a>
+<a name="module_Line--exports.xAxisLabel" id="module_Line--exports.xAxisLabel"></a>
 
-### exports.xAxisLabel(_x) ⇒ <code>string</code> \| <code>module</code>
+## exports.xAxisLabel(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the label of the X axis of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -107,9 +110,9 @@ Gets or Sets the label of the X axis of the chart
 | --- | --- | --- |
 | _x | <code>string</code> | Desired label for the X axis |
 
-<a name="module_Line--exports.yAxisLabel"></a>
+<a name="module_Line--exports.yAxisLabel" id="module_Line--exports.yAxisLabel"></a>
 
-### exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the label of the Y axis of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -120,9 +123,9 @@ Gets or Sets the label of the Y axis of the chart
 | --- | --- | --- |
 | _x | <code>string</code> | Desired label for the Y axis |
 
-<a name="module_Line--exports.colorSchema"></a>
+<a name="module_Line--exports.colorSchema" id="module_Line--exports.colorSchema"></a>
 
-### exports.colorSchema(_x) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
+## exports.colorSchema(_x) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -133,9 +136,9 @@ Gets or Sets the colorSchema of the chart
 | --- | --- | --- |
 | _x | <code>Array.&lt;string&gt;</code> | Desired colorSchema for the graph |
 
-<a name="module_Line--exports.colorMap"></a>
+<a name="module_Line--exports.colorMap" id="module_Line--exports.colorMap"></a>
 
-### exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
+## exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -150,9 +153,9 @@ Gets or Sets the colorMap of the chart
 ```js
 lineChart.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
 ```
-<a name="module_Line--exports.dateLabel"></a>
+<a name="module_Line--exports.dateLabel" id="module_Line--exports.dateLabel"></a>
 
-### ~~exports.dateLabel(_x) ⇒ <code>number</code> \| <code>module</code>~~
+## ~~exports.dateLabel(_x) ⇒ <code>number</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the dateLabel of the chart
@@ -165,9 +168,9 @@ Gets or Sets the dateLabel of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired dateLabel for the graph |
 
-<a name="module_Line--exports.xAxisCustomFormat"></a>
+<a name="module_Line--exports.xAxisCustomFormat" id="module_Line--exports.xAxisCustomFormat"></a>
 
-### exports.xAxisCustomFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+## exports.xAxisCustomFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Exposes the ability to force the chart to show a certain x format
 It requires a `xAxisFormat` of 'custom' in order to work.
 NOTE: localization not supported
@@ -180,9 +183,9 @@ NOTE: localization not supported
 | --- | --- | --- |
 | _x | <code>string</code> | Desired format for x axis, one of the d3.js date formats [here](https://github.com/d3/d3-time-format#locale_format) |
 
-<a name="module_Line--exports.xAxisFormat"></a>
+<a name="module_Line--exports.xAxisFormat" id="module_Line--exports.xAxisFormat"></a>
 
-### exports.xAxisFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
+## exports.xAxisFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x axis grouping
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -197,9 +200,9 @@ Exposes the ability to force the chart to show a certain x axis grouping
 ```js
 line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
 ```
-<a name="module_Line--exports.xTicks"></a>
+<a name="module_Line--exports.xTicks" id="module_Line--exports.xTicks"></a>
 
-### exports.xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
 NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 how many and where the ticks will appear.
@@ -212,9 +215,9 @@ how many and where the ticks will appear.
 | --- | --- | --- |
 | _x | <code>number</code> | Desired number of x axis ticks (multiple of 2, 5 or 10) |
 
-<a name="module_Line--exports.grid"></a>
+<a name="module_Line--exports.grid" id="module_Line--exports.grid"></a>
 
-### exports.grid(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.grid(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the grid mode.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -225,9 +228,9 @@ Gets or Sets the grid mode.
 | --- | --- | --- |
 | _x | <code>string</code> | Desired mode for the grid ('vertical'|'horizontal'|'full') |
 
-<a name="module_Line--exports.hasMinimumValueScale"></a>
+<a name="module_Line--exports.hasMinimumValueScale" id="module_Line--exports.hasMinimumValueScale"></a>
 
-### exports.hasMinimumValueScale(_x) ⇒ <code>hasMinimumValueScale</code> \| <code>module</code>
+## exports.hasMinimumValueScale(_x) ⇒ <code>hasMinimumValueScale</code> \| <code>module</code>
 Gets or Sets the hasMinimumValueScale property of the chart, making yAxix bottom value
 to adjust to the minimum dataset value.
 By default this is 'false'
@@ -240,9 +243,9 @@ By default this is 'false'
 | --- | --- | --- |
 | _x | <code>Boolean</code> | Desired minimum value flag |
 
-<a name="module_Line--exports.height"></a>
+<a name="module_Line--exports.height" id="module_Line--exports.height"></a>
 
-### exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -253,9 +256,9 @@ Gets or Sets the height of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired width for the graph |
 
-<a name="module_Line--exports.isAnimated"></a>
+<a name="module_Line--exports.isAnimated" id="module_Line--exports.isAnimated"></a>
 
-### exports.isAnimated(_x) ⇒ <code>isAnimated</code> \| <code>module</code>
+## exports.isAnimated(_x) ⇒ <code>isAnimated</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -266,9 +269,9 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 | --- | --- | --- |
 | _x | <code>boolean</code> | = false     Desired animation flag |
 
-<a name="module_Line--exports.lines"></a>
+<a name="module_Line--exports.lines" id="module_Line--exports.lines"></a>
 
-### exports.lines(_x) ⇒ <code>Array.&lt;Object&gt;</code> \| <code>module</code>
+## exports.lines(_x) ⇒ <code>Array.&lt;Object&gt;</code> \| <code>module</code>
 Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
 onto the chart with a specific color and a text annotation over the line.
 
@@ -288,9 +291,9 @@ line.lines([{
   color: '#ff0000'
 }])
 ```
-<a name="module_Line--exports.lineCurve"></a>
+<a name="module_Line--exports.lineCurve" id="module_Line--exports.lineCurve"></a>
 
-### exports.lineCurve(_x) ⇒ <code>curve</code> \| <code>module</code>
+## exports.lineCurve(_x) ⇒ <code>curve</code> \| <code>module</code>
 Gets or Sets the curve of the line chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -301,9 +304,9 @@ Gets or Sets the curve of the line chart
 | --- | --- | --- |
 | _x | <code>curve</code> | Desired curve for the lines, default 'linear'. Other options are: basis, natural, monotoneX, monotoneY, step, stepAfter, stepBefore, cardinal, and catmullRom. Visit https://github.com/d3/d3-shape#curves for more information. |
 
-<a name="module_Line--exports.lineGradient"></a>
+<a name="module_Line--exports.lineGradient" id="module_Line--exports.lineGradient"></a>
 
-### exports.lineGradient(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.lineGradient(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the gradient colors of the line chart when there is only one line
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -314,9 +317,9 @@ Gets or Sets the gradient colors of the line chart when there is only one line
 | --- | --- | --- |
 | _x | <code>Array.&lt;string&gt;</code> | Desired color gradient for the line (array of two hexadecimal numbers) |
 
-<a name="module_Line--exports.isLoading"></a>
+<a name="module_Line--exports.isLoading" id="module_Line--exports.isLoading"></a>
 
-### exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -327,9 +330,9 @@ Gets or Sets the loading state of the chart
 | --- | --- | --- |
 | flag | <code>boolean</code> | Desired value for the loading state |
 
-<a name="module_Line--exports.locale"></a>
+<a name="module_Line--exports.locale" id="module_Line--exports.locale"></a>
 
-### exports.locale(_x) ⇒ <code>string</code> \| <code>module</code>
+## exports.locale(_x) ⇒ <code>string</code> \| <code>module</code>
 Pass language tag for the tooltip to localize the date.
 Uses Intl.DateTimeFormat, for compatability and support, refer to
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
@@ -342,9 +345,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 | --- | --- | --- |
 | _x | <code>string</code> | A language tag (BCP 47) like 'en-US' or 'fr-FR' |
 
-<a name="module_Line--exports.margin"></a>
+<a name="module_Line--exports.margin" id="module_Line--exports.margin"></a>
 
-### exports.margin(_x) ⇒ <code>object</code> \| <code>module</code>
+## exports.margin(_x) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the margin object of the chart (top, bottom, left and right)
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -355,9 +358,9 @@ Gets or Sets the margin object of the chart (top, bottom, left and right)
 | --- | --- | --- |
 | _x | <code>object</code> | Margin object to get/set |
 
-<a name="module_Line--exports.numberFormat"></a>
+<a name="module_Line--exports.numberFormat" id="module_Line--exports.numberFormat"></a>
 
-### exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the line chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -368,9 +371,9 @@ Gets or Sets the number format of the line chart
 | --- | --- | --- |
 | _x | <code>string</code> | = ',f'       Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
-<a name="module_Line--exports.shouldShowAllDataPoints"></a>
+<a name="module_Line--exports.shouldShowAllDataPoints" id="module_Line--exports.shouldShowAllDataPoints"></a>
 
-### exports.shouldShowAllDataPoints(_x) ⇒ <code>shouldShowAllDataPoints</code> \| <code>module</code>
+## exports.shouldShowAllDataPoints(_x) ⇒ <code>shouldShowAllDataPoints</code> \| <code>module</code>
 Gets or Sets the topicLabel of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -381,9 +384,9 @@ Gets or Sets the topicLabel of the chart
 | --- | --- | --- | --- |
 | _x | <code>boolean</code> | <code>false</code> | Whether all data points should be drawn |
 
-<a name="module_Line--exports.tooltipThreshold"></a>
+<a name="module_Line--exports.tooltipThreshold" id="module_Line--exports.tooltipThreshold"></a>
 
-### exports.tooltipThreshold(_x) ⇒ <code>Number</code> \| <code>module</code>
+## exports.tooltipThreshold(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
@@ -395,9 +398,9 @@ NOTE: This could also depend on the aspect ratio
 | --- | --- | --- |
 | _x | <code>number</code> | Desired tooltip threshold for the graph |
 
-<a name="module_Line--exports.topicLabel"></a>
+<a name="module_Line--exports.topicLabel" id="module_Line--exports.topicLabel"></a>
 
-### ~~exports.topicLabel(_x) ⇒ <code>topicLabel</code> \| <code>module</code>~~
+## ~~exports.topicLabel(_x) ⇒ <code>topicLabel</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the topicLabel of the chart
@@ -410,9 +413,9 @@ Gets or Sets the topicLabel of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired topicLabel for the graph |
 
-<a name="module_Line--exports.valueLabel"></a>
+<a name="module_Line--exports.valueLabel" id="module_Line--exports.valueLabel"></a>
 
-### ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
+## ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
 ***Deprecated***
 
 Gets or Sets the valueLabel of the chart
@@ -425,9 +428,9 @@ Gets or Sets the valueLabel of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired valueLabel for the graph |
 
-<a name="module_Line--exports.yAxisLabelPadding"></a>
+<a name="module_Line--exports.yAxisLabelPadding" id="module_Line--exports.yAxisLabelPadding"></a>
 
-### exports.yAxisLabelPadding(_x&#x3D;) ⇒ <code>yAxisLabelPadding</code> \| <code>module</code>
+## exports.yAxisLabelPadding(_x&#x3D;) ⇒ <code>yAxisLabelPadding</code> \| <code>module</code>
 Gets or Sets the yAxisLabelPadding of the chart.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -438,9 +441,9 @@ Gets or Sets the yAxisLabelPadding of the chart.
 | --- | --- | --- |
 | _x= | <code>number</code> | 36                 Desired yAxisLabelPadding for the graph |
 
-<a name="module_Line--exports.yTicks"></a>
+<a name="module_Line--exports.yTicks" id="module_Line--exports.yTicks"></a>
 
-### exports.yTicks(_x) ⇒ <code>number</code> \| <code>module</code>
+## exports.yTicks(_x) ⇒ <code>number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the y axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -451,9 +454,9 @@ Gets or Sets the number of ticks of the y axis on the chart
 | --- | --- | --- |
 | _x | <code>number</code> | = 5     Desired yTicks |
 
-<a name="module_Line--exports.width"></a>
+<a name="module_Line--exports.width" id="module_Line--exports.width"></a>
 
-### exports.width(_x) ⇒ <code>number</code> \| <code>Module</code>
+## exports.width(_x) ⇒ <code>number</code> \| <code>Module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -464,9 +467,9 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>number</code> | Desired width for the graph |
 
-<a name="module_Line--exports.exportChart"></a>
+<a name="module_Line--exports.exportChart" id="module_Line--exports.exportChart"></a>
 
-### exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exports.exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
@@ -478,9 +481,9 @@ Chart exported to png and a download action is fired
 | filename | <code>string</code> | File title for the resulting picture |
 | title | <code>string</code> | Title to add at the top of the exported picture |
 
-<a name="module_Line--exports.on"></a>
+<a name="module_Line--exports.on" id="module_Line--exports.on"></a>
 
-### exports.on() ⇒ <code>module</code>
+## exports.on() ⇒ <code>module</code>
 Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseHover, customMouseMove, customMouseOut,
@@ -489,9 +492,9 @@ customDataEntryClick, and customTouchMove
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
 **Returns**: <code>module</code> - Bar Chart  
 **Access**: public  
-<a name="module_Line--exports.xAxisValueType"></a>
+<a name="module_Line--exports.xAxisValueType" id="module_Line--exports.xAxisValueType"></a>
 
-### exports.xAxisValueType([_x]) ⇒ <code>string</code> \| <code>module</code>
+## exports.xAxisValueType([_x]) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the `xAxisValueType`.
 Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
 be dates anymore, but can be arbitrary numbers.
@@ -508,9 +511,9 @@ be dates anymore, but can be arbitrary numbers.
 ```js
 line.xAxisValueType('numeric')
 ```
-<a name="module_Line--exports.xAxisScale"></a>
+<a name="module_Line--exports.xAxisScale" id="module_Line--exports.xAxisScale"></a>
 
-### exports.xAxisScale([_x]) ⇒ <code>string</code> \| <code>module</code>
+## exports.xAxisScale([_x]) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the `xAxisScale`.
 Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
 'number' as well, otherwise it won't influence the visualization.
@@ -527,9 +530,9 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 ```js
 line.xAxisValueType('numeric').xAxisScale('logarithmic')
 ```
-<a name="module_Line--exports..D3Selection"></a>
+<a name="module_Line--exports..D3Selection" id="module_Line--exports..D3Selection"></a>
 
-### exports~D3Selection : <code>Array.&lt;Array&gt;</code>
+## exports~D3Selection : <code>Array.&lt;Array&gt;</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
 **Properties**
 
@@ -538,9 +541,9 @@ line.xAxisValueType('numeric').xAxisScale('logarithmic')
 | length | <code>number</code> | Size of the selection |
 | parentNode | <code>DOMElement</code> | Parent of the selection |
 
-<a name="module_Line--exports..LineChartFlatData"></a>
+<a name="module_Line--exports..LineChartFlatData" id="module_Line--exports..LineChartFlatData"></a>
 
-### exports~LineChartFlatData : <code>object</code>
+## exports~LineChartFlatData : <code>object</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
 **Properties**
 
@@ -561,9 +564,9 @@ line.xAxisValueType('numeric').xAxisScale('logarithmic')
     }
 ]
 ```
-<a name="module_Line--exports..LineChartDataSorted"></a>
+<a name="module_Line--exports..LineChartDataSorted" id="module_Line--exports..LineChartDataSorted"></a>
 
-### exports~LineChartDataSorted : <code>Array.&lt;object&gt;</code>
+## exports~LineChartDataSorted : <code>Array.&lt;object&gt;</code>
 The Data Sorted is calculated internally in the chart in order to pass it to our tooltips
 
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
@@ -600,9 +603,9 @@ The Data Sorted is calculated internally in the chart in order to pass it to our
     {...}
 ]
 ```
-<a name="module_Line--exports..LineChartData"></a>
+<a name="module_Line--exports..LineChartData" id="module_Line--exports..LineChartData"></a>
 
-### exports~LineChartData : <code>object</code>
+## exports~LineChartData : <code>object</code>
 The data shape for the line chart.
 Up to version 2.10.1 this required a "dataByTopic" array. That shape was
 removed in 3.0.0 -- pass the flat dataset described here instead.

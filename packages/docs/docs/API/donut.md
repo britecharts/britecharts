@@ -1,6 +1,9 @@
-<a name="module_Donut"></a>
+---
+title: Donut
+---
 
-# Donut
+<a name="module_Donut" id="module_Donut"></a>
+
 Reusable Donut Chart API class that renders a
 simple and configurable donut chart.
 
@@ -47,7 +50,7 @@ d3Selection.select('.css-selector')
         * _inner_
             * [~DonutChartData](#module_Donut--exports..DonutChartData) : <code>Array.&lt;Object&gt;</code>
 
-<a name="exp_module_Donut--exports"></a>
+<a name="exp_module_Donut--exports" id="exp_module_Donut--exports"></a>
 
 ## exports(_selection, _data) ⏏
 This function creates the graph using the selection as container
@@ -59,9 +62,9 @@ This function creates the graph using the selection as container
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
 | _data | <code>DonutChartData</code> | The data to attach and generate the chart |
 
-<a name="module_Donut--exports.animationDuration"></a>
+<a name="module_Donut--exports.animationDuration" id="module_Donut--exports.animationDuration"></a>
 
-### exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -72,9 +75,9 @@ Gets or Sets the duration of the animation
 | --- | --- | --- | --- |
 | _x | <code>Number</code> | <code>1200</code> | Desired animation duration for the graph |
 
-<a name="module_Donut--exports.centeredTextFunction"></a>
+<a name="module_Donut--exports.centeredTextFunction" id="module_Donut--exports.centeredTextFunction"></a>
 
-### exports.centeredTextFunction(_x) ⇒ <code>function</code> \| <code>module</code>
+## exports.centeredTextFunction(_x) ⇒ <code>function</code> \| <code>module</code>
 Gets or Sets the centeredTextFunction of the chart. If function is provided
 the format will be changed by the custom function's value format.
 The default format function value is "${d.percentage}% ${d.name}".
@@ -93,9 +96,9 @@ Also provides the component added by the user in each data entry.
 ```js
 donutChart.centeredTextFunction(d => `${d.id} ${d.quantity}`)
 ```
-<a name="module_Donut--exports.colorMap"></a>
+<a name="module_Donut--exports.colorMap" id="module_Donut--exports.colorMap"></a>
 
-### exports.colorMap([_x]) ⇒ <code>number</code> \| <code>module</code>
+## exports.colorMap([_x]) ⇒ <code>number</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -110,9 +113,9 @@ Gets or Sets the colorMap of the chart
 ```js
 stackedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
 ```
-<a name="module_Donut--exports.colorSchema"></a>
+<a name="module_Donut--exports.colorSchema" id="module_Donut--exports.colorSchema"></a>
 
-### exports.colorSchema(_x) ⇒ <code>String</code> \| <code>module</code>
+## exports.colorSchema(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -123,9 +126,9 @@ Gets or Sets the colorSchema of the chart
 | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | Desired colorSchema for the graph |
 
-<a name="module_Donut--exports.emptyDataConfig"></a>
+<a name="module_Donut--exports.emptyDataConfig" id="module_Donut--exports.emptyDataConfig"></a>
 
-### exports.emptyDataConfig(_x) ⇒ <code>Object</code> \| <code>module</code>
+## exports.emptyDataConfig(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
 adds up to zero or there are no entries), the chart will render an empty slice
 with a given color (light gray by default)
@@ -142,9 +145,9 @@ with a given color (light gray by default)
 ```js
 donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
 ```
-<a name="module_Donut--exports.exportChart"></a>
+<a name="module_Donut--exports.exportChart" id="module_Donut--exports.exportChart"></a>
 
-### exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exports.exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -156,9 +159,9 @@ Chart exported to png and a download action is fired
 | filename | <code>String</code> | File title for the resulting picture |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
-<a name="module_Donut--exports.externalRadius"></a>
+<a name="module_Donut--exports.externalRadius" id="module_Donut--exports.externalRadius"></a>
 
-### exports.externalRadius(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.externalRadius(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the externalRadius of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -169,9 +172,9 @@ Gets or Sets the externalRadius of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | ExternalRadius number to get/set |
 
-<a name="module_Donut--exports.hasCenterLegend"></a>
+<a name="module_Donut--exports.hasCenterLegend" id="module_Donut--exports.hasCenterLegend"></a>
 
-### exports.hasCenterLegend(_x) ⇒ <code>boolean</code> \| <code>Module</code>
+## exports.hasCenterLegend(_x) ⇒ <code>boolean</code> \| <code>Module</code>
 Gets or Sets the hasCenterLegend property of the chart, making it display
 legend at the center of the donut.
 
@@ -183,9 +186,9 @@ legend at the center of the donut.
 | --- | --- | --- |
 | _x | <code>boolean</code> | If we want to show legent at the center of the donut |
 
-<a name="module_Donut--exports.hasHoverAnimation"></a>
+<a name="module_Donut--exports.hasHoverAnimation" id="module_Donut--exports.hasHoverAnimation"></a>
 
-### exports.hasHoverAnimation(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.hasHoverAnimation(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasHoverAnimation property of the chart. By default,
 donut chart highlights the hovered slice. This property explicitly
 disables this hover behavior.
@@ -198,9 +201,9 @@ disables this hover behavior.
 | --- | --- | --- |
 | _x | <code>boolean</code> | Decide whether hover slice animation should be enabled |
 
-<a name="module_Donut--exports.hasFixedHighlightedSlice"></a>
+<a name="module_Donut--exports.hasFixedHighlightedSlice" id="module_Donut--exports.hasFixedHighlightedSlice"></a>
 
-### exports.hasFixedHighlightedSlice(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.hasFixedHighlightedSlice(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
 highlight the selected slice id set with `highlightSliceById` all the time.
 
@@ -212,9 +215,9 @@ highlight the selected slice id set with `highlightSliceById` all the time.
 | --- | --- | --- |
 | _x | <code>boolean</code> | If we want to make the highlighted slice permanently highlighted |
 
-<a name="module_Donut--exports.hasLastHoverSliceHighlighted"></a>
+<a name="module_Donut--exports.hasLastHoverSliceHighlighted" id="module_Donut--exports.hasLastHoverSliceHighlighted"></a>
 
-### exports.hasLastHoverSliceHighlighted(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.hasLastHoverSliceHighlighted(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or sets the hasLastHoverSliceHighlighted property.
 If property is true, the last hovered slice will be highlighted
 after 'mouseout` event is triggered. The last hovered slice will remain
@@ -230,9 +233,9 @@ are true, the latter property will override the former.
 | --- | --- | --- |
 | _x | <code>boolean</code> | Decide whether the last hovered slice should be highlighted |
 
-<a name="module_Donut--exports.height"></a>
+<a name="module_Donut--exports.height" id="module_Donut--exports.height"></a>
 
-### exports.height(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.height(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -243,9 +246,9 @@ Gets or Sets the height of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the graph |
 
-<a name="module_Donut--exports.highlightSliceById"></a>
+<a name="module_Donut--exports.highlightSliceById" id="module_Donut--exports.highlightSliceById"></a>
 
-### exports.highlightSliceById(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.highlightSliceById(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the id of the slice to highlight
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -256,9 +259,9 @@ Gets or Sets the id of the slice to highlight
 | --- | --- | --- |
 | _x | <code>Number</code> | Slice id |
 
-<a name="module_Donut--exports.internalRadius"></a>
+<a name="module_Donut--exports.internalRadius" id="module_Donut--exports.internalRadius"></a>
 
-### exports.internalRadius(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.internalRadius(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the internalRadius of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -269,9 +272,9 @@ Gets or Sets the internalRadius of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | InternalRadius number to get/set |
 
-<a name="module_Donut--exports.isAnimated"></a>
+<a name="module_Donut--exports.isAnimated" id="module_Donut--exports.isAnimated"></a>
 
-### exports.isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## exports.isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
 By default this is 'false'
 
@@ -283,9 +286,9 @@ By default this is 'false'
 | --- | --- | --- |
 | _x | <code>Boolean</code> | Desired animation flag |
 
-<a name="module_Donut--exports.isLoading"></a>
+<a name="module_Donut--exports.isLoading" id="module_Donut--exports.isLoading"></a>
 
-### exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
+## exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -296,9 +299,9 @@ Gets or Sets the loading state of the chart
 | --- | --- | --- |
 | flag | <code>boolean</code> | Desired value for the loading state |
 
-<a name="module_Donut--exports.margin"></a>
+<a name="module_Donut--exports.margin" id="module_Donut--exports.margin"></a>
 
-### exports.margin(_x) ⇒ <code>Object</code> \| <code>Module</code>
+## exports.margin(_x) ⇒ <code>Object</code> \| <code>Module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -309,9 +312,9 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>Object</code> | Margin object to get/set |
 
-<a name="module_Donut--exports.numberFormat"></a>
+<a name="module_Donut--exports.numberFormat" id="module_Donut--exports.numberFormat"></a>
 
-### exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the donut chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -322,9 +325,9 @@ Gets or Sets the number format of the donut chart
 | --- | --- | --- |
 | _x | <code>string</code> | Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
-<a name="module_Donut--exports.on"></a>
+<a name="module_Donut--exports.on" id="module_Donut--exports.on"></a>
 
-### exports.on() ⇒ <code>module</code>
+## exports.on() ⇒ <code>module</code>
 Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut and customClick
@@ -332,9 +335,9 @@ customMouseOver, customMouseMove, customMouseOut and customClick
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
 **Returns**: <code>module</code> - Bar Chart  
 **Access**: public  
-<a name="module_Donut--exports.orderingFunction"></a>
+<a name="module_Donut--exports.orderingFunction" id="module_Donut--exports.orderingFunction"></a>
 
-### exports.orderingFunction(_x) ⇒ <code>function</code> \| <code>Module</code>
+## exports.orderingFunction(_x) ⇒ <code>function</code> \| <code>Module</code>
 Changes the order of items given custom function
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -345,9 +348,9 @@ Changes the order of items given custom function
 | --- | --- | --- |
 | _x | <code>function</code> | A custom function that sets logic for ordering |
 
-<a name="module_Donut--exports.percentageFormat"></a>
+<a name="module_Donut--exports.percentageFormat" id="module_Donut--exports.percentageFormat"></a>
 
-### exports.percentageFormat(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.percentageFormat(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the percentage format for the percentage label
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -358,9 +361,9 @@ Gets or Sets the percentage format for the percentage label
 | --- | --- | --- |
 | _x | <code>String</code> | Format for the percentage label (e.g. '.1f') |
 
-<a name="module_Donut--exports.radiusHoverOffset"></a>
+<a name="module_Donut--exports.radiusHoverOffset" id="module_Donut--exports.radiusHoverOffset"></a>
 
-### exports.radiusHoverOffset(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.radiusHoverOffset(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the radiusHoverOffset of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -371,9 +374,9 @@ Gets or Sets the radiusHoverOffset of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired offset for the hovered slice |
 
-<a name="module_Donut--exports.width"></a>
+<a name="module_Donut--exports.width" id="module_Donut--exports.width"></a>
 
-### exports.width(_x) ⇒ <code>Number</code> \| <code>Module</code>
+## exports.width(_x) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
@@ -384,9 +387,9 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the graph |
 
-<a name="module_Donut--exports..DonutChartData"></a>
+<a name="module_Donut--exports..DonutChartData" id="module_Donut--exports..DonutChartData"></a>
 
-### exports~DonutChartData : <code>Array.&lt;Object&gt;</code>
+## exports~DonutChartData : <code>Array.&lt;Object&gt;</code>
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Donut--exports)  
 **Properties**
 

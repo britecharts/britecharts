@@ -27,8 +27,23 @@ function log(msg) {
     console.log('\u001B[32m', msg, '\u001B[0m');
 }
 
+// The all-contributors bot writes each contribution badge as a link to
+// `#<type>-<user>`, a fragment nothing on the page defines (it is only
+// meaningful on the bot's own emoji key page), and it regenerates the table
+// whenever a contributor is added. So the README keeps the bot's format and
+// the docs copy points those links at the emoji key instead, where
+// Docusaurus's broken-anchor check can follow them.
+function pointContributionBadgesAtTheEmojiKey(content) {
+    return content.replace(
+        /href="#[a-z]+-[A-Za-z0-9_-]+"/g,
+        'href="https://allcontributors.org/docs/en/emoji-key"'
+    );
+}
+
 async function copyMainReadme() {
-    const readmeFile = await readFile(mainReadmePath);
+    const readmeFile = pointContributionBadgesAtTheEmojiKey(
+        String(await readFile(mainReadmePath))
+    );
     const updatedContent = updateFrontMatterWithPosition(readmeFile, 1);
 
     await writeFile(newMainReadmePath, updatedContent);

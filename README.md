@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![test workflow](https://github.com/britecharts/britecharts/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/britecharts/britecharts/actions/workflows/unit-tests.yml) [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/britecharts/britecharts)](https://github.com/britecharts/britecharts/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc) [![](https://data.jsdelivr.com/v1/package/npm/britecharts/badge)](https://www.jsdelivr.com/package/npm/britecharts)
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md) [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#toc8__anchor) [![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md) [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-) [![Twitter Follow](https://img.shields.io/twitter/follow/britecharts.svg?style=social&label=Follow)](https://twitter.com/Britecharts/followers)
 
 | [![Bar Chart][barchartimg]][barchart-story] | [![Line Chart][linechartimg]][linechart-story] | [![Donut Chart][donutchartimg]][donutchart-story] |
 | --- | --- | --- |

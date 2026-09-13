@@ -46,11 +46,26 @@ async function generateDocs() {
     for (const filePath of filePaths) {
         // Generate markdown from JSDoc comments.
         // jsdoc-to-markdown dropped renderSync in v8, so this is awaited.
-        const markdown = await jsdoc2md.render({
+        // eslint-disable-next-line testing-library/render-result-naming-convention -- jsdoc2md.render, not Testing Library's
+        const apiMarkdown = await jsdoc2md.render({
             files: filePath,
             configure: path.join(__dirname, '../jsdoc.conf.json'),
             'heading-depth': 1,
+            // A file with no @module (the helpers) would otherwise open with
+            // an index of its constants and functions -- a page that reads as
+            // the same content twice, titled "Constants" or "Modules".
+            'global-index-format': 'none',
         });
+        // jsdoc2md anchors its table of contents with <a name="…">, which
+        // browsers honour but Docusaurus's broken-anchor check does not:
+        // it only knows ids. Give every anchor an id as well.
+        // jsdoc2md puts the chart's own call (`exports(_selection)`) at
+        // heading level 2 and every accessor at level 3, so the first entry
+        // on a page sits one level above the rest. One level for all of
+        // them: the page's title is the only level-1 heading.
+        const markdown = apiMarkdown
+            .replace(/<a name="([^"]+)"><\/a>/g, '<a name="$1" id="$1"></a>')
+            .replace(/^### /gm, '## ');
 
         // if there's markdown, do stuff
         if (markdown && markdown.length > 0) {
@@ -59,6 +74,14 @@ async function generateDocs() {
             const [, packageId, chartId] = matchingExpression;
             const chartName =
                 chartId.charAt(0).toUpperCase() + chartId.slice(1);
+            // The page's title, which is also its sidebar label: "Grouped
+            // Bar" rather than the module's "Grouped-bar", and the helpers
+            // (grid, domain) named as such
+            const title =
+                chartId
+                    .split('-')
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ') + (chartId === 'helpers' ? '' : '');
 
             if (chartName !== processingPackageName) {
                 processingPackageName = chartName;
@@ -94,8 +117,30 @@ async function generateDocs() {
                 fs.mkdirSync(writeDir, { recursive: true });
             }
 
+            const isHelper = /\/helpers\//.test(filePath);
+            const pageTitle = isHelper
+                ? `${fileName.charAt(0).toUpperCase()}${fileName.slice(
+                      1
+                  )} helpers`
+                : title;
+            // The module heading would repeat the title; the rest -- the
+            // chart's call, its accessors, typedefs, a helper's functions --
+            // all sit one level under it
+            const page = markdown
+                .replace(new RegExp(`^# ${chartName}\\n`, 'm'), '')
+                // jsdoc2md's own indexes of a page's modules, typedefs,
+                // constants or functions: lists of links to what follows
+                .replace(
+                    /^# (Modules|Typedefs|Constants|Functions|Members|Classes)\n[\s\S]*?(?=^# |^<a name=|(?![\s\S]))/gm,
+                    ''
+                )
+                .replace(/^# /gm, '## ');
+
             // write the markdown file
-            fs.writeFileSync(`${writeDir}/${fileName}.md`, markdown);
+            fs.writeFileSync(
+                `${writeDir}/${fileName}.md`,
+                `---\ntitle: ${pageTitle}\n---\n\n${page}`
+            );
         }
 
         // Add category metadata
