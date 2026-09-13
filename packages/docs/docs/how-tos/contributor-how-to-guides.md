@@ -10,10 +10,10 @@ Our contributor how to guides are recipes to address specific use cases when wor
 
 When you have a branch that you want to contribute back to Britecharts, you need to create a Pull Request(PR) to propose the addition of the code. Follow these steps:
 
-1. When you're finished coding, `git checkout master`
-2. Run `git pull upstream master` (note that your local master should always reflect upstream master)
+1. When you're finished coding, `git checkout main`
+2. Run `git pull upstream main` (note that your local main should always reflect upstream main)
 3. Run `git checkout <your branch>`
-4. Execute `git rebase master` & reconcile all conflicts
+4. Execute `git rebase main` & reconcile all conflicts
 5. Make sure everything looks OK codewise by running `yarn run check`
 6. Push the branch to your fork with `git push origin <your branch>`
 7. Create a new PR, filling the [PR template][prtemplate], and adding a link to the original issue filed (if you see "unable to merge", please pull from your upstream and rebase again)
@@ -51,7 +51,7 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 1. Create a new data builder file. Name it something like `chartNameChartDataBuilder.js`.
 1. In the chart folder, create a new chart file called `chart-name.js`.
 1. Create a `<chartName>.stories.js` file to hold a new demo for the new chart. Re-run the demos script to get it showing in the storybook.
-1. Go to `webpack.config.js` and add the new chart to the `CHARTS` object, give it a camel case name.
+1. Go to `packages/core/webpack.constants.js` and add the new chart to the `CHARTS` object, give it a camel case name.
 1. Go to your test file `/packages/core/src/charts/chart-name.spec.js` and, taking another test as an example, copy over pieces until you have the first test case.
 1. Add one test and make it fail by calling `yarn run test` or keep the tests running with `yarn run test:watch`.
 1. Keep on coding according to our [API Guidelines][styleguide]
