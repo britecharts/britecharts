@@ -1,8 +1,8 @@
-@import "../helpers/variables";
+@use "../helpers/variables" as vars;
 
 .britechart {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: $text-size-base;
+    font-size: vars.$text-size-base;
     -webkit-font-smoothing: antialiased;
 }
 

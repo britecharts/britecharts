@@ -70,18 +70,11 @@ module.exports = {
                 {
                     loader: 'sass-loader',
                     options: {
-                        // These styles still use @import, global built-ins and
-                        // desaturate(); sass-loader also uses the legacy JS API.
-                        // Migrating is tracked separately -- until then, silence
-                        // the warnings rather than print several hundred lines
-                        // on every build.
                         sassOptions: {
-                            silenceDeprecations: [
-                                'import',
-                                'global-builtin',
-                                'color-functions',
-                                'legacy-js-api',
-                            ],
+                            // sass-loader 10 uses the legacy JS API, which
+                            // Dart Sass 2 removes. Moving off it needs
+                            // webpack 5, so it goes with Vite.
+                            silenceDeprecations: ['legacy-js-api'],
                         },
                     },
                 },

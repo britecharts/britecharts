@@ -1,16 +1,18 @@
+@use "../helpers/variables" as vars;
+
 .grid-line,
 .vertical-grid-line,
 .horizontal-grid-line {
     fill: none;
     shape-rendering: crispedges;
-    stroke: $grey-200;
+    stroke: vars.$grey-200;
     stroke-dasharray: 4, 4;
     stroke-width: 1;
 }
 
 .horizontal-grid-line--highlighted,
 .vertical-grid-line--highlighted {
-    stroke: $grey-700;
+    stroke: vars.$grey-700;
     stroke-dasharray: 2, 2;
 }
 
@@ -18,6 +20,6 @@
 .extended-x-line {
     fill: none;
     shape-rendering: crispedges;
-    stroke: $grey-500;
+    stroke: vars.$grey-500;
     stroke-width: 1;
 }
