@@ -286,7 +286,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                     expect(actual).toEqual(expected);
                 });
 
-                // Flaky in Travis, no time to debug
+                // Flaky in CI, no time to debug
                 xdescribe('when chart width is not enough for one line', () => {
 
                     beforeEach(() => {

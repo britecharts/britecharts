@@ -25,7 +25,6 @@ coverage
 Gruntfile.js
 .sass-cache
 .sass-lint.yml
-.travis.yml
 .babelrc
 .codeclimate.yml
 .dockerignore
