@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './index.module.css';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageGetStarted from '@site/src/components/HomepageGetStarted';
@@ -16,7 +17,15 @@ function HomepageHeader() {
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
             <div className="container">
-                <h1 className="hero__title">{siteConfig.title}</h1>
+                <h1 className={styles.heroTitle}>
+                    <img
+                        className={styles.heroLogo}
+                        src={useBaseUrl('/img/brand/britecharts-logo.svg')}
+                        alt={siteConfig.title}
+                        width="1000"
+                        height="200"
+                    />
+                </h1>
                 <p className="hero__subtitle">{siteConfig.tagline}</p>
                 <div className={styles.buttons}>
                     <Link

@@ -28,7 +28,7 @@ module.exports = {
     // literally the same files the documentation uses.
     staticDirs: [{ from: '../../docs/static/img', to: '/img' }],
     managerHead: (head) =>
-        `${head}<link rel="icon" href="/img/icons/favicon.ico" />`,
+        `${head}<link rel="icon" href="img/icons/favicon.ico" />`,
     core: {
         disableTelemetry: true,
     },

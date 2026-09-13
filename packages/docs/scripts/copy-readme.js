@@ -36,7 +36,7 @@ function log(msg) {
 function pointContributionBadgesAtTheEmojiKey(content) {
     return content.replace(
         /href="#[a-z]+-[A-Za-z0-9_-]+"/g,
-        'href="https://allcontributors.org/docs/en/emoji-key"'
+        'href="https://allcontributors.org/en/reference/emoji-key/"'
     );
 }
 

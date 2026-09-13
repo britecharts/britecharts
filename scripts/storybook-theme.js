@@ -26,7 +26,10 @@ module.exports = create({
 
     brandTitle: 'Britecharts',
     brandUrl: 'https://britecharts.github.io/britecharts/',
-    brandImage: '/img/brand/britecharts-logo.svg',
+    // Relative on purpose: in production the Storybooks live under
+    // /britecharts/storybook/, so a root-relative /img/... would resolve to
+    // the site root and 404. staticDirs puts img/ next to each manager.
+    brandImage: 'img/brand/britecharts-logo.svg',
     brandTarget: '_blank',
 
     colorPrimary: brandOrange,
