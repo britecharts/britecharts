@@ -144,23 +144,19 @@ export default class Tooltip extends React.Component {
             .isRequired,
 
         /**
-         * Internally used, do not overwrite.
-         *
-         * @ignore
+         * Called after the tooltip updates, with what the chart dispatches on
+         * customMouseMove: the data point, its anchor [x, y], the chart's size and,
+         * from the multi-value charts, the topic colours
          */
         customMouseMove: PropTypes.func,
 
         /**
-         * Internally used, do not overwrite.
-         *
-         * @ignore
+         * Called after the tooltip hides, when the pointer leaves the chart
          */
         customMouseOut: PropTypes.func,
 
         /**
-         * Internally used, do not overwrite.
-         *
-         * @ignore
+         * Called after the tooltip shows, when the pointer enters the chart
          */
         customMouseOver: PropTypes.func,
     };

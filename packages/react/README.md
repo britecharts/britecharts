@@ -46,13 +46,12 @@ The complete set of components is in progress; the following components are curr
 - Sparkline charts [(API)][sparklineChartAPI]
 - Stacked Area charts [(API)][stackedAreaChartAPI]
 - Stacked Bar charts [(API)][stackedBarChartAPI]
-- Tooltips [(API)][tooltipAPI]
+- Tooltips [(API)][tooltipAPI], wrapping the line, stacked area, stacked bar and grouped bar charts with a list of values, and the bar, scatter plot and heatmap charts with a single value (the mini tooltip)
 - Legends [(API)][legendAPI]
 
 The following components haven't been adapted yet from Britecharts:
 - Brush charts
 - Heatmaps
-- Mini Tooltips
 - Scatter Plots
 
 These components were previously hosted in the [britecharts-react][britecharts-react] repository, but became a package with Britecharts V3.
@@ -110,7 +109,7 @@ Our idea for the short term is to update this package to use TypeScript natively
 [sparklineChartAPI]: **
 [stackedAreaChartAPI]: **
 [stackedBarChartAPI]: **
-[tooltipAPI]: **
+[tooltipAPI]: https://britecharts.github.io/britecharts/docs/API/tooltip
 [legendAPI]: **
 [bulletAPI]: **
 [jsDelivrLib]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/

@@ -26,21 +26,20 @@ export const WithMouseEventsOnConsole = () => {
     const data = stackedAreaData.with2Sources();
     const logMouseOver = () => console.log('Mouse Over');
     const logMouseOut = () => console.log('Mouse Out');
-    const logMouseMoveTooltip = (
-        dataPoint,
-        topicColorMap,
-        dataPointXPosition
-    ) => {
+    // What every chart dispatches on customMouseMove: the data point, its
+    // anchor [x, y], the chart's size and the topic colours
+    const logMouseMove = (dataPoint, position, size, topicColorMap) => {
         console.log('Mouse Move: dataPoint', dataPoint);
+        console.log('Mouse Move: position', position);
+        console.log('Mouse Move: size', size);
         console.log('Mouse Move: topicColorMap', topicColorMap);
-        console.log('Mouse Move: dataPointXPosition', dataPointXPosition);
     };
 
     return (
         <StackedArea
             data={data}
             customMouseOver={logMouseOver}
-            customMouseMove={logMouseMoveTooltip}
+            customMouseMove={logMouseMove}
             customMouseOut={logMouseOut}
         />
     );
