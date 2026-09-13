@@ -102,6 +102,14 @@ export default class Tooltip extends React.Component {
         valueLabel: PropTypes.string,
 
         /**
+         * Gets or Sets the layout: 'list' (title and one row per topic), 'single'
+         * (title, name and a big value) or 'auto' (the default: by the data point's shape,
+         * so a list for the line, stacked area, stacked bar and grouped bar charts and a
+         * single value for the bar, scatter plot, heatmap and donut charts)
+         */
+        layout: PropTypes.oneOf(['auto', 'list', 'single']),
+
+        /**
          * Gets or Sets the most rows the tooltip shows; past that, the last row reads "+n more".
          * 0 shows every row. Default 12.
          */
@@ -200,19 +208,26 @@ export default class Tooltip extends React.Component {
         chart.destroy(this.rootNode);
     }
 
-    handleMouseMove(dataPoint, topicColorMap, x, y) {
+    /**
+     * What every chart dispatches on customMouseMove: the data point, its
+     * anchor [x, y], the chart's size and, from the multi-value charts, the
+     * topic colours
+     */
+    handleMouseMove(dataPoint, position, size, topicColorMap) {
+        const [x, y] = Array.isArray(position) ? position : [];
+
         // Update Tooltip State
         this.setState((state) => ({
             ...state,
             dataPoint,
-            topicColorMap,
+            topicColorMap: topicColorMap || null,
             x,
             y,
         }));
         const { customMouseMove } = this.props;
 
         if (customMouseMove) {
-            customMouseMove(dataPoint, topicColorMap, x, y);
+            customMouseMove(dataPoint, position, size, topicColorMap);
         }
     }
 

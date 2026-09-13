@@ -16,10 +16,26 @@ export type TooltipTopic = {
 };
 
 // This is equivalent to the LineChartDataSorted data type in Britecharts
-export type TooltipDataShape = {
+export type TooltipListDataShape = {
     [tooltipKeys.Date]: string;
     [tooltipKeys.Topics]: TooltipTopic[];
 };
+
+/** What the single-value charts (bar, scatter plot, heatmap, donut) dispatch */
+export type TooltipSingleDataShape = {
+    name: string;
+    value: number;
+};
+
+export type TooltipDataShape = TooltipListDataShape | TooltipSingleDataShape;
+
+/** [x, y] in pixels, relative to the chart's drawing area */
+export type TooltipPosition = [number, number];
+
+/** [width, height] of the chart in pixels; accepted and ignored */
+export type TooltipChartSize = [number, number];
+
+export type TooltipLayout = 'auto' | 'list' | 'single';
 
 export type TooltipSelection = Selection<
     BaseType,
@@ -40,8 +56,18 @@ type TooltipFormattingFunction = (value: number) => number;
 export interface TooltipAPI {
     /** Hides the tooltip */
     hide(): void;
-    /** Shows the tooltip */
-    show(): void;
+    /**
+     * Shows the tooltip. Given the hovered data point and its position, as the
+     * single-value charts dispatch them on `customMouseOver`, it renders and
+     * places the tooltip at once; otherwise it shows empty until the first update.
+     */
+    show(dataPoint?: TooltipDataShape, position?: TooltipPosition): void;
+    /**
+     * Gets or Sets the layout: 'list' (title and one row per topic), 'single'
+     * (title, name and a big value; what miniTooltip renders) or 'auto' (the
+     * default: by the data point's shape). Set before the tooltip is drawn.
+     */
+    layout(layout?: TooltipLayout): TooltipModule;
     /**
      * Constants to be used to force the x axis to respect a certain granularity
      * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
@@ -78,12 +104,26 @@ export interface TooltipAPI {
     topicsOrder(namesOrder?: string[]): TooltipModule;
     /** Gets or Sets the topicLabel of the data */
     topicLabel(label?: string): TooltipModule;
-    /** Updates the position and content of the tooltip */
+    /**
+     * Updates the content and position of the tooltip with what every chart
+     * dispatches on `customMouseMove`: the data point, its anchor, the chart's
+     * size (ignored) and, from the multi-value charts, the topic colours.
+     */
     update(
         dataPoint: TooltipDataShape,
+        position: TooltipPosition,
+        chartSize?: TooltipChartSize,
+        colorMap?: TopicColorMap
+    ): void;
+    /**
+     * @deprecated The order the multi-value charts used before 3.0; still
+     * accepted, warns once. The charts now dispatch the order above.
+     */
+    update(
+        dataPoint: TooltipListDataShape,
         colorMapping: TopicColorMap,
         xPosition: number,
-        yPosition: number
+        yPosition?: number
     ): void;
     /** Gets or Sets the valueLabel of the data */
     valueLabel(label?: string): TooltipModule;

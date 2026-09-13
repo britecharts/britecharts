@@ -1,73 +1,38 @@
-import { ChartModuleSelection } from '../common/selection';
-import { BaseType, Selection } from 'd3-selection';
+import {
+    TooltipAPI,
+    TooltipModule,
+    TooltipPosition,
+    TooltipChartSize,
+    TooltipSingleDataShape,
+} from './tooltip';
 
 export enum MiniTooltipKeys {
     Value = 'value',
     Name = 'name',
 }
 
-export type MiniTooltipDataShape = {
-    [MiniTooltipKeys.Value]: number;
-    [MiniTooltipKeys.Name]: string;
-};
+export type MiniTooltipDataShape = TooltipSingleDataShape;
 
-export type MiniTooltipSelection = Selection<
-    BaseType,
-    MiniTooltipDataShape,
-    HTMLElement,
-    any
->;
+export type MousePosition = TooltipPosition;
 
-export type MousePosition = [number, number];
-
-export type ChartSize = [number, number];
-
-type MiniTooltipFormattingFunction = (value: number) => number;
-
-export interface MiniTooltipAPI {
-    /** Hides the tooltip */
-    hide(): void;
-    /**
-     * Shows the tooltip. With the hovered data point and pointer position,
-     * as the charts dispatch them on `customMouseOver`, it renders and
-     * places the tooltip at once.
-     */
-    show(dataPoint?: MiniTooltipDataShape, mousePosition?: MousePosition): void;
-    /**
-     * Updates the position and content of the tooltip. The chart size is
-     * accepted for compatibility with what the charts dispatch, but ignored:
-     * the tooltip measures the chart it is drawn in.
-     */
-    update(
-        dataPoint: MiniTooltipDataShape,
-        mousePosition: MousePosition,
-        chartSize?: ChartSize
-    ): void;
-    /** Gets or Sets the number format for the value displayed on the tooltip */
-    numberFormat(format?: string): MiniTooltipModule;
-    /**
-     * Gets or Sets the formatter function for the value displayed on the tooltip.
-     * Setting this property makes the tooltip ignore numberFormat. Set by default to
-     * d3-format formatter with numberFormat.
-     */
-    valueFormatter(
-        formattingFunction?: MiniTooltipFormattingFunction
-    ): MiniTooltipModule;
-    /** Gets or Sets the title of the tooltip */
-    title(title?: string): MiniTooltipModule;
-    /** Gets or Sets data's valueLabel */
-    valueLabel(label?: string): MiniTooltipModule;
-    /** Gets or Sets data's nameLabel */
-    nameLabel(label?: string): MiniTooltipModule;
-}
-
-export type MiniTooltipModule = ChartModuleSelection<MiniTooltipDataShape[]> &
-    MiniTooltipAPI;
+export type ChartSize = TooltipChartSize;
 
 /**
- * import {bar, miniTooltip} from 'britecharts;
+ * The mini tooltip is the single-value preset of the tooltip
+ * (`tooltip().layout('single').title('').numberFormat('.2f')`), so it has
+ * the tooltip's whole API.
+ */
+export type MiniTooltipAPI = TooltipAPI;
+
+export type MiniTooltipModule = TooltipModule;
+
+/**
+ * import {bar, miniTooltip} from '@britecharts/core';
  *
- * bar()
+ * const barChart = bar(),
+ *     tooltip = miniTooltip();
+ *
+ * barChart
  *  .width(100)
  *  .height(100)
  *  .on('customMouseOver', tooltip.show)

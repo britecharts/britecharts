@@ -61,9 +61,7 @@ export const WithTooltip = () => {
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
-            .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
-                chartTooltip.update(dataPoint, topicColorMap, x, y);
-            })
+            .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', function () {
                 chartTooltip.hide();
             });
@@ -117,9 +115,7 @@ export const WithHorizontalDirection = () => {
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
-            .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
-                chartTooltip.update(dataPoint, topicColorMap, x, y);
-            })
+            .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', function () {
                 chartTooltip.hide();
             });

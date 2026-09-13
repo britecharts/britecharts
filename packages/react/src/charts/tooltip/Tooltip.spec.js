@@ -243,7 +243,14 @@ describe('tooltip', () => {
             // One render per event, as real pointer events arrive
             act(() => tooltip.handleMouseOver());
             [10, 30, 50].forEach((x) => {
-                act(() => tooltip.handleMouseMove(dataPoint, colorMap, x, 20));
+                act(() =>
+                    tooltip.handleMouseMove(
+                        dataPoint,
+                        [x, 20],
+                        [600, 300],
+                        colorMap
+                    )
+                );
             });
             wrapper.update();
 

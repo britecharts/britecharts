@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Bar from './Bar';
+import Tooltip from '../tooltip/Tooltip';
 import barData from './barChart.fixtures';
 import { colors } from '@britecharts/core';
 
@@ -13,6 +14,14 @@ export const WithDefaultProperties = () => {
     const data = barData.withLetters();
 
     return <Bar data={data} />;
+};
+
+export const WithTooltip = () => {
+    const data = barData.withLetters();
+
+    const renderBar = (props) => <Bar {...props} />;
+
+    return <Tooltip data={data} render={renderBar} title="Frequency" />;
 };
 
 export const WithHorizontalDirectionAndColorSchema = () => {
