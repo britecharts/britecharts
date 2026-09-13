@@ -7,6 +7,7 @@ exports.CHARTS = {
     groupedBar: './src/charts/groupedBar/groupedBarChart.js',
     legend: './src/charts/legend/legendChart.js',
     line: './src/charts/line/lineChart.js',
+    scatterPlot: './src/charts/scatterPlot/scatterPlotChart.js',
     sparkline: './src/charts/sparkline/sparklineChart.js',
     stackedArea: './src/charts/stackedArea/stackedAreaChart.js',
     stackedBar: './src/charts/stackedBar/stackedBarChart.js',

@@ -22,6 +22,7 @@ const CHARTS = {
     Bullet: `${PATHS.charts}/bullet/Bullet.js`,
     Donut: `${PATHS.charts}/donut/Donut.js`,
     GroupedBar: `${PATHS.charts}/groupedBar/GroupedBar.js`,
+    ScatterPlot: `${PATHS.charts}/scatterPlot/ScatterPlot.js`,
     Legend: `${PATHS.charts}/legend/Legend.js`,
     Line: `${PATHS.charts}/line/Line.js`,
     StackedArea: `${PATHS.charts}/stackedArea/StackedArea.js`,

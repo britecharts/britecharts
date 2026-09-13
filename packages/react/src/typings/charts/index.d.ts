@@ -4,6 +4,7 @@ export { default as Donut, DonutChartProps } from './Donut';
 export { default as GroupedBar, GroupedBarProps } from './GroupedBar';
 export { default as Legend, LegendProps } from './Legend';
 export { default as Line, LineProps } from './Line';
+export { default as ScatterPlot, ScatterPlotProps } from './ScatterPlot';
 export { default as Sparkline, SparklineProps } from './Sparkline';
 export { default as StackedArea, StackedAreaProps } from './StackedArea';
 export { default as StackedBar, StackedBarProps } from './StackedBar';

@@ -7,6 +7,7 @@ import {
     GroupedBar,
     Legend,
     Line,
+    ScatterPlot,
     Sparkline,
     StackedArea,
     StackedBar,
@@ -19,6 +20,7 @@ import type {
     GroupedBarProps,
     LegendProps,
     LineProps,
+    ScatterPlotProps,
     SparklineProps,
     StackedAreaProps,
     StackedBarProps,
@@ -58,6 +60,13 @@ export const lineProps: LineProps = {
     },
 };
 export const line = <Line {...lineProps} />;
+
+export const scatterPlotProps: ScatterPlotProps = {
+    data: [{ name: 'Ice Cream Sales', x: 14.2, y: 215 }],
+    hasTrendline: true,
+    grid: 'horizontal',
+};
+export const scatterPlot = <ScatterPlot {...scatterPlotProps} />;
 
 export const sparklineProps: SparklineProps = {
     data: [{ value: 1, date: '2020-01-01' }],

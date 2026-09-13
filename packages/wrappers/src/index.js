@@ -4,6 +4,7 @@ export { default as DonutWrapper } from './charts/donut/donutChart.js';
 export { default as GroupedBarWrapper } from './charts/groupedBar/groupedBarChart.js';
 export { default as LegendWrapper } from './charts/legend/legendChart.js';
 export { default as LineWrapper } from './charts/line/lineChart.js';
+export { default as ScatterPlotWrapper } from './charts/scatterPlot/scatterPlotChart.js';
 export { default as SparklineWrapper } from './charts/sparkline/sparklineChart';
 export { default as StackedAreaWrapper } from './charts/stackedArea/stackedAreaChart.js';
 export { default as StackedBarWrapper } from './charts/stackedBar/stackedBarChart.js';
