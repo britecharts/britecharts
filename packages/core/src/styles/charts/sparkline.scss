@@ -1,4 +1,4 @@
-@import "../helpers/_variables";
+@use "../helpers/variables" as vars;
 
 $line-width: 1;
 $dot-size: 0;
@@ -15,7 +15,7 @@ $dot-size: 0;
 
     .sparkline-circle {
         display: none;
-        fill: $brand-color-red;
+        fill: vars.$brand-color-red;
         stroke-width: $dot-size;
     }
 

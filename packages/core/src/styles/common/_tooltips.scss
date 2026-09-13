@@ -1,4 +1,4 @@
-@import "../helpers/variables";
+@use "../helpers/variables" as vars;
 
 $marker-stroke-width: 1;
 $marker-stroke-width-highlight: 2;
@@ -8,30 +8,30 @@ $tooltip-value-text-size: 27px;
 
 // Tooltip Container
 .britechart-tooltip {
-    font-size: $text-size-medium;
+    font-size: vars.$text-size-medium;
 }
 
 .britechart-mini-tooltip {
-    font-size: $text-size-large;
+    font-size: vars.$text-size-large;
 }
 
 // Vertical Marker Container
 .vertical-marker-container {
     .vertical-marker {
         fill: none;
-        stroke: $grey-300;
+        stroke: vars.$grey-300;
         stroke-width: $marker-stroke-width;
     }
 
     .data-point-highlighter {
-        fill: $white;
+        fill: vars.$white;
         stroke-width: $marker-stroke-width-highlight;
     }
 }
 
 // Tooltip
 .tooltip-background {
-    fill: rgba($white, $tooltip-background-opacity);
-    stroke: $grey-300;
+    fill: rgba(vars.$white, $tooltip-background-opacity);
+    stroke: vars.$grey-300;
     stroke-width: $tooltip-stroke-width;
 }

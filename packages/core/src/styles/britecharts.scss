@@ -1,23 +1,26 @@
+// Every stylesheet Britecharts ships, in one file. Each partial pulls the
+// palette it needs from helpers/variables itself, so the entry only lists
+// what emits CSS.
+
 // Base Styles
-@import "base/_typography";
+@use "base/typography";
 
 // Helpers
-@import "helpers/_variables";
-@import "helpers/loadingStates";
+@use "helpers/loadingStates";
 
 // Common Elements
-@import "common/_grid";
-@import "common/_axes";
-@import "common/_tooltips";
-@import "common/_legend";
+@use "common/grid";
+@use "common/axes";
+@use "common/tooltips";
+@use "common/legend";
 
 // Charts
-@import "charts/bar";
-@import "charts/line";
-@import "charts/scatter-plot";
-@import "charts/sparkline";
-@import "charts/stacked-area";
-@import "charts/stacked-bar";
-@import "charts/grouped-bar";
-@import "charts/brush";
-@import "charts/bullet";
+@use "charts/bar";
+@use "charts/line";
+@use "charts/scatter-plot";
+@use "charts/sparkline";
+@use "charts/stacked-area";
+@use "charts/stacked-bar";
+@use "charts/grouped-bar";
+@use "charts/brush";
+@use "charts/bullet";

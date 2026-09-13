@@ -1,7 +1,8 @@
-@import "../helpers/_variables";
+@use "sass:color";
+@use "../helpers/variables" as vars;
 
-$bar-color: desaturate($bc-green, 20%);
-$bar-color-hover: $bc-e-green-600;
+$bar-color: color.adjust(vars.$bc-green, $saturation: -20%);
+$bar-color-hover: vars.$bc-e-green-600;
 $bar-stroke-width: 0;
 
 .bar-chart {
@@ -30,6 +31,6 @@ $bar-stroke-width: 0;
     }
 
     .percentage-label {
-        fill: $grey-600;
+        fill: vars.$grey-600;
     }
 }

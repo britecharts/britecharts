@@ -1,12 +1,12 @@
-@import "../helpers/_variables";
+@use "../helpers/variables" as vars;
 
 .brush-chart {
     .brush-area {
-        fill: $grey-300;
+        fill: vars.$grey-300;
     }
 
     .missing-brush-area {
-        fill: $grey-100;
+        fill: vars.$grey-100;
     }
 
     .brush-rect.selection {
@@ -15,7 +15,7 @@
     }
 
     .brush-rect.handle {
-        fill: $bc-e-blue-300;
+        fill: vars.$bc-e-blue-300;
         width: 0.2rem;
     }
 

@@ -1,13 +1,12 @@
-// Helpers
-@import "helpers/_variables";
+// What every chart needs, for use alongside a per-chart stylesheet.
 
 // Loading states. These belong here rather than in britecharts.scss alone:
 // the per-chart stylesheets are meant to be used alongside common.css, and
 // without this the loading skeletons render but never animate.
-@import "helpers/loadingStates";
+@use "helpers/loadingStates";
 
 // Common Elements
-@import "common/_grid";
-@import "common/_axes";
-@import "common/_tooltips";
-@import "common/_legend";
+@use "common/grid";
+@use "common/axes";
+@use "common/tooltips";
+@use "common/legend";

@@ -1,4 +1,4 @@
-@import "../helpers/variables";
+@use "../helpers/variables" as vars;
 
 $text-padding: 12px;
 $tick-size: 1;
@@ -7,19 +7,19 @@ $tick-size: 1;
     line {
         fill: none;
         shape-rendering: crispedges;
-        stroke: $grey-500;
+        stroke: vars.$grey-500;
         stroke-width: $tick-size;
     }
 
     text {
-        fill: $grey-600;
-        font-size: $text-size-small;
+        fill: vars.$grey-600;
+        font-size: vars.$text-size-small;
         padding: $text-padding;
     }
 }
 
 .y-axis-label,
 .x-axis-label {
-    fill: $grey-500;
-    font-size: $text-size-medium;
+    fill: vars.$grey-500;
+    font-size: vars.$text-size-medium;
 }

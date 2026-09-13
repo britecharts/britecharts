@@ -1,7 +1,8 @@
+@use "../helpers/variables" as vars;
+
 // TODO:
 // - Review the naming
 // - Create mixins for animation
-@import "../helpers/variables";
 
 $child-font-size: 1em !important;
 $letter-spacing: 0.5px;
@@ -10,7 +11,7 @@ $enter-opacity: 0.6;
 
 .britechart-legend {
     .legend-entry {
-        font-size: $text-size-medium;
+        font-size: vars.$text-size-medium;
     }
 
     .is-faded {
