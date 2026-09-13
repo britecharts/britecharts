@@ -53,5 +53,5 @@ This piece of code returns a function that accepts a D3.js selection as input. T
 
 To learn more about this pattern you can read [this blog post][reusableapi] on Eventbrite's Engineering Blog.
 
-[reusableapi]: https://www.eventbrite.com/engineering/leveling-up-d3-the-reusable-chart-api/
+[reusableapi]: https://web.archive.org/web/20160315015524/https://www.eventbrite.com/engineering/leveling-up-d3-the-reusable-chart-api/
 [towardsreusablecharts]: http://bost.ocks.org/mike/chart/

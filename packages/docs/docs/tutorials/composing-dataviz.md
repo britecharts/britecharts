@@ -239,13 +239,13 @@ If you are excited about Britecharts, want to add more configurable properties o
 [lineChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/simple-line-chart.png
 [composingDatavizTutorialHTML]: https://github.com/britecharts/britecharts/blob/main/packages/docs/docs/tutorials/html/tutorial-composing-dataviz.html
 [composingDatavizTutorial]: ./composing-dataviz.md
-[lineChartAPIReference]: API/line
+[lineChartAPIReference]: ../API/line
 [lineChartDataSchema]: https://britecharts.github.io/britecharts/docs/API/line#module_Line--exports..LineChartData
-[tooltipAPIReference]: API/tooltip
+[tooltipAPIReference]: ../API/tooltip
 [lineChartTooltipImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/line-chart-tooltip.png
-[legendAPIReference]: API/legend
+[legendAPIReference]: ../API/legend
 [lineChartLegendImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/line-chart-legend.png
-[brushChartAPIReference]: API/brush
+[brushChartAPIReference]: ../API/brush
 [brushChartDataSchema]: https://britecharts.github.io/britecharts/docs/API/brush#module_Brush--exports..BrushChartData
 [brushAxisCombinations]: https://britecharts.github.io/britecharts/docs/API/brush#module_Brush--exports.axisTimeCombinations
 [brushChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/simple-brush-chart.png

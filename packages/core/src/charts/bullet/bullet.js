@@ -563,7 +563,7 @@ export default function module() {
 
     /**
      * Gets or Sets the number format of the bar chart
-     * @param  {string} _x = ',f'       Desired numberFormat for the chart. See examples [here]{@link https://observablehq.com/@d3/d3-format}
+     * @param  {string} _x = ',f'       Desired numberFormat for the chart. See examples [here]{@link https://d3js.org/d3-format}
      * @return {string | module}        Current numberFormat or Chart module to chain calls
      * @public
      */

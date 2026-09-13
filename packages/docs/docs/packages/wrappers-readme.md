@@ -98,6 +98,6 @@ npm i --save @britecharts/core @britecharts/wrappers
 Our idea for the short term is to update this package to use TypeScript natively. [Let us know][d3Slack] if you want to help with it.
 
 [britecharts]: https://github.com/britecharts/
-[britecharts-api]: **
+[britecharts-api]: https://britecharts.github.io/britecharts/docs/Britecharts
 [contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [d3Slack]: https://d3js.slack.com/

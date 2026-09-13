@@ -198,7 +198,7 @@ Gets or Sets the number format for the value displayed on the tooltip
 
 | Param | Type | Description |
 | --- | --- | --- |
-| _x | <code>string</code> | Desired numberFormat for the chart. See examples [here](https://observablehq.com/@d3/d3-format) |
+| _x | <code>string</code> | Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
 <a name="module_Tooltip--exports.valueFormatter"></a>
 

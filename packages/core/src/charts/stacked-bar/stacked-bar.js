@@ -1159,7 +1159,7 @@ export default function module() {
 
     /**
      * Gets or Sets the numberFormat of the chart
-     * @param  {String} _x = ',f'     Desired numberFormat for the graph. See examples [here]{@link https://observablehq.com/@d3/d3-format}
+     * @param  {String} _x = ',f'     Desired numberFormat for the graph. See examples [here]{@link https://d3js.org/d3-format}
      * @return {String | module}      Current numberFormat or Chart module to chain calls
      * @public
      */

@@ -116,13 +116,13 @@ To keep on learning more about Britecharts, you can follow our [Composing Your F
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
-[home]: http://britecharts.github.io/britecharts/
-[demos]: **/tutorial-kitchen-sink.html
+[home]: https://britecharts.github.io/britecharts/
+[demos]: https://britecharts.github.io/britecharts/storybook/
 [contribute]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [barChartAPI]: /docs/API/bar
 [barChartDataSchema]: /docs/API/bar#exportsbarchartdata--arrayobject
 [barChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/simple-bar-chart.png
 [simpleBarChartTutorialHTML]: https://github.com/britecharts/britecharts/blob/main/packages/docs/docs/tutorials/html/tutorial-simple-bar-chart.html
-[simpleBarChartTutorial]: **/tutorial-simple-bar-chart.html
+[simpleBarChartTutorial]: https://britecharts.github.io/britecharts/storybook/core/?path=/story/charts-bar--vertical-bar-chart
 [composingDataviz]: /docs/tutorials/composing-dataviz
 [installingBritecharts]: /docs/tutorials/installing-britecharts

@@ -236,7 +236,7 @@ In version 2 and our demos, we recommended listening to viewport width changes a
 
 3. Use 'colorMap' to select the colors you want for each data category.
 
-One common request of our users was to specify the colors for each category on the different Britecharts components. Now you can! Use the ["colorMap"](https://britecharts.github.io/britecharts/module-Bar.html#.colorMap__anchor) property to specify a hash map between category names and HEX colors.
+One common request of our users was to specify the colors for each category on the different Britecharts components. Now you can! Use the ["colorMap"](../API/bar#module_Bar--exports.colorMap) property to specify a hash map between category names and HEX colors.
 
 4. Specify the duration of animations with 'animationDuration'
 
