@@ -23,6 +23,19 @@
     }
 }
 
+/* The logo stands in for the typed title: large, and no larger than the
+   viewport allows, with the height following the SVG's own proportions. */
+.heroTitle {
+    margin: 0 0 1.5rem;
+}
+
+.heroLogo {
+    display: block;
+    width: min(640px, 90vw);
+    height: auto;
+    margin: 0 auto;
+}
+
 .buttons {
     display: flex;
     align-items: center;

@@ -35,6 +35,32 @@ margins). The chart's size is accepted and ignored: the tooltip measures
 the chart itself. The line and stacked area charts dispatch nothing while
 narrower than `tooltipThreshold` (480 px by default).
 
+## miniTooltip, the single-value preset
+
+`miniTooltip()` is `tooltip().layout('single').title('').numberFormat('.2f')`:
+the same component with the single-value layout, no title and a `.2f`
+number format, for the bar, scatter plot, heatmap and donut charts. Every
+accessor documented on this page is available on it.
+
+```js
+const barChart = bar(),
+    chartTooltip = miniTooltip();
+
+barChart
+    .width(500)
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
+
+d3Selection.select('.css-selector')
+    .datum(dataset)
+    .call(barChart);
+
+d3Selection.select('.metadata-group')
+    .datum([])
+    .call(chartTooltip);
+```
+
 **Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js

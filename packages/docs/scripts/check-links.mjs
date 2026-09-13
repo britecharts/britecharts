@@ -21,6 +21,11 @@ const docsDir = path.resolve(
 const PORT = 3030;
 // The site's baseUrl, as in docusaurus.config.js
 const BASE = `http://localhost:${PORT}/britecharts/`;
+// Where the site is deployed (url + baseUrl in docusaurus.config.js). Every
+// page links to itself there -- canonical, Open Graph, the feeds -- and a page
+// added in this change does not exist there yet, so those links are checked
+// against the local build instead.
+const DEPLOYED = 'https://britecharts.github.io/britecharts/';
 
 // Links not worth failing a build over. Keep this list short and dated.
 const SKIP = [
@@ -89,6 +94,7 @@ try {
         retryErrors: true,
         retryErrorsCount: 2,
         linksToSkip: SKIP,
+        urlRewriteExpressions: [{ pattern: DEPLOYED, replacement: BASE }],
     });
     const broken = result.links.filter((link) => link.state === 'BROKEN');
     const checked = result.links.filter((link) => link.state !== 'SKIPPED');
