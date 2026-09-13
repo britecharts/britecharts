@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_britecharts_docs||=[]).push([[273],{901(s){s.exports=JSON.parse('{"authors":[{"name":"Marcos Iglesias Valle","title":"Maintainer of Britecharts","url":"https://github.com/golodhros","imageURL":"https://github.com/golodhros.png","key":"marcos","page":null,"count":1}]}')}}]);

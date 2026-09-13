@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_britecharts_docs||=[]).push([[1903],{1912(t){t.exports=JSON.parse('{"blogBasePath":"/britecharts/blog","blogTitle":"Blog","authorsListPath":"/britecharts/blog/authors"}')}}]);
