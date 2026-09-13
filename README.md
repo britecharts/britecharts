@@ -76,7 +76,7 @@ All the components expose **common API methods** like width, height, and margin.
 -   [API][scatter-docs], [Demo][scatterplot-story] Scatter Plot
 -   [API][sparkline-docs], [Demo][sparklinechart-story] Sparkline Chart
 -   [API][stacked-area-docs], [Demo][stackedareachart-story] Stacked Area Chart
--   [API][mini-tooltip-docs], [Demo][barchart-story] Mini Tooltip
+-   [API][mini-tooltip-docs], [Demo][barchart-story] Mini Tooltip (the tooltip's single-value preset)
 -   [API][tooltip-docs], [Demo][linechart-story] Tooltip
 -   [API][legend-docs], [Demo][donutchart-story] Legend
 
@@ -90,7 +90,7 @@ All the components expose **common API methods** like width, height, and margin.
 [scatter-docs]: API/scatter-plot
 [sparkline-docs]: API/sparkline
 [stacked-area-docs]: API/stacked-area
-[mini-tooltip-docs]: API/mini-tooltip
+[mini-tooltip-docs]: API/tooltip#minitooltip-the-single-value-preset
 [tooltip-docs]: API/tooltip
 [legend-docs]: API/legend
 
