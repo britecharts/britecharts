@@ -24,6 +24,9 @@ import { setDefaultLocale } from '../helpers/locale';
 import { motion } from '../helpers/constants';
 import { gridHorizontal, gridVertical } from '../helpers/grid';
 
+const DEFAULT_ANIMATION_DELAY = 300;
+const DEFAULT_TREND_LINE_ANIMATION_DELAY = 1500;
+
 /**
  * Reusable Scatter Plot API class that renders a
  * simple and configurable scatter chart.
@@ -119,7 +122,7 @@ export default function module() {
         trendLinePath,
         trendLineCurve = curveBasis,
         trendLineStrokWidth = '2',
-        trendLineDelay = 1500,
+        trendLineDelay = DEFAULT_TREND_LINE_ANIMATION_DELAY,
         trendLineDuration = 2000,
         highlightPointData,
         highlightFilter,
@@ -148,8 +151,8 @@ export default function module() {
         hasTrendline = false,
         enableZoom = false,
         ease = easeCircleIn,
-        delay = 500,
-        duration = motion.duration,
+        delay = DEFAULT_ANIMATION_DELAY,
+        duration = motion.mediumDuration,
         hasHollowCircles = false,
         locale = null,
         localeFormatter = d3Format,
