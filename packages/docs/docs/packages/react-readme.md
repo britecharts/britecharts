@@ -46,6 +46,7 @@ The complete set of components is in progress; the following components are curr
 - Grouped Bar charts [(API)][groupedBarChartAPI]
 - Donut charts [(API)][donutChartAPI]
 - Line charts [(API)][lineChartAPI]
+- Scatter Plots [(API)][scatterPlotAPI]
 - Sparkline charts [(API)][sparklineChartAPI]
 - Stacked Area charts [(API)][stackedAreaChartAPI]
 - Stacked Bar charts [(API)][stackedBarChartAPI]
@@ -55,7 +56,6 @@ The complete set of components is in progress; the following components are curr
 The following components haven't been adapted yet from Britecharts:
 - Brush charts
 - Heatmaps
-- Scatter Plots
 
 These components were previously hosted in the [britecharts-react][britecharts-react] repository, but became a package with Britecharts V3.
 
@@ -109,6 +109,7 @@ Our idea for the short term is to update this package to use TypeScript natively
 [groupedBarChartAPI]: https://britecharts.github.io/britecharts/docs/API/grouped-bar
 [donutChartAPI]: https://britecharts.github.io/britecharts/docs/API/donut
 [lineChartAPI]: https://britecharts.github.io/britecharts/docs/API/line
+[scatterPlotAPI]: https://britecharts.github.io/britecharts/docs/API/scatter-plot
 [sparklineChartAPI]: https://britecharts.github.io/britecharts/docs/API/sparkline
 [stackedAreaChartAPI]: https://britecharts.github.io/britecharts/docs/API/stacked-area
 [stackedBarChartAPI]: https://britecharts.github.io/britecharts/docs/API/stacked-bar

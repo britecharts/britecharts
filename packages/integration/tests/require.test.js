@@ -26,8 +26,8 @@ const CORE_UMD_CHARTS = [
 ];
 const WRAPPER_EXPORTS = [
     'BarWrapper', 'BulletWrapper', 'DonutWrapper', 'GroupedBarWrapper',
-    'LegendWrapper', 'LineWrapper', 'SparklineWrapper', 'StackedAreaWrapper',
-    'StackedBarWrapper', 'TooltipWrapper',
+    'LegendWrapper', 'LineWrapper', 'ScatterPlotWrapper', 'SparklineWrapper',
+    'StackedAreaWrapper', 'StackedBarWrapper', 'TooltipWrapper',
 ];
 
 test('C3 · require("@britecharts/core") resolves main to the UMD bundle', () => {
@@ -70,8 +70,8 @@ const REACT_CONSUMER = path.resolve(__dirname, '..', 'consumers', 'react');
 const requireFromReact = createRequire(path.join(REACT_CONSUMER, 'package.json'));
 
 const REACT_COMPONENTS = [
-    'Bar', 'Bullet', 'Donut', 'GroupedBar', 'Legend', 'Line', 'Sparkline',
-    'StackedArea', 'StackedBar', 'Tooltip',
+    'Bar', 'Bullet', 'Donut', 'GroupedBar', 'Legend', 'Line', 'ScatterPlot',
+    'Sparkline', 'StackedArea', 'StackedBar', 'Tooltip',
 ];
 
 test('R1 · require("@britecharts/react") resolves main to the UMD bundle', () => {

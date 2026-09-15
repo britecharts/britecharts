@@ -86,6 +86,8 @@ export const hoursHuman = [
 
 export const motion = {
     duration: 1200,
+    mediumDuration: 600,
+    shortDuration: 300,
 };
 
 export const curveMap = {
