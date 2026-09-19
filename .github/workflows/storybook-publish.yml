@@ -60,11 +60,24 @@ jobs:
       - name: Build react storybook 🔧
         run: yarn workspace @britecharts/react demo:build
 
+      # TEMPORARY, for the React hooks migration: no autoAcceptChanges on this
+      # step. The migration lands as many merges to main, and with
+      # auto-accept the first merged regression becomes the new baseline
+      # before anyone has looked at it. Changes are reported, not accepted,
+      # and exitZeroOnChanges keeps unreviewed ones from turning main red.
+      # The core step above keeps auto-accept: the migration does not touch it.
+      #
+      # Restore `autoAcceptChanges: 'main'` and drop `exitZeroOnChanges` at the
+      # end of the migration (Phase 5), once every diff has been reviewed.
+      #
+      # The baseline is pinned by hand: after the first main build that
+      # contains the stories added for the migration, accept it once in
+      # Chromatic. Every later change is then reviewed against that build.
       - name: Publish react storybook to Chromatic 🚀
         uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_TOKEN_REACT }}
-          autoAcceptChanges: 'main'
+          exitZeroOnChanges: true
           storybookBuildDir: './packages/react/dist/storybook'
 
       - name: Build the composed storybook (check only) 🔧
