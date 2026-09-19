@@ -191,4 +191,34 @@ describe('legend Chart', () => {
             expect(actual).toEqual(expected);
         });
     });
+
+    describe('configuration', () => {
+        let createSpy;
+
+        beforeEach(() => {
+            createSpy = jest.spyOn(LegendWrapper, 'create');
+        });
+
+        afterEach(() => {
+            createSpy.mockReset();
+            createSpy.mockRestore();
+        });
+
+        // A Tooltip hands its child chart `createTooltip`. It is the chart
+        // component's business, never a configuration key of the wrapper,
+        // which rejects keys the chart does not have.
+        it('should not pass createTooltip to the wrapper', () => {
+            mount(
+                <Legend
+                    chart={LegendWrapper}
+                    data={legendData.with6Points()}
+                    createTooltip={jest.fn()}
+                />
+            );
+
+            expect(createSpy.mock.calls[0][2]).not.toHaveProperty(
+                'createTooltip'
+            );
+        });
+    });
 });

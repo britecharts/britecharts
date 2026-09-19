@@ -6,6 +6,8 @@ import { act } from 'react-dom/test-utils';
 import Tooltip from './Tooltip';
 import Line from '../line/Line';
 import lineData from '../line/lineChart.fixtures';
+import Donut from '../donut/Donut';
+import donutData from '../donut/donutChart.fixtures';
 import { TooltipWrapper } from '@britecharts/wrappers';
 
 const FakeChart = () => (
@@ -280,6 +282,69 @@ describe('tooltip', () => {
                 .querySelectorAll('.britechart-tooltip').length;
 
             expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('configuration', () => {
+        // Tooltip's own callbacks are handled by the component; the wrapper it
+        // creates the tooltip with has no `on` accessor to hand them to, so
+        // they must never reach it.
+        describe('when the mouse handlers are passed in', () => {
+            let createSpy;
+
+            beforeEach(() => {
+                createSpy = jest.spyOn(TooltipWrapper, 'create');
+            });
+
+            afterEach(() => {
+                createSpy.mockReset();
+                createSpy.mockRestore();
+            });
+
+            it('should not throw', () => {
+                expect(() =>
+                    mount(
+                        <Tooltip
+                            customMouseMove={jest.fn()}
+                            customMouseOut={jest.fn()}
+                            customMouseOver={jest.fn()}
+                            render={renderFakeChart}
+                            data={[]}
+                        />
+                    )
+                ).not.toThrow();
+            });
+
+            ['customMouseMove', 'customMouseOut', 'customMouseOver'].forEach(
+                (handler) => {
+                    it(`should not pass ${handler} to the tooltip wrapper`, () => {
+                        mount(
+                            <Tooltip
+                                {...{ [handler]: jest.fn() }}
+                                render={renderFakeChart}
+                                data={[]}
+                            />
+                        );
+
+                        expect(createSpy.mock.calls[0][1]).not.toHaveProperty(
+                            handler
+                        );
+                    });
+                }
+            );
+        });
+    });
+
+    describe('wrapping a donut', () => {
+        it('should render without throwing', () => {
+            expect(() =>
+                mount(
+                    <Tooltip
+                        data={donutData.with4Slices()}
+                        render={(props) => <Donut {...props} />}
+                    />
+                )
+            ).not.toThrow();
         });
     });
 });
