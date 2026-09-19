@@ -10,15 +10,15 @@ export default {
 };
 
 /**
- * The container measures itself after mount and hands the chart its width.
- * The frame has a fixed width so the snapshot does not depend on the
- * viewport.
+ * The container measures itself after mount and again whenever the window is
+ * resized, and hands the chart its width: resize the window to see the chart
+ * follow. The frame fills the width available.
  */
 export const WithALineChart = () => {
     const data = lineData.oneSet();
 
     return (
-        <div style={{ width: 640 }}>
+        <div style={{ width: '100%' }}>
             <ResponsiveContainer
                 render={({ width }) => (
                     <Line
@@ -33,11 +33,15 @@ export const WithALineChart = () => {
     );
 };
 
+/**
+ * A frame capped at 360px: the chart takes the frame's width, not the
+ * window's, until the window gets narrower than the frame.
+ */
 export const InANarrowFrame = () => {
     const data = lineData.oneSet();
 
     return (
-        <div style={{ width: 360 }}>
+        <div style={{ width: '100%', maxWidth: 360 }}>
             <ResponsiveContainer
                 render={({ width }) => (
                     <Line
