@@ -11473,6 +11473,7 @@ __metadata:
     eslint-plugin-jest: ^27.1.5
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-react: 7.29.4
+    eslint-plugin-react-hooks: 4.6.2
     eslint-plugin-testing-library: ^5.5.0
     husky: ^7.0.0
     jest: ^29.7.0
@@ -16011,6 +16012,15 @@ __metadata:
     eslint-config-prettier:
       optional: true
   checksum: 03d69177a3c21fa2229c7e427ce604429f0b20ab7f411e2e824912f572a207c7f5a41fd1f0a95b9b8afe121e291c1b1f1dc1d44c7aad4b0837487f9c19f5210d
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react-hooks@npm:4.6.2":
+  version: 4.6.2
+  resolution: "eslint-plugin-react-hooks@npm:4.6.2"
+  peerDependencies:
+    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+  checksum: 395c433610f59577cfcf3f2e42bcb130436c8a0b3777ac64f441d88c5275f4fcfc89094cedab270f2822daf29af1079151a7a6579a8e9ea8cee66540ba0384c4
   languageName: node
   linkType: hard
 

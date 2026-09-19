@@ -62,6 +62,8 @@
     "clean": "rimraf dist",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
     "demo": "yarn run storybook",
+    "lint:js": "eslint src/charts src/index.js webpack.*.js --ignore-pattern \"*.spec.js\" --cache",
+    "lint": "yarn run lint:js",
     "start": "webpack-dev-server --env=test --open --hot",
     "storybook": "storybook dev -p 2002 --exact-port",
     "test:watch": "jest --watch --colors",

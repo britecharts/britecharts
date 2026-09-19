@@ -274,6 +274,7 @@
     "eslint-plugin-jest": "^27.1.5",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.29.4",
+    "eslint-plugin-react-hooks": "4.6.2",
     "eslint-plugin-testing-library": "^5.5.0",
     "husky": "^7.0.0",
     "jest": "^29.7.0",
