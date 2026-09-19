@@ -222,4 +222,41 @@ describe('donut Chart', () => {
             );
         });
     });
+
+    // The only behavioural defaultProp in the package: `isAnimated` reaches the
+    // chart through the defaultProps -> props merge, so a conversion that
+    // destructures the rest of the props would silently stop animating the
+    // donut. Pinned here so that shows up as one named failure.
+    describe('animation', () => {
+        let createSpy;
+
+        beforeEach(() => {
+            createSpy = jest.spyOn(DonutWrapper, 'create');
+        });
+
+        afterEach(() => {
+            createSpy.mockReset();
+            createSpy.mockRestore();
+        });
+
+        it('should be animated by default', () => {
+            mount(
+                <Donut chart={DonutWrapper} data={donutData.with4Slices()} />
+            );
+
+            expect(createSpy.mock.calls[0][2].isAnimated).toBe(true);
+        });
+
+        it('should let isAnimated be turned off', () => {
+            mount(
+                <Donut
+                    chart={DonutWrapper}
+                    data={donutData.with4Slices()}
+                    isAnimated={false}
+                />
+            );
+
+            expect(createSpy.mock.calls[0][2].isAnimated).toBe(false);
+        });
+    });
 });
