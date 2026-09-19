@@ -5,6 +5,9 @@ const { test, expect } = require('@playwright/test');
 
 const VANILLA = 'http://localhost:4173';
 const REACT = 'http://localhost:4174';
+// The same React pages, built with React's development build (see
+// playwright.config.js): the only place StrictMode double-invokes effects.
+const REACT_DEV = 'http://localhost:4175';
 
 // `.tick text { fill: #666a73 }` from styles/charts/common.css -- present in
 // both the bundle and the per-chart stylesheets, and nothing else sets it.
@@ -28,6 +31,22 @@ const PAGES = [
         oneSvg: ['.donut-container', '.plain-line', '.tooltip-line', '.responsive-line'],
         composed: true,
     }],
+    ['R6', `${REACT}/lifecycle.html`, 'React 19: create, destroy and create again by hand', {
+        react: true,
+        oneSvg: ['.donut-container', '.plain-line', '.tooltip-line', '.responsive-line'],
+        composed: true,
+        lifecycle: true,
+    }],
+    ['R5', `${REACT_DEV}/strict.html`, 'React 19: development build under StrictMode', {
+        react: true,
+        oneSvg: ['.donut-container', '.plain-line', '.tooltip-line', '.responsive-line'],
+        composed: true,
+        // destroy() is a no-op in every wrapper, so StrictMode's second
+        // setup appends a second svg to the same container. Un-fixme this in
+        // the PR that makes destroy() work (Phase 1: "destroy() actually
+        // removes the chart"); removing it earlier fails on the svg count.
+        fixme: 'wrappers destroy() is a no-op, so StrictMode leaves two svgs per chart',
+    }],
     ['R3', `${REACT}/cjs-chart.html`, 'React 19: per-component CommonJS build', { donut: true, react: true, oneSvg: ['.donut-container'] }],
     ['R4', `${REACT}/umd-chart.html`, 'React 19: per-component UMD build', { donut: true, react: true, oneSvg: ['.donut-container'] }],
 ];
@@ -38,6 +57,8 @@ for (const [id, url, how, expects] of PAGES) {
             Boolean(expects.published) && !process.env.SMOKE_REGISTRY,
             'needs a published version; run by smoke-published.yml'
         );
+
+        test.fixme(Boolean(expects.fixme), expects.fixme);
 
         const problems = [];
 
@@ -66,6 +87,14 @@ for (const [id, url, how, expects] of PAGES) {
             const { barData } = await import('../consumers/vanilla/src/data.js');
 
             await expect(page.locator('.bar-container svg.bar-chart rect.bar')).toHaveCount(barData.length);
+        }
+        if (expects.lifecycle) {
+            const state = await page.locator('body[data-lifecycle]').getAttribute('data-lifecycle');
+            const { drawn, afterUnmount, remounted } = JSON.parse(state);
+
+            expect(drawn, 'nothing was drawn before the unmount').toBeGreaterThan(0);
+            expect(afterUnmount, 'svgs survived the unmount').toBe(0);
+            expect(remounted, 'the remount did not redraw every chart').toBe(drawn);
         }
         if (expects.donut) {
             const { donutData } = await import('../consumers/react/src/data.js');
