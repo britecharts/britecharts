@@ -12,9 +12,7 @@ describe('bar Chart', () => {
                 const wrapper = mount(<Bar data={[]} isLoading={true} />);
 
                 const expected = 1;
-                const actual = wrapper
-                    .render()
-                    .find('.bar-load-state').length;
+                const actual = wrapper.render().find('.bar-load-state').length;
 
                 expect(actual).toEqual(expected);
             });
@@ -177,6 +175,35 @@ describe('bar Chart', () => {
             const actual = createSpy.mock.calls.length;
 
             expect(actual).toEqual(expected);
+        });
+    });
+
+    // Deliberate behaviour, pinned so that its change is one named diff: every
+    // re-render redraws the chart, even when the props are referentially
+    // identical, which is how a consumer who mutates their data array in place
+    // gets a redraw today. The shallow-compare guard in the hooks version
+    // (decision 04) removes it and needs a line in the changelog.
+    describe('re-rendering with props that did not change', () => {
+        let updateSpy;
+
+        beforeEach(() => {
+            updateSpy = jest.spyOn(BarWrapper, 'update');
+        });
+
+        afterEach(() => {
+            updateSpy.mockReset();
+            updateSpy.mockRestore();
+        });
+
+        it('should redraw with the data as mutated in place', () => {
+            const data = barData.withLetters();
+            const wrapper = mount(<Bar chart={BarWrapper} data={data} />);
+
+            data[0].value = 999;
+            wrapper.setProps({ chart: BarWrapper, data });
+
+            expect(updateSpy).toHaveBeenCalledTimes(1);
+            expect(updateSpy.mock.calls[0][1][0].value).toEqual(999);
         });
     });
 });

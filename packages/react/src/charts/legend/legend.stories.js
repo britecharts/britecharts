@@ -41,3 +41,12 @@ export const WithHorizontalDirectionAndSmallerDots = () => {
         />
     );
 };
+
+/**
+ * The legend used to have no guard against having no data yet, so with
+ * `data={null}` it tried to draw and threw ("Cannot read properties of
+ * undefined (reading 'filter')"). It now waits like every other chart: nothing
+ * is drawn until the data arrives. This story is the one Chromatic diff that
+ * change causes (an error state becomes an empty frame).
+ */
+export const WithNoData = () => <Legend data={null} height={250} width={400} />;

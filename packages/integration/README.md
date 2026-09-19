@@ -47,7 +47,15 @@ yarn test:integration     # from the repo root; needs Chromium once:
    bundler, ES modules; the React package and its per-component builds on
    React 19 under StrictMode). Each page must draw the chart, have the
    stylesheet applied, and produce no console errors, page errors or failed
-   requests — on the React pages, no console warnings either.
+   requests — on the React pages, no console warnings either. The
+   `package.html` page also composes a line chart inside a `Tooltip` and one
+   inside a `ResponsiveContainer`, and every block on the React pages must
+   hold exactly one `svg`. Two more React pages go further than a production
+   build can: `lifecycle.html` mounts, unmounts and remounts the blocks by
+   hand, and `strict.html` is built in **development** mode on a third server
+   (port 4175), because StrictMode only double-invokes effects there. That
+   page is marked `test.fixme` until the wrappers' `destroy()` actually
+   removes the chart; without the fixme it fails on a doubled svg count.
    `tests/hover.spec.js` runs on the same server against `hover.html`, one
    chart per way a tooltip is attached (line, stacked area, stacked bar and
    grouped bar with the tooltip; bar, scatter plot and heatmap with the mini

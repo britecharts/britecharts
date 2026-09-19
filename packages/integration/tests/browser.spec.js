@@ -5,6 +5,9 @@ const { test, expect } = require('@playwright/test');
 
 const VANILLA = 'http://localhost:4173';
 const REACT = 'http://localhost:4174';
+// The same React pages, built with React's development build (see
+// playwright.config.js): the only place StrictMode double-invokes effects.
+const REACT_DEV = 'http://localhost:4175';
 
 // `.tick text { fill: #666a73 }` from styles/charts/common.css -- present in
 // both the bundle and the per-chart stylesheets, and nothing else sets it.
@@ -19,9 +22,31 @@ const PAGES = [
     ['C5', `${VANILLA}/esm-bundle.html`, 'ES modules (package module entry)', { bars: true }],
     ['C6', `${VANILLA}/esm-chart.html`, 'per-chart ES module by source path', { bars: true }],
     ['CDN', `${VANILLA}/cdn-jsdelivr.html`, 'published version: CDN bundle from jsDelivr', { bars: true, published: true }],
-    ['R1–R2', `${REACT}/package.html`, 'React 19: named imports from @britecharts/react', { donut: true, line: true, react: true }],
-    ['R3', `${REACT}/cjs-chart.html`, 'React 19: per-component CommonJS build', { donut: true, react: true }],
-    ['R4', `${REACT}/umd-chart.html`, 'React 19: per-component UMD build', { donut: true, react: true }],
+    ['R1–R2', `${REACT}/package.html`, 'React 19: named imports from @britecharts/react', {
+        donut: true,
+        line: true,
+        react: true,
+        // Every block must hold exactly one svg. The wrappers' destroy() is a
+        // no-op today, so this is where a leak under React 19 would show.
+        oneSvg: ['.donut-container', '.plain-line', '.tooltip-line', '.responsive-line'],
+        composed: true,
+    }],
+    ['R6', `${REACT}/lifecycle.html`, 'React 19: create, destroy and create again by hand', {
+        react: true,
+        oneSvg: ['.donut-container', '.plain-line', '.tooltip-line', '.responsive-line'],
+        composed: true,
+        lifecycle: true,
+    }],
+    ['R5', `${REACT_DEV}/strict.html`, 'React 19: development build under StrictMode', {
+        react: true,
+        oneSvg: ['.donut-container', '.plain-line', '.tooltip-line', '.responsive-line'],
+        composed: true,
+        // StrictMode runs every component's setup, cleanup and setup again on
+        // the same container: a wrapper whose destroy() leaves its svg behind
+        // shows up here as a second svg per chart.
+    }],
+    ['R3', `${REACT}/cjs-chart.html`, 'React 19: per-component CommonJS build', { donut: true, react: true, oneSvg: ['.donut-container'] }],
+    ['R4', `${REACT}/umd-chart.html`, 'React 19: per-component UMD build', { donut: true, react: true, oneSvg: ['.donut-container'] }],
 ];
 
 for (const [id, url, how, expects] of PAGES) {
@@ -30,6 +55,8 @@ for (const [id, url, how, expects] of PAGES) {
             Boolean(expects.published) && !process.env.SMOKE_REGISTRY,
             'needs a published version; run by smoke-published.yml'
         );
+
+        test.fixme(Boolean(expects.fixme), expects.fixme);
 
         const problems = [];
 
@@ -59,6 +86,14 @@ for (const [id, url, how, expects] of PAGES) {
 
             await expect(page.locator('.bar-container svg.bar-chart rect.bar')).toHaveCount(barData.length);
         }
+        if (expects.lifecycle) {
+            const state = await page.locator('body[data-lifecycle]').getAttribute('data-lifecycle');
+            const { drawn, afterUnmount, remounted } = JSON.parse(state);
+
+            expect(drawn, 'nothing was drawn before the unmount').toBeGreaterThan(0);
+            expect(afterUnmount, 'svgs survived the unmount').toBe(0);
+            expect(remounted, 'the remount did not redraw every chart').toBe(drawn);
+        }
         if (expects.donut) {
             const { donutData } = await import('../consumers/react/src/data.js');
 
@@ -70,7 +105,27 @@ for (const [id, url, how, expects] of PAGES) {
             const { lineData } = await import('../consumers/react/src/data.js');
             const topics = new Set(lineData.data.map((d) => d.topicName)).size;
 
-            await expect(page.locator('.line-container svg.line-chart path.line')).toHaveCount(topics);
+            await expect(page.locator('.plain-line svg.line-chart path.line')).toHaveCount(topics);
+        }
+
+        if (expects.composed) {
+            const { lineData } = await import('../consumers/react/src/data.js');
+            const topics = new Set(lineData.data.map((d) => d.topicName)).size;
+
+            // A chart inside a Tooltip's render prop, and one sized by a
+            // ResponsiveContainer: both must draw their lines.
+            await expect(page.locator('.tooltip-line svg.line-chart path.line')).toHaveCount(topics);
+            await expect(page.locator('.responsive-line svg.line-chart path.line')).toHaveCount(topics);
+
+            // The container hands over its measured width after mount.
+            const width = await page
+                .locator('.responsive-line svg.line-chart')
+                .evaluate((svg) => Number(svg.getAttribute('width')));
+
+            expect(width, 'the chart never received a measured width').toBeGreaterThan(0);
+        }
+        for (const selector of expects.oneSvg ?? []) {
+            await expect(page.locator(`${selector} svg`), `${selector} should hold one svg`).toHaveCount(1);
         }
 
         // Only charts with axes carry the tick rule; the donut pages prove the

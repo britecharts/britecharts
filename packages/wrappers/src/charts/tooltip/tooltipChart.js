@@ -6,6 +6,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeTooltip } from '../../helpers/destroy';
 
 const tooltipChart = {};
 
@@ -54,6 +55,6 @@ tooltipChart.update = (el, configuration = {}, state = {}, chart) => {
     return chartConfigured;
 };
 
-tooltipChart.destroy = () => {};
+tooltipChart.destroy = removeTooltip;
 
 export default tooltipChart;

@@ -191,4 +191,116 @@ describe('legend Chart', () => {
             expect(actual).toEqual(expected);
         });
     });
+
+    describe('configuration', () => {
+        let createSpy;
+
+        beforeEach(() => {
+            createSpy = jest.spyOn(LegendWrapper, 'create');
+        });
+
+        afterEach(() => {
+            createSpy.mockReset();
+            createSpy.mockRestore();
+        });
+
+        // A Tooltip hands its child chart `createTooltip`. It is the chart
+        // component's business, never a configuration key of the wrapper,
+        // which rejects keys the chart does not have.
+        it('should not pass createTooltip to the wrapper', () => {
+            mount(
+                <Legend
+                    chart={LegendWrapper}
+                    data={legendData.with6Points()}
+                    createTooltip={jest.fn()}
+                />
+            );
+
+            expect(createSpy.mock.calls[0][2]).not.toHaveProperty(
+                'createTooltip'
+            );
+        });
+    });
+
+    // Same lifecycle as every other chart: nothing is drawn until there is
+    // data, and the chart is created as soon as it arrives.
+    describe('when there is no data yet', () => {
+        let createSpy;
+        let updateSpy;
+
+        beforeEach(() => {
+            createSpy = jest.spyOn(LegendWrapper, 'create');
+            updateSpy = jest.spyOn(LegendWrapper, 'update');
+        });
+
+        afterEach(() => {
+            createSpy.mockRestore();
+            updateSpy.mockRestore();
+        });
+
+        it('should not throw', () => {
+            expect(() =>
+                mount(<Legend chart={LegendWrapper} data={null} />)
+            ).not.toThrow();
+        });
+
+        it('should not call the create method of the chart', () => {
+            mount(<Legend chart={LegendWrapper} data={null} />);
+
+            expect(createSpy).not.toHaveBeenCalled();
+        });
+
+        it('should not draw anything', () => {
+            const wrapper = mount(<Legend chart={LegendWrapper} data={null} />);
+
+            expect(wrapper.getDOMNode().querySelectorAll('svg')).toHaveLength(
+                0
+            );
+        });
+
+        describe('and the data arrives', () => {
+            it('should call the create method of the chart', () => {
+                const wrapper = mount(
+                    <Legend chart={LegendWrapper} data={null} />
+                );
+
+                wrapper.setProps({ data: legendData.with6Points() });
+
+                expect(createSpy).toHaveBeenCalledTimes(1);
+            });
+
+            it('should not call the update method of the chart', () => {
+                const wrapper = mount(
+                    <Legend chart={LegendWrapper} data={null} />
+                );
+
+                wrapper.setProps({ data: legendData.with6Points() });
+
+                expect(updateSpy).not.toHaveBeenCalled();
+            });
+
+            it('should draw the chart', () => {
+                const wrapper = mount(
+                    <Legend chart={LegendWrapper} data={null} />
+                );
+
+                wrapper.setProps({ data: legendData.with6Points() });
+
+                expect(
+                    wrapper.getDOMNode().querySelectorAll('svg')
+                ).toHaveLength(1);
+            });
+
+            it('should update the chart on the next change', () => {
+                const wrapper = mount(
+                    <Legend chart={LegendWrapper} data={null} />
+                );
+
+                wrapper.setProps({ data: legendData.with6Points() });
+                wrapper.setProps({ width: 300 });
+
+                expect(updateSpy).toHaveBeenCalledTimes(1);
+            });
+        });
+    });
 });

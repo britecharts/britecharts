@@ -5,6 +5,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeChartSvg } from '../../helpers/destroy';
 
 const bulletChart = {};
 
@@ -38,6 +39,6 @@ bulletChart.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-bulletChart.destroy = () => {};
+bulletChart.destroy = removeChartSvg;
 
 export default bulletChart;

@@ -100,5 +100,6 @@ plan/
 packages/integration/.tarballs
 packages/integration/.consumers
 packages/integration/consumers/*/public/vendor
+packages/integration/consumers/*/dist-dev
 packages/integration/test-results
 packages/integration/playwright-report

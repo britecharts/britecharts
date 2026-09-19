@@ -258,6 +258,10 @@ export default class Tooltip extends React.Component {
         delete configuration.data;
         delete configuration.chart;
         delete configuration.render;
+        // The component's own callbacks: the tooltip has no `on` accessor
+        delete configuration.customMouseMove;
+        delete configuration.customMouseOut;
+        delete configuration.customMouseOver;
 
         return configuration;
     }

@@ -172,6 +172,7 @@ export default class Donut extends Component {
 
         delete configuration.data;
         delete configuration.chart;
+        delete configuration.createTooltip;
 
         return configuration;
     }

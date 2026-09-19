@@ -192,4 +192,71 @@ describe('donut Chart', () => {
             expect(actual).toEqual(expected);
         });
     });
+
+    describe('configuration', () => {
+        let createSpy;
+
+        beforeEach(() => {
+            createSpy = jest.spyOn(DonutWrapper, 'create');
+        });
+
+        afterEach(() => {
+            createSpy.mockReset();
+            createSpy.mockRestore();
+        });
+
+        // A Tooltip hands its child chart `createTooltip`. It is the chart
+        // component's business, never a configuration key of the wrapper,
+        // which rejects keys the chart does not have.
+        it('should not pass createTooltip to the wrapper', () => {
+            mount(
+                <Donut
+                    chart={DonutWrapper}
+                    data={donutData.with4Slices()}
+                    createTooltip={jest.fn()}
+                />
+            );
+
+            expect(createSpy.mock.calls[0][2]).not.toHaveProperty(
+                'createTooltip'
+            );
+        });
+    });
+
+    // The only behavioural defaultProp in the package: `isAnimated` reaches the
+    // chart through the defaultProps -> props merge, so a conversion that
+    // destructures the rest of the props would silently stop animating the
+    // donut. Pinned here so that shows up as one named failure.
+    describe('animation', () => {
+        let createSpy;
+
+        beforeEach(() => {
+            createSpy = jest.spyOn(DonutWrapper, 'create');
+        });
+
+        afterEach(() => {
+            createSpy.mockReset();
+            createSpy.mockRestore();
+        });
+
+        it('should be animated by default', () => {
+            mount(
+                <Donut chart={DonutWrapper} data={donutData.with4Slices()} />
+            );
+
+            expect(createSpy.mock.calls[0][2].isAnimated).toBe(true);
+        });
+
+        it('should let isAnimated be turned off', () => {
+            mount(
+                <Donut
+                    chart={DonutWrapper}
+                    data={donutData.with4Slices()}
+                    isAnimated={false}
+                />
+            );
+
+            expect(createSpy.mock.calls[0][2].isAnimated).toBe(false);
+        });
+    });
 });

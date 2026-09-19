@@ -5,6 +5,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeChartSvg } from '../../helpers/destroy';
 
 const sparklineChart = {};
 
@@ -38,6 +39,6 @@ sparklineChart.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-sparklineChart.destroy = () => {};
+sparklineChart.destroy = removeChartSvg;
 
 export default sparklineChart;
