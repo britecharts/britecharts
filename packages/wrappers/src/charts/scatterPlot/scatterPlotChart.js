@@ -6,6 +6,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeChartSvg } from '../../helpers/destroy';
 
 const scatterPlotChart = {};
 
@@ -38,6 +39,6 @@ scatterPlotChart.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-scatterPlotChart.destroy = () => {};
+scatterPlotChart.destroy = removeChartSvg;
 
 export default scatterPlotChart;

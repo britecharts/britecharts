@@ -41,11 +41,9 @@ const PAGES = [
         react: true,
         oneSvg: ['.donut-container', '.plain-line', '.tooltip-line', '.responsive-line'],
         composed: true,
-        // destroy() is a no-op in every wrapper, so StrictMode's second
-        // setup appends a second svg to the same container. Un-fixme this in
-        // the PR that makes destroy() work (Phase 1: "destroy() actually
-        // removes the chart"); removing it earlier fails on the svg count.
-        fixme: 'wrappers destroy() is a no-op, so StrictMode leaves two svgs per chart',
+        // StrictMode runs every component's setup, cleanup and setup again on
+        // the same container: a wrapper whose destroy() leaves its svg behind
+        // shows up here as a second svg per chart.
     }],
     ['R3', `${REACT}/cjs-chart.html`, 'React 19: per-component CommonJS build', { donut: true, react: true, oneSvg: ['.donut-container'] }],
     ['R4', `${REACT}/umd-chart.html`, 'React 19: per-component UMD build', { donut: true, react: true, oneSvg: ['.donut-container'] }],

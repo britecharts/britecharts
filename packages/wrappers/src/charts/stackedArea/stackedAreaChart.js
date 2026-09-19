@@ -6,6 +6,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeChartSvg } from '../../helpers/destroy';
 
 const stackedAreaChart = {};
 
@@ -40,6 +41,6 @@ stackedAreaChart.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-stackedAreaChart.destroy = () => {};
+stackedAreaChart.destroy = removeChartSvg;
 
 export default stackedAreaChart;

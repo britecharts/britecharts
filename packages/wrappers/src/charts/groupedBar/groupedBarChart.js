@@ -5,6 +5,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeChartSvg } from '../../helpers/destroy';
 
 const groupedBarChart = {};
 
@@ -38,6 +39,6 @@ groupedBarChart.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-groupedBarChart.destroy = () => {};
+groupedBarChart.destroy = removeChartSvg;
 
 export default groupedBarChart;

@@ -5,6 +5,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeChartSvg } from '../../helpers/destroy';
 
 const donutChart = {};
 
@@ -38,6 +39,6 @@ donutChart.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-donutChart.destroy = () => {};
+donutChart.destroy = removeChartSvg;
 
 export default donutChart;

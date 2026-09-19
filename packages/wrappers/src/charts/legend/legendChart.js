@@ -5,6 +5,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeChartSvg } from '../../helpers/destroy';
 
 const legendChart = {};
 
@@ -38,6 +39,6 @@ legendChart.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-legendChart.destroy = () => {};
+legendChart.destroy = removeChartSvg;
 
 export default legendChart;

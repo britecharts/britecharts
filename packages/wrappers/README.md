@@ -68,7 +68,17 @@ BarWrapper.update(container, newData, {}, barInstance);
 ```
 
 ### Destroy
-Doing nothing at the moment. Thinking about removing it as the users already have the instance and can remove it themselves.
+Removes the chart's `svg` from the container, so the container can be used again (a `create` after a `destroy` draws exactly one chart). It only removes that `svg`: never the container itself, which a framework may own, nor anything else inside it.
+
+Signature:
+`<Wrapper>.destroy(HTMLElement) => void`
+
+Example:
+```js
+BarWrapper.destroy(container);
+```
+
+`TooltipWrapper.destroy` has its own contract: it removes the tooltip from inside the element and never an `svg`, because a tooltip is created inside the chart it decorates and destroyed against the element around it.
 
 ## Availability
 The following components haven't been adapted yet from Britecharts:

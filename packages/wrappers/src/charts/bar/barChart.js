@@ -6,6 +6,7 @@ import {
     validateContainer,
 } from '../../helpers/validation';
 import { applyConfiguration } from '../../helpers/configuration';
+import { removeChartSvg } from '../../helpers/destroy';
 
 const barChart = {};
 
@@ -38,6 +39,6 @@ barChart.update = (el, data, configuration = {}, chart) => {
     return chart;
 };
 
-barChart.destroy = () => {};
+barChart.destroy = removeChartSvg;
 
 export default barChart;
