@@ -6,9 +6,9 @@ import { LegendWrapper } from '@britecharts/wrappers';
 export default class Legend extends React.Component {
     static propTypes = {
         /**
-         * The data to be used by the chart
+         * The data to be used by the chart. Nothing is drawn while it is null
          */
-        data: PropTypes.arrayOf(PropTypes.any).isRequired,
+        data: PropTypes.arrayOf(PropTypes.any),
 
         /**
          * Clears all highlighted entries
@@ -101,24 +101,19 @@ export default class Legend extends React.Component {
     }
 
     componentDidMount() {
-        const { chart, data } = this.props;
+        const { data } = this.props;
 
-        this.chart = chart.create(
-            this.rootNode,
-            data,
-            this.getChartConfiguration()
-        );
+        if (data !== null) {
+            this.createChart();
+        }
     }
 
     componentDidUpdate() {
-        const { chart, data } = this.props;
-
-        chart.update(
-            this.rootNode,
-            data,
-            this.getChartConfiguration(),
-            this.chart
-        );
+        if (!this.chart) {
+            this.createChart();
+        } else {
+            this.updateChart();
+        }
     }
 
     componentWillUnmount() {
@@ -143,6 +138,27 @@ export default class Legend extends React.Component {
 
     setRef(componentNode) {
         this.rootNode = componentNode;
+    }
+
+    createChart() {
+        const { chart, data } = this.props;
+
+        this.chart = chart.create(
+            this.rootNode,
+            data,
+            this.getChartConfiguration()
+        );
+    }
+
+    updateChart() {
+        const { chart, data } = this.props;
+
+        chart.update(
+            this.rootNode,
+            data,
+            this.getChartConfiguration(),
+            this.chart
+        );
     }
 
     render() {
