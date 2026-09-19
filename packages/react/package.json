@@ -67,7 +67,8 @@
     "start": "webpack-dev-server --env=test --open --hot",
     "storybook": "storybook dev -p 2002 --exact-port",
     "test:watch": "jest --watch --colors",
-    "test": "jest --colors --coverage"
+    "test": "jest --colors --coverage",
+    "verify:suite": "node testing/verify-suite.mjs"
   },
   "files": [
     "dist/umd/**",

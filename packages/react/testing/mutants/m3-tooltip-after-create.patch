@@ -1,0 +1,10 @@
+--- a/packages/react/src/charts/helpers/useChart.js
++++ b/packages/react/src/charts/helpers/useChart.js
+@@ -86,6 +86,7 @@
+             data,
+             configuration
+         );
++        createTooltip();
+     });
+ 
+     // Mount and unmount only. Nothing the cleanup reads may come from a render

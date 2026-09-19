@@ -1,94 +1,18 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { LineWrapper } from '@britecharts/wrappers';
 
 import { axisTimeCombinations as combinations } from '../constants';
-
-const noop = () => null;
-
-/**
- * The configuration is rebuilt from the props on every render, so it can never
- * be compared by identity, which is what a deps array would have to do. Compare
- * what was drawn last with what is about to be, field by field. Delete this and
- * its call site to get back to redrawing on every render.
- */
-const isSameDrawing = (previous, next) => {
-    if (!previous) {
-        return false;
-    }
-
-    const keys = Object.keys(next);
-
-    return (
-        keys.length === Object.keys(previous).length &&
-        keys.every((key) => Object.is(previous[key], next[key]))
-    );
-};
+import useChart from '../helpers/useChart';
 
 const Line = ({
     chart = LineWrapper,
-    createTooltip = noop,
+    createTooltip,
     data,
     ...configuration
 }) => {
-    const rootNode = useRef(null);
-    const chartInstance = useRef(null);
-    const chartWrapper = useRef(chart);
-    const lastDrawn = useRef(null);
-
-    // Layout effects flush synchronously inside React's commit, before paint,
-    // which is what componentDidMount and componentDidUpdate did. No deps array
-    // on purpose: creating and updating live in one effect that branches on
-    // whether a chart exists, so creation stays reachable on any render (the
-    // data arriving after mount) and a StrictMode remount recreates the chart.
-    useLayoutEffect(() => {
-        chartWrapper.current = chart;
-
-        const drawing = { data, ...configuration };
-
-        if (chartInstance.current) {
-            if (isSameDrawing(lastDrawn.current, drawing)) {
-                return;
-            }
-
-            lastDrawn.current = drawing;
-            chart.update(
-                rootNode.current,
-                data,
-                configuration,
-                chartInstance.current
-            );
-            // After the update, and never after the creation
-            createTooltip();
-
-            return;
-        }
-
-        if (data === null) {
-            return;
-        }
-
-        lastDrawn.current = drawing;
-        chartInstance.current = chart.create(
-            rootNode.current,
-            data,
-            configuration
-        );
-    });
-
-    // Mount and unmount only. Nothing the cleanup reads may come from a render
-    // closure: the node is captured inside this effect and the wrapper comes
-    // from a ref, so it is the one the last render was given.
-    useLayoutEffect(() => {
-        const node = rootNode.current;
-
-        return () => {
-            chartWrapper.current.destroy(node);
-            chartInstance.current = null;
-            lastDrawn.current = null;
-        };
-    }, []);
+    const rootNode = useChart(chart, data, configuration, { createTooltip });
 
     return <div className="line-container" ref={rootNode} />;
 };

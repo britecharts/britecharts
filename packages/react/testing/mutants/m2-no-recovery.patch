@@ -1,0 +1,29 @@
+--- a/packages/react/src/charts/helpers/useChart.js
++++ b/packages/react/src/charts/helpers/useChart.js
+@@ -48,6 +48,7 @@
+     const chartInstance = useRef(null);
+     const chartWrapper = useRef(wrapper);
+     const lastDrawn = useRef(null);
++    const hasRun = useRef(false);
+ 
+     // No deps array on purpose: creating and updating live in one effect that
+     // branches on whether a chart exists, so creation stays reachable on any
+@@ -55,6 +56,9 @@
+     // recreates the chart.
+     useLayoutEffect(() => {
+         chartWrapper.current = wrapper;
++        const firstRun = !hasRun.current;
++
++        hasRun.current = true;
+ 
+         const drawing = { data, ...configuration };
+ 
+@@ -76,7 +80,7 @@
+             return;
+         }
+ 
+-        if (requiresData && data === null) {
++        if (!firstRun || (requiresData && data === null)) {
+             return;
+         }
+ 

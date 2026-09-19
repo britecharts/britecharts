@@ -1,0 +1,11 @@
+--- a/packages/react/src/charts/tooltip/Tooltip.js
++++ b/packages/react/src/charts/tooltip/Tooltip.js
+@@ -338,7 +338,7 @@
+         // the chart the same element and React leaves it alone. Rebuilding
+         // it here on every render would make the chart redraw itself on
+         // each move.
+-        if (props.render && props !== this.childChartProps) {
++        if (props.render) {
+             this.childChart = this.renderChildChart(props);
+             this.childChartProps = props;
+         }
