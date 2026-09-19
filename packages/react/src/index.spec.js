@@ -35,7 +35,6 @@ const LEGACY_DEFAULT_PROPS = [
     'Donut',
     'GroupedBar',
     'Legend',
-    'Line',
     'ScatterPlot',
     'Sparkline',
     'StackedArea',
