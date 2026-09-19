@@ -19,6 +19,10 @@ module.exports = {
         '^@britecharts/core$': '<rootDir>/../core/src/index.js',
         '^@britecharts/wrappers$': '<rootDir>/../wrappers/src/index.js',
     },
+    collectCoverageFrom: [
+        'src/charts/**/*.js',
+        '!src/charts/**/*.{spec,stories,fixtures}.js',
+    ],
     setupFiles: ['jest-canvas-mock'],
     setupFilesAfterEnv: ['./jest.setup.js'],
 };
