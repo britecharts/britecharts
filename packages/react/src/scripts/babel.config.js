@@ -13,10 +13,7 @@ const baseConfig = {
             },
         ],
     ],
-    plugins: [
-        '@babel/plugin-proposal-class-properties',
-        '@babel/plugin-proposal-object-rest-spread',
-    ],
+    plugins: ['@babel/plugin-proposal-object-rest-spread'],
     env: {
         test: {
             plugins: ['@babel/plugin-transform-modules-commonjs'],

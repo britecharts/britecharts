@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/parser": "^7.17.5",
     "@mdx-js/react": "^1.6.22",
     "@storybook/addon-a11y": "8.6.14",
     "@storybook/addon-essentials": "8.6.14",
