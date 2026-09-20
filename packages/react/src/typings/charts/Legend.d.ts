@@ -3,12 +3,17 @@ import { FunctionComponent } from 'react';
 export interface LegendProps {
     /**
      * The data to be used by the chart
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
-    data: {
-        id: number;
-        quantity: number;
-        name?: string;
-    }[];
+    data:
+        | {
+              id: number;
+              quantity: number;
+              name?: string;
+          }[]
+        | null;
 
     /**
      * Clears all highlighted entries

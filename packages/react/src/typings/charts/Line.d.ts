@@ -3,6 +3,9 @@ import { FunctionComponent } from 'react';
 export interface LineProps {
     /**
      * Internally used, do not overwrite.
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
     data: {
         data: {
@@ -11,7 +14,7 @@ export interface LineProps {
             date: string;
             value: number;
         }[];
-    };
+    } | null;
 
     /**
      * Gets or Sets the duration of the animation

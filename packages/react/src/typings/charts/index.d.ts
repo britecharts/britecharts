@@ -9,3 +9,8 @@ export { default as Sparkline, SparklineProps } from './Sparkline';
 export { default as StackedArea, StackedAreaProps } from './StackedArea';
 export { default as StackedBar, StackedBarProps } from './StackedBar';
 export { default as Tooltip, TooltipProps } from './Tooltip';
+export {
+    default as ResponsiveContainer,
+    ResponsiveContainerProps,
+} from './ResponsiveContainer';
+export { default as withResponsiveness } from './withResponsiveness';

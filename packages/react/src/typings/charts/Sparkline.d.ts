@@ -3,11 +3,16 @@ import { FunctionComponent } from 'react';
 export interface SparklineProps {
     /**
      * Internally used, do not overwrite.
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
-    data: {
-        value: number;
-        date: string;
-    }[];
+    data:
+        | {
+              value: number;
+              date: string;
+          }[]
+        | null;
 
     /**
      * Gets or Sets the duration of the animation

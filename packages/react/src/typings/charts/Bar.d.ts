@@ -4,8 +4,11 @@ import { LocalObject } from '@britecharts/core';
 export interface BarChartProps {
     /**
      * Internally used, do not overwrite.
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
-    data: { value: number; name: string }[];
+    data: { value: number; name: string }[] | null;
 
     /**
      * Gets or Sets the duration of the animation

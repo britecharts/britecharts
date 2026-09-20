@@ -4,12 +4,17 @@ import { LocalObject } from '@britecharts/core';
 export interface GroupedBarProps {
     /**
      * Internally used, do not overwrite.
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
-    data: {
-        name: string;
-        group: string;
-        value: number;
-    }[];
+    data:
+        | {
+              name: string;
+              group: string;
+              value: number;
+          }[]
+        | null;
 
     /**
      * Gets or Sets the duration of the animation
