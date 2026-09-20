@@ -13,6 +13,5 @@
  * Not shipped (*.fixtures.js is excluded from the package).
  */
 export const LEGACY_DEFAULT_PROPS = [
-    'Legend',
     'Tooltip',
 ];

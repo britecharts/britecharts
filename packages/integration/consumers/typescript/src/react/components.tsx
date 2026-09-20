@@ -122,3 +122,6 @@ export const stackedBarWithRef = <StackedBar {...stackedBarProps} ref={someRef} 
 // prettier-ignore
 // @ts-expect-error Bullet is a function component: it takes no ref
 export const bulletWithRef = <Bullet {...bulletProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error Legend is a function component: it takes no ref
+export const legendWithRef = <Legend {...legendProps} ref={someRef} />;
