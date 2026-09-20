@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 
 export interface BulletChartProps {
     /**
@@ -77,4 +77,6 @@ export interface BulletChartProps {
     chart?: any;
 }
 
-export default class Bullet extends Component<BulletChartProps> {}
+declare const Bullet: FunctionComponent<BulletChartProps>;
+
+export default Bullet;

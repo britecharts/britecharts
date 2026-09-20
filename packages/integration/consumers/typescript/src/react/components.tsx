@@ -119,3 +119,6 @@ export const stackedAreaWithRef = <StackedArea {...stackedAreaProps} ref={someRe
 // prettier-ignore
 // @ts-expect-error StackedBar is a function component: it takes no ref
 export const stackedBarWithRef = <StackedBar {...stackedBarProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error Bullet is a function component: it takes no ref
+export const bulletWithRef = <Bullet {...bulletProps} ref={someRef} />;

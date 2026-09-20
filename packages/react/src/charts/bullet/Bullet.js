@@ -1,164 +1,101 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import { BulletWrapper } from '@britecharts/wrappers';
+import useChart from '../helpers/useChart';
 
-class Bullet extends React.Component {
-    static propTypes = {
-        /**
-         * Internally used, do not overwrite.
-         */
-        data: PropTypes.arrayOf(PropTypes.any),
+const Bullet = ({
+    chart = BulletWrapper,
+    createTooltip,
+    data,
+    ...configuration
+}) => {
+    const rootNode = useChart(chart, data, configuration, { createTooltip });
 
-        /**
-         * Gets or Sets the colorSchema of the chart. The first color from the array will be applied to range bars (the wider bars). The second color from the array will be applied to measure bars (the narrow bars) and the third to the marker lines.
-         */
-        colorSchema: PropTypes.arrayOf(PropTypes.string),
+    return <div className="bullet-container" ref={rootNode} />;
+};
 
-        /**
-         * Gets or Sets the subtitle for measure identifier range.
-         */
-        customSubtitle: PropTypes.string,
-
-        /**
-         * Gets or Sets the title for measure identifier range.
-         */
-        customTitle: PropTypes.string,
-
-        /**
-         * Gets or Sets the height of the chart
-         */
-        height: PropTypes.number,
-
-        /**
-         * Gets or Sets the isReverse status of the chart. If true, the elements will be rendered in reverse order.
-         */
-        isReverse: PropTypes.bool,
-
-        /**
-         * Gets or Sets the margin of the chart
-         */
-        margin: PropTypes.shape({
-            top: PropTypes.number,
-            bottom: PropTypes.number,
-            left: PropTypes.number,
-            right: PropTypes.number,
-        }),
-
-        /**
-         * Gets or Sets the number format of the bar chart
-         */
-        numberFormat: PropTypes.string,
-
-        /**
-         * Space between axis and chart
-         */
-        paddingBetweenAxisAndChart: PropTypes.number,
-
-        /**
-         * Gets or Sets the starting point of the capacity range.
-         * Default is 0.5
-         */
-        startMaxRangeOpacity: PropTypes.number,
-
-        /**
-         * Gets or Sets the number of ticks of the x axis on the chart
-         * Default is 5
-         */
-        ticks: PropTypes.number,
-
-        /**
-         * Gets or Sets the width of the chart
-         */
-        width: PropTypes.number,
-
-        /**
-         * Internally used, do not overwrite.
-         *
-         * @ignore
-         */
-        chart: PropTypes.object,
-    };
-
-    static defaultProps = {
-        chart: BulletWrapper,
-        createTooltip: () => null,
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.setRef = this.setRef.bind(this);
-    }
-
-    componentDidMount() {
-        const { data } = this.props;
-
-        if (data !== null) {
-            this.createChart();
-        }
-    }
-
-    componentDidUpdate() {
-        const { createTooltip } = this.props;
-
-        if (!this.chart) {
-            this.createChart();
-        } else {
-            this.updateChart();
-            createTooltip();
-        }
-    }
-
-    componentWillUnmount() {
-        const { chart } = this.props;
-
-        chart.destroy(this.rootNode);
-    }
-
-    createChart() {
-        const { chart, data } = this.props;
-
-        this.chart = chart.create(
-            this.rootNode,
-            data,
-            this.getChartConfiguration()
-        );
-    }
-
-    updateChart() {
-        const { chart, data } = this.props;
-
-        chart.update(
-            this.rootNode,
-            data,
-            this.getChartConfiguration(),
-            this.chart
-        );
-    }
+Bullet.propTypes = {
+    /**
+     * Internally used, do not overwrite.
+     */
+    data: PropTypes.arrayOf(PropTypes.any),
 
     /**
-     * We want to remove the chart and data from the props in order to have a configuration object
-     * @return {Object} Configuration object for the chart
+     * Gets or Sets the colorSchema of the chart. The first color from the array will be applied to range bars (the wider bars). The second color from the array will be applied to measure bars (the narrow bars) and the third to the marker lines.
      */
-    getChartConfiguration() {
-        let configuration = { ...this.props };
+    colorSchema: PropTypes.arrayOf(PropTypes.string),
 
-        delete configuration.data;
-        delete configuration.chart;
-        delete configuration.createTooltip;
+    /**
+     * Gets or Sets the subtitle for measure identifier range.
+     */
+    customSubtitle: PropTypes.string,
 
-        return configuration;
-    }
+    /**
+     * Gets or Sets the title for measure identifier range.
+     */
+    customTitle: PropTypes.string,
 
-    setRef(componentNode) {
-        this.rootNode = componentNode;
-    }
+    /**
+     * Gets or Sets the height of the chart
+     */
+    height: PropTypes.number,
 
-    render() {
-        return <div className="bullet-container" ref={this.setRef} />;
-    }
-}
+    /**
+     * Gets or Sets the isReverse status of the chart. If true, the elements will be rendered in reverse order.
+     */
+    isReverse: PropTypes.bool,
+
+    /**
+     * Gets or Sets the margin of the chart
+     */
+    margin: PropTypes.shape({
+        top: PropTypes.number,
+        bottom: PropTypes.number,
+        left: PropTypes.number,
+        right: PropTypes.number,
+    }),
+
+    /**
+     * Gets or Sets the number format of the bar chart
+     */
+    numberFormat: PropTypes.string,
+
+    /**
+     * Space between axis and chart
+     */
+    paddingBetweenAxisAndChart: PropTypes.number,
+
+    /**
+     * Gets or Sets the starting point of the capacity range.
+     * Default is 0.5
+     */
+    startMaxRangeOpacity: PropTypes.number,
+
+    /**
+     * Gets or Sets the number of ticks of the x axis on the chart
+     * Default is 5
+     */
+    ticks: PropTypes.number,
+
+    /**
+     * Gets or Sets the width of the chart
+     */
+    width: PropTypes.number,
+
+    /**
+     * Internally used, do not overwrite.
+     *
+     * @ignore
+     */
+    chart: PropTypes.object,
+
+    /**
+     * Internally used, do not overwrite.
+     *
+     * @ignore
+     */
+    createTooltip: PropTypes.func,
+};
 
 export default Bullet;
