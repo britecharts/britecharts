@@ -14,7 +14,6 @@
  */
 export const LEGACY_DEFAULT_PROPS = [
     'Bullet',
-    'GroupedBar',
     'Legend',
     'ScatterPlot',
     'Sparkline',

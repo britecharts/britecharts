@@ -104,3 +104,6 @@ export const lineWithRef = <Line {...lineProps} ref={someRef} />;
 export const donutWithRef = <Donut {...donutProps} ref={someRef} />;
 // @ts-expect-error Bar is a function component: it takes no ref
 export const barWithRef = <Bar {...barProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error GroupedBar is a function component: it takes no ref
+export const groupedBarWithRef = <GroupedBar {...groupedBarProps} ref={someRef} />;
