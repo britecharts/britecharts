@@ -6,9 +6,9 @@
 > `@britecharts/react` is a package that allows you use [Britecharts][britecharts] within [React][react] applications.
 
 ## Usage
-`@britecharts/react` components are used just like any other stateless React component. You pass in some props, and it renders a chart:
+Every chart in `@britecharts/react` is a function component: you pass in some props, and it renders a chart.
 
-```js
+```jsx
 import { Bar } from '@britecharts/react';
 
 const data = [
@@ -30,10 +30,63 @@ const data = [
     data={data}
     width={400}
     isHorizontal
->
+/>
 ```
 
 Check our [Storybook][storybook] for more examples and check the source to copy/paste code.
+
+### Loading data
+
+`data` is required. Pass `null` while it loads: nothing is drawn until it arrives, and the chart is drawn as soon as it does. Leaving `data` out, or passing `undefined`, is an error (and a type error, too).
+
+```jsx
+<Bar data={isLoading ? null : data} />
+```
+
+### Updating a chart
+
+A chart is redrawn when its props change, and only then. On every render the data and each configuration value are compared with what was last drawn, so a re-render with the same props costs nothing. The consequence is that **the data has to be a new array or object to be redrawn**: mutating it in place and re-rendering with the same reference does nothing.
+
+```jsx
+setData([...data, newPoint]); // redraws
+data.push(newPoint);
+setData(data); // does not: same array, nothing changed
+```
+
+### No instance, no ref
+
+Function components have no instance to point a `ref` at, so a `ref` on a chart is not accepted (the typings say so). A chart is drawn into a `<div>` the component owns, and removes what it drew when it unmounts.
+
+### Tooltips
+
+A `Tooltip` wraps the chart it decorates: give it a `render` prop that returns the chart, and pass on the props it hands you, which are what connect the two.
+
+```jsx
+import { Line, Tooltip } from '@britecharts/react';
+
+<Tooltip
+    data={data}
+    render={(props) => <Line {...props} />}
+    topicLabel="topics"
+    title="A title"
+/>
+```
+
+### Responsive charts
+
+`ResponsiveContainer` hands its `render` prop the width it has measured, and measures again when the window is resized. `withResponsiveness` does the same for a component you wrap, as its `width` prop (a `width` you pass yourself wins).
+
+```jsx
+import { Line, ResponsiveContainer, withResponsiveness } from '@britecharts/react';
+
+<ResponsiveContainer
+    render={({ width }) => <Line data={data} width={width} />}
+/>
+
+const ResponsiveLine = withResponsiveness(Line);
+
+<ResponsiveLine data={data} />
+```
 
 ## API
 Each component's API is a reflection of [Britecharts][britecharts] charts and their APIs. They also have a bunch of React specific props, and there are some changes due to the declarative way of building with React. 
@@ -52,6 +105,7 @@ The complete set of components is in progress; the following components are curr
 - Stacked Bar charts [(API)][stackedBarChartAPI]
 - Tooltips [(API)][tooltipAPI], wrapping the line, stacked area, stacked bar and grouped bar charts with a list of values, and the bar, scatter plot and heatmap charts with a single value (the mini tooltip)
 - Legends [(API)][legendAPI]
+- The `ResponsiveContainer` component and the `withResponsiveness` function, described above
 
 The following components haven't been adapted yet from Britecharts:
 - Brush charts
@@ -78,16 +132,15 @@ Each component is also published on its own, in UMD format (`dist/umd/charts/<Co
 
 ### Supported React versions
 
-`peerDependencies` allows `react` and `react-dom` `>=15`, and the components
-themselves use no API newer than that. Be aware, though, that the test suite
-still runs on Enzyme, whose last adapter targets React 16 — so **React 16 is the
-only version covered by our tests**. React 17, 18 and 19 are expected to work
-and are not known to break, but that is not something we verify on every commit.
-If you hit a version-specific problem, please open an issue; it helps us
-prioritise moving the specs to React Testing Library.
+`peerDependencies` requires `react` and `react-dom` `>=16.8`: the components use hooks, which arrived in that release. What is actually verified on every commit:
+
+- **React 16.14**, by the unit tests, which run on Enzyme, whose last adapter targets React 16.
+- **React 19**, in a real browser: CI packs the package the way a release does, installs it into a React 19 project, and loads it in production and in a development build under `StrictMode`, which runs every effect's setup, cleanup and setup again.
+
+React 17 and 18 are expected to work and are not exercised. If you hit a version-specific problem, please open an issue; it helps us prioritise moving the specs to React Testing Library.
 
 ## Acknowledgments
-For this project, we have followed the approach called ‘Mapping Lifecycle methods’ based on [Nicholas Hery's article][integration-article]. We want to recognize all the contributors in the parent project [Britecharts][britecharts].
+For this project, we have followed the approach called ‘Mapping Lifecycle methods’ based on [Nicholas Hery's article][integration-article]: a chart's `create`, `update` and `destroy` are called from the component's mount, update and unmount, which one internal hook now does for every chart. We want to recognize all the contributors in the parent project [Britecharts][britecharts].
 
 ## See Also
 - [Documentation Homepage][homepage]
@@ -100,7 +153,7 @@ If you need to use one of the missing charts, check out our [how-to guide for cr
 Note that the aim of this project is to allow the usage of Britecharts within your React applications. For that, we are ‘wrapping’ Britecharts with `@britecharts/wrappers`. This means that **any new features need to first be implemented on Britecharts**. Only then you could update the props and logic that passes in the configuration.
 
 ### Roadmap
-Our idea for the short term is to update this package to use TypeScript natively. For that, we already have an initial version that we need to polish and reproduce. [Let us know][d3Slack] if you want to help with it.
+The typings are hand-written `.d.ts` declarations, checked in CI by a TypeScript project that consumes the packed package. Our idea for the short term is to write the package in TypeScript natively. [Let us know][d3Slack] if you want to help with it.
 
 [react]: https://react.dev/
 [integration-article]: http://nicolashery.com/integrating-d3js-visualizations-in-a-react-app/

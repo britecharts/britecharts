@@ -125,6 +125,9 @@ Cover the whole contract: `create`, `update`, `destroy`; the validation errors (
 
 React is **16.14 with enzyme** here, not React Testing Library. Do not introduce RTL or `@testing-library/*` into this package.
 
+- **Why, as of 2026-09-20:** the React devDependency is pinned to 16.14, and Enzyme's last adapter targets React 16, so the whole suite runs on that pair. `@testing-library/react` v12.1.5 is the last line that supports React 16; v13 and later need React 18. Adopting RTL now would mean picking a version that is already a dead end, and a second migration when React moves. The package README tells users the same limit.
+- **What lifts it:** upgrading the test rig to React 18 (the `react` and `react-dom` devDependencies, replacing `enzyme` and `enzyme-adapter-react-16`). Then every spec moves to RTL together, in one change, not one file at a time. Until that lands, keep to enzyme even where RTL would read better; do not write the new spec in RTL "to be ready".
+
 ```jsx
 import React from 'react';
 import { mount } from 'enzyme';
@@ -140,6 +143,15 @@ The component's job is to delegate to its wrapper, so that is what you assert:
 - Assert on `createSpy.mock.calls[0][n]` for the container, data and configuration arguments.
 - `wrapper.setProps({...})` drives the update path; `wrapper.unmount()` drives destroy.
 - For rendered output use `wrapper.render().find('.bar-load-state').length` — the loading state is the usual case.
+
+The components are function components on hooks (there are no classes left), which changes how you test them:
+
+- There is no instance: no `wrapper.instance()`, `wrapper.state()` or `wrapper.setState()`. Reach the DOM with `getDOMNode()`, and drive state through the public contract. For `Tooltip`, capture the props it hands the chart inside `render`, and call them (`customMouseOver`, `customMouseMove`) inside `act()` from `react-dom/test-utils`.
+- Effects are layout effects, which enzyme's `mount`, `setProps` and `unmount` flush without `act()`. Wrap only what triggers a state update from outside React.
+- A re-render whose props did not change does **not** redraw the chart: props are compared with the last drawing. To test an update, change a prop to a new value (a new array or object for `data`), never mutate in place.
+- `jest.setup.js` fails any test that logs `console.error` or `console.warn`, prop-type warnings included, unless it is on its short commented allowlist. Restore only your own spies with `mockRestore()`; never `jest.restoreAllMocks()`, which also undoes the setup file's console spies and breaks every test's teardown.
+- A component's default wrapper (`chart = BarWrapper`) is a destructured default, and React 19 ignores `defaultProps` on function components: `src/charts/defaultWrapper.spec.js` covers it for every chart, and `sourceContract.spec.js` forbids `defaultProps`, classes, `useEffect(` and class fields.
+- `yarn test` in this package enforces coverage thresholds (`--coverageThreshold` in its `test` script). Do not lower them; add tests.
 
 ## Workflow
 
