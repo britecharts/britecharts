@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 
 export interface SparklineProps {
     /**
@@ -117,8 +117,11 @@ export interface SparklineProps {
      * Internally used, do not overwrite.
      *
      * @ignore
+     * @internal
      */
     createTooltip?: Function;
 }
 
-export default class Sparkline extends Component<SparklineProps> {}
+declare const Sparkline: FunctionComponent<SparklineProps>;
+
+export default Sparkline;
