@@ -18,6 +18,24 @@ describe('bar Chart', () => {
             });
         });
 
+        // A flag that is turned back off has to reach the chart: false used to
+        // be skipped, so isLoading={false} could never end a loading state
+        describe('when isLoading turns false', () => {
+            it('should end the loading state', () => {
+                const wrapper = mount(<Bar data={[]} isLoading={true} />);
+
+                wrapper.setProps({
+                    data: barData.withLetters(),
+                    isLoading: false,
+                });
+
+                const expected = 0;
+                const actual = wrapper.render().find('.bar-load-state').length;
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
         describe('when data passed in', () => {
             let createSpy;
 
