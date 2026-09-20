@@ -54,9 +54,9 @@ describe('package surface', () => {
         ).toEqual([]);
     });
 
-    // Sparkline is exported without a file extension. Fixed in Phase 5,
-    // when the entry file is rewritten: flip this to `it` then.
-    it.failing('should export every component with a file extension', () => {
+    // Every export names its file with the extension: the ES module entry is
+    // read by bundlers and by Node, and only some of them add it for you.
+    it('should export every component with a file extension', () => {
         expect(reExports.filter(({ from }) => !/\.js$/.test(from))).toEqual([]);
     });
 });

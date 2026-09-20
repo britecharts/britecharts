@@ -7,9 +7,10 @@ import useChart from './useChart';
 /**
  * The hook is the one place eleven components get their lifecycle from, so it
  * is tested directly against a fake wrapper of spies. The cases named "defect
- * N" are the twelve ways the abandoned hooks port of Bullet
- * (TS-wip/ComponentDemo.tsx) went wrong, so the same mistakes fail here by
- * name before that file is deleted.
+ * N" are the twelve ways the abandoned hooks port of Bullet went wrong (it was
+ * packages/react/TS-wip/ComponentDemo.tsx, now deleted: see
+ * `git show f6c738d8:packages/react/TS-wip/ComponentDemo.tsx`), so the same
+ * mistakes fail here by name.
  */
 const makeWrapper = () => {
     const instance = { name: 'the chart instance' };
