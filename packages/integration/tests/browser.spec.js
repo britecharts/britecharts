@@ -117,6 +117,13 @@ for (const [id, url, how, expects] of PAGES) {
             await expect(page.locator('.tooltip-line svg.line-chart path.line')).toHaveCount(topics);
             await expect(page.locator('.responsive-line svg.line-chart path.line')).toHaveCount(topics);
 
+            // The tooltip is drawn once into the chart it wraps: none means it was
+            // not (re)created after a remount, two means it was created twice.
+            await expect(
+                page.locator('.tooltip-line svg.line-chart .britechart-tooltip'),
+                'the Tooltip should draw exactly one tooltip into its chart'
+            ).toHaveCount(1);
+
             // The container hands over its measured width after mount.
             const width = await page
                 .locator('.responsive-line svg.line-chart')

@@ -125,3 +125,6 @@ export const bulletWithRef = <Bullet {...bulletProps} ref={someRef} />;
 // prettier-ignore
 // @ts-expect-error Legend is a function component: it takes no ref
 export const legendWithRef = <Legend {...legendProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error Tooltip is a function component: it takes no ref
+export const tooltipWithRef = <Tooltip {...tooltipProps} ref={someRef} />;
