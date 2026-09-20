@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 
 export interface LineProps {
     /**
@@ -186,8 +186,11 @@ export interface LineProps {
      * Internally used, do not overwrite.
      *
      * @ignore
+     * @internal
      */
     createTooltip?: Function;
 }
 
-export default class Line extends Component<LineProps> {}
+declare const Line: FunctionComponent<LineProps>;
+
+export default Line;

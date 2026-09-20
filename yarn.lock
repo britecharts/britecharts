@@ -3438,8 +3438,8 @@ __metadata:
     webpack-merge: 4.1.4
   peerDependencies:
     prop-types: ">=15"
-    react: ">=15"
-    react-dom: ">=15"
+    react: ">=16.8"
+    react-dom: ">=16.8"
   languageName: unknown
   linkType: soft
 

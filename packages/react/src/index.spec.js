@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import * as exported from './index';
+import { LEGACY_DEFAULT_PROPS } from './legacyComponents.fixtures';
 
 const source = fs.readFileSync(path.join(__dirname, 'index.js'), 'utf8');
 
@@ -16,32 +17,6 @@ const reExports = [
 const components = reExports
     .map(({ name }) => name)
     .filter((name) => /^[A-Z]/.test(name));
-
-/**
- * The components that still declare `static defaultProps`. A ratchet: each
- * conversion of a class component to a function deletes exactly one line, so
- * a component left half-converted fails loudly at every intermediate state
- * instead of relying on a reviewer to notice. Empty when the migration is
- * done.
- *
- * Note what this cannot catch: React 16.14 still honours `defaultProps` on
- * function components, so under jest a half-done conversion (defaultProps left
- * in place) behaves exactly like a finished one. This list is what stands
- * between such a component and React 19, which ignores it silently.
- */
-const LEGACY_DEFAULT_PROPS = [
-    'Bar',
-    'Bullet',
-    'Donut',
-    'GroupedBar',
-    'Legend',
-    'Line',
-    'ScatterPlot',
-    'Sparkline',
-    'StackedArea',
-    'StackedBar',
-    'Tooltip',
-];
 
 describe('package surface', () => {
     it('should find the components exported from the entry file', () => {

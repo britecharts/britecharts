@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 
 export interface DonutChartProps {
     /**
@@ -134,4 +134,6 @@ export interface DonutChartProps {
     chart?: any;
 }
 
-export default class Donut extends Component<DonutChartProps> {}
+declare const Donut: FunctionComponent<DonutChartProps>;
+
+export default Donut;

@@ -295,6 +295,39 @@ describe('tooltip', () => {
             expect(actual).toEqual(expected);
         });
 
+        // The tooltip re-renders on every pointer move, since its state
+        // changes. The chart it wraps is built from the props only, so it must
+        // be handed the same element and left alone: rebuilding it there would
+        // redraw the whole chart underneath on each move.
+        it('should not redraw the chart underneath while the pointer moves', () => {
+            const child = {};
+            const updateSpy = jest.spyOn(LineWrapper, 'update');
+
+            mount(
+                <Tooltip
+                    data={lineData.oneSet()}
+                    render={captureChildProps(child, renderLine)}
+                    topicLabel="topics"
+                />
+            );
+
+            act(() => child.props.customMouseOver());
+            [10, 30, 50].forEach((x) => {
+                act(() =>
+                    child.props.customMouseMove(
+                        dataPoint,
+                        [x, 20],
+                        [600, 300],
+                        colorMap
+                    )
+                );
+            });
+
+            expect(updateSpy).not.toHaveBeenCalled();
+
+            updateSpy.mockRestore();
+        });
+
         it('should keep a single tooltip when the chart receives new props', () => {
             const wrapper = mount(
                 <Tooltip
