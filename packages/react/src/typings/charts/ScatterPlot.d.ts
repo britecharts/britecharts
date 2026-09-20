@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 import { LocalObject } from '@britecharts/core';
 
 export interface ScatterPlotProps {
@@ -193,8 +193,11 @@ export interface ScatterPlotProps {
      * Internally used, do not overwrite.
      *
      * @ignore
+     * @internal
      */
     createTooltip?: Function;
 }
 
-export default class ScatterPlot extends Component<ScatterPlotProps> {}
+declare const ScatterPlot: FunctionComponent<ScatterPlotProps>;
+
+export default ScatterPlot;

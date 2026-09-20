@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 
 export interface StackedAreaProps {
     /**
@@ -177,8 +177,11 @@ export interface StackedAreaProps {
      * Internally used, do not overwrite.
      *
      * @ignore
+     * @internal
      */
     createTooltip?: Function;
 }
 
-export default class StackedArea extends Component<StackedAreaProps> {}
+declare const StackedArea: FunctionComponent<StackedAreaProps>;
+
+export default StackedArea;

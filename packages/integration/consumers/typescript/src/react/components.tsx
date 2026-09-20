@@ -102,3 +102,29 @@ const someRef = { current: null };
 export const lineWithRef = <Line {...lineProps} ref={someRef} />;
 // @ts-expect-error Donut is a function component: it takes no ref
 export const donutWithRef = <Donut {...donutProps} ref={someRef} />;
+// @ts-expect-error Bar is a function component: it takes no ref
+export const barWithRef = <Bar {...barProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error GroupedBar is a function component: it takes no ref
+export const groupedBarWithRef = <GroupedBar {...groupedBarProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error ScatterPlot is a function component: it takes no ref
+export const scatterPlotWithRef = <ScatterPlot {...scatterPlotProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error Sparkline is a function component: it takes no ref
+export const sparklineWithRef = <Sparkline {...sparklineProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error StackedArea is a function component: it takes no ref
+export const stackedAreaWithRef = <StackedArea {...stackedAreaProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error StackedBar is a function component: it takes no ref
+export const stackedBarWithRef = <StackedBar {...stackedBarProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error Bullet is a function component: it takes no ref
+export const bulletWithRef = <Bullet {...bulletProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error Legend is a function component: it takes no ref
+export const legendWithRef = <Legend {...legendProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error Tooltip is a function component: it takes no ref
+export const tooltipWithRef = <Tooltip {...tooltipProps} ref={someRef} />;

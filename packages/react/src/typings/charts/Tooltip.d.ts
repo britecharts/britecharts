@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 
 export interface TooltipProps {
     /**
@@ -148,4 +148,6 @@ export interface TooltipProps {
     customMouseOver?: () => void;
 }
 
-export default class Tooltip extends Component<TooltipProps> {}
+declare const Tooltip: FunctionComponent<TooltipProps>;
+
+export default Tooltip;

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 
 export interface LegendProps {
     /**
@@ -90,4 +90,6 @@ export interface LegendProps {
     chart?: any;
 }
 
-export default class Legend extends Component<LegendProps> {}
+declare const Legend: FunctionComponent<LegendProps>;
+
+export default Legend;

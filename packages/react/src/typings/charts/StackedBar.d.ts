@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 import { LocalObject } from '@britecharts/core';
 
 export interface StackedBarProps {
@@ -162,8 +162,11 @@ export interface StackedBarProps {
      * Internally used, do not overwrite.
      *
      * @ignore
+     * @internal
      */
     createTooltip?: Function;
 }
 
-export default class StackedBar extends Component<StackedBarProps> {}
+declare const StackedBar: FunctionComponent<StackedBarProps>;
+
+export default StackedBar;

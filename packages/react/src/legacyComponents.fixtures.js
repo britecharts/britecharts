@@ -13,13 +13,4 @@
  * Not shipped (*.fixtures.js is excluded from the package).
  */
 export const LEGACY_DEFAULT_PROPS = [
-    'Bar',
-    'Bullet',
-    'GroupedBar',
-    'Legend',
-    'ScatterPlot',
-    'Sparkline',
-    'StackedArea',
-    'StackedBar',
-    'Tooltip',
 ];

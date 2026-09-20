@@ -178,11 +178,11 @@ describe('bar Chart', () => {
         });
     });
 
-    // Deliberate behaviour, pinned so that its change is one named diff: every
-    // re-render redraws the chart, even when the props are referentially
-    // identical, which is how a consumer who mutates their data array in place
-    // gets a redraw today. The shallow-compare guard in the hooks version
-    // (decision 04) removes it and needs a line in the changelog.
+    // Flipped by Bar's conversion to a function component (decision 04): it
+    // used to redraw on every re-render, even with referentially identical
+    // props, which is how a consumer who mutated their data array in place got a
+    // redraw. The props are now compared with the last drawing, so no update is
+    // made; a new array or object is needed. Named in the changeset.
     describe('re-rendering with props that did not change', () => {
         let updateSpy;
 
@@ -195,15 +195,14 @@ describe('bar Chart', () => {
             updateSpy.mockRestore();
         });
 
-        it('should redraw with the data as mutated in place', () => {
+        it('should not redraw the data mutated in place', () => {
             const data = barData.withLetters();
             const wrapper = mount(<Bar chart={BarWrapper} data={data} />);
 
             data[0].value = 999;
             wrapper.setProps({ chart: BarWrapper, data });
 
-            expect(updateSpy).toHaveBeenCalledTimes(1);
-            expect(updateSpy.mock.calls[0][1][0].value).toEqual(999);
+            expect(updateSpy).not.toHaveBeenCalled();
         });
     });
 });

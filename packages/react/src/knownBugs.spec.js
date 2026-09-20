@@ -3,13 +3,15 @@ import { mount } from 'enzyme';
 
 import Bar from './charts/bar/Bar';
 import barData from './charts/bar/barChart.fixtures';
-import ResponsiveContainer from './charts/helpers/responsiveContainer';
 
 /**
  * Standing markers for bugs that are known and deliberately fixed much later
  * in the hooks migration. `it.failing` passes while the bug is present and
  * fails the moment it is fixed, so whoever fixes it has to come here, flip the
  * marker to `it`, and say so in the PR. Nothing else may touch these bugs.
+ *
+ * (The marker for ResponsiveContainer without a render prop was flipped, and
+ * moved to helpers/responsive.spec.js, when it was fixed.)
  */
 describe('known bugs', () => {
     // Fixed last, on its own: it is the one change that moves Chromatic
@@ -32,16 +34,5 @@ describe('known bugs', () => {
                 );
             }
         );
-    });
-
-    // Fixed with ResponsiveContainer's conversion. `render` is optional in
-    // propTypes but is called unconditionally.
-    describe('ResponsiveContainer', () => {
-        it.failing('should render without a render prop', () => {
-            // React logs the render error; it is what this marker is about.
-            jest.spyOn(console, 'error').mockImplementation(() => {});
-
-            expect(() => mount(<ResponsiveContainer />)).not.toThrow();
-        });
     });
 });

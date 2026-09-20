@@ -18,7 +18,7 @@
 | --- | --- | --- | --- |
 | m2 | `helpers/useChart.js` | a chart is only ever created on the first render (the recovery branch is gone) | `useChart.spec.js`, `Line.lifecycle.spec.js` |
 | m3 | `helpers/useChart.js` | `createTooltip` is also called after the creation | same |
-| m6 | `tooltip/Tooltip.js` | the wrapped chart is rebuilt on every render, not when the props change | `Tooltip.spec.js` |
+| m6 | `tooltip/Tooltip.js` | the wrapped chart is rebuilt on every render, not when the props change | `Tooltip.spec.js` (the pointer-move guard) |
 
 ## Keeping the patches alive
 
@@ -31,4 +31,4 @@ git checkout -- packages/react/src/charts/helpers/useChart.js
 git apply --check packages/react/testing/mutants/<name>.patch   # from the repo root
 ```
 
-m6 targets the class version of `Tooltip`. When `Tooltip` becomes a function component its patch changes with it (the plan's form is a `useMemo` for the child element), and so does the spec it is caught by.
+m6 targets `Tooltip`, and was regenerated when `Tooltip` became a function component: the wrapped chart is rebuilt on every render instead of only when the props change. The plan's own wording for it is "use `useMemo` for the child memo". That variant is behaviourally equivalent for a test suite, because React does not discard a memo in practice, so it cannot be killed; the ref pair keyed on props identity, which is what the component uses, is what the mutant breaks.

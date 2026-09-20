@@ -31,7 +31,7 @@ const relative = (file) => path.relative(srcRoot, file);
 // Every `export { default as Name } from '...'` line of the entry file
 const components = [
     ...read(path.join(srcRoot, 'index.js')).matchAll(
-        /export \{ default as ([A-Z]\w*) \} from '([^']+)'/g
+        /export \{ default as (\w+) \} from '([^']+)'/g
     ),
 ].map(([, name, from]) => ({
     name,
@@ -62,15 +62,9 @@ describe('source contract', () => {
         });
     });
 
-    // The charts and the tooltip. ResponsiveContainer lives in helpers/ and has
-    // no defaultProps to put on the legacy list: it is converted on its own,
-    // and joins this check then.
+    // Every component the package exports, the helpers included
     describe.each(
-        components.filter(
-            ({ name, file }) =>
-                !LEGACY_DEFAULT_PROPS.includes(name) &&
-                !file.includes(`${path.sep}helpers${path.sep}`)
-        )
+        components.filter(({ name }) => !LEGACY_DEFAULT_PROPS.includes(name))
     )('converted component $name', ({ file }) => {
         const source = read(file);
 
