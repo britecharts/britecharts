@@ -107,3 +107,6 @@ export const barWithRef = <Bar {...barProps} ref={someRef} />;
 // prettier-ignore
 // @ts-expect-error GroupedBar is a function component: it takes no ref
 export const groupedBarWithRef = <GroupedBar {...groupedBarProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error ScatterPlot is a function component: it takes no ref
+export const scatterPlotWithRef = <ScatterPlot {...scatterPlotProps} ref={someRef} />;
