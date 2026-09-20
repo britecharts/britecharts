@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 import { LocalObject } from '@britecharts/core';
 
 export interface BarChartProps {
@@ -190,8 +190,11 @@ export interface BarChartProps {
      * Internally used, do not overwrite.
      *
      * @ignore
+     * @internal
      */
     createTooltip?: Function;
 }
 
-export default class Bar extends Component<BarChartProps> {}
+declare const Bar: FunctionComponent<BarChartProps>;
+
+export default Bar;

@@ -102,3 +102,5 @@ const someRef = { current: null };
 export const lineWithRef = <Line {...lineProps} ref={someRef} />;
 // @ts-expect-error Donut is a function component: it takes no ref
 export const donutWithRef = <Donut {...donutProps} ref={someRef} />;
+// @ts-expect-error Bar is a function component: it takes no ref
+export const barWithRef = <Bar {...barProps} ref={someRef} />;
