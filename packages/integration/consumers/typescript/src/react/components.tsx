@@ -116,3 +116,6 @@ export const sparklineWithRef = <Sparkline {...sparklineProps} ref={someRef} />;
 // prettier-ignore
 // @ts-expect-error StackedArea is a function component: it takes no ref
 export const stackedAreaWithRef = <StackedArea {...stackedAreaProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error StackedBar is a function component: it takes no ref
+export const stackedBarWithRef = <StackedBar {...stackedBarProps} ref={someRef} />;

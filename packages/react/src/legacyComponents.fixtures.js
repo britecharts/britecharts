@@ -15,6 +15,5 @@
 export const LEGACY_DEFAULT_PROPS = [
     'Bullet',
     'Legend',
-    'StackedBar',
     'Tooltip',
 ];
