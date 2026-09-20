@@ -3,13 +3,18 @@ import { FunctionComponent } from 'react';
 export interface DonutChartProps {
     /**
      * Internally used, do not overwrite.
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
-    data: {
-        quantity: number;
-        percentage?: number;
-        name: string;
-        id?: number;
-    }[];
+    data:
+        | {
+              quantity: number;
+              percentage?: number;
+              name: string;
+              id?: number;
+          }[]
+        | null;
 
     /**
      * Gets or Sets the duration of the animation

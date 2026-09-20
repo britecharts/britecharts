@@ -1145,6 +1145,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/parser@npm:^7.17.5, @babel/parser@npm:^7.23.9":
+  version: 7.29.9
+  resolution: "@babel/parser@npm:7.29.9"
+  dependencies:
+    "@babel/types": ^7.29.8
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: e6a9c2dfade8c81b842d1db89fc9fac7258890b3de0f9a7e4b294b178ba698b900382d09d79862444a7dc6777cd153d70ebef59b966f0eb6e810b8f03933aa35
+  languageName: node
+  linkType: hard
+
 "@babel/parser@npm:^7.18.10, @babel/parser@npm:^7.20.1, @babel/parser@npm:^7.20.2":
   version: 7.20.3
   resolution: "@babel/parser@npm:7.20.3"
@@ -1162,17 +1173,6 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: c8bbea3c87b8593e78e8901841b068cc004ece24bf3ee44e11b4a3e04f10dab513125ca290c2cc04ba981399b662dbebb0a675016417d600e99272e86d59b375
-  languageName: node
-  linkType: hard
-
-"@babel/parser@npm:^7.23.9":
-  version: 7.29.9
-  resolution: "@babel/parser@npm:7.29.9"
-  dependencies:
-    "@babel/types": ^7.29.8
-  bin:
-    parser: ./bin/babel-parser.js
-  checksum: e6a9c2dfade8c81b842d1db89fc9fac7258890b3de0f9a7e4b294b178ba698b900382d09d79862444a7dc6777cd153d70ebef59b966f0eb6e810b8f03933aa35
   languageName: node
   linkType: hard
 
@@ -1284,7 +1284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-class-properties@npm:^7.0.0, @babel/plugin-proposal-class-properties@npm:^7.16.7":
+"@babel/plugin-proposal-class-properties@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/plugin-proposal-class-properties@npm:7.16.7"
   dependencies:
@@ -3399,6 +3399,7 @@ __metadata:
   resolution: "@britecharts/react@workspace:packages/react"
   dependencies:
     "@babel/core": ^7.17.5
+    "@babel/parser": ^7.17.5
     "@britecharts/core": "workspace:^"
     "@britecharts/wrappers": "workspace:^"
     "@mdx-js/react": ^1.6.22
@@ -11453,7 +11454,6 @@ __metadata:
   dependencies:
     "@babel/core": ^7.17.5
     "@babel/eslint-parser": ^7.12.1
-    "@babel/plugin-proposal-class-properties": ^7.0.0
     "@babel/plugin-transform-async-to-generator": ^7.4.4
     "@babel/plugin-transform-modules-commonjs": ^7.0.0
     "@babel/plugin-transform-runtime": ^7.4.4

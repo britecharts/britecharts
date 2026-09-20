@@ -3,14 +3,19 @@ import { FunctionComponent } from 'react';
 export interface BulletChartProps {
     /**
      * Internally used, do not overwrite.
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
-    data: {
-        ranges: number[];
-        measures: number[];
-        markers: number[];
-        title?: string;
-        subtitle?: string;
-    }[];
+    data:
+        | {
+              ranges: number[];
+              measures: number[];
+              markers: number[];
+              title?: string;
+              subtitle?: string;
+          }[]
+        | null;
 
     /**
      * Gets or Sets the colorSchema of the chart. The first color from the array will be applied to range bars (the wider bars). The second color from the array will be applied to measure bars (the narrow bars) and marker lines.

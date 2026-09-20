@@ -3,12 +3,17 @@ import { FunctionComponent } from 'react';
 export interface StackedAreaProps {
     /**
      * Internally used, do not overwrite.
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
-    data: {
-        date: string;
-        name: string;
-        value: number;
-    }[];
+    data:
+        | {
+              date: string;
+              name: string;
+              value: number;
+          }[]
+        | null;
 
     /**
      * Gets or Sets the duration of the animation

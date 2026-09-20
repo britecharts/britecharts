@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/parser": "^7.17.5",
     "@mdx-js/react": "^1.6.22",
     "@storybook/addon-a11y": "8.6.14",
     "@storybook/addon-essentials": "8.6.14",
@@ -67,16 +68,13 @@
     "start": "webpack-dev-server --env=test --open --hot",
     "storybook": "storybook dev -p 2002 --exact-port",
     "test:watch": "jest --watch --colors",
-    "test": "jest --colors --coverage",
+    "test": "jest --colors --coverage --coverageThreshold='{\"global\":{\"statements\":93,\"branches\":85,\"functions\":93,\"lines\":94},\"./src/charts/helpers/useChart.js\":{\"statements\":95,\"branches\":90,\"functions\":95,\"lines\":95}}'",
     "verify:suite": "node testing/verify-suite.mjs"
   },
   "files": [
     "dist/umd/**",
     "dist/cjs/**",
     "src/**",
-    "!src/templates/**",
-    "!src/tasks/**",
-    "!src/scripts/**",
     "!src/docs/**",
     "!**/*.map",
     "!**/*.spec.js",

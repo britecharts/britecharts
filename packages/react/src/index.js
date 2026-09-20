@@ -5,7 +5,7 @@ export { default as GroupedBar } from './charts/groupedBar/GroupedBar.js';
 export { default as Legend } from './charts/legend/Legend.js';
 export { default as Line } from './charts/line/Line.js';
 export { default as ScatterPlot } from './charts/scatterPlot/ScatterPlot.js';
-export { default as Sparkline } from './charts/sparkline/Sparkline';
+export { default as Sparkline } from './charts/sparkline/Sparkline.js';
 export { default as StackedArea } from './charts/stackedArea/StackedArea.js';
 export { default as StackedBar } from './charts/stackedBar/StackedBar.js';
 

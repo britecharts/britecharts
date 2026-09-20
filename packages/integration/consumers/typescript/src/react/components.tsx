@@ -11,7 +11,9 @@ import {
     Sparkline,
     StackedArea,
     StackedBar,
+    ResponsiveContainer,
     Tooltip,
+    withResponsiveness,
 } from '@britecharts/react';
 import type {
     BarChartProps,
@@ -128,3 +130,38 @@ export const legendWithRef = <Legend {...legendProps} ref={someRef} />;
 // prettier-ignore
 // @ts-expect-error Tooltip is a function component: it takes no ref
 export const tooltipWithRef = <Tooltip {...tooltipProps} ref={someRef} />;
+
+// `data` is required, and null means "not loaded yet": nothing is drawn until
+// it arrives. Leaving it out, or passing undefined, throws at runtime, so it is
+// an error here too. (Declaring it optional would type-check code that crashes.)
+export const loadingBar = <Bar data={null} />;
+export const loadingBullet = <Bullet data={null} />;
+export const loadingDonut = <Donut data={null} />;
+export const loadingGroupedBar = <GroupedBar data={null} />;
+export const loadingLegend = <Legend data={null} />;
+export const loadingLine = <Line data={null} />;
+export const loadingScatterPlot = <ScatterPlot data={null} />;
+export const loadingSparkline = <Sparkline data={null} />;
+export const loadingStackedArea = <StackedArea data={null} />;
+export const loadingStackedBar = <StackedBar data={null} />;
+// @ts-expect-error data is required, even if it is only null
+export const omittedData = <Bar />;
+// @ts-expect-error undefined is not null: it would be drawn, and throw
+export const undefinedData = <Bar data={undefined} />;
+
+// The two responsive helpers: the container hands its content the measured
+// width, and the wrapper takes over the `width` prop of what it wraps.
+export const responsiveContainer = (
+    <ResponsiveContainer
+        render={({ width }) => <Line data={null} width={width} />}
+    />
+);
+const ResponsiveLine = withResponsiveness(Line);
+export const responsiveLine = <ResponsiveLine data={null} />;
+export const responsiveLineExplicitWidth = (
+    <ResponsiveLine data={null} width={300} />
+);
+// @ts-expect-error render is a function
+export const wrongRender = <ResponsiveContainer render="nope" />;
+// @ts-expect-error the wrapped component's other props are still required
+export const wrapperMissingData = <ResponsiveLine />;

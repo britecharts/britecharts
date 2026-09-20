@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { parse } from '@babel/parser';
+
 import { LEGACY_DEFAULT_PROPS } from '../legacyComponents.fixtures';
 
 /**
@@ -81,6 +83,87 @@ describe('source contract', () => {
 
         it('should not use useEffect(', () => {
             expect(source).not.toMatch(/\buseEffect\s*\(/);
+        });
+    });
+
+    // The end state of the migration, and what lets the class-properties Babel
+    // plugin go: no class field is left in anything the package publishes. The
+    // packages ship their `src/` (the `module` entry, and deep imports), and a
+    // toolchain that does not know class fields cannot read one.
+    describe('published source', () => {
+        const packageRoot = path.join(srcRoot, '..');
+        const excludedFolders = JSON.parse(
+            read(path.join(packageRoot, 'package.json')).toString()
+        )
+            .files.filter((entry) => /^!src\/[^*]+\/\*\*$/.test(entry))
+            .map((entry) => path.join(packageRoot, entry.slice(1, -3)));
+
+        const isPublished = (file) =>
+            isSource(path.basename(file)) &&
+            !/DataBuilder\.js$/.test(file) &&
+            !excludedFolders.some((folder) =>
+                file.startsWith(folder + path.sep)
+            );
+
+        const publishedFiles = sourceFilesUnder(srcRoot).filter(isPublished);
+
+        const CLASS_FIELD_NODES = [
+            'ClassProperty',
+            'ClassPrivateProperty',
+            'ClassAccessorProperty',
+            'StaticBlock',
+        ];
+
+        // Every class field in a piece of source, as `Type line`
+        const classFieldsIn = (source) => {
+            const ast = parse(source, {
+                sourceType: 'module',
+                plugins: ['jsx'],
+            });
+            const found = [];
+            const visit = (node) => {
+                if (!node || typeof node.type !== 'string') {
+                    return;
+                }
+                if (CLASS_FIELD_NODES.includes(node.type)) {
+                    found.push(`${node.type} line ${node.loc.start.line}`);
+                }
+                Object.values(node).forEach((child) =>
+                    Array.isArray(child)
+                        ? child.forEach(visit)
+                        : child && typeof child === 'object' && visit(child)
+                );
+            };
+
+            visit(ast.program);
+
+            return found;
+        };
+
+        it('should find the files the package publishes', () => {
+            expect(publishedFiles.length).toBeGreaterThan(10);
+            expect(publishedFiles.map(relative)).toContain('index.js');
+            expect(publishedFiles.map(relative)).not.toContain(
+                path.join('templates', 'Component.js')
+            );
+        });
+
+        it('should notice a class field, or the test below proves nothing', () => {
+            expect(classFieldsIn('class A { x = 1; }')).toHaveLength(1);
+            expect(classFieldsIn('class A { static y = 1; }')).toHaveLength(1);
+            expect(
+                classFieldsIn('class A { constructor() { this.x = 1; } }')
+            ).toHaveLength(0);
+        });
+
+        it('should contain no class field, so no Babel proposal plugin is needed to read it', () => {
+            const offenders = publishedFiles.flatMap((file) =>
+                classFieldsIn(read(file)).map(
+                    (field) => `${relative(file)}: ${field}`
+                )
+            );
+
+            expect(offenders).toEqual([]);
         });
     });
 });

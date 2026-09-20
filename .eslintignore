@@ -1,5 +1,3 @@
-packages/react/src/templates/*.js
-packages/react/src/scripts
 
 packages/docs/build
 packages/docs/scripts
