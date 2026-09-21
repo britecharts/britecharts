@@ -32,3 +32,9 @@ git apply --check packages/react/testing/mutants/<name>.patch   # from the repo 
 ```
 
 m6 targets `Tooltip`, and was regenerated when `Tooltip` became a function component: the wrapped chart is rebuilt on every render instead of only when the props change. The plan's own wording for it is "use `useMemo` for the child memo". That variant is behaviourally equivalent for a test suite, because React does not discard a memo in practice, so it cannot be killed; the ref pair keyed on props identity, which is what the component uses, is what the mutant breaks.
+
+## The chart component contract
+
+`chartComponentContract.js` is not part of the mutation runner: it is the one place the tests every chart component shares are written down (creates into its container with the data and configuration, keeps `chart`, `data` and `createTooltip` out of the configuration, waits for data, updates with the new data and configuration, asks for the tooltip again after an update, destroys with the container on unmount). Each component's own spec calls `describeChartComponent({ Component, wrapper, containerSelector, data, nextData })` from inside its own `describe`, so a chart that breaks the contract fails in its own file, and whatever is particular to it (a loading state, a default prop, chart-specific options) stays written next to the chart, not behind an option of the factory.
+
+It lives here, not in `src`, because everything under `src` is published. A new chart component gets the whole contract with one call.

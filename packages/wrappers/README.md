@@ -40,6 +40,8 @@ BarWrapper.update(container, newData, {}, barInstance);
 
 The wrappers include a lightweight configuration and container validation. 
 
+A configuration value of `undefined` or `null` means "not set" and the chart keeps its own default. Any other value is applied, including the falsy ones: `false`, `0` and `''` reach the chart, so a setting can be turned back off with `{ isLoading: false }`.
+
 In theory, you shouldn't be using this wrappers by themselves, but you might prefer this API (more OO-like) for your vanilla JavaScript projects.
 
 ## API
