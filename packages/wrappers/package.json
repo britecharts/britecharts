@@ -8,8 +8,6 @@
     "d3-selection": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.5",
-    "babel-loader": "^8.2.3",
     "eslint": "7.32.0",
     "jest": "^29.7.0",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
@@ -21,22 +19,7 @@
     "webpack-fix-style-only-entries": "^0.6.1",
     "webpack-merge": "4.2.1"
   },
-  "browserslist": "> 0.25%, not dead",
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env"
-      ]
-    ],
-    "plugins": [
-      [
-        "@babel/plugin-transform-runtime",
-        {
-          "regenerator": false
-        }
-      ]
-    ]
-  },
+  "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
     "build:bundle:cjs": "webpack --env=prodCJSBundleConfig",
     "build:bundle": "webpack --env=prodBundleConfig",

@@ -5,18 +5,6 @@ const constants = require('./webpack.constants');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-exports.babelLoader = () => ({
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: ['babel-loader'],
-            },
-        ],
-    },
-});
-
 exports.istanbulLoader = () => ({
     module: {
         rules: [

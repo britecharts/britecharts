@@ -25,7 +25,6 @@
     "d3-zoom": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.5",
     "@storybook/addon-a11y": "8.6.14",
     "@storybook/addon-essentials": "8.6.14",
     "@storybook/addon-links": "8.6.14",
@@ -33,12 +32,11 @@
     "@storybook/manager-api": "8.6.14",
     "@storybook/theming": "8.6.14",
     "@typescript-eslint/parser": "^4.6.1",
-    "babel-loader": "^8.2.3",
     "babel-plugin-istanbul": "^6.0.0",
     "chromatic": "^6.15.0",
     "css-loader": "3.0.0",
     "d3": "^5.16.0",
-    "es-check": "^6.0.0",
+    "es-check": "^9.8.1",
     "eslint": "7.32.0",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.2.0",
@@ -66,22 +64,7 @@
     "webpack-fix-style-only-entries": "^0.6.1",
     "webpack-merge": "4.2.1"
   },
-  "browserslist": "> 0.25%, not dead",
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env"
-      ]
-    ],
-    "plugins": [
-      [
-        "@babel/plugin-transform-runtime",
-        {
-          "regenerator": false
-        }
-      ]
-    ]
-  },
+  "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "stylelint": {
     "plugins": [
       "stylelint-scss"
@@ -104,9 +87,9 @@
     "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig",
     "build:chartStyles": "webpack --env=prodChartStyles",
-    "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
+    "build:check": "es-check es2020 \"./dist/umd/bundle/core.bundled.min.js\" \"./dist/umd/charts/bar.min.js\"",
     "build:styles": "webpack --env=prodStyles",
-    "build": "yarn run clean && webpack --env=production",
+    "build": "yarn run clean && webpack --env=production && yarn run build:check",
     "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_CORE",
     "clean": "rimraf dist",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
