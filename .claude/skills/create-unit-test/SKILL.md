@@ -13,7 +13,7 @@ Dispatches the `ut-agent` to handle unit test work in Britecharts: writing new s
 |---|---|---|
 | `@britecharts/core` | the rendered SVG and the accessor API | render into a jsdom fixture with `d3-selection`, assert on `.select(...).size()` |
 | `@britecharts/wrappers` | the `create`/`update`/`destroy` contract | mount into a detached `div`, assert on thrown validation errors and DOM data |
-| `@britecharts/react` | the component's delegation to its wrapper | enzyme `mount`, `jest.spyOn` the wrapper's methods |
+| `@britecharts/react` | the component's delegation to its wrapper | `mount` (a Testing Library shim, `testing/mount.js`), `jest.spyOn` the wrapper's methods |
 
 Specs are `<name>.spec.js`, colocated with their source. Sibling workspaces resolve to source via `moduleNameMapper`, so **no build step is needed before testing**.
 

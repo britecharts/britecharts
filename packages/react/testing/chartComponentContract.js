@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount } from './mount';
 
 /**
  * The contract every chart component shares, because every chart component is
@@ -58,7 +58,7 @@ const describeChartComponent = ({
             it('should call the create method of the chart with the container as the first argument', () => {
                 const wrapper = mountChart();
 
-                const expected = wrapper.find(containerSelector).getDOMNode();
+                const expected = wrapper.find(containerSelector);
                 const actual = createSpy().mock.calls[0][0];
 
                 expect(actual).toBe(expected);
@@ -194,7 +194,7 @@ const describeChartComponent = ({
 
                 wrapper.setProps({ data: nextData() });
 
-                const expected = wrapper.find(containerSelector).getDOMNode();
+                const expected = wrapper.find(containerSelector);
                 const actual = updateSpy().mock.calls[0][0];
 
                 expect(actual).toBe(expected);
@@ -255,7 +255,7 @@ const describeChartComponent = ({
 
         it('should call the destroy method of the chart with the container', () => {
             const wrapper = mountChart();
-            const container = wrapper.find(containerSelector).getDOMNode();
+            const container = wrapper.find(containerSelector);
 
             wrapper.unmount();
 

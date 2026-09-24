@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount } from '../../../testing/mount';
 
 import Bar from './Bar';
 import barData from './barChart.fixtures';
@@ -21,7 +21,7 @@ describe('bar Chart', () => {
                 const wrapper = mount(<Bar data={[]} isLoading={true} />);
 
                 const expected = 1;
-                const actual = wrapper.render().find('.bar-load-state').length;
+                const actual = wrapper.findAll('.bar-load-state').length;
 
                 expect(actual).toEqual(expected);
             });
@@ -39,7 +39,7 @@ describe('bar Chart', () => {
                 });
 
                 const expected = 0;
-                const actual = wrapper.render().find('.bar-load-state').length;
+                const actual = wrapper.findAll('.bar-load-state').length;
 
                 expect(actual).toEqual(expected);
             });

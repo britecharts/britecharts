@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount } from '../../../testing/mount';
 
 import Donut from './Donut';
 import donutData from './donutChart.fixtures';

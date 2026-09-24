@@ -131,10 +131,9 @@ Each component is also published on its own, in UMD format (`dist/umd/charts/<Co
 
 `peerDependencies` requires `react` and `react-dom` `>=16.8`: the components use hooks, which arrived in that release. What is actually verified on every commit:
 
-- **React 16.14**, by the unit tests, which run on Enzyme, whose last adapter targets React 16.
-- **React 19**, in a real browser: CI packs the package the way a release does, installs it into a React 19 project, and loads it in production and in a development build under `StrictMode`, which runs every effect's setup, cleanup and setup again.
+- **React 19**, by the unit tests, which now run on React Testing Library, and in a real browser: CI packs the package the way a release does, installs it into a React 19 project, and loads it in production and in a development build under `StrictMode`, which runs every effect's setup, cleanup and setup again.
 
-React 17 and 18 are expected to work and are not exercised. If you hit a version-specific problem, please open an issue; it helps us prioritise moving the specs to React Testing Library.
+React 17 and 18 are expected to work and are not exercised. If you hit a version-specific problem on an older React, please open an issue.
 
 ## Acknowledgments
 For this project, we have followed the approach called ‘Mapping Lifecycle methods’ based on [Nicholas Hery's article][integration-article]: a chart's `create`, `update` and `destroy` are called from the component's mount, update and unmount, which one internal hook now does for every chart. We want to recognize all the contributors in the parent project [Britecharts][britecharts].

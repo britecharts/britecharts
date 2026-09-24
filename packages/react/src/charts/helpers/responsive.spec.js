@@ -1,6 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
+
+import { mount } from '../../../testing/mount';
 
 import Line from '../line/Line';
 import lineData from '../line/lineChart.fixtures';
@@ -59,11 +60,7 @@ describe('responsive helpers', () => {
     // Only what this spec spied on: jest.restoreAllMocks() would also undo the
     // console spies the setup file installs for its fail-on-console check
     afterEach(() => {
-        mounted.splice(0).forEach((wrapper) => {
-            if (wrapper.length) {
-                wrapper.unmount();
-            }
-        });
+        mounted.splice(0).forEach((wrapper) => wrapper.unmount());
         spies.forEach((spy) => spy.mockRestore());
     });
 
@@ -224,25 +221,22 @@ describe('responsive helpers', () => {
         it('should render the component inside a container element', () => {
             const wrapper = mountTracked(<Responsive />);
 
-            expect(
-                wrapper.find('div.responsive-container').hostNodes()
-            ).toHaveLength(1);
-            expect(wrapper.find('.chart')).toHaveLength(1);
+            expect(wrapper.findAll('div.responsive-container')).toHaveLength(1);
+            expect(wrapper.findAll('.chart')).toHaveLength(1);
         });
 
         it('should hand the component the measured width', () => {
             const wrapper = mountTracked(<Responsive />);
 
-            expect(wrapper.find('.chart').text()).toEqual('640');
+            expect(wrapper.find('.chart').textContent).toEqual('640');
         });
 
         it('should hand the component the new width when the window is resized', () => {
             const wrapper = mountTracked(<Responsive />);
 
             resizeWindowTo(600, 420);
-            wrapper.update();
 
-            expect(wrapper.find('.chart').text()).toEqual('420');
+            expect(wrapper.find('.chart').textContent).toEqual('420');
         });
 
         it('should pass the other props on', () => {
@@ -255,7 +249,7 @@ describe('responsive helpers', () => {
         it('should let an explicit width win over the measured one', () => {
             const wrapper = mountTracked(<Responsive width={300} />);
 
-            expect(wrapper.find('.chart').text()).toEqual('300');
+            expect(wrapper.find('.chart').textContent).toEqual('300');
         });
 
         // A pure component: a parent re-rendering with the same props costs
@@ -293,9 +287,8 @@ describe('responsive helpers', () => {
 
             leaving.unmount();
             resizeWindowTo(600, 420);
-            remaining.update();
 
-            expect(remaining.find('.chart').text()).toEqual('420');
+            expect(remaining.find('.chart').textContent).toEqual('420');
         });
 
         it('should not throw when the window is resized after it unmounted', () => {

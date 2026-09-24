@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount } from '../../../testing/mount';
 
 import ScatterPlot from './ScatterPlot';
 import scatterPlotData from './scatterPlotChart.fixtures';
@@ -23,9 +23,9 @@ describe('scatterPlot Chart', () => {
                 );
 
                 const expected = 1;
-                const actual = wrapper
-                    .render()
-                    .find('.scatter-plot-load-state').length;
+                const actual = wrapper.findAll(
+                    '.scatter-plot-load-state'
+                ).length;
 
                 expect(actual).toEqual(expected);
             });
