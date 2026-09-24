@@ -35,10 +35,6 @@ const SKIP = [
     // not by `docs:build`, so they are not in a local build; the deployed ones
     // are still checked through the absolute links the READMEs carry
     `^${BASE.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')}storybook`,
-    // Until 3.0.0 is published, nothing under @britecharts exists on npm or
-    // jsDelivr. Remove these two after the first publish.
-    'npmjs\\.com/package/@britecharts',
-    'cdn\\.jsdelivr\\.net/npm/@britecharts',
 ];
 
 if (!existsSync(path.join(docsDir, 'build', 'index.html'))) {

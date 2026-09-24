@@ -38,7 +38,7 @@ container.datum(barData).call(barChart);
 
 Starting with this bar chart, we want to customize the color palette. For that, we first need to load our color schemas by using this script tag:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@britecharts/core@3/dist/umd/charts/colors.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/umd/charts/colors.min.js"></script>
 ```
 
 Then, we can set the color schema of the bar chart by doing:

@@ -12,14 +12,14 @@ To use a Britechart, we need to install the library. In this tutorial, we are go
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/**@britecharts/core@3.0.0/dist/umd/bar.min.js"
+<script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/umd/charts/bar.min.js"
         type="text/javascript"></script>
 ```
 We are going to create a bar chart, so we download the bundle for that individual chart. Note that we also require `d3-selection`. We use this module to create a selection and load the data in the container where we render the chart.
 
 We also need to load the styling of our chart, and we do it similarly by accesing the CDN link:
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/css/britecharts.min.css" type="text/css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/styles/bundle/britecharts.min.css" type="text/css" />
 ```
 
 ## Setting up Container, Dataset and Chart

@@ -13,7 +13,7 @@ In this tutorial, you will learn to install Britecharts in your project by using
 ## Install with NPM
 The recommended way of installing Britecharts is to use NPM or Yarn:
 ```
-npm install --save #britecharts/core d3-selection
+npm install --save @britecharts/core d3-selection
 ```
 Or, using Yarn:
 ```
@@ -45,7 +45,7 @@ Or loading only the styles for the current chart plus the common Britecharts sty
 ## Download from the CDN
 To import the latest bundle (3.x.x version), use this URL:
 ```
-https://cdn.jsdelivr.net/npm/@britecharts/core@3/dist/cdn/bundle/core.cdn.min.js
+https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js
 ```
 This bundle attaches to the global `window` object a JavaScript object called `britecharts`. Within it, you can find the charts and helpers you need.
 
