@@ -1,13 +1,14 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { mount } from 'enzyme';
+import { mount } from '../testing/mount';
 
 /**
  * The hooks migration rests on two properties of this test rig. If either
- * stops being true (an adapter or React upgrade), the conversion PRs' promise
- * of an unchanged spec file no longer holds, so fail here first and loudly.
+ * stops being true (a testing-library or React upgrade), the conversion PRs'
+ * promise of an unchanged spec file no longer holds, so fail here first and
+ * loudly.
  */
 describe('test harness', () => {
-    describe('enzyme adapter', () => {
+    describe('testing-library render', () => {
         it('should flush layout and passive effects on mount, update and unmount without act()', () => {
             const calls = [];
             const Probe = ({ n }) => {

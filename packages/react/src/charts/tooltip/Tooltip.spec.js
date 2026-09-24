@@ -1,7 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { act } from '@testing-library/react';
 
-import { act } from 'react-dom/test-utils';
+import { mount } from '../../../testing/mount';
 
 import Tooltip from './Tooltip';
 import Line from '../line/Line';
@@ -87,9 +87,7 @@ describe('tooltip', () => {
                 />
             );
 
-            const expected = wrapper
-                .find('.vertical-marker-container')
-                .getDOMNode();
+            const expected = wrapper.find('.vertical-marker-container');
             const actual = createSpy.mock.calls[0][0];
 
             expect(actual).toEqual(expected);
@@ -104,7 +102,7 @@ describe('tooltip', () => {
                 />
             );
 
-            const expected = wrapper.find('.metadata-group').getDOMNode();
+            const expected = wrapper.find('.metadata-group');
             const actual = createSpy.mock.calls[0][0];
 
             expect(actual).toEqual(expected);
@@ -285,7 +283,6 @@ describe('tooltip', () => {
                     )
                 );
             });
-            wrapper.update();
 
             const expected = 1;
             const actual = wrapper

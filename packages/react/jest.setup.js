@@ -1,8 +1,4 @@
 import { format } from 'util';
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-configure({ adapter: new Adapter() });
 
 /**
  * Any console.error or console.warn raised during a test fails that test,
