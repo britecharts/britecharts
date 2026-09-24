@@ -13,7 +13,6 @@ const testConfig = merge([
             modules: [path.resolve(__dirname, './src/charts'), 'node_modules'],
         },
     },
-    parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
     parts.istanbulLoader(),
 ]);
@@ -34,7 +33,6 @@ const CDNBundleConfig = merge([
             globalObject: 'this',
         },
     },
-    parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
     // parts.bundleTreeChart(8899),
 ]);
@@ -53,7 +51,6 @@ const CDNChartsBundleConfig = merge([
             globalObject: 'this',
         },
     },
-    parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
     // parts.bundleTreeChart(8899),
 ]);
@@ -74,7 +71,6 @@ const prodBundleConfig = merge([
             globalObject: 'this',
         },
     },
-    parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
     // parts.bundleTreeChart(8899),
     parts.noParseD3Vendor(),
@@ -95,7 +91,6 @@ const prodChartsConfig = merge([
             globalObject: 'this',
         },
     },
-    parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
     // parts.bundleTreeChart(8899),
     parts.noParseD3Vendor(),

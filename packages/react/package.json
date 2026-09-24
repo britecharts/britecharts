@@ -52,7 +52,7 @@
     "react": ">=16.8",
     "react-dom": ">=16.8"
   },
-  "browserslist": "> 0.25%, not dead",
+  "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:charts:cjs": "webpack --env=prodCJSChartsConfig",
