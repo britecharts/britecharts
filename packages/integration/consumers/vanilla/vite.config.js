@@ -51,6 +51,13 @@ export default defineConfig({
         fs: { allow: [repoRoot] },
     },
     preview: {
+        // Vite's default host ('localhost', unresolved) lands on an
+        // IPv6-only bind on this toolchain's Node, while Playwright's
+        // webServer readiness probe connects over IPv4 -- a permanent
+        // mismatch that leaves it retrying for many minutes before giving
+        // up on IPv6 and eventually succeeding. Binding IPv4 loopback
+        // explicitly is what the probe actually reaches.
+        host: '127.0.0.1',
         port: 4173,
         strictPort: true,
     },

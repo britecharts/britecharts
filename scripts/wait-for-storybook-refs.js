@@ -2,7 +2,7 @@
 /**
  * Waits for the composed Storybook's refs to be serving, then runs its command.
  *
- * `yarn demos` starts core (2001), react (2002) and the composing shell (2000)
+ * `pnpm demos` starts core (2001), react (2002) and the composing shell (2000)
  * at once. The shell resolves its refs once, at startup: for each one it fetches
  * `<url>/iframe.html` from Node and records `type: 'server-checked'` if that
  * succeeds, `'unknown'` if it does not. That decision is never revisited.

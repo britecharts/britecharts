@@ -27,26 +27,26 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       - name: Build docs website 📚
-        run: yarn docs:build
+        run: pnpm run docs:build
 
       # The Storybooks live under /storybook/ on the same site: the composed
       # shell at /storybook/, and the two it references at /storybook/core
       # and /storybook/react. Same origin, so composition needs no CORS and
       # no login -- which is what publishing them to Chromatic could not give.
       - name: Build packages 🔧
-        run: yarn build:packages
+        run: pnpm run build:packages
 
       - name: Build the Storybooks 📖
         run: |
-          yarn workspace @britecharts/core demo:build
-          yarn workspace @britecharts/react demo:build
-          yarn workspace @britecharts/demos build
+          pnpm --filter @britecharts/core run demo:build
+          pnpm --filter @britecharts/react run demo:build
+          pnpm --filter @britecharts/demos run build
 
       - name: Add the Storybooks to the site
         run: node scripts/compose-site.js

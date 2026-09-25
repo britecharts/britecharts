@@ -37,26 +37,32 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
-          registry-url: https://registry.npmjs.org/
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
+
+      # setup-node's registry-url option writes a .npmrc with
+      # ${NODE_AUTH_TOKEN} for npm to interpolate at read time -- npm's own
+      # convention, which Yarn 3 never read either (the previous bug here).
+      # pnpm reads .npmrc too, but does not interpolate ${VAR} placeholders in
+      # it at all (verified: a literal ${TOKEN} in .npmrc resolves to
+      # undefined even with the variable set), so the placeholder route is
+      # never going to work for pnpm. Writing the real value directly, with
+      # the substitution done by the workflow YAML before this ever reaches
+      # pnpm, sidesteps the question entirely.
+      - name: Configure npm registry auth
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
 
       - name: Create version PR or publish 🚀
         uses: changesets/action@v2
         with:
-          version-script: yarn version-packages
-          # Publishes through `yarn npm publish`, not `npm publish`: Yarn is
-          # what resolves the workspace:^ ranges between these packages into
-          # real version numbers at pack time.
-          publish-script: yarn release
+          version-script: pnpm run version-packages
+          # Publishes through `pnpm publish`, not `npm publish`: pnpm is what
+          # resolves the workspace:^ ranges between these packages into real
+          # version numbers at pack time.
+          publish-script: pnpm run release
           pr-title: 'chore: version packages'
           commit-message: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          # Yarn 3 does not read the .npmrc that setup-node writes (that is what
-          # NODE_AUTH_TOKEN feeds); it takes its token from this variable.
-          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

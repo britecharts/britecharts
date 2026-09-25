@@ -10,12 +10,12 @@ It has no stories of its own beyond an introduction: it *composes* the core and 
 From the repo root:
 
 ```sh
-yarn demos
+pnpm demos
 ```
 
-That starts core on 2001, react on 2002 and this shell on 2000 — open [localhost:2000](http://localhost:2000). `yarn demos:demos` does the same thing.
+That starts core on 2001, react on 2002 and this shell on 2000 — open [localhost:2000](http://localhost:2000). `pnpm demos:demos` does the same thing.
 
-If core and react are already running, `yarn demos:shell` brings up just this package. On its own it renders the shell with both refs unavailable, which is why the composed command is the default.
+If core and react are already running, `pnpm demos:shell` brings up just this package. On its own it renders the shell with both refs unavailable, which is why the composed command is the default.
 
 
 The production build is deployed with the docs site on every push to `main`, under [/storybook/][demos], together with the core and react Storybooks it composes (`/storybook/core`, `/storybook/react`). Composition there is same-origin, so it needs no CORS setup and no login.

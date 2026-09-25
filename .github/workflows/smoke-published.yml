@@ -44,10 +44,10 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       - name: Resolve the version to test
         id: version
@@ -81,7 +81,7 @@ jobs:
 
       - name: Install Chromium
         if: steps.version.outputs.skip != 'true'
-        run: yarn workspace @britecharts/integration playwright install --with-deps chromium
+        run: pnpm --filter @britecharts/integration exec playwright install --with-deps chromium
 
       # No pack step: the consumers install @britecharts/*@<version> from npm.
       # The tarball tier is skipped for the same reason; the require, types
@@ -93,7 +93,7 @@ jobs:
           BRITECHARTS_VERSION: ${{ steps.version.outputs.version }}
           VITE_BRITECHARTS_VERSION: ${{ steps.version.outputs.version }}
           SMOKE_REGISTRY: '1'
-        run: yarn workspace @britecharts/integration test:published
+        run: pnpm --filter @britecharts/integration run test:published
 
       - name: Upload Playwright traces
         if: failure()

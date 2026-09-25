@@ -29,13 +29,13 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       - name: Linting Styles 🌈
-        run: yarn lint:styles
+        run: pnpm run lint:styles
 
       - name: Linting Code 🗃
-        run: yarn lint:js
+        run: pnpm run lint:js

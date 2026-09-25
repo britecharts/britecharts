@@ -42,14 +42,14 @@ To start contributing to Britecharts, you need to set up your machine to develop
 1. Fork the Britecharts repository by clicking the fork button on GitHub.
 2. Clone your fork with `git clone https://github.com/<your handle>/britecharts.git`.
 3. Install Node. We develop on the version in [`.nvmrc`](../.nvmrc) (Node 24; anything from Node 20 works), so `nvm use` or `fnm use` in the repository folder picks the right one.
-4. Enable Yarn. The repository pins Yarn 3 in `package.json`, so with [Corepack][corepack] you don't need to install it yourself: run `corepack enable` once.
-5. Navigate to the repository folder and install the dependencies with `yarn`.
+4. Enable pnpm. The repository pins pnpm in `package.json`, so with [Corepack][corepack] you don't need to install it yourself: run `corepack enable` once.
+5. Navigate to the repository folder and install the dependencies with `pnpm install`.
 
 That is all the charts need: the unit tests run under jsdom, so no browser is required. The integration tests use Playwright, which downloads its own Chromium (see [Running the Integration Tests](#running-the-integration-tests)).
 
 ### The Repository
 
-Britecharts is a monorepo of Yarn workspaces under `packages/`:
+Britecharts is a monorepo of pnpm workspaces under `packages/`:
 
 | Package | What it is |
 | --- | --- |
@@ -77,43 +77,43 @@ The development branch is `main`. Base your branches on it, not on `master`, whi
 The demos are Storybooks, one per package, and they are the best place to see your changes as you make them. From the repository root:
 
 ```sh
-yarn demos
+pnpm demos
 ```
 
-That starts the core Storybook on [localhost:2001](http://localhost:2001), the React one on [localhost:2002](http://localhost:2002) and the composed demos site on [localhost:2000](http://localhost:2000). `yarn demos:core` or `yarn demos:react` runs just one of them.
+That starts the core Storybook on [localhost:2001](http://localhost:2001), the React one on [localhost:2002](http://localhost:2002) and the composed demos site on [localhost:2000](http://localhost:2000). `pnpm demos:core` or `pnpm demos:react` runs just one of them.
 
 Each chart's stories live next to its code, in `packages/core/src/charts/<chart>/<chart>.stories.js` and `packages/react/src/charts/<chart>/<chart>.stories.js`. Add a story when you add a feature.
 
 ### Running the Tests
 
 ```sh
-yarn test           # every package's unit tests, once
-yarn test:watch     # re-runs them as you edit
-yarn lint           # ESLint on the JavaScript, stylelint on the SCSS
-yarn check          # lint plus the tests, what CI runs
+pnpm test           # every package's unit tests, once
+pnpm test:watch     # re-runs them as you edit
+pnpm lint           # ESLint on the JavaScript, stylelint on the SCSS
+pnpm check          # lint plus the tests, what CI runs
 ```
 
-To iterate on a single package, run its scripts directly: `yarn workspace @britecharts/core test:watch`. The tests use Jest with jsdom; the core charts' specs sit next to the charts, as `<chart>.spec.js`.
+To iterate on a single package, run its scripts directly: `pnpm --filter @britecharts/core run test:watch`. The tests use Jest with jsdom; the core charts' specs sit next to the charts, as `<chart>.spec.js`.
 
 ### Running the Integration Tests
 
 The unit tests check the charts; the integration package checks what ships. It packs the three publishable packages the way the release does, installs them into small consumer projects (plain JavaScript, TypeScript and React) with npm, and then checks the tarball contents, `require()` paths, the typings and, with Playwright, that every way of loading a chart renders in a browser:
 
 ```sh
-yarn build:packages
-yarn workspace @britecharts/integration playwright install chromium   # once
-yarn test:integration
+pnpm build:packages
+pnpm --filter @britecharts/integration exec playwright install chromium   # once
+pnpm test:integration
 ```
 
-It runs on every pull request as the **Integration** check. See [its README](../packages/integration/README.md) for the tiers and for how to add a consumption path, and `yarn workspace @britecharts/integration start` for a dev server over the consumer pages that uses the workspace source.
+It runs on every pull request as the **Integration** check. See [its README](../packages/integration/README.md) for the tiers and for how to add a consumption path, and `pnpm --filter @britecharts/integration run start` for a dev server over the consumer pages that uses the workspace source.
 
 ### Running the Documentation
 
 ```sh
-yarn docs
+pnpm docs
 ```
 
-That generates the API pages from the JSDoc comments in `@britecharts/core`, copies the packages' READMEs in and starts the Docusaurus site with live reload. `yarn docs:build` builds it the way the deployment does and fails on a broken internal link or anchor; `yarn docs:links` then crawls the built site and checks the external links too.
+That generates the API pages from the JSDoc comments in `@britecharts/core`, copies the packages' READMEs in and starts the Docusaurus site with live reload. `pnpm docs:build` builds it the way the deployment does and fails on a broken internal link or anchor; `pnpm docs:links` then crawls the built site and checks the external links too.
 
 The charts' API pages come from their JSDoc comments, so when you change an accessor, update its comment. The [Contributor How To Guides][contributorHowTo] cover how to modify and create charts step by step.
 
@@ -130,7 +130,7 @@ Pull request titles follow the same convention, since they become the commit on 
 Versioning is owned by [Changesets](../.changeset). If your change is something users of `@britecharts/core`, `@britecharts/wrappers` or `@britecharts/react` would notice, a new feature, a fix, a breaking change, add a changeset and commit it with your change:
 
 ```sh
-yarn changeset
+pnpm changeset
 ```
 
 Pick the affected packages, pick major, minor or patch, and write the line that will appear in the changelog. The three packages are released together with one version number, so one changeset covers them all. Changes to the docs, the demos, the tests or the CI don't need a changeset.
@@ -139,7 +139,7 @@ Pick the affected packages, pick major, minor or patch, and write the line that 
 
 Every pull request runs:
 
-- **Lint** and **Unit Tests**, the same as `yarn check`.
+- **Lint** and **Unit Tests**, the same as `pnpm check`.
 - **Integration Tests**, which pack the packages and test them from the consumer projects.
 - **Visual tests on Chromatic**, which snapshot every story and flag visual changes for review.
 - **Test Docs Deployment** and **Link check**, which build the documentation site and check its links.
