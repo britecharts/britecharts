@@ -45,6 +45,16 @@ module.exports = {
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
                 },
+                // The pre-Docusaurus jsdoc site had this wired up by hand
+                // (see packages/docs/doc_bk); the Docusaurus rebuild never
+                // carried it over, so the live site has shipped with no
+                // traffic observability at all. gtag is a no-op outside a
+                // production build (NODE_ENV !== 'production'), so `yarn
+                // docs` / `yarn start` never sends local traffic.
+                gtag: {
+                    trackingID: 'G-W3BQXCKSD9',
+                    anonymizeIP: true,
+                },
             }),
         ],
     ],
