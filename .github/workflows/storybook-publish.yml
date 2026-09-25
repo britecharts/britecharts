@@ -39,16 +39,16 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       - name: Build all packages 🔧
-        run: yarn build:packages
+        run: pnpm run build:packages
 
       - name: Build core storybook 🔧
-        run: yarn workspace @britecharts/core demo:build
+        run: pnpm --filter @britecharts/core run demo:build
 
       - name: Publish core storybook to Chromatic 🚀
         uses: chromaui/action@v18
@@ -58,7 +58,7 @@ jobs:
           storybookBuildDir: './packages/core/dist/storybook'
 
       - name: Build react storybook 🔧
-        run: yarn workspace @britecharts/react demo:build
+        run: pnpm --filter @britecharts/react run demo:build
 
       - name: Publish react storybook to Chromatic 🚀
         uses: chromaui/action@v18
@@ -68,4 +68,4 @@ jobs:
           storybookBuildDir: './packages/react/dist/storybook'
 
       - name: Build the composed storybook (check only) 🔧
-        run: yarn workspace @britecharts/demos build
+        run: pnpm --filter @britecharts/demos run build

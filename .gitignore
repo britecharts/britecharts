@@ -45,14 +45,8 @@ node_modules
 # Github actions sandbox
 .actrc
 
-# Ignoring yarn/cache files
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+# pnpm's global store lives outside the repo; nothing package-manager-specific
+# needs ignoring here beyond node_modules above.
 
 # remove coverage dir
 .coverage
@@ -92,6 +86,7 @@ packages/docs/.env.production.local
 packages/docs/npm-debug.log*
 packages/docs/yarn-debug.log*
 packages/docs/yarn-error.log*
+packages/docs/pnpm-debug.log*
 
 # Local review/plan output (from the /code-review skill)
 plan/

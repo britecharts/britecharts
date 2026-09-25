@@ -5,18 +5,18 @@
   "module": "src/index.js",
   "dependencies": {
     "@britecharts/core": "workspace:^",
-    "d3-selection": "^3.0.0"
+    "d3-selection": "3.0.0"
   },
   "devDependencies": {
     "eslint": "7.32.0",
-    "jest": "^29.7.0",
-    "optimize-css-assets-webpack-plugin": "^6.0.1",
-    "rimraf": "^2.6.3",
+    "jest": "29.7.0",
+    "optimize-css-assets-webpack-plugin": "6.0.1",
+    "rimraf": "2.7.1",
     "webpack": "4.46.0",
     "webpack-bundle-analyzer": "3.3.2",
-    "webpack-cli": "^3.3.12",
+    "webpack-cli": "3.3.12",
     "webpack-dev-server": "3.7.2",
-    "webpack-fix-style-only-entries": "^0.6.1",
+    "webpack-fix-style-only-entries": "0.6.1",
     "webpack-merge": "4.2.1"
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
@@ -24,14 +24,15 @@
     "build:bundle:cjs": "webpack --env=prodCJSBundleConfig",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig",
-    "build": "yarn run clean && webpack --env=production",
+    "build": "pnpm run clean && webpack --env=production",
     "clean": "rimraf dist",
     "lint:js": "eslint src/charts/ src/helpers webpack.*.js --cache",
-    "lint": "yarn run lint:js",
+    "lint": "pnpm run lint:js",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors --coverage"
   },
   "files": [
+    "CHANGELOG.md",
     "dist/**",
     "src/**",
     "!**/*.map",

@@ -1,6 +1,6 @@
 # testing/
 
-`yarn verify:suite` answers one question: **does the test suite notice when the hooks lifecycle breaks?**
+`pnpm run verify:suite` answers one question: **does the test suite notice when the hooks lifecycle breaks?**
 
 `verify-suite.mjs` applies each maintained mutation patch in `mutants/` to the source, runs the specs that are meant to catch it, and requires them to go red. Exit codes, all with their own message:
 

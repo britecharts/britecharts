@@ -33,10 +33,10 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       # Chromium is ~100 MB; cache it by the Playwright version so a bump is
       # the only thing that re-downloads it. install-deps is what actually
@@ -52,15 +52,15 @@ jobs:
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
 
       - name: Install Chromium
-        run: yarn workspace @britecharts/integration playwright install --with-deps chromium
+        run: pnpm --filter @britecharts/integration exec playwright install --with-deps chromium
 
       - name: Build packages 🔧
-        run: yarn build:packages
+        run: pnpm run build:packages
 
       # pack → npm-install the consumers from the tarballs → tarball contents
       # → require() paths → Playwright over the consumer pages
       - name: Pack, install the consumers and test what ships 📦
-        run: yarn test:integration
+        run: pnpm run test:integration
 
       - name: Upload Playwright traces
         if: failure()

@@ -4,22 +4,22 @@ Private workspace. It answers, in CI, the question the three old stand-alone
 test projects answered by hand: does every way of installing Britecharts still
 work, and do the types still compile?
 
-It is deliberately **not** run by `yarn test` — its script is `test:integration`
-so the unit-test job's `yarn workspaces foreach run test` never picks it up.
+It is deliberately **not** run by `pnpm test` — its script is `test:integration`
+so the unit-test job's `pnpm -r run test` never picks it up.
 
 ## Running it
 
 ```sh
-yarn build:packages       # the tarballs are built from dist/
-yarn test:integration     # from the repo root; needs Chromium once:
-                          #   yarn workspace @britecharts/integration playwright install chromium
+pnpm build:packages       # the tarballs are built from dist/
+pnpm test:integration     # from the repo root; needs Chromium once:
+                          #   pnpm --filter @britecharts/integration exec playwright install chromium
 ```
 
-`yarn test:integration` runs, in order:
+`pnpm test:integration` runs, in order:
 
-1. `scripts/pack.js` — `yarn workspace <pkg> pack` for core, wrappers and
-   react into `.tarballs/`. It uses Yarn's packer on purpose: that is what
-   `yarn release` publishes with, and it does not produce the same tarball as
+1. `scripts/pack.js` — `pnpm pack --dir <pkg>` for core, wrappers and
+   react into `.tarballs/`. It uses pnpm's packer on purpose: that is what
+   `pnpm release` publishes with, and it does not produce the same tarball as
    `npm pack`.
 2. `scripts/install-consumers.js` — `npm install` in every `consumers/<name>/`
    project, whose dependencies are `file:` references to those tarballs. A
@@ -72,14 +72,14 @@ Playwright (`*.spec.js`).
 
 ## After a release: the published packages
 
-`yarn test:published` runs the same require, types and browser tiers, but
+`pnpm test:published` runs the same require, types and browser tiers, but
 with the consumers installed from the npm registry instead of the tarballs,
 plus a page that loads the CDN bundle from jsDelivr:
 
 ```sh
 BRITECHARTS_SOURCE=registry BRITECHARTS_VERSION=3.0.0-beta.1 \
 VITE_BRITECHARTS_VERSION=3.0.0-beta.1 SMOKE_REGISTRY=1 \
-yarn workspace @britecharts/integration test:published
+pnpm --filter @britecharts/integration run test:published
 ```
 
 The **Smoke test the published packages** workflow does this on its own after
@@ -89,8 +89,8 @@ version or dist-tag. It is the only test that touches the network.
 ## Local loop for chart work
 
 ```sh
-yarn workspace @britecharts/integration start          # vanilla pages
-yarn workspace @britecharts/integration start:react    # React pages
+pnpm --filter @britecharts/integration run start          # vanilla pages
+pnpm --filter @britecharts/integration run start:react    # React pages
 ```
 
 Opens the vanilla consumer's pages with the bare `@britecharts/core` imports

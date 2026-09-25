@@ -148,7 +148,10 @@ function readTarball(name) {
 
     assert.ok(
         fs.existsSync(file),
-        `${path.relative(process.cwd(), file)} is missing; run \`yarn pack\` (scripts/pack.js) first`
+        `${path.relative(
+            process.cwd(),
+            file
+        )} is missing; run \`pnpm run pack\` (scripts/pack.js) first`
     );
 
     const entries = execFileSync('tar', ['-tzf', file], { encoding: 'utf8' })
@@ -170,9 +173,16 @@ for (const [name, { allow, deny }] of Object.entries(PACKAGES)) {
 
         await t.test('contains everything its files field promises', () => {
             const missing = allow
-                .map(([glob, min]) => [glob, min, matching(entries, glob).length])
+                .map(([glob, min]) => [
+                    glob,
+                    min,
+                    matching(entries, glob).length,
+                ])
                 .filter(([, min, found]) => found < min)
-                .map(([glob, min, found]) => `${glob} (wanted ${min}, found ${found})`);
+                .map(
+                    ([glob, min, found]) =>
+                        `${glob} (wanted ${min}, found ${found})`
+                );
 
             assert.deepEqual(missing, []);
         });
@@ -195,17 +205,33 @@ for (const [name, { allow, deny }] of Object.entries(PACKAGES)) {
             }
         });
 
-        await t.test('passes publint (errors, and warnings not waived)', async () => {
-            const { publint } = await import('publint');
-            const { formatMessage } = await import('publint/utils');
-            const tarball = fs.readFileSync(path.join(TARBALLS, `${name}.tgz`));
-            const { messages, pkg } = await publint({ pack: { tarball } });
-            const failing = messages
-                .filter((m) => m.type === 'error' || (m.type === 'warning' && !WAIVED_PUBLINT.has(m.code)))
-                .map((m) => `${m.type} ${m.code}: ${formatMessage(m, pkg ?? manifest)}`);
+        await t.test(
+            'passes publint (errors, and warnings not waived)',
+            async () => {
+                const { publint } = await import('publint');
+                const { formatMessage } = await import('publint/utils');
+                const tarball = fs.readFileSync(
+                    path.join(TARBALLS, `${name}.tgz`)
+                );
+                const { messages, pkg } = await publint({ pack: { tarball } });
+                const failing = messages
+                    .filter(
+                        (m) =>
+                            m.type === 'error' ||
+                            (m.type === 'warning' &&
+                                !WAIVED_PUBLINT.has(m.code))
+                    )
+                    .map(
+                        (m) =>
+                            `${m.type} ${m.code}: ${formatMessage(
+                                m,
+                                pkg ?? manifest
+                            )}`
+                    );
 
-            assert.deepEqual(failing, []);
-        });
+                assert.deepEqual(failing, []);
+            }
+        );
 
         await t.test('passes attw (problems not waived)', () => {
             if (!manifest.types) {
@@ -214,19 +240,34 @@ for (const [name, { allow, deny }] of Object.entries(PACKAGES)) {
             // attw exits non-zero when it finds problems, and a process that
             // exits with a pipe on stdout loses everything past 64 KB. A file
             // is written synchronously, so the report goes there.
-            const reportFile = path.join(os.tmpdir(), `attw-${name}-${process.pid}.json`);
+            const reportFile = path.join(
+                os.tmpdir(),
+                `attw-${name}-${process.pid}.json`
+            );
             const fd = fs.openSync(reportFile, 'w');
             const result = spawnSync(
-                'yarn',
-                ['attw', path.join(TARBALLS, `${name}.tgz`), '--format', 'json'],
-                { cwd: path.resolve(__dirname, '..'), stdio: ['ignore', fd, 'pipe'], encoding: 'utf8' }
+                'pnpm',
+                [
+                    'exec',
+                    'attw',
+                    path.join(TARBALLS, `${name}.tgz`),
+                    '--format',
+                    'json',
+                ],
+                {
+                    cwd: path.resolve(__dirname, '..'),
+                    stdio: ['ignore', fd, 'pipe'],
+                    encoding: 'utf8',
+                }
             );
             fs.closeSync(fd);
             let report;
             try {
                 report = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
             } catch {
-                assert.fail(`attw produced no JSON (exit ${result.status}):\n${result.stderr}`);
+                assert.fail(
+                    `attw produced no JSON (exit ${result.status}):\n${result.stderr}`
+                );
             } finally {
                 fs.rmSync(reportFile, { force: true });
             }
@@ -246,7 +287,11 @@ for (const [name, { allow, deny }] of Object.entries(PACKAGES)) {
                 ...manifest.peerDependencies,
             }).filter(([, range]) => String(range).startsWith('workspace:'));
 
-            assert.deepEqual(unresolved, [], 'workspace: ranges survived packing');
+            assert.deepEqual(
+                unresolved,
+                [],
+                'workspace: ranges survived packing'
+            );
         });
     });
 }

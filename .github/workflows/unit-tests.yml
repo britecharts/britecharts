@@ -22,7 +22,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v7
 
-      # Corepack has to be on before setup-node, which shells out to yarn to
+      # Corepack has to be on before setup-node, which shells out to pnpm to
       # locate the cache folder. The version comes from `packageManager` in
       # package.json, so CI and local always agree.
       - name: Enable Corepack
@@ -32,21 +32,15 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       # No build step: specs resolve sibling workspaces to their source, so
       # the suites run against a clean checkout.
       - name: Testing Library 🕵️‍♀️
-        run: yarn test:ci
-
-      - name: Send coverage to Codecov
-        uses: codecov/codecov-action@v7
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unittests
+        run: pnpm run test:ci
 
   build:
     name: Build
@@ -62,10 +56,10 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       - name: Build packages 🔧
-        run: yarn build:packages
+        run: pnpm run build:packages

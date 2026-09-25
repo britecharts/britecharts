@@ -19,7 +19,7 @@ for (const [name, how] of RESOLUTIONS) {
     test(`T · typings compile under ${how}`, () => {
         assert.ok(
             fs.existsSync(TSC),
-            'consumers/typescript is not installed; run `yarn install:consumers` first'
+            'consumers/typescript is not installed; run `pnpm run install:consumers` first'
         );
 
         const result = spawnSync(

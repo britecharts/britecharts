@@ -21,7 +21,7 @@ const COPIES = [
 
 if (!fs.existsSync(path.join(SITE, 'index.html'))) {
     console.error(
-        'packages/docs/build is missing; run `yarn docs:build` first.'
+        'packages/docs/build is missing; run `pnpm docs:build` first.'
     );
     process.exit(1);
 }

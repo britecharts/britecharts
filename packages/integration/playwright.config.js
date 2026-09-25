@@ -32,9 +32,17 @@ module.exports = defineConfig({
         // esbuild pre-bundling would skip Rollup's CommonJS/UMD interop.
         // Production is the path users ship; the one development-mode server
         // exists because StrictMode does nothing in a production build.
-        command: `yarn vite build ${
+        //
+        // `exec` before the preview command matters: without it, this whole
+        // line runs as `sh -c "build && preview"`, and shutting a webServer
+        // down means sending SIGTERM to that shell -- which does not forward
+        // it to the preview process, orphaning it instead of stopping it.
+        // Playwright then has no way to observe the server actually exit and
+        // stalls its teardown. `exec` replaces the shell with the preview
+        // process outright, so the signal reaches it directly.
+        command: `pnpm exec vite build ${
             mode ? `--mode ${mode} ` : ''
-        }--config consumers/${name}/vite.config.js && yarn vite preview --config consumers/${name}/vite.config.js`,
+        }--config consumers/${name}/vite.config.js && exec pnpm exec vite preview --config consumers/${name}/vite.config.js`,
         env,
         url: `http://localhost:${port}/`,
         reuseExistingServer: !process.env.CI,

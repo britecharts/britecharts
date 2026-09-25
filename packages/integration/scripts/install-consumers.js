@@ -17,7 +17,8 @@ const path = require('node:path');
 const CONSUMERS_DIR = path.resolve(__dirname, '..', 'consumers');
 const TARBALLS = path.resolve(__dirname, '..', '.tarballs');
 
-const SOURCE = process.env.BRITECHARTS_SOURCE === 'registry' ? 'registry' : 'tarballs';
+const SOURCE =
+    process.env.BRITECHARTS_SOURCE === 'registry' ? 'registry' : 'tarballs';
 const VERSION = process.env.BRITECHARTS_VERSION;
 
 // source (inside the consumer's node_modules) -> destination (inside public/)
@@ -28,17 +29,23 @@ const VENDOR = [
 ];
 
 if (SOURCE === 'registry' && !VERSION) {
-    console.error('BRITECHARTS_SOURCE=registry needs BRITECHARTS_VERSION (a version or dist-tag).');
+    console.error(
+        'BRITECHARTS_SOURCE=registry needs BRITECHARTS_VERSION (a version or dist-tag).'
+    );
     process.exit(1);
 }
 if (SOURCE === 'tarballs' && !fs.existsSync(TARBALLS)) {
-    console.error('.tarballs/ is missing; run `yarn pack` (scripts/pack.js) first.');
+    console.error(
+        '.tarballs/ is missing; run `pnpm run pack` (scripts/pack.js) first.'
+    );
     process.exit(1);
 }
 
 const consumers = fs
     .readdirSync(CONSUMERS_DIR)
-    .filter((name) => fs.existsSync(path.join(CONSUMERS_DIR, name, 'package.json')));
+    .filter((name) =>
+        fs.existsSync(path.join(CONSUMERS_DIR, name, 'package.json'))
+    );
 
 for (const name of consumers) {
     const cwd = path.join(CONSUMERS_DIR, name);
@@ -48,7 +55,10 @@ for (const name of consumers) {
     // A fresh install every time: npm's hidden lockfile would otherwise keep
     // a previously extracted tarball when only its contents changed.
     fs.rmSync(path.join(cwd, 'node_modules'), { recursive: true, force: true });
-    fs.rmSync(path.join(cwd, 'public', 'vendor'), { recursive: true, force: true });
+    fs.rmSync(path.join(cwd, 'public', 'vendor'), {
+        recursive: true,
+        force: true,
+    });
 
     if (SOURCE === 'registry') {
         const manifest = JSON.parse(original);
@@ -58,20 +68,33 @@ for (const name of consumers) {
                 manifest.dependencies[dependency] = VERSION;
             }
         }
-        fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+        fs.writeFileSync(
+            manifestPath,
+            `${JSON.stringify(manifest, null, 2)}\n`
+        );
     }
 
-    console.log(`installing consumers/${name} from ${SOURCE}${SOURCE === 'registry' ? ` (@britecharts/*@${VERSION})` : ''}`);
+    console.log(
+        `installing consumers/${name} from ${SOURCE}${
+            SOURCE === 'registry' ? ` (@britecharts/*@${VERSION})` : ''
+        }`
+    );
     try {
         execFileSync(
             'npm',
-            ['install', '--no-package-lock', '--no-audit', '--no-fund', '--loglevel=error'],
+            [
+                'install',
+                '--no-package-lock',
+                '--no-audit',
+                '--no-fund',
+                '--loglevel=error',
+            ],
             {
                 cwd,
                 stdio: 'inherit',
                 env: {
                     ...process.env,
-                    // The repo root pins packageManager to Yarn; Corepack would
+                    // The repo root pins packageManager to pnpm; Corepack would
                     // otherwise refuse to let npm run underneath it.
                     COREPACK_ENABLE_STRICT: '0',
                 },
@@ -86,7 +109,9 @@ for (const name of consumers) {
         const source = path.join(cwd, 'node_modules', from);
 
         if (fs.existsSync(source)) {
-            fs.cpSync(source, path.join(cwd, 'public', to), { recursive: true });
+            fs.cpSync(source, path.join(cwd, 'public', to), {
+                recursive: true,
+            });
         }
     }
 }

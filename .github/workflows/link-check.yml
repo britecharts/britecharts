@@ -38,13 +38,13 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       - name: Build docs website 📚
-        run: yarn docs:build
+        run: pnpm run docs:build
 
       - name: Check links 🔗
-        run: yarn docs:links
+        run: pnpm run docs:links

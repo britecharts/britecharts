@@ -1,7 +1,9 @@
 const path = require('path');
 
 /**
- * Yarn does not always hoist a workspace's Storybook packages to the root, and
+ * No package manager reliably hoists a workspace's Storybook packages to the
+ * root -- pnpm's isolated node_modules never does, and Yarn didn't always either
+ * -- and
  * Storybook resolves presets relative to its own install rather than to this
  * config -- so a nested copy fails with "Cannot find module .../preset". Naming
  * them by absolute path makes resolution start here instead, which is what
@@ -38,7 +40,7 @@ module.exports = {
         // from there -- they arrive at webpack with only the CSF and
         // export-order loaders applied, so JSX fails to parse. Declaring the
         // rule here compiles them with this package's own babel config,
-        // whatever Yarn does with the hoisting.
+        // whatever the package manager does with the hoisting.
         //
         // It is scoped by `include` rather than `exclude: /node_modules/`, and
         // that matters: Storybook generates its entry module, storybook-stories.js,

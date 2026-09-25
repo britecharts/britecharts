@@ -1,0 +1,17 @@
+packages:
+  - packages/core
+  - packages/wrappers
+  - packages/react
+  - packages/*
+
+# pnpm blocks a dependency's install/build scripts by default; each of these
+# is a known, legitimate reason to run one -- a native binary (fsevents,
+# esbuild, @parcel/watcher) or a package that only prints a support notice on
+# install (core-js, ejs). Approving one here does not approve any of its own
+# transitive dependencies.
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  ejs: true
+  esbuild: true
+  fsevents: true

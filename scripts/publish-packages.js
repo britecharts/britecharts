@@ -1,13 +1,22 @@
 /**
  * Publishes every public workspace, with the dist-tag Changesets is on.
  *
- * `yarn npm publish` always tags `latest` unless told otherwise, so in
+ * `pnpm publish` always tags `latest` unless told otherwise, so in
  * prerelease mode (.changeset/pre.json exists) a plain publish would make a
- * beta what `yarn add @britecharts/core` installs. Outside prerelease mode no
+ * beta what `pnpm add @britecharts/core` installs. Outside prerelease mode no
  * tag is passed and npm's default applies.
  *
- * Yarn publishes, not npm, because Yarn resolves the workspace:^ ranges
+ * pnpm publishes, not npm, because pnpm resolves the workspace:^ ranges
  * between these packages into real versions when it packs them.
+ *
+ * Unlike `yarn npm publish`, `pnpm publish` has no --tolerate-republish: by
+ * default it refuses to republish a version already on the registry, the
+ * same as plain npm. That is exactly the retry case this release has already
+ * hit once for real -- the first 3.0.0-beta.1 attempt failed on
+ * authentication after packing but before every package had published, and
+ * the fix was to run this script again. So each package's version is checked
+ * against the registry first and skipped, not retried, if it is already
+ * there; a real publish failure still fails the whole run.
  */
 const { existsSync, readFileSync } = require('fs');
 const { join } = require('path');
@@ -19,21 +28,48 @@ const pre = existsSync(preFile)
     : null;
 const tag = pre && pre.mode === 'pre' ? pre.tag : null;
 
-const args = [
-    'workspaces',
-    'foreach',
-    '--no-private',
-    '--topological',
-    'npm',
-    'publish',
-    '--tolerate-republish',
-    '--access',
-    'public',
-    ...(tag ? ['--tag', tag] : []),
-];
+// Listed in publish order: core has no workspace dependency, wrappers
+// depends on core, react depends on both.
+const PACKAGES = ['core', 'wrappers', 'react'];
 
-console.log(`yarn ${args.join(' ')}`);
+const isAlreadyPublished = (name, version) => {
+    const result = spawnSync('npm', ['view', `${name}@${version}`, 'version'], {
+        encoding: 'utf8',
+    });
 
-const result = spawnSync('yarn', args, { stdio: 'inherit' });
+    return result.status === 0 && result.stdout.trim() === version;
+};
 
-process.exit(result.status === null ? 1 : result.status);
+let failed = false;
+
+for (const dir of PACKAGES) {
+    const manifest = JSON.parse(
+        readFileSync(join(__dirname, '..', 'packages', dir, 'package.json'))
+    );
+    const { name, version } = manifest;
+
+    if (isAlreadyPublished(name, version)) {
+        console.log(`${name}@${version} is already published, skipping`);
+        continue;
+    }
+
+    const args = [
+        'publish',
+        '--filter',
+        name,
+        '--access',
+        'public',
+        '--no-git-checks',
+        ...(tag ? ['--tag', tag] : []),
+    ];
+
+    console.log(`pnpm ${args.join(' ')}`);
+
+    const result = spawnSync('pnpm', args, { stdio: 'inherit' });
+
+    if (result.status !== 0) {
+        failed = true;
+    }
+}
+
+process.exit(failed ? 1 : 0);

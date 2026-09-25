@@ -6,7 +6,7 @@
 // links rot between edits. So this serves `build/` the way GitHub Pages will
 // and follows every link on every page, external ones included.
 //
-// Run `yarn docs:build` first; then `yarn workspace @britecharts/docs docs:links`.
+// Run `pnpm docs:build` first; then `pnpm --filter @britecharts/docs run docs:links`.
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -39,14 +39,14 @@ const SKIP = [
 
 if (!existsSync(path.join(docsDir, 'build', 'index.html'))) {
     console.error(
-        'packages/docs/build is missing; run `yarn docs:build` first.'
+        'packages/docs/build is missing; run `pnpm docs:build` first.'
     );
     process.exit(2);
 }
 
 const server = spawn(
-    'yarn',
-    ['docusaurus', 'serve', '--port', String(PORT), '--no-open'],
+    'pnpm',
+    ['exec', 'docusaurus', 'serve', '--port', String(PORT), '--no-open'],
     { cwd: docsDir, stdio: 'ignore' }
 );
 

@@ -1,7 +1,9 @@
 const path = require('path');
 
 /**
- * Yarn does not always hoist a workspace's Storybook packages to the root, and
+ * No package manager reliably hoists a workspace's Storybook packages to the
+ * root -- pnpm's isolated node_modules never does, and Yarn didn't always either
+ * -- and
  * Storybook resolves presets relative to its own install rather than to this
  * config -- so a nested copy fails with "Cannot find module .../preset". Naming
  * them by absolute path makes resolution start here instead, which is what
