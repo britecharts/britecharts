@@ -1,0 +1,18 @@
+{
+  "endOfLine": "lf",
+  "tabWidth": 4,
+  "semi": true,
+  "bracketSpacing": true,
+  "singleQuote": true,
+  "arrowParens": "always",
+  "trailingComma": "es5",
+  "printWidth": 80,
+  "ignorePatterns": [
+    "packages/core/src/doc/template/",
+    "packages/docs/doc_bk/",
+    "packages/react/dist",
+    "packages/react/lib",
+    "packages/react/node_modules",
+    "*.scss"
+  ]
+}

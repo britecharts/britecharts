@@ -22,7 +22,8 @@
  * refs (see scripts/wait-for-storybook-refs.js), which makes them
  * `server-checked` and drops credentials from the request entirely.
  */
-const LOOPBACK_ORIGIN = /^https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/;
+const LOOPBACK_ORIGIN =
+    /^https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/;
 
 // The response Storybook hands the middleware is a plain Node ServerResponse,
 // not an Express one, so there is no res.vary() to append with.
