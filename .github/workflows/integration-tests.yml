@@ -22,6 +22,12 @@ jobs:
   integration:
     name: Integration
     runs-on: ubuntu-latest
+    # Healthy runs finish in 2-5 minutes. Without this, GitHub's own 6h job
+    # cap is the only thing that ends a hang -- which is what happened three
+    # times running (see install-consumers.js): a stalled npm fetch against
+    # the registry with no timeout of its own turned into a silent
+    # multi-hour zombie run instead of a fast, loud failure.
+    timeout-minutes: 20
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v7
