@@ -16,10 +16,11 @@ npm install @britecharts/core@beta
 ## What is new
 
 - **Modern modules.** Built on the current d3 modules, shipped as ES modules, CommonJS, UMD and CDN builds, with an `exports` map and TypeScript typings for every chart. Vite, Rollup, esbuild and webpack all work out of the box.
+- **Smaller bundles.** The build now targets ES2020, and Babel is gone entirely from `@britecharts/core` and `@britecharts/wrappers` — the core UMD bundle drops 12.7% (151,923 → 132,626 bytes) and the React bundle 14% (368 → 315 KB). No action needed on your side; a browser below the new target already needs a bundler or its own polyfills to run modern syntax at all.
 - **One tooltip.** `tooltip` and `miniTooltip` are one component that never gets cut off at the chart's edges, follows the pointer smoothly and works the same way on every chart.
 - **Negative values** on the bar, stacked bar, grouped bar and brush charts, stacking down from zero.
 - **Loading states** for every chart, `colorMap` to name the colour of each category, `animationDuration` on every animated chart, and charts that are responsive by default.
-- **React 19** is tested: the React package is installed into a React 19 project under `StrictMode` on every change.
+- **React 19** is tested end to end: the unit suite itself now runs on React 19 (it ran on 16 only at the first beta), and the React package is also installed into a real React 19 project under `StrictMode` on every change.
 
 ## Moving from version 2
 
