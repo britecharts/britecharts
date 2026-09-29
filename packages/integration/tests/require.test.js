@@ -15,19 +15,53 @@ const requireFromConsumer = createRequire(path.join(CONSUMER, 'package.json'));
 // the 14 charts, `colors` and `constants`. The bundle must expose exactly
 // these names, no more and no fewer.
 const CORE_EXPORTS = [
-    'bar', 'brush', 'bullet', 'colors', 'constants', 'donut', 'groupedBar',
-    'heatmap', 'legend', 'line', 'miniTooltip', 'scatterPlot', 'sparkline',
-    'stackedArea', 'stackedBar', 'tooltip',
+    'bar',
+    'brush',
+    'bullet',
+    'colors',
+    'constants',
+    'donut',
+    'groupedBar',
+    'heatmap',
+    'legend',
+    'line',
+    'miniTooltip',
+    'scatterPlot',
+    'sparkline',
+    'stackedArea',
+    'stackedBar',
+    'tooltip',
 ];
 const CORE_UMD_CHARTS = [
-    'bar', 'brush', 'bullet', 'colors', 'donut', 'groupedBar', 'heatmap',
-    'legend', 'line', 'loading', 'miniTooltip', 'scatterPlot', 'sparkline',
-    'stackedArea', 'stackedBar', 'tooltip',
+    'bar',
+    'brush',
+    'bullet',
+    'colors',
+    'donut',
+    'groupedBar',
+    'heatmap',
+    'legend',
+    'line',
+    'loading',
+    'miniTooltip',
+    'scatterPlot',
+    'sparkline',
+    'stackedArea',
+    'stackedBar',
+    'tooltip',
 ];
 const WRAPPER_EXPORTS = [
-    'BarWrapper', 'BulletWrapper', 'DonutWrapper', 'GroupedBarWrapper',
-    'LegendWrapper', 'LineWrapper', 'ScatterPlotWrapper', 'SparklineWrapper',
-    'StackedAreaWrapper', 'StackedBarWrapper', 'TooltipWrapper',
+    'BarWrapper',
+    'BulletWrapper',
+    'DonutWrapper',
+    'GroupedBarWrapper',
+    'LegendWrapper',
+    'LineWrapper',
+    'ScatterPlotWrapper',
+    'SparklineWrapper',
+    'StackedAreaWrapper',
+    'StackedBarWrapper',
+    'TooltipWrapper',
 ];
 
 test('C3 · require("@britecharts/core") resolves main to the UMD bundle', () => {
@@ -39,7 +73,9 @@ test('C3 · require("@britecharts/core") resolves main to the UMD bundle', () =>
 
 test('C4 · every per-chart UMD build can be required', () => {
     for (const chart of CORE_UMD_CHARTS) {
-        const module = requireFromConsumer(`@britecharts/core/dist/umd/charts/${chart}.min.js`);
+        const module = requireFromConsumer(
+            `@britecharts/core/dist/umd/charts/${chart}.min.js`
+        );
 
         assert.ok(
             ['function', 'object'].includes(typeof module) && module !== null,
@@ -50,11 +86,16 @@ test('C4 · every per-chart UMD build can be required', () => {
 
 test('W · require("@britecharts/wrappers") and its CommonJS bundle', () => {
     const umd = requireFromConsumer('@britecharts/wrappers');
-    const cjs = requireFromConsumer('@britecharts/wrappers/dist/cjs/bundle/wrappers.bundled.min.js');
+    const cjs = requireFromConsumer(
+        '@britecharts/wrappers/dist/cjs/bundle/wrappers.bundled.min.js'
+    );
 
     // A wrapper is a { create, update, destroy } object, not a chart factory.
     for (const name of WRAPPER_EXPORTS) {
-        for (const [flavour, bundle] of [['umd', umd], ['cjs', cjs]]) {
+        for (const [flavour, bundle] of [
+            ['umd', umd],
+            ['cjs', cjs],
+        ]) {
             assert.deepEqual(
                 Object.keys(bundle[name] ?? {}).sort(),
                 ['create', 'destroy', 'update'],
@@ -67,11 +108,22 @@ test('W · require("@britecharts/wrappers") and its CommonJS bundle', () => {
 // --- @britecharts/react, resolved from the React consumer ---------------
 
 const REACT_CONSUMER = path.resolve(__dirname, '..', 'consumers', 'react');
-const requireFromReact = createRequire(path.join(REACT_CONSUMER, 'package.json'));
+const requireFromReact = createRequire(
+    path.join(REACT_CONSUMER, 'package.json')
+);
 
 const REACT_COMPONENTS = [
-    'Bar', 'Bullet', 'Donut', 'GroupedBar', 'Legend', 'Line', 'ScatterPlot',
-    'Sparkline', 'StackedArea', 'StackedBar', 'Tooltip',
+    'Bar',
+    'Bullet',
+    'Donut',
+    'GroupedBar',
+    'Legend',
+    'Line',
+    'ScatterPlot',
+    'Sparkline',
+    'StackedArea',
+    'StackedBar',
+    'Tooltip',
 ];
 
 test('R1 · require("@britecharts/react") resolves main to the UMD bundle', () => {
@@ -87,10 +139,16 @@ test('R1 · require("@britecharts/react") resolves main to the UMD bundle', () =
 test('R3/R4 · every per-component CJS and UMD build can be required', () => {
     for (const name of REACT_COMPONENTS) {
         for (const flavour of ['cjs', 'umd']) {
-            const component = requireFromReact(`@britecharts/react/dist/${flavour}/charts/${name}.js`);
+            const component = requireFromReact(
+                `@britecharts/react/dist/${flavour}/charts/${name}.js`
+            );
 
             // The module is the component, as with core's per-chart builds.
-            assert.equal(typeof component, 'function', `${flavour}/charts/${name}.js is not the component`);
+            assert.equal(
+                typeof component,
+                'function',
+                `${flavour}/charts/${name}.js is not the component`
+            );
         }
     }
 });

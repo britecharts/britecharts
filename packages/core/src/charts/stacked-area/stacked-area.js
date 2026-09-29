@@ -600,8 +600,8 @@ export default function module() {
             originalData.length === 0 ? createFakeData() : originalData;
 
         return originalData.reduce((acc, d) => {
-            (d.date = castValueToType(d[dateLabel], xAxisValueType)),
-                (d.value = +d[valueLabel]);
+            ((d.date = castValueToType(d[dateLabel], xAxisValueType)),
+                (d.value = +d[valueLabel]));
 
             return [...acc, d];
         }, []);

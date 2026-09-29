@@ -33,16 +33,29 @@ module.exports = defineConfig({
         // Production is the path users ship; the one development-mode server
         // exists because StrictMode does nothing in a production build.
         //
-        // `exec` before the preview command matters: without it, this whole
-        // line runs as `sh -c "build && preview"`, and shutting a webServer
-        // down means sending SIGTERM to that shell -- which does not forward
-        // it to the preview process, orphaning it instead of stopping it.
-        // Playwright then has no way to observe the server actually exit and
-        // stalls its teardown. `exec` replaces the shell with the preview
-        // process outright, so the signal reaches it directly.
+        // The preview command execs the vite bin shim directly rather than
+        // going through `pnpm exec vite preview`. `pnpm exec` doesn't
+        // reliably stay alive for the life of a long-running server it
+        // spawns -- observed directly: with three of these servers running,
+        // one `pnpm exec vite preview` process exited on its own well before
+        // teardown, orphaning its vite child (still listening on its port,
+        // reparented to pid 1) while Playwright kept trying to manage a pid
+        // that no longer existed. All 21 tests would pass and the run would
+        // then hang indefinitely at teardown -- every command in the chain
+        // had already succeeded, so nothing failed, nothing retried, no
+        // error ever surfaced; only GitHub's own 6h job cap (later this
+        // repo's own timeout-minutes) ever ended it. `exec` alone doesn't
+        // fix this -- `exec pnpm exec vite preview` still leaves `pnpm exec`
+        // free to spawn its own child rather than being replaced by it, so
+        // the orphaning risk is one layer below where `exec` operates.
+        // Going straight at the bin shim removes that layer: the shim's own
+        // `exec node .../vite.js "$@"` (see node_modules/.bin/vite) means
+        // this line's `exec` replaces the shell with a process that *is*
+        // the vite CLI the whole way down, with nothing in between able to
+        // exit early and leave it behind.
         command: `pnpm exec vite build ${
             mode ? `--mode ${mode} ` : ''
-        }--config consumers/${name}/vite.config.js && exec pnpm exec vite preview --config consumers/${name}/vite.config.js`,
+        }--config consumers/${name}/vite.config.js && exec node_modules/.bin/vite preview --config consumers/${name}/vite.config.js`,
         env,
         url: `http://localhost:${port}/`,
         reuseExistingServer: !process.env.CI,
