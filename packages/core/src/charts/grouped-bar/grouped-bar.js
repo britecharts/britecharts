@@ -221,6 +221,35 @@ export default function module() {
     }
 
     /**
+     * Picks an evenly-spaced subset of up to `numTicks` values from a
+     * categorical domain. d3's axis `.ticks(count)` is ignored for
+     * band/ordinal scales (it always renders one tick per domain value),
+     * so this is used to honor `xTicks` on the vertical grouped-bar's
+     * categorical x axis via `.tickValues()` instead.
+     * @param  {Array}  domainValues Full list of category values (xScale.domain())
+     * @param  {Number} numTicks     Desired number of ticks to display
+     * @return {Array}               Subset of domainValues to pass to tickValues
+     * @private
+     */
+    function getEvenlySpacedTickValues(domainValues, numTicks) {
+        const total = domainValues.length;
+
+        if (!numTicks || numTicks >= total) {
+            return domainValues;
+        }
+
+        if (numTicks <= 1) {
+            return [domainValues[0]];
+        }
+
+        const step = (total - 1) / (numTicks - 1);
+
+        return uniq(
+            range(numTicks).map((i) => domainValues[Math.round(i * step)])
+        );
+    }
+
+    /**
      * Creates the d3 x and y axis, setting orientations
      * @private
      */
@@ -232,7 +261,9 @@ export default function module() {
             );
             yAxis = axisLeft(yScale);
         } else {
-            xAxis = axisBottom(xScale);
+            xAxis = axisBottom(xScale).tickValues(
+                getEvenlySpacedTickValues(xScale.domain(), xTicks)
+            );
             yAxis = axisLeft(yScale).ticks(yTicks, locale.format(numberFormat));
         }
     }

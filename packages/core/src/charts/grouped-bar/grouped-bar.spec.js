@@ -670,6 +670,35 @@ describe('grouped Bar Chart', () => {
         });
     });
 
+    describe('when xTicks is set on a large categorical dataset', () => {
+        it('should render at most the requested number of x-axis ticks (issue #1024)', () => {
+            const numberOfCategories = 20;
+            const groups = ['source1', 'source2', 'source3'];
+            const largeDataset = [];
+            const expectedXTicks = 6;
+
+            for (let i = 0; i < numberOfCategories; i++) {
+                groups.forEach((group) => {
+                    largeDataset.push({
+                        name: `Category ${i}`,
+                        group,
+                        value: i + 1,
+                    });
+                });
+            }
+
+            groupedBarChart.xTicks(expectedXTicks);
+            containerFixture.datum(largeDataset).call(groupedBarChart);
+
+            const actualNumberOfTicks = containerFixture
+                .selectAll('.x-axis-group .tick')
+                .size();
+
+            expect(actualNumberOfTicks).toBeLessThanOrEqual(expectedXTicks);
+            expect(actualNumberOfTicks).toBeGreaterThan(0);
+        });
+    });
+
     describe('when the data has negative values', () => {
         it('should render every bar with a non-negative height', () => {
             const negativeData = [
