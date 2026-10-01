@@ -17,7 +17,7 @@ Britecharts is a [Yarn][yarn] 3 workspace. Node comes from `.nvmrc` (24), Yarn f
 
 ### Building the packages
 
-Each published package is built with [webpack][webpack] 4 from `yarn build` in its folder, or all three at once with `yarn build:packages` at the root. Two things make that work on a current Node: `sass-loader` 10 with Dart Sass, and `scripts/patch-webpack4-md4.js`, which webpack's configs require first so the md4 hashing webpack 4 asks for is served by sha256 on OpenSSL 3. Babel's `preset-env` still emits ES5 output; that, and webpack itself, go with the Vite migration on the roadmap ([#1044][vite]).
+Each published package is built with [webpack][webpack] 5 from `yarn build` in its folder, or all three at once with `yarn build:packages` at the root. `sass-loader` 10 still uses Dart Sass through the legacy JS API, silenced via `silenceDeprecations` in each package's `webpack.parts.js`. Babel's `preset-env` still emits ES5 output; that, and webpack itself, go with the Vite migration on the roadmap ([#1044][vite]).
 
 What comes out of `packages/core/dist`:
 

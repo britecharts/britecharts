@@ -1,49 +1,6 @@
-const webpack = require('webpack');
-const BundleAnalyzerPlugin =
-    require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const constants = require('./webpack.constants');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
-exports.istanbulLoader = () => ({
-    module: {
-        rules: [
-            {
-                test: /\.js?$/,
-                include: /src/,
-                exclude: /(node_modules|__tests__|tests_index.js)/,
-                use: [
-                    {
-                        loader: 'istanbul-instrumenter-loader',
-                        query: {
-                            esModules: true,
-                        },
-                    },
-                ],
-            },
-        ],
-    },
-});
-
-exports.bundleTreeChart = (analyzerPort = 8888) => ({
-    plugins: [
-        new BundleAnalyzerPlugin({
-            analyzerPort,
-        }),
-    ],
-});
-
-exports.sassLoader = () => ({
-    module: {
-        rules: [
-            {
-                test: /\.scss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
-                exclude: /node_modules/,
-            },
-        ],
-    },
-});
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 exports.allStyles = (isMinified = false) => ({
     module: {
@@ -63,7 +20,11 @@ exports.allStyles = (isMinified = false) => ({
                         loader: 'extract-loader',
                     },
                     {
-                        loader: 'css-loader?-url',
+                        loader: 'css-loader',
+                        options: {
+                            url: false,
+                            esModule: false,
+                        },
                     },
                     {
                         loader: 'sass-loader',
@@ -80,7 +41,7 @@ exports.allStyles = (isMinified = false) => ({
             },
         ],
     },
-    plugins: [new FixStyleOnlyEntriesPlugin({ extensions: ['scss'] })],
+    plugins: [new RemoveEmptyScriptsPlugin({ extensions: ['scss'] })],
 });
 
 exports.chartStyles = (isMinified = false) => ({
@@ -99,7 +60,11 @@ exports.chartStyles = (isMinified = false) => ({
                         loader: 'extract-loader',
                     },
                     {
-                        loader: 'css-loader?-url',
+                        loader: 'css-loader',
+                        options: {
+                            url: false,
+                            esModule: false,
+                        },
                     },
                     {
                         loader: 'sass-loader',
@@ -116,18 +81,26 @@ exports.chartStyles = (isMinified = false) => ({
             },
         ],
     },
-    plugins: [new FixStyleOnlyEntriesPlugin({ extensions: ['scss'] })],
+    plugins: [new RemoveEmptyScriptsPlugin({ extensions: ['scss'] })],
 });
 
 exports.minifyStyles = () => ({
-    plugins: [
-        new OptimizeCssAssetsPlugin({
-            cssProcessorPluginOptions: {
-                preset: ['default', { discardComments: { removeAll: true } }],
-            },
-            canPrint: true,
-        }),
-    ],
+    optimization: {
+        // '...' keeps webpack 5's default JS minimizer (Terser) active
+        // alongside the CSS minimizer -- omitting it would silently turn
+        // off JS minification for this config.
+        minimizer: [
+            '...',
+            new CssMinimizerPlugin({
+                minimizerOptions: {
+                    preset: [
+                        'default',
+                        { discardComments: { removeAll: true } },
+                    ],
+                },
+            }),
+        ],
+    },
 });
 
 exports.noParseD3Vendor = () => ({

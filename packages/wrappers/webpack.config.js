@@ -1,21 +1,8 @@
-require('../../scripts/patch-webpack4-md4');
-
 const path = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const parts = require('./webpack.parts');
 const constants = require('./webpack.constants');
-
-const testConfig = merge([
-    {
-        mode: 'development',
-        resolve: {
-            modules: [path.resolve(__dirname, './src/charts'), 'node_modules'],
-        },
-    },
-    parts.aliasD3ToVendorPath(),
-    parts.istanbulLoader(),
-]);
 
 const prodBundleConfig = merge([
     {
@@ -36,7 +23,6 @@ const prodBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(8899),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
@@ -56,7 +42,6 @@ const prodCJSBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(8899),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
@@ -76,30 +61,26 @@ const prodChartsConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(8899),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
 
 module.exports = (env) => {
-    // eslint-disable-next-line no-console
-    console.log('%%%%%%%% env', env);
-
-    if (env === 'test') {
-        return testConfig;
-    }
-
-    if (env === 'prodBundleConfig') {
+    // webpack-cli 4+ normalizes a bare `--env=name` flag into an object
+    // (`{ name: true, ... }`) rather than passing `name` through as a
+    // string the way webpack-cli 3 did, so this dispatch keys off
+    // `env.<name>` rather than `env === '<name>'`.
+    if (env.prodBundleConfig) {
         return prodBundleConfig;
     }
-    if (env === 'prodCJSBundleConfig') {
+    if (env.prodCJSBundleConfig) {
         return prodCJSBundleConfig;
     }
-    if (env === 'prodChartsConfig') {
+    if (env.prodChartsConfig) {
         return prodChartsConfig;
     }
 
-    if (env === 'production') {
+    if (env.production) {
         return [prodBundleConfig, prodCJSBundleConfig, prodChartsConfig];
     }
 };

@@ -1,12 +1,8 @@
 /* eslint-disable no-console */
-require('../../scripts/patch-webpack4-md4');
-
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const parts = require('./webpack.parts');
 
 const PATHS = {
@@ -65,19 +61,22 @@ const testConfig = merge([
             new HtmlWebpackPlugin({
                 title: 'Webpack demo',
             }),
-            // If you require a missing module and then `npm install` it, you still have
-            // to restart the development server for Webpack to discover it. This plugin
-            // makes the discovery automatic so you don't have to restart.
-            // See https://github.com/facebookincubator/create-react-app/issues/186
-            new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
         ],
+        // webpack 5 defaults externalsType to 'var', which can't resolve the
+        // UMD-shaped { root, commonjs2, commonjs, amd } values commonSplittedConfig
+        // sets for react/react-dom; this config has no output.library of its
+        // own (unlike the prod configs, which imply 'umd' via libraryTarget)
+        // to tell it otherwise.
+        externalsType: 'umd',
         output: {
             devtoolModuleFilenameTemplate:
                 'webpack:///[absolute-resource-path]',
         },
     },
     parts.babelLoader(),
-    parts.generateSourceMaps({ type: 'cheap-module-eval-source-map' }),
+    // webpack 5 tightened the `devtool` pattern: the `eval-` keyword must
+    // come first (it used to be able to sit anywhere in the string).
+    parts.generateSourceMaps({ type: 'eval-cheap-module-source-map' }),
 ]);
 
 const prodChartsConfig = merge([
@@ -141,32 +140,30 @@ const prodBundleConfig = merge([
     },
     parts.babelLoader(),
     parts.generateSourceMaps({ type: 'source-map' }),
-    // parts.bundleTreeChart(),
     parts.minifyJavaScript(),
-    // TODO: Figure out this
-    // parts.copy({
-    //     from: 'node_modules/@britecharts/core/dist/styles/bundle/britecharts.min.css',
-    //     to: 'react.min.css',
-    // }),
 ]);
 
 module.exports = (env) => {
+    // webpack-cli 4+ normalizes a bare `--env=name` flag into an object
+    // (`{ name: true, ... }`) rather than passing `name` through as a
+    // string the way webpack-cli 3 did, so this dispatch keys off
+    // `env.<name>` rather than `env === '<name>'`.
     console.log('%%%%%%%% env', env);
 
-    if (env === 'test') {
+    if (env.test) {
         return merge(commonSplittedConfig, testConfig);
     }
-    if (env === 'prodBundleConfig') {
+    if (env.prodBundleConfig) {
         return prodBundleConfig;
     }
-    if (env === 'prodChartsConfig') {
+    if (env.prodChartsConfig) {
         return prodChartsConfig;
     }
-    if (env === 'prodCJSChartsConfig') {
+    if (env.prodCJSChartsConfig) {
         return prodCJSChartsConfig;
     }
 
-    if (env === 'production') {
+    if (env.production) {
         return [prodCJSChartsConfig, prodChartsConfig, prodBundleConfig];
     }
 
