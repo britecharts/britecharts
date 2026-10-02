@@ -1,59 +1,17 @@
 {
-    // Shared TypeScript settings for the published packages. Each of
-    // core/wrappers/react extends this with its own `include`; this file is
-    // never built directly, which is why it is tsconfig.base.json rather than
-    // tsconfig.json (same split packages/integration/consumers/typescript uses).
-    //
-    // Written TS7-clean on purpose: no option TypeScript 6.0 deprecated appears
-    // here, so moving from typescript@6.0.3 to the Go-native 7.x once 7.1 ships
-    // its compiler API is a version bump and nothing else.
     "compilerOptions": {
-        // Matches what the build already targets -- core's `build:check` runs
-        // `es-check es2020` over the emitted bundles.
         "target": "ES2020",
         "lib": ["ES2020", "DOM", "DOM.Iterable"],
-
-        // webpack consumes the ES module source directly (`module` in each
-        // package.json points at src/), and resolves like a bundler -- which is
-        // also what lets a `./Bar.js` specifier resolve to a `Bar.tsx` on disk.
         "module": "ESNext",
         "moduleResolution": "bundler",
-
         "strict": true,
-
-        // Babel strips types one file at a time and never sees the whole
-        // program, so it cannot know whether a re-export is a type or a value.
-        // This flags the patterns it would get wrong.
         "isolatedModules": true,
-
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-
-        // Skips checking .d.ts files, including the hand-written ones under
-        // src/typings. Those are not unchecked overall: packages/integration's
-        // Tier 2b compiles a real consumer against the *published* typings with
-        // skipLibCheck off, which is the check that actually matters for them.
         "skipLibCheck": true,
-
-        // The packages are mixed .js/.ts for the length of the migration, so a
-        // converted file has to be able to import its not-yet-converted
-        // neighbours. checkJs stays off: type-checking the remaining JavaScript
-        // is explicitly not the plan (see Toolchain strategy).
         "allowJs": true,
         "checkJs": false,
-
-        // Ambient globals, listed rather than discovered. tsc's automatic
-        // @types inclusion did not pick these up from the package-level
-        // node_modules/@types that pnpm's isolated layout creates, and naming
-        // them is the better habit regardless: only the packages listed here
-        // get pulled into every compilation, instead of whatever @types
-        // happen to be installed. Types reached through an import
-        // (@types/react, @types/d3-selection) resolve normally and need no
-        // entry.
         "types": ["jest"],
-
-        // Type-checking only. The bundles come from webpack + Babel, and the
-        // published .d.ts will come from a separate declaration build later.
         "noEmit": true
     }
 }
