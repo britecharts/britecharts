@@ -42,6 +42,16 @@
         "allowJs": true,
         "checkJs": false,
 
+        // Ambient globals, listed rather than discovered. tsc's automatic
+        // @types inclusion did not pick these up from the package-level
+        // node_modules/@types that pnpm's isolated layout creates, and naming
+        // them is the better habit regardless: only the packages listed here
+        // get pulled into every compilation, instead of whatever @types
+        // happen to be installed. Types reached through an import
+        // (@types/react, @types/d3-selection) resolve normally and need no
+        // entry.
+        "types": ["jest"],
+
         // Type-checking only. The bundles come from webpack + Babel, and the
         // published .d.ts will come from a separate declaration build later.
         "noEmit": true
