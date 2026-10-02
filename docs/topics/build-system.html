@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.e4699776.css">
-<script src="/britecharts/assets/js/runtime~main.462eef20.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.955c6a73.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.33534819.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.d01c0275.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -54,7 +54,7 @@
 
 <table><thead><tr><th>Package</th><th>What it is</th></tr></thead><tbody><tr><td><code>@britecharts/core</code></td><td>The charts, the tooltip and legend, the styles and the TypeScript typings.</td></tr><tr><td><code>@britecharts/wrappers</code></td><td><code>create</code>/<code>update</code>/<code>destroy</code> wrappers around each chart, for frameworks.</td></tr><tr><td><code>@britecharts/react</code></td><td>React components built on the wrappers.</td></tr><tr><td><code>@britecharts/docs</code></td><td>This site, built with <a href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer" class="">Docusaurus</a>. Private.</td></tr><tr><td><code>@britecharts/demos</code></td><td>The Storybook shell that composes the core and React Storybooks. Private.</td></tr><tr><td><code>@britecharts/integration</code></td><td>Installs the packed packages into real consumer projects and tests what ships. Private.</td></tr></tbody></table>
 <h3 class="anchor anchorTargetStickyNavbar_DQsT" id="building-the-packages">Building the packages<a href="#building-the-packages" class="hash-link" aria-label="Direct link to Building the packages" title="Direct link to Building the packages" translate="no">​</a></h3>
-<p>Each published package is built with <a href="https://webpack.js.org/" target="_blank" rel="noopener noreferrer" class="">webpack</a> 4 from <code>yarn build</code> in its folder, or all three at once with <code>yarn build:packages</code> at the root. Two things make that work on a current Node: <code>sass-loader</code> 10 with Dart Sass, and <code>scripts/patch-webpack4-md4.js</code>, which webpack&#x27;s configs require first so the md4 hashing webpack 4 asks for is served by sha256 on OpenSSL 3. Babel&#x27;s <code>preset-env</code> still emits ES5 output; that, and webpack itself, go with the Vite migration on the roadmap (<a href="https://github.com/britecharts/britecharts/issues/1044" target="_blank" rel="noopener noreferrer" class="">#1044</a>).</p>
+<p>Each published package is built with <a href="https://webpack.js.org/" target="_blank" rel="noopener noreferrer" class="">webpack</a> 5 from <code>yarn build</code> in its folder, or all three at once with <code>yarn build:packages</code> at the root. <code>sass-loader</code> 10 still uses Dart Sass through the legacy JS API, silenced via <code>silenceDeprecations</code> in each package&#x27;s <code>webpack.parts.js</code>. Babel&#x27;s <code>preset-env</code> still emits ES5 output; that, and webpack itself, go with the Vite migration on the roadmap (<a href="https://github.com/britecharts/britecharts/issues/1044" target="_blank" rel="noopener noreferrer" class="">#1044</a>).</p>
 <p>What comes out of <code>packages/core/dist</code>:</p>
 
 
