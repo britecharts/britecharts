@@ -108,7 +108,12 @@ const prodCJSChartsConfig = merge([
         output: {
             path: PATHS.cjs,
             filename: '[name].js',
-            library: ['react', '[name]'],
+            // No `library` name here on purpose: webpack 4 ignored it for
+            // commonjs2 (there's no global to namespace), but webpack 5
+            // actually nests the exports under it -- `module.exports.react.Bar`
+            // instead of `module.exports` -- if it's set, which also defeats
+            // libraryExport below.
+            //
             // The component itself, not { default: Component }; same shape as
             // core's per-chart builds.
             libraryExport: 'default',

@@ -37,7 +37,10 @@ const prodCJSBundleConfig = merge([
         output: {
             path: path.resolve(__dirname, './dist/cjs/bundle'),
             filename: 'wrappers.bundled.min.js',
-            library: ['wrappers'],
+            // No `library` name here on purpose: webpack 4 ignored it for
+            // commonjs2 (there's no global to namespace), but webpack 5
+            // actually nests the exports under it -- `module.exports.wrappers`
+            // instead of `module.exports` -- if it's set.
             libraryTarget: 'commonjs2',
         },
     },
