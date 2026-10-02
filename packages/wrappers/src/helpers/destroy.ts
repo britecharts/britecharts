@@ -6,9 +6,11 @@ import { select } from 'd3-selection';
  *
  * The core charts only ever append their svg as a direct child of the element
  * they are called on, so that is where this looks.
- * @param  {HTMLElement} el     The element the chart was created in
+ *
+ * @param el The element the chart was created in. Missing is allowed and does
+ * nothing: a wrapper can be destroyed before it ever drew.
  */
-export const removeChartSvg = (el) => {
+export const removeChartSvg = (el?: HTMLElement | null) => {
     if (!el) {
         return;
     }
@@ -23,9 +25,11 @@ export const removeChartSvg = (el) => {
  * (`.metadata-group`), but is destroyed against the outermost node, whose svg
  * belongs to the chart. Removing that svg here would delete the chart the
  * tooltip is attached to.
- * @param  {HTMLElement} el     An element containing the tooltip
+ *
+ * @param el An element containing the tooltip. Missing is allowed and does
+ * nothing.
  */
-export const removeTooltip = (el) => {
+export const removeTooltip = (el?: HTMLElement | null) => {
     if (!el) {
         return;
     }

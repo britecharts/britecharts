@@ -35,7 +35,7 @@ describe('destroy helpers', () => {
     });
 
     describe('removeTooltip', () => {
-        const group = (className) => {
+        const group = (className: string) => {
             const g = document.createElementNS(
                 'http://www.w3.org/2000/svg',
                 'g'
