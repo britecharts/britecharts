@@ -28,6 +28,6 @@ Include one of these prefixes:
 
 <!--- Review the list before submitting your pull request -->
 <!--- Leave the list intact for the code reviewer's use -->
--   [ ] Code follows the [API Guidelines](http://britecharts.github.io/britecharts/topics-index.html#toc5__anchor)
+-   [ ] Code follows the [API Guidelines](https://britecharts.github.io/britecharts/docs/topics/api-guidelines)
 -   [ ] Updated the documentation
 -   [ ] Added tests to cover changes

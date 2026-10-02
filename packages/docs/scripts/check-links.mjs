@@ -81,6 +81,18 @@ try {
     await waitForServer();
 
     const checker = new LinkChecker();
+
+    // github.com intermittently answers automated/CI traffic with 503
+    // (Service Unavailable) under concurrent load -- not a broken link, the
+    // server saying it's temporarily busy. Confirmed by hand (the same URLs
+    // resolve fine outside CI) and against this workflow's own run history
+    // (consistently green on main; failures cluster on PRs, which run many
+    // other jobs against the same commit in parallel). A 503 still gets
+    // logged, just not failed; a real 404/DNS failure still fails the build.
+    checker.on('statusCodeWarning', ({ url, status }) => {
+        console.warn(`  [warn] ${status} ${url} (treated as non-fatal)`);
+    });
+
     const result = await checker.check({
         path: BASE,
         recurse: true,
@@ -90,6 +102,7 @@ try {
         retryErrors: true,
         retryErrorsCount: 2,
         linksToSkip: SKIP,
+        statusCodes: { 503: 'warn' },
         urlRewriteExpressions: [{ pattern: DEPLOYED, replacement: BASE }],
     });
     const broken = result.links.filter((link) => link.state === 'BROKEN');
