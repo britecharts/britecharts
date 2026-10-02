@@ -13,6 +13,6 @@
 // (no-console, single quotes) failed on files that were never meant to run
 // through it.
 module.exports = {
-    '*.js': [() => 'pnpm run lint:js', () => 'pnpm run format'],
+    '*.{js,ts,tsx}': [() => 'pnpm run lint:js', () => 'pnpm run format'],
     '*.scss': () => 'pnpm run lint:styles',
 };
