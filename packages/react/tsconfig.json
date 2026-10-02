@@ -1,0 +1,13 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        // "react", not "react-jsx": babel.config.test.js and the webpack build
+        // both run preset-react's *classic* runtime, which needs `React` in
+        // scope in every file with JSX. Telling tsc the same thing makes it
+        // enforce that import rather than let a .tsx type-check clean and then
+        // fail at runtime. Switch both together if the automatic runtime is
+        // ever adopted.
+        "jsx": "react"
+    },
+    "include": ["src"]
+}
