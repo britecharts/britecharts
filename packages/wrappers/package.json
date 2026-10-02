@@ -19,15 +19,16 @@
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
-    "build:bundle:cjs": "webpack --env=prodCJSBundleConfig",
-    "build:bundle": "webpack --env=prodBundleConfig",
-    "build:charts": "webpack --env=prodChartsConfig",
     "build": "pnpm run clean && webpack --env=production",
+    "build:bundle": "webpack --env=prodBundleConfig",
+    "build:bundle:cjs": "webpack --env=prodCJSBundleConfig",
+    "build:charts": "webpack --env=prodChartsConfig",
     "clean": "rimraf dist",
-    "lint:js": "eslint src/charts/ src/helpers webpack.*.js --ext .js,.ts,.tsx --cache",
     "lint": "pnpm run lint:js",
+    "lint:js": "eslint src/charts/ src/helpers webpack.*.js --ext .js,.ts,.tsx --cache",
+    "test": "jest --colors --coverage",
     "test:watch": "jest --watch --colors",
-    "test": "jest --colors --coverage"
+    "type-check": "tsc --noEmit"
   },
   "files": [
     "CHANGELOG.md",

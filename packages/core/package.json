@@ -79,25 +79,26 @@
     }
   },
   "scripts": {
+    "build": "pnpm run clean && webpack --env=production && pnpm run build:check",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:cdn:bundle": "webpack --env=CDNBundleConfig",
     "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
-    "build:charts": "webpack --env=prodChartsConfig",
     "build:chartStyles": "webpack --env=prodChartStyles",
+    "build:charts": "webpack --env=prodChartsConfig",
     "build:check": "es-check es2020 \"./dist/umd/bundle/core.bundled.min.js\" \"./dist/umd/charts/bar.min.js\"",
     "build:styles": "webpack --env=prodStyles",
-    "build": "pnpm run clean && webpack --env=production && pnpm run build:check",
     "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_CORE",
     "clean": "rimraf dist",
-    "demo:build": "storybook build -c .storybook -o dist/storybook",
     "demo": "pnpm run storybook",
+    "demo:build": "storybook build -c .storybook -o dist/storybook",
+    "lint": "pnpm run lint:js && pnpm run lint:styles",
     "lint:js": "eslint src/charts/ webpack.*.js --ext .js,.ts,.tsx --cache",
     "lint:styles": "stylelint './src/styles/**/*.scss'",
-    "lint": "pnpm run lint:js && pnpm run lint:styles",
     "start": "pnpm run demo",
     "storybook": "storybook dev -p 2001 --exact-port",
+    "test": "jest --colors --coverage",
     "test:watch": "jest --watch --colors",
-    "test": "jest --colors --coverage"
+    "type-check": "tsc --noEmit"
   },
   "files": [
     "CHANGELOG.md",

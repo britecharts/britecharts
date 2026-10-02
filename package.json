@@ -257,7 +257,7 @@
     "build:react": "pnpm --filter @britecharts/react run build",
     "build:wrappers": "pnpm --filter @britecharts/wrappers run build",
     "changeset": "changeset",
-    "check": "pnpm run lint:styles && pnpm run lint:js && pnpm run test:ci",
+    "check": "pnpm run lint:styles && pnpm run lint:js && pnpm run type-check && pnpm run test:ci",
     "clean": "pnpm -r run clean && pnpm store prune && rimraf node_modules && pnpm install",
     "demos": "concurrently -k -n core,react,shell -c cyan,magenta,green \"pnpm run demos:core\" \"pnpm run demos:react\" \"pnpm run demos:shell\"",
     "demos:core": "pnpm --filter @britecharts/core run demo",
@@ -283,6 +283,7 @@
     "test:ci": "pnpm -r --parallel run test",
     "test:integration": "pnpm --filter @britecharts/integration run test:integration",
     "test:watch": "pnpm -r --parallel run test:watch",
+    "type-check": "pnpm -r --parallel run type-check",
     "version-packages": "changeset version"
   },
   "private": true
