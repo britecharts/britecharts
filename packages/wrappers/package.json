@@ -5,6 +5,7 @@
   "module": "src/index.js",
   "dependencies": {
     "@britecharts/core": "workspace:^",
+    "@types/d3-selection": "3.0.12",
     "d3-selection": "3.0.0"
   },
   "devDependencies": {
