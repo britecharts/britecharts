@@ -3,7 +3,14 @@
 // current browserslist (H26) that downlevelled everything for nothing, since
 // JSX is the only thing this build still needs Babel for.
 module.exports = {
-    presets: ['@babel/preset-react', '@babel/preset-env'],
+    // Presets apply last-to-first, so preset-typescript strips the types
+    // before preset-react sees the JSX. It keys off the file extension, so
+    // .ts and .tsx are each parsed correctly with no further configuration.
+    presets: [
+        '@babel/preset-react',
+        '@babel/preset-env',
+        '@babel/preset-typescript',
+    ],
     env: {
         test: {
             plugins: ['@babel/plugin-transform-modules-commonjs'],

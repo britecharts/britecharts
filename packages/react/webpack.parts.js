@@ -42,13 +42,33 @@ exports.babelLoader = () => ({
     module: {
         rules: [
             {
-                test: /\.js$/,
+                // .tsx? as well as .jsx?: unlike core and wrappers, this
+                // package already runs Babel over its source for JSX, so
+                // converted files just need preset-typescript alongside
+                // preset-react in babel.config.js -- no second rule.
+                test: /\.[jt]sx?$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                 },
             },
         ],
+    },
+});
+
+exports.resolveTypeScript = () => ({
+    resolve: {
+        // webpack's defaults are ['.js', '.json', '.wasm'].
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.wasm'],
+        // Lets `export { default as Bar } from './charts/bar/Bar.js'` in the
+        // barrel resolve to Bar.tsx on disk, so index.js keeps its .js
+        // specifiers -- and index.spec.js's assertion that every re-export
+        // ends in literal .js keeps passing -- as components convert one at a
+        // time. webpack 4 could not do this, which is what made it a fork in
+        // the road before #1079.
+        extensionAlias: {
+            '.js': ['.ts', '.tsx', '.js'],
+        },
     },
 });
 

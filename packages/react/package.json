@@ -11,6 +11,7 @@
   "devDependencies": {
     "@babel/core": "7.29.7",
     "@babel/parser": "7.29.9",
+    "@babel/preset-typescript": "7.29.7",
     "@storybook/addon-a11y": "8.6.14",
     "@storybook/addon-essentials": "8.6.14",
     "@storybook/addon-links": "8.6.14",
