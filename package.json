@@ -200,6 +200,7 @@
     "@babel/plugin-transform-modules-commonjs": "7.29.7",
     "@babel/preset-env": "7.29.7",
     "@babel/preset-react": "7.29.7",
+    "@babel/preset-typescript": "7.29.7",
     "@changesets/cli": "3.0.3",
     "@commitlint/cli": "16.3.0",
     "@commitlint/config-conventional": "16.2.4",
@@ -225,8 +226,7 @@
     "stylelint-config-sass-guidelines": "9.0.1",
     "stylelint-config-standard": "29.0.0",
     "stylelint-config-standard-scss": "4.0.0",
-    "ts-jest": "29.4.13",
-    "typescript": "4.9.5"
+    "typescript": "6.0.3"
   },
   "scripts": {
     "build": "pnpm run build:core && pnpm run build:wrappers && pnpm run build:react && pnpm run build:docs && pnpm run build:demos",

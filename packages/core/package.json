@@ -54,7 +54,6 @@
     "stylelint-config-sass-guidelines": "9.0.1",
     "stylelint-config-standard": "29.0.0",
     "stylelint-scss": "4.7.0",
-    "typescript": "3.9.10",
     "underscore": "1.9.1",
     "webpack": "5.111.1",
     "webpack-cli": "7.2.3",
