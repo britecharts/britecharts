@@ -21,6 +21,7 @@ const CDNBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
+    parts.typeScript(),
 ]);
 
 const CDNChartsBundleConfig = merge([
@@ -38,6 +39,7 @@ const CDNChartsBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
+    parts.typeScript(),
 ]);
 
 const prodBundleConfig = merge([
@@ -57,6 +59,7 @@ const prodBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
+    parts.typeScript(),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
@@ -76,6 +79,7 @@ const prodChartsConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
+    parts.typeScript(),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);

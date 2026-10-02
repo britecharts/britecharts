@@ -172,9 +172,27 @@
     "overrides": [
       {
         "files": [
+          "*.ts",
+          "*.tsx",
           "*.d.ts"
         ],
-        "parser": "@typescript-eslint/parser"
+        "parser": "@typescript-eslint/parser",
+        "plugins": [
+          "@typescript-eslint"
+        ],
+        "extends": [
+          "plugin:@typescript-eslint/recommended"
+        ],
+        "rules": {
+          "no-unused-vars": "off",
+          "@typescript-eslint/no-unused-vars": [
+            1,
+            {
+              "varsIgnorePattern": "[d3Transition]"
+            }
+          ],
+          "@typescript-eslint/no-explicit-any": 1
+        }
       }
     ]
   },
@@ -200,10 +218,12 @@
     "@babel/plugin-transform-modules-commonjs": "7.29.7",
     "@babel/preset-env": "7.29.7",
     "@babel/preset-react": "7.29.7",
+    "@babel/preset-typescript": "7.29.7",
     "@changesets/cli": "3.0.3",
     "@commitlint/cli": "16.3.0",
     "@commitlint/config-conventional": "16.2.4",
-    "@typescript-eslint/parser": "5.62.0",
+    "@typescript-eslint/eslint-plugin": "8.71.0",
+    "@typescript-eslint/parser": "8.71.0",
     "babel-jest": "29.7.0",
     "babel-plugin-async-import": "2.1.0",
     "babel-plugin-module-resolver": "4.1.0",
@@ -225,8 +245,7 @@
     "stylelint-config-sass-guidelines": "9.0.1",
     "stylelint-config-standard": "29.0.0",
     "stylelint-config-standard-scss": "4.0.0",
-    "ts-jest": "29.4.13",
-    "typescript": "4.9.5"
+    "typescript": "6.0.3"
   },
   "scripts": {
     "build": "pnpm run build:core && pnpm run build:wrappers && pnpm run build:react && pnpm run build:docs && pnpm run build:demos",
@@ -238,7 +257,7 @@
     "build:react": "pnpm --filter @britecharts/react run build",
     "build:wrappers": "pnpm --filter @britecharts/wrappers run build",
     "changeset": "changeset",
-    "check": "pnpm run lint:styles && pnpm run lint:js && pnpm run test:ci",
+    "check": "pnpm run lint:styles && pnpm run lint:js && pnpm run type-check && pnpm run test:ci",
     "clean": "pnpm -r run clean && pnpm store prune && rimraf node_modules && pnpm install",
     "demos": "concurrently -k -n core,react,shell -c cyan,magenta,green \"pnpm run demos:core\" \"pnpm run demos:react\" \"pnpm run demos:shell\"",
     "demos:core": "pnpm --filter @britecharts/core run demo",
@@ -248,7 +267,7 @@
     "docs": "pnpm --filter @britecharts/docs run start",
     "docs:build": "pnpm --filter @britecharts/docs run build",
     "docs:links": "pnpm --filter @britecharts/docs run docs:links",
-    "format": "sh -c 'oxfmt \"${@:-**/*.js}\"' --",
+    "format": "sh -c 'oxfmt \"${@:-**/*.{js,ts,tsx}}\"' --",
     "lint": "pnpm -r --parallel run lint",
     "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
     "lint:js": "pnpm -r --parallel run lint:js",
@@ -264,6 +283,7 @@
     "test:ci": "pnpm -r --parallel run test",
     "test:integration": "pnpm --filter @britecharts/integration run test:integration",
     "test:watch": "pnpm -r --parallel run test:watch",
+    "type-check": "pnpm -r --parallel run type-check",
     "version-packages": "changeset version"
   },
   "private": true

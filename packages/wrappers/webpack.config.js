@@ -23,6 +23,7 @@ const prodBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
+    parts.typeScript(),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
@@ -45,6 +46,7 @@ const prodCJSBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
+    parts.typeScript(),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
@@ -64,6 +66,7 @@ const prodChartsConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
+    parts.typeScript(),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);

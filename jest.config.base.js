@@ -3,13 +3,12 @@ const path = require('path');
 process.env.TZ = 'UTC';
 
 module.exports = {
-    globals: {
-        'ts-jest': {
-            disableSourceMapSupport: true,
-        },
-    },
+    // One transform for every extension: babel-jest strips TypeScript the same
+    // way the webpack build does (@babel/preset-typescript in
+    // babel.config.test.js), rather than type-checking on the way through.
+    // ts-jest used to own .ts/.tsx here, but it duplicated the `type-check`
+    // script's work on every test run and pinned the repo to TypeScript < 7.
     transform: {
-        '^.+\\.tsx?$': 'ts-jest',
         '\\.[jt]sx?$': [
             'babel-jest',
             { configFile: path.join(__dirname, 'babel.config.test.js') },

@@ -74,6 +74,7 @@ const testConfig = merge([
         },
     },
     parts.babelLoader(),
+    parts.resolveTypeScript(),
     // webpack 5 tightened the `devtool` pattern: the `eval-` keyword must
     // come first (it used to be able to sit anywhere in the string).
     parts.generateSourceMaps({ type: 'eval-cheap-module-source-map' }),
@@ -97,6 +98,7 @@ const prodChartsConfig = merge([
         externals: parts.externals(),
     },
     parts.babelLoader(),
+    parts.resolveTypeScript(),
     parts.generateSourceMaps({ type: 'source-map' }),
 ]);
 
@@ -122,6 +124,7 @@ const prodCJSChartsConfig = merge([
         externals: parts.externals(),
     },
     parts.babelLoader(),
+    parts.resolveTypeScript(),
     parts.generateSourceMaps({ type: 'source-map' }),
 ]);
 
@@ -144,6 +147,7 @@ const prodBundleConfig = merge([
         externals: parts.externals(),
     },
     parts.babelLoader(),
+    parts.resolveTypeScript(),
     parts.generateSourceMaps({ type: 'source-map' }),
     parts.minifyJavaScript(),
 ]);

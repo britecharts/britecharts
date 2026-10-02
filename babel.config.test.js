@@ -20,5 +20,12 @@ module.exports = {
             },
         ],
         '@babel/preset-react',
+        // Presets apply last-to-first, so this strips the types before
+        // preset-react sees the JSX. It keys off the file extension, so .ts
+        // and .tsx are each parsed correctly with no further configuration.
+        //
+        // Babel only strips types, it never checks them -- that is the
+        // `type-check` script's job, the same split the webpack build uses.
+        '@babel/preset-typescript',
     ],
 };
