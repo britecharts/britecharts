@@ -172,9 +172,27 @@
     "overrides": [
       {
         "files": [
+          "*.ts",
+          "*.tsx",
           "*.d.ts"
         ],
-        "parser": "@typescript-eslint/parser"
+        "parser": "@typescript-eslint/parser",
+        "plugins": [
+          "@typescript-eslint"
+        ],
+        "extends": [
+          "plugin:@typescript-eslint/recommended"
+        ],
+        "rules": {
+          "no-unused-vars": "off",
+          "@typescript-eslint/no-unused-vars": [
+            1,
+            {
+              "varsIgnorePattern": "[d3Transition]"
+            }
+          ],
+          "@typescript-eslint/no-explicit-any": 1
+        }
       }
     ]
   },
@@ -204,7 +222,8 @@
     "@changesets/cli": "3.0.3",
     "@commitlint/cli": "16.3.0",
     "@commitlint/config-conventional": "16.2.4",
-    "@typescript-eslint/parser": "5.62.0",
+    "@typescript-eslint/eslint-plugin": "8.71.0",
+    "@typescript-eslint/parser": "8.71.0",
     "babel-jest": "29.7.0",
     "babel-plugin-async-import": "2.1.0",
     "babel-plugin-module-resolver": "4.1.0",

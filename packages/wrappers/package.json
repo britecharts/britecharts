@@ -22,7 +22,7 @@
     "build:charts": "webpack --env=prodChartsConfig",
     "build": "pnpm run clean && webpack --env=production",
     "clean": "rimraf dist",
-    "lint:js": "eslint src/charts/ src/helpers webpack.*.js --cache",
+    "lint:js": "eslint src/charts/ src/helpers webpack.*.js --ext .js,.ts,.tsx --cache",
     "lint": "pnpm run lint:js",
     "test:watch": "jest --watch --colors",
     "test": "jest --colors --coverage"

@@ -58,7 +58,7 @@
     "clean": "rimraf dist",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
     "demo": "pnpm run storybook",
-    "lint:js": "eslint src/charts src/index.js webpack.*.js --ignore-pattern \"*.spec.js\" --cache",
+    "lint:js": "eslint src/charts src/index.js webpack.*.js --ext .js,.ts,.tsx --ignore-pattern \"*.spec.js\" --cache",
     "lint": "pnpm run lint:js",
     "start": "webpack-dev-server --env=test --open --hot",
     "storybook": "storybook dev -p 2002 --exact-port",
