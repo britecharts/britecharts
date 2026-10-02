@@ -1,21 +1,8 @@
-require('../../scripts/patch-webpack4-md4');
-
 const path = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const parts = require('./webpack.parts');
 const constants = require('./webpack.constants');
-
-const testConfig = merge([
-    {
-        mode: 'development',
-        resolve: {
-            modules: [path.resolve(__dirname, './src/charts'), 'node_modules'],
-        },
-    },
-    parts.aliasD3ToVendorPath(),
-    parts.istanbulLoader(),
-]);
 
 const CDNBundleConfig = merge([
     {
@@ -34,7 +21,6 @@ const CDNBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(8899),
 ]);
 
 const CDNChartsBundleConfig = merge([
@@ -52,7 +38,6 @@ const CDNChartsBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(8899),
 ]);
 
 const prodBundleConfig = merge([
@@ -72,7 +57,6 @@ const prodBundleConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(8899),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
@@ -92,7 +76,6 @@ const prodChartsConfig = merge([
         },
     },
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(8899),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
@@ -148,32 +131,33 @@ const prodChartsStylesConfigMin = merge([
 ]);
 
 module.exports = (env) => {
+    // webpack-cli 4+ normalizes a bare `--env=name` flag into an object
+    // (`{ name: true, ... }`) rather than passing `name` through as a
+    // string the way webpack-cli 3 did, so this dispatch keys off
+    // `env.<name>` rather than `env === '<name>'`.
     // eslint-disable-next-line no-console
     console.log('%%%%%%%% env', env);
 
-    if (env === 'test') {
-        return testConfig;
-    }
-    if (env === 'prodStyles') {
+    if (env.prodStyles) {
         return [prodStylesConfig, prodStylesConfigMin];
     }
-    if (env === 'prodChartStyles') {
+    if (env.prodChartStyles) {
         return [prodChartsStylesConfig, prodChartsStylesConfigMin];
     }
-    if (env === 'prodBundleConfig') {
+    if (env.prodBundleConfig) {
         return prodBundleConfig;
     }
-    if (env === 'prodChartsConfig') {
+    if (env.prodChartsConfig) {
         return prodChartsConfig;
     }
-    if (env === 'CDNBundleConfig') {
+    if (env.CDNBundleConfig) {
         return CDNBundleConfig;
     }
-    if (env === 'CDNChartsBundleConfig') {
+    if (env.CDNChartsBundleConfig) {
         return CDNChartsBundleConfig;
     }
 
-    if (env === 'production') {
+    if (env.production) {
         return [
             prodBundleConfig,
             prodChartsConfig,

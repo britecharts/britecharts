@@ -1,6 +1,4 @@
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 exports.devServer = ({ host, port } = {}) => ({
@@ -9,13 +7,19 @@ exports.devServer = ({ host, port } = {}) => ({
         // routing works. Good for complex setups.
         historyApiFallback: true,
 
-        // Display only errors to reduce the amount of output.
-        stats: 'errors-only',
+        // Display only errors to reduce the amount of output. webpack-dev-server
+        // 4 moved this from a top-level `stats` option to `devMiddleware.stats`.
+        devMiddleware: {
+            stats: 'errors-only',
+        },
 
-        // overlay: true is equivalent
-        overlay: {
-            errors: true,
-            warnings: true,
+        // overlay: true is equivalent. webpack-dev-server 4 moved this under
+        // `client`.
+        client: {
+            overlay: {
+                errors: true,
+                warnings: true,
+            },
         },
 
         // Parse host and port from env to allow customization.
@@ -55,13 +59,10 @@ exports.generateSourceMaps = ({ type }) => ({
 exports.minifyJavaScript = () => ({
     optimization: {
         minimizer: [
-            new UglifyJsPlugin({
-                sourceMap: true,
-                cache: true,
+            new TerserPlugin({
                 parallel: 2,
-                uglifyOptions: {
+                terserOptions: {
                     mangle: true,
-                    ie8: true,
                     keep_fnames: true, // eslint-disable-line
                     compress: {
                         drop_console: true,
@@ -70,10 +71,6 @@ exports.minifyJavaScript = () => ({
             }),
         ],
     },
-});
-
-exports.bundleTreeChart = () => ({
-    plugins: [new BundleAnalyzerPlugin()],
 });
 
 exports.externals = () => ({
@@ -95,8 +92,4 @@ exports.externals = () => ({
         commonjs: 'prop-types',
         amd: 'prop-types',
     },
-});
-
-exports.copy = (patterns, options) => ({
-    plugins: [new CopyWebpackPlugin([patterns], options)],
 });
