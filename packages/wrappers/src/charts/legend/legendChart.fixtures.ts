@@ -1,4 +1,6 @@
-const with6Points = () => [
+import type { LegendDataShape } from '@britecharts/core';
+
+const with6Points = (): LegendDataShape[] => [
     {
         name: 'Shiny',
         id: 1,
