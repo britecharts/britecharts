@@ -1,4 +1,6 @@
-const flatData = {
+import type { LineChartData } from '@britecharts/core';
+
+const flatData: Record<string, LineChartData> = {
     a: {
         data: [
             {
@@ -33,7 +35,7 @@ const flatData = {
     },
 };
 
-const oneSet = () => ({
+const oneSet = (): LineChartData => ({
     data: [
         {
             topicName: 'Vivid',
@@ -200,7 +202,7 @@ const oneSet = () => ({
     ],
 });
 
-const fiveTopics = () => ({
+const fiveTopics = (): LineChartData => ({
     data: [
         {
             topicName: 'San Francisco',
