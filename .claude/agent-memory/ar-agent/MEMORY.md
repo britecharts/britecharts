@@ -1,0 +1,1 @@
+- [Verify from code, don't echo the premise](feedback_verify_dont_echo.md) — re-derive claims from source, report file:line, disagree plainly
