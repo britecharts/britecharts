@@ -1,4 +1,6 @@
-const with3Sources = () => [
+import type { StackedBarChartDataShape } from '@britecharts/core';
+
+const with3Sources = (): StackedBarChartDataShape[] => [
     {
         name: 'Shiny',
         stack: 'Bottom',
@@ -46,7 +48,7 @@ const with3Sources = () => [
     },
 ];
 
-const with3SourcesAndDates = () => [
+const with3SourcesAndDates = (): StackedBarChartDataShape[] => [
     {
         name: '2011-01-05',
         stack: 'vivid',
@@ -109,7 +111,7 @@ const with3SourcesAndDates = () => [
     },
 ];
 
-const with2Sources = () => [
+const with2Sources = (): StackedBarChartDataShape[] => [
     {
         name: 'Dazzling',
         stack: 'Bottom',

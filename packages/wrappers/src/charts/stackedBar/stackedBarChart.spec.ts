@@ -1,8 +1,16 @@
+import type { StackedBarChartDataShape } from '@britecharts/core';
+
 import stackedBarData from './stackedBarChart.fixtures';
 import stackedBar from './stackedBarChart';
 
+// d3 stashes the bound datum on the node itself, which is how these tests read
+// back what was drawn. This wrapper binds the whole array.
+type NodeWithDatum = HTMLElement & { __data__?: StackedBarChartDataShape[] };
+
+const datumOf = (el: HTMLElement) => (el as NodeWithDatum).__data__;
+
 describe('stacked Bar Chart', () => {
-    let anchor;
+    let anchor: HTMLElement;
 
     beforeEach(() => {
         anchor = document.createElement('div');
@@ -14,6 +22,7 @@ describe('stacked Bar Chart', () => {
                 it('should throw an error', () => {
                     expect(() => {
                         stackedBar.create(
+                            // @ts-expect-error el is required
                             undefined,
                             stackedBarData.with3Sources(),
                             {}
@@ -28,6 +37,7 @@ describe('stacked Bar Chart', () => {
                         stackedBar.create(
                             anchor,
                             stackedBarData.with3Sources(),
+                            // @ts-expect-error not an accessor on the chart
                             { test: 'test' }
                         );
                     }).toThrow('Method not supported by Britechart: test');
@@ -42,6 +52,7 @@ describe('stacked Bar Chart', () => {
                         stackedBar.create(
                             anchor,
                             stackedBarData.with3Sources(),
+                            // @ts-expect-error not a britecharts custom event
                             { customFakeEvent: callback }
                         );
                     }).toThrow(
@@ -57,7 +68,7 @@ describe('stacked Bar Chart', () => {
 
                 stackedBar.create(anchor, stackedBarData.with3Sources());
 
-                const actual = anchor.__data__.length;
+                const actual = datumOf(anchor)?.length;
 
                 expect(actual).toEqual(expected);
             });
@@ -180,7 +191,7 @@ describe('stacked Bar Chart', () => {
                     stackedBar.update(anchor, secondDataSet, {}, chart);
 
                     const expected = secondDataSet.length;
-                    const actual = anchor.__data__.length;
+                    const actual = datumOf(anchor)?.length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -194,7 +205,7 @@ describe('stacked Bar Chart', () => {
                     stackedBar.update(anchor, [], {}, chart);
 
                     const expected = dataSet.length;
-                    const actual = anchor.__data__.length;
+                    const actual = datumOf(anchor)?.length;
 
                     expect(actual).toEqual(expected);
                 });
