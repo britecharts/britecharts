@@ -1,7 +1,15 @@
+import type { TooltipDataShape } from '@britecharts/core';
+
 import tooltip from './tooltipChart';
 
+// d3 stashes the bound datum on the node itself. tooltipChart binds an empty
+// array of its own, since it takes no data argument.
+type NodeWithDatum = HTMLElement & { __data__?: TooltipDataShape[] };
+
+const datumOf = (el: HTMLElement) => (el as NodeWithDatum).__data__;
+
 describe('tooltip Chart', () => {
-    let anchor;
+    let anchor: HTMLElement;
 
     beforeEach(() => {
         anchor = document.createElement('div');
@@ -12,6 +20,7 @@ describe('tooltip Chart', () => {
             describe('when the DOM element is not passed', () => {
                 it('should throw an error', () => {
                     expect(() => {
+                        // @ts-expect-error el is required
                         tooltip.create(undefined, {});
                     }).toThrow('A root container is required');
                 });
@@ -20,6 +29,7 @@ describe('tooltip Chart', () => {
             describe('when a non-supported method is passed', () => {
                 it('should throw an error', () => {
                     expect(() => {
+                        // @ts-expect-error not an accessor on the chart
                         tooltip.create(anchor, { test: 'test' });
                     }).toThrow('Method not supported by Britechart: test');
                 });
@@ -32,7 +42,7 @@ describe('tooltip Chart', () => {
 
                 tooltip.create(anchor);
 
-                const actual = anchor.__data__.length;
+                const actual = datumOf(anchor)?.length;
 
                 expect(actual).toEqual(expected);
             });

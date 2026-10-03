@@ -1,3 +1,9 @@
+import type {
+    TooltipDataShape,
+    TooltipModule,
+    TopicColorMap,
+} from '@britecharts/core';
+
 import type { WrapperConfiguration } from './configuration';
 
 /**
@@ -62,5 +68,56 @@ export interface Wrapper<TData, TChart extends object> {
      * migration has to call that out as a behaviour change, not just a typing
      * one.
      */
+    destroy(el?: HTMLElement | null): void;
+}
+
+/**
+ * What a framework hands tooltipChart's `update` in place of data: where the
+ * pointer is, whether the tooltip should be showing, and what to show.
+ *
+ * Every field is optional because this arrives as accumulated component state
+ * -- react's Tooltip seeds it with `isActive: false`, `dataPoint: null`,
+ * `topicColorMap: null` and no position at all, then merges in what each
+ * `customMouseMove` dispatches.
+ */
+export interface TooltipState {
+    /** Whether to `show()` or `hide()` the tooltip on this update. */
+    isActive?: boolean;
+    dataPoint?: TooltipDataShape | null;
+    /**
+     * `x` and `y` always arrive together or not at all: the consumer gets them
+     * by destructuring the chart's `[x, y]` anchor
+     * (`const [x, y] = Array.isArray(position) ? position : []`), so there is
+     * no case where one is a number and the other is not.
+     */
+    x?: number;
+    y?: number;
+    /** Only the multi-value charts dispatch this. */
+    topicColorMap?: TopicColorMap | null;
+}
+
+/**
+ * tooltipChart alone, because it is shaped differently from the other ten:
+ * `create` takes no data (it binds an empty datum itself), and `update` takes
+ * a {@link TooltipState} where the others take data -- in third position, with
+ * the chart last.
+ *
+ * `destroy` is `removeTooltip` rather than `removeChartSvg`: a tooltip is
+ * created into a descendant of the chart it decorates but destroyed against
+ * the outermost node, whose svg belongs to that chart.
+ */
+export interface TooltipWrapper {
+    create(
+        el: HTMLElement,
+        configuration?: WrapperConfiguration<TooltipModule>
+    ): TooltipModule;
+
+    update(
+        el: HTMLElement,
+        configuration: WrapperConfiguration<TooltipModule> | undefined,
+        state: TooltipState | undefined,
+        chart: TooltipModule
+    ): TooltipModule;
+
     destroy(el?: HTMLElement | null): void;
 }
