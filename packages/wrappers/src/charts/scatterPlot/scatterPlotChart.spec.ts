@@ -1,8 +1,16 @@
+import type { ScatterPlotDataShape } from '@britecharts/core';
+
 import scatterPlotData from './scatterPlotChart.fixtures';
 import scatterPlot from './scatterPlotChart';
 
+// d3 stashes the bound datum on the node itself, which is how these tests read
+// back what was drawn. This wrapper binds the whole array.
+type NodeWithDatum = HTMLElement & { __data__?: ScatterPlotDataShape[] };
+
+const datumOf = (el: HTMLElement) => (el as NodeWithDatum).__data__;
+
 describe('scatterPlot Chart', () => {
-    let anchor;
+    let anchor: HTMLElement;
 
     beforeEach(() => {
         anchor = document.createElement('div');
@@ -14,6 +22,7 @@ describe('scatterPlot Chart', () => {
                 it('should throw an error', () => {
                     expect(() => {
                         scatterPlot.create(
+                            // @ts-expect-error el is required
                             undefined,
                             scatterPlotData.withOneSource(),
                             {}
@@ -29,6 +38,7 @@ describe('scatterPlot Chart', () => {
                             anchor,
                             scatterPlotData.withOneSource(),
                             {
+                                // @ts-expect-error not an accessor on the chart
                                 test: 'test',
                             }
                         );
@@ -45,6 +55,7 @@ describe('scatterPlot Chart', () => {
                             anchor,
                             scatterPlotData.withOneSource(),
                             {
+                                // @ts-expect-error not a britecharts custom event
                                 customFakeEvent: callback,
                             }
                         );
@@ -61,7 +72,7 @@ describe('scatterPlot Chart', () => {
 
                 scatterPlot.create(anchor, scatterPlotData.withFourNames());
 
-                const actual = anchor.__data__.length;
+                const actual = datumOf(anchor)?.length;
 
                 expect(actual).toEqual(expected);
             });
@@ -152,7 +163,7 @@ describe('scatterPlot Chart', () => {
                     scatterPlot.update(anchor, secondDataSet, {}, chart);
 
                     const expected = secondDataSet.length;
-                    const actual = anchor.__data__.length;
+                    const actual = datumOf(anchor)?.length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -166,7 +177,7 @@ describe('scatterPlot Chart', () => {
                     scatterPlot.update(anchor, null, {}, chart);
 
                     const expected = dataSet.length;
-                    const actual = anchor.__data__.length;
+                    const actual = datumOf(anchor)?.length;
 
                     expect(actual).toEqual(expected);
                 });

@@ -1,4 +1,6 @@
-const withOneSource = () => [
+import type { ScatterPlotDataShape } from '@britecharts/core';
+
+const withOneSource = (): ScatterPlotDataShape[] => [
     { name: 'Ice Cream Sales', x: 14.2, y: 215 },
     { name: 'Ice Cream Sales', x: 16.4, y: 325 },
     { name: 'Ice Cream Sales', x: 11.9, y: 185 },
@@ -13,7 +15,7 @@ const withOneSource = () => [
     { name: 'Ice Cream Sales', x: 17.2, y: 408 },
 ];
 
-const withFourNames = () => [
+const withFourNames = (): ScatterPlotDataShape[] => [
     { name: 'radiating', x: 112, y: 47 },
     { name: 'reflecting', x: 374, y: 112 },
     { name: 'blazing', x: 295, y: 250 },
@@ -24,7 +26,7 @@ const withFourNames = () => [
     { name: 'radiating', x: 317, y: 313 },
 ];
 
-const withNegativeValues = () => [
+const withNegativeValues = (): ScatterPlotDataShape[] => [
     { name: 'Temperature delta', x: -12.4, y: -30 },
     { name: 'Temperature delta', x: -8.1, y: 45 },
     { name: 'Temperature delta', x: -4.6, y: -12 },
