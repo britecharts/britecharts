@@ -18,7 +18,18 @@ export enum LineChartKeys {
 
 export type LineChartDataShape = {
     [LineChartKeys.Date]: string;
-    [LineChartKeys.Name]: string;
+    /**
+     * The topic identifier, not a label -- `topicName` is the label. The chart
+     * reads this as `topic` (`line.js`'s `topic: values[0]['name']`) and uses
+     * it to group the flat data and to key the colour map, which is why core's
+     * own JSDoc documents it as `@property {number} topic`.
+     *
+     * Declared `string` until now, which contradicted core's runtime and
+     * JSDoc, react's `Line.d.ts` (already `number`) and wrappers' own
+     * fixtures. It blocked typing the line wrapper at all: its fixture data
+     * did not satisfy this type.
+     */
+    [LineChartKeys.Name]: number;
     [LineChartKeys.TopicName]: string;
     [LineChartKeys.Value]: number;
 };

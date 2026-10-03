@@ -16,6 +16,9 @@ exports.CHARTS = {
 
 exports.PATHS = {
     vendor: path.resolve('./node_modules'),
-    bundleIndex: path.resolve('./src/index.js'),
+    // The barrel is TypeScript now. `resolve.extensionAlias` would still
+    // resolve a `.js` spelling here, but naming the file that exists is
+    // clearer than relying on that for the build's own entry point.
+    bundleIndex: path.resolve('./src/index.ts'),
     charts: path.resolve('./src/charts'),
 };
