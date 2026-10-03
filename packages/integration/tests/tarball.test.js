@@ -110,7 +110,7 @@ const PACKAGES = {
             // `*.js` made this assertion pass by coincidence after bullet
             // converted -- 10 charts, 10 matches, one of them no longer the
             // file this was meant to be checking.
-            ['src/index.js', 1],
+            ['src/index.?s', 1],
             ['src/charts/*/*.?s', 11],
         ],
         deny: COMMON_DENY,

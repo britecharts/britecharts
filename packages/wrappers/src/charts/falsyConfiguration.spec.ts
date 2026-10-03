@@ -12,7 +12,7 @@ import lineData from './line/lineChart.fixtures';
 // so a chart could never have a flag turned back off (isLoading={false} could
 // not end a loading state).
 describe('falsy configuration values', () => {
-    let anchor;
+    let anchor: HTMLElement;
 
     beforeEach(() => {
         anchor = document.createElement('div');
@@ -78,19 +78,30 @@ describe('falsy configuration values', () => {
     });
 
     describe('a value that is not set', () => {
+        // `null` is not in `width`'s declared type -- core's accessor takes
+        // `number | undefined` -- but it is exactly what a framework passes
+        // for an unset prop, and the point of this test is that
+        // applyConfiguration leaves the default alone for both. The cast keeps
+        // the case covered without widening the accessor types to admit null.
         it.each([
             ['undefined', undefined],
             ['null', null],
-        ])('should leave the default alone when it is %s', (name, value) => {
-            const defaultWidth = bar
-                .create(document.createElement('div'), barData.withLetters())
-                .width();
-            const chart = bar.create(anchor, barData.withLetters(), {
-                width: value,
-            });
+        ] as [string, number | undefined][])(
+            'should leave the default alone when it is %s',
+            (name, value) => {
+                const defaultWidth = bar
+                    .create(
+                        document.createElement('div'),
+                        barData.withLetters()
+                    )
+                    .width();
+                const chart = bar.create(anchor, barData.withLetters(), {
+                    width: value,
+                });
 
-            expect(chart.width()).toBe(defaultWidth);
-        });
+                expect(chart.width()).toBe(defaultWidth);
+            }
+        );
     });
 
     it('should draw into the anchor it was given', () => {
