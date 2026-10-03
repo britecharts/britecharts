@@ -1,4 +1,6 @@
-const with4Slices = () => [
+import type { DonutChartDataShape } from '@britecharts/core';
+
+const with4Slices = (): DonutChartDataShape[] => [
     {
         quantity: 60,
         percentage: 60,

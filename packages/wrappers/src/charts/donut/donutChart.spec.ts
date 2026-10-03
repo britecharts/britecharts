@@ -1,8 +1,16 @@
+import type { DonutChartDataShape } from '@britecharts/core';
+
 import donutData from './donutChart.fixtures';
 import donut from './donutChart';
 
+// d3 stashes the bound datum on the node itself, which is how these tests read
+// back what was drawn. donut binds the whole array.
+type NodeWithDatum = HTMLElement & { __data__?: DonutChartDataShape[] };
+
+const datumOf = (el: HTMLElement) => (el as NodeWithDatum).__data__;
+
 describe('donut Chart', () => {
-    let anchor;
+    let anchor: HTMLElement;
 
     beforeEach(() => {
         anchor = document.createElement('div');
@@ -13,6 +21,7 @@ describe('donut Chart', () => {
             describe('when the DOM element is not passed', () => {
                 it('should throw an error', () => {
                     expect(() => {
+                        // @ts-expect-error el is required
                         donut.create(undefined, donutData.with4Slices(), {});
                     }).toThrow('A root container is required');
                 });
@@ -22,6 +31,7 @@ describe('donut Chart', () => {
                 it('should throw an error', () => {
                     expect(() => {
                         donut.create(anchor, donutData.with4Slices(), {
+                            // @ts-expect-error not an accessor on the chart
                             test: 'test',
                         });
                     }).toThrow('Method not supported by Britechart: test');
@@ -34,6 +44,7 @@ describe('donut Chart', () => {
 
                     expect(() => {
                         donut.create(anchor, donutData.with4Slices(), {
+                            // @ts-expect-error not a britecharts custom event
                             customFakeEvent: callback,
                         });
                     }).toThrow(
@@ -49,7 +60,7 @@ describe('donut Chart', () => {
 
                 donut.create(anchor, donutData.with4Slices());
 
-                const actual = anchor.__data__.length;
+                const actual = datumOf(anchor)?.length;
 
                 expect(actual).toEqual(expected);
             });
@@ -145,7 +156,7 @@ describe('donut Chart', () => {
                     donut.update(anchor, secondDataSet, {}, chart);
 
                     const expected = secondDataSet.length;
-                    const actual = anchor.__data__.length;
+                    const actual = datumOf(anchor)?.length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -159,7 +170,7 @@ describe('donut Chart', () => {
                     donut.update(anchor, dataSet, {}, chart);
 
                     const expected = dataSet.length;
-                    const actual = anchor.__data__.length;
+                    const actual = datumOf(anchor)?.length;
 
                     expect(actual).toEqual(expected);
                 });
