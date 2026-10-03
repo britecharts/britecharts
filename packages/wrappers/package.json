@@ -2,13 +2,16 @@
   "name": "@britecharts/wrappers",
   "version": "3.0.0-beta.2",
   "main": "dist/umd/bundle/wrappers.bundled.min.js",
-  "module": "src/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
   "dependencies": {
     "@britecharts/core": "workspace:^",
     "@types/d3-selection": "3.0.12",
     "d3-selection": "3.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.29.7",
+    "@babel/core": "7.29.7",
     "@babel/preset-typescript": "7.29.7",
     "@types/jest": "29.5.9",
     "babel-loader": "8.4.1",
@@ -21,8 +24,11 @@
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
-    "build": "pnpm run clean && webpack --env=production",
+    "build": "pnpm run clean && pnpm run build:esm && webpack --env=production",
     "build:bundle": "webpack --env=prodBundleConfig",
+    "build:esm": "pnpm run build:esm:js && pnpm run build:esm:types",
+    "build:esm:js": "babel src --out-dir dist/esm --extensions .ts,.js --no-babelrc --presets @babel/preset-typescript --ignore \"src/**/*.spec.ts,src/**/*.spec.js,src/**/*.fixtures.ts,src/**/*.fixtures.js\"",
+    "build:esm:types": "tsc -p tsconfig.build.json",
     "build:bundle:cjs": "webpack --env=prodCJSBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig",
     "clean": "rimraf dist",
@@ -38,14 +44,20 @@
     "src/**",
     "!**/*.map",
     "!**/*.spec.js",
+    "!**/*.spec.ts",
     "!**/*.stories.js",
+    "!**/*.stories.ts",
+    "!**/*.stories.tsx",
     "!**/*.stories.mdx",
     "!**/*DataBuilder.js",
-    "!**/*.fixtures.js"
+    "!**/*DataBuilder.ts",
+    "!**/*.fixtures.js",
+    "!**/*.fixtures.ts"
   ],
   "exports": {
     ".": {
-      "import": "./src/index.js",
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
       "require": "./dist/umd/bundle/wrappers.bundled.min.js",
       "default": "./dist/umd/bundle/wrappers.bundled.min.js"
     },

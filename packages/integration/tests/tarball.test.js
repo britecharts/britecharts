@@ -32,13 +32,25 @@ const WAIVED_ATTW = new Set([
 ]);
 
 // Things that must never ship from any package.
+// globToRegExp below escapes braces, so `*.spec.{js,ts}` would match nothing.
+// Every extension is spelled out instead -- and it has to include the
+// TypeScript ones: these globs mirror each package's `files` field, and when
+// both only said `.js`, a converted `bulletChart.spec.ts` leaked into the
+// wrappers tarball with this test still passing. The same blind spot in the
+// manifest and in the guard meant to catch it is why that went unnoticed.
 const COMMON_DENY = [
     '**/*.map',
     '**/*.spec.js',
+    '**/*.spec.ts',
+    '**/*.spec.tsx',
     '**/*.stories.js',
+    '**/*.stories.ts',
+    '**/*.stories.tsx',
     '**/*.stories.mdx',
     '**/*DataBuilder.js',
+    '**/*DataBuilder.ts',
     '**/*.fixtures.js',
+    '**/*.fixtures.ts',
     '**/*.html',
     'dist/storybook/**',
     'coverage/**',
@@ -80,8 +92,26 @@ const PACKAGES = {
             ['dist/umd/bundle/wrappers.bundled.min.js', 1],
             ['dist/cjs/bundle/wrappers.bundled.min.js', 1],
             ['dist/umd/charts/*.min.js', 10],
+            // The ESM entry point and its declarations. These are what
+            // `module`, `exports.import` and `types` resolve to, so a
+            // consumer's bundler and tsc both land here rather than in src/ --
+            // which is the whole point of building them: src/ holds authored
+            // TypeScript that no consumer can be expected to compile.
+            ['dist/esm/index.js', 1],
+            ['dist/esm/index.d.ts', 1],
+            ['dist/esm/charts/*/*.js', 11],
+            ['dist/esm/charts/*/*.d.ts', 11],
+            ['dist/esm/helpers/*.js', 4],
+            ['dist/esm/helpers/*.d.ts', 4],
+            // Source still ships, so deep `./src/*` imports of the wrappers
+            // that are still JavaScript keep resolving. The extension is
+            // deliberately loose: each conversion turns one of these from .js
+            // into .ts, and the count has to hold either way. Spelling it
+            // `*.js` made this assertion pass by coincidence after bullet
+            // converted -- 10 charts, 10 matches, one of them no longer the
+            // file this was meant to be checking.
             ['src/index.js', 1],
-            ['src/charts/*/*.js', 10],
+            ['src/charts/*/*.?s', 11],
         ],
         deny: COMMON_DENY,
     },
