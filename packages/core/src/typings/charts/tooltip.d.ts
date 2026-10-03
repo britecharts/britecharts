@@ -8,9 +8,26 @@ export enum tooltipKeys {
     Topics = 'topics',
 }
 
+/**
+ * One row of a list-layout tooltip. This is a `LineChartDataShape`, not merely
+ * something like one: line hands the tooltip its raw flat rows untouched
+ * (`line.js`'s `dataSorted` is `{ date, topics: values }`, where `values` are
+ * the rows as they were bound), so `name` here is the same numeric topic
+ * identifier it is there -- not a label. `topicName` is the label.
+ *
+ * It was declared `string`, which only became visibly wrong when
+ * `LineChartDataShape.name` was corrected to `number`: core then described the
+ * same runtime object two different ways, and anyone wiring `customMouseMove`
+ * into the tooltip in TypeScript got an incompatible assignment at that
+ * boundary.
+ *
+ * `TooltipSingleDataShape.name` below is genuinely a string -- that is the
+ * category name from bar, donut and scatter plot -- so the two are not the
+ * same field and must not be collapsed.
+ */
 export type TooltipTopic = {
     date: string;
-    name: string;
+    name: number;
     value: number;
     topicName: string;
 };
