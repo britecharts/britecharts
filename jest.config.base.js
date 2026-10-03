@@ -19,6 +19,23 @@ module.exports = {
         url: 'http://localhost',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    // Jest's counterpart to webpack's `resolve.extensionAlias`, which it has no
+    // native equivalent for: drop the `.js` off a relative specifier so
+    // `moduleFileExtensions` above decides what it resolves to, trying .ts and
+    // .tsx before .js.
+    //
+    // The barrels keep their `.js` specifiers as files convert one at a time
+    // (`export { default as BulletWrapper } from './charts/bullet/bulletChart.js'`
+    // still points at bulletChart.ts), and jest otherwise resolves that string
+    // literally and fails. It bites hardest across packages: wrappers' own
+    // specs import each wrapper directly and never noticed, while every react
+    // spec goes through the wrappers barrel and all 16 suites broke at once.
+    //
+    // Dropping the extension is safe for files that really are .js -- the same
+    // lookup finds them -- so this needs no per-package exceptions.
+    moduleNameMapper: {
+        '^(\\.{1,2}/.*)\\.js$': '$1',
+    },
     // d3 v2+ ships ESM only, so those packages have to go through Babel
     // rather than being skipped along with the rest of node_modules.
     //

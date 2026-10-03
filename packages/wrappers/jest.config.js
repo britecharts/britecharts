@@ -8,6 +8,8 @@ module.exports = {
     // points at a built bundle, so without this every spec here needs
     // `pnpm build:core` to have run first.
     moduleNameMapper: {
+        // Spread, not replace: see the note in jest.config.base.js.
+        ...configBase.moduleNameMapper,
         '^@britecharts/core$': '<rootDir>/../core/src/index.js',
     },
 };
