@@ -1,4 +1,6 @@
-const withLowValues = () => [
+import type { SparklineChartDataShape } from '@britecharts/core';
+
+const withLowValues = (): (SparklineChartDataShape & { name: string })[] => [
     {
         name: 'Blazing',
         value: 2,
@@ -41,7 +43,7 @@ const withLowValues = () => [
     },
 ];
 
-const with1Source = () => [
+const with1Source = (): (SparklineChartDataShape & { name: string })[] => [
     {
         name: 'Glittering',
         value: 2,
