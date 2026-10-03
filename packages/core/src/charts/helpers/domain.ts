@@ -10,15 +10,18 @@ import { max, min } from 'd3-array';
  * For data that is entirely non-negative this returns the same `[0, max]` the
  * charts used before, so nothing about existing charts changes.
  *
- * @param  {Number[]} values            Values the axis has to cover
- * @param  {Number} ratio               Headroom multiplier applied to the extent
- * @param  {Number} emptyDomainMax      Upper bound to use when every value is 0
- * @return {Number[]}                   [lower, upper], always spanning zero
+ * @param  values            Values the axis has to cover
+ * @param  ratio             Headroom multiplier applied to the extent
+ * @param  emptyDomainMax    Upper bound to use when every value is 0
+ * @return                   [lower, upper], always spanning zero
  */
 export const getValueDomain = (
-    values,
-    { ratio = 1, emptyDomainMax = 1 } = {}
-) => {
+    values: Iterable<number>,
+    {
+        ratio = 1,
+        emptyDomainMax = 1,
+    }: { ratio?: number; emptyDomainMax?: number } = {}
+): [number, number] => {
     const lowest = min(values);
     const highest = max(values);
 
@@ -45,11 +48,19 @@ export const getValueDomain = (
  * back on the other side of the baseline with a positive size, which is what
  * SVG needs.
  *
- * @param  {Function} scale     Linear scale for the value axis
- * @param  {Number} value       Value to place
- * @return {Object}             { start, size }
+ * `scale` is typed structurally, as the number-to-number function this
+ * actually calls it as, rather than as a d3 `ScaleLinear`. That is both
+ * narrower about what is required and wider about what satisfies it: any of
+ * d3's continuous scales fits, and the helper never touches the rest of a
+ * scale's surface.
+ *
+ * @param  scale     Linear scale for the value axis
+ * @param  value     Value to place
  */
-export const getBaselineExtent = (scale, value) => {
+export const getBaselineExtent = (
+    scale: (value: number) => number,
+    value: number
+): { start: number; size: number } => {
     const baseline = scale(0);
     const point = scale(value);
 
