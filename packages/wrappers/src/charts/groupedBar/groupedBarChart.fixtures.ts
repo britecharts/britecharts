@@ -1,4 +1,6 @@
-const with3Groups = () => [
+import type { GroupedBarChartDataShape } from '@britecharts/core';
+
+const with3Groups = (): GroupedBarChartDataShape[] => [
     {
         name: 'Dogs',
         group: 'Group A',
@@ -46,7 +48,7 @@ const with3Groups = () => [
     },
 ];
 
-const with2Groups = () => [
+const with2Groups = (): GroupedBarChartDataShape[] => [
     {
         name: 'Ari',
         group: 'Group A',
