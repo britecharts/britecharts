@@ -1,4 +1,6 @@
-const with3Sources = () => [
+import type { StackedAreaChartDataShape } from '@britecharts/core';
+
+const with3Sources = (): StackedAreaChartDataShape[] => [
     {
         name: 'Direct',
         value: 0,
@@ -61,7 +63,7 @@ const with3Sources = () => [
     },
 ];
 
-const with2Sources = () => [
+const with2Sources = (): StackedAreaChartDataShape[] => [
     {
         date: '2017-02-16T00:00:00-08:00',
         name: 'Organizer Channels',
