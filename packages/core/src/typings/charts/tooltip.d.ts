@@ -1,7 +1,7 @@
 import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
 import { AxisTimeCombination } from '../helpers/constants';
-import { LocalObject } from '../common/local';
+import { LocaleString } from '../common/local';
 
 export enum tooltipKeys {
     Date = 'date',
@@ -81,8 +81,19 @@ export interface TooltipAPI {
     dateCustomFormat(format?: string): TooltipModule;
     /** Gets or Sets the dateLabel of the data */
     dateLabel(label?: string): TooltipModule;
-    /** Pass locale for the tooltip to render the date in */
-    locale(localObject?: LocalObject | null): TooltipModule;
+    /**
+     * The locale the tooltip renders its date in, as a BCP 47 tag
+     * ('en-US'). It goes straight to `Intl.DateTimeFormat(locale, ...)`
+     * (`tooltip.js`'s date formatting), which is a different thing from the
+     * d3-format locale *definition* object the value-formatting charts take --
+     * bar and the rest pass theirs to `setDefaultLocale`, and those are
+     * rightly typed `LocalObject`.
+     *
+     * Declared `LocalObject` until now, which is that other kind. Core's own
+     * `base.d.ts` already types the same accessor as `LocaleString` for the
+     * time-series charts; this brings the tooltip in line with it.
+     */
+    locale(locale?: LocaleString | null): TooltipModule;
     /** Gets or Sets the nameLabel of the data */
     nameLabel(label?: string): TooltipModule;
     /** Gets or Sets the number format for the value displayed on the tooltip */
