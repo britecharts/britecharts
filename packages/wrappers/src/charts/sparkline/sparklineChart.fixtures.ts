@@ -1,6 +1,16 @@
 import type { SparklineChartDataShape } from '@britecharts/core';
 
-const withLowValues = (): (SparklineChartDataShape & { name: string })[] => [
+// Every row here carries a `name` that the chart never reads --
+// `SparklineChartDataShape` is `{ date, value }`, and core's sparkline only
+// ever touches those two (`sparkline.js`'s `.each`, which does
+// `d.date = new Date(d[dateLabel])` and `d.value = +d[valueLabel]`).
+//
+// The annotation widens to admit the extra field rather than the data being
+// edited to fit it: a conversion should not change what the tests feed in. If
+// the stale field is dropped later, this intersection goes with it.
+type SparklineFixture = SparklineChartDataShape & { name: string };
+
+const withLowValues = (): SparklineFixture[] => [
     {
         name: 'Blazing',
         value: 2,
@@ -43,7 +53,7 @@ const withLowValues = (): (SparklineChartDataShape & { name: string })[] => [
     },
 ];
 
-const with1Source = (): (SparklineChartDataShape & { name: string })[] => [
+const with1Source = (): SparklineFixture[] => [
     {
         name: 'Glittering',
         value: 2,
