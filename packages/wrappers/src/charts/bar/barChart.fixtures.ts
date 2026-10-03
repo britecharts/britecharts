@@ -1,4 +1,6 @@
-const withLetters = () => [
+import type { BarChartDataShape } from '@britecharts/core';
+
+const withLetters = (): BarChartDataShape[] => [
     {
         name: 'A',
         value: 0.08167,
@@ -105,7 +107,7 @@ const withLetters = () => [
     },
 ];
 
-const withColors = () => [
+const withColors = (): BarChartDataShape[] => [
     {
         name: 'Radiating',
         value: 2,
