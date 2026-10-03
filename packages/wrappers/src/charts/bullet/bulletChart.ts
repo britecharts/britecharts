@@ -13,7 +13,7 @@ import { applyConfiguration } from '../../helpers/configuration';
 import { removeChartSvg } from '../../helpers/destroy';
 import type { Wrapper } from '../../helpers/wrapper';
 
-const bulletChart: Wrapper<BulletChartDataShape, BulletChartModule> = {
+const bulletChart: Wrapper<BulletChartDataShape[], BulletChartModule> = {
     create(el, data, configuration = {}) {
         const container = select<HTMLElement, BulletChartDataShape>(el);
         const chart = bullet();
