@@ -5,7 +5,16 @@ import type { WrapperConfiguration } from './configuration';
 
 // The container a wrapper is handed is always the d3 selection, not the raw
 // element -- every wrapper does `const container = select(el)` first.
-export type ChartContainer = Selection<BaseType, unknown, null, undefined>;
+//
+// Only the part of Selection this helper actually uses, rather than a concrete
+// Selection: d3's Selection is invariant in both its element and its datum
+// (each appears in parameter position on merge, select, on and others), so any
+// one Selection type we picked here would reject every caller whose selection
+// is typed even slightly differently, and all ten wrappers would need a cast.
+export type ChartContainer = Pick<
+    Selection<BaseType, unknown, null, undefined>,
+    'empty'
+>;
 
 const isNotCustomEvent = (configName: string) =>
     (britechartsCustomEvents as readonly string[]).indexOf(configName) === -1;

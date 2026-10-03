@@ -1,18 +1,31 @@
+import type { BulletChartDataShape } from '@britecharts/core';
+
 import bulletData from './bulletChart.fixtures';
 import bullet from './bulletChart';
 
+// d3 stashes the bound datum on the node itself. That is how these tests read
+// back what was drawn, and it is not part of the DOM lib's typings.
+type NodeWithDatum = HTMLElement & { __data__?: BulletChartDataShape };
+
+const datumOf = (el: HTMLElement) => (el as NodeWithDatum).__data__;
+
 describe('bullet Chart', () => {
-    let anchor;
+    let anchor: HTMLElement;
 
     beforeEach(() => {
         anchor = document.createElement('div');
     });
 
     describe('create', () => {
+        // Each of these passes something the types already reject, so the
+        // ts-expect-error is doing double duty: it keeps the runtime guard
+        // covered, and it fails the build if the wrapper's own typing ever
+        // loosens to the point of accepting these.
         describe('when incorrect arguments are used', () => {
             describe('when the DOM element is not passed', () => {
                 it('should throw an error', () => {
                     expect(() => {
+                        // @ts-expect-error el is required
                         bullet.create(undefined, bulletData.fullTestData(), {});
                     }).toThrow('A root container is required');
                 });
@@ -22,6 +35,7 @@ describe('bullet Chart', () => {
                 it('should throw an error', () => {
                     expect(() => {
                         bullet.create(anchor, bulletData.fullTestData(), {
+                            // @ts-expect-error not an accessor on the chart
                             test: 'test',
                         });
                     }).toThrow('Method not supported by Britechart: test');
@@ -34,6 +48,7 @@ describe('bullet Chart', () => {
 
                     expect(() => {
                         bullet.create(anchor, bulletData.fullTestData(), {
+                            // @ts-expect-error not a britecharts custom event
                             customFakeEvent: callback,
                         });
                     }).toThrow(
@@ -49,7 +64,7 @@ describe('bullet Chart', () => {
 
                 bullet.create(anchor, bulletData.fullTestData());
 
-                const actual = anchor.__data__;
+                const actual = datumOf(anchor);
 
                 expect(actual).toEqual(expected);
             });
@@ -109,7 +124,7 @@ describe('bullet Chart', () => {
                     bullet.update(anchor, secondDataSet, {}, chart);
 
                     const expected = secondDataSet[0];
-                    const actual = anchor.__data__;
+                    const actual = datumOf(anchor);
 
                     expect(actual).toEqual(expected);
                 });
@@ -124,7 +139,7 @@ describe('bullet Chart', () => {
                     bullet.update(anchor, [], {}, chart);
 
                     const expected = dataSet[0];
-                    const actual = anchor.__data__;
+                    const actual = datumOf(anchor);
 
                     expect(actual).toEqual(expected);
                 });
