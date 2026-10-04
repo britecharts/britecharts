@@ -17,14 +17,18 @@ const CHART_REGEX = /\/packages\/([\s\S]*?)\/src\/charts\/([\s\S]*?)\//i;
 // Matches paths of the shape: /src/charts/bar and get the chart name
 const SUB_FOLDER_REGEX = /\/src\/charts\/([\s\S]*?)$/i;
 
+// Extension-agnostic on purpose. These used to read `*.spec.js`,
+// `*.stories.js` and `*DataBuilder.js`, which stop matching the moment a file
+// converts to TypeScript -- the same blind spot that leaked spec files into the
+// published wrappers tarball.
 const IGNORED_PATHS = [
     '**/node_modules/**',
-    '**/*.spec.js',
+    '**/*.spec.[jt]s?(x)',
     '**/*.d.ts',
-    '**/index.js',
-    '**/*.stories.js',
-    '**/*DataBuilder.js',
-    '**/*Data.js',
+    '**/index.[jt]s',
+    '**/*.stories.[jt]s?(x)',
+    '**/*DataBuilder.[jt]s',
+    '**/*Data.[jt]s',
 ];
 
 /**
@@ -32,8 +36,19 @@ const IGNORED_PATHS = [
  */
 async function generateDocs() {
     console.log('-= Generating package docs =-');
-    // Use glob to get all js/ts files
-    const pathPattern = path.join(__dirname, '../../core/src/**/*.[jt]s?(x)');
+    // JavaScript only, deliberately. jsdoc's own `includePattern` in
+    // jsdoc.conf.json is `.+\.js(doc)?$` and jsdoc cannot parse TypeScript
+    // syntax at all -- handed a .ts file it fails the whole run with "There are
+    // no input files to process". The pattern used to say `[jt]s`, which broke
+    // this script as soon as core's first helper converted.
+    //
+    // Nothing user-facing is missing from the docs because of this yet: every
+    // converted file so far is a `@private` helper, and the API pages are built
+    // from the charts' `@public` accessors. That changes the moment a chart
+    // converts, so the typedoc migration (docusaurus-plugin-typedoc, Phase 4 in
+    // the migration plan) has to land before the first chart does -- it is a
+    // prerequisite for Phase 2's chart conversions, not a later nicety.
+    const pathPattern = path.join(__dirname, '../../core/src/**/*.js');
     const filePaths = glob.sync(pathPattern, {
         ignore: IGNORED_PATHS,
     });
