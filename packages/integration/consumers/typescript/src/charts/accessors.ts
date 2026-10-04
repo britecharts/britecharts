@@ -62,3 +62,36 @@ export const readAccessors = {
     animationDuration,
     locale,
 };
+
+// Heatmap's own accessors, and the three its declaration never had at all.
+//
+// The implementation exposes eleven accessors; the declaration covered eight.
+// `on`, `isAnimated` and `animationDuration` are all documented `@public` and
+// have always shipped. `on` is the consequential one: it is how a consumer
+// wires the mini tooltip to a chart, which is the pattern this library's own
+// examples show, so `heatmap().on('customMouseOver', tooltip.show)` was a
+// compile error for every TypeScript consumer.
+import { miniTooltip } from '@britecharts/core';
+
+const heatmapChart = heatmap();
+const tooltip = miniTooltip();
+
+const boxSize: number = heatmapChart.boxSize();
+// `string[] | undefined` because the chart declares `let yAxisLabels` with no
+// default and falls back to `daysHuman` at draw time, so reading it before
+// setting it really does give undefined.
+const yAxisLabels: string[] | undefined = heatmapChart.yAxisLabels();
+const heatmapAnimated: boolean = heatmapChart.isAnimated();
+const heatmapDuration: number = heatmapChart.animationDuration();
+
+heatmap()
+    .on('customMouseOver', tooltip.show)
+    .on('customMouseMove', tooltip.update)
+    .on('customMouseOut', tooltip.hide);
+
+export const heatmapAccessors = {
+    boxSize,
+    yAxisLabels,
+    heatmapAnimated,
+    heatmapDuration,
+};
