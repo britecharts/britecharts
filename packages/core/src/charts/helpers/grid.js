@@ -73,7 +73,11 @@ function gridBase(orient, scale) {
     let range = [0, 1],
         offsetStart = 0,
         offsetEnd = 0,
-        hideEdges = false,
+        // 'first' rather than false: every one of the twelve grid
+        // constructions in the charts passes 'first' explicitly, so this is
+        // the value the helper is actually always used with. The accessor
+        // still takes false, true, 'both', 'first' or 'last'.
+        hideEdges = 'first',
         ticks = null,
         tickValues = null,
         extendedLine = null,

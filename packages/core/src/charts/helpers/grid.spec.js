@@ -23,11 +23,22 @@ describe('grid helper', () => {
 
     describe('gridHorizontal', () => {
         it('draws one horizontal line per tick, in a grid container', () => {
-            gridHorizontal(yScale()).range([0, 200]).ticks(5)(container);
+            gridHorizontal(yScale()).range([0, 200]).ticks(5).hideEdges(false)(
+                container
+            );
 
             expect(lines('g.grid.horizontal')).toHaveLength(1);
             expect(lines('line.grid-line')).toHaveLength(6);
             expect(lines('line.grid-line')[0].getAttribute('x2')).toBe('200');
+        });
+
+        it('hides the first edge by default', () => {
+            // Every grid construction in the charts passes 'first', so that is
+            // the default. The tests above pin `hideEdges(false)` precisely so
+            // they keep testing what they are about rather than this.
+            gridHorizontal(yScale()).range([0, 200]).ticks(5)(container);
+
+            expect(lines('line.grid-line')).toHaveLength(5);
         });
 
         it('hides the first edge when asked', () => {
@@ -94,6 +105,7 @@ describe('grid helper', () => {
             )
                 .range([0, 200])
                 .ticks(5)
+                .hideEdges(false)
                 .highlight(0);
 
             g(container);
@@ -112,6 +124,7 @@ describe('grid helper', () => {
             gridVertical(xScale())
                 .range([0, 100])
                 .ticks(4)
+                .hideEdges(false)
                 .extendedLine(10)
                 .highlight(0)(container);
 
@@ -130,7 +143,7 @@ describe('grid helper', () => {
         it('centres its lines on band scales', () => {
             const band = scaleBand().domain(['a', 'b']).range([0, 100]);
 
-            gridVertical(band).range([0, 50])(container);
+            gridVertical(band).range([0, 50]).hideEdges(false)(container);
 
             expect(lines('line.grid-line')[0].getAttribute('x1')).toBe('25');
         });
@@ -139,6 +152,7 @@ describe('grid helper', () => {
     describe('grid (2D)', () => {
         it('passes extendedLine and highlight through to each direction', () => {
             const g = grid(xScale(), yScale())
+                .hideEdges(false)
                 .extendedLineH(20)
                 .extendedLineV(5)
                 .highlightH(0)
