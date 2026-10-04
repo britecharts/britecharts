@@ -1,8 +1,10 @@
-import * as d3 from 'd3';
+// d3-selection rather than the monolithic `d3`, matching the rest of core.
+import { select, selectAll } from 'd3-selection';
+import type { Selection } from 'd3-selection';
 
 import { wrapText, getApproximateNumberOfLines } from './text';
 
-let containerFixture;
+let containerFixture: Selection<HTMLElement, unknown, HTMLElement, unknown>;
 
 describe('text Helper', () => {
     beforeEach(() => {
@@ -12,12 +14,20 @@ describe('text Helper', () => {
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
-        containerFixture = d3.select('.test-container');
+        containerFixture = select('.test-container');
     });
 
     // remove the html fixture from the DOM
     afterEach(() => {
-        document.body.removeChild(document.getElementById('fixture'));
+        const fixture = document.getElementById('fixture');
+
+        // Asserted rather than passed straight through: if beforeEach ever
+        // stops inserting it, the failure should say so.
+        if (!fixture) {
+            throw new Error('the fixture was not inserted');
+        }
+
+        document.body.removeChild(fixture);
     });
 
     it('should wrap the text in X lines', () => {
@@ -27,8 +37,7 @@ describe('text Helper', () => {
         const xOffset = 0;
         const expectedLabelCount = 3;
         const expectedValueCount = 1;
-        const textNode = d3
-            .select('.test-container')
+        const textNode = select('.test-container')
             .append('svg')
             .append('text')
             .attr('dy', '.2em')
@@ -37,8 +46,8 @@ describe('text Helper', () => {
 
         wrapText.call(null, xOffset, fontSize, availableWidth, textNode);
 
-        const actualValueCount = d3.selectAll('.test-container .value').size();
-        const actualLabelCount = d3.selectAll('.test-container .label').size();
+        const actualValueCount = selectAll('.test-container .value').size();
+        const actualLabelCount = selectAll('.test-container .label').size();
 
         expect(actualValueCount).toEqual(expectedValueCount);
         expect(actualLabelCount).toEqual(expectedLabelCount);
