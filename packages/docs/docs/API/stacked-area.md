@@ -422,7 +422,7 @@ be dates anymore, but can be arbitrary numbers.
 
 **Example**  
 ```js
-stackedArea.xAxisValueType('numeric')
+stackedArea.xAxisValueType('number')
 ```
 <a name="module_Stacked-area--exports.xAxisScale" id="module_Stacked-area--exports.xAxisScale"></a>
 
@@ -441,7 +441,7 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 
 **Example**  
 ```js
-stackedArea.xAxisValueType('numeric').xAxisScale('logarithmic')
+stackedArea.xAxisValueType('number').xAxisScale('logarithmic')
 ```
 <a name="module_Stacked-area--exports.xTicks" id="module_Stacked-area--exports.xTicks"></a>
 

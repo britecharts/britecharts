@@ -509,7 +509,7 @@ be dates anymore, but can be arbitrary numbers.
 
 **Example**  
 ```js
-line.xAxisValueType('numeric')
+line.xAxisValueType('number')
 ```
 <a name="module_Line--exports.xAxisScale" id="module_Line--exports.xAxisScale"></a>
 
@@ -528,7 +528,7 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 
 **Example**  
 ```js
-line.xAxisValueType('numeric').xAxisScale('logarithmic')
+line.xAxisValueType('number').xAxisScale('logarithmic')
 ```
 <a name="module_Line--exports..D3Selection" id="module_Line--exports..D3Selection"></a>
 

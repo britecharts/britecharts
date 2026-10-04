@@ -1603,7 +1603,7 @@ export default function module() {
      * @param  {string} [_x='date']     Desired value type of the x-axis
      * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
      * @public
-     * @example stackedArea.xAxisValueType('numeric')
+     * @example stackedArea.xAxisValueType('number')
      */
     exports.xAxisValueType = function (_x) {
         if (!arguments.length) {
@@ -1621,7 +1621,7 @@ export default function module() {
      * @param  {string} [_x='linear']   Desired value type of the x-axis
      * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
      * @public
-     * @example stackedArea.xAxisValueType('numeric').xAxisScale('logarithmic')
+     * @example stackedArea.xAxisValueType('number').xAxisScale('logarithmic')
      */
     exports.xAxisScale = function (_x) {
         if (!arguments.length) {
