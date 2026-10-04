@@ -62,10 +62,13 @@ export const wrapText = function (
     // the one existing caller (donut's `.donut-text` sets no `y`, and
     // `null + 10` was already 10), so nothing that renders today moves.
     const y = Number(text.attr('y'));
-    // `Number` rather than `parseFloat` for the same reason: `parseFloat(null)`
-    // is NaN, which rendered as the string 'NaNem'. `Number(null)` is 0, so an
-    // element with no `dy` now gets '0em' instead.
-    const dy = Number(text.attr('dy'));
+    // `dy` is a length, so it usually arrives with a unit -- donut sets
+    // `.donut-text`'s to '.2em' immediately before calling this. `parseFloat`
+    // is what reads that; `Number('.2em')` is NaN, which renders as the string
+    // 'NaNem' and the browser rejects the attribute outright. The `|| 0` covers
+    // the other end: `parseFloat(null)` is also NaN, for an element that has no
+    // `dy` at all.
+    const dy = parseFloat(text.attr('dy')!) || 0;
     const smallFontSize = fontSize * wrapConfig.smallTextRatio;
 
     let lineNumber = 0;
@@ -144,11 +147,10 @@ export const wrapTextWithEllipses = function <TElement extends BaseType>(
         const words = element.text().split(/\s+/).reverse();
         const lineHeight = 1.2;
         // `y` is passed straight back to `attr` and never does arithmetic, so
-        // it stays whatever the element had. `dy` does -- see wrapText above
-        // for why `parseFloat` is wrong here: without a `dy` it is NaN, and
-        // `NaN + 'em'` renders as the string 'NaNem'.
+        // it stays whatever the element had. `dy` does -- see wrapText above for
+        // why it is read with `parseFloat` and defaulted to 0.
         const y = element.attr('y');
-        const dy = Number(element.attr('dy'));
+        const dy = parseFloat(element.attr('dy')!) || 0;
 
         let line: string[] = [];
         let lineNumber = 0;

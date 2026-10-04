@@ -2,7 +2,11 @@
 import { select, selectAll } from 'd3-selection';
 import type { Selection } from 'd3-selection';
 
-import { wrapText, getApproximateNumberOfLines } from './text';
+import {
+    wrapText,
+    wrapTextWithEllipses,
+    getApproximateNumberOfLines,
+} from './text';
 
 let containerFixture: Selection<HTMLElement, unknown, HTMLElement, unknown>;
 
@@ -63,6 +67,51 @@ describe('text Helper', () => {
             wrapText(0, 20, 200, textNode);
 
             expect(select('.test-container .value').attr('y')).toEqual('95');
+        });
+    });
+
+    describe('when the text element carries a dy with a unit', () => {
+        // This is the shape donut actually passes: drawLegend sets
+        // `.donut-text`'s dy to '.2em' and calls wrapText on the next line.
+        // `Number('.2em')` is NaN, so every tspan came out with dy='NaNem',
+        // which a browser rejects outright -- the tspans never positioned.
+        // The specs above already set this dy and only ever asserted on `y`,
+        // which is why nothing here caught it; the browser tests did.
+        it('should keep the dy a usable length', () => {
+            const textNode = select('.test-container')
+                .append('svg')
+                .append('text')
+                .attr('y', 100)
+                .attr('dy', '.2em')
+                .text('brilliant dazzling flashing')
+                .node();
+
+            wrapText(0, 20, 200, textNode);
+
+            const valueDy = select('.test-container .value').attr('dy');
+            const labelDy = select('.test-container .label').attr('dy');
+
+            expect(valueDy).toEqual('0.2em');
+            // The label sits a line below, so its dy is the unit the element
+            // carried plus one small line height -- the point being that the
+            // element's own dy is read, not discarded and not turned into NaN.
+            expect(labelDy).not.toContain('NaN');
+            expect(parseFloat(labelDy!)).toBeCloseTo(1.28);
+        });
+
+        it('should keep the dy a usable length when adding ellipses', () => {
+            const text = select('.test-container')
+                .append('svg')
+                .append('text')
+                .attr('dy', '.2em')
+                .text('brilliant dazzling flashing shimmering radiant');
+
+            wrapTextWithEllipses(text, 20);
+
+            const dy = select('.test-container tspan').attr('dy');
+
+            expect(dy).not.toContain('NaN');
+            expect(dy).toEqual('0.2em');
         });
     });
 
