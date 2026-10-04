@@ -71,18 +71,16 @@ export type RegressionPoint = { x: number; y: number };
  * trendline. The calculation of slope and y-intercept uses basic accumulative
  * linear regression formula.
  *
- * NOTE: `y1` is computed as `slope * n + intercept`, where `n` is the number
- * of points -- not `slope * minX + intercept`. Since the scatter plot draws
- * the trendline from `(x1, y1)` to `(x2, y2)` and `x1` is `minX`, that start
- * point sits at the wrong height whenever `minX` differs from the point count.
- * `y2` does use `maxX` and is right.
- *
- * Left exactly as it was: this is a behaviour bug, not a typing one, and a
- * conversion is the wrong place to change what the library draws.
+ * Both ends are the fitted line evaluated at the x they sit on: `y1` at
+ * `minX`, `y2` at `maxX`. `y1` used to read `slope * n + intercept`, with `n`
+ * the number of points, so the line's left end was drawn at the wrong height
+ * whenever `minX` differed from the point count -- the scatter plot draws from
+ * `(x1, y1)` to `(x2, y2)` with `x1` being `minX`.
  *
  * `x1`/`x2` are `number | undefined` because d3's `min`/`max` return undefined
- * for an empty input, in which case `y2` comes out NaN. No caller passes an
- * empty array today -- the scatter plot only calls this when it has points.
+ * for an empty input. No caller passes an empty array today -- the scatter plot
+ * only calls this when it has points -- so that case still yields NaN heights
+ * rather than being given an invented meaning.
  * @private
  */
 export const calcLinearRegression = (
@@ -109,7 +107,7 @@ export const calcLinearRegression = (
 
     return {
         x1: minX,
-        y1: slope * n + intercept,
+        y1: slope * (minX as number) + intercept,
         x2: maxX,
         y2: slope * (maxX as number) + intercept,
     };
