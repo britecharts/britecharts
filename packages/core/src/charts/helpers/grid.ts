@@ -14,13 +14,19 @@ import { classArray } from './classes';
  * A d3 scale with a numeric range: continuous (`scaleLinear`, `scaleTime`, ...)
  * or band (`scaleBand`, `scalePoint`). Band scales are recognised through
  * `bandwidth()` and their lines are centred on the band.
- *
- * Declared as the surface this file actually uses rather than as a union of
- * d3's scale types. Those differ in ways that matter here -- only band scales
- * have `bandwidth`/`round`, only continuous ones have `ticks` -- and the code
- * already feature-detects both. The optional members say exactly that, so the
- * detection narrows instead of being cast away.
+ * @typedef {function} GridScale
  */
+// Everything above goes on the generated API page, so it is kept to what a
+// caller needs. The `@typedef` is what puts it there: this is a real type now,
+// which jsdoc has no way to know is documented, and without the tag the
+// `@param {GridScale}` tags below would render as plain text rather than links
+// to an explanation.
+//
+// Declared as the surface this file actually uses rather than as a union of
+// d3's scale types. Those differ in ways that matter here -- only band scales
+// have `bandwidth`/`round`, only continuous ones have `ticks` -- and the code
+// already feature-detects both. The optional members say exactly that, so the
+// detection narrows instead of being cast away.
 export type GridScale = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (value: any): number | undefined;
@@ -65,6 +71,11 @@ type LineSelectionOrTransition =
 
 export type HideEdges = boolean | 'both' | 'first' | 'last';
 
+/**
+ * A d3 selection to render into, or a d3 transition on one. Given a
+ * transition, entering and exiting lines fade and slide between positions.
+ * @typedef {Object} GridContext
+ */
 export type GridContext =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Selection<any, any, any, any> | Transition<any, any, any, any>;

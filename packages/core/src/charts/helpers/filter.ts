@@ -161,6 +161,7 @@ export const createWhiteGlow = <TElement extends BaseType>(
 
 /**
  * @param ease A d3 easing function: normalized time in, eased time out.
+ * @private
  */
 export const bounceCircleHighlight = <TElement extends BaseType>(
     el: FilterSelection<TElement>,

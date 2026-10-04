@@ -56,6 +56,7 @@ export const getValueDomain = (
  *
  * @param  scale     Linear scale for the value axis
  * @param  value     Value to place
+ * @returns Where the mark starts and how long it is
  */
 export const getBaselineExtent = (
     scale: (value: number) => number,
