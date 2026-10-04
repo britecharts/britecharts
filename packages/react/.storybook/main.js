@@ -35,6 +35,20 @@ module.exports = {
         disableTelemetry: true,
     },
     webpackFinal: async (config) => {
+        // The same `resolve.extensionAlias` every webpack config in this repo
+        // sets (see each package's webpack.parts.js), which Storybook's own
+        // webpack knows nothing about. These stories reach core through
+        // wrappers, and core's barrel imports `./charts/helpers/color.js` for a
+        // file that is `color.ts` on disk -- so without this the preview fails
+        // to build outright with "Can't resolve './charts/helpers/color.js'".
+        //
+        // core's Storybook does not need it because its stories import each
+        // chart directly rather than through the barrel.
+        config.resolve.extensionAlias = {
+            ...config.resolve.extensionAlias,
+            '.js': ['.ts', '.tsx', '.js'],
+        };
+
         // Storybook's React preset is installed nested in this workspace rather
         // than hoisted, and its babel-loader rule does not reach these stories
         // from there -- they arrive at webpack with only the CSF and
@@ -55,6 +69,15 @@ module.exports = {
             include: [
                 path.resolve(__dirname, '../src'),
                 path.resolve(__dirname),
+                // core's and wrappers' sources are consumed directly from the
+                // workspace, and both are part TypeScript now. They sit outside
+                // this package, so neither Storybook's own babel-loader nor the
+                // rule above reached them, and webpack met a type annotation
+                // with no loader: "Module parse failed: Unexpected token".
+                // This package's babel config already includes
+                // preset-typescript, which keys off the file extension.
+                path.resolve(__dirname, '../../core/src'),
+                path.resolve(__dirname, '../../wrappers/src'),
             ],
             use: {
                 loader: require.resolve('babel-loader'),

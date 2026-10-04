@@ -4,7 +4,7 @@ title: Domain helpers
 
 <a name="getValueDomain" id="getValueDomain"></a>
 
-## getValueDomain ⇒ <code>Array.&lt;Number&gt;</code>
+## getValueDomain ⇒ <code>Array.&lt;number&gt;</code>
 Builds the domain for a value axis so that it always contains zero.
 
 Charts whose marks grow from a baseline need that baseline inside the domain,
@@ -15,13 +15,13 @@ For data that is entirely non-negative this returns the same `[0, max]` the
 charts used before, so nothing about existing charts changes.
 
 **Kind**: global constant  
-**Returns**: <code>Array.&lt;Number&gt;</code> - [lower, upper], always spanning zero  
+**Returns**: <code>Array.&lt;number&gt;</code> - [lower, upper], always spanning zero  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| values | <code>Array.&lt;Number&gt;</code> | Values the axis has to cover |
-| ratio | <code>Number</code> | Headroom multiplier applied to the extent |
-| emptyDomainMax | <code>Number</code> | Upper bound to use when every value is 0 |
+| values | <code>Iterable.&lt;number&gt;</code> | Values the axis has to cover |
+| ratio | <code>number</code> | Headroom multiplier applied to the extent |
+| emptyDomainMax | <code>number</code> | Upper bound to use when every value is 0 |
 
 <a name="getBaselineExtent" id="getBaselineExtent"></a>
 
@@ -33,11 +33,17 @@ height, with a horizontal one they are an x and a width. Negative values come
 back on the other side of the baseline with a positive size, which is what
 SVG needs.
 
+`scale` is typed structurally, as the number-to-number function this
+actually calls it as, rather than as a d3 `ScaleLinear`. That is both
+narrower about what is required and wider about what satisfies it: any of
+d3's continuous scales fits, and the helper never touches the rest of a
+scale's surface.
+
 **Kind**: global constant  
-**Returns**: <code>Object</code> - { start, size }  
+**Returns**: <code>Object</code> - Where the mark starts and how long it is  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | scale | <code>function</code> | Linear scale for the value axis |
-| value | <code>Number</code> | Value to place |
+| value | <code>number</code> | Value to place |
 

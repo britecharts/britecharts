@@ -1,15 +1,50 @@
 import base64 from 'base-64';
+import type { BaseType, Selection } from 'd3-selection';
 
 import { colorSchemas } from './color';
 import serializeWithStyles from './style';
+import type { ChartMarginParams } from '../../typings/common/margin';
+
+/**
+ * What these functions need `this` to be: a chart instance, called as
+ * `exportChart.call(chart, ...)` from each chart's own `exportChart` accessor.
+ *
+ * Declared structurally here rather than reusing core's chart types, because
+ * those cannot express it yet: every accessor is typed
+ * `width(width?: number): T & ChartBaseAPI<T>`, so under them `this.width()`
+ * is the chart, not a number. That getter gap is recorded in the migration
+ * plan as core's to resolve; this contract describes what the code actually
+ * receives at runtime.
+ */
+type ExportableChartContext = {
+    width(): number;
+    height(): number;
+    margin(): ChartMarginParams;
+};
+
+/** The d3 selection wrapping the chart's svg. */
+type SvgSelection = Selection<
+    BaseType,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
 
 const isBrowser = typeof window !== 'undefined';
-const isIE = navigator.msSaveOrOpenBlob;
+// `msSaveOrOpenBlob` is IE-only and not in the DOM typings. The cast is the
+// feature detection, not a claim that it exists.
+const isIE = (navigator as Navigator & { msSaveOrOpenBlob?: unknown })
+    .msSaveOrOpenBlob;
 const IE_ERROR_MSG =
     'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
 const DEFAULT_FONT_STACK = '‘Helvetica Neue’, Helvetica, Arial, sans-serif';
 
-let encoder = isBrowser && window.btoa;
+let encoder: (input: string) => string = isBrowser
+    ? window.btoa
+    : base64.encode;
 
 if (!encoder) {
     encoder = base64.encode;
@@ -17,12 +52,15 @@ if (!encoder) {
 
 // Base64 doesn't work really well with Unicode strings, so we need to use this function
 // Ref: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
-const b64EncodeUnicode = (str) => {
+const b64EncodeUnicode = (str: string): string => {
     return encoder(
         encodeURIComponent(str).replace(
             /%([0-9A-F]{2})/g,
             function (match, p1) {
-                return String.fromCharCode('0x' + p1);
+                // `Number` where this passed the string '0x41' straight to
+                // fromCharCode and let it coerce. Same result -- ToNumber reads
+                // the hex prefix either way -- spelled so it types.
+                return String.fromCharCode(Number('0x' + p1));
             }
         )
     );
@@ -44,12 +82,17 @@ const config = {
 
 /**
  * Main function to be used as a method by chart instances to export charts to png
- * @param  {array} svgs         (or an svg element) pass in both chart & legend as array or just chart as svg or in array
- * @param  {string} filename    [download to be called <filename>.png]
- * @param  {string} title       Title for the image
+ * @param  d3svg     The chart's svg selection
+ * @param  filename  download to be called <filename>.png
+ * @param  title     Title for the image
  * @private
  */
-export function exportChart(d3svg, filename, title) {
+export function exportChart(
+    this: ExportableChartContext,
+    d3svg: SvgSelection,
+    filename?: string,
+    title?: string
+): Promise<void> | false {
     if (isIE) {
         // eslint-disable-next-line no-console
         console.error(IE_ERROR_MSG);
@@ -57,7 +100,7 @@ export function exportChart(d3svg, filename, title) {
         return false;
     }
 
-    return loadImage(convertSvgToHtml.call(this, d3svg, title))
+    return loadImage(convertSvgToHtml.call(this, d3svg, title) as string)
         .then((img) => {
             return {
                 canvas: createCanvas(this.width(), this.height()),
@@ -69,28 +112,32 @@ export function exportChart(d3svg, filename, title) {
 
 /**
  * adds background styles to raw html
- * @param {string} html raw html
+ * @param html raw html
  * @private
  */
-function addBackground(html) {
+function addBackground(html: string): string {
     return html.replace('>', `>${config.styleBackgroundString}`);
 }
 
 /**
  * Takes the D3 SVG element, adds proper SVG tags, adds inline styles
  * from stylesheets, adds white background and returns string
- * @param  {SVGElement} d3svg   TYPE d3 svg element
- * @return {String}             String of passed d3
+ * @param  d3svg  d3 svg selection
+ * @return String of passed d3, or undefined when given no selection
  * @private
  */
-export function convertSvgToHtml(d3svg, title) {
+export function convertSvgToHtml(
+    this: ExportableChartContext,
+    d3svg: SvgSelection | null | undefined,
+    title?: string
+): string | undefined {
     if (!d3svg) {
         return;
     }
 
     d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
-    let serializer = serializeWithStyles.initializeSerializer();
-    let html = serializer(d3svg.node());
+    const serializer = serializeWithStyles.initializeSerializer();
+    let html = serializer(d3svg.node() as Element) as string;
 
     html = formatHtmlByBrowser(html);
     html = prependTitle.call(
@@ -106,13 +153,10 @@ export function convertSvgToHtml(d3svg, title) {
 
 /**
  * Create Canvas
- * @param  {number} width
- * @param  {number} height
- * @return {object} TYPE canvas element
  * @private
  */
-function createCanvas(width, height) {
-    let canvas = document.createElement('canvas');
+function createCanvas(width: number, height: number): HTMLCanvasElement {
+    const canvas = document.createElement('canvas');
 
     canvas.height = height;
     canvas.width = width;
@@ -122,13 +166,16 @@ function createCanvas(width, height) {
 
 /**
  * Create Image
- * @param  {string} svgHtml string representation of svg el
- * @param  {Function} callback function to prepare image for loading
- * @return {object}  TYPE element <img>, src points at svg
+ * @param  svgHtml   string representation of svg el
+ * @param  callback  function to prepare image for loading
+ * @return element <img>, src points at svg
  * @private
  */
-function createImage(svgHtml, callback) {
-    let img = new Image();
+function createImage(
+    svgHtml: string,
+    callback?: (img: HTMLImageElement) => void
+): HTMLImageElement {
+    const img = new Image();
 
     if (callback) {
         if (typeof callback !== 'function') {
@@ -145,12 +192,14 @@ function createImage(svgHtml, callback) {
 
 /**
  * Draws image on canvas
- * @param  {object} image TYPE:el <img>, to be drawn
- * @param  {object} canvas TYPE: el <canvas>, to draw on
  * @private
  */
-export function drawImageOnCanvas(image, canvas) {
-    canvas.getContext('2d').drawImage(image, 0, 0);
+export function drawImageOnCanvas(
+    image: CanvasImageSource,
+    canvas: HTMLCanvasElement
+): HTMLCanvasElement {
+    // Asserted, not guarded: a null context already threw on the next call.
+    canvas.getContext('2d')!.drawImage(image, 0, 0);
 
     return canvas;
 }
@@ -159,18 +208,15 @@ export function drawImageOnCanvas(image, canvas) {
  * Triggers browser to download image, convert canvas to url,
  * we need to append the link el to the dom before clicking it for Firefox to register
  * point <a> at it and trigger click
- * @param  {object} canvas TYPE: el <canvas>
- * @param  {string} filename
- * @param  {string} extensionType
  * @private
  */
 function downloadCanvas(
-    canvas,
-    filename = config.defaultFilename,
-    extensionType = 'image/png'
-) {
-    let url = canvas.toDataURL(extensionType);
-    let link = document.createElement('a');
+    canvas: HTMLCanvasElement,
+    filename: string = config.defaultFilename,
+    extensionType: string = 'image/png'
+): void {
+    const url = canvas.toDataURL(extensionType);
+    const link = document.createElement('a');
 
     link.href = url;
     link.download = filename;
@@ -181,11 +227,9 @@ function downloadCanvas(
 
 /**
  * Some browsers need special formatting, we handle that here
- * @param  {string} html string of svg html
- * @return {string} string of svg html
  * @private
  */
-function formatHtmlByBrowser(html) {
+function formatHtmlByBrowser(html: string): string {
     if (navigator.userAgent.search('FireFox') > -1) {
         return html.replace(
             /url.*&quot;\)/,
@@ -198,21 +242,23 @@ function formatHtmlByBrowser(html) {
 
 /**
  * Handles on load event fired by img.onload, this=img
- * @param  {object} canvas TYPE: el <canvas>
- * @param  {string} filename
  * @private
  */
-function handleImageLoad(canvas, filename) {
+function handleImageLoad(
+    this: HTMLImageElement,
+    canvas: HTMLCanvasElement,
+    filename?: string
+): void {
     downloadCanvas(drawImageOnCanvas(this, canvas), filename);
 }
 
 /**
  * Create Image instance and attach event listeners for future promise
- * @param  {string} svgHtml string representation of svg el
- * @returns {Promise} promise that exposes loaded image instance
+ * @param  svgHtml  string representation of svg el
+ * @returns promise that exposes loaded image instance
  * @private
  */
-function loadImage(svgHtml) {
+function loadImage(svgHtml: string): Promise<HTMLImageElement> {
     return new Promise((res, rej) => {
         createImage(svgHtml, (img) => {
             img.addEventListener('load', () => res(img));
@@ -223,17 +269,22 @@ function loadImage(svgHtml) {
 
 /**
  * if passed, append title to the raw html to appear on graph
- * @param  {string} html     raw html string
- * @param  {string} title    title of the graph
- * @param  {number} svgWidth width of graph container
- * @return {string}         raw html with title prepended
+ * @param  html      raw html string
+ * @param  title     title of the graph
+ * @param  svgWidth  width of graph container
+ * @return raw html with title prepended
  * @private
  */
-function prependTitle(html, title, svgWidth) {
+function prependTitle(
+    this: ExportableChartContext,
+    html: string,
+    title: string | undefined,
+    svgWidth: number
+): string {
     if (!title || !svgWidth) {
         return html;
     }
-    let { grey } = colorSchemas;
+    const { grey } = colorSchemas;
 
     html = html.replace(
         /<g/,

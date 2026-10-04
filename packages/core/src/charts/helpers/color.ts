@@ -1,18 +1,41 @@
+// Checked against the published typings with `satisfies`, rather than typed
+// independently and hoped to match. `src/typings/helpers/colors.d.ts` is what
+// consumers actually get, and it describes this file's default export down to
+// `ColorGradientType` being a two-element tuple -- which these arrays would
+// not satisfy if they were left to infer as `string[]`.
+//
+// The import is type-only: those declarations include numeric enums that exist
+// solely to be read with `keyof typeof`, and have no runtime counterpart to
+// import.
+//
+// When Phase 5 retires src/typings in favour of generated declarations, these
+// `satisfies` clauses go with it -- which is the point: the removal has to be
+// deliberate, not silent.
+import type {
+    ColorGradients,
+    ColorGradientsHuman,
+    ColorSchemas,
+    ColorsSchemaHumanType,
+    ColorsSchemasType,
+    SingleColors,
+    SingleColorsHuman,
+} from '../../typings/helpers/colors';
+
 // Color Gradients
 export const colorGradients = {
     greenBlue: ['#39C7EA', '#4CDCBA'],
     orangePink: ['#FBC670', '#F766B8'],
     bluePurple: ['#3DC3C9', '#824a9e'],
-};
+} satisfies ColorGradients;
 export const colorGradientsHuman = {
     greenBlue: 'Green to Blue',
     orangePink: 'Orange to Pink',
     bluePurple: 'Blue to Purple',
-};
+} satisfies ColorGradientsHuman;
 
 // Color Schemas
 // Standard Color Schema for Britecharts
-export const britecharts = [
+export const britecharts: ColorsSchemasType = [
     '#6aedc7', //green
     '#39c2c9', //blue
     '#ffce00', //yellow
@@ -21,7 +44,7 @@ export const britecharts = [
     '#998ce3', //purple
 ];
 // Grey Palette
-export const grey = [
+export const grey: ColorsSchemasType = [
     '#F8F8FA',
     '#EFF2F5',
     '#D2D6DF',
@@ -33,7 +56,7 @@ export const grey = [
     '#282C35',
 ];
 // Orange Palette
-export const orange = [
+export const orange: ColorsSchemasType = [
     '#fcc870',
     '#ffa71a',
     '#fb8825',
@@ -45,7 +68,7 @@ export const orange = [
     '#f9e9c5',
 ];
 // Blue Palette
-export const blueGreen = [
+export const blueGreen: ColorsSchemasType = [
     '#ccf7f6',
     '#70e4e0',
     '#00d8d2',
@@ -57,7 +80,7 @@ export const blueGreen = [
     '#0d2223',
 ];
 // LightBlue Palette
-export const teal = [
+export const teal: ColorsSchemasType = [
     '#ccfffe',
     '#94f7f4',
     '#00fff8',
@@ -69,7 +92,7 @@ export const teal = [
     '#133f3e',
 ];
 // Green Palette
-export const green = [
+export const green: ColorsSchemasType = [
     '#edfff7',
     '#d7ffef',
     '#c0ffe7',
@@ -81,7 +104,7 @@ export const green = [
     '#206953',
 ];
 // Yellow Palette
-export const yellow = [
+export const yellow: ColorsSchemasType = [
     '#f9f2b3',
     '#fbe986',
     '#fce05a',
@@ -93,7 +116,7 @@ export const yellow = [
     '#e09819',
 ];
 // Pink Palette
-export const pink = [
+export const pink: ColorsSchemasType = [
     '#fdd1ea',
     '#fb9cd2',
     '#f866b9',
@@ -105,7 +128,7 @@ export const pink = [
     '#85135f',
 ];
 // Purple Palette
-export const purple = [
+export const purple: ColorsSchemasType = [
     '#ddd6fc',
     '#bbb1f0',
     '#998ce3',
@@ -117,7 +140,7 @@ export const purple = [
     '#470f3f',
 ];
 // Red Palette
-export const red = [
+export const red: ColorsSchemasType = [
     '#ffd8d4',
     '#ffb5b0',
     '#ff938c',
@@ -140,7 +163,7 @@ export const colorSchemas = {
     pink,
     purple,
     red,
-};
+} satisfies ColorSchemas;
 export const colorSchemasHuman = {
     britecharts: 'Britecharts Default',
     grey: 'Britecharts Grey',
@@ -152,16 +175,16 @@ export const colorSchemasHuman = {
     pink: 'Pink',
     purple: 'Purple',
     red: 'Red',
-};
+} satisfies ColorsSchemaHumanType;
 
 // Single Colors
-export const aloeGreen = ['#7bdcc0']; // To Deprecate
-export const greenColor = ['#6aedc7'];
-export const blueColor = ['#39c2c9'];
-export const yellowColor = ['#ffce00'];
-export const orangeColor = ['#ffa71a'];
-const pinkColor = ['#f866b9'];
-const purpleColor = ['#998ce3'];
+export const aloeGreen: ColorsSchemasType = ['#7bdcc0']; // To Deprecate
+export const greenColor: ColorsSchemasType = ['#6aedc7'];
+export const blueColor: ColorsSchemasType = ['#39c2c9'];
+export const yellowColor: ColorsSchemasType = ['#ffce00'];
+export const orangeColor: ColorsSchemasType = ['#ffa71a'];
+const pinkColor: ColorsSchemasType = ['#f866b9'];
+const purpleColor: ColorsSchemasType = ['#998ce3'];
 
 const singleColors = {
     aloeGreen,
@@ -171,7 +194,7 @@ const singleColors = {
     orangeColor,
     pinkColor,
     purpleColor,
-};
+} satisfies SingleColors;
 const singleColorsHuman = {
     aloeGreen: 'Aloe Green',
     greenColor: 'Green',
@@ -180,7 +203,7 @@ const singleColorsHuman = {
     orangeColor: 'Orange',
     pinkColor: 'Pink',
     purpleColor: 'Purple',
-};
+} satisfies SingleColorsHuman;
 
 export default {
     colorSchemas,

@@ -139,16 +139,18 @@ export const brushLoadingMarkup = `
     `;
 
 /**
- * Builds the heatmap's grid of placeholder boxes. Generated rather than written
- * out so the skeleton stays readable -- it is 60 rects.
+ * The heatmap's loading placeholder is a 12x5 grid of identical squares, so
+ * they are generated rather than written out -- it is 60 rects, and the
+ * skeleton stays readable without them. Everything else in this file is a
+ * literal markup string.
  * @private
  */
-const heatmapLoadingBoxes = () => {
+const heatmapLoadingBoxes = (): string => {
     const columns = 12;
     const rows = 5;
     const size = 46;
     const gap = 10;
-    const boxes = [];
+    const boxes: string[] = [];
 
     for (let row = 0; row < rows; row++) {
         for (let column = 0; column < columns; column++) {

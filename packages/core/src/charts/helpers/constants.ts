@@ -42,14 +42,24 @@ import {
     timeYear,
     utcYear,
 } from 'd3-time';
+import type { CountableTimeInterval } from 'd3-time';
+import type { CurveFactory } from 'd3-shape';
 
+// `as const` so each value's literal type survives. This is the one constant
+// that is public API -- src/index.js re-exports it as `constants`, and the
+// time-series charts' `xAxisFormat` accepts exactly these strings -- so the
+// published typing promises those literals, not `string`.
 export const axisTimeCombinations = {
     MINUTE_HOUR: 'minute-hour',
     HOUR_DAY: 'hour-daymonth',
     DAY_MONTH: 'day-month',
     MONTH_YEAR: 'month-year',
     CUSTOM: 'custom',
-};
+} as const;
+
+/** Any of the values of {@link axisTimeCombinations}. */
+export type AxisTimeCombinationValue =
+    (typeof axisTimeCombinations)[keyof typeof axisTimeCombinations];
 
 export const timeBenchmarks = {
     ONE_AND_A_HALF_YEARS: 47304000000,
@@ -90,7 +100,10 @@ export const motion = {
     shortDuration: 300,
 };
 
-export const curveMap = {
+// Deliberately not `as const`: the charts look these up with a dynamic
+// string (`curveMap[areaCurve]` in stacked-area and brush), which a readonly
+// literal-keyed object would reject once those files convert.
+export const curveMap: Record<string, CurveFactory> = {
     linear: curveLinear,
     basis: curveBasis,
     cardinal: curveCardinal,
@@ -110,7 +123,10 @@ export const emptyDonutData = [
     },
 ];
 
-export const timeIntervals = {
+// Same reason as curveMap: brush does `timeIntervals[roundingTimeInterval]`.
+// The values are a mix -- d3's millisecond/second/... intervals are countable,
+// which is what brush's `.round` and `.every` need.
+export const timeIntervals: Record<string, CountableTimeInterval> = {
     timeMillisecond: timeMillisecond,
     utcMillisecond: utcMillisecond,
     timeSecond: timeSecond,

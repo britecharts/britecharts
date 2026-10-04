@@ -1764,7 +1764,7 @@ export default function module() {
      * @param  {string} [_x='date']     Desired value type of the x-axis
      * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
      * @public
-     * @example line.xAxisValueType('numeric')
+     * @example line.xAxisValueType('number')
      */
     exports.xAxisValueType = function (_x) {
         if (!arguments.length) {
@@ -1782,7 +1782,7 @@ export default function module() {
      * @param  {string} [_x='linear']      Desired value type of the x-axis
      * @return {string | module}           Current value type of the x-axis or Chart module to chain calls
      * @public
-     * @example line.xAxisValueType('numeric').xAxisScale('logarithmic')
+     * @example line.xAxisValueType('number').xAxisScale('logarithmic')
      */
     exports.xAxisScale = function (_x) {
         if (!arguments.length) {
