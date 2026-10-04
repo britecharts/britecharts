@@ -10,7 +10,7 @@
     "d3-selection": "3.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.29.7",
+    "@babel/cli": "7.29.7",
     "@babel/core": "7.29.7",
     "@babel/preset-typescript": "7.29.7",
     "@types/jest": "29.5.9",

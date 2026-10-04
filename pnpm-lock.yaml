@@ -269,34 +269,34 @@ importers:
   packages/core:
     dependencies:
       '@types/base-64':
-        specifier: ^1.0.2
+        specifier: 1.0.2
         version: 1.0.2
       '@types/d3-array':
-        specifier: ^3.2.2
+        specifier: 3.2.2
         version: 3.2.2
       '@types/d3-ease':
-        specifier: ^3.0.2
+        specifier: 3.0.2
         version: 3.0.2
       '@types/d3-format':
-        specifier: ^3.0.4
+        specifier: 3.0.4
         version: 3.0.4
       '@types/d3-scale':
-        specifier: ^4.0.9
+        specifier: 4.0.9
         version: 4.0.9
       '@types/d3-selection':
         specifier: 3.0.12
         version: 3.0.12
       '@types/d3-shape':
-        specifier: ^3.2.0
+        specifier: 3.2.0
         version: 3.2.0
       '@types/d3-time':
-        specifier: ^3.0.4
+        specifier: 3.0.4
         version: 3.0.4
       '@types/d3-time-format':
-        specifier: ^4.0.3
+        specifier: 4.0.3
         version: 4.0.3
       '@types/d3-transition':
-        specifier: ^3.0.9
+        specifier: 3.0.9
         version: 3.0.9
       base-64:
         specifier: 0.1.0
@@ -550,7 +550,7 @@ importers:
         specifier: 18.3.31
         version: 18.3.31
       catharsis:
-        specifier: ^0.9.0
+        specifier: 0.9.0
         version: 0.9.0
       jsdoc-to-markdown:
         specifier: 9.1.3
@@ -717,7 +717,7 @@ importers:
         version: 3.0.0
     devDependencies:
       '@babel/cli':
-        specifier: ^7.29.7
+        specifier: 7.29.7
         version: 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
       '@babel/core':
         specifier: 7.29.7
