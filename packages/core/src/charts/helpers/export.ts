@@ -22,9 +22,28 @@ type ExportableChartContext = {
     margin(): ChartMarginParams;
 };
 
-/** The d3 selection wrapping the chart's svg. */
+/**
+ * The d3 selection wrapping the chart's svg.
+ *
+ * The element is `any` here, which is the one place in core where that is the
+ * right answer rather than a shortcut. This type named `BaseType` until the
+ * heatmap became the first converted chart to call `exportChart`, holding a
+ * `Selection<SVGSVGElement, ...>`: `Selection` is invariant in its element, so
+ * that is not assignable to a `Selection<BaseType, ...>` parameter -- the same
+ * trap as `ChartContainer` in Phase 1, found this time by a caller rather than
+ * by a probe.
+ *
+ * `filter.ts`'s answer, a generic parameter per function, does not work here.
+ * Both of these are reached through `exportChart.call(chart, svg, ...)`,
+ * because they need `this` to be the chart, and inference through
+ * `Function.prototype.call` instantiates the parameter rather than inferring
+ * it -- it comes out as `BaseType` again. Nothing in this file depends on the
+ * element: the svg is serialized via `.node()` and `.attr()` and never
+ * returned, so there is no type for a caller to get back wrong.
+ */
 type SvgSelection = Selection<
-    BaseType,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

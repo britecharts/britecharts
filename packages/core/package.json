@@ -7,8 +7,10 @@
   "dependencies": {
     "@types/base-64": "1.0.2",
     "@types/d3-array": "3.2.2",
+    "@types/d3-dispatch": "3.0.7",
     "@types/d3-ease": "3.0.2",
     "@types/d3-format": "3.0.4",
+    "@types/d3-interpolate": "3.0.4",
     "@types/d3-scale": "4.0.9",
     "@types/d3-selection": "3.0.12",
     "@types/d3-shape": "3.2.0",
