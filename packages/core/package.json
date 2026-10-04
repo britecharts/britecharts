@@ -5,6 +5,7 @@
   "module": "src/index.js",
   "types": "src/typings/index.d.ts",
   "dependencies": {
+    "@types/base-64": "^1.0.2",
     "@types/d3-array": "^3.2.2",
     "@types/d3-ease": "^3.0.2",
     "@types/d3-format": "^3.0.4",
