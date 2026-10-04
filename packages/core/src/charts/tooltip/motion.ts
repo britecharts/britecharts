@@ -11,7 +11,32 @@
  */
 import { easeQuadInOut } from 'd3-ease';
 import { select } from 'd3-selection';
+import type { Selection } from 'd3-selection';
 import 'd3-transition';
+
+/**
+ * The tooltip's root group, as a selection of it.
+ *
+ * Same convention as the helpers in `charts/helpers`: the datum and parent
+ * generics are the migration plan's bounded `any` because `Selection` is
+ * invariant in them and nothing here reads the datum, while the element is a
+ * generic parameter on each function so a caller keeps its own element type.
+ *
+ * The element is narrower than the helpers' `BaseType`, though, and has to be:
+ * `prepareToShow` reads `node.style`, which `BaseType` does not have -- it
+ * admits `Document`, `Window` and `null`. `SVGElement | HTMLElement` is the
+ * smallest bound that carries an inline style, and the real caller passes an
+ * SVG `<g>`.
+ */
+type MotionSelection<TElement extends SVGElement | HTMLElement> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
 
 /**
  * Milliseconds for a fade in or out
@@ -36,10 +61,12 @@ const FADE = 'tooltip-fade';
  * transparent when it was hidden, or at its current opacity when it is
  * still fading out -- the pointer crossing from one bar to the next hides
  * and shows the tooltip within one event, and it must not blink.
- * @param {Selection} selection     The tooltip's root group
+ * @param selection     The tooltip's root group
  * @private
  */
-export function prepareToShow(selection) {
+export function prepareToShow<TElement extends SVGElement | HTMLElement>(
+    selection: MotionSelection<TElement>
+): void {
     // The inline style, not the computed one: the tooltip sets it itself,
     // so it reads 'visible' only between a show and the end of a fade out
     const node = selection.node();
@@ -54,10 +81,12 @@ export function prepareToShow(selection) {
 
 /**
  * Fades the tooltip in from its current opacity
- * @param {Selection} selection     The tooltip's root group
+ * @param selection     The tooltip's root group
  * @private
  */
-export function fadeIn(selection) {
+export function fadeIn<TElement extends SVGElement | HTMLElement>(
+    selection: MotionSelection<TElement>
+): void {
     selection
         .interrupt(FADE)
         .transition(FADE)
@@ -69,10 +98,12 @@ export function fadeIn(selection) {
 /**
  * Fades the tooltip out and hides it once the fade completes. A show()
  * during the fade stops it and the tooltip stays visible.
- * @param {Selection} selection     The tooltip's root group
+ * @param selection     The tooltip's root group
  * @private
  */
-export function fadeOut(selection) {
+export function fadeOut<TElement extends SVGElement | HTMLElement>(
+    selection: MotionSelection<TElement>
+): void {
     selection
         .interrupt(FADE)
         .transition(FADE)

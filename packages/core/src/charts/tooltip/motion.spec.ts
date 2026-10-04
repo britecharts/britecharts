@@ -1,4 +1,5 @@
 import { select } from 'd3-selection';
+import type { Selection } from 'd3-selection';
 
 import {
     fadeDuration,
@@ -12,7 +13,10 @@ const settle = () =>
     new Promise((resolve) => setTimeout(resolve, fadeDuration + 100));
 
 describe('tooltip motion', () => {
-    let group;
+    // The `<g class="box">` of the fixture below, which is what the tooltip
+    // passes these functions at runtime. Spelled concretely rather than as
+    // `BaseType` so the specs exercise the inference a real caller gets.
+    let group: Selection<SVGGElement, unknown, HTMLElement, unknown>;
 
     beforeEach(() => {
         document.body.insertAdjacentHTML(
@@ -23,7 +27,15 @@ describe('tooltip motion', () => {
     });
 
     afterEach(() => {
-        document.body.removeChild(document.getElementById('fixture'));
+        const fixture = document.getElementById('fixture');
+
+        // Asserted rather than passed straight to removeChild: if beforeEach
+        // ever stops inserting it, the failure should say that.
+        if (!fixture) {
+            throw new Error('the fixture was not inserted');
+        }
+
+        document.body.removeChild(fixture);
     });
 
     it('should use one duration for fades and for the chase', () => {
