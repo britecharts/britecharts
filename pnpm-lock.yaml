@@ -356,6 +356,9 @@ importers:
         specifier: 3.0.0
         version: 3.0.0
     devDependencies:
+      '@babel/cli':
+        specifier: 7.29.7
+        version: 7.29.7(@babel/core@7.29.7(supports-color@6.1.0))
       '@babel/preset-typescript':
         specifier: 7.29.7
         version: 7.29.7(@babel/core@7.29.7(supports-color@6.1.0))(supports-color@6.1.0)
@@ -12286,6 +12289,20 @@ snapshots:
       semver: 7.8.5
       typescript: 5.6.1-rc
       validate-npm-package-name: 5.0.1
+
+  '@babel/cli@7.29.7(@babel/core@7.29.7(supports-color@6.1.0))':
+    dependencies:
+      '@babel/core': 7.29.7(supports-color@6.1.0)
+      '@jridgewell/trace-mapping': 0.3.31
+      commander: 6.2.1
+      convert-source-map: 2.0.0
+      fs-readdir-recursive: 1.1.0
+      glob: 7.2.3
+      make-dir: 2.1.0
+      slash: 2.0.0
+    optionalDependencies:
+      '@nicolo-ribaudo/chokidar-2': 2.1.8-no-fsevents.3
+      chokidar: 3.6.0
 
   '@babel/cli@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:

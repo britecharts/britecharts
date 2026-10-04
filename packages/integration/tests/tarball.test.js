@@ -78,8 +78,25 @@ const PACKAGES = {
             ['dist/styles/bundle/britecharts.min.css', 1],
             ['dist/styles/charts/common.css', 1],
             ['dist/styles/charts/*.min.css', 10],
-            ['src/index.js', 1],
-            ['src/charts/*/*.js', 16],
+            // The ESM entry point. This is what `module` and
+            // `exports.import` resolve to, so a consumer's bundler lands here
+            // rather than in src/ -- which is the whole point of building it:
+            // src/ holds authored TypeScript that no consumer can be expected
+            // to compile. core shipped src/ as its ESM entry until the first
+            // helper converted, at which point `index.js`'s
+            // `'./charts/helpers/color.js'` pointed at a file that was not
+            // there. Nothing caught it: Vite resolves `.js` to `.ts` and
+            // transpiles, so the browser tiers passed, and the require tier
+            // only exercises the CJS bundle.
+            ['dist/esm/index.js', 1],
+            ['dist/esm/charts/*/*.js', 34],
+            // Source still ships, so deep `./src/*` imports keep resolving.
+            // The extension is deliberately loose, as in wrappers: each
+            // conversion turns one of these from .js into .ts and the count has
+            // to hold either way. Spelled `*.js` this silently counted down as
+            // charts converted -- it is what failed when heatmap did.
+            ['src/index.?s', 1],
+            ['src/charts/*/*.?s', 34],
             ['src/typings/index.d.ts', 1],
             ['src/typings/charts/*.d.ts', 14],
         ],
