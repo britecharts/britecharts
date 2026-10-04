@@ -30,6 +30,61 @@ describe('text Helper', () => {
         document.body.removeChild(fixture);
     });
 
+    describe('when the text element carries a y', () => {
+        // `attr('y')` hands back a string, and wrapText derives two offsets
+        // from it. Untouched, `y - 5` subtracted numerically while
+        // `y + smallTextOffset` concatenated, so '100' produced a label at
+        // y='10010' instead of y=110.
+        it('should offset the label numerically rather than concatenating', () => {
+            const textNode = select('.test-container')
+                .append('svg')
+                .append('text')
+                .attr('y', 100)
+                .attr('dy', '.2em')
+                .text('brilliant dazzling flashing')
+                .node();
+
+            wrapText(0, 20, 200, textNode);
+
+            const label = select('.test-container .label');
+
+            expect(label.attr('y')).toEqual('110');
+        });
+
+        it('should offset the value numerically too', () => {
+            const textNode = select('.test-container')
+                .append('svg')
+                .append('text')
+                .attr('y', 100)
+                .attr('dy', '.2em')
+                .text('brilliant dazzling')
+                .node();
+
+            wrapText(0, 20, 200, textNode);
+
+            expect(select('.test-container .value').attr('y')).toEqual('95');
+        });
+    });
+
+    describe('when the text element has no dy', () => {
+        // parseFloat(null) is NaN, and `NaN + 'em'` is the string 'NaNem',
+        // which is not a length an SVG renderer can use.
+        it('should write a usable dy', () => {
+            const textNode = select('.test-container')
+                .append('svg')
+                .append('text')
+                .text('brilliant dazzling')
+                .node();
+
+            wrapText(0, 20, 200, textNode);
+
+            const dy = select('.test-container .value').attr('dy');
+
+            expect(dy).not.toContain('NaN');
+            expect(dy).toEqual('0em');
+        });
+    });
+
     it('should wrap the text in X lines', () => {
         const expectedText = 'brilliant dazzling flashing';
         const fontSize = 20;

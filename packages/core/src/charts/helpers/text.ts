@@ -52,23 +52,20 @@ export const wrapText = function (
     const smallLineHeight =
         wrapConfig.lineHeight * wrapConfig.smallTextLineHeightRatio;
 
-    // `attr` returns `string | null`, and the arithmetic below leans on
-    // JavaScript's coercion rules in two different directions: `y - 5`
-    // subtracts numerically, while `y + smallTextOffset` CONCATENATES when `y`
-    // is a string ('100' + 10 is '10010', not 110).
+    // `attr` returns a string, so this has to be converted rather than used
+    // raw. Untouched, `y - 5` subtracted numerically while
+    // `y + smallTextOffset` CONCATENATED -- '100' + 10 is '10010', not 110 --
+    // so the two offsets computed from the same value disagreed about what it
+    // was.
     //
-    // That is latent rather than live: the only caller is donut's
-    // `.donut-text`, which is appended with a class and a `dy` and never a `y`,
-    // so `y` is null here and `null + 10` is 10 -- numeric, correct. A caller
-    // that did set `y` would get a concatenated attribute.
-    //
-    // Cast rather than converted, so the coercion stays bit-identical. Wrapping
-    // it in `Number()` would be the fix, and would change what the chart draws
-    // for any future caller that sets `y`, which is not a conversion's call.
-    const y = text.attr('y') as unknown as number;
-    // parseFloat(null) is NaN, so `dy + 'em'` renders as 'NaNem' when the
-    // element has no `dy`. Also preserved; donut sets `dy` so it does not bite.
-    const dy = parseFloat(text.attr('dy') as string);
+    // `Number(null)` is 0, which is what the arithmetic already produced for
+    // the one existing caller (donut's `.donut-text` sets no `y`, and
+    // `null + 10` was already 10), so nothing that renders today moves.
+    const y = Number(text.attr('y'));
+    // `Number` rather than `parseFloat` for the same reason: `parseFloat(null)`
+    // is NaN, which rendered as the string 'NaNem'. `Number(null)` is 0, so an
+    // element with no `dy` now gets '0em' instead.
+    const dy = Number(text.attr('dy'));
     const smallFontSize = fontSize * wrapConfig.smallTextRatio;
 
     let lineNumber = 0;
@@ -146,8 +143,12 @@ export const wrapTextWithEllipses = function <TElement extends BaseType>(
         const element = select(this);
         const words = element.text().split(/\s+/).reverse();
         const lineHeight = 1.2;
+        // `y` is passed straight back to `attr` and never does arithmetic, so
+        // it stays whatever the element had. `dy` does -- see wrapText above
+        // for why `parseFloat` is wrong here: without a `dy` it is NaN, and
+        // `NaN + 'em'` renders as the string 'NaNem'.
         const y = element.attr('y');
-        const dy = parseFloat(element.attr('dy') as string);
+        const dy = Number(element.attr('dy'));
 
         let line: string[] = [];
         let lineNumber = 0;
