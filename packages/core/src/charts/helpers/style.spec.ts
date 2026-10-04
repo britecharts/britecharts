@@ -62,28 +62,25 @@ describe('style Helper', () => {
         it('should add styles from stylesheets to inline of element', () => {
             node = containerFixture.nodes()[0];
 
-            styledHTML = serializer!(node)!.replace(' ', '');
-
-            // This assertion cannot fail, and TypeScript is what surfaced it:
-            // `indexOf` returns a number, so `.length` is `undefined`, and
-            // `expect(undefined).not.toBe(0)` passes whatever the serializer
-            // did. It was reaching for "the stylesheet colour ended up inline".
+            // A global regex, not `replace(' ', '')`. With a string pattern
+            // `replace` swaps only the FIRST match, so the computed
+            // 'rgb(222, 163, 12)' normalised to 'rgb(222,163, 12)' -- one
+            // space short of `randomColor` -- and the colour could never be
+            // found no matter what the serializer did.
             //
-            // Left exactly as it was, because writing the assertion it meant
-            // -- `expect(styledHTML.indexOf(randomColor)).not.toBe(-1)` --
-            // FAILS: the colour is not in the output. So this is not just a
-            // typo to tidy up; either jsdom's getComputedStyle does not
-            // resolve the <style> cascade here, or the serializer does not
-            // inline stylesheet-derived styles at all. Flagged for its own
-            // investigation rather than quietly turned red in a conversion.
-            //
-            // The assertion below it is the one doing real work: serializing
-            // changed the markup.
-            // @ts-expect-error indexOf returns a number, which has no length
-            const actual = styledHTML.indexOf(randomColor).length;
+            // `replaceAll` would say this more plainly but is ES2021, and this
+            // repo's lib is ES2020 (es-check holds the bundles to ES11).
+            styledHTML = serializer!(node)!.replace(/ /g, '');
 
-            expect(styledHTML).not.toBe(node.outerHTML.replace(' ', ''));
-            expect(actual).not.toBe(0);
+            expect(styledHTML).not.toBe(node.outerHTML.replace(/ /g, ''));
+            // This is what the spec was reaching for and never asserted: the
+            // colour that only existed in a stylesheet is now inline.
+            //
+            // It used to read `styledHTML.indexOf(randomColor).length` and
+            // compare that to 0 -- `indexOf` returns a number, so `.length`
+            // was `undefined`, and `expect(undefined).not.toBe(0)` passed
+            // however the serializer behaved. TypeScript is what surfaced it.
+            expect(styledHTML).toContain(randomColor);
         });
     });
 });
