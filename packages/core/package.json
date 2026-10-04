@@ -118,10 +118,14 @@
     "src/**",
     "!**/*.map",
     "!**/*.spec.js",
+    "!**/*.spec.ts",
     "!**/*.stories.js",
+    "!**/*.stories.ts",
     "!**/*.stories.mdx",
     "!**/*DataBuilder.js",
-    "!**/*.fixtures.js"
+    "!**/*DataBuilder.ts",
+    "!**/*.fixtures.js",
+    "!**/*.fixtures.ts"
   ],
   "exports": {
     ".": {
