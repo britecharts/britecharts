@@ -1,23 +1,41 @@
-import * as d3 from 'd3';
+// d3-selection rather than the monolithic `d3`, as elsewhere in core.
+import { select } from 'd3-selection';
+import type { Selection } from 'd3-selection';
 
 import { LineDataBuilder } from '../line/lineChartDataBuilder';
 import timeAxis from './axis';
+import type {
+    AxisDatumByDate,
+    AxisDatumSorted,
+    AxisTickSettings,
+} from './axis';
+
+// lineChartDataBuilder is still JavaScript, so `build()` is `any`. Naming the
+// two shapes this spec actually reads keeps that `any` from spreading into
+// every assertion below.
+type LineTestData = {
+    dataByDate: AxisDatumByDate[];
+    dataSorted: AxisDatumSorted[];
+};
 
 const aLineTestDataSet = () => new LineDataBuilder();
 
-let containerFixture;
+let containerFixture: Selection<HTMLElement, unknown, HTMLElement, unknown>;
 
 describe('axis Helper', () => {
+    // `format` is optional on AxisTickSettings because the CUSTOM combination
+    // produces no formatter. Every combination exercised below is one of the
+    // four real ones, which always do, so the assertions say so with `!`.
     const minuteFormat = '%M m';
     const hourFormat = '%H %p';
     const dayFormat = '%e';
     const dayMonthFormat = '%d %b';
     const monthFormat = '%b';
     const yearFormat = '%Y';
-    let twoYearsDataSet;
-    let oneDayDataSet;
-    let lessThanOneMonthDataSet;
-    let numericalAxisDataSet;
+    let twoYearsDataSet: LineTestData;
+    let oneDayDataSet: LineTestData;
+    let lessThanOneMonthDataSet: LineTestData;
+    let numericalAxisDataSet: LineTestData;
 
     beforeEach(() => {
         const fixture =
@@ -26,7 +44,7 @@ describe('axis Helper', () => {
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
-        containerFixture = d3.select('.test-container');
+        containerFixture = select('.test-container');
 
         lessThanOneMonthDataSet = aLineTestDataSet().with5Topics().build();
         oneDayDataSet = aLineTestDataSet().withHourDateRange().build();
@@ -36,12 +54,20 @@ describe('axis Helper', () => {
 
     // remove the html fixture from the DOM
     afterEach(() => {
-        document.body.removeChild(document.getElementById('fixture'));
+        const fixture = document.getElementById('fixture');
+
+        // Asserted rather than passed straight through: if beforeEach ever
+        // stops inserting it, the failure should say so.
+        if (!fixture) {
+            throw new Error('the fixture was not inserted');
+        }
+
+        document.body.removeChild(fixture);
     });
 
     describe('when automatic setting', () => {
         describe('when timeframe is 1 day', () => {
-            let minor, major;
+            let minor: AxisTickSettings, major: AxisTickSettings;
 
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
@@ -58,20 +84,20 @@ describe('axis Helper', () => {
             });
 
             it('should give back a minor hour format and 5 ticks', () => {
-                const actual = minor.format.toString();
+                const actual = minor.format!.toString();
 
                 expect(actual).toEqual(hourFormat);
             });
 
             it('should give back a major day format', () => {
-                const actual = major.format.toString();
+                const actual = major.format!.toString();
 
                 expect(actual).toEqual(dayMonthFormat);
             });
         });
 
         describe('when timeframe is less than one month', () => {
-            let minor, major;
+            let minor: AxisTickSettings, major: AxisTickSettings;
 
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
@@ -88,20 +114,20 @@ describe('axis Helper', () => {
             });
 
             it('should give back a minor day format and 5 ticks', () => {
-                const actual = minor.format.toString();
+                const actual = minor.format!.toString();
 
                 expect(actual).toEqual(dayFormat);
             });
 
             it('should give back a major month format', () => {
-                const actual = major.format.toString();
+                const actual = major.format!.toString();
 
                 expect(actual).toEqual(monthFormat);
             });
         });
 
         describe('when timeframe is 2 years', () => {
-            let minor, major;
+            let minor: AxisTickSettings, major: AxisTickSettings;
 
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
@@ -118,13 +144,13 @@ describe('axis Helper', () => {
             });
 
             it('should give back a minor month format and 5 ticks', () => {
-                const actual = minor.format.toString();
+                const actual = minor.format!.toString();
 
                 expect(actual).toEqual(monthFormat);
             });
 
             it('should give back a major year format', () => {
-                const actual = major.format.toString();
+                const actual = major.format!.toString();
 
                 expect(actual).toEqual(yearFormat);
             });
@@ -133,7 +159,7 @@ describe('axis Helper', () => {
 
     describe('when forced setting', () => {
         describe('when timeframe forced to minute and hour', () => {
-            let minor, major;
+            let minor: AxisTickSettings, major: AxisTickSettings;
 
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
@@ -144,20 +170,20 @@ describe('axis Helper', () => {
             });
 
             it('should give back a minor minute format and 5 ticks', () => {
-                const actual = minor.format.toString();
+                const actual = minor.format!.toString();
 
                 expect(actual).toEqual(minuteFormat);
             });
 
             it('should give back a major hour format', () => {
-                const actual = major.format.toString();
+                const actual = major.format!.toString();
 
                 expect(actual).toEqual(hourFormat);
             });
         });
 
         describe('when timeframe forced to hour and day', () => {
-            let minor, major;
+            let minor: AxisTickSettings, major: AxisTickSettings;
 
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
@@ -168,20 +194,20 @@ describe('axis Helper', () => {
             });
 
             it('should give back a minor hour format and 5 ticks', () => {
-                const actual = minor.format.toString();
+                const actual = minor.format!.toString();
 
                 expect(actual).toEqual(hourFormat);
             });
 
             it('should give back a major day-month format', () => {
-                const actual = major.format.toString();
+                const actual = major.format!.toString();
 
                 expect(actual).toEqual(dayMonthFormat);
             });
         });
 
         describe('when timeframe forced to day and month', () => {
-            let minor, major;
+            let minor: AxisTickSettings, major: AxisTickSettings;
 
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
@@ -192,20 +218,20 @@ describe('axis Helper', () => {
             });
 
             it('should give back a minor day format and 5 ticks', () => {
-                const actual = minor.format.toString();
+                const actual = minor.format!.toString();
 
                 expect(actual).toEqual(dayFormat);
             });
 
             it('should give back a major month format', () => {
-                const actual = major.format.toString();
+                const actual = major.format!.toString();
 
                 expect(actual).toEqual(monthFormat);
             });
         });
 
         describe('when timeframe forced to month and year', () => {
-            let minor, major;
+            let minor: AxisTickSettings, major: AxisTickSettings;
 
             beforeEach(() => {
                 ({ minor, major } = timeAxis.getTimeSeriesAxis(
@@ -223,20 +249,22 @@ describe('axis Helper', () => {
             });
 
             it('should give back a minor day format and 5 ticks', () => {
-                const actual = minor.format.toString();
+                const actual = minor.format!.toString();
 
                 expect(actual).toEqual(monthFormat);
             });
 
             it('should give back a major month format', () => {
-                const actual = major.format.toString();
+                const actual = major.format!.toString();
 
                 expect(actual).toEqual(yearFormat);
             });
         });
 
         describe('when using a numerical axis', () => {
-            let minor;
+            // getSortedNumberAxis returns only a tick, and always a number --
+            // no format, so this is not an AxisTickSettings.
+            let minor: { tick: number };
 
             beforeEach(() => {
                 minor = timeAxis.getSortedNumberAxis(

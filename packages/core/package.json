@@ -12,6 +12,7 @@
     "@types/d3-selection": "3.0.12",
     "@types/d3-shape": "^3.2.0",
     "@types/d3-time": "^3.0.4",
+    "@types/d3-time-format": "^4.0.3",
     "@types/d3-transition": "^3.0.9",
     "base-64": "0.1.0",
     "d3-array": "3.2.4",
