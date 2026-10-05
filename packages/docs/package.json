@@ -43,6 +43,7 @@
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "docs:api": "node ./scripts/generate-docs.js",
+    "docs:source-links": "node ./scripts/check-source-links.mjs",
     "docs:links": "node ./scripts/check-links.mjs",
     "docs:readme": "node ./scripts/copy-readme.js",
     "docusaurus": "docusaurus",
