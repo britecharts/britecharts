@@ -21,7 +21,7 @@ d3Selection.select('.css-selector')
 ```
 
 * [Heatmap](#module_Heatmap)
-    * [exports(_selection, _data)](#exp_module_Heatmap--exports) ⏏
+    * [exports(_selection)](#exp_module_Heatmap--exports) ⏏
         * _static_
             * [.animationDuration(_x)](#module_Heatmap--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
             * [.boxSize(_x)](#module_Heatmap--exports.boxSize) ⇒ <code>Number</code> \| <code>module</code>
@@ -35,11 +35,11 @@ d3Selection.select('.css-selector')
             * [.yAxisLabels(_x)](#module_Heatmap--exports.yAxisLabels) ⇒ <code>yAxisLabels</code> \| <code>module</code>
             * [.width(_x)](#module_Heatmap--exports.width) ⇒ <code>Number</code> \| <code>module</code>
         * _inner_
-            * [~HeatmapData](#module_Heatmap--exports..HeatmapData) : <code>Array.&lt;Array&gt;</code>
+            * [~HeatmapData](#module_Heatmap--exports..HeatmapData) : <code>Array.&lt;Object&gt;</code>
 
 <a name="exp_module_Heatmap--exports" id="exp_module_Heatmap--exports"></a>
 
-## exports(_selection, _data) ⏏
+## exports(_selection) ⏏
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -47,7 +47,6 @@ This function creates the graph using the selection as container
 | Param | Type | Description |
 | --- | --- | --- |
 | _selection | <code>D3Selection</code> | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
-| _data | <code>HeatmapData</code> | The data to attach and generate the chart |
 
 <a name="module_Heatmap--exports.animationDuration" id="module_Heatmap--exports.animationDuration"></a>
 
@@ -195,14 +194,16 @@ Gets or Sets the width of the chart
 
 <a name="module_Heatmap--exports..HeatmapData" id="module_Heatmap--exports..HeatmapData"></a>
 
-## exports~HeatmapData : <code>Array.&lt;Array&gt;</code>
+## exports~HeatmapData : <code>Array.&lt;Object&gt;</code>
+The data a heatmap takes: one entry per box.
+
 **Kind**: inner typedef of [<code>exports</code>](#exp_module_Heatmap--exports)  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| week | <code>Number</code> | 
 | day | <code>Number</code> | 
+| hour | <code>Number</code> | 
 | value | <code>Number</code> | 
 
 **Example**  
