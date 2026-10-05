@@ -105,7 +105,7 @@ git diff --stat $(git merge-base HEAD main)...HEAD
 then read the content, excluding the data fixtures which run to hundreds of KB:
 
 ```bash
-git diff $(git merge-base HEAD main)...HEAD -- ':(exclude)*.json' ':(exclude)yarn.lock'
+git diff $(git merge-base HEAD main)...HEAD -- ':(exclude)*.json' ':(exclude)pnpm-lock.yaml'
 ```
 
 `main` is the v3 integration branch and the changesets `baseBranch`; `origin/HEAD` still points at the v2 `master` line, so do not diff against `master` unless the user is explicitly reviewing a v2 backport.
