@@ -784,6 +784,52 @@ describe('stacked Area Chart', () => {
             expect(actual).toEqual(expected);
         });
 
+        it('should provide numberFormat getter and setter', () => {
+            const previous = stackedAreaChart.numberFormat();
+            const expected = '.2f';
+
+            stackedAreaChart.numberFormat(expected);
+
+            expect(previous).not.toBe(expected);
+            expect(stackedAreaChart.numberFormat()).toBe(expected);
+        });
+
+        it('should apply numberFormat to the axis it formats', () => {
+            // The accessor existing is not what matters: `numberFormat` was
+            // declared for this chart all along with nothing behind it, so a
+            // getter/setter pair alone would reproduce that bug exactly. This
+            // asserts the format reaches what it drives -- `getFormattedValue`
+            // is the y axis's `tickFormat`, and the x axis's too when
+            // `xAxisValueType` is 'number'.
+            //
+            // Its own container and its own data, not the shared fixture and
+            // the file-scope `dataset` that a dozen nested beforeEach blocks
+            // reassign. An earlier version of this leaned on both and passed
+            // alone while failing in the full suite.
+            const own = aTestDataSet().withReportData().build();
+            const draw = (chart) => {
+                const svg = d3
+                    .select('.test-container')
+                    .append('svg')
+                    .attr('class', 'number-format-probe');
+
+                svg.datum(own).call(chart);
+
+                return svg
+                    .select('.y-axis-group')
+                    .selectAll('g.tick')
+                    .nodes()
+                    .map((node) => node.textContent)
+                    .join('|');
+            };
+
+            const plain = draw(stackedArea());
+            const formatted = draw(stackedArea().numberFormat('$,.2f'));
+
+            expect(formatted).not.toEqual(plain);
+            expect(formatted).toContain('$');
+        });
+
         it('should provide margin getter and setter', () => {
             let previous = stackedAreaChart.margin(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },

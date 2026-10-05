@@ -36,6 +36,7 @@ d3Selection.select('.css-selector')
             * [.height(_x)](#module_Stacked-area--exports.height) ⇒ <code>Number</code> \| <code>module</code>
             * [.isAnimated(_x)](#module_Stacked-area--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
             * ~~[.keyLabel(_x)](#module_Stacked-area--exports.keyLabel) ⇒ <code>Number</code> \| <code>module</code>~~
+            * [.numberFormat(_x)](#module_Stacked-area--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
             * [.margin(_x)](#module_Stacked-area--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
             * [.tooltipThreshold(_x)](#module_Stacked-area--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
             * [.topicsOrder(_x)](#module_Stacked-area--exports.topicsOrder) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
@@ -247,6 +248,19 @@ Gets or Sets the keyLabel of the chart
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired keyLabel for the graph |
+
+<a name="module_Stacked-area--exports.numberFormat" id="module_Stacked-area--exports.numberFormat"></a>
+
+## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+Gets or Sets the number format of the stacked area chart
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Returns**: <code>string</code> \| <code>module</code> - Current numberFormat or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>string</code> | = ',f'       Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
 <a name="module_Stacked-area--exports.margin" id="module_Stacked-area--exports.margin"></a>
 
