@@ -2,19 +2,21 @@
   "name": "@britecharts/core",
   "version": "3.0.0-beta.2",
   "main": "dist/umd/bundle/core.bundled.min.js",
-  "module": "src/index.js",
+  "module": "dist/esm/index.js",
   "types": "src/typings/index.d.ts",
   "dependencies": {
-    "@types/base-64": "^1.0.2",
-    "@types/d3-array": "^3.2.2",
-    "@types/d3-ease": "^3.0.2",
-    "@types/d3-format": "^3.0.4",
-    "@types/d3-scale": "^4.0.9",
+    "@types/base-64": "1.0.2",
+    "@types/d3-array": "3.2.2",
+    "@types/d3-dispatch": "3.0.7",
+    "@types/d3-ease": "3.0.2",
+    "@types/d3-format": "3.0.4",
+    "@types/d3-interpolate": "3.0.4",
+    "@types/d3-scale": "4.0.9",
     "@types/d3-selection": "3.0.12",
-    "@types/d3-shape": "^3.2.0",
-    "@types/d3-time": "^3.0.4",
-    "@types/d3-time-format": "^4.0.3",
-    "@types/d3-transition": "^3.0.9",
+    "@types/d3-shape": "3.2.0",
+    "@types/d3-time": "3.0.4",
+    "@types/d3-time-format": "4.0.3",
+    "@types/d3-transition": "3.0.9",
     "base-64": "0.1.0",
     "d3-array": "3.2.4",
     "d3-axis": "3.0.0",
@@ -34,6 +36,7 @@
     "d3-zoom": "3.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "7.29.7",
     "@babel/preset-typescript": "7.29.7",
     "@storybook/addon-a11y": "8.6.14",
     "@storybook/addon-essentials": "8.6.14",
@@ -89,7 +92,8 @@
     }
   },
   "scripts": {
-    "build": "pnpm run clean && webpack --env=production && pnpm run build:check",
+    "build": "pnpm run clean && pnpm run build:esm && webpack --env=production && pnpm run build:check",
+    "build:esm": "babel src --out-dir dist/esm --extensions .ts,.js --no-babelrc --presets @babel/preset-typescript --ignore \"src/**/*.d.ts,src/**/*.spec.ts,src/**/*.spec.js,src/**/*.stories.js,src/**/*.stories.ts,src/**/*DataBuilder.js,src/**/*Data.js,src/**/*.fixtures.js,src/**/*.fixtures.ts\"",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:cdn:bundle": "webpack --env=CDNBundleConfig",
     "build:cdn:charts": "webpack --env=CDNChartsBundleConfig",
@@ -112,6 +116,7 @@
   },
   "files": [
     "CHANGELOG.md",
+    "dist/esm/**",
     "dist/umd/**",
     "dist/cdn/**",
     "dist/styles/**",
@@ -130,7 +135,7 @@
   "exports": {
     ".": {
       "types": "./src/typings/index.d.ts",
-      "import": "./src/index.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/umd/bundle/core.bundled.min.js",
       "default": "./dist/umd/bundle/core.bundled.min.js"
     },

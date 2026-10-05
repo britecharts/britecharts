@@ -1,7 +1,11 @@
 import { place } from './place';
+import type { PlacementFrame } from './place';
 
-const frame = { width: 600, height: 300 };
-const size = [250, 60];
+const frame: PlacementFrame = { width: 600, height: 300 };
+// Annotated as a tuple rather than left to infer `number[]`, so this shared
+// fixture matches the pair `place` takes. The inline sizes below infer as
+// tuples already, being argument positions.
+const size: [number, number] = [250, 60];
 
 describe('tooltip place()', () => {
     describe('horizontal side', () => {

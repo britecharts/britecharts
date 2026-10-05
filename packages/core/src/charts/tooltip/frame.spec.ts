@@ -17,9 +17,24 @@ const buildFixture = (svgAttributes = 'width="600" height="300"') => `
         </svg>
     </div>`;
 
+/**
+ * The element at `selector`, or a failure that says which one was missing.
+ * `querySelector` is nullable, and a spec that reads a node the fixture should
+ * have is better off failing by name than on `null.setAttribute`.
+ */
+const required = (selector: string): Element => {
+    const node = document.querySelector(selector);
+
+    if (!node) {
+        throw new Error(`the fixture has no ${selector}`);
+    }
+
+    return node;
+};
+
 describe('tooltip frame', () => {
     afterEach(() => {
-        document.body.removeChild(document.getElementById('fixture'));
+        document.body.removeChild(required('#fixture'));
     });
 
     describe('originOf', () => {
@@ -52,7 +67,7 @@ describe('tooltip frame', () => {
         });
 
         it('reads a single-value translate as a horizontal offset', () => {
-            const node = document.querySelector('.hover-marker');
+            const node = required('.hover-marker');
 
             node.setAttribute('transform', 'translate(33)');
 
@@ -60,7 +75,7 @@ describe('tooltip frame', () => {
         });
 
         it('ignores transforms that are not translations', () => {
-            const node = document.querySelector('.hover-marker');
+            const node = required('.hover-marker');
 
             node.setAttribute('transform', 'scale(2)');
 

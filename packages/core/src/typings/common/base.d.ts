@@ -6,53 +6,71 @@ import { AxisTimeCombination } from '../helpers/constants';
 
 export interface ChartBaseAPI<T> {
     /** Gets or Sets the number format of the chart */
-    numberFormat(format?: string): T & ChartBaseAPI<T>;
+    numberFormat(): string;
+    numberFormat(format: string): T & ChartBaseAPI<T>;
     /** Gets or Sets the height of the chart */
-    height(height?: number): T & ChartBaseAPI<T>;
+    height(): number;
+    height(height: number): T & ChartBaseAPI<T>;
     /** Gets or Sets the loading state of the chart */
-    isLoading(isLoading?: boolean): T & ChartBaseAPI<T>;
+    isLoading(): boolean;
+    isLoading(isLoading: boolean): T & ChartBaseAPI<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
-    margin(margin?: ChartMarginParams): T & ChartBaseAPI<T>;
+    margin(): ChartMarginParams;
+    margin(margin: ChartMarginParams): T & ChartBaseAPI<T>;
     /** Gets or Sets the width of the chart */
-    width(width?: number): T & ChartBaseAPI<T>;
+    width(): number;
+    width(width: number): T & ChartBaseAPI<T>;
 }
 
 // Using it on the brush chart, for charts with no 'numberFormat'
 export interface ChartBaseAPIMinimal<T> {
     /** Gets or Sets the height of the chart */
-    height(height?: number): T & ChartBaseAPIMinimal<T>;
+    height(): number;
+    height(height: number): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the loading state of the chart */
-    isLoading(isLoading?: boolean): T & ChartBaseAPIMinimal<T>;
+    isLoading(): boolean;
+    isLoading(isLoading: boolean): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
-    margin(margin?: ChartMarginParams): T & ChartBaseAPIMinimal<T>;
+    margin(): ChartMarginParams;
+    margin(margin: ChartMarginParams): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the width of the chart */
-    width(width?: number): T & ChartBaseAPIMinimal<T>;
+    width(): number;
+    width(width: number): T & ChartBaseAPIMinimal<T>;
 }
 
 export interface ComponentBaseAPI<T> {
     /** Gets or Sets the number format of the chart */
-    numberFormat(format?: string): T & ComponentBaseAPI<T>;
+    numberFormat(): string;
+    numberFormat(format: string): T & ComponentBaseAPI<T>;
     /** Gets or Sets the height of the chart */
-    height(height?: number): T & ComponentBaseAPI<T>;
+    height(): number;
+    height(height: number): T & ComponentBaseAPI<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
-    margin(margin?: ChartMarginParams): T & ComponentBaseAPI<T>;
+    margin(): ChartMarginParams;
+    margin(margin: ChartMarginParams): T & ComponentBaseAPI<T>;
     /** Gets or Sets the width of the chart */
-    width(width?: number): T & ComponentBaseAPI<T>;
+    width(): number;
+    width(width: number): T & ComponentBaseAPI<T>;
 }
 
 // Using it on Heatmap until getting a good set of API configs
 // https://github.com/britecharts/britecharts/issues/845
 export interface BaseAPI<T> {
     /** Gets or Sets the colorSchema of the chart */
+    colorSchema(): ColorsSchemasType;
     colorSchema(schema: ColorsSchemasType): T & BaseAPI<T>;
     /** Gets or Sets the height of the chart */
-    height(height?: number): T & BaseAPI<T>;
+    height(): number;
+    height(height: number): T & BaseAPI<T>;
     /** Gets or Sets the loading state of the chart */
-    isLoading(isLoading?: boolean): T & BaseAPI<T>;
+    isLoading(): boolean;
+    isLoading(isLoading: boolean): T & BaseAPI<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
-    margin(margin?: ChartMarginParams): T & BaseAPI<T>;
+    margin(): ChartMarginParams;
+    margin(margin: ChartMarginParams): T & BaseAPI<T>;
     /** Gets or Sets the width of the chart */
-    width(width?: number): T & BaseAPI<T>;
+    width(): number;
+    width(width: number): T & BaseAPI<T>;
 }
 
 // More granular approach
@@ -66,18 +84,23 @@ export interface InteractiveChartAPI<T> {
 
 export interface ChartDimensionsAPI<T> {
     /** Gets or Sets the height of the chart */
-    height(height?: number): T & ChartDimensionsAPI<T>;
+    height(): number;
+    height(height: number): T & ChartDimensionsAPI<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
-    margin(margin?: ChartMarginParams): T & ChartDimensionsAPI<T>;
+    margin(): ChartMarginParams;
+    margin(margin: ChartMarginParams): T & ChartDimensionsAPI<T>;
     /** Gets or Sets the width of the chart */
-    width(width?: number): T & ChartDimensionsAPI<T>;
+    width(): number;
+    width(width: number): T & ChartDimensionsAPI<T>;
 }
 
 export interface AnimatedChartAPI<T> {
     /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & AnimatedChartAPI<T>;
+    isAnimated(): boolean;
+    isAnimated(isAnimated: boolean): T & AnimatedChartAPI<T>;
     /** Gets or Sets the duration of the animation */
-    animationDuration(duration?: number): T & AnimatedChartAPI<T>;
+    animationDuration(): number;
+    animationDuration(duration: number): T & AnimatedChartAPI<T>;
 }
 
 export interface ExportableChartAPI {
@@ -93,9 +116,11 @@ export interface ExportableChartAPI {
 
 export interface ThemableChartAPI<T> {
     /** Gets or Sets the colorSchema of the chart */
+    colorSchema(): ColorsSchemasType;
     colorSchema(schema: ColorsSchemasType): T & ThemableChartAPI<T>;
     /** Gets or Sets the colorMap of the chart */
-    colorMap(colorMap?: Record<string, string>): T & ThemableChartAPI<T>;
+    colorMap(): Record<string, string>;
+    colorMap(colorMap: Record<string, string>): T & ThemableChartAPI<T>;
 }
 
 export interface TimeSeriesChartAPI<T> {
@@ -113,14 +138,16 @@ export interface TimeSeriesChartAPI<T> {
      * Uses Intl.DateTimeFormat, for compatability and support, refer to
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
      */
-    locale(localObject?: LocaleString | null): T & TimeSeriesChartAPI<T>;
+    locale(): LocaleString | null;
+    locale(localObject: LocaleString | null): T & TimeSeriesChartAPI<T>;
     /**
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
      * Accepts the format for x axis, one of the d3.js date formats [here]{@link https://github.com/d3/d3-time-format#locale_format}
      */
-    xAxisCustomFormat(format?: string): T & TimeSeriesChartAPI<T>;
+    xAxisCustomFormat(): string;
+    xAxisCustomFormat(format: string): T & TimeSeriesChartAPI<T>;
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
      * It is a combination of axisTimeCombinations (MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR)
@@ -128,7 +155,8 @@ export interface TimeSeriesChartAPI<T> {
      * * @example
      *     chart.xAxisCustomFormat(chart.axisTimeCombinations.HOUR_DAY)
      */
+    xAxisFormat(): AxisTimeCombination | `${AxisTimeCombination}`;
     xAxisFormat(
-        format?: AxisTimeCombination | `${AxisTimeCombination}`
+        format: AxisTimeCombination | `${AxisTimeCombination}`
     ): T & TimeSeriesChartAPI<T>;
 }
