@@ -100,6 +100,24 @@ for (const [, name, relative] of barrel.matchAll(
     }
 }
 
+/**
+ * Members of a chart's module type that are not accessors, so their absence from
+ * the source's assignments means nothing. The callable's own members come from
+ * `ChartModuleSelection`, and `exportChart` is a command rather than a
+ * get-or-set pair.
+ */
+const NOT_AN_ACCESSOR = new Set([
+    'apply',
+    'arguments',
+    'bind',
+    'call',
+    'caller',
+    'length',
+    'name',
+    'prototype',
+    'toString',
+]);
+
 const gaps = [];
 
 for (const [name, { file, source }] of [...sources].sort()) {
@@ -115,16 +133,42 @@ for (const [name, { file, source }] of [...sources].sort()) {
         checker.getPropertiesOfType(moduleType).map((symbol) => symbol.getName())
     );
     const exposed = assignedAccessors(source);
-    const undeclared = [...exposed].filter((n) => !declared.has(n)).sort();
 
-    if (undeclared.length) {
-        gaps.push({ name, file: path.relative(packageRoot, file), undeclared });
+    // A preset assigns nothing: `miniTooltip` is
+    // `tooltip().layout('single').title('').numberFormat('.2f')` and inherits the
+    // tooltip's whole surface, so every member it declares is legitimately
+    // absent from its own source.
+    if (exposed.size === 0) {
+        console.log(`  ${name.padEnd(13)} a preset, nothing of its own to compare`);
+        continue;
+    }
+    const undeclared = [...exposed].filter((n) => !declared.has(n)).sort();
+    // The other direction, which this script used to ignore: a member the
+    // typings promise and the chart does not have. Calling one compiles and then
+    // throws, which is worse than an accessor being merely unreachable.
+    // `exportChart` and the callable itself are not accessors and never appear
+    // as assignments.
+    const phantom = [...declared]
+        .filter((n) => !exposed.has(n) && !NOT_AN_ACCESSOR.has(n))
+        .sort();
+
+    if (undeclared.length || phantom.length) {
+        gaps.push({
+            name,
+            file: path.relative(packageRoot, file),
+            undeclared,
+            phantom,
+        });
     }
 
     const counts = `${String(exposed.size).padStart(2)} exposed, ${String(declared.size).padStart(2)} declared`;
+    const notes = [
+        undeclared.length ? `undeclared: ${undeclared.join(', ')}` : '',
+        phantom.length ? `declared but absent: ${phantom.join(', ')}` : '',
+    ].filter(Boolean);
 
     console.log(
-        `  ${name.padEnd(13)} ${counts}${undeclared.length ? `  undeclared: ${undeclared.join(', ')}` : ''}`
+        `  ${name.padEnd(13)} ${counts}${notes.length ? '  ' + notes.join('; ') : ''}`
     );
 }
 
