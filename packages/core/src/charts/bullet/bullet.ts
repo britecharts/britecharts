@@ -2,11 +2,45 @@ import { axisBottom } from 'd3-axis';
 import { format } from 'd3-format';
 import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
+import type { BaseType, Selection } from 'd3-selection';
+import type { Axis } from 'd3-axis';
+import type { NumberValue } from 'd3-scale';
+import type { ScaleLinear } from 'd3-scale';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
 import { bulletLoadingMarkup } from '../helpers/load';
 import colorHelper from '../helpers/color';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type {
+    BulletChartDataShape,
+    BulletChartModule,
+} from '../../typings/charts/bullet-chart';
+
+/**
+ * The chart's own svg, and the selections derived from it. The datum and parent
+ * generics are the migration plan's bounded `any`, as in `filter.ts`: these are
+ * module-level variables reassigned from several differently-shaped selections,
+ * so naming one concrete datum would reject the others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/** What `cleanData` hands the drawing functions. */
+type BulletData = {
+    ranges: number[];
+    measures: number[];
+    markers: number[];
+    title?: string;
+    subtitle?: string;
+};
 
 /**
  * Reusable Bullet Chart API class that renders a
@@ -47,8 +81,11 @@ import colorHelper from '../helpers/color';
  *
  */
 
-export default function module() {
-    let margin = {
+export default function module(): BulletChartModule {
+    // Split into `let` and `const` rather than the one `let` chain the
+    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
+    // error, and the constants below are never reassigned.
+    let margin: ChartMarginParams = {
             top: 20,
             right: 20,
             bottom: 30,
@@ -57,45 +94,53 @@ export default function module() {
         width = 960,
         height = 150,
         isLoading = false,
-        chartWidth,
-        chartHeight,
-        xScale,
-        rangeOpacityScale,
-        rangeOpacifyDiff = 0.2,
-        measureOpacityScale,
-        measureOpacifyDiff = 0.3,
-        colorSchema = colorHelper.colorSchemas.britecharts,
-        rangeColor,
-        measureColor,
-        markerColor,
+        chartWidth: number,
+        chartHeight: number,
+        xScale: ScaleLinear<number, number>,
+        rangeOpacityScale: number[],
+        measureOpacityScale: number[],
+        colorSchema: string[] = colorHelper.colorSchemas.britecharts,
+        rangeColor: string,
+        measureColor: string,
+        markerColor: string,
         numberFormat = '',
-        baseLine,
+        baseLine: ChartSelection<SVGLineElement>,
         ticks = 6,
-        tickPadding = 5,
-        axis,
+        // `Axis<NumberValue>`, which is what `axisBottom` on a numeric scale
+        // produces -- d3 types a scale's accepted input as `NumberValue`
+        // (`number | { valueOf(): number }`), not `number`.
+        axis: Axis<NumberValue>,
         paddingBetweenAxisAndChart = 5,
         startMaxRangeOpacity = 0.5,
-        markerStrokeWidth = 5,
-        barWidth,
+        // Derived from the x scale: the width of one bullet for a given datum.
+        barWidth: (d: number) => number,
         isReverse = false,
-        legendGroup,
-        titleEl,
-        subtitleEl,
-        rangesEl,
-        measuresEl,
-        markersEl,
-        legendSpacing = 100,
-        title,
-        customTitle,
-        subtitle,
-        customSubtitle,
-        subtitleSpacing = 15,
-        ranges = [],
-        markers = [],
-        measures = [],
-        svg,
-        hasTitle = () => title || customTitle,
-        getMeasureBarHeight = () => chartHeight / 3;
+        legendGroup: ChartSelection<SVGGElement>,
+        titleEl: ChartSelection<SVGTextElement>,
+        subtitleEl: ChartSelection<SVGTextElement>,
+        rangesEl: ChartSelection<SVGRectElement>,
+        measuresEl: ChartSelection<SVGRectElement>,
+        markersEl: ChartSelection<SVGLineElement>,
+        // No defaults: a title arrives with the data, a customTitle through the
+        // accessor, and reading either before it is set gives undefined -- which
+        // is what the declaration says.
+        title: string | undefined,
+        customTitle: string | undefined,
+        subtitle: string | undefined,
+        customSubtitle: string | undefined,
+        ranges: number[] = [],
+        markers: number[] = [],
+        measures: number[] = [],
+        svg: ChartSelection<SVGSVGElement>;
+
+    const rangeOpacifyDiff = 0.2;
+    const measureOpacifyDiff = 0.3;
+    const tickPadding = 5;
+    const markerStrokeWidth = 5;
+    const legendSpacing = 100;
+    const subtitleSpacing = 15;
+    const hasTitle = () => title || customTitle;
+    const getMeasureBarHeight = () => chartHeight / 3;
 
     /**
      * This function creates the graph using the selection as container
@@ -103,10 +148,21 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      * @param {BulletChartData} _data   The data to attach and generate the chart
      */
-    function exports(_selection) {
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            BulletChartDataShape,
+            TParent,
+            TParentDatum
+        >
+    ) {
         _selection.each(function (_data) {
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
 
             // The loading state stands in for data that has not arrived, so it
             // has to be drawn before cleanData(), which expects a real datum
@@ -136,7 +192,7 @@ export default function module() {
      * Creates the d3 x and y axis, setting orientations
      * @private
      */
-    function buildAxis() {
+    function buildAxis(): void {
         axis = axisBottom(xScale)
             .ticks(ticks)
             .tickPadding(tickPadding)
@@ -148,7 +204,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function cleanLoadingState() {
+    function cleanLoadingState(): void {
         svg.select('.loading-state-group svg').remove();
     }
 
@@ -157,7 +213,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawLoadingState() {
+    function drawLoadingState(): void {
         svg.select('.loading-state-group').html(bulletLoadingMarkup);
     }
 
@@ -167,8 +223,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function buildContainerGroups() {
-        let container = svg
+    function buildContainerGroups(): void {
+        const container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -191,7 +247,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function buildScales() {
+    function buildScales(): void {
         const decidedRange = isReverse ? [chartWidth, 0] : [0, chartWidth];
         const domain = [0, Math.max(...ranges, ...markers, ...measures)];
 
@@ -220,7 +276,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element): void {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -240,10 +296,10 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function bulletWidth(x) {
+    function bulletWidth(x: ScaleLinear<number, number>) {
         const x0 = x(0);
 
-        return function (d) {
+        return function (d: number) {
             return Math.abs(x(d) - x0);
         };
     }
@@ -256,12 +312,20 @@ export default function module() {
      * @return  {BulletChartData}               Clean data
      * @private
      */
-    function cleanData(originalData) {
+    function cleanData(originalData: BulletChartDataShape): BulletData {
+        // The declared shape spells these as tuples of optional numbers,
+        // `[number?, number?, number?]`, so spreading one yields
+        // `(number | undefined)[]`. The assertions keep the behaviour exactly as
+        // it is rather than filtering: a hole in the data already reaches
+        // `Math.max(...)` and already produces a NaN domain, and inventing a
+        // meaning for it is not this conversion's to decide. Recorded in the
+        // migration plan -- the documented `@typedef` above says `Number[]`,
+        // which is what the implementation actually requires.
         const newData = {
-            ranges: [...originalData.ranges].sort().reverse(),
-            measures: [...originalData.measures].sort().reverse(),
+            ranges: ([...originalData.ranges] as number[]).sort().reverse(),
+            measures: ([...originalData.measures] as number[]).sort().reverse(),
             markers: originalData.markers.length
-                ? [...originalData.markers].sort().reverse()
+                ? ([...originalData.markers] as number[]).sort().reverse()
                 : [],
             subtitle: originalData.subtitle,
             title: originalData.title,
@@ -276,8 +340,8 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawAxis() {
-        let translateX = hasTitle() ? legendSpacing : 0;
+    function drawAxis(): void {
+        const translateX = hasTitle() ? legendSpacing : 0;
 
         svg.select('.axis-group')
             .attr(
@@ -286,7 +350,13 @@ export default function module() {
                     chartHeight + paddingBetweenAxisAndChart
                 })`
             )
-            .call(axis);
+            // Cast because `svg.select` hands back a `Selection<BaseType, ...>`
+            // while an axis renders into an SVG container; `BaseType` admits
+            // `Document` and `Window`, which have no geometry. Same invariance
+            // as everywhere else in this migration.
+            .call(
+                axis as unknown as (selection: ChartSelection<BaseType>) => void
+            );
 
         drawHorizontalExtendedLine();
     }
@@ -296,7 +366,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawBullet() {
+    function drawBullet(): void {
         if (rangesEl) {
             rangesEl.remove();
         }
@@ -357,7 +427,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawHorizontalExtendedLine() {
+    function drawHorizontalExtendedLine(): void {
         if (baseLine) {
             baseLine.remove();
         }
@@ -378,7 +448,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawTitles() {
+    function drawTitles(): void {
         if (hasTitle()) {
             // either use title provided from the data
             // or customTitle provided via API method call
@@ -407,7 +477,7 @@ export default function module() {
                 .enter()
                 .append('text')
                 .attr('class', 'bullet-title x-axis-label')
-                .text(title);
+                .text(title ?? null);
 
             // either use subtitle provided from the data
             // or customSubtitle provided via API method call
@@ -428,7 +498,7 @@ export default function module() {
                     .append('text')
                     .attr('class', 'bullet-subtitle x-axis-label')
                     .attr('y', subtitleSpacing)
-                    .text(subtitle);
+                    .text(subtitle ?? null);
             }
         }
     }
@@ -443,14 +513,17 @@ export default function module() {
      * @return {String[] | module}  Current colorSchema or Chart module to chain calls
      * @public
      */
-    exports.colorSchema = function (_x) {
+    (exports as BulletChartModule).colorSchema = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return colorSchema;
         }
         colorSchema = _x;
 
         return this;
-    };
+    } as BulletChartModule['colorSchema'];
 
     /**
      * Gets or Sets the title for measure identifier
@@ -460,14 +533,17 @@ export default function module() {
      * @public
      * @example bulletChart.customTitle('CPU Usage')
      */
-    exports.customTitle = function (_x) {
+    (exports as BulletChartModule).customTitle = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return customTitle;
         }
         customTitle = _x;
 
         return this;
-    };
+    } as BulletChartModule['customTitle'];
 
     /**
      * Gets or Sets the subtitle for measure identifier range.
@@ -476,14 +552,17 @@ export default function module() {
      * @public
      * @example bulletChart.customSubtitle('GHz')
      */
-    exports.customSubtitle = function (_x) {
+    (exports as BulletChartModule).customSubtitle = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return customSubtitle;
         }
         customSubtitle = _x;
 
         return this;
-    };
+    } as BulletChartModule['customSubtitle'];
 
     /**
      * Chart exported to png and a download action is fired
@@ -492,9 +571,16 @@ export default function module() {
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
-    exports.exportChart = function (filename, title) {
-        return exportChart.call(exports, svg, filename, title);
-    };
+    (exports as BulletChartModule).exportChart = function (filename, title) {
+        // The module, not the bare function: `exportChart` needs `this` to
+        // answer `width()`, `height()` and `margin()`.
+        return exportChart.call(
+            exports as BulletChartModule,
+            svg,
+            filename,
+            title
+        );
+    } as BulletChartModule['exportChart'];
 
     /**
      * Gets or Sets the loading state of the chart
@@ -503,14 +589,17 @@ export default function module() {
      * @public
      * @example chart.isLoading(true)
      */
-    exports.isLoading = function (_flag) {
+    (exports as BulletChartModule).isLoading = function (
+        this: BulletChartModule,
+        _flag
+    ) {
         if (!arguments.length) {
             return isLoading;
         }
         isLoading = _flag;
 
         return this;
-    };
+    } as BulletChartModule['isLoading'];
 
     /**
      * Gets or Sets the height of the chart
@@ -518,14 +607,17 @@ export default function module() {
      * @return {Number | module}    Current height or Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    (exports as BulletChartModule).height = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return height;
         }
         height = _x;
 
         return this;
-    };
+    } as BulletChartModule['height'];
 
     /**
      * Gets or Sets the isReverse status of the chart. If true,
@@ -534,14 +626,17 @@ export default function module() {
      * @return {Boolean | module}       Current height or Chart module to chain calls
      * @public
      */
-    exports.isReverse = function (_x) {
+    (exports as BulletChartModule).isReverse = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isReverse;
         }
         isReverse = _x;
 
         return this;
-    };
+    } as BulletChartModule['isReverse'];
 
     /**
      * Gets or Sets the margin of the chart
@@ -549,7 +644,10 @@ export default function module() {
      * @return {margin | module}    Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    (exports as BulletChartModule).margin = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return margin;
         }
@@ -559,7 +657,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as BulletChartModule['margin'];
 
     /**
      * Gets or Sets the number format of the bar chart
@@ -567,14 +665,17 @@ export default function module() {
      * @return {string | module}        Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function (_x) {
+    (exports as BulletChartModule).numberFormat = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    };
+    } as BulletChartModule['numberFormat'];
 
     /**
      * Space between axis and chart
@@ -582,14 +683,17 @@ export default function module() {
      * @return {Number| module}         Current value of paddingBetweenAxisAndChart or Chart module to chain calls
      * @public
      */
-    exports.paddingBetweenAxisAndChart = function (_x) {
+    (exports as BulletChartModule).paddingBetweenAxisAndChart = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return paddingBetweenAxisAndChart;
         }
         paddingBetweenAxisAndChart = _x;
 
         return this;
-    };
+    } as BulletChartModule['paddingBetweenAxisAndChart'];
 
     /**
      * Gets or Sets the starting point of the capacity range.
@@ -598,14 +702,17 @@ export default function module() {
      * @public
      * @example bulletChart.startMaxRangeOpacity(0.8)
      */
-    exports.startMaxRangeOpacity = function (_x) {
+    (exports as BulletChartModule).startMaxRangeOpacity = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return startMaxRangeOpacity;
         }
         startMaxRangeOpacity = _x;
 
         return this;
-    };
+    } as BulletChartModule['startMaxRangeOpacity'];
 
     /**
      * Gets or Sets the number of ticks of the x axis on the chart
@@ -613,14 +720,17 @@ export default function module() {
      * @return {Number | module}    Current ticks or Chart module to chain calls
      * @public
      */
-    exports.ticks = function (_x) {
+    (exports as BulletChartModule).ticks = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return ticks;
         }
         ticks = _x;
 
         return this;
-    };
+    } as BulletChartModule['ticks'];
 
     /**
      * Gets or Sets the width of the chart
@@ -628,14 +738,17 @@ export default function module() {
      * @return {Number | module}     Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    (exports as BulletChartModule).width = function (
+        this: BulletChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return width;
         }
         width = _x;
 
         return this;
-    };
+    } as BulletChartModule['width'];
 
-    return exports;
+    return exports as unknown as BulletChartModule;
 }
