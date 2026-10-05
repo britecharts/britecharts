@@ -45,8 +45,6 @@ export interface StackedBarChartAPI
     hasReversedStacks(hasReversedStacks?: boolean): StackedBarChartModule;
     /** Gets or Sets the horizontal direction of the chart */
     isHorizontal(isHorizontal?: boolean): StackedBarChartModule;
-    /** Pass language tag for the tooltip to localize the date */
-    locale(localObject?: LocalObject | null): StackedBarChartModule;
     /**
      * Configurable extension of the x axis
      * If your max point was 50% you might want to show x axis to 60%, pass 1.2
