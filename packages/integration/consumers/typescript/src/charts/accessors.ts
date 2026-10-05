@@ -213,3 +213,38 @@ export const bulletAccessors = {
     bulletSubtitle,
     bulletChained,
 };
+
+// The sparkline's own four, corrected with its conversion for the same reason
+// bullet's seven were: they were setter-only, so reading one reported the chart
+// instead of its value. Its three shared ones -- `dateLabel`, `valueLabel`,
+// `isLoading` -- already read correctly and are asserted further up.
+//
+// The two gradients are a two-element tuple, not `string[]`: the chart reads
+// `[0]` and `[1]` and nothing else, and `ColorGradientType` has said so since
+// before this migration. `titleText` is `string | undefined` on the way out
+// because the chart has no default title -- `drawSparklineTitle` only runs once
+// one is set.
+const sparklineOwn = sparkline();
+
+const sparklineAreaGradient: [string, string] = sparklineOwn.areaGradient();
+const sparklineLineGradient: [string, string] = sparklineOwn.lineGradient();
+const sparklineTitleText: string | undefined = sparklineOwn.titleText();
+const sparklineTitleFont: string | undefined =
+    sparklineOwn.titleTextStyle()['font-family'];
+
+// The setters still chain, and a partial style object is still accepted: the
+// chart falls back to its own default for every member left out.
+const sparklineChained: string | undefined = sparkline()
+    .areaGradient(['#F5FDFF', '#F6FEFC'])
+    .lineGradient(['#39C7EA', '#4CDCBA'])
+    .titleTextStyle({ 'font-size': '1.5em' })
+    .titleText('Signups')
+    .titleText();
+
+export const sparklineAccessors = {
+    sparklineAreaGradient,
+    sparklineLineGradient,
+    sparklineTitleText,
+    sparklineTitleFont,
+    sparklineChained,
+};

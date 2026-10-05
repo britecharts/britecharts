@@ -36,20 +36,27 @@ export interface SparklineChartAPI
         AnimatedChartAPI<SparklineChartModule>,
         ExportableChartAPI {
     /** Gets or Sets the areaGradient of the chart */
-    areaGradient(gradient?: [string, string]): SparklineChartModule;
+    areaGradient(): [string, string];
+    areaGradient(gradient: [string, string]): SparklineChartModule;
     /** Gets or Sets the lineGradient of the chart */
-    lineGradient(gradient?: [string, string]): SparklineChartModule;
+    lineGradient(): [string, string];
+    lineGradient(gradient: [string, string]): SparklineChartModule;
     /**
      * Gets or Sets the text of the title at the top of sparkline.
      * To style the title, use the titleTextStyle method below.
+     *
+     * The getter can return undefined: the chart has no default title, and
+     * `drawSparklineTitle` only runs once one is set.
      */
-    titleText(title?: string): SparklineChartModule;
+    titleText(): string | undefined;
+    titleText(title: string): SparklineChartModule;
     /**
      * Gets or Sets the text style object of the title at the top of sparkline.
      * Using this method, you can set font-family, font-size, font-weight, font-style,
      * and color (fill).
      */
-    titleTextStyle(titleStyle?: SparkelineTitleTextStyle): SparklineChartModule;
+    titleTextStyle(): SparkelineTitleTextStyle;
+    titleTextStyle(titleStyle: SparkelineTitleTextStyle): SparklineChartModule;
     /** Gets or Sets the `date` key of the data */
     dateLabel(): string;
     dateLabel(value: string): SparklineChartModule;
