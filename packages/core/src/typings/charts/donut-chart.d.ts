@@ -82,6 +82,9 @@ export interface DonutChartAPI
     percentageFormat(format: string): DonutChartModule;
     /** Gets or Sets the radiusHoverOffset of the chart */
     radiusHoverOffset(offset: number): DonutChartModule;
+    /** Gets or Sets whether the legend shows at the centre of the donut */
+    hasCenterLegend(): boolean;
+    hasCenterLegend(value: boolean): DonutChartModule;
 }
 
 export type DonutChartModule = ChartModuleSelection<DonutChartDataShape[]> &

@@ -95,3 +95,80 @@ export const heatmapAccessors = {
     heatmapAnimated,
     heatmapDuration,
 };
+
+// The label accessors, and the three others that were exposed but never
+// declared. Eighteen in total across eight charts, found by comparing each
+// chart's runtime surface against its typings rather than one at a time --
+// `check:api-parity` in core does that comparison through the TypeScript
+// compiler, so it resolves `Omit`, inherited members and intersections properly.
+//
+// Fifteen of the eighteen are one family: the keys a chart reads its data by.
+// Their JSDoc called most of them `{number}`, which is why the types here come
+// from the implementation's own defaults instead -- `nameLabel` defaults to
+// `'name'`, `valueLabel` to `'value'`, `dateLabel` to `'date'`. They are
+// strings, and they always have been.
+import {
+    groupedBar,
+    legend,
+    sparkline,
+    stackedArea,
+    stackedBar,
+} from '@britecharts/core';
+
+const barNameLabel: string = bar().nameLabel();
+const donutCenterLegend: boolean = donut().hasCenterLegend();
+const legendUnit: string = legend().unit();
+
+const groupedBarChart = groupedBar();
+const groupLabel: string = groupedBarChart.groupLabel();
+const groupedNameLabel: string = groupedBarChart.nameLabel();
+const groupedValueLabel: string = groupedBarChart.valueLabel();
+
+const lineChart = line();
+const lineDateLabel: string = lineChart.dateLabel();
+const lineTopicLabel: string = lineChart.topicLabel();
+const lineValueLabel: string = lineChart.valueLabel();
+const hasMinimumValueScale: boolean = lineChart.hasMinimumValueScale();
+
+const sparklineChart = sparkline();
+const sparklineDateLabel: string = sparklineChart.dateLabel();
+const sparklineValueLabel: string = sparklineChart.valueLabel();
+const sparklineIsLoading: boolean = sparklineChart.isLoading();
+
+const stackedAreaChart = stackedArea();
+const areaDateLabel: string = stackedAreaChart.dateLabel();
+const areaValueLabel: string = stackedAreaChart.valueLabel();
+
+const stackedBarChart = stackedBar();
+const barStackLabel: string = stackedBarChart.stackLabel();
+const stackedNameLabel: string = stackedBarChart.nameLabel();
+const stackedValueLabel: string = stackedBarChart.valueLabel();
+
+// Setting one still chains, so the overloads did not cost the setter anything.
+const chainedLabels: string = stackedBar()
+    .nameLabel('name')
+    .valueLabel('value')
+    .stackLabel('stack')
+    .nameLabel();
+
+export const labelAccessors = {
+    barNameLabel,
+    donutCenterLegend,
+    legendUnit,
+    groupLabel,
+    groupedNameLabel,
+    groupedValueLabel,
+    lineDateLabel,
+    lineTopicLabel,
+    lineValueLabel,
+    hasMinimumValueScale,
+    sparklineDateLabel,
+    sparklineValueLabel,
+    sparklineIsLoading,
+    areaDateLabel,
+    areaValueLabel,
+    barStackLabel,
+    stackedNameLabel,
+    stackedValueLabel,
+    chainedLabels,
+};

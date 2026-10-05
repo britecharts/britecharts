@@ -70,6 +70,15 @@ export interface StackedBarChartAPI
     yAxisLabelOffset(yAxisLabelOffset?: number): StackedBarChartModule;
     /** Gets or Sets the number of vertical ticks of the axis on the chart */
     yTicks(ticks?: number): StackedBarChartModule;
+    /** Gets or Sets the `name` key of the data */
+    nameLabel(): string;
+    nameLabel(value: string): StackedBarChartModule;
+    /** Gets or Sets the `stack` key of the data */
+    stackLabel(): string;
+    stackLabel(value: string): StackedBarChartModule;
+    /** Gets or Sets the `value` key of the data */
+    valueLabel(): string;
+    valueLabel(value: string): StackedBarChartModule;
 }
 
 export type StackedBarChartModule = ChartModuleSelection<

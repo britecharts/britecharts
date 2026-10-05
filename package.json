@@ -284,6 +284,7 @@
     "test:ci": "pnpm -r --parallel run test",
     "test:integration": "pnpm --filter @britecharts/integration run test:integration",
     "test:watch": "pnpm -r --parallel run test:watch",
+    "check:api-parity": "pnpm --filter @britecharts/core run check:api-parity",
     "type-check": "pnpm -r --parallel run type-check",
     "version-packages": "changeset version"
   },
