@@ -79,10 +79,16 @@
     "!src/docs/**",
     "!**/*.map",
     "!**/*.spec.js",
+    "!**/*.spec.ts",
+    "!**/*.spec.tsx",
     "!**/*.stories.js",
+    "!**/*.stories.ts",
+    "!**/*.stories.tsx",
     "!**/*.stories.mdx",
     "!**/*DataBuilder.js",
-    "!**/*.fixtures.js"
+    "!**/*DataBuilder.ts",
+    "!**/*.fixtures.js",
+    "!**/*.fixtures.ts"
   ],
   "exports": {
     ".": {
