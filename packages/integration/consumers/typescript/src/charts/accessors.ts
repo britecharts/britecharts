@@ -172,3 +172,44 @@ export const labelAccessors = {
     stackedValueLabel,
     chainedLabels,
 };
+
+// The bullet chart's own accessors. Its declaration had every member, so the
+// parity check was already green on it -- what was wrong was the shape and two
+// of the types.
+//
+// `customTitle` and `customSubtitle` were declared `number`. The chart assigns
+// them to `title`/`subtitle` and renders them as text, and its own documented
+// examples are `customTitle('CPU Usage')` and `customSubtitle('GHz')`. They are
+// `string`, and `string | undefined` on the way out, since neither has a
+// default. The seven chart-specific accessors were also setter-only, so reading
+// one reported the chart rather than its value -- the same gap the shared
+// interfaces had before, which never reached the per-chart declarations.
+import { bullet } from '@britecharts/core';
+
+const bulletChart = bullet();
+
+const bulletTicks: number = bulletChart.ticks();
+const bulletPadding: number = bulletChart.paddingBetweenAxisAndChart();
+const bulletOpacity: number = bulletChart.startMaxRangeOpacity();
+const bulletReverse: boolean = bulletChart.isReverse();
+const bulletSchema: string[] = bulletChart.colorSchema();
+const bulletTitle: string | undefined = bulletChart.customTitle();
+const bulletSubtitle: string | undefined = bulletChart.customSubtitle();
+
+// A string goes in, and the setter still chains.
+const bulletChained: string | undefined = bullet()
+    .customTitle('CPU Usage')
+    .customSubtitle('GHz')
+    .ticks(8)
+    .customTitle();
+
+export const bulletAccessors = {
+    bulletTicks,
+    bulletPadding,
+    bulletOpacity,
+    bulletReverse,
+    bulletSchema,
+    bulletTitle,
+    bulletSubtitle,
+    bulletChained,
+};
