@@ -21,9 +21,18 @@ export type ScatterPlotDataShape = {
     [ScatterPlotKeys.Y]: number;
 };
 
+// `numberFormat` is omitted because this chart does not have it and should not:
+// its own idiom is a format per axis, `xAxisFormat` and `yAxisFormat`, both of
+// which it exposes. A chart-wide `numberFormat` would be a second way to say the
+// same thing.
+//
+// The two keys this omitted before, `'locale' | 'loadingState'`, are not members
+// of `ChartBaseAPI` at all -- the loading accessor is `isLoading`, and `locale`
+// lives on `TimeSeriesChartAPI`. So the `Omit` removed nothing while reading as
+// though it removed two things.
 export type ScatterPlotBaseAPI = Omit<
     ChartBaseAPI<ScatterPlotModule>,
-    'locale' | 'loadingState'
+    'numberFormat'
 >;
 
 export interface ScatterPlotAPI

@@ -39,8 +39,6 @@ export interface SparklineChartAPI
     areaGradient(gradient?: [string, string]): SparklineChartModule;
     /** Gets or Sets the lineGradient of the chart */
     lineGradient(gradient?: [string, string]): SparklineChartModule;
-    /** Gets or Sets the loading state of the chart */
-    loadingState(markup?: string): SparklineChartModule;
     /**
      * Gets or Sets the text of the title at the top of sparkline.
      * To style the title, use the titleTextStyle method below.
