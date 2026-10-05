@@ -12,6 +12,15 @@ export type BulletChartDataShape = {
   [BulletChartKeys.Ranges]: [number?, number?, number?];
   [BulletChartKeys.Measures]: [number?, number?, number?];
   [BulletChartKeys.Markers]: [number?];
+  /**
+   * Identification for the measure. The chart reads `originalData.title` and
+   * renders it, and the chart's own `@typedef BulletChartData` documents both of
+   * these, but the declared shape omitted them -- so a consumer passing the
+   * data the documentation shows did not compile.
+   */
+  title?: string;
+  /** More detail on the measure identification. As above. */
+  subtitle?: string;
 };
 
 // The `Omit` this used to carry removed `'locale' | 'isAnimated' |
