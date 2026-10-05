@@ -45,6 +45,9 @@ export interface LegendAPI
      * Command that clears all highlighted entries on a legend instance
      */
     clearHighlight(): void;
+    /** Gets or Sets the unit shown beside each value */
+    unit(): string;
+    unit(value: string): LegendModule;
 }
 
 export type LegendModule = ChartModuleSelection<LegendDataShape[]> & LegendAPI;

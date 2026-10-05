@@ -52,6 +52,15 @@ export interface SparklineChartAPI
      * and color (fill).
      */
     titleTextStyle(titleStyle?: SparkelineTitleTextStyle): SparklineChartModule;
+    /** Gets or Sets the `date` key of the data */
+    dateLabel(): string;
+    dateLabel(value: string): SparklineChartModule;
+    /** Gets or Sets the loading state of the chart */
+    isLoading(): boolean;
+    isLoading(value: boolean): SparklineChartModule;
+    /** Gets or Sets the `value` key of the data */
+    valueLabel(): string;
+    valueLabel(value: string): SparklineChartModule;
 }
 
 export type SparklineChartModule = ChartModuleSelection<

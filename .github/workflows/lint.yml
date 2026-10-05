@@ -34,6 +34,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Nothing compared a chart's runtime surface against its typings, and
+      # eighteen accessors across eight charts had drifted out of the published
+      # declarations -- a consumer writing TypeScript could not call any of them.
+      # It is a lint rather than a test because the answer is static: what the
+      # source assigns, against what the compiler says the module type has.
+      - name: Chart API parity 🔍
+        run: pnpm run check:api-parity
+
       - name: Linting Styles 🌈
         run: pnpm run lint:styles
 

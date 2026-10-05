@@ -97,6 +97,9 @@ export interface BarChartAPI
     yAxisPaddingBetweenChart(yAxisPadding?: number): BarChartModule;
     /** Gets or Sets the number of vertical ticks on the chart */
     yTicks(ticks?: number): BarChartModule;
+    /** Gets or Sets the `name` key of the data */
+    nameLabel(): string;
+    nameLabel(value: string): BarChartModule;
 }
 
 export type BarChartModule = ChartModuleSelection<BarChartDataShape[]> &

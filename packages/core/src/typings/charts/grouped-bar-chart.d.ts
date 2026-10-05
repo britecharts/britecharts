@@ -64,6 +64,15 @@ export interface GroupedBarChartAPI
     yTicks(ticks?: number): GroupedBarChartModule;
     /** Gets or Sets the x and y offset of ticks of the y axis on the chart */
     yTickTextOffset(yTickTextOffset?: Offset): GroupedBarChartModule;
+    /** Gets or Sets the `group` key of the data */
+    groupLabel(): string;
+    groupLabel(value: string): GroupedBarChartModule;
+    /** Gets or Sets the `name` key of the data */
+    nameLabel(): string;
+    nameLabel(value: string): GroupedBarChartModule;
+    /** Gets or Sets the `value` key of the data */
+    valueLabel(): string;
+    valueLabel(value: string): GroupedBarChartModule;
 }
 
 export type GroupedBarChartModule = ChartModuleSelection<

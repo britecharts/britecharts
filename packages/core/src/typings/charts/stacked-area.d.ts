@@ -85,6 +85,12 @@ export interface StackedAreaChartAPI
     yAxisLabelOffset(offset: number): StackedAreaChartModule;
     /** Gets or Sets the number of ticks of the y axis on the chart */
     yTicks(ticks: number): StackedAreaChartModule;
+    /** Gets or Sets the `date` key of the data */
+    dateLabel(): string;
+    dateLabel(value: string): StackedAreaChartModule;
+    /** Gets or Sets the `value` key of the data */
+    valueLabel(): string;
+    valueLabel(value: string): StackedAreaChartModule;
 }
 
 export type StackedAreaChartModule = ChartModuleSelection<

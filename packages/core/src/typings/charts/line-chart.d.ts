@@ -101,6 +101,18 @@ export interface LineChartAPI
     yAxisLabelPadding(padding: number): LineChartModule;
     /** Gets or Sets the number of ticks of the y axis on the chart */
     yTicks(ticks: number): LineChartModule;
+    /** Gets or Sets the `date` key of the data */
+    dateLabel(): string;
+    dateLabel(value: string): LineChartModule;
+    /** Gets or Sets whether the y axis starts at the lowest value rather than zero */
+    hasMinimumValueScale(): boolean;
+    hasMinimumValueScale(value: boolean): LineChartModule;
+    /** Gets or Sets the `topic` key of the data */
+    topicLabel(): string;
+    topicLabel(value: string): LineChartModule;
+    /** Gets or Sets the `value` key of the data */
+    valueLabel(): string;
+    valueLabel(value: string): LineChartModule;
 }
 
 export type LineChartModule = ChartModuleSelection<LineChartData> &
