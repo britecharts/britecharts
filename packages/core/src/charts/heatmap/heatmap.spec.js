@@ -282,18 +282,6 @@ describe('heatmap Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it.skip('should provide loadingState getter and setter', () => {
-            let previous = heatmapChart.loadingState(),
-                expected = 'test',
-                actual;
-
-            heatmapChart.loadingState(expected);
-            actual = heatmapChart.loadingState();
-
-            expect(previous).not.toBe(actual);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide margin getter and setter', () => {
             let previous = heatmapChart.margin(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },
