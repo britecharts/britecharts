@@ -44,7 +44,7 @@ Remember that for increased accuracy, all date formats in Britecharts should be 
 
 [gettingStarted]: ../tutorials/getting-started
 [colorPalettesDemo]: https://britecharts.github.io/britecharts/storybook/core/?path=/story/attributes-colors--color-schemas
-[colorsHelper]: https://github.com/britecharts/britecharts/blob/main/packages/core/src/charts/helpers/color.js
+[colorsHelper]: https://github.com/britecharts/britecharts/blob/main/packages/core/src/charts/helpers/color.ts
 [ISOFormat]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
 [lineChartAPI]: /docs/API/line
 [timeFormatSpecifiers]: https://github.com/d3/d3-time-format#locale_format
