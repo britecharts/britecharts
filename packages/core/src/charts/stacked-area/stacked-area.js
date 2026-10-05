@@ -2,6 +2,7 @@ import { min, max, sum, range, extent, groups } from 'd3-array';
 import { axisRight, axisBottom } from 'd3-axis';
 import { dispatch } from 'd3-dispatch';
 import { easeQuadInOut } from 'd3-ease';
+import { format } from 'd3-format';
 import { scaleLinear, scaleTime, scaleLog } from 'd3-scale';
 import { line, area, stackOffsetNone, stackOrderNone, stack } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
@@ -115,6 +116,7 @@ export default function module() {
         xAxisFormat = null,
         xTicks = null,
         xAxisCustomFormat = null,
+        numberFormat,
         locale,
         areaCurve = 'monotoneX',
         layers,
@@ -269,15 +271,26 @@ export default function module() {
      * @return {Number}       Formatted value
      */
     function getFormattedValue(value) {
-        let format;
+        let formatFn;
 
         if (isInteger(value)) {
-            format = formatIntegerValue;
+            formatFn = formatIntegerValue;
         } else {
-            format = formatDecimalValue;
+            formatFn = formatDecimalValue;
         }
 
-        return format(value);
+        // Same precedence as the line chart, whose equivalent function this is
+        // otherwise a copy of: an explicit numberFormat overrides the
+        // integer/decimal choice. This chart inherits `numberFormat` from
+        // `ChartBaseAPI` and had nothing behind it, so setting it did nothing.
+        //
+        // It reaches both axes, as the line chart's does: the y axis always,
+        // and the x axis when `xAxisValueType` is 'number'.
+        if (numberFormat) {
+            formatFn = format(numberFormat);
+        }
+
+        return formatFn(value);
     }
 
     /**
@@ -1417,6 +1430,21 @@ export default function module() {
         }
         keyLabel = _x;
         dataKeyDeprecationMessage('name');
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the number format of the stacked area chart
+     * @param  {string} _x = ',f'       Desired numberFormat for the chart. See examples [here]{@link https://d3js.org/d3-format}
+     * @return {string | module}        Current numberFormat or Chart module to chain calls
+     * @public
+     */
+    exports.numberFormat = function (_x) {
+        if (!arguments.length) {
+            return numberFormat;
+        }
+        numberFormat = _x;
 
         return this;
     };
