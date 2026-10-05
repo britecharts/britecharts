@@ -25,22 +25,24 @@ Two things are already handled for you, in `jest.setup.js`:
 
 ```bash
 # One spec file (fastest loop)
-yarn jest packages/core/src/charts/bar/bar.spec.js --coverage=false
+pnpm exec jest packages/core/src/charts/bar/bar.spec.js --coverage=false
 
 # One test by name
-yarn jest packages/core/src/charts/bar/bar.spec.js -t "should provide margin getter and setter" --coverage=false
+pnpm exec jest packages/core/src/charts/bar/bar.spec.js -t "should provide margin getter and setter" --coverage=false
 
 # Everything related to files you changed
-yarn jest --findRelatedTests <changed files> --coverage=false
+pnpm exec jest --findRelatedTests <changed files> --coverage=false
 
 # A whole package
-yarn workspace @britecharts/core test
+pnpm --filter @britecharts/core run test
 
 # Everything
-yarn test:ci
+pnpm run test:ci
 ```
 
-Run these from the repo root. **Never run the root `yarn test`** — it has a `posttest` hook that runs `yarn format`, rewriting every `.js` file in the repo. Use `yarn test:ci`.
+Run these from the repo root. **Never run the root `pnpm test`** — it has a `posttest` hook that runs `pnpm run format`, and pnpm does execute post scripts, so it reformats every `.js`, `.ts` and `.tsx` in the repo on the way out. Use `pnpm run test:ci`.
+
+A spec may now be `.ts` as well as `.js`: `packages/wrappers/src` is fully TypeScript and `packages/core` is converting. Chart specs stay `.js` for now — follow the sibling spec in the same folder rather than assuming an extension.
 
 ## House Style — Follow It Exactly
 
@@ -151,7 +153,7 @@ The components are function components on hooks (there are no classes left), whi
 - A re-render whose props did not change does **not** redraw the chart: props are compared with the last drawing. To test an update, change a prop to a new value (a new array or object for `data`), never mutate in place.
 - `jest.setup.js` fails any test that logs `console.error` or `console.warn`, prop-type warnings included, unless it is on its short commented allowlist. Restore only your own spies with `mockRestore()`; never `jest.restoreAllMocks()`, which also undoes the setup file's console spies and breaks every test's teardown.
 - A component's default wrapper (`chart = BarWrapper`) is a destructured default, and React 19 ignores `defaultProps` on function components: `src/charts/defaultWrapper.spec.js` covers it for every chart, and `sourceContract.spec.js` forbids `defaultProps`, classes, `useEffect(` and class fields.
-- `yarn test` in this package enforces coverage thresholds (`--coverageThreshold` in its `test` script). Do not lower them; add tests.
+- `pnpm --filter @britecharts/react run test` enforces coverage thresholds (`--coverageThreshold` in its `test` script): a global floor plus a per-file one on `./src/charts/helpers/useChart.js`. Do not lower them; add tests. Note the per-file key is a literal `.js` path, so it stops matching the moment that file converts to `.ts` — update both in the same change.
 
 ## Workflow
 
@@ -160,8 +162,8 @@ The components are function components on hooks (there are no classes left), whi
 3. **Check the data builder or fixtures** for a dataset that already fits.
 4. **Write the specs**, expected/actual, one behavior per `it`.
 5. **Run them** with the targeted command, iterate until green.
-6. **Run the related suites** (`yarn jest --findRelatedTests <source> --coverage=false`) to catch what you broke elsewhere.
-7. **Lint and format**: `yarn eslint <spec>` then `yarn exec prettier --write <spec>`.
+6. **Run the related suites** (`pnpm exec jest --findRelatedTests <source> --coverage=false`) to catch what you broke elsewhere. If the file you tested is imported by another package, run that package's suite too — a green suite in the package you changed proves nothing about the one downstream of it.
+7. **Lint and format**: `pnpm exec eslint <spec>` then `pnpm exec oxfmt --write <spec>`.
 8. **Report** results and any gap you chose not to cover.
 
 ## Debugging Failures

@@ -50,5 +50,5 @@ When the story-agent returns, summarize:
 
 1. The story file written and its location
 2. The named stories added, and which accessor or state each one demonstrates
-3. How to view them — `yarn demos:core` (port 2001) or `yarn demos:react` (port 2002)
+3. How to view them — `pnpm run demos:core` (port 2001) or `pnpm run demos:react` (port 2002)
 4. Any accessor left without a demo, and why
