@@ -43,6 +43,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Before the build, because it needs neither the site nor the network.
+      #
+      # `docs:links` below follows links over the network against `main`, so a
+      # link to a file this branch renames stays green for the whole life of the
+      # pull request and turns red only once it merges. That is how `color.js`
+      # became `color.ts` in #1083 with a passing link check, and took `main`
+      # red on the merge. This resolves the same links against the checkout, so
+      # a rename fails on the pull request that causes it -- which matters while
+      # the TypeScript migration renames most of the library.
+      - name: Check links to source files 🧭
+        run: pnpm run docs:source-links
+
       - name: Build docs website 📚
         run: pnpm run docs:build
 

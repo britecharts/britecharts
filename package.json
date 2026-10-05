@@ -266,6 +266,7 @@
     "demos:shell": "node scripts/wait-for-storybook-refs.js http://localhost:2001/iframe.html http://localhost:2002/iframe.html -- pnpm --filter @britecharts/demos run demo",
     "docs": "pnpm --filter @britecharts/docs run start",
     "docs:build": "pnpm --filter @britecharts/docs run build",
+    "docs:source-links": "pnpm --filter @britecharts/docs run docs:source-links",
     "docs:links": "pnpm --filter @britecharts/docs run docs:links",
     "format": "sh -c 'oxfmt \"${@:-**/*.{js,ts,tsx}}\"' --",
     "lint": "pnpm -r --parallel run lint",

@@ -1,6 +1,8 @@
 import { extent } from 'd3-array';
 import { select, pointer } from 'd3-selection';
+import type { BaseType, Selection } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
+import type { ScaleLinear } from 'd3-scale';
 import { interpolateHcl } from 'd3-interpolate';
 import { dispatch } from 'd3-dispatch';
 import 'd3-transition';
@@ -9,6 +11,11 @@ import { exportChart } from '../helpers/export';
 import { heatmapLoadingMarkup } from '../helpers/load';
 import colorHelper from '../helpers/color';
 import { hoursHuman, motion } from '../helpers/constants';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type {
+    HeatmapChartDataShape,
+    HeatmapChartModule,
+} from '../../typings/charts/heatmap-chart';
 
 /**
  * Reusable Heatmap API module that renders a
@@ -30,10 +37,10 @@ import { hoursHuman, motion } from '../helpers/constants';
  */
 
 /**
- * @typedef HeatmapData
- * @type {Array[]}
- * @property {Number} week
+ * The data a heatmap takes: one entry per box.
+ * @typedef {Object[]} HeatmapData
  * @property {Number} day
+ * @property {Number} hour
  * @property {Number} value
  *
  * @example
@@ -51,8 +58,30 @@ import { hoursHuman, motion } from '../helpers/constants';
  * ]
  */
 
-export default function module() {
-    let margin = {
+/**
+ * The chart's own svg, and the selections derived from it.
+ *
+ * The datum and parent generics are the migration plan's bounded `any`, for the
+ * reason `filter.ts` set out: `Selection` is invariant in them, and these are
+ * module-level variables reassigned from several different selections, so
+ * naming one concrete shape would reject the others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+export default function module(): HeatmapChartModule {
+    // Split into `let` and `const` rather than left as the one `let` chain the
+    // JavaScript had. The TypeScript ESLint override runs `prefer-const` as an
+    // error, and ten of these are never reassigned -- only the accessors'
+    // targets and the drawing state are. Same treatment as `grid.ts`.
+    let margin: ChartMarginParams = {
             top: 40,
             right: 20,
             bottom: 20,
@@ -61,49 +90,85 @@ export default function module() {
         width = 780,
         height = 270,
         isLoading = false,
-        svg,
-        data,
-        chartWidth,
-        chartHeight,
-        boxes,
+        svg: ChartSelection<SVGSVGElement>,
+        data: HeatmapChartDataShape[],
+        chartWidth: number,
+        chartHeight: number,
+        boxes: Selection<
+            SVGRectElement,
+            HeatmapChartDataShape,
+            BaseType,
+            unknown
+        >,
         boxSize = 30,
-        boxBorderSize = 2,
-        boxInitialOpacity = 0.2,
-        boxFinalOpacity = 1,
-        boxInitialColor = '#BBBBBB',
-        boxBorderColor = '#FFFFFF',
-        colorScale,
-        colorSchema = colorHelper.colorSchemas.red,
-        animationDuration = motion.duration,
+        // A linear scale whose range is two colours rather than two numbers,
+        // which is what `interpolateHcl` makes possible.
+        colorScale: ScaleLinear<string, string>,
+        colorSchema: string[] = colorHelper.colorSchemas.red,
+        animationDuration: number = motion.duration,
         isAnimated = false,
-        yAxisLabels,
-        dayLabels,
-        daysHuman = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-        dayLabelWidth = 30,
-        hourLabels,
-        hourLabelHeight = 20,
-        // Dispatcher object to broadcast the mouse events
-        // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-        dispatcher = dispatch(
-            'customMouseOver',
-            'customMouseOut',
-            'customMouseMove',
-            'customClick'
-        ),
-        getValue = ({ value }) => value;
+        // No default: `drawDayLabels` falls back to `daysHuman`, so reading
+        // this accessor before setting it gives undefined, which is what the
+        // declaration says.
+        yAxisLabels: string[] | undefined,
+        dayLabels: Selection<BaseType, string, BaseType, unknown>,
+        hourLabels: Selection<BaseType, string, BaseType, unknown>;
 
+    // One statement each rather than a second comma chain: `one-var` asks for
+    // that, and the JavaScript never tripped it because everything here was a
+    // single `let`.
+    const boxBorderSize = 2;
+    const boxInitialOpacity = 0.2;
+    const boxFinalOpacity = 1;
+    const boxInitialColor = '#BBBBBB';
+    const boxBorderColor = '#FFFFFF';
+    const daysHuman = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    const dayLabelWidth = 30;
+    const hourLabelHeight = 20;
+    // Dispatcher object to broadcast the mouse events
+    // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+    const dispatcher = dispatch(
+        'customMouseOver',
+        'customMouseOut',
+        'customMouseMove',
+        'customClick'
+    );
+    const getValue = ({ value }: HeatmapChartDataShape) => value;
+
+    // Generic in the element and parent types, not fixed, because that is what
+    // `ChartModuleSelection` declares and d3's `Selection` is invariant in them
+    // -- a caller's `Selection<HTMLDivElement, ...>` would not be assignable to
+    // a `Selection<Element, ...>` parameter.
+    //
+    // The `@param` below keeps its `{D3Selection}` rather than letting the
+    // generator inject the real signature. The injected form names `TElement`
+    // and `TParent`, type parameters a reader of the page cannot resolve, and
+    // the page is for readers. The original's second tag, `@param {HeatmapData}
+    // _data`, is gone: `d3.call` passes no second argument and this function has
+    // never taken one, which is the same phantom parameter Phase 1 removed from
+    // `ChartModuleSelection`.
     /**
      * This function creates the graph using the selection as container
      * @param  {D3Selection} _selection A d3 selection that represents
      *                                  the container(s) where the chart(s) will be rendered
-     * @param {HeatmapData} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
+    const exports = function <
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            HeatmapChartDataShape[],
+            TParent,
+            TParentDatum
+        >
+    ) {
         _selection.each(function (_data) {
             data = cleanData(_data);
 
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
 
             buildSVG(this);
             if (isLoading) {
@@ -117,15 +182,20 @@ export default function module() {
             drawHourLabels();
             drawBoxes();
         });
-    }
+        // One assertion for the whole module, because the accessors below are
+        // properties assigned onto this function inside the closure and
+        // TypeScript does not widen a function's type that way -- its
+        // expando-function inference does not reach here, so even
+        // `exports.width = ...` is an error without this. Each accessor is then
+        // checked against the declaration individually on assignment.
+    } as unknown as HeatmapChartModule;
 
     /**
      * Builds the SVG element that will contain the chart
-     * @param  {HTMLElement} container DOM element that will work as the container of the graph
-     * @return {void}
+     * @param  container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element): void {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -134,7 +204,13 @@ export default function module() {
             buildContainerGroups();
         }
 
-        svg.attr('viewBox', [0, 0, width, height])
+        // `.join(',')` where this passed the array itself and let
+        // `setAttribute` coerce it. d3's `attr` types its value as a string,
+        // number or boolean, so the array needs spelling out -- and `','` is
+        // what `Array.prototype.toString` produced, so the attribute is
+        // byte-identical to before. A space-separated viewBox renders the same
+        // but is not the same string, which is not this commit's call to make.
+        svg.attr('viewBox', [0, 0, width, height].join(','))
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
             .attr('height', height);
@@ -142,30 +218,27 @@ export default function module() {
 
     /**
      * Cleans the loading state
-     * @return {void}
      * @private
      */
-    function cleanLoadingState() {
+    function cleanLoadingState(): void {
         svg.select('.loading-state-group svg').remove();
     }
 
     /**
      * Draws the loading state
-     * @return {void}
      * @private
      */
-    function drawLoadingState() {
+    function drawLoadingState(): void {
         svg.select('.loading-state-group').html(heatmapLoadingMarkup);
     }
 
     /**
      * Builds containers for the chart, the axis and a wrapper for all of them
      * Also applies the Margin convention
-     * @return {void}
      * @private
      */
-    function buildContainerGroups() {
-        let container = svg
+    function buildContainerGroups(): void {
+        const container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -182,12 +255,14 @@ export default function module() {
      * Cleaning data casting the values to the proper
      * type while keeping the rest of properties on the data. It
      * also creates a set of zeroed data (for animation purposes)
-     * @param   {HeatmapData} originalData  Raw data as passed to the container
-     * @return  {HeatmapData}               Clean data
+     * @param   originalData  Raw data as passed to the container
+     * @return                Clean data
      * @private
      */
-    function cleanData(originalData) {
-        return originalData.reduce(
+    function cleanData(
+        originalData: HeatmapChartDataShape[]
+    ): HeatmapChartDataShape[] {
+        return originalData.reduce<HeatmapChartDataShape[]>(
             (acc, { day, hour, value }) => [
                 ...acc,
                 {
@@ -202,12 +277,17 @@ export default function module() {
 
     /**
      * Creates the scales for the heatmap chart
-     * @return void
+     * @private
      */
-    function buildScales() {
-        colorScale = scaleLinear()
+    function buildScales(): void {
+        colorScale = scaleLinear<string>()
             .range([colorSchema[0], colorSchema[colorSchema.length - 1]])
-            .domain(extent(data, getValue))
+            // Asserted, not guarded: `extent` of an empty array is
+            // `[undefined, undefined]`, which this has always handed straight
+            // to `domain()` and which yields a NaN domain. No caller draws an
+            // empty heatmap, and preserving that is the conversion's job
+            // rather than inventing a meaning for it.
+            .domain(extent(data, getValue) as [number, number])
             .interpolate(interpolateHcl);
     }
 
@@ -215,19 +295,28 @@ export default function module() {
      * Returns the sibling box nodes of the given element. d3 v6 dropped
      * the third `nodes` argument that used to be passed to event handlers,
      * so the list is derived from the DOM instead.
-     * @param  {SVGElement} node  The element the event fired on
-     * @return {SVGElement[]}     Its siblings, including itself
+     * @param  node  The element the event fired on
+     * @return       Its siblings, including itself
      * @private
      */
-    function siblingNodes(node) {
-        return select(node.parentNode).selectAll('.box').nodes();
+    function siblingNodes(node: SVGRectElement): SVGRectElement[] {
+        // `parentNode` is a `ParentNode`, which d3's `select` does not accept
+        // and which the JavaScript passed anyway. The assertion says "this is
+        // an element", which for a rect inside the chart group it is.
+        return select(node.parentNode as Element)
+            .selectAll<SVGRectElement, unknown>('.box')
+            .nodes();
     }
 
     /**
      * Draws the boxes of the heatmap
+     * @private
      */
-    function drawBoxes() {
-        boxes = svg.select('.chart-group').selectAll('.box').data(data);
+    function drawBoxes(): void {
+        boxes = svg
+            .select('.chart-group')
+            .selectAll<SVGRectElement, HeatmapChartDataShape>('.box')
+            .data(data);
 
         const boxElements = boxes
             .enter()
@@ -241,7 +330,7 @@ export default function module() {
             .style('fill', boxInitialColor)
             .style('stroke', boxBorderColor)
             .style('stroke-width', boxBorderSize)
-            .on('mouseover', function (event, d) {
+            .on('mouseover', function (event: MouseEvent, d) {
                 handleMouseOver(
                     this,
                     d,
@@ -251,10 +340,10 @@ export default function module() {
                     event
                 );
             })
-            .on('mousemove', function (event, d) {
+            .on('mousemove', function (event: MouseEvent, d) {
                 handleMouseMove(this, d, chartWidth, chartHeight, event);
             })
-            .on('mouseout', function (event, d) {
+            .on('mouseout', function (event: MouseEvent, d) {
                 handleMouseOut(
                     this,
                     d,
@@ -264,7 +353,7 @@ export default function module() {
                     event
                 );
             })
-            .on('click', function (event, d) {
+            .on('click', function (event: MouseEvent, d) {
                 handleClick(this, d, chartWidth, chartHeight, event);
             });
 
@@ -280,19 +369,24 @@ export default function module() {
                 .style('opacity', boxFinalOpacity);
         }
 
+        // On the enter selection, not on `boxes`, so this removes nothing: an
+        // enter selection has no exit groups. Preserved as it stands -- making
+        // it `boxes.exit()` would start removing elements that are not being
+        // removed today, which is a behaviour change and not this commit's.
         boxElements.exit().remove();
     }
 
     /**
      * Draws the day labels
+     * @private
      */
-    function drawDayLabels() {
+    function drawDayLabels(): void {
         const dayLabelsGroup = svg.select('.day-labels-group');
         const arrayForYAxisLabels = yAxisLabels || daysHuman;
 
         dayLabels = svg
             .select('.day-labels-group')
-            .selectAll('.day-label')
+            .selectAll<BaseType, string>('.day-label')
             .data(arrayForYAxisLabels);
 
         dayLabels
@@ -313,13 +407,14 @@ export default function module() {
 
     /**
      * Draws the hour labels
+     * @private
      */
-    function drawHourLabels() {
-        let hourLabelsGroup = svg.select('.hour-labels-group');
+    function drawHourLabels(): void {
+        const hourLabelsGroup = svg.select('.hour-labels-group');
 
         hourLabels = svg
             .select('.hour-labels-group')
-            .selectAll('.hour-label')
+            .selectAll<BaseType, string>('.hour-label')
             .data(hoursHuman);
 
         hourLabels
@@ -338,28 +433,64 @@ export default function module() {
         );
     }
 
-    function handleMouseOver(e, d, boxList, chartWidth, chartHeight, event) {
+    /**
+     * `boxList` is unused by every one of these, as it was before: the
+     * dispatcher only forwards the datum, the pointer and the chart size. It
+     * stays in the signature because `drawBoxes` passes it and removing a
+     * parameter is a change of its own.
+     * @private
+     */
+    function handleMouseOver(
+        e: SVGRectElement,
+        d: HeatmapChartDataShape,
+        boxList: SVGRectElement[],
+        chartWidth: number,
+        chartHeight: number,
+        event: MouseEvent
+    ): void {
         dispatcher.call('customMouseOver', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
-    function handleMouseMove(e, d, chartWidth, chartHeight, event) {
+    /** @private */
+    function handleMouseMove(
+        e: SVGRectElement,
+        d: HeatmapChartDataShape,
+        chartWidth: number,
+        chartHeight: number,
+        event: MouseEvent
+    ): void {
         dispatcher.call('customMouseMove', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
-    function handleMouseOut(e, d, boxList, chartWidth, chartHeight, event) {
+    /** @private */
+    function handleMouseOut(
+        e: SVGRectElement,
+        d: HeatmapChartDataShape,
+        boxList: SVGRectElement[],
+        chartWidth: number,
+        chartHeight: number,
+        event: MouseEvent
+    ): void {
         dispatcher.call('customMouseOut', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
         ]);
     }
 
-    function handleClick(e, d, chartWidth, chartHeight, event) {
+    /** @private */
+    function handleClick(
+        e: SVGRectElement,
+        d: HeatmapChartDataShape,
+        chartWidth: number,
+        chartHeight: number,
+        event: MouseEvent
+    ): void {
         dispatcher.call('customClick', e, d, pointer(event, e), [
             chartWidth,
             chartHeight,
@@ -373,14 +504,17 @@ export default function module() {
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.animationDuration = function (_x) {
+    exports.animationDuration = function (
+        this: HeatmapChartModule,
+        _x?: number
+    ) {
         if (!arguments.length) {
             return animationDuration;
         }
-        animationDuration = _x;
+        animationDuration = _x as number;
 
         return this;
-    };
+    } as HeatmapChartModule['animationDuration'];
 
     /**
      * Gets or Sets the boxSize of the chart
@@ -388,14 +522,14 @@ export default function module() {
      * @return {Number | module}    Current boxSize or Chart module to chain calls
      * @public
      */
-    exports.boxSize = function (_x) {
+    exports.boxSize = function (this: HeatmapChartModule, _x?: number) {
         if (!arguments.length) {
             return boxSize;
         }
-        boxSize = _x;
+        boxSize = _x as number;
 
         return this;
-    };
+    } as HeatmapChartModule['boxSize'];
 
     /**
      * Gets or Sets the colorSchema of the chart
@@ -403,14 +537,14 @@ export default function module() {
      * @return {String[] | module}            Current colorSchema or Chart module to chain calls
      * @public
      */
-    exports.colorSchema = function (_x) {
+    exports.colorSchema = function (this: HeatmapChartModule, _x?: string[]) {
         if (!arguments.length) {
             return colorSchema;
         }
-        colorSchema = _x;
+        colorSchema = _x as string[];
 
         return this;
-    };
+    } as HeatmapChartModule['colorSchema'];
 
     /**
      * Chart exported to png and a download action is fired
@@ -418,9 +552,9 @@ export default function module() {
      * @param {String} title        Title to add at the top of the exported picture
      * @public
      */
-    exports.exportChart = function (filename, title) {
+    exports.exportChart = function (filename: string, title: string) {
         exportChart.call(exports, svg, filename, title);
-    };
+    } as HeatmapChartModule['exportChart'];
 
     /**
      * Gets or Sets the loading state of the chart
@@ -429,14 +563,14 @@ export default function module() {
      * @public
      * @example chart.isLoading(true)
      */
-    exports.isLoading = function (_flag) {
+    exports.isLoading = function (this: HeatmapChartModule, _flag?: boolean) {
         if (!arguments.length) {
             return isLoading;
         }
-        isLoading = _flag;
+        isLoading = _flag as boolean;
 
         return this;
-    };
+    } as HeatmapChartModule['isLoading'];
 
     /**
      * Gets or Sets the height of the chart
@@ -444,14 +578,14 @@ export default function module() {
      * @return {Number | module}    Current height or Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    exports.height = function (this: HeatmapChartModule, _x?: number) {
         if (!arguments.length) {
             return height;
         }
-        height = _x;
+        height = _x as number;
 
         return this;
-    };
+    } as HeatmapChartModule['height'];
 
     /**
      * Gets or Sets the isAnimated value of the chart
@@ -459,14 +593,14 @@ export default function module() {
      * @return {Boolean | module}         Current isAnimated value or Chart module to chain calls
      * @public
      */
-    exports.isAnimated = function (_x) {
+    exports.isAnimated = function (this: HeatmapChartModule, _x?: boolean) {
         if (!arguments.length) {
             return isAnimated;
         }
-        isAnimated = _x;
+        isAnimated = _x as boolean;
 
         return this;
-    };
+    } as HeatmapChartModule['isAnimated'];
 
     /**
      * Gets or Sets the margin of the chart
@@ -474,7 +608,10 @@ export default function module() {
      * @return {margin | module}    Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    exports.margin = function (
+        this: HeatmapChartModule,
+        _x?: ChartMarginParams
+    ) {
         if (!arguments.length) {
             return margin;
         }
@@ -484,7 +621,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as HeatmapChartModule['margin'];
 
     /**
      * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -494,11 +631,18 @@ export default function module() {
      * @return {module} Bar Chart
      * @public
      */
-    exports.on = function () {
-        let value = dispatcher.on.apply(dispatcher, arguments);
+    exports.on = function (...args: [string] | [string, () => void]) {
+        // Rest parameters and a spread where this read `arguments` and used
+        // `.apply`. The TypeScript lint override makes `prefer-spread` an
+        // error, and the two shapes `on` is called with -- a lookup and a
+        // registration -- are exactly what the tuple says, so this forwards
+        // the same arguments it always did.
+        const value = dispatcher.on(
+            ...(args as Parameters<typeof dispatcher.on>)
+        );
 
         return value === dispatcher ? exports : value;
-    };
+    } as HeatmapChartModule['on'];
 
     /**
      * Gets or Sets the y-axis labels of the chart
@@ -506,14 +650,14 @@ export default function module() {
      * @return {yAxisLabels | module}                                       Current yAxisLabels array or Chart module to chain calls
      * @public
      */
-    exports.yAxisLabels = function (_x) {
+    exports.yAxisLabels = function (this: HeatmapChartModule, _x?: string[]) {
         if (!arguments.length) {
             return yAxisLabels;
         }
         yAxisLabels = _x;
 
         return this;
-    };
+    } as HeatmapChartModule['yAxisLabels'];
 
     /**
      * Gets or Sets the width of the chart
@@ -521,14 +665,14 @@ export default function module() {
      * @return {Number | module}         Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    exports.width = function (this: HeatmapChartModule, _x?: number) {
         if (!arguments.length) {
             return width;
         }
-        width = _x;
+        width = _x as number;
 
         return this;
-    };
+    } as HeatmapChartModule['width'];
 
     return exports;
 }

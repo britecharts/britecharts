@@ -298,7 +298,19 @@ function annotateDocTypesFromTs({ onUnsupportedType }) {
  */
 function dropTypeOnlyComments() {
     const ignoreComments = (nodePath) => {
-        for (const comment of nodePath.node.leadingComments ?? []) {
+        // Only the comment nearest the declaration, which is jsdoc's own rule
+        // for what documents a symbol. Babel hands over every unattached
+        // comment above a node as its `leadingComments`, so when a type alias
+        // is the first statement after the imports -- as it is in every
+        // converted chart -- that list also holds the file's `@module` block
+        // and its `@typedef`s. Ignoring all of them stripped `@module Heatmap`
+        // out of the generated source, and without it jsdoc cannot name the
+        // chart's inner `exports` function: the whole run then dies with
+        // "[anchorName helper] cannot create a link without a id", since every
+        // symbol on the page hangs off that one.
+        const nearest = (nodePath.node.leadingComments ?? []).slice(-1);
+
+        for (const comment of nearest) {
             // A `@typedef` is kept: it is the author saying this type should
             // appear on the page, which is the one way to get a section and
             // working links for a type that is no longer a jsdoc construct.
