@@ -274,6 +274,9 @@ importers:
       '@types/d3-array':
         specifier: 3.2.2
         version: 3.2.2
+      '@types/d3-axis':
+        specifier: 3.0.6
+        version: 3.0.6
       '@types/d3-dispatch':
         specifier: 3.0.7
         version: 3.0.7
@@ -3484,6 +3487,9 @@ packages:
 
   '@types/d3-array@3.2.2':
     resolution: {integrity: sha512-hOLWVbm7uRza0BYXpIIW5pxfrKe0W+D5lrFiAEYR+pb6w3N2SwSMaJbXdUfSEv+dT4MfHBLtn5js0LAWaO6otw==}
+
+  '@types/d3-axis@3.0.6':
+    resolution: {integrity: sha512-pYeijfZuBd87T0hGn0FO1vQ/cgLk6E1ALJjfkC0oJ8cbwkZl3TpgS8bVBLZN+2jjGgg38epgxb2zmoGtSfvgMw==}
 
   '@types/d3-color@3.1.3':
     resolution: {integrity: sha512-iO90scth9WAbmgv7ogoq57O9YpKmFBbmoEoCHDB2xMBY0+/KVrqAaCDyCE16dUspeOvIxFFRI+0sEtqDqy2b4A==}
@@ -16817,6 +16823,10 @@ snapshots:
       '@types/node': 26.6.2
 
   '@types/d3-array@3.2.2': {}
+
+  '@types/d3-axis@3.0.6':
+    dependencies:
+      '@types/d3-selection': 3.0.12
 
   '@types/d3-color@3.1.3': {}
 
