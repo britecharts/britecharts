@@ -237,6 +237,51 @@ export const legendAccessors = {
     legendHighlightReturn,
 };
 
+// The brush chart's own accessors, and the generic argument that made three of
+// its inherited surfaces unusable.
+//
+// `AnimatedChartAPI`, `TimeSeriesChartAPI` and `InteractiveChartAPI` were each
+// parameterised with `BrushChartAPI` instead of `BrushChartModule`. Those
+// interfaces return `T & XAPI<T>`, so setting an inherited accessor reported a
+// type with no `ChartModuleSelection` in it: the result could not be handed to
+// `selection.call()`, and chaining off it lost the rest of the chart. The two
+// assertions below are what that broke -- both are errors against the old
+// declaration, and neither needs a cast now.
+import { brush } from '@britecharts/core';
+import type { BrushChartModule } from '@britecharts/core';
+
+const brushChart = brush();
+
+// Setting an inherited accessor still gives something drawable.
+const brushDrawable: BrushChartModule = brush().isAnimated(true);
+// ... and still carries the chart's own accessors, so a chain crossing from an
+// inherited surface back to a brush-specific one resolves.
+const brushChained: string = brush().isAnimated(true).areaCurve('monotoneX').areaCurve();
+
+const brushAreaCurve: string = brushChart.areaCurve();
+const brushLocked: boolean = brushChart.isLocked();
+const brushGradient: [string, string] = brushChart.gradient();
+// `roundingTimeInterval` is a d3 time interval name. It was declared as
+// returning the `'value' | 'date'` data-key enum.
+const brushRounding: string = brushChart.roundingTimeInterval();
+const brushRoundingChains: BrushChartModule =
+    brush().roundingTimeInterval('timeWeek');
+// Both nullable until set.
+const brushDateRange: [string | null, string | null] = brushChart.dateRange();
+const brushTicks: number | null = brushChart.xTicks();
+
+export const brushAccessors = {
+    brushDrawable,
+    brushChained,
+    brushAreaCurve,
+    brushLocked,
+    brushGradient,
+    brushRounding,
+    brushRoundingChains,
+    brushDateRange,
+    brushTicks,
+};
+
 export const bulletAccessors = {
     bulletTicks,
     bulletPadding,
