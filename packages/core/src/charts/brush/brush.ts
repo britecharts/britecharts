@@ -6,6 +6,12 @@ import { area } from 'd3-shape';
 import { dispatch } from 'd3-dispatch';
 import { select } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
+import type { Axis } from 'd3-axis';
+import type { BrushBehavior, D3BrushEvent } from 'd3-brush';
+import type { Dispatch } from 'd3-dispatch';
+import type { NumberValue, ScaleLinear, ScaleTime } from 'd3-scale';
+import type { BaseType, Selection } from 'd3-selection';
+import type { Area } from 'd3-shape';
 import 'd3-transition';
 
 import colorHelper from '../helpers/color';
@@ -19,6 +25,48 @@ import {
 import { getValueDomain } from '../helpers/domain';
 import { uniqueId } from '../helpers/number';
 import { brushLoadingMarkup } from '../helpers/load';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type { ColorGradientType } from '../../typings/helpers/colors';
+import type { AxisTimeCombinationValue } from '../helpers/constants';
+import type { AxisTickSettings } from '../helpers/axis';
+import type {
+    BrushChartDataShape,
+    BrushChartModule,
+} from '../../typings/charts/brush-chart';
+
+/**
+ * The chart's own svg, and the selections derived from it. The datum and parent
+ * generics are the migration plan's bounded `any`, as in `bullet.ts`: these are
+ * module-level variables reassigned from several differently-shaped selections,
+ * so naming one concrete datum would reject the others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/**
+ * What `cleanData` hands the drawing functions.
+ *
+ * `value` is nullable here where the published `BrushChartDataShape` says
+ * `number`, and the runtime is the honest one: `acceptNullValue` preserves a
+ * null rather than coercing it, `brushArea.defined()` skips those points, and
+ * the chart's own `brushMissingData.json` fixture carries eleven of them. The
+ * published input shape therefore rejects data this chart is built to draw --
+ * a real gap, but one that changes an input contract rather than this
+ * conversion, so it is left for its own change.
+ *
+ * `date` is a Date where the input is a string: `cleanData` replaces it.
+ */
+type BrushDatum = {
+    date: Date;
+    value: number | null;
+};
 
 /**
  * Brush Chart reusable API class that renders a
@@ -69,8 +117,11 @@ import { brushLoadingMarkup } from '../helpers/load';
  * ]
  */
 
-export default function module() {
-    let margin = {
+export default function module(): BrushChartModule {
+    // Split into `let` and `const` rather than the one `let` chain the
+    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
+    // error, and the bindings below it are never reassigned.
+    let margin: ChartMarginParams = {
             top: 20,
             right: 20,
             bottom: 30,
@@ -79,44 +130,61 @@ export default function module() {
         width = 960,
         height = 500,
         isLoading = false,
-        data,
-        dataZeroed,
-        svg,
+        data: BrushDatum[],
+        dataZeroed: BrushDatum[],
+        svg: ChartSelection<SVGSVGElement>,
         isAnimated = false,
         animationDuration = motion.duration,
-        dateLabel = 'date',
-        valueLabel = 'value',
-        dateRange = [null, null],
+        // `[null, null]` until both ends are set, which is what the
+        // declaration now says.
+        dateRange: [string | null, string | null] = [null, null],
         isLocked = false,
-        chartWidth,
-        chartHeight,
-        xScale,
-        yScale,
-        xAxis,
-        xSubAxis,
-        xAxisFormat = null,
-        xTicks = null,
-        monthAxisPadding = 30,
-        xAxisCustomFormat = null,
-        locale,
-        brush,
-        chartBrush,
-        brushArea,
+        chartWidth: number,
+        chartHeight: number,
+        xScale: ScaleTime<number, number>,
+        yScale: ScaleLinear<number, number>,
+        xAxis: Axis<Date | NumberValue>,
+        xSubAxis: Axis<Date | NumberValue>,
+        // `AxisTimeCombinationValue | null` is what `getTimeSeriesAxis` takes,
+        // so the type comes from the helper rather than being restated. The
+        // chart also compares it against `'custom'`, which the union includes.
+        xAxisFormat: AxisTimeCombinationValue | null = null,
+        xTicks: number | null = null,
+        xAxisCustomFormat: string | null = null,
+        // Stored and never read -- see the note on the accessor below.
+        locale: string | null = null,
+        brush: BrushBehavior<BrushDatum>,
+        chartBrush: ChartSelection<SVGGElement>,
+        // `| undefined` where the selections beside it do without: the guard
+        // in `drawArea` reads it before the first assignment, and TypeScript
+        // reports a truthiness test on a function type that cannot be
+        // undefined (TS2774) while saying nothing about an object one.
+        brushArea: Area<BrushDatum> | undefined,
         areaCurve = 'monotoneX',
-        handle,
-        tickPadding = 5,
-        chartGradientEl,
-        gradient = colorHelper.colorGradients.greenBlue,
-        gradientId = uniqueId('brush-area-gradient'),
-        roundingTimeInterval = 'timeDay',
-        // Dispatcher object to broadcast the mouse events
-        // @see {@link https://github.com/d3/d3/blob/master/API.md#dispatches-d3-dispatch}
-        dispatcher = dispatch('customBrushStart', 'customBrushEnd'),
-        // extractors
-        getValue = ({ value }) => value,
-        getDate = ({ date }) => date;
+        handle: ChartSelection<BaseType>,
+        chartGradientEl: ChartSelection<SVGStopElement>,
+        gradient: ColorGradientType = colorHelper.colorGradients.greenBlue,
+        roundingTimeInterval = 'timeDay';
 
-    const acceptNullValue = (value) => (value === null ? null : +value);
+    // Brush exposes no accessor for either, unlike the charts that let the
+    // data name its own keys, so both are constants here.
+    const dateLabel = 'date';
+    const valueLabel = 'value';
+    const monthAxisPadding = 30;
+    const tickPadding = 5;
+    const gradientId = uniqueId('brush-area-gradient');
+    // Dispatcher object to broadcast the mouse events
+    // @see {@link https://github.com/d3/d3/blob/master/API.md#dispatches-d3-dispatch}
+    const dispatcher: Dispatch<object> = dispatch(
+        'customBrushStart',
+        'customBrushEnd'
+    );
+    // extractors
+    const getValue = ({ value }: BrushDatum) => value;
+    const getDate = ({ date }: BrushDatum) => date;
+
+    const acceptNullValue = (value: number | null) =>
+        value === null ? null : +value;
 
     /**
      * This function creates the graph using the selection as container
@@ -124,10 +192,21 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      * @param {BrushChartData} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            BrushChartDataShape[],
+            TParent,
+            TParentDatum
+        >
+    ) {
         _selection.each(function (_data) {
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
             data = cleanData(cloneData(_data));
 
             buildSVG(this);
@@ -152,33 +231,49 @@ export default function module() {
      * Creates the d3 x axis, setting orientation
      * @private
      */
-    function buildAxis() {
-        let minor, major;
+    function buildAxis(): void {
+        // `AxisTickSettings` comes from the helper rather than being restated,
+        // the way `axis.ts` took `AxisTimeCombinationValue` from `constants`.
+        let minor: AxisTickSettings;
 
         if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
             minor = {
                 tick: xTicks,
                 format: timeFormat(xAxisCustomFormat),
             };
-            major = null;
         } else {
-            ({ minor, major } = timeAxisHelper.getTimeSeriesAxis(
+            // Assigned through a local rather than destructured onto the outer
+            // bindings: `major` is only read in this branch, and a destructuring
+            // assignment does not narrow it out of `null` for the reader or the
+            // compiler.
+            const axes = timeAxisHelper.getTimeSeriesAxis(
                 data,
                 width,
                 xAxisFormat
-            ));
+            );
 
+            minor = axes.minor;
+
+            // `tickSize(0, 0)` and `tickSize(10, 0)` below each passed a second
+            // argument that d3-axis does not take -- its signature is
+            // `tickSize(size)`. The extra was discarded, so dropping it is
+            // bit-identical.
             xSubAxis = axisBottom(xScale)
-                .ticks(major.tick)
-                .tickSize(0, 0)
-                .tickFormat(major.format);
+                .ticks(axes.major.tick)
+                .tickSize(0)
+                .tickFormat(
+                    axes.major.format as (d: Date | NumberValue) => string
+                );
         }
 
         xAxis = axisBottom(xScale)
             .ticks(minor.tick)
-            .tickSize(10, 0)
-            .tickPadding([tickPadding])
-            .tickFormat(minor.format);
+            .tickSize(10)
+            // `tickPadding([tickPadding])` wrapped the number in an array, and
+            // d3 does `+padding` on it -- `+[5]` is 5, so it worked by
+            // coercion. Passing the number is the same value.
+            .tickPadding(tickPadding)
+            .tickFormat(minor.format as (d: Date | NumberValue) => string);
 
         drawHorizontalExtendedLine();
     }
@@ -187,8 +282,8 @@ export default function module() {
      * Creates the brush element and attaches a listener
      * @return {void}
      */
-    function buildBrush() {
-        brush = brushX()
+    function buildBrush(): void {
+        brush = brushX<BrushDatum>()
             .extent([
                 [0, 0],
                 [chartWidth, chartHeight],
@@ -202,7 +297,7 @@ export default function module() {
      * Also applies the Margin convention
      * @private
      */
-    function buildContainerGroups() {
+    function buildContainerGroups(): void {
         const container = svg
             .append('g')
             .classed('container-group', true)
@@ -228,7 +323,7 @@ export default function module() {
      * Creates the gradient on the area
      * @return {void}
      */
-    function buildGradient() {
+    function buildGradient(): void {
         if (!chartGradientEl) {
             chartGradientEl = svg
                 .select('.metadata-group')
@@ -255,13 +350,22 @@ export default function module() {
      * Creates the x and y scales of the graph
      * @private
      */
-    function buildScales() {
+    function buildScales(): void {
+        // `extent` is typed for the empty-input case, which this chart has
+        // never guarded against -- it reads `data[data.length - 1]`
+        // unconditionally too. Asserted rather than guarded, so the conversion
+        // changes no behaviour.
         xScale = scaleTime()
-            .domain(extent(data, getDate))
+            .domain(extent(data, getDate) as [Date, Date])
             .range([0, chartWidth]);
 
+        // `getValueDomain` takes `Iterable<number>` and this chart really does
+        // hand it nulls, from the missing-data case `acceptNullValue`
+        // preserves. Filtering them would change the domain the chart draws,
+        // so the cast keeps the arithmetic bit-identical: a null compares as 0
+        // inside min/max, exactly as before.
         yScale = scaleLinear()
-            .domain(getValueDomain(data.map(getValue)))
+            .domain(getValueDomain(data.map(getValue) as number[]))
             .range([chartHeight, 0]);
     }
 
@@ -270,7 +374,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element): void {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -292,12 +396,21 @@ export default function module() {
      * @return {BrushChartData}                     Clean data
      * @private
      */
-    function cleanData(originalData) {
-        const cleanData = originalData.reduce((acc, d) => {
-            d.date = new Date(d[dateLabel]);
-            d.value = acceptNullValue(d[valueLabel]);
+    function cleanData(originalData: BrushChartDataShape[]): BrushDatum[] {
+        const cleanData = originalData.reduce<BrushDatum[]>((acc, d) => {
+            // The same object, mutated in place, which is what this chart has
+            // always done. `cloneData` ran first, so these are already copies
+            // of the caller's data rather than the caller's own objects.
+            // Read through `d`, which is still typed as the input, and write
+            // through `datum`, which is the post-clean view of the same
+            // object. Reading through the cast would ask TypeScript for a Date
+            // where a string is what actually arrives.
+            const datum = d as unknown as BrushDatum;
 
-            return [...acc, d];
+            datum.date = new Date(d[dateLabel]);
+            datum.value = acceptNullValue(d[valueLabel]);
+
+            return [...acc, datum];
         }, []);
 
         dataZeroed = cleanData.map((d) => {
@@ -311,7 +424,7 @@ export default function module() {
      * Cleans the loading state
      * @private
      */
-    function cleanLoadingState() {
+    function cleanLoadingState(): void {
         svg.select('.loading-state-group svg').remove();
     }
 
@@ -320,7 +433,9 @@ export default function module() {
      * @param  {Object[]} dataToClone Data to clone
      * @return {Object[]}             Cloned data
      */
-    function cloneData(dataToClone) {
+    function cloneData(
+        dataToClone: BrushChartDataShape[]
+    ): BrushChartDataShape[] {
         return JSON.parse(JSON.stringify(dataToClone));
     }
 
@@ -329,13 +444,13 @@ export default function module() {
      *
      * @private
      */
-    function drawAxis() {
-        svg.select('.x-axis-group .axis.x')
+    function drawAxis(): void {
+        svg.select<SVGGElement>('.x-axis-group .axis.x')
             .attr('transform', `translate(0, ${chartHeight})`)
             .call(xAxis);
 
         if (xAxisFormat !== 'custom') {
-            svg.select('.x-axis-group .axis.sub-x')
+            svg.select<SVGGElement>('.x-axis-group .axis.sub-x')
                 .attr(
                     'transform',
                     `translate(0, ${chartHeight + monthAxisPadding})`
@@ -349,18 +464,25 @@ export default function module() {
      *
      * @return {void}
      */
-    function drawArea() {
+    function drawArea(): void {
         if (brushArea) {
             svg.selectAll('.brush-area').remove();
             svg.selectAll('.missing-brush-area').remove();
         }
 
         // Create and configure the area generator
-        brushArea = area()
-            .defined(({ value }) => !isNaN(parseInt(value, 10)))
+        brushArea = area<BrushDatum>()
+            // `parseInt` is declared to take a string and this chart hands it
+            // `number | null` -- the missing-data case. Both coercions are the
+            // point of the guard: `parseInt(null, 10)` is NaN, so a null point
+            // is skipped, and a number is stringified first. The cast keeps
+            // both bit-identical.
+            .defined(
+                ({ value }) => !isNaN(parseInt(value as unknown as string, 10))
+            )
             .x(({ date }) => xScale(date))
             .y0(yScale(0))
-            .y1(({ value }) => yScale(value))
+            .y1(({ value }) => yScale(value as number))
             .curve(curveMap[areaCurve]);
 
         if (isAnimated) {
@@ -420,8 +542,8 @@ export default function module() {
      * Draws the Brush components on its group
      * @return {void}
      */
-    function drawBrush() {
-        chartBrush = svg.select('.brush-group').call(brush);
+    function drawBrush(): void {
+        chartBrush = svg.select<SVGGElement>('.brush-group').call(brush);
 
         if (isAnimated) {
             chartBrush.style('opacity', 0);
@@ -447,8 +569,8 @@ export default function module() {
      * Draws a handle for the Brush section
      * @return {void}
      */
-    function drawHandles() {
-        let handleFillColor = colorHelper.colorSchemasHuman.grey[1];
+    function drawHandles(): void {
+        const handleFillColor = colorHelper.colorSchemasHuman.grey[1];
 
         // Styling
         handle = chartBrush
@@ -461,7 +583,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawHorizontalExtendedLine() {
+    function drawHorizontalExtendedLine(): void {
         svg.select('.x-axis-group')
             .selectAll('line.extended-x-line')
             .data([0])
@@ -478,7 +600,7 @@ export default function module() {
      * Draws the loading state
      * @private
      */
-    function drawLoadingState() {
+    function drawLoadingState(): void {
         svg.select('.loading-state-group').html(brushLoadingMarkup);
     }
 
@@ -488,17 +610,25 @@ export default function module() {
      *
      * @return {void}
      */
-    function handleBrushStart(event) {
-        const selection = event.selection;
-        let newSelection;
+    function handleBrushStart(
+        this: Element,
+        event: D3BrushEvent<BrushDatum>
+    ): void {
+        const selection = event.selection as [number, number] | null;
+        let newSelection: [number, number];
 
         if (!selection) {
             return;
         }
 
         if (isLocked) {
+            // Reached only when `isLocked`, which the chart documents as
+            // requiring a dateRange -- so both ends are set here. `new
+            // Date(null)` would be the epoch rather than a throw, which is the
+            // behaviour this preserves either way.
             const lockedSelectionSize = Math.floor(
-                xScale(new Date(dateRange[1])) - xScale(new Date(dateRange[0]))
+                xScale(new Date(dateRange[1] as string)) -
+                    xScale(new Date(dateRange[0] as string))
             );
             const selectedRange = Math.floor(selection[1] - selection[0]);
 
@@ -531,34 +661,51 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleBrushEnd(event) {
+    function handleBrushEnd(
+        this: Element,
+        event: D3BrushEvent<BrushDatum>
+    ): void {
         if (!event.sourceEvent) {
             return; // Only transition after input.
         }
 
-        let dateExtentRounded = [null, null];
-        const selection = event.selection;
+        // Starts as the empty pair and is replaced wholesale when there is a
+        // selection, which is why it is typed as the pair rather than as
+        // `Date[]` -- the dispatched payload is always two entries.
+        let dateExtentRounded: [Date, Date] | [null, null] = [null, null];
+        const selection = event.selection as [number, number] | null;
 
         if (selection) {
-            let dateExtent = selection.map(xScale.invert);
+            const dateExtent = selection.map(xScale.invert);
 
-            dateExtentRounded = dateExtent.map(
+            // `map` gives `Date[]`, and this pair is always two entries
+            // because `selection` is. Asserted rather than restructured so the
+            // rounding below reads as it did.
+            const rounded = dateExtent.map(
                 timeIntervals[roundingTimeInterval].round
-            );
+            ) as [Date, Date];
 
             // If empty when rounded, use floor & ceil instead.
-            if (dateExtentRounded[0] >= dateExtentRounded[1]) {
-                dateExtentRounded[0] = timeIntervals[
-                    roundingTimeInterval
-                ].floor(dateExtent[0]);
-                dateExtentRounded[1] = timeIntervals[
-                    roundingTimeInterval
-                ].offset(dateExtentRounded[0]);
+            if (rounded[0] >= rounded[1]) {
+                rounded[0] = timeIntervals[roundingTimeInterval].floor(
+                    dateExtent[0]
+                );
+                rounded[1] = timeIntervals[roundingTimeInterval].offset(
+                    rounded[0]
+                );
             }
+
+            dateExtentRounded = rounded;
 
             select(this)
                 .transition()
-                .call(event.target.move, dateExtentRounded.map(xScale));
+                .call(
+                    // `brush.move` is typed for a selection or a transition of
+                    // the brush's own element and datum; `select(this)` is the
+                    // same node d3 just handed us.
+                    event.target.move as never,
+                    rounded.map(xScale) as never
+                );
         } else {
             // When no selection (clicked on brush without dragging)
             if (isLocked) {
@@ -574,12 +721,20 @@ export default function module() {
      * @param {String | Date} dateA Initial Date
      * @param {String | Date} dateB End Date
      */
-    function setBrushByDates(dateA, dateB) {
-        let selection = null;
+    function setBrushByDates(
+        dateA: string | Date | null,
+        dateB: string | Date | null
+    ): void {
+        let selection: [number, number] | null = null;
 
         if (dateA !== null) {
-            if (new Date(dateA) < new Date(dateB)) {
-                selection = [xScale(new Date(dateA)), xScale(new Date(dateB))];
+            // `dateB` is non-null whenever `dateA` is: both come from
+            // `dateRange`, which is set as a pair.
+            if (new Date(dateA) < new Date(dateB as string | Date)) {
+                selection = [
+                    xScale(new Date(dateA)),
+                    xScale(new Date(dateB as string | Date)),
+                ];
             } else {
                 // eslint-disable-next-line no-console
                 console.error(
@@ -598,14 +753,17 @@ export default function module() {
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.animationDuration = function (_x) {
+    (exports as BrushChartModule).animationDuration = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return animationDuration;
         }
         animationDuration = _x;
 
         return this;
-    };
+    } as BrushChartModule['animationDuration'];
 
     /**
      * Gets or Sets the area curve of the stacked area.
@@ -616,14 +774,17 @@ export default function module() {
      * @public
      * @example brushChart.areaCurve('step')
      */
-    exports.areaCurve = function (_x) {
+    (exports as BrushChartModule).areaCurve = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return areaCurve;
         }
         areaCurve = _x;
 
         return this;
-    };
+    } as BrushChartModule['areaCurve'];
 
     /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity
@@ -631,7 +792,14 @@ export default function module() {
      * @example
      *     brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
      */
-    exports.axisTimeCombinations = axisTimeCombinations;
+    // `TimeSeriesChartAPI` models these as members of the `AxisTimeCombination`
+    // enum, while `constants.ts` exports them as an `as const` object of string
+    // literals -- and a string enum member is not assignable from its own
+    // literal. The values are identical; only the nominality differs. Cast
+    // here rather than changing the shared declaration, which line,
+    // stacked-area and tooltip also depend on: that is its own change.
+    (exports as BrushChartModule).axisTimeCombinations =
+        axisTimeCombinations as BrushChartModule['axisTimeCombinations'];
 
     /**
      * Gets or Sets the dateRange for the selected part of the brush
@@ -639,7 +807,10 @@ export default function module() {
      * @return { dateRange | module}            Current dateRange or Chart module to chain calls
      * @public
      */
-    exports.dateRange = function (_x) {
+    (exports as BrushChartModule).dateRange = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return dateRange;
         }
@@ -650,7 +821,7 @@ export default function module() {
         }
 
         return this;
-    };
+    } as BrushChartModule['dateRange'];
 
     /**
      * Gets or Sets the gradient of the chart
@@ -658,14 +829,17 @@ export default function module() {
      * @return {String | Module}    Current gradient or Chart module to chain calls
      * @public
      */
-    exports.gradient = function (_x) {
+    (exports as BrushChartModule).gradient = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return gradient;
         }
         gradient = _x;
 
         return this;
-    };
+    } as BrushChartModule['gradient'];
 
     /**
      * Gets or Sets the height of the chart
@@ -673,14 +847,17 @@ export default function module() {
      * @return {Number | Module}    Current height or Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    (exports as BrushChartModule).height = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return height;
         }
         height = _x;
 
         return this;
-    };
+    } as BrushChartModule['height'];
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
@@ -688,14 +865,17 @@ export default function module() {
      * @return {Boolean | module}       Current isAnimated flag or Chart module
      * @public
      */
-    exports.isAnimated = function (_x) {
+    (exports as BrushChartModule).isAnimated = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isAnimated;
         }
         isAnimated = _x;
 
         return this;
-    };
+    } as BrushChartModule['isAnimated'];
 
     /**
      * Gets or Sets the loading state of the chart
@@ -703,14 +883,17 @@ export default function module() {
      * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.isLoading = function (_flag) {
+    (exports as BrushChartModule).isLoading = function (
+        this: BrushChartModule,
+        _flag
+    ) {
         if (!arguments.length) {
             return isLoading;
         }
         isLoading = _flag;
 
         return this;
-    };
+    } as BrushChartModule['isLoading'];
 
     /**
      * Gets or Sets the isLocked property of the brush, enforcing the initial brush size set with dateRange
@@ -718,14 +901,17 @@ export default function module() {
      * @return {Boolean | module}       Current isLocked flag or Chart module
      * @public
      */
-    exports.isLocked = function (_x) {
+    (exports as BrushChartModule).isLocked = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isLocked;
         }
         isLocked = _x;
 
         return this;
-    };
+    } as BrushChartModule['isLocked'];
 
     /**
      * Pass language tag for the tooltip to localize the date.
@@ -734,14 +920,17 @@ export default function module() {
      * @param  {String} _x              Must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
      * @return { (String|Module) }      Current locale or module to chain calls
      */
-    exports.locale = function (_x) {
+    (exports as BrushChartModule).locale = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return locale;
         }
         locale = _x;
 
         return this;
-    };
+    } as BrushChartModule['locale'];
 
     /**
      * Gets or Sets the margin of the chart
@@ -749,7 +938,10 @@ export default function module() {
      * @return {Object | Module}    Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    (exports as BrushChartModule).margin = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return margin;
         }
@@ -759,7 +951,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as BrushChartModule['margin'];
 
     /**
      * Date range
@@ -799,11 +991,19 @@ export default function module() {
      * @see {@link https://github.com/d3/d3-dispatch/blob/master/README.md#dispatch_on|d3-dispatch:on}
      * @public
      */
-    exports.on = function () {
-        let value = dispatcher.on.apply(dispatcher, arguments);
+    (exports as BrushChartModule).on = function (
+        ...args: [string] | [string, () => void]
+    ) {
+        // Rest parameters and a spread where this read `arguments` and used
+        // `.apply`, following `heatmap.ts`: the TypeScript lint override makes
+        // `prefer-spread` an error, and the two shapes `on` is called with --
+        // a lookup and a registration -- are exactly what the tuple says.
+        const value = dispatcher.on(
+            ...(args as Parameters<typeof dispatcher.on>)
+        );
 
         return value === dispatcher ? exports : value;
-    };
+    } as unknown as BrushChartModule['on'];
 
     /**
      * Gets or Sets the width of the chart
@@ -811,14 +1011,17 @@ export default function module() {
      * @return {Number | Module}    Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    (exports as BrushChartModule).width = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return width;
         }
         width = _x;
 
         return this;
-    };
+    } as BrushChartModule['width'];
 
     /**
      * Exposes the ability to force the chart to show a certain x format
@@ -827,14 +1030,17 @@ export default function module() {
      * @return {String | Module}        Current format or module to chain calls
      * @public
      */
-    exports.xAxisCustomFormat = function (_x) {
+    (exports as BrushChartModule).xAxisCustomFormat = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisCustomFormat;
         }
         xAxisCustomFormat = _x;
 
         return this;
-    };
+    } as BrushChartModule['xAxisCustomFormat'];
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
@@ -845,14 +1051,17 @@ export default function module() {
      * @example
      *     brushChart.xAxisCustomFormat(brushChart.axisTimeCombinations.HOUR_DAY)
      */
-    exports.xAxisFormat = function (_x) {
+    (exports as BrushChartModule).xAxisFormat = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisFormat;
         }
         xAxisFormat = _x;
 
         return this;
-    };
+    } as BrushChartModule['xAxisFormat'];
 
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
@@ -863,14 +1072,17 @@ export default function module() {
      * @return {Number | Module}        Current number or ticks or module to chain calls
      * @public
      */
-    exports.xTicks = function (_x) {
+    (exports as BrushChartModule).xTicks = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xTicks;
         }
         xTicks = _x;
 
         return this;
-    };
+    } as BrushChartModule['xTicks'];
 
     /**
      * Gets or Sets the rounding time interval of the selection boundary
@@ -885,14 +1097,17 @@ export default function module() {
      * utcWednesday, timeThursday, utcThursday, timeFriday, utcFriday, timeSaturday, utcSaturday, timeMonth, utcMonth,
      * timeYear and utcYear.
      */
-    exports.roundingTimeInterval = function (_x) {
+    (exports as BrushChartModule).roundingTimeInterval = function (
+        this: BrushChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return roundingTimeInterval;
         }
         roundingTimeInterval = _x;
 
         return this;
-    };
+    } as BrushChartModule['roundingTimeInterval'];
 
-    return exports;
+    return exports as unknown as BrushChartModule;
 }
