@@ -3,6 +3,9 @@ import { easeQuadInOut } from 'd3-ease';
 import { scaleLinear } from 'd3-scale';
 import { area, line, curveBasis } from 'd3-shape';
 import { select } from 'd3-selection';
+import type { BaseType, Selection } from 'd3-selection';
+import type { ScaleLinear } from 'd3-scale';
+import type { Area, Line } from 'd3-shape';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -11,13 +14,53 @@ import colorHelper from '../helpers/color';
 import { sparkLineLoadingMarkup } from '../helpers/load';
 import { uniqueId } from '../helpers/number';
 import { motion } from '../helpers/constants';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type { ColorGradientType } from '../../typings/helpers/colors';
+import type {
+    SparkelineTitleTextStyle,
+    SparklineChartDataShape,
+    SparklineChartModule,
+} from '../../typings/charts/sparkline-chart';
 
+/**
+ * The chart's own svg, and the selections derived from it. The datum and parent
+ * generics are the migration plan's bounded `any`, as in `bullet.ts`: these are
+ * module-level variables reassigned from several differently-shaped selections,
+ * so naming one concrete datum would reject the others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/**
+ * What `cleanData` hands the drawing functions. The published
+ * `SparklineChartDataShape` describes the chart's *input*, where `date` is a
+ * string; `cleanData` replaces it with a Date in place, and every drawing
+ * function downstream reads that Date. The index signature is the deprecated
+ * `dateLabel`/`valueLabel` accessors: they let the data carry those two values
+ * under any key, so the two reads in `cleanData` really are dynamic.
+ */
+type SparklineDatum = {
+    date: Date;
+    value: number;
+    [key: string]: string | number | Date;
+};
+
+// `satisfies` rather than an annotation, so each member stays a required
+// string: the fallbacks below read them directly, and an optional member would
+// hand `undefined` to `style()`.
 const DEFAULT_TITLE_TEXT_STYLE = {
     'font-size': '22px',
     'font-family': 'sans-serif',
     'font-style': 'normal',
     'font-weight': 0,
-};
+} satisfies SparkelineTitleTextStyle;
 
 /**
  * Sparkline Chart reusable API module that allows us
@@ -59,8 +102,11 @@ const DEFAULT_TITLE_TEXT_STYLE = {
  * ]
  */
 
-export default function module() {
-    let margin = {
+export default function module(): SparklineChartModule {
+    // Split into `let` and `const` rather than the one `let` chain the
+    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
+    // error, and the bindings below it are never reassigned.
+    let margin: ChartMarginParams = {
             left: 5,
             right: 5,
             top: 5,
@@ -69,37 +115,48 @@ export default function module() {
         width = 100,
         height = 30,
         isLoading = false,
-        xScale,
-        yScale,
-        areaGradient = ['#F5FDFF', '#F6FEFC'],
-        areaGradientEl,
-        areaGradientId = uniqueId('sparkline-area-gradient'),
-        lineStrokeWidth = 2,
-        lineGradient = colorHelper.colorGradients.greenBlue,
-        lineGradientEl,
-        lineGradientId = uniqueId('sparkline-line-gradient'),
-        maskingClip,
-        maskingClipId = uniqueId('maskingClip'),
-        svg,
-        chartWidth,
-        chartHeight,
-        data,
-        hasArea = true,
+        xScale: ScaleLinear<number, number>,
+        yScale: ScaleLinear<number, number>,
+        areaGradient: ColorGradientType = ['#F5FDFF', '#F6FEFC'],
+        areaGradientEl: ChartSelection<SVGStopElement>,
+        lineGradient: ColorGradientType = colorHelper.colorGradients.greenBlue,
+        lineGradientEl: ChartSelection<SVGStopElement>,
+        maskingClip: ChartSelection<SVGRectElement>,
+        svg: ChartSelection<SVGSVGElement>,
+        chartWidth: number,
+        chartHeight: number,
+        data: SparklineDatum[],
         isAnimated = false,
         clipDuration = motion.duration,
-        ease = easeQuadInOut,
-        topLine,
-        areaBelow,
-        circle,
-        titleEl,
-        titleText,
-        titleTextStyle = DEFAULT_TITLE_TEXT_STYLE,
-        markerSize = 1.5,
+        // `| undefined` on these two where the selections above do without
+        // it: both guards below read them before the first assignment, and
+        // TypeScript reports a truthiness test on a function type that cannot
+        // be undefined (TS2774) where it says nothing about an object one.
+        topLine: Line<SparklineDatum> | undefined,
+        areaBelow: Area<SparklineDatum> | undefined,
+        circle: ChartSelection<SVGCircleElement>,
+        titleEl: ChartSelection<SVGTextElement>,
+        // No default: a title arrives through the accessor, and reading it
+        // before it is set gives undefined -- which is what the declaration
+        // now says.
+        titleText: string | undefined,
+        titleTextStyle: SparkelineTitleTextStyle = DEFAULT_TITLE_TEXT_STYLE,
         valueLabel = 'value',
-        dateLabel = 'date',
-        // getters
-        getDate = ({ date }) => date,
-        getValue = ({ value }) => value;
+        dateLabel = 'date';
+
+    // `hasArea = true` sat in the `let` chain and is gone: nothing in this
+    // chart, or anywhere else in the three packages, ever read it. A conversion
+    // has to give every binding a type, and there is none for a value no code
+    // consults.
+    const areaGradientId = uniqueId('sparkline-area-gradient');
+    const lineGradientId = uniqueId('sparkline-line-gradient');
+    const maskingClipId = uniqueId('maskingClip');
+    const lineStrokeWidth = 2;
+    const ease = easeQuadInOut;
+    const markerSize = 1.5;
+    // getters
+    const getDate = ({ date }: SparklineDatum) => date;
+    const getValue = ({ value }: SparklineDatum) => value;
 
     /**
      * This function creates the graph using the selection and data provided
@@ -108,10 +165,21 @@ export default function module() {
      * the container(s) where the chart(s) will be rendered
      * @param {SparklineChartData} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            SparklineChartDataShape[],
+            TParent,
+            TParentDatum
+        >
+    ) {
         _selection.each(function (_data) {
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
             data = cleanData(_data);
 
             buildSVG(this);
@@ -140,8 +208,8 @@ export default function module() {
      * as everything else will be drawn on top of them
      * @private
      */
-    function buildContainerGroups() {
-        let container = svg
+    function buildContainerGroups(): void {
+        const container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
@@ -157,13 +225,17 @@ export default function module() {
      * Creates the x, y and color scales of the chart
      * @private
      */
-    function buildScales() {
+    function buildScales(): void {
+        // `extent` is typed `[T, T] | [undefined, undefined]` for the
+        // empty-input case, which this chart has never guarded against -- it
+        // reads `data[data.length - 1]` unconditionally too. Asserted rather
+        // than guarded, so the conversion changes no behaviour.
         xScale = scaleLinear()
-            .domain(extent(data, getDate))
+            .domain(extent(data, getDate) as [Date, Date])
             .range([0, chartWidth]);
 
         yScale = scaleLinear()
-            .domain(extent(data, getValue))
+            .domain(extent(data, getValue) as [number, number])
             .range([chartHeight, 0]);
     }
 
@@ -172,7 +244,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element): void {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -194,12 +266,20 @@ export default function module() {
      * @return {SparklineChartData}                 Clean data
      * @private
      */
-    function cleanData(originalData) {
-        return originalData.reduce((acc, d) => {
-            d.date = new Date(d[dateLabel]);
-            d.value = +d[valueLabel];
+    function cleanData(
+        originalData: SparklineChartDataShape[]
+    ): SparklineDatum[] {
+        return originalData.reduce<SparklineDatum[]>((acc, d) => {
+            // The same object, mutated in place, which is what this chart has
+            // always done -- `date` goes from the input's string to a Date and
+            // every other key the datum carries survives. The cast says that
+            // rather than rebuilding the object, which would drop those keys.
+            const datum = d as unknown as SparklineDatum;
 
-            return [...acc, d];
+            datum.date = new Date(datum[dateLabel]);
+            datum.value = +datum[valueLabel];
+
+            return [...acc, datum];
         }, []);
     }
 
@@ -207,7 +287,7 @@ export default function module() {
      * Cleans the loading state
      * @private
      */
-    function cleanLoadingState() {
+    function cleanLoadingState(): void {
         svg.select('.loading-state-group svg').remove();
     }
 
@@ -215,8 +295,8 @@ export default function module() {
      * Creates the gradient on the area below the line
      * @return {void}
      */
-    function createGradients() {
-        let metadataGroup = svg.select('.metadata-group');
+    function createGradients(): void {
+        const metadataGroup = svg.select('.metadata-group');
 
         if (areaGradientEl || lineGradientEl) {
             svg.selectAll(`#${areaGradientId}`).remove();
@@ -268,7 +348,7 @@ export default function module() {
      *
      * @return {void}
      */
-    function createMaskingClip() {
+    function createMaskingClip(): void {
         if (maskingClip) {
             svg.selectAll(`#${maskingClipId}`).remove();
         }
@@ -295,12 +375,12 @@ export default function module() {
      * Draws the area that will be placed below the line
      * @private
      */
-    function drawArea() {
+    function drawArea(): void {
         if (areaBelow) {
             svg.selectAll('.sparkline-area').remove();
         }
 
-        areaBelow = area()
+        areaBelow = area<SparklineDatum>()
             .x(({ date }) => xScale(date))
             .y0(() => yScale(0) + lineStrokeWidth / 2)
             .y1(({ value }) => yScale(value))
@@ -319,12 +399,12 @@ export default function module() {
      * Draws the line element within the chart group
      * @private
      */
-    function drawLine() {
+    function drawLine(): void {
         if (topLine) {
             svg.selectAll('.line').remove();
         }
 
-        topLine = line()
+        topLine = line<SparklineDatum>()
             .curve(curveBasis)
             .x(({ date }) => xScale(date))
             .y(({ value }) => yScale(value));
@@ -343,7 +423,7 @@ export default function module() {
      * Draws the loading state
      * @private
      */
-    function drawLoadingState() {
+    function drawLoadingState(): void {
         svg.select('.loading-state-group').html(sparkLineLoadingMarkup);
     }
 
@@ -352,7 +432,7 @@ export default function module() {
      * Is displayed at the top of sparked area
      * @private
      */
-    function drawSparklineTitle() {
+    function drawSparklineTitle(): void {
         if (titleEl) {
             svg.selectAll('.sparkline-text').remove();
         }
@@ -385,13 +465,15 @@ export default function module() {
                 titleTextStyle['font-style'] ||
                     DEFAULT_TITLE_TEXT_STYLE['font-style']
             )
-            .text(titleText);
+            // `exports` only calls this when `titleText` is set, which is a
+            // guard TypeScript cannot see from here.
+            .text(titleText as string);
     }
 
     /**
      * Draws a marker at the end of the sparkline
      */
-    function drawEndMarker() {
+    function drawEndMarker(): void {
         if (circle) {
             svg.selectAll('.sparkline-circle').remove();
         }
@@ -412,14 +494,17 @@ export default function module() {
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.animationDuration = function (_x) {
+    (exports as SparklineChartModule).animationDuration = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return clipDuration;
         }
         clipDuration = _x;
 
         return this;
-    };
+    } as SparklineChartModule['animationDuration'];
 
     /**
      * Gets or Sets the areaGradient of the chart
@@ -427,14 +512,17 @@ export default function module() {
      * @return {areaGradient | module}                  Current areaGradient or Chart module to chain calls
      * @public
      */
-    exports.areaGradient = function (_x) {
+    (exports as SparklineChartModule).areaGradient = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return areaGradient;
         }
         areaGradient = _x;
 
         return this;
-    };
+    } as SparklineChartModule['areaGradient'];
 
     /**
      * Gets or Sets the dateLabel of the chart
@@ -443,7 +531,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.dateLabel = function (_x) {
+    (exports as SparklineChartModule).dateLabel = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return dateLabel;
         }
@@ -451,7 +542,7 @@ export default function module() {
         dataKeyDeprecationMessage('date');
 
         return this;
-    };
+    } as SparklineChartModule['dateLabel'];
 
     /**
      * Chart exported to png and a download action is fired
@@ -460,9 +551,16 @@ export default function module() {
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
-    exports.exportChart = function (filename, title) {
-        return exportChart.call(exports, svg, filename, title);
-    };
+    (exports as SparklineChartModule).exportChart = function (filename, title) {
+        // The module, not the bare function: `exportChart` needs `this` to
+        // answer `width()`, `height()` and `margin()`.
+        return exportChart.call(
+            exports as SparklineChartModule,
+            svg,
+            filename,
+            title
+        );
+    } as SparklineChartModule['exportChart'];
 
     /**
      * Gets or Sets the height of the chart
@@ -470,14 +568,17 @@ export default function module() {
      * @return { height | module}   Current height or Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    (exports as SparklineChartModule).height = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return height;
         }
         height = _x;
 
         return this;
-    };
+    } as SparklineChartModule['height'];
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
@@ -487,14 +588,17 @@ export default function module() {
      * @return {isAnimated | module}    Current isAnimated flag or Chart module
      * @public
      */
-    exports.isAnimated = function (_x) {
+    (exports as SparklineChartModule).isAnimated = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isAnimated;
         }
         isAnimated = _x;
 
         return this;
-    };
+    } as SparklineChartModule['isAnimated'];
 
     /**
      * Gets or Sets the lineGradient of the chart
@@ -502,14 +606,17 @@ export default function module() {
      * @return {lineGradient | module}                                  Current lineGradient or Chart module to chain calls
      * @public
      */
-    exports.lineGradient = function (_x) {
+    (exports as SparklineChartModule).lineGradient = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return lineGradient;
         }
         lineGradient = _x;
 
         return this;
-    };
+    } as SparklineChartModule['lineGradient'];
 
     /**
      * Gets or Sets the loading state of the chart
@@ -517,14 +624,17 @@ export default function module() {
      * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.isLoading = function (_flag) {
+    (exports as SparklineChartModule).isLoading = function (
+        this: SparklineChartModule,
+        _flag
+    ) {
         if (!arguments.length) {
             return isLoading;
         }
         isLoading = _flag;
 
         return this;
-    };
+    } as SparklineChartModule['isLoading'];
 
     /**
      * Gets or Sets the margin of the chart
@@ -532,7 +642,10 @@ export default function module() {
      * @return {object | module}    Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    (exports as SparklineChartModule).margin = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return margin;
         }
@@ -542,7 +655,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as SparklineChartModule['margin'];
 
     /**
      * Gets or Sets the text of the title at the top of sparkline.
@@ -551,14 +664,17 @@ export default function module() {
      * @return {string | module}    Current titleText or Chart module to chain calls
      * @public
      */
-    exports.titleText = function (_x) {
+    (exports as SparklineChartModule).titleText = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return titleText;
         }
         titleText = _x;
 
         return this;
-    };
+    } as SparklineChartModule['titleText'];
 
     /**
      * Gets or Sets the text style object of the title at the top of sparkline.
@@ -592,14 +708,17 @@ export default function module() {
      *    'fill': 'lightblue'
      * })
      */
-    exports.titleTextStyle = function (_x) {
+    (exports as SparklineChartModule).titleTextStyle = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return titleTextStyle;
         }
         titleTextStyle = _x;
 
         return this;
-    };
+    } as SparklineChartModule['titleTextStyle'];
 
     /**
      * Gets or Sets the valueLabel of the chart
@@ -608,7 +727,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.valueLabel = function (_x) {
+    (exports as SparklineChartModule).valueLabel = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return valueLabel;
         }
@@ -616,7 +738,7 @@ export default function module() {
         dataKeyDeprecationMessage('value');
 
         return this;
-    };
+    } as SparklineChartModule['valueLabel'];
 
     /**
      * Gets or Sets the width of the chart
@@ -624,14 +746,17 @@ export default function module() {
      * @return {width | module}     Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    (exports as SparklineChartModule).width = function (
+        this: SparklineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return width;
         }
         width = _x;
 
         return this;
-    };
+    } as SparklineChartModule['width'];
 
-    return exports;
+    return exports as unknown as SparklineChartModule;
 }

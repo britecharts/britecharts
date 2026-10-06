@@ -9,7 +9,15 @@ export enum BrushChartKeys {
 }
 
 export type BrushChartDataShape = {
-    [BrushChartKeys.Value]: number;
+    /**
+     * Nullable, because a gap in the series is a case this chart is built for.
+     * `acceptNullValue` preserves a null rather than coercing it to zero,
+     * `brushArea.defined()` skips those points so the area breaks rather than
+     * dropping to the baseline, and the chart's own `brushMissingData.json`
+     * fixture carries eleven of them. Declared as `number` until now, so a
+     * TypeScript consumer could not pass the data the library itself ships.
+     */
+    [BrushChartKeys.Value]: number | null;
     [BrushChartKeys.Date]: string;
 };
 
@@ -20,27 +28,56 @@ export type BrushSelection = Selection<
     any
 >;
 
+// The three generics below named `BrushChartAPI`, where every other chart
+// names its Module. That is not cosmetic: these interfaces all return
+// `T & XAPI<T>`, so `brush().isAnimated(true)` reported
+// `BrushChartAPI & AnimatedChartAPI<BrushChartAPI>` -- a type with no
+// `ChartModuleSelection` in it, so the result could not be passed to
+// `selection.call()` and chaining off it lost the rest of the chart. The
+// sibling `ChartBaseAPIMinimal<BrushChartModule>` on the same line had it
+// right all along.
 export interface BrushChartAPI
     extends ChartBaseAPIMinimal<BrushChartModule>,
-        AnimatedChartAPI<BrushChartAPI>,
-        TimeSeriesChartAPI<BrushChartAPI>,
-        InteractiveChartAPI<BrushChartAPI> {
+        AnimatedChartAPI<BrushChartModule>,
+        TimeSeriesChartAPI<BrushChartModule>,
+        InteractiveChartAPI<BrushChartModule> {
     /** Gets or Sets the area curve of the stacked area. */
-    areaCurve(curveType?: string): BrushChartModule;
+    areaCurve(): string;
+    areaCurve(curveType: string): BrushChartModule;
     /** Gets or Sets the isLocked property of the brush, enforcing the initial brush size set with dateRange */
-    isLocked(isLocked?: boolean): BrushChartModule;
-    /** Gets or Sets the dateRange for the selected part of the brush */
-    dateRange(dateRange?: [string, string]): BrushChartModule;
+    isLocked(): boolean;
+    isLocked(isLocked: boolean): BrushChartModule;
+    /**
+     * Gets or Sets the dateRange for the selected part of the brush.
+     *
+     * The getter's members are nullable: the default is `[null, null]`, and
+     * the chart only draws a selection once both ends are set.
+     */
+    dateRange(): [string | null, string | null];
+    dateRange(dateRange: [string, string]): BrushChartModule;
     /** Gets or Sets the gradient of the chart */
-    gradient(gradient?: ColorGradientType): BrushChartModule;
-    /** Gets or Sets the rounding time interval of the selection boundary */
-    roundingTimeInterval(roundingTimeInterval?: string): BrushChartKeys;
+    gradient(): ColorGradientType;
+    gradient(gradient: ColorGradientType): BrushChartModule;
+    /**
+     * Gets or Sets the rounding time interval of the selection boundary.
+     *
+     * The setter returns the module, as every other accessor does. It was
+     * declared as returning `BrushChartKeys` -- the `'value' | 'date'` data-key
+     * enum, which this accessor has nothing to do with: it holds a d3 time
+     * interval name such as `'timeDay'`, and setting it returns `this`.
+     */
+    roundingTimeInterval(): string;
+    roundingTimeInterval(roundingTimeInterval: string): BrushChartModule;
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
      * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
      * how many and where the ticks will appear.
+     *
+     * The getter is nullable: the default is `null`, which leaves the tick
+     * count to d3.
      */
-    xTicks(ticks?: number): BrushChartModule;
+    xTicks(): number | null;
+    xTicks(ticks: number): BrushChartModule;
 }
 
 export type BrushChartModule = ChartModuleSelection<BrushChartDataShape[]> &

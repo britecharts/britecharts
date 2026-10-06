@@ -424,6 +424,53 @@ describe('brush Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should pass the locale to the x axis tick formatter', () => {
+            // A getter/setter pair for `locale` passes trivially and would have
+            // passed against the bug this covers: the accessor stored the value
+            // and `getTimeSeriesAxis` never received it, so the axis always
+            // formatted in d3's default English. Asserting the rendered tick
+            // text is the point.
+            //
+            // Own container and own data rather than the shared
+            // `containerFixture` and the file-scope `dataset` that the nested
+            // beforeEach blocks reassign -- leaning on those is what made the
+            // equivalent stacked-area test pass alone and fail in the full
+            // suite.
+            const localeFixture =
+                '<div id="locale-fixture"><div class="default-locale"></div><div class="german-locale"></div></div>';
+
+            document.body.insertAdjacentHTML('afterbegin', localeFixture);
+
+            const localeDataset = buildDataSet('withSimpleData');
+            const readTicks = (selector) =>
+                d3
+                    .select(selector)
+                    .selectAll('.x.axis .tick text')
+                    .nodes()
+                    .map((node) => node.textContent);
+
+            d3.select('.default-locale')
+                .datum(localeDataset)
+                .call(chart().xAxisFormat('day-month'));
+
+            d3.select('.german-locale')
+                .datum(buildDataSet('withSimpleData'))
+                .call(chart().xAxisFormat('day-month').locale('de-DE'));
+
+            const defaultTicks = readTicks('.default-locale');
+            const germanTicks = readTicks('.german-locale');
+
+            document.body.removeChild(
+                document.getElementById('locale-fixture')
+            );
+
+            // Both axes rendered, so a difference below is a formatting
+            // difference rather than one chart failing to draw.
+            expect(defaultTicks.length).toBeGreaterThan(0);
+            expect(germanTicks.length).toBe(defaultTicks.length);
+            expect(germanTicks).not.toEqual(defaultTicks);
+        });
+
         it('should provide a xAxisFormat getter and setter', () => {
             let previous = brushChart.xAxisFormat(),
                 expected = brushChart.axisTimeCombinations.HOUR_DAY,

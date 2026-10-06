@@ -118,8 +118,15 @@ export interface ThemableChartAPI<T> {
     /** Gets or Sets the colorSchema of the chart */
     colorSchema(): ColorsSchemasType;
     colorSchema(schema: ColorsSchemasType): T & ThemableChartAPI<T>;
-    /** Gets or Sets the colorMap of the chart */
-    colorMap(): Record<string, string>;
+    /**
+     * Gets or Sets the colorMap of the chart.
+     *
+     * The getter is nullable because every chart that exposes this defaults
+     * `nameToColorMap` to `null` and falls back to the colour scale until one
+     * is set -- bar, donut, grouped-bar, legend, line, scatter-plot,
+     * stacked-area and stacked-bar, which is all eight of them.
+     */
+    colorMap(): Record<string, string> | null;
     colorMap(colorMap: Record<string, string>): T & ThemableChartAPI<T>;
 }
 

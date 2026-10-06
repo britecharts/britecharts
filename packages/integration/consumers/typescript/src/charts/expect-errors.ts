@@ -48,3 +48,22 @@ stackedBar().width('wide');
 tooltip().nope();
 // @ts-expect-error not a colour schema
 colors.colorSchemas.nope;
+
+// `colorMap`'s getter is nullable, because all eight charts that expose it
+// default `nameToColorMap` to null and fall back to the colour scale. Indexing
+// the result without a guard is "possibly null".
+//
+// This is the control for that declaration, and it runs both ways: against the
+// old non-null getter the index below compiles, which leaves the directive
+// unused and fails the build.
+// @ts-expect-error possibly null
+legend().colorMap()['one'];
+
+// The donut's two callbacks are read for what they return, so a callback that
+// returns nothing is the error. Against the old `=> void` declaration both
+// lines below compiled, which left these directives unused and failed the
+// build -- the control for a declaration that was too loose rather than wrong.
+// @ts-expect-error a centered-text callback has to return the string to render
+donut().centeredTextFunction(() => undefined);
+// @ts-expect-error a comparator has to return a number
+donut().orderingFunction(() => undefined);

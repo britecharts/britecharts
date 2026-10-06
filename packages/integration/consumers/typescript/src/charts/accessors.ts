@@ -203,6 +203,143 @@ const bulletChained: string | undefined = bullet()
     .ticks(8)
     .customTitle();
 
+// The legend's own four, corrected with its conversion, and the shared
+// `colorMap` the conversion forced.
+//
+// `colorMap` is declared on `ThemableChartAPI`, so its getter was wrong for all
+// eight charts that expose it: each defaults `nameToColorMap` to null and falls
+// back to the colour scale until one is set. The guarded read below is the
+// shape a consumer now has to write; `expect-errors.ts` holds the other half.
+//
+// `highlightEntryById` is nullable for the same reason -- no default, and the
+// component only fades the other entries once an id is set.
+const legendChart = legend();
+
+const legendColorMap: Record<string, string> | null = legendChart.colorMap();
+const legendFirstColour: string | undefined =
+    legendColorMap === null ? undefined : legendColorMap['one'];
+const legendHighlighted: number | null = legendChart.highlightEntryById();
+const legendHorizontal: boolean = legendChart.isHorizontal();
+const legendMarginRatio: number = legendChart.marginRatio();
+const legendMarkerSize: number = legendChart.markerSize();
+
+// `highlight` and `clearHighlight` are commands, not accessors: they return
+// void, so they do not chain and never have.
+const legendHighlightReturn: void = legend().highlight(1);
+
+export const legendAccessors = {
+    legendColorMap,
+    legendFirstColour,
+    legendHighlighted,
+    legendHorizontal,
+    legendMarginRatio,
+    legendMarkerSize,
+    legendHighlightReturn,
+};
+
+// The brush chart's own accessors, and the generic argument that made three of
+// its inherited surfaces unusable.
+//
+// `AnimatedChartAPI`, `TimeSeriesChartAPI` and `InteractiveChartAPI` were each
+// parameterised with `BrushChartAPI` instead of `BrushChartModule`. Those
+// interfaces return `T & XAPI<T>`, so setting an inherited accessor reported a
+// type with no `ChartModuleSelection` in it: the result could not be handed to
+// `selection.call()`, and chaining off it lost the rest of the chart. The two
+// assertions below are what that broke -- both are errors against the old
+// declaration, and neither needs a cast now.
+import { brush } from '@britecharts/core';
+import type { BrushChartModule } from '@britecharts/core';
+import type {
+    DonutChartDataShape,
+    DonutEmptyDataConfig,
+} from '@britecharts/core';
+
+const brushChart = brush();
+
+// Setting an inherited accessor still gives something drawable.
+const brushDrawable: BrushChartModule = brush().isAnimated(true);
+// ... and still carries the chart's own accessors, so a chain crossing from an
+// inherited surface back to a brush-specific one resolves.
+const brushChained: string = brush().isAnimated(true).areaCurve('monotoneX').areaCurve();
+
+const brushAreaCurve: string = brushChart.areaCurve();
+const brushLocked: boolean = brushChart.isLocked();
+const brushGradient: [string, string] = brushChart.gradient();
+// `roundingTimeInterval` is a d3 time interval name. It was declared as
+// returning the `'value' | 'date'` data-key enum.
+const brushRounding: string = brushChart.roundingTimeInterval();
+const brushRoundingChains: BrushChartModule =
+    brush().roundingTimeInterval('timeWeek');
+// Both nullable until set.
+const brushDateRange: [string | null, string | null] = brushChart.dateRange();
+const brushTicks: number | null = brushChart.xTicks();
+
+export const brushAccessors = {
+    brushDrawable,
+    brushChained,
+    brushAreaCurve,
+    brushLocked,
+    brushGradient,
+    brushRounding,
+    brushRoundingChains,
+    brushDateRange,
+    brushTicks,
+};
+
+// The donut chart's eleven own accessors, and the two callbacks whose declared
+// return type was wrong.
+//
+// `centeredTextFunction`'s result goes to `.text()` and `orderingFunction`'s to
+// `.sort()`, but both were declared `=> void`. TypeScript lets a
+// value-returning function satisfy a `=> void` parameter, so a consumer's
+// correct callback always compiled -- which is why nothing caught this. What
+// broke was reading either one back: the result was `void` and unusable. The
+// two assertions below are that read, and `expect-errors.ts` holds the control.
+const donutChart = donut();
+
+const donutCentered: (d: DonutChartDataShape) => string =
+    donutChart.centeredTextFunction();
+const donutOrdering: (
+    a: DonutChartDataShape,
+    b: DonutChartDataShape
+) => number = donutChart.orderingFunction();
+
+// Read back, each is usable for what the chart uses it for.
+const donutCenteredText: string = donutCentered({
+    id: 1,
+    name: 'glittering',
+    quantity: 2,
+    percentage: 50,
+});
+const donutSorted: DonutChartDataShape[] = [].sort(donutOrdering);
+
+const donutEmptyData: DonutEmptyDataConfig = donutChart.emptyDataConfig();
+const donutExternalRadius: number = donutChart.externalRadius();
+const donutInternalRadius: number = donutChart.internalRadius();
+const donutRadiusHoverOffset: number = donutChart.radiusHoverOffset();
+const donutPercentageFormat: string = donutChart.percentageFormat();
+const donutFixedHighlight: boolean = donutChart.hasFixedHighlightedSlice();
+const donutHoverAnimation: boolean = donutChart.hasHoverAnimation();
+const donutLastHover: boolean = donutChart.hasLastHoverSliceHighlighted();
+// Undefined until set: the chart has no default slice to highlight.
+const donutHighlighted: number | undefined = donutChart.highlightSliceById();
+
+export const donutAccessors = {
+    donutCentered,
+    donutOrdering,
+    donutCenteredText,
+    donutSorted,
+    donutEmptyData,
+    donutExternalRadius,
+    donutInternalRadius,
+    donutRadiusHoverOffset,
+    donutPercentageFormat,
+    donutFixedHighlight,
+    donutHoverAnimation,
+    donutLastHover,
+    donutHighlighted,
+};
+
 export const bulletAccessors = {
     bulletTicks,
     bulletPadding,
@@ -212,4 +349,39 @@ export const bulletAccessors = {
     bulletTitle,
     bulletSubtitle,
     bulletChained,
+};
+
+// The sparkline's own four, corrected with its conversion for the same reason
+// bullet's seven were: they were setter-only, so reading one reported the chart
+// instead of its value. Its three shared ones -- `dateLabel`, `valueLabel`,
+// `isLoading` -- already read correctly and are asserted further up.
+//
+// The two gradients are a two-element tuple, not `string[]`: the chart reads
+// `[0]` and `[1]` and nothing else, and `ColorGradientType` has said so since
+// before this migration. `titleText` is `string | undefined` on the way out
+// because the chart has no default title -- `drawSparklineTitle` only runs once
+// one is set.
+const sparklineOwn = sparkline();
+
+const sparklineAreaGradient: [string, string] = sparklineOwn.areaGradient();
+const sparklineLineGradient: [string, string] = sparklineOwn.lineGradient();
+const sparklineTitleText: string | undefined = sparklineOwn.titleText();
+const sparklineTitleFont: string | undefined =
+    sparklineOwn.titleTextStyle()['font-family'];
+
+// The setters still chain, and a partial style object is still accepted: the
+// chart falls back to its own default for every member left out.
+const sparklineChained: string | undefined = sparkline()
+    .areaGradient(['#F5FDFF', '#F6FEFC'])
+    .lineGradient(['#39C7EA', '#4CDCBA'])
+    .titleTextStyle({ 'font-size': '1.5em' })
+    .titleText('Signups')
+    .titleText();
+
+export const sparklineAccessors = {
+    sparklineAreaGradient,
+    sparklineLineGradient,
+    sparklineTitleText,
+    sparklineTitleFont,
+    sparklineChained,
 };
