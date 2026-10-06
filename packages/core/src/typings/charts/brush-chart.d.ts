@@ -9,7 +9,15 @@ export enum BrushChartKeys {
 }
 
 export type BrushChartDataShape = {
-    [BrushChartKeys.Value]: number;
+    /**
+     * Nullable, because a gap in the series is a case this chart is built for.
+     * `acceptNullValue` preserves a null rather than coercing it to zero,
+     * `brushArea.defined()` skips those points so the area breaks rather than
+     * dropping to the baseline, and the chart's own `brushMissingData.json`
+     * fixture carries eleven of them. Declared as `number` until now, so a
+     * TypeScript consumer could not pass the data the library itself ships.
+     */
+    [BrushChartKeys.Value]: number | null;
     [BrushChartKeys.Date]: string;
 };
 

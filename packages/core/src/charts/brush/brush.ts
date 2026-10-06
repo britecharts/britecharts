@@ -53,15 +53,10 @@ type ChartSelection<TElement extends BaseType> = Selection<
 /**
  * What `cleanData` hands the drawing functions.
  *
- * `value` is nullable here where the published `BrushChartDataShape` says
- * `number`, and the runtime is the honest one: `acceptNullValue` preserves a
- * null rather than coercing it, `brushArea.defined()` skips those points, and
- * the chart's own `brushMissingData.json` fixture carries eleven of them. The
- * published input shape therefore rejects data this chart is built to draw --
- * a real gap, but one that changes an input contract rather than this
- * conversion, so it is left for its own change.
- *
- * `date` is a Date where the input is a string: `cleanData` replaces it.
+ * It differs from the published `BrushChartDataShape` in one place: `date` is a
+ * Date here where the input is a string, because `cleanData` replaces it.
+ * `value` is nullable in both -- a gap in the series is a case this chart
+ * draws, and the published shape says so now.
  */
 type BrushDatum = {
     date: Date;
