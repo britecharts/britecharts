@@ -249,6 +249,10 @@ export const legendAccessors = {
 // declaration, and neither needs a cast now.
 import { brush } from '@britecharts/core';
 import type { BrushChartModule } from '@britecharts/core';
+import type {
+    DonutChartDataShape,
+    DonutEmptyDataConfig,
+} from '@britecharts/core';
 
 const brushChart = brush();
 
@@ -280,6 +284,60 @@ export const brushAccessors = {
     brushRoundingChains,
     brushDateRange,
     brushTicks,
+};
+
+// The donut chart's eleven own accessors, and the two callbacks whose declared
+// return type was wrong.
+//
+// `centeredTextFunction`'s result goes to `.text()` and `orderingFunction`'s to
+// `.sort()`, but both were declared `=> void`. TypeScript lets a
+// value-returning function satisfy a `=> void` parameter, so a consumer's
+// correct callback always compiled -- which is why nothing caught this. What
+// broke was reading either one back: the result was `void` and unusable. The
+// two assertions below are that read, and `expect-errors.ts` holds the control.
+const donutChart = donut();
+
+const donutCentered: (d: DonutChartDataShape) => string =
+    donutChart.centeredTextFunction();
+const donutOrdering: (
+    a: DonutChartDataShape,
+    b: DonutChartDataShape
+) => number = donutChart.orderingFunction();
+
+// Read back, each is usable for what the chart uses it for.
+const donutCenteredText: string = donutCentered({
+    id: 1,
+    name: 'glittering',
+    quantity: 2,
+    percentage: 50,
+});
+const donutSorted: DonutChartDataShape[] = [].sort(donutOrdering);
+
+const donutEmptyData: DonutEmptyDataConfig = donutChart.emptyDataConfig();
+const donutExternalRadius: number = donutChart.externalRadius();
+const donutInternalRadius: number = donutChart.internalRadius();
+const donutRadiusHoverOffset: number = donutChart.radiusHoverOffset();
+const donutPercentageFormat: string = donutChart.percentageFormat();
+const donutFixedHighlight: boolean = donutChart.hasFixedHighlightedSlice();
+const donutHoverAnimation: boolean = donutChart.hasHoverAnimation();
+const donutLastHover: boolean = donutChart.hasLastHoverSliceHighlighted();
+// Undefined until set: the chart has no default slice to highlight.
+const donutHighlighted: number | undefined = donutChart.highlightSliceById();
+
+export const donutAccessors = {
+    donutCentered,
+    donutOrdering,
+    donutCenteredText,
+    donutSorted,
+    donutEmptyData,
+    donutExternalRadius,
+    donutInternalRadius,
+    donutRadiusHoverOffset,
+    donutPercentageFormat,
+    donutFixedHighlight,
+    donutHoverAnimation,
+    donutLastHover,
+    donutHighlighted,
 };
 
 export const bulletAccessors = {

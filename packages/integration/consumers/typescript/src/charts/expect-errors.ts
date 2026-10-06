@@ -58,3 +58,12 @@ colors.colorSchemas.nope;
 // unused and fails the build.
 // @ts-expect-error possibly null
 legend().colorMap()['one'];
+
+// The donut's two callbacks are read for what they return, so a callback that
+// returns nothing is the error. Against the old `=> void` declaration both
+// lines below compiled, which left these directives unused and failed the
+// build -- the control for a declaration that was too loose rather than wrong.
+// @ts-expect-error a centered-text callback has to return the string to render
+donut().centeredTextFunction(() => undefined);
+// @ts-expect-error a comparator has to return a number
+donut().orderingFunction(() => undefined);
