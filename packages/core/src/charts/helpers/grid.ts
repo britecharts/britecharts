@@ -197,7 +197,7 @@ function positionCenter(scale: GridScale) {
  * Constructor for a one-dimensional grid helper
  * @param {string} orient - orientation string to define the direction
  * @param {GridScale} scale - d3 scale for the grid's ticks
- * @return {gridBaseGenerator}
+ * @return The grid generator, so the accessor calls chain
  * @private
  */
 function gridBase(orient: string, scale: GridScale) {
@@ -1038,7 +1038,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
 /**
  * Constructor for a horizontal grid helper
  * @param {GridScale} scale - d3 scale to initialize the grid
- * @return {gridBaseGenerator}
+ * @return The grid generator, so the accessor calls chain
  * @public
  * @memberof Grid
  * @alias module:Grid.gridHorizontal
@@ -1057,7 +1057,7 @@ export function gridHorizontal(scale: GridScale): GridBaseGenerator {
 /**
  * Constructor for a vertical grid helper
  * @param {GridScale} scale - d3 scale to initialize the grid
- * @return {gridBaseGenerator}
+ * @return The grid generator, so the accessor calls chain
  * @public
  * @memberof Grid
  * @alias module:Grid.gridVertical
