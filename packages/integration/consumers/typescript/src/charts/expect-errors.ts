@@ -48,3 +48,13 @@ stackedBar().width('wide');
 tooltip().nope();
 // @ts-expect-error not a colour schema
 colors.colorSchemas.nope;
+
+// `colorMap`'s getter is nullable, because all eight charts that expose it
+// default `nameToColorMap` to null and fall back to the colour scale. Indexing
+// the result without a guard is "possibly null".
+//
+// This is the control for that declaration, and it runs both ways: against the
+// old non-null getter the index below compiles, which leaves the directive
+// unused and fails the build.
+// @ts-expect-error possibly null
+legend().colorMap()['one'];

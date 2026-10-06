@@ -26,21 +26,30 @@ export interface LegendAPI
         ThemableChartAPI<LegendModule> {
     /** Command that highlights a line entry by fading the rest of lines on a legend instance */
     highlight(entryId: number): void;
-    /** Gets or Sets the id of the entry to highlight */
-    highlightEntryById(highlightedEntryId?: number): LegendModule;
+    /**
+     * Gets or Sets the id of the entry to highlight.
+     *
+     * The getter is nullable: the default is `null`, and `exports` only fades
+     * the other entries once an id is set.
+     */
+    highlightEntryById(): number | null;
+    highlightEntryById(highlightedEntryId: number): LegendModule;
     /** Gets or Sets the horizontal mode on the legend */
-    isHorizontal(isHorizontal?: boolean): LegendModule;
+    isHorizontal(): boolean;
+    isHorizontal(isHorizontal: boolean): LegendModule;
     /**
      * Gets or Sets the margin ratio of the legend chart.
      * Used to determine spacing between legend elements.
      */
-    marginRatio(ratio?: number): LegendModule;
+    marginRatio(): number;
+    marginRatio(ratio: number): LegendModule;
     /**
      * Gets or Sets the markerSize of the legend chart.
      * This markerSize will determine the horizontal and vertical size of the colored marks
      * added as color identifiers for the chart's categories.
      */
-    markerSize(markerSize?: number): LegendModule;
+    markerSize(): number;
+    markerSize(markerSize: number): LegendModule;
     /**
      * Command that clears all highlighted entries on a legend instance
      */

@@ -203,6 +203,40 @@ const bulletChained: string | undefined = bullet()
     .ticks(8)
     .customTitle();
 
+// The legend's own four, corrected with its conversion, and the shared
+// `colorMap` the conversion forced.
+//
+// `colorMap` is declared on `ThemableChartAPI`, so its getter was wrong for all
+// eight charts that expose it: each defaults `nameToColorMap` to null and falls
+// back to the colour scale until one is set. The guarded read below is the
+// shape a consumer now has to write; `expect-errors.ts` holds the other half.
+//
+// `highlightEntryById` is nullable for the same reason -- no default, and the
+// component only fades the other entries once an id is set.
+const legendChart = legend();
+
+const legendColorMap: Record<string, string> | null = legendChart.colorMap();
+const legendFirstColour: string | undefined =
+    legendColorMap === null ? undefined : legendColorMap['one'];
+const legendHighlighted: number | null = legendChart.highlightEntryById();
+const legendHorizontal: boolean = legendChart.isHorizontal();
+const legendMarginRatio: number = legendChart.marginRatio();
+const legendMarkerSize: number = legendChart.markerSize();
+
+// `highlight` and `clearHighlight` are commands, not accessors: they return
+// void, so they do not chain and never have.
+const legendHighlightReturn: void = legend().highlight(1);
+
+export const legendAccessors = {
+    legendColorMap,
+    legendFirstColour,
+    legendHighlighted,
+    legendHorizontal,
+    legendMarginRatio,
+    legendMarkerSize,
+    legendHighlightReturn,
+};
+
 export const bulletAccessors = {
     bulletTicks,
     bulletPadding,
