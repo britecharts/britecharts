@@ -114,6 +114,7 @@ import {
     stackedArea,
     stackedBar,
 } from '@britecharts/core';
+import type { LocalObject } from '@britecharts/core';
 
 const barNameLabel: string = bar().nameLabel();
 const donutCenterLegend: boolean = donut().hasCenterLegend();
@@ -123,6 +124,78 @@ const groupedBarChart = groupedBar();
 const groupLabel: string = groupedBarChart.groupLabel();
 const groupedNameLabel: string = groupedBarChart.nameLabel();
 const groupedValueLabel: string = groupedBarChart.valueLabel();
+
+// The grouped bar's other eleven accessors, corrected with its conversion for
+// the same reason bullet's seven and the sparkline's four were: setter-only, so
+// reading one reported the chart instead of its value. The three label getters
+// just above already read correctly and were never part of that.
+//
+// Three of the eleven have a getter wider than their setter, which is the whole
+// of what reading one before setting it gives you: `grid` and `valueLocale` are
+// `null` in the module's own `let` block, and `yAxisLabel` has no initialiser at
+// all. `expect-errors.ts` holds the control for those three -- a positive
+// assertion proves a getter is not too narrow, and only a call that should fail
+// proves it is not too wide.
+//
+// `GridTypes` and `Offset` are spelled out rather than imported: `common/grid`
+// and `common/position` are not in `index.d.ts`, the same gap the margin read at
+// the top of this file works around. Exporting them is a separate, additive
+// change, and it would let these two assertions name the real types.
+const groupedBarPadding: number = groupedBarChart.betweenBarsPadding();
+const groupedGroupsPadding: number = groupedBarChart.betweenGroupsPadding();
+const groupedHorizontal: boolean = groupedBarChart.isHorizontal();
+const groupedThreshold: number = groupedBarChart.tooltipThreshold();
+const groupedXTicks: number = groupedBarChart.xTicks();
+const groupedYTicks: number = groupedBarChart.yTicks();
+const groupedLabelOffset: number = groupedBarChart.yAxisLabelOffset();
+const groupedTickOffset: { x: number; y: number } =
+    groupedBarChart.yTickTextOffset();
+
+// Null or undefined until set, so each read needs the guard a consumer now has
+// to write.
+const groupedGrid: 'vertical' | 'horizontal' | 'full' | null =
+    groupedBarChart.grid();
+const groupedLocale: LocalObject | null = groupedBarChart.valueLocale();
+const groupedLocaleDecimal: string | undefined = groupedLocale?.decimal;
+const groupedAxisLabel: string | undefined = groupedBarChart.yAxisLabel();
+
+// The setters still chain, and a chain crossing from an inherited surface back
+// to a grouped-bar-specific one still resolves.
+const groupedChained: number = groupedBar()
+    .isAnimated(true)
+    .grid('horizontal')
+    .yAxisLabel('Ticket Sales')
+    .betweenBarsPadding(0.2)
+    .betweenBarsPadding();
+
+// `grid` and `valueLocale` take their own empty value back, which is how either
+// one is turned off again. The chart's JSDoc documents `null` as the default
+// for both, and both assign it straight through.
+const groupedGridReset: 'vertical' | 'horizontal' | 'full' | null = groupedBar()
+    .grid('full')
+    .grid(null)
+    .grid();
+const groupedLocaleReset: LocalObject | null = groupedBar()
+    .valueLocale(null)
+    .valueLocale();
+
+export const groupedBarAccessors = {
+    groupedBarPadding,
+    groupedGroupsPadding,
+    groupedHorizontal,
+    groupedThreshold,
+    groupedXTicks,
+    groupedYTicks,
+    groupedLabelOffset,
+    groupedTickOffset,
+    groupedGrid,
+    groupedLocale,
+    groupedLocaleDecimal,
+    groupedAxisLabel,
+    groupedChained,
+    groupedGridReset,
+    groupedLocaleReset,
+};
 
 const lineChart = line();
 const lineDateLabel: string = lineChart.dateLabel();

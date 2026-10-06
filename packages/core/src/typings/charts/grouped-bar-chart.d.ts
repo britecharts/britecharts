@@ -30,6 +30,16 @@ export type GroupedBarSelection = Selection<
     any
 >;
 
+// The eleven accessors below were setter-only -- a single
+// optional-parameter signature returning the chart -- so reading one reported
+// the chart rather than its value. Each is a getter/setter overload pair now,
+// with the getter typed from the implementation's own default.
+//
+// Three of those getters are wider than their setter, and for the same reason
+// in each case: the chart has no usable default, so reading before setting
+// really does give the empty value. `grid` and `valueLocale` are declared
+// `null` in the module's own `let` block, and `yAxisLabel` is declared with no
+// initialiser at all.
 export interface GroupedBarChartAPI
     extends ChartBaseAPI<GroupedBarChartModule>,
         InteractiveChartAPI<GroupedBarChartModule>,
@@ -37,33 +47,59 @@ export interface GroupedBarChartAPI
         AnimatedChartAPI<GroupedBarChartModule>,
         ThemableChartAPI<GroupedBarChartModule> {
     /** Gets or Sets the padding between bars. */
-    betweenBarsPadding(padding?: number): GroupedBarChartModule;
+    betweenBarsPadding(): number;
+    betweenBarsPadding(padding: number): GroupedBarChartModule;
     /** Gets or Sets the padding between groups of bars. */
-    betweenGroupsPadding(padding?: number): GroupedBarChartModule;
-    /** Gets or Sets the grid mode. */
-    grid(gridMode?: GridTypes): GroupedBarChartModule;
+    betweenGroupsPadding(): number;
+    betweenGroupsPadding(padding: number): GroupedBarChartModule;
+    /**
+     * Gets or Sets the grid mode.
+     *
+     * The getter is `null` until one is set: the chart draws no configurable
+     * grid by default. The setter takes `null` for the same reason -- the
+     * chart's own JSDoc documents `null` as the default, and assigning it back
+     * is how a grid is turned off again.
+     */
+    grid(): GridTypes | null;
+    grid(gridMode: GridTypes | null): GroupedBarChartModule;
     /** Gets or Sets the horizontal direction of the chart */
-    isHorizontal(isHorizontal?: boolean): GroupedBarChartModule;
+    isHorizontal(): boolean;
+    isHorizontal(isHorizontal: boolean): GroupedBarChartModule;
     /** Gets or Sets the minimum width of the graph in order to show the tooltip */
-    tooltipThreshold(threshold?: number): GroupedBarChartModule;
+    tooltipThreshold(): number;
+    tooltipThreshold(threshold: number): GroupedBarChartModule;
     /**
      * Gets or Sets the locale which our formatting functions use.
      * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     *
+     * The getter is `null` until one is set: the chart formats with d3-format's
+     * own default locale until then.
      */
-    valueLocale(localObject?: LocalObject | null): GroupedBarChartModule;
+    valueLocale(): LocalObject | null;
+    valueLocale(localObject: LocalObject | null): GroupedBarChartModule;
     /** Gets or Sets the number of ticks of the x axis on the chart */
-    xTicks(ticks?: number): GroupedBarChartModule;
-    /** Gets or Sets the y-axis label of the chart */
-    yAxisLabel(yAxisLabel?: string): GroupedBarChartModule;
+    xTicks(): number;
+    xTicks(ticks: number): GroupedBarChartModule;
+    /**
+     * Gets or Sets the y-axis label of the chart
+     *
+     * The getter is `undefined` until one is set: the chart has no default
+     * label and only appends the text element once one arrives.
+     */
+    yAxisLabel(): string | undefined;
+    yAxisLabel(yAxisLabel: string): GroupedBarChartModule;
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
      * The method accepts both positive and negative values.
      */
-    yAxisLabelOffset(yAxisLabelOffset?: number): GroupedBarChartModule;
+    yAxisLabelOffset(): number;
+    yAxisLabelOffset(yAxisLabelOffset: number): GroupedBarChartModule;
     /** Gets or Sets the number of ticks of the y axis on the chart */
-    yTicks(ticks?: number): GroupedBarChartModule;
+    yTicks(): number;
+    yTicks(ticks: number): GroupedBarChartModule;
     /** Gets or Sets the x and y offset of ticks of the y axis on the chart */
-    yTickTextOffset(yTickTextOffset?: Offset): GroupedBarChartModule;
+    yTickTextOffset(): Offset;
+    yTickTextOffset(yTickTextOffset: Offset): GroupedBarChartModule;
     /** Gets or Sets the `group` key of the data */
     groupLabel(): string;
     groupLabel(value: string): GroupedBarChartModule;

@@ -67,3 +67,16 @@ legend().colorMap()['one'];
 donut().centeredTextFunction(() => undefined);
 // @ts-expect-error a comparator has to return a number
 donut().orderingFunction(() => undefined);
+
+// Three of the grouped bar's getters are wider than their setter, because the
+// chart has no usable default for any of them: `grid` and `valueLocale` are
+// `null` in its own `let` block and `yAxisLabel` has no initialiser. Each line
+// below is an unguarded read that must not compile, which is the control for
+// the width -- narrowing any of these three getters back to its setter's type
+// leaves the directive unused and fails the build with TS2578.
+// @ts-expect-error possibly null
+groupedBar().grid().length;
+// @ts-expect-error possibly null
+groupedBar().valueLocale().decimal;
+// @ts-expect-error possibly undefined
+groupedBar().yAxisLabel().length;
