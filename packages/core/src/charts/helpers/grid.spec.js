@@ -119,6 +119,66 @@ describe('grid helper', () => {
         });
     });
 
+    describe('accessors', () => {
+        // The runtime half of what `GridBaseGenerator`'s overloads declare.
+        // Every chart that draws a grid chains its setters, and reading one
+        // back has to give the value rather than the generator -- which is the
+        // contract the single-signature typing described wrongly, and which
+        // nothing here pinned before.
+        it('returns the generator from every setter, so the calls chain', () => {
+            const generator = gridHorizontal(yScale());
+
+            expect(generator.range([0, 200])).toBe(generator);
+            expect(generator.ticks(5)).toBe(generator);
+            expect(generator.hideEdges('first')).toBe(generator);
+            expect(generator.offsetStart(2)).toBe(generator);
+            expect(generator.offsetEnd(3)).toBe(generator);
+            expect(generator.extendedLine(10)).toBe(generator);
+            expect(generator.highlight(4)).toBe(generator);
+            expect(generator.tickValues([1, 2])).toBe(generator);
+        });
+
+        it('reads each value back rather than the generator', () => {
+            const scale = yScale();
+            const generator = gridHorizontal(scale)
+                .range([0, 200])
+                .ticks(5)
+                .hideEdges('last')
+                .offsetStart(2)
+                .offsetEnd(3)
+                .extendedLine(10)
+                .highlight(4);
+
+            expect(generator.scale()).toBe(scale);
+            expect(generator.range()).toEqual([0, 200]);
+            expect(generator.ticks()).toBe(5);
+            expect(generator.hideEdges()).toBe('last');
+            expect(generator.offsetStart()).toBe(2);
+            expect(generator.offsetEnd()).toBe(3);
+            expect(generator.extendedLine()).toBe(10);
+            expect(generator.highlight()).toBe(4);
+        });
+
+        it('starts ticks, tickValues, extendedLine and highlight at null', () => {
+            const generator = gridHorizontal(yScale());
+
+            expect(generator.ticks()).toBeNull();
+            expect(generator.tickValues()).toBeNull();
+            expect(generator.extendedLine()).toBeNull();
+            expect(generator.highlight()).toBeNull();
+        });
+
+        it('copies the tick values it hands back, and clears them on null', () => {
+            const generator = gridHorizontal(yScale()).tickValues([1, 2]);
+            const read = generator.tickValues();
+
+            read.push(3);
+
+            expect(generator.tickValues()).toEqual([1, 2]);
+            expect(generator.tickValues(null).tickValues()).toBeNull();
+        });
+    });
+
     describe('gridVertical', () => {
         it('draws vertical lines and names the extended line and highlight after its direction', () => {
             gridVertical(xScale())
