@@ -4,6 +4,10 @@ import { interpolate } from 'd3-interpolate';
 import { scaleOrdinal } from 'd3-scale';
 import { pie, arc } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
+import type { Dispatch } from 'd3-dispatch';
+import type { ScaleOrdinal } from 'd3-scale';
+import type { BaseType, Selection } from 'd3-selection';
+import type { Arc, Pie, PieArcDatum } from 'd3-shape';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -13,6 +17,87 @@ import { calculatePercent } from '../helpers/number';
 import { emptyDonutData } from '../helpers/constants';
 import { donutLoadingMarkup } from '../helpers/load';
 import { motion } from '../helpers/constants';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import type {
+    DonutChartDataShape,
+    DonutChartModule,
+    DonutEmptyDataConfig,
+} from '../../typings/charts/donut-chart';
+
+/**
+ * The chart's own svg, and the selections derived from it. The datum and parent
+ * generics are the migration plan's bounded `any`, as in `bullet.ts`: these are
+ * module-level variables reassigned from several differently-shaped selections,
+ * so naming one concrete datum would reject the others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/**
+ * The datum mid-clean, after the quantity/name coercion and before the
+ * percentage pass: `cleanData` sets `percentage` to `d[percentageLabel] ||
+ * null` and fills it in on the next map.
+ */
+type DonutCleanDatum = Omit<DonutChartDataShape, 'percentage'> & {
+    percentage: number | null;
+};
+
+/**
+ * What `cleanData` returns and every drawing function reads.
+ *
+ * `percentage` is a **string** here, where the published `DonutChartDataShape`
+ * declares a number. That is the runtime: `cleanData` ends with
+ * `d.percentage = String(...)`, and the default `centeredTextFunction`
+ * interpolates it into `${d.percentage}%`. So the datum handed to a consumer's
+ * own `centeredTextFunction` has a string in that field while the declaration
+ * promises a number -- a real mismatch, left alone here because it changes a
+ * published callback's parameter rather than this conversion.
+ */
+type DonutDatum = Omit<DonutChartDataShape, 'percentage'> & {
+    percentage: string;
+};
+
+/**
+ * One slice, as d3's pie layout produces it, plus the two radii this chart
+ * mutates onto the datum itself. `reduceOuterRadius` and the growth tween both
+ * write `outerRadius`, and `tweenLoading` writes `innerRadius`, which is how
+ * the hover and loading animations work -- the arc generator reads them back
+ * off the datum rather than from its own accessors.
+ */
+type DonutArcDatum = PieArcDatum<DonutDatum> & {
+    outerRadius?: number;
+    innerRadius?: number;
+};
+
+/**
+ * A slice's path element -- the thing the hover handlers receive and the thing
+ * `initHighlightSlice` picks out.
+ *
+ * `__data__` is d3's own property: it stores a node's bound datum on the node,
+ * and `initHighlightSlice` reads it back that way rather than through a
+ * selection, so it is part of how this chart works.
+ */
+type SliceElement = SVGPathElement & { __data__?: DonutArcDatum };
+
+/**
+ * The `g.arc` wrapper each slice sits in, which is what `storeAngle` writes
+ * `_current` onto.
+ *
+ * Nothing reads it. d3's own examples stash the previous angles on the node so
+ * the next transition can interpolate from them, and `tweenArc` below is the
+ * function that would -- but it is never called, so `storeAngle` and `tweenArc`
+ * are a vestigial pair. Preserved rather than removed, since a conversion is
+ * the wrong place to delete behaviour, even behaviour that does nothing.
+ */
+type ArcGroupElement = SVGGElement & { _current?: DonutArcDatum };
 
 /**
  * Reusable Donut Chart API class that renders a
@@ -59,8 +144,11 @@ import { motion } from '../helpers/constants';
  *     }
  * ]
  */
-export default function module() {
-    let margin = {
+export default function module(): DonutChartModule {
+    // Split into `let` and `const` rather than the one `let` chain the
+    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
+    // error, and the bindings below it are never reassigned.
+    let margin: ChartMarginParams = {
             top: 0,
             right: 0,
             bottom: 0,
@@ -69,64 +157,80 @@ export default function module() {
         width = 300,
         height = 300,
         isLoading = false,
-        ease = easeCubicInOut,
-        pieDrawingTransitionDuration = motion.duration,
-        pieHoverTransitionDuration = 150,
         radiusHoverOffset = 12,
-        paddingAngle = 0,
-        data,
-        chartWidth,
-        chartHeight,
+        // Reassigned by the `animationDuration` accessor, so it stays a `let`.
+        pieDrawingTransitionDuration = motion.duration,
+        data: DonutDatum[],
+        chartWidth: number,
+        chartHeight: number,
         externalRadius = 140,
         internalRadius = 45.5,
-        legendWidth = externalRadius + internalRadius,
-        layout,
-        shape,
-        slices,
-        svg,
+        layout: Pie<unknown, DonutDatum>,
+        shape: Arc<unknown, DonutArcDatum>,
+        slices: ChartSelection<ArcGroupElement>,
+        svg: ChartSelection<SVGSVGElement>,
         isAnimated = false,
         isEmpty = false,
-        highlightedSliceId,
-        highlightedSlice,
+        // No default: the chart highlights nothing until an id arrives, which
+        // is what the declaration now says.
+        highlightedSliceId: number | undefined,
+        // A DOM element, not a datum: `initHighlightSlice` assigns it from
+        // `.node()` and the hover handlers compare it against `el`.
+        highlightedSlice: SliceElement | null,
         hasFixedHighlightedSlice = false,
         hasHoverAnimation = true,
         hasLastHoverSliceHighlighted = false,
-        lastHighlightedSlice = null,
-        emptyDataConfig = {
+        lastHighlightedSlice: SliceElement | null = null,
+        emptyDataConfig: DonutEmptyDataConfig = {
             emptySliceColor: '#EFF2F5',
             showEmptySlice: false,
         },
-        quantityLabel = 'quantity',
-        nameLabel = 'name',
-        percentageLabel = 'percentage',
         percentageFormat = '.1f',
-        numberFormat,
+        numberFormat: string | undefined,
         hasCenterLegend = true,
         // colors
-        colorScale,
-        nameToColorMap = null,
-        colorSchema = colorHelper.colorSchemas.britecharts,
-        centeredTextFunction = (d) => `${d.percentage}% ${d.name}`,
-        // utils
-        storeAngle = function (d) {
-            this._current = d;
-        },
-        reduceOuterRadius = (d) => {
-            d.outerRadius = externalRadius - radiusHoverOffset;
-        },
-        orderingFunction = (a, b) => b.quantity - a.quantity,
-        sumValues = (data) => data.reduce((total, d) => d.quantity + total, 0),
-        // extractors
-        getQuantity = ({ quantity }) => quantity,
-        getName = ({ name }) => name,
-        getSliceFill = ({ data }) => nameToColorMap[data.name],
-        // events
-        dispatcher = dispatch(
-            'customMouseOver',
-            'customMouseOut',
-            'customMouseMove',
-            'customClick'
-        );
+        colorScale: ScaleOrdinal<string, string>,
+        nameToColorMap: Record<string, string> | null = null,
+        colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
+        centeredTextFunction: (d: DonutDatum) => string = (d) =>
+            `${d.percentage}% ${d.name}`,
+        orderingFunction: (a: DonutDatum, b: DonutDatum) => number = (a, b) =>
+            b.quantity - a.quantity;
+
+    const ease = easeCubicInOut;
+    const pieHoverTransitionDuration = 150;
+    const paddingAngle = 0;
+    const legendWidth = externalRadius + internalRadius;
+    // Donut exposes no accessor for any of the three, unlike the charts that
+    // let the data name its own keys, so all three are constants.
+    const quantityLabel = 'quantity';
+    const nameLabel = 'name';
+    const percentageLabel = 'percentage';
+
+    // utils
+    const storeAngle = function (this: ArcGroupElement, d: DonutArcDatum) {
+        this._current = d;
+    };
+    const reduceOuterRadius = (d: DonutArcDatum) => {
+        d.outerRadius = externalRadius - radiusHoverOffset;
+    };
+    const sumValues = (data: DonutCleanDatum[]) =>
+        data.reduce((total, d) => d.quantity + total, 0);
+    // extractors
+    const getQuantity = ({ quantity }: DonutDatum) => quantity;
+
+    const getName = ({ name }: DonutDatum) => name;
+    // `buildColorScale` fills `nameToColorMap` before any slice is drawn, so
+    // it is non-null everywhere this runs.
+    const getSliceFill = ({ data }: DonutArcDatum) =>
+        (nameToColorMap as Record<string, string>)[data.name];
+    // events
+    const dispatcher: Dispatch<object> = dispatch(
+        'customMouseOver',
+        'customMouseOut',
+        'customMouseMove',
+        'customClick'
+    );
 
     /**
      * This function creates the graph using the selection as container
@@ -135,10 +239,21 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      * @param {DonutChartData} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            DonutChartDataShape[],
+            TParent,
+            TParentDatum
+        >
+    ) {
         _selection.each(function (_data) {
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
             data = cleanData(_data);
 
             buildSVG(this);
@@ -167,16 +282,16 @@ export default function module() {
      * Builds color scale for chart, if any colorSchema was defined
      * @private
      */
-    function buildColorScale() {
+    function buildColorScale(): void {
         if (colorSchema) {
-            colorScale = scaleOrdinal().range(colorSchema);
+            colorScale = scaleOrdinal<string, string>().range(colorSchema);
 
             nameToColorMap =
                 nameToColorMap ||
                 colorScale
                     .domain(data.map(getName))
                     .domain()
-                    .reduce((memo, item) => {
+                    .reduce<Record<string, string>>((memo, item) => {
                         memo[item] = colorScale(item);
 
                         return memo;
@@ -188,8 +303,8 @@ export default function module() {
      * Builds containers for the chart, the legend and a wrapper for all of them
      * @private
      */
-    function buildContainerGroups() {
-        let container = svg
+    function buildContainerGroups(): void {
+        const container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${width / 2}, ${height / 2})`);
@@ -204,8 +319,8 @@ export default function module() {
      * Builds the pie layout that will produce data ready to draw
      * @private
      */
-    function buildLayout() {
-        layout = pie()
+    function buildLayout(): void {
+        layout = pie<DonutDatum>()
             .padAngle(paddingAngle)
             .value(getQuantity)
             .sort(orderingFunction);
@@ -215,8 +330,10 @@ export default function module() {
      * Builds the shape function
      * @private
      */
-    function buildShape() {
-        shape = arc().innerRadius(internalRadius).padRadius(externalRadius);
+    function buildShape(): void {
+        shape = arc<DonutArcDatum>()
+            .innerRadius(internalRadius)
+            .padRadius(externalRadius);
     }
 
     /**
@@ -225,7 +342,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element): void {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -247,29 +364,34 @@ export default function module() {
      * @return {DonutChartData}         Clean data with percentages
      * @private
      */
-    function cleanData(data) {
-        let dataWithPercentages;
-        let cleanData = data.reduce((acc, d) => {
+    function cleanData(data: DonutChartDataShape[]): DonutDatum[] {
+        const cleanData = data.reduce<DonutCleanDatum[]>((acc, d) => {
             // Skip data without quantity
             if (d[quantityLabel] === undefined || d[quantityLabel] === null) {
                 return acc;
             }
 
-            d.quantity = +d[quantityLabel];
-            d.name = String(d[nameLabel]);
-            d.percentage = d[percentageLabel] || null;
+            // Read through `d`, which is typed as the input, and write through
+            // the mid-clean view of the same object.
+            const datum = d as unknown as DonutCleanDatum;
 
-            return [...acc, d];
+            datum.quantity = +d[quantityLabel];
+            datum.name = String(d[nameLabel]);
+            datum.percentage = d[percentageLabel] || null;
+
+            return [...acc, datum];
         }, []);
 
-        let totalQuantity = sumValues(cleanData);
+        const totalQuantity = sumValues(cleanData);
 
         if (totalQuantity === 0 && emptyDataConfig.showEmptySlice) {
             isEmpty = true;
         }
 
-        dataWithPercentages = cleanData.map((d) => {
-            d.percentage = String(
+        return cleanData.map((d) => {
+            const datum = d as unknown as DonutDatum;
+
+            datum.percentage = String(
                 d.percentage ||
                     calculatePercent(
                         d[quantityLabel],
@@ -278,17 +400,15 @@ export default function module() {
                     )
             );
 
-            return d;
+            return datum;
         });
-
-        return dataWithPercentages;
     }
 
     /**
      * Cleans any value that could be on the legend text element
      * @private
      */
-    function cleanLegend() {
+    function cleanLegend(): void {
         svg.select('.donut-text').text('');
     }
 
@@ -296,7 +416,7 @@ export default function module() {
      * Cleans the loading state
      * @private
      */
-    function cleanLoadingState() {
+    function cleanLoadingState(): void {
         svg.select('.loading-state-group svg').remove();
     }
 
@@ -304,16 +424,20 @@ export default function module() {
      * Draw an empty slice
      * @private
      */
-    function drawEmptySlice() {
+    function drawEmptySlice(): void {
         if (slices) {
             svg.selectAll('g.arc').remove();
         }
         slices = svg
             .select('.chart-group')
-            .selectAll('g.arc')
-            .data(layout(emptyDonutData));
+            .selectAll<ArcGroupElement, DonutArcDatum>('g.arc')
+            // `emptyDonutData` is the placeholder slice pair from `constants`,
+            // whose `percentage` is a number where a cleaned datum's is a
+            // string. It never reaches `centeredTextFunction`, which is the
+            // only thing that reads the field.
+            .data(layout(emptyDonutData as unknown as DonutDatum[]));
 
-        let newSlices = slices
+        const newSlices = slices
             .enter()
             .append('g')
             .each(storeAngle)
@@ -322,7 +446,13 @@ export default function module() {
             .append('path');
 
         newSlices
-            .merge(slices)
+            .merge(
+                // The enter selection holds the appended paths while `slices`
+                // holds their `g` wrappers. Merging across the two element
+                // types is what this chart has always done; d3 only cares that
+                // the groups line up.
+                slices as unknown as ChartSelection<SVGPathElement>
+            )
             .attr('fill', emptyDataConfig.emptySliceColor)
             .attr('d', shape)
             .transition()
@@ -339,7 +469,7 @@ export default function module() {
      * @param  {Object} obj Data object
      * @private
      */
-    function drawLegend(obj) {
+    function drawLegend(obj: DonutArcDatum): void {
         if (obj.data && hasCenterLegend) {
             svg.select('.donut-text')
                 .text(() => centeredTextFunction(obj.data))
@@ -354,7 +484,7 @@ export default function module() {
      * Draws the loading state
      * @private
      */
-    function drawLoadingState() {
+    function drawLoadingState(): void {
         svg.select('.loading-state-group').html(donutLoadingMarkup);
     }
 
@@ -362,7 +492,7 @@ export default function module() {
      * Draws the slices of the donut
      * @private
      */
-    function drawSlices() {
+    function drawSlices(): void {
         // Not ideal, we need to figure out how to call exit for nested elements
         if (slices) {
             svg.selectAll('g.arc').remove();
@@ -370,10 +500,10 @@ export default function module() {
 
         slices = svg
             .select('.chart-group')
-            .selectAll('g.arc')
+            .selectAll<ArcGroupElement, DonutArcDatum>('g.arc')
             .data(layout(data));
 
-        let newSlices = slices
+        const newSlices = slices
             .enter()
             .append('g')
             .each(storeAngle)
@@ -383,7 +513,13 @@ export default function module() {
 
         if (isAnimated) {
             newSlices
-                .merge(slices)
+                .merge(
+                    // The enter selection holds the appended paths while `slices`
+                    // holds their `g` wrappers. Merging across the two element
+                    // types is what this chart has always done; d3 only cares that
+                    // the groups line up.
+                    slices as unknown as ChartSelection<SVGPathElement>
+                )
                 .attr('fill', getSliceFill)
                 .on('mouseover', function (event, d) {
                     handleMouseOver(this, d, chartWidth, chartHeight, event);
@@ -403,7 +539,13 @@ export default function module() {
                 .attrTween('d', tweenLoading);
         } else {
             newSlices
-                .merge(slices)
+                .merge(
+                    // The enter selection holds the appended paths while `slices`
+                    // holds their `g` wrappers. Merging across the two element
+                    // types is what this chart has always done; d3 only cares that
+                    // the groups line up.
+                    slices as unknown as ChartSelection<SVGPathElement>
+                )
                 .attr('fill', getSliceFill)
                 .attr('d', shape)
                 .on('mouseover', function (event, d) {
@@ -429,10 +571,18 @@ export default function module() {
      * @param  {DOMElement} options.data Dom element to check
      * @return {DOMElement}              Dom element if it has the same id
      */
-    function filterHighlightedSlice({ data }) {
+    function filterHighlightedSlice(
+        this: SliceElement,
+        { data }: DonutArcDatum
+    ): SliceElement | undefined {
+        // Returns the element rather than a boolean, which is what `.select()`
+        // takes: a function giving the descendant to select, or nothing. The
+        // JSDoc above has always said so.
         if (data.id === highlightedSliceId) {
             return this;
         }
+
+        return undefined;
     }
 
     /**
@@ -440,7 +590,13 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOver(el, d, chartWidth, chartHeight, event) {
+    function handleMouseOver(
+        el: SliceElement,
+        d: DonutArcDatum,
+        chartWidth: number,
+        chartHeight: number,
+        event: MouseEvent
+    ): void {
         drawLegend(d);
         dispatcher.call('customMouseOver', el, d, pointer(event, el), [
             chartWidth,
@@ -472,7 +628,13 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseMove(el, d, chartWidth, chartHeight, event) {
+    function handleMouseMove(
+        el: SliceElement,
+        d: DonutArcDatum,
+        chartWidth: number,
+        chartHeight: number,
+        event: MouseEvent
+    ): void {
         dispatcher.call('customMouseMove', el, d, pointer(event, el), [
             chartWidth,
             chartHeight,
@@ -484,7 +646,13 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOut(el, d, chartWidth, chartHeight, event) {
+    function handleMouseOut(
+        el: SliceElement,
+        d: DonutArcDatum,
+        chartWidth: number,
+        chartHeight: number,
+        event: MouseEvent
+    ): void {
         cleanLegend();
 
         // When there is a fixed highlighted slice,
@@ -494,7 +662,7 @@ export default function module() {
             hasFixedHighlightedSlice &&
             !hasLastHoverSliceHighlighted
         ) {
-            drawLegend(highlightedSlice.__data__);
+            drawLegend(highlightedSlice.__data__ as DonutArcDatum);
             tweenGrowth(highlightedSlice, externalRadius);
         }
 
@@ -512,7 +680,7 @@ export default function module() {
         }
 
         if (hasLastHoverSliceHighlighted) {
-            drawLegend(el.__data__);
+            drawLegend(el.__data__ as DonutArcDatum);
             tweenGrowth(el, externalRadius);
             lastHighlightedSlice = el;
         }
@@ -528,7 +696,13 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleClick(el, d, chartWidth, chartHeight, event) {
+    function handleClick(
+        el: SliceElement,
+        d: DonutArcDatum,
+        chartWidth: number,
+        chartHeight: number,
+        event: MouseEvent
+    ): void {
         dispatcher.call('customClick', el, d, pointer(event, el), [
             chartWidth,
             chartHeight,
@@ -539,14 +713,22 @@ export default function module() {
      * Find the slice by id and growth it if needed
      * @private
      */
-    function initHighlightSlice() {
+    function initHighlightSlice(): void {
         highlightedSlice = svg
-            .selectAll('.chart-group .arc path')
-            .select(filterHighlightedSlice)
+            .selectAll<SliceElement, DonutArcDatum>('.chart-group .arc path')
+            // d3 types `.select(fn)` as returning an element rather than
+            // "element or nothing", while its implementation skips a node the
+            // function declines. That is what this filter relies on.
+            .select(
+                filterHighlightedSlice as unknown as (
+                    this: SliceElement,
+                    d: DonutArcDatum
+                ) => SliceElement
+            )
             .node();
 
         if (highlightedSlice) {
-            drawLegend(highlightedSlice.__data__);
+            drawLegend(highlightedSlice.__data__ as DonutArcDatum);
             tweenGrowth(
                 highlightedSlice,
                 externalRadius,
@@ -558,7 +740,7 @@ export default function module() {
     /**
      * Creates the text element that will hold the legend of the chart
      */
-    function initTooltip() {
+    function initTooltip(): void {
         svg.select('.legend-group').append('text').attr('class', 'donut-text');
     }
 
@@ -570,12 +752,12 @@ export default function module() {
      * @return {Function}       Tweening function for the donut shape
      * @private
      */
-    function tweenArc(a) {
-        let i = interpolate(this._current, a);
+    function tweenArc(this: ArcGroupElement, a: DonutArcDatum) {
+        const i = interpolate(this._current, a);
 
         this._current = i(0);
 
-        return function (t) {
+        return function (t: number) {
             return shape(i(t));
         };
     }
@@ -588,17 +770,26 @@ export default function module() {
      * @param  {Number} delay       Delay of animation
      * @private
      */
-    function tweenGrowth(slice, outerRadius, delay = 0) {
-        select(slice)
+    function tweenGrowth(
+        slice: SliceElement,
+        outerRadius: number,
+        delay = 0
+    ): void {
+        // The datum generic has to be named: `select(node)` on its own leaves
+        // it `unknown`, and the tween below reads `outerRadius` off it.
+        select<SliceElement, DonutArcDatum>(slice)
             .transition()
             .delay(delay)
-            .attrTween('d', function (d) {
-                let i = interpolate(d.outerRadius, outerRadius);
+            .attrTween('d', function (d: DonutArcDatum) {
+                // `outerRadius` is optional on the datum because the chart
+                // writes it rather than the layout, and `reduceOuterRadius`
+                // has always run before this tween.
+                const i = interpolate(d.outerRadius as number, outerRadius);
 
-                return (t) => {
+                return (t: number) => {
                     d.outerRadius = i(t);
 
-                    return shape(d);
+                    return shape(d) as string;
                 };
             });
     }
@@ -611,14 +802,13 @@ export default function module() {
      * @return {Function}   Tween function
      * @private
      */
-    function tweenLoading(b) {
-        let i;
-
+    function tweenLoading(b: DonutArcDatum) {
         b.innerRadius = 0;
-        i = interpolate({ startAngle: 0, endAngle: 0 }, b);
 
-        return function (t) {
-            return shape(i(t));
+        const i = interpolate({ startAngle: 0, endAngle: 0 }, b);
+
+        return function (t: number) {
+            return shape(i(t)) as string;
         };
     }
 
@@ -629,8 +819,12 @@ export default function module() {
      * @param  {Number} legendWidth     Width of the container
      * @private
      */
-    function wrapText(text, legendWidth) {
-        let fontSize = externalRadius / 5;
+    function wrapText(
+        // A selection, despite the name: the body calls `text.node()`.
+        text: ChartSelection<BaseType>,
+        legendWidth: number
+    ): void {
+        const fontSize = externalRadius / 5;
 
         textHelper.wrapText.call(null, 0, fontSize, legendWidth, text.node());
     }
@@ -642,14 +836,17 @@ export default function module() {
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.animationDuration = function (_x) {
+    (exports as DonutChartModule).animationDuration = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return pieDrawingTransitionDuration;
         }
         pieDrawingTransitionDuration = _x;
 
         return this;
-    };
+    } as DonutChartModule['animationDuration'];
 
     /**
      * Gets or Sets the centeredTextFunction of the chart. If function is provided
@@ -662,14 +859,21 @@ export default function module() {
      * @public
      * @example donutChart.centeredTextFunction(d => `${d.id} ${d.quantity}`)
      */
-    exports.centeredTextFunction = function (_x) {
+    (exports as DonutChartModule).centeredTextFunction = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return centeredTextFunction;
         }
-        centeredTextFunction = _x;
+        // The declaration types the callback against `DonutChartDataShape`,
+        // whose `percentage` is a number, while the datum this chart hands it
+        // has the string `cleanData` produced. That mismatch is the deferred
+        // finding noted on `DonutDatum`; the cast is where it surfaces.
+        centeredTextFunction = _x as unknown as (d: DonutDatum) => string;
 
         return this;
-    };
+    } as DonutChartModule['centeredTextFunction'];
 
     /**
      * Gets or Sets the colorMap of the chart
@@ -678,14 +882,17 @@ export default function module() {
      * @example stackedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
      * @public
      */
-    exports.colorMap = function (_x) {
+    (exports as DonutChartModule).colorMap = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return nameToColorMap;
         }
         nameToColorMap = _x;
 
         return this;
-    };
+    } as DonutChartModule['colorMap'];
 
     /**
      * Gets or Sets the colorSchema of the chart
@@ -693,14 +900,17 @@ export default function module() {
      * @return { String | module}   Current colorSchema or Chart module to chain calls
      * @public
      */
-    exports.colorSchema = function (_x) {
+    (exports as DonutChartModule).colorSchema = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return colorSchema;
         }
         colorSchema = _x;
 
         return this;
-    };
+    } as DonutChartModule['colorSchema'];
 
     /**
      * Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
@@ -711,14 +921,17 @@ export default function module() {
      * @public
      * @example donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
      */
-    exports.emptyDataConfig = function (_x) {
+    (exports as DonutChartModule).emptyDataConfig = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return emptyDataConfig;
         }
         emptyDataConfig = _x;
 
         return this;
-    };
+    } as DonutChartModule['emptyDataConfig'];
 
     /**
      * Chart exported to png and a download action is fired
@@ -727,9 +940,16 @@ export default function module() {
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
-    exports.exportChart = function (filename, title) {
-        return exportChart.call(exports, svg, filename, title);
-    };
+    (exports as DonutChartModule).exportChart = function (filename, title) {
+        // The module, not the bare function: `exportChart` needs `this` to
+        // answer `width()`, `height()` and `margin()`.
+        return exportChart.call(
+            exports as DonutChartModule,
+            svg,
+            filename,
+            title
+        );
+    } as DonutChartModule['exportChart'];
 
     /**
      * Gets or Sets the externalRadius of the chart
@@ -737,14 +957,17 @@ export default function module() {
      * @return { (Number | Module) }    Current externalRadius or Donut Chart module to chain calls
      * @public
      */
-    exports.externalRadius = function (_x) {
+    (exports as DonutChartModule).externalRadius = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return externalRadius;
         }
         externalRadius = _x;
 
         return this;
-    };
+    } as DonutChartModule['externalRadius'];
 
     /**
      * Gets or Sets the hasCenterLegend property of the chart, making it display
@@ -754,14 +977,17 @@ export default function module() {
      * @return {boolean | Module}   Current hasCenterLegend flag or Chart module
      * @public
      */
-    exports.hasCenterLegend = function (_x) {
+    (exports as DonutChartModule).hasCenterLegend = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasCenterLegend;
         }
         hasCenterLegend = _x;
 
         return this;
-    };
+    } as DonutChartModule['hasCenterLegend'];
 
     /**
      * Gets or Sets the hasHoverAnimation property of the chart. By default,
@@ -771,14 +997,17 @@ export default function module() {
      * @return {boolean | module}   Current hasHoverAnimation flag or Chart module
      * @public
      */
-    exports.hasHoverAnimation = function (_x) {
+    (exports as DonutChartModule).hasHoverAnimation = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasHoverAnimation;
         }
         hasHoverAnimation = _x;
 
         return this;
-    };
+    } as DonutChartModule['hasHoverAnimation'];
 
     /**
      * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
@@ -788,14 +1017,17 @@ export default function module() {
      * @return {boolean | module}   Current hasFixedHighlightedSlice flag or Chart module
      * @public
      */
-    exports.hasFixedHighlightedSlice = function (_x) {
+    (exports as DonutChartModule).hasFixedHighlightedSlice = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasFixedHighlightedSlice;
         }
         hasFixedHighlightedSlice = _x;
 
         return this;
-    };
+    } as DonutChartModule['hasFixedHighlightedSlice'];
 
     /**
      * Gets or sets the hasLastHoverSliceHighlighted property.
@@ -808,14 +1040,17 @@ export default function module() {
      * @return {boolean | module}   Current hasLastHoverSliceHighlighted value or Chart module
      * @public
      */
-    exports.hasLastHoverSliceHighlighted = function (_x) {
+    (exports as DonutChartModule).hasLastHoverSliceHighlighted = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasLastHoverSliceHighlighted;
         }
         hasLastHoverSliceHighlighted = _x;
 
         return this;
-    };
+    } as DonutChartModule['hasLastHoverSliceHighlighted'];
 
     /**
      * Gets or Sets the height of the chart
@@ -823,14 +1058,17 @@ export default function module() {
      * @return { (Number | Module) }    Current height or Donut Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    (exports as DonutChartModule).height = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return height;
         }
         height = _x;
 
         return this;
-    };
+    } as DonutChartModule['height'];
 
     /**
      * Gets or Sets the id of the slice to highlight
@@ -838,14 +1076,17 @@ export default function module() {
      * @return { (Number | Module) }    Current highlighted slice id or Donut Chart module to chain calls
      * @public
      */
-    exports.highlightSliceById = function (_x) {
+    (exports as DonutChartModule).highlightSliceById = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return highlightedSliceId;
         }
         highlightedSliceId = _x;
 
         return this;
-    };
+    } as DonutChartModule['highlightSliceById'];
 
     /**
      * Gets or Sets the internalRadius of the chart
@@ -853,14 +1094,17 @@ export default function module() {
      * @return { (Number | Module) }    Current internalRadius or Donut Chart module to chain calls
      * @public
      */
-    exports.internalRadius = function (_x) {
+    (exports as DonutChartModule).internalRadius = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return internalRadius;
         }
         internalRadius = _x;
 
         return this;
-    };
+    } as DonutChartModule['internalRadius'];
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
@@ -870,14 +1114,17 @@ export default function module() {
      * @return { Boolean | module}      Current isAnimated flag or Chart module
      * @public
      */
-    exports.isAnimated = function (_x) {
+    (exports as DonutChartModule).isAnimated = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isAnimated;
         }
         isAnimated = _x;
 
         return this;
-    };
+    } as DonutChartModule['isAnimated'];
 
     /**
      * Gets or Sets the loading state of the chart
@@ -885,14 +1132,17 @@ export default function module() {
      * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.isLoading = function (_flag) {
+    (exports as DonutChartModule).isLoading = function (
+        this: DonutChartModule,
+        _flag
+    ) {
         if (!arguments.length) {
             return isLoading;
         }
         isLoading = _flag;
 
         return this;
-    };
+    } as DonutChartModule['isLoading'];
 
     /**
      * Gets or Sets the margin of the chart
@@ -900,7 +1150,10 @@ export default function module() {
      * @return { (Object | Module) }    Current margin or Donut Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    (exports as DonutChartModule).margin = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return margin;
         }
@@ -910,7 +1163,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as DonutChartModule['margin'];
 
     /**
      * Gets or Sets the number format of the donut chart
@@ -918,14 +1171,17 @@ export default function module() {
      * @return {string | module}    Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function (_x) {
+    (exports as DonutChartModule).numberFormat = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    };
+    } as DonutChartModule['numberFormat'];
 
     /**
      * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -935,11 +1191,19 @@ export default function module() {
      * @return {module} Bar Chart
      * @public
      */
-    exports.on = function () {
-        let value = dispatcher.on.apply(dispatcher, arguments);
+    (exports as DonutChartModule).on = function (
+        ...args: [string] | [string, () => void]
+    ) {
+        // Rest parameters and a spread where this read `arguments` and used
+        // `.apply`, following `heatmap.ts`: the TypeScript lint override makes
+        // `prefer-spread` an error, and the two shapes `on` is called with --
+        // a lookup and a registration -- are exactly what the tuple says.
+        const value = dispatcher.on(
+            ...(args as Parameters<typeof dispatcher.on>)
+        );
 
         return value === dispatcher ? exports : value;
-    };
+    } as unknown as DonutChartModule['on'];
 
     /**
      * Changes the order of items given custom function
@@ -947,14 +1211,20 @@ export default function module() {
      * @return { (Function | Module) }    Void function with no return
      * @public
      */
-    exports.orderingFunction = function (_x) {
+    (exports as DonutChartModule).orderingFunction = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return orderingFunction;
         }
-        orderingFunction = _x;
+        orderingFunction = _x as unknown as (
+            a: DonutDatum,
+            b: DonutDatum
+        ) => number;
 
         return this;
-    };
+    } as DonutChartModule['orderingFunction'];
 
     /**
      * Gets or Sets the percentage format for the percentage label
@@ -962,14 +1232,17 @@ export default function module() {
      * @return { (Number | Module) }    Current format or Donut Chart module to chain calls
      * @public
      */
-    exports.percentageFormat = function (_x) {
+    (exports as DonutChartModule).percentageFormat = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return percentageFormat;
         }
         percentageFormat = _x;
 
         return this;
-    };
+    } as DonutChartModule['percentageFormat'];
 
     /**
      * Gets or Sets the radiusHoverOffset of the chart
@@ -977,14 +1250,17 @@ export default function module() {
      * @return { (Number | Module) }    Current offset or Donut Chart module to chain calls
      * @public
      */
-    exports.radiusHoverOffset = function (_x) {
+    (exports as DonutChartModule).radiusHoverOffset = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return radiusHoverOffset;
         }
         radiusHoverOffset = _x;
 
         return this;
-    };
+    } as DonutChartModule['radiusHoverOffset'];
 
     /**
      * Gets or Sets the width of the chart
@@ -992,14 +1268,17 @@ export default function module() {
      * @return { (Number | Module) }    Current width or Donut Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    (exports as DonutChartModule).width = function (
+        this: DonutChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return width;
         }
         width = _x;
 
         return this;
-    };
+    } as DonutChartModule['width'];
 
-    return exports;
+    return exports as unknown as DonutChartModule;
 }
