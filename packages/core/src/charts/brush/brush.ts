@@ -146,7 +146,6 @@ export default function module(): BrushChartModule {
         xAxisFormat: AxisTimeCombinationValue | null = null,
         xTicks: number | null = null,
         xAxisCustomFormat: string | null = null,
-        // Stored and never read -- see the note on the accessor below.
         locale: string | null = null,
         brush: BrushBehavior<BrushDatum>,
         chartBrush: ChartSelection<SVGGElement>,
@@ -244,7 +243,8 @@ export default function module(): BrushChartModule {
             const axes = timeAxisHelper.getTimeSeriesAxis(
                 data,
                 width,
-                xAxisFormat
+                xAxisFormat,
+                locale
             );
 
             minor = axes.minor;
