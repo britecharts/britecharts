@@ -80,3 +80,11 @@ groupedBar().grid().length;
 groupedBar().valueLocale().decimal;
 // @ts-expect-error possibly undefined
 groupedBar().yAxisLabel().length;
+
+// The stacked bar has the same three, for the same reasons.
+// @ts-expect-error possibly null
+stackedBar().grid().length;
+// @ts-expect-error possibly null
+stackedBar().valueLocale().decimal;
+// @ts-expect-error possibly undefined
+stackedBar().yAxisLabel().length;

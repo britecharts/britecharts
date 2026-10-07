@@ -217,6 +217,68 @@ const barStackLabel: string = stackedBarChart.stackLabel();
 const stackedNameLabel: string = stackedBarChart.nameLabel();
 const stackedValueLabel: string = stackedBarChart.valueLabel();
 
+// The stacked bar's other twelve accessors, corrected with its conversion for
+// the same reason the grouped bar's eleven were: setter-only, so reading one
+// reported the chart instead of its value. Its three label getters just above
+// were never part of that.
+//
+// `hasPercentage` is the odd one: its getter is computed rather than stored,
+// reporting whether `numberFormat` is currently the percentage one. Setting it
+// and reading it back is the assertion that actually covers it.
+//
+// `grid`, `valueLocale` and `yAxisLabel` have a getter wider than their setter,
+// the same three as on the grouped bar and for the same reasons.
+// `expect-errors.ts` holds the control for those.
+const stackedPadding: number = stackedBarChart.betweenBarsPadding();
+const stackedReversed: boolean = stackedBarChart.hasReversedStacks();
+const stackedHorizontal: boolean = stackedBarChart.isHorizontal();
+const stackedAxisRatio: number = stackedBarChart.percentageAxisToMaxRatio();
+const stackedThreshold: number = stackedBarChart.tooltipThreshold();
+const stackedXTicks: number = stackedBarChart.xTicks();
+const stackedYTicks: number = stackedBarChart.yTicks();
+const stackedLabelOffset: number = stackedBarChart.yAxisLabelOffset();
+
+// Null or undefined until set.
+const stackedGrid: 'vertical' | 'horizontal' | 'full' | null =
+    stackedBarChart.grid();
+const stackedLocale: LocalObject | null = stackedBarChart.valueLocale();
+const stackedAxisLabel: string | undefined = stackedBarChart.yAxisLabel();
+
+// Computed from `numberFormat`, so it reads back what was set rather than a
+// stored flag -- and `numberFormat` itself moves with it.
+const stackedPercentage: boolean = stackedBar().hasPercentage(true)
+    .hasPercentage();
+const stackedPercentageFormat: string = stackedBar()
+    .hasPercentage(true)
+    .numberFormat();
+
+// The setters chain, and a chain crossing from an inherited surface back to a
+// stacked-bar-specific one still resolves.
+const stackedChained: number = stackedBar()
+    .isAnimated(true)
+    .grid('full')
+    .grid(null)
+    .hasReversedStacks(true)
+    .betweenBarsPadding(0.2)
+    .betweenBarsPadding();
+
+export const stackedBarAccessors = {
+    stackedPadding,
+    stackedReversed,
+    stackedHorizontal,
+    stackedAxisRatio,
+    stackedThreshold,
+    stackedXTicks,
+    stackedYTicks,
+    stackedLabelOffset,
+    stackedGrid,
+    stackedLocale,
+    stackedAxisLabel,
+    stackedPercentage,
+    stackedPercentageFormat,
+    stackedChained,
+};
+
 // Setting one still chains, so the overloads did not cost the setter anything.
 const chainedLabels: string = stackedBar()
     .nameLabel('name')
