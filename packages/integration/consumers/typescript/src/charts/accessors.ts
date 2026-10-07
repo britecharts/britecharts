@@ -115,8 +115,98 @@ import {
     stackedBar,
 } from '@britecharts/core';
 import type { LocalObject } from '@britecharts/core';
+import type { BarChartDataShape, BarSelection } from '@britecharts/core';
 
 const barNameLabel: string = bar().nameLabel();
+
+// The bar chart's other twenty-two accessors, corrected with its conversion for
+// the same reason the grouped and stacked bars' were: setter-only, so reading
+// one reported the chart instead of its value. `nameLabel` just above was never
+// part of that.
+//
+// `orderingFunction` is the one that was declared wrong rather than merely
+// incomplete. It was `=> void`, and the chart hands it to
+// `Array.prototype.sort`, which reads the sign of the result -- so the
+// assertion below is that the comparator comes back usable for what the chart
+// uses it for, and `expect-errors.ts` holds the control for the callback that
+// returns nothing.
+//
+// Four getters are wider than their setter: `chartGradient`, `xAxisLabel`,
+// `yAxisLabel` and `valueLocale` are `null` until set, where the grouped and
+// stacked bars left their axis labels `undefined` instead. `orderingFunction`
+// reads `undefined`, having no initialiser. Worth asserting separately, since
+// the shape a consumer has to write differs between the two.
+const barOwn = bar();
+
+const barPadding: number = barOwn.betweenBarsPadding();
+const barLabelsEnabled: boolean = barOwn.enableLabels();
+const barPercentage: boolean = barOwn.hasPercentage();
+const barSingleHighlight: boolean = barOwn.hasSingleBarHighlight();
+const barHorizontal: boolean = barOwn.isHorizontal();
+const barLabelsMargin: number = barOwn.labelsMargin();
+const barLabelsFormat: string = barOwn.labelsNumberFormat();
+const barLabelsSize: number = barOwn.labelsSize();
+const barAxisRatio: number = barOwn.percentageAxisToMaxRatio();
+const barReverseColors: boolean = barOwn.shouldReverseColorList();
+const barValueLabel: string = barOwn.valueLabel();
+const barXLabelOffset: number = barOwn.xAxisLabelOffset();
+const barXTicks: number = barOwn.xTicks();
+const barYLabelOffset: number = barOwn.yAxisLabelOffset();
+const barYAxisPadding: number = barOwn.yAxisPaddingBetweenChart();
+const barYTicks: number = barOwn.yTicks();
+
+// Null until set, each needing the guard a consumer now has to write.
+const barGradient: [string, string] | null = barOwn.chartGradient();
+const barXAxisLabel: string | null = barOwn.xAxisLabel();
+const barYAxisLabel: string | null = barOwn.yAxisLabel();
+const barLocale: LocalObject | null = barOwn.valueLocale();
+const barHighlight: ((barSelection: BarSelection) => void) | null =
+    barOwn.highlightBarFunction();
+
+// Undefined until set, and read back usable for what the chart does with it:
+// the sign of the number is what `Array.prototype.sort` reads.
+const barOrdering = bar()
+    .orderingFunction((a, b) => a.value - b.value)
+    .orderingFunction();
+const barSorted: BarChartDataShape[] = [
+    { name: 'b', value: 2 },
+    { name: 'a', value: 1 },
+].sort(barOrdering);
+
+// The setters chain, and a chain crossing from an inherited surface back to a
+// bar-specific one still resolves.
+const barChained: number = bar()
+    .isAnimated(true)
+    .enableLabels(true)
+    .labelsSize(14)
+    .labelsSize();
+
+export const barOwnAccessors = {
+    barPadding,
+    barLabelsEnabled,
+    barPercentage,
+    barSingleHighlight,
+    barHorizontal,
+    barLabelsMargin,
+    barLabelsFormat,
+    barLabelsSize,
+    barAxisRatio,
+    barReverseColors,
+    barValueLabel,
+    barXLabelOffset,
+    barXTicks,
+    barYLabelOffset,
+    barYAxisPadding,
+    barYTicks,
+    barGradient,
+    barXAxisLabel,
+    barYAxisLabel,
+    barLocale,
+    barHighlight,
+    barOrdering,
+    barSorted,
+    barChained,
+};
 const donutCenterLegend: boolean = donut().hasCenterLegend();
 const legendUnit: string = legend().unit();
 

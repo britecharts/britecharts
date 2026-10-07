@@ -88,3 +88,23 @@ stackedBar().grid().length;
 stackedBar().valueLocale().decimal;
 // @ts-expect-error possibly undefined
 stackedBar().yAxisLabel().length;
+
+// The bar chart's four nullable getters and its undefined one.
+// @ts-expect-error possibly null
+bar().chartGradient()[0];
+// @ts-expect-error possibly null
+bar().xAxisLabel().length;
+// @ts-expect-error possibly null
+bar().yAxisLabel().length;
+// @ts-expect-error possibly null
+bar().valueLocale().decimal;
+// @ts-expect-error possibly undefined
+bar().orderingFunction()({ name: 'a', value: 1 }, { name: 'b', value: 2 });
+
+// `orderingFunction` goes to `Array.prototype.sort`, which reads the sign of
+// what the comparator returns, so a callback returning nothing is the error.
+// Against the old `=> void` declaration this compiled, which left the directive
+// unused and failed the build -- the control for a declaration that was too
+// loose rather than merely incomplete.
+// @ts-expect-error a comparator has to return a number
+bar().orderingFunction(() => undefined);
