@@ -1065,6 +1065,75 @@ describe('scatter Plot', () => {
         });
     });
 
+    describe('zoom', () => {
+        // Nothing covered this path before, and it had not run since the d3 v6
+        // upgrade: the handler kept v5's `(d, i, nodes)` signature and read the
+        // transform off a third argument v6 does not pass.
+        const aZoomedChart = () => {
+            const zoomable = chart().enableZoom(true);
+            const container = d3.select('.test-container').append('svg');
+
+            container.datum(dataset).call(zoomable);
+
+            return container;
+        };
+        const wheelOver = (container) => {
+            const event = new Event('wheel', {
+                bubbles: true,
+                cancelable: true,
+            });
+
+            // d3-zoom reads these off the event to work out the new transform.
+            event.deltaY = -120;
+            event.deltaMode = 0;
+            event.clientX = 10;
+            event.clientY = 10;
+            container.select('rect.zoom').node().dispatchEvent(event);
+        };
+        const pointXs = (container) =>
+            container
+                .select('.chart-group')
+                .selectAll('circle.data-point')
+                .nodes()
+                .map((node) => node.getAttribute('cx'));
+
+        it('should add an overlay to catch pointer events when enabled', () => {
+            const container = aZoomedChart();
+
+            expect(container.select('rect.zoom').empty()).toEqual(false);
+        });
+
+        it('should add no overlay when it is disabled', () => {
+            expect(containerFixture.select('rect.zoom').empty()).toEqual(true);
+        });
+
+        it('should rescale the data points on a zoom event', () => {
+            const container = aZoomedChart();
+            const before = pointXs(container);
+
+            wheelOver(container);
+
+            const after = pointXs(container);
+
+            expect(after).not.toEqual(before);
+            // Every point keeps a real position: the regression this covers
+            // left them unset, because the handler threw part way through.
+            after.forEach((cx) => {
+                expect(cx).not.toBeNull();
+                expect(Number.isNaN(Number(cx))).toEqual(false);
+            });
+        });
+
+        it('should zoom before anything has been hovered', () => {
+            const container = aZoomedChart();
+
+            // The highlight circle is bound to a placeholder datum, so its
+            // accessors always run, while the hovered point is only set on
+            // hover. Reading the point's `x` before the first hover threw.
+            expect(() => wheelOver(container)).not.toThrow();
+        });
+    });
+
     describe('loading state', () => {
         it('should provide isLoading getter and setter', () => {
             let previous = scatterPlot.isLoading(),

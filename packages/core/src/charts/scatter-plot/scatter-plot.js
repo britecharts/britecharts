@@ -8,7 +8,7 @@ import { scaleSqrt, scaleOrdinal, scaleLinear } from 'd3-scale';
 import { curveBasis, line } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
 import { Delaunay } from 'd3-delaunay';
-import { zoom as d3Zoom, zoomTransform } from 'd3-zoom';
+import { zoom as d3Zoom } from 'd3-zoom';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -518,9 +518,15 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function updateChartAfterZoom(data, index, elements) {
+    function updateChartAfterZoom(event) {
+        // d3-zoom calls this with (event, datum) and the event carries the
+        // transform. It used to read `zoomTransform(elements[0])` from a third
+        // parameter, which is d3 v5's `(d, i, nodes)` signature -- v6 and
+        // later pass no such argument, so the line threw on the first zoom
+        // event and the whole feature was dead.
+        const transform = event.transform;
+
         //update scale
-        const transform = zoomTransform(elements[0]);
         xScale = transform.rescaleX(xOriginalScale);
         yScale = transform.rescaleY(yOriginalScale);
         //update axes
@@ -536,9 +542,17 @@ export default function module() {
             .attr('cy', (d) => yScale(d.y));
 
         // update highlight location
-        highlightCircle
-            .attr('cx', () => xScale(highlightPointData.x))
-            .attr('cy', () => yScale(highlightPointData.y));
+        //
+        // Guarded because `highlightCircle` is bound to a single placeholder
+        // datum by initHighlightComponents, so its accessors always run, while
+        // `highlightPointData` is only set once a point has been hovered.
+        // Before the first hover there is no highlight to move, and reading
+        // `.x` off it threw.
+        if (highlightPointData) {
+            highlightCircle
+                .attr('cx', () => xScale(highlightPointData.x))
+                .attr('cy', () => yScale(highlightPointData.y));
+        }
     }
 
     /**
