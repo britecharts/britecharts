@@ -120,3 +120,13 @@ scatterPlot().yTicks().toFixed(0);
 scatterPlot().xAxisLabel().length;
 // @ts-expect-error possibly undefined
 scatterPlot().yAxisLabel().length;
+
+// The tooltip's three nullable getters and its undefined-or-null locale.
+// @ts-expect-error possibly null
+tooltip().dateCustomFormat().length;
+// @ts-expect-error possibly null
+tooltip().numberFormat().length;
+// @ts-expect-error possibly null
+tooltip().valueFormatter()(1);
+// @ts-expect-error possibly null or undefined
+tooltip().locale().length;

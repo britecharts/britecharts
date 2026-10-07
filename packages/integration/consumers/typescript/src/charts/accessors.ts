@@ -117,6 +117,12 @@ import {
 import type { LocalObject } from '@britecharts/core';
 import type { BarChartDataShape, BarSelection } from '@britecharts/core';
 import { scatterPlot } from '@britecharts/core';
+import { tooltip as tooltipFactory } from '@britecharts/core';
+import type {
+    TooltipLayout,
+    TooltipOffset,
+    TooltipXAxisValueType,
+} from '@britecharts/core';
 
 const barNameLabel: string = bar().nameLabel();
 
@@ -223,6 +229,70 @@ const scatterChained: number | null = scatterPlot()
     .hasTrendline(true)
     .yTicks(8)
     .yTicks();
+
+// The tooltip's sixteen accessors, corrected with its conversion. Its
+// declaration was already careful about the data shapes -- `TooltipTopic.name`
+// is a number, not a label -- but every accessor was still setter-only.
+//
+// `dateFormat` is the one worth an assertion of its own: its getter never
+// reports null, because it falls back to the default axis setting when none is
+// set, where `dateCustomFormat` and `numberFormat` beside it do report null.
+// Three accessors on one module, two shapes.
+const tooltipChart = tooltipFactory();
+
+const tooltipLayout: TooltipLayout = tooltipChart.layout();
+const tooltipDateFormat: string = tooltipChart.dateFormat();
+const tooltipDateLabel: string = tooltipChart.dateLabel();
+const tooltipNameLabel: string = tooltipChart.nameLabel();
+const tooltipTopicLabel: string = tooltipChart.topicLabel();
+const tooltipValueLabel: string = tooltipChart.valueLabel();
+const tooltipTitle: string = tooltipChart.title();
+const tooltipShowsDate: boolean = tooltipChart.shouldShowDateInTitle();
+const tooltipMaxEntries: number = tooltipChart.maxEntries();
+const tooltipOffset: TooltipOffset = tooltipChart.tooltipOffset();
+const tooltipTopicsOrder: string[] = tooltipChart.topicsOrder();
+const tooltipValueType: TooltipXAxisValueType = tooltipChart.xAxisValueType();
+
+// Null until set, where `dateFormat` above falls back instead.
+const tooltipCustomFormat: string | null = tooltipChart.dateCustomFormat();
+const tooltipNumberFormat: string | null = tooltipChart.numberFormat();
+const tooltipFormatter: ((value: number) => number) | null =
+    tooltipChart.valueFormatter();
+// Undefined until set, and nullable because the setter takes null: the tooltip
+// has no initialiser where the time-series charts default theirs to null.
+const tooltipLocale: string | null | undefined = tooltipChart.locale();
+
+// The setters chain, and a formatter read back is usable for what the tooltip
+// uses it for.
+const tooltipChained: number = tooltipFactory()
+    .layout('single')
+    .maxEntries(5)
+    .valueFormatter((value) => value * 2)
+    .maxEntries();
+const tooltipFormatted: number | undefined = tooltipFactory()
+    .valueFormatter((value) => value * 2)
+    .valueFormatter()?.(21);
+
+export const tooltipAccessors = {
+    tooltipLayout,
+    tooltipDateFormat,
+    tooltipDateLabel,
+    tooltipNameLabel,
+    tooltipTopicLabel,
+    tooltipValueLabel,
+    tooltipTitle,
+    tooltipShowsDate,
+    tooltipMaxEntries,
+    tooltipOffset,
+    tooltipTopicsOrder,
+    tooltipValueType,
+    tooltipCustomFormat,
+    tooltipNumberFormat,
+    tooltipFormatter,
+    tooltipLocale,
+    tooltipChained,
+    tooltipFormatted,
+};
 
 export const scatterPlotAccessors = {
     scatterStrokeOpacity,
