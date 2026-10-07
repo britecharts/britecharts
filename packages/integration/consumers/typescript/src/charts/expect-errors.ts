@@ -108,3 +108,15 @@ bar().orderingFunction()({ name: 'a', value: 1 }, { name: 'b', value: 2 });
 // loose rather than merely incomplete.
 // @ts-expect-error a comparator has to return a number
 bar().orderingFunction(() => undefined);
+
+// The scatter plot's four nullable getters and its two undefined ones.
+// @ts-expect-error possibly null
+scatterPlot().grid().length;
+// @ts-expect-error possibly null
+scatterPlot().valueLocale().decimal;
+// @ts-expect-error possibly null
+scatterPlot().yTicks().toFixed(0);
+// @ts-expect-error possibly undefined
+scatterPlot().xAxisLabel().length;
+// @ts-expect-error possibly undefined
+scatterPlot().yAxisLabel().length;

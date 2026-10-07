@@ -116,6 +116,7 @@ import {
 } from '@britecharts/core';
 import type { LocalObject } from '@britecharts/core';
 import type { BarChartDataShape, BarSelection } from '@britecharts/core';
+import { scatterPlot } from '@britecharts/core';
 
 const barNameLabel: string = bar().nameLabel();
 
@@ -180,6 +181,72 @@ const barChained: number = bar()
     .enableLabels(true)
     .labelsSize(14)
     .labelsSize();
+
+// The scatter plot's twenty-one accessors, corrected with its conversion for
+// the same reason the three bar charts' were.
+//
+// Four getters are wider than their setter, and `yTicks` is the one worth
+// noticing: it is `null` by default and the chart hands that straight to d3's
+// `axis.ticks`, where null means "use the scale's own count". So a consumer
+// reading it back before setting one gets null, not a number -- the same shape
+// brush's `xTicks` already has. `grid` and `valueLocale` are null too, and the
+// two axis labels read `undefined`.
+const scatterChart = scatterPlot();
+
+const scatterStrokeOpacity: number = scatterChart.circleStrokeOpacity();
+const scatterStrokeWidth: number = scatterChart.circleStrokeWidth();
+const scatterOpacity: number = scatterChart.circleOpacity();
+const scatterZoom: boolean = scatterChart.enableZoom();
+const scatterCrossHairs: boolean = scatterChart.hasCrossHairs();
+const scatterHollow: boolean = scatterChart.hasHollowCircles();
+const scatterTrendline: boolean = scatterChart.hasTrendline();
+const scatterLegendOffset: number = scatterChart.highlightTextLegendOffset();
+const scatterMaxArea: number = scatterChart.maxCircleArea();
+const scatterXFormat: string = scatterChart.xAxisFormat();
+const scatterXFormatType: string = scatterChart.xAxisFormatType();
+const scatterXLabelOffset: number = scatterChart.xAxisLabelOffset();
+const scatterXTicks: number = scatterChart.xTicks();
+const scatterYFormat: string = scatterChart.yAxisFormat();
+const scatterYLabelOffset: number = scatterChart.yAxisLabelOffset();
+
+// Null or undefined until set.
+const scatterGrid: 'vertical' | 'horizontal' | 'full' | null =
+    scatterChart.grid();
+const scatterLocale: LocalObject | null = scatterChart.valueLocale();
+const scatterXLabel: string | undefined = scatterChart.xAxisLabel();
+const scatterYLabel: string | undefined = scatterChart.yAxisLabel();
+const scatterYTicks: number | null = scatterChart.yTicks();
+
+// The setters chain, and the nullable ticks still reads a number once set.
+const scatterChained: number | null = scatterPlot()
+    .isAnimated(true)
+    .hasTrendline(true)
+    .yTicks(8)
+    .yTicks();
+
+export const scatterPlotAccessors = {
+    scatterStrokeOpacity,
+    scatterStrokeWidth,
+    scatterOpacity,
+    scatterZoom,
+    scatterCrossHairs,
+    scatterHollow,
+    scatterTrendline,
+    scatterLegendOffset,
+    scatterMaxArea,
+    scatterXFormat,
+    scatterXFormatType,
+    scatterXLabelOffset,
+    scatterXTicks,
+    scatterYFormat,
+    scatterYLabelOffset,
+    scatterGrid,
+    scatterLocale,
+    scatterXLabel,
+    scatterYLabel,
+    scatterYTicks,
+    scatterChained,
+};
 
 export const barOwnAccessors = {
     barPadding,
