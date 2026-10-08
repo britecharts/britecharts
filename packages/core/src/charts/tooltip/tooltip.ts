@@ -2,6 +2,7 @@ import { max } from 'd3-array';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
+import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
 import { axisTimeCombinations } from '../helpers/constants';
@@ -17,8 +18,69 @@ import { measureFrame, originOf, translateOf } from './frame';
 import { chaseDuration, ease, prepareToShow, fadeIn, fadeOut } from './motion';
 import { place } from './place';
 
+import type { LocaleString } from '../../typings/common/local';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type {
+    TooltipDataShape,
+    TooltipLayout,
+    TooltipListDataShape,
+    TooltipModule,
+    TooltipOffset,
+    TooltipPosition,
+    TooltipSingleDataShape,
+    TooltipTopic,
+    TooltipXAxisValueType,
+    TopicColorMap,
+} from '../../typings/charts/tooltip';
+
 // Key of the row that stands for the topics past maxEntries
 const MORE_ROW_KEY = '__more__';
+
+// Fallback for the getBBox() guard: roughly one line of the 12px tooltip
+// text. Module-level now because the `let` chain reads it.
+const defaultTextHeight = 14;
+
+/**
+ * The tooltip's own svg, and the selections derived from it. The datum and
+ * parent generics are the migration plan's bounded `any`, as in the charts:
+ * these are module-level variables reassigned from several differently-shaped
+ * selections, so naming one concrete datum would reject the others.
+ */
+type TooltipSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/**
+ * One row of the list layout, as the tooltip renders it: a topic, plus the
+ * synthetic "+n more" row that stands for everything past `maxEntries`.
+ *
+ * The extra row carries `MORE_ROW_KEY` as its name and no value, which is why
+ * both members are looser here than on `TooltipTopic`.
+ */
+type TooltipEntry = Partial<TooltipTopic> & {
+    name: TooltipTopic['name'];
+    /** Set only on the synthetic row that stands for the folded topics. */
+    isMoreRow?: boolean;
+    /** How many topics that row stands for. */
+    hiddenCount?: number;
+    [key: string]: unknown;
+};
+
+/**
+ * What the tooltip reads a key off: either layout's data point, by whichever
+ * of the label accessors applies. The index signature is those accessors --
+ * `dateLabel`, `nameLabel`, `valueLabel` and `topicLabel` let a chart name its
+ * own members, so the reads really are dynamic.
+ */
+type TooltipDatum = TooltipDataShape & {
+    [key: string]: unknown;
+};
 
 // The legacy update(dataPoint, colorMap, x, y) order is warned about once
 let hasWarnedLegacyOrder = false;
@@ -107,99 +169,106 @@ let hasWarnedLegacyOrder = false;
  *     .call(chartTooltip);
  *
  */
-export default function module() {
-    let margin = {
-            top: 2,
-            right: 2,
-            bottom: 2,
-            left: 2,
-        },
-        width = 250,
-        height = 45,
-        title = 'Tooltip title',
+export default function module(): TooltipModule {
+    // Kept as one `let` chain with annotations rather than split into `let`
+    // and `const`: nearly every binding here is reassigned, either by an
+    // accessor or while measuring and placing the box. The handful that are
+    // not are below it.
+    let title = 'Tooltip title',
         shouldShowDateInTitle = true,
-        valueFormat = null,
         // tooltip
-        tooltipBackground,
+        tooltipBackground: TooltipSelection<SVGRectElement>,
         tooltipBackgroundX = 0,
-        tooltipOffset = {
+        tooltipOffset: TooltipOffset = {
             x: 0,
             y: 0,
         },
-        tooltipGap = 12,
-        tooltipMaxTopicLength = 170,
-        tooltipMaxTitleLength = 230,
-        tooltipGroupOrigin = null,
-        tooltipTextContainer,
-        tooltipBody,
-        tooltipTitle,
-        tooltipWidth = 250,
+        // Where the tooltip's group sat last time it was placed, so the next
+        // placement can shift from there rather than jumping.
+        tooltipGroupOrigin: [number, number] | null = null,
+        tooltipTextContainer: TooltipSelection<SVGGElement>,
+        tooltipBody: TooltipSelection<SVGGElement>,
+        tooltipTitle: TooltipSelection<SVGTextElement>,
         tooltipHeight = 48,
-        tooltipBorderRadius = 3,
-        tooltipContentPadding = 12,
-        circularMarkerRadius = 4,
         ttTextX = 0,
         ttTextY = 37,
         // Fallback for the getBBox() guard below: roughly one line of the 12px
         // tooltip text. Without it the first measurement that comes back 0 makes
         // textHeight undefined, and every height derived from it NaN.
-        defaultTextHeight = 14,
         textHeight = defaultTextHeight,
-        entryLineLimit = 3,
-        initialTooltipBodyYPosition = 37,
         additionalTooltipTitleHeight = 0,
-        initialTooltipTextXPosition = -22,
-        tooltipTextLinePadding = 5,
-        tooltipRightWidth,
+        tooltipRightWidth = 0,
         // Whether show() has been called and hide() has not
         isShown = false,
         // Whether the next update is the first since show(), and fades in
         isEntering = false,
-        circleYOffset = 8,
-        colorMap,
-        titleFillColor = '#6D717A',
-        textFillColor = '#282C35',
-        tooltipTextColor = '#000000',
+        colorMap: TopicColorMap | undefined,
         dateLabel = 'date',
         valueLabel = 'value',
         nameLabel = 'name',
         topicLabel = 'topics',
-        defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
-        xAxisValueType = 'auto',
+        xAxisValueType: TooltipXAxisValueType = 'auto',
         // Rows shown before the rest are folded into a "+n more" row
         maxEntries = 12,
         // 'list' (title + one row per topic), 'single' (title, name and a
         // big value, the mini tooltip) or 'auto' (by the data point's shape)
-        layout = 'auto',
+        layout: TooltipLayout = 'auto',
         // The layout the last data point was rendered with
-        activeLayout = 'list',
+        activeLayout: Exclude<TooltipLayout, 'auto'> = 'list',
         // Single layout: the group its lines go in, its measured box, and
         // its type
-        tooltipSingle,
+        tooltipSingle: TooltipSelection<SVGGElement>,
         singleWidth = 0,
         singleHeight = 0,
-        singlePadding = 12,
-        singleTextSize = 14,
-        singleTextLineHeight = 1.5,
-        singleValueTextSize = 27,
-        singleValueTextLineHeight = 1.18,
-        singleTitleFillColor = '#666a73',
-        singleNameTextFillColor = '#666a73',
-        singleValueTextFillColor = '#45494E',
-        singleValueTextWeight = 200,
-        dateFormat = null,
-        dateCustomFormat = null,
-        topicsOrder = [],
+        dateFormat: string | null = null,
+        dateCustomFormat: string | null = null,
+        topicsOrder: TooltipTopic['name'][] = [],
         // formats
-        numberFormat = null,
-        valueFormatter = null,
-        monthDayYearFormat = timeFormat('%b %d, %Y'),
-        monthDayHourFormat = timeFormat('%b %d, %I %p'),
-        locale,
-        chartWidth,
-        chartHeight,
-        data,
-        svg;
+        numberFormat: string | null = null,
+        valueFormatter: ((value: number) => number) | null = null,
+        locale: LocaleString | null | undefined,
+        chartWidth: number,
+        chartHeight: number,
+        svg: TooltipSelection<SVGGElement>;
+
+    // The tooltip exposes no width, height or margin accessor, unlike every
+    // chart, so these are fixed rather than configuration.
+    const margin: ChartMarginParams = {
+        top: 2,
+        right: 2,
+        bottom: 2,
+        left: 2,
+    };
+    const width = 250;
+    const height = 45;
+    const tooltipWidth = 250;
+    const initialTooltipBodyYPosition = 37;
+    const tooltipGap = 12;
+    const tooltipMaxTopicLength = 170;
+    const tooltipMaxTitleLength = 230;
+    const tooltipBorderRadius = 3;
+    const tooltipContentPadding = 12;
+    const circularMarkerRadius = 4;
+
+    const entryLineLimit = 3;
+    const initialTooltipTextXPosition = -22;
+    const tooltipTextLinePadding = 5;
+    const circleYOffset = 8;
+    const titleFillColor = '#6D717A';
+    const textFillColor = '#282C35';
+    const tooltipTextColor = '#000000';
+    const defaultAxisSettings = axisTimeCombinations.DAY_MONTH;
+    const singlePadding = 12;
+    const singleTextSize = 14;
+    const singleTextLineHeight = 1.5;
+    const singleValueTextSize = 27;
+    const singleValueTextLineHeight = 1.18;
+    const singleTitleFillColor = '#666a73';
+    const singleNameTextFillColor = '#666a73';
+    const singleValueTextFillColor = '#45494E';
+    const singleValueTextWeight = 200;
+    const monthDayYearFormat = timeFormat('%b %d, %Y');
+    const monthDayHourFormat = timeFormat('%b %d, %I %p');
 
     /**
      * This function creates the graph using the selection as container
@@ -207,11 +276,21 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      * @param {Object} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
-        _selection.each(function (_data) {
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
-            data = _data;
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            TooltipDataShape[],
+            TParent,
+            TParentDatum
+        >
+    ) {
+        _selection.each(function (this: TElement) {
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
 
             buildSVG(this);
         });
@@ -226,7 +305,10 @@ export default function module() {
         const container = svg
             .append('g')
             .classed('tooltip-container-group select-disable', true)
-            .attr('transform', `translate( ${margin.left}, ${margin.top})`);
+            .attr(
+                'transform',
+                `translate( ${margin.left ?? 0}, ${margin.top ?? 0})`
+            );
 
         container.append('g').classed('tooltip-group', true);
     }
@@ -236,7 +318,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element) {
         if (!svg) {
             svg = select(container)
                 .append('g')
@@ -256,7 +338,7 @@ export default function module() {
             // Hidden by default. Only on the first build: the wrappers call
             // the tooltip on its container again on every update, and a
             // hide there would make the box fade in again on every move
-            exports.hide();
+            (exports as TooltipModule).hide();
         }
         svg.transition().attr('width', width).attr('height', height);
     }
@@ -314,7 +396,7 @@ export default function module() {
      * @return {{ width: Number, height: Number }}
      * @private
      */
-    function measure(node) {
+    function measure(node: SVGGraphicsElement | null) {
         const box = node && node.getBBox ? node.getBBox() : null;
 
         return {
@@ -331,7 +413,9 @@ export default function module() {
      * @return {'list' | 'single'}
      * @private
      */
-    function resolveLayout(dataPoint) {
+    function resolveLayout(
+        dataPoint: TooltipDatum | undefined
+    ): Exclude<TooltipLayout, 'auto'> {
         if (layout !== 'auto') {
             return layout;
         }
@@ -365,7 +449,7 @@ export default function module() {
      * @return {Number}       Formatted value
      * @private
      */
-    function getFormattedValue(value) {
+    function getFormattedValue(value: number) {
         if (valueFormatter !== null) {
             return valueFormatter(value);
         }
@@ -401,16 +485,22 @@ export default function module() {
      *                              the origin the group is measured from
      * @private
      */
-    function getTooltipPosition([anchorX, anchorY]) {
-        const container = svg.node().parentNode;
-        const [parentX, parentY] = originOf(container.parentNode);
+    function getTooltipPosition([anchorX, anchorY]: TooltipPosition) {
+        // Two hops up from the tooltip's own group: its container, then that
+        // container's parent, which is the space the anchor is given in.
+        const container = svg.node()?.parentNode ?? null;
+        const [parentX, parentY] = originOf(
+            (container?.parentNode ?? null) as SVGGraphicsElement | null
+        );
         // Measured from the parent of the group that gets translated, so
         // the current position never feeds into the next one.
         const {
             width,
             height,
             origin: [groupX, groupY],
-        } = measureFrame(svg.select('.tooltip-container-group').node());
+        } = measureFrame(
+            svg.select<SVGGraphicsElement>('.tooltip-container-group').node()
+        );
         const box = getBox();
         const { x, y } = place({
             anchor: [
@@ -435,8 +525,8 @@ export default function module() {
      * @param  {Object} data Data value containing the info
      * @return {String}      Value to show
      */
-    function getValueText(data) {
-        let value = data[valueLabel];
+    function getValueText(data: { [key: string]: unknown }) {
+        const value = data[valueLabel] as number;
         let valueText;
 
         if (data.missingValue) {
@@ -467,7 +557,7 @@ export default function module() {
      * @return void
      * @private
      */
-    function buildEntry(entry) {
+    function buildEntry(entry: TooltipSelection<SVGGElement>) {
         entry
             .append('circle')
             .classed('tooltip-circle', true)
@@ -502,15 +592,18 @@ export default function module() {
      * @return void
      * @private
      */
-    function layoutEntry(entry, topic) {
-        const name = topic[nameLabel];
+    function layoutEntry(
+        entry: TooltipSelection<SVGGElement>,
+        topic: TooltipEntry
+    ) {
+        const name = topic[nameLabel] as TooltipTopic['name'];
         const isMoreRow = !!topic.isMoreRow;
         const leftText = isMoreRow
             ? `+${topic.hiddenCount} more`
-            : topic.topicName || name;
+            : topic.topicName || String(name);
         const rightText = isMoreRow ? '' : getValueText(topic);
-        const left = entry.select('.tooltip-left-text');
-        const right = entry.select('.tooltip-right-text');
+        const left = entry.select<SVGTextElement>('.tooltip-left-text');
+        const right = entry.select<SVGTextElement>('.tooltip-right-text');
 
         entry.attr('transform', `translate(${ttTextX}, ${ttTextY})`);
 
@@ -529,7 +622,9 @@ export default function module() {
 
             // A width of 0 comes back while the tooltip is hidden; keep the
             // last usable one, as with the height below
-            const measuredWidth = measure(right.node()).width;
+            const measuredWidth = measure(
+                right.node() as SVGGraphicsElement | null
+            ).width;
 
             if (measuredWidth) {
                 right.attr('data-width', measuredWidth);
@@ -546,15 +641,30 @@ export default function module() {
         // when hovering over the vertical marker, and any browser does it while
         // the tooltip is still hidden. Keep the last usable measurement instead,
         // which is seeded with defaultTextHeight so it is never undefined.
-        const measuredTextHeight = measure(left.node()).height;
+        const measuredTextHeight = measure(
+            left.node() as SVGGraphicsElement | null
+        ).height;
 
         textHeight = measuredTextHeight || textHeight;
         tooltipHeight += textHeight + tooltipTextLinePadding;
 
-        entry
-            .select('.tooltip-circle')
-            .style('display', isMoreRow ? 'none' : null)
-            .style('fill', isMoreRow ? null : colorMap[name]);
+        const circle = entry.select('.tooltip-circle');
+
+        if (isMoreRow) {
+            circle.style('display', 'none').style('fill', null);
+        } else {
+            circle.style('display', null);
+            // `colorMap` only arrives from the multi-value charts, and only
+            // on update; a list rendered before one has been sent leaves the
+            // dot its stylesheet colour.
+            const fill = colorMap?.[name];
+
+            if (fill) {
+                circle.style('fill', fill);
+            } else {
+                circle.style('fill', null);
+            }
+        }
 
         ttTextY += textHeight + 7;
     }
@@ -567,7 +677,7 @@ export default function module() {
      * @return void
      * @private
      */
-    function updatePositionAndSize(xPosition, yPosition) {
+    function updatePositionAndSize(xPosition: number, yPosition: number) {
         const { x, y, origin } = getTooltipPosition([xPosition, yPosition]);
         const group = svg.selectAll('.tooltip-group');
 
@@ -591,7 +701,9 @@ export default function module() {
         // the ease runs in chart space, instead of jumping with the marker
         // and easing back.
         if (tooltipGroupOrigin) {
-            const [currentX, currentY] = translateOf(group.node());
+            const [currentX, currentY] = translateOf(
+                group.node() as SVGGraphicsElement | null
+            );
             const shiftX = origin[0] - tooltipGroupOrigin[0];
             const shiftY = origin[1] - tooltipGroupOrigin[1];
 
@@ -604,7 +716,7 @@ export default function module() {
                     );
             }
         }
-        tooltipGroupOrigin = origin;
+        tooltipGroupOrigin = [origin[0], origin[1]];
 
         group
             .transition()
@@ -619,7 +731,7 @@ export default function module() {
      * @return {String}     Formatted Key
      * @private
      */
-    function formatKey(key) {
+    function formatKey(key: unknown) {
         if (!isDefined(key)) {
             return '';
         }
@@ -635,7 +747,7 @@ export default function module() {
             return String(key);
         }
 
-        return formatDate(new Date(key));
+        return formatDate(new Date(key as string | number | Date));
     }
 
     /**
@@ -646,7 +758,7 @@ export default function module() {
      * @return {'date' | 'number' | 'category'}
      * @private
      */
-    function detectKeyType(key) {
+    function detectKeyType(key: unknown) {
         if (key instanceof Date) {
             return 'date';
         }
@@ -676,7 +788,7 @@ export default function module() {
      * @return {Date | Number | String | undefined}
      * @private
      */
-    function getKey(dataPoint) {
+    function getKey(dataPoint: TooltipDatum) {
         if (isDefined(dataPoint[dateLabel])) {
             return dataPoint[dateLabel];
         }
@@ -694,10 +806,15 @@ export default function module() {
      * @return {Function}   The proper date formatting function
      * @private
      */
-    function formatDate(date) {
-        let settings = dateFormat || defaultAxisSettings;
-        let format = null;
-        let localeOptions = { month: 'short', day: 'numeric' };
+    function formatDate(date: Date) {
+        const settings = dateFormat || defaultAxisSettings;
+        let format: ((date: Date) => string) | null = null;
+        // Members are added by the branches below, so the type is the whole
+        // shape rather than what the initialiser happens to carry.
+        const localeOptions: Intl.DateTimeFormatOptions = {
+            month: 'short',
+            day: 'numeric',
+        };
 
         if (
             settings === axisTimeCombinations.DAY_MONTH ||
@@ -724,12 +841,14 @@ export default function module() {
             typeof Intl === 'object' &&
             Intl.DateTimeFormat
         ) {
-            let f = Intl.DateTimeFormat(locale, localeOptions);
+            const f = Intl.DateTimeFormat(locale, localeOptions);
 
             return f.format(date);
         }
 
-        return format(date);
+        // Every branch above that leaves `format` null is the one that also
+        // returns through Intl, so this is reached only with a formatter set.
+        return format!(date);
     }
 
     /**
@@ -747,7 +866,10 @@ export default function module() {
      * @return {Object[]}           sorted topics object
      * @private
      */
-    function _sortByTopicsOrder(topics, order = topicsOrder) {
+    function _sortByTopicsOrder(
+        topics: TooltipEntry[],
+        order: TooltipTopic['name'][] = topicsOrder
+    ) {
         return order.map(
             (orderName) => topics.filter(({ name }) => name === orderName)[0]
         );
@@ -759,7 +881,7 @@ export default function module() {
      * @return {Array}          List of topic name strings
      * @private
      */
-    function _sortByAlpha(topics) {
+    function _sortByAlpha(topics: TooltipEntry[]) {
         return topics
             .map((d) => d)
             .sort((a, b) => {
@@ -795,7 +917,7 @@ export default function module() {
      * @return void
      * @private
      */
-    function updateTitle(dataPoint) {
+    function updateTitle(dataPoint: TooltipDatum) {
         const textTitle = getTooltipTitle(getKey(dataPoint));
 
         tooltipTitle
@@ -808,16 +930,16 @@ export default function module() {
      * @param  {Date | String}  date  Date to use
      * @private
      */
-    function getTooltipTitle(date) {
+    function getTooltipTitle(date: unknown) {
         let textTitle = title;
-        let formattedDate = formatKey(date);
+        const formattedDate = formatKey(date);
 
         if (textTitle.length) {
             if (shouldShowDateInTitle && formattedDate !== '') {
                 textTitle = `${textTitle} - ${formattedDate}`;
             }
         } else {
-            textTitle = formattedDate;
+            textTitle = String(formattedDate);
         }
 
         // A number key comes back as a number
@@ -843,7 +965,10 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function showTooltip(dataPoint, position) {
+    function showTooltip(
+        dataPoint?: TooltipDataShape,
+        position?: TooltipPosition
+    ) {
         // Already showing: no new fade -- the wrappers call show() before
         // every update
         if (!isShown) {
@@ -866,7 +991,7 @@ export default function module() {
         } else if (isEntering) {
             // Nothing to render yet: the title alone, as the mini tooltip
             // always did, until the first update
-            updateContent({});
+            updateContent({} as TooltipDatum);
         }
     }
 
@@ -880,19 +1005,26 @@ export default function module() {
      * @private
      *
      */
-    function textWrap(text, width, xpos = 0) {
-        text.each(function () {
-            let words, word, line, lineNumber, lineHeight, y, dy, tspan;
+    function textWrap(
+        text: TooltipSelection<SVGTextElement>,
+        width: number,
+        xpos = 0
+    ) {
+        text.each(function (this: SVGTextElement) {
+            let word: string | undefined;
+            let line: string[] = [];
+            let lineNumber = 0;
 
+            // Rebinding the parameter to the element being iterated is how
+            // this has always worked: `each` visits one node at a time and the
+            // rest of the body reads and writes that one.
             text = select(this);
 
-            words = text.text().split(/\s+/).reverse();
-            line = [];
-            lineNumber = 0;
-            lineHeight = 1.2;
-            y = text.attr('y');
-            dy = parseFloat(text.attr('dy'));
-            tspan = text
+            const words = text.text().split(/\s+/).reverse();
+            const lineHeight = 1.2;
+            const y = text.attr('y');
+            const dy = parseFloat(text.attr('dy'));
+            let tspan = text
                 .text(null)
                 .append('tspan')
                 .attr('x', xpos)
@@ -934,7 +1066,7 @@ export default function module() {
      * @return void
      * @private
      */
-    function updateContent(dataPoint) {
+    function updateContent(dataPoint: TooltipDatum) {
         activeLayout = resolveLayout(dataPoint);
 
         if (activeLayout === 'single') {
@@ -951,7 +1083,7 @@ export default function module() {
      * @return void
      * @private
      */
-    function renderSingle(dataPoint = {}) {
+    function renderSingle(dataPoint: TooltipDatum = {} as TooltipDatum) {
         const value = dataPoint[valueLabel];
         const name = dataPoint[nameLabel] || '';
         const lineHeight = singleTextSize * singleTextLineHeight;
@@ -989,7 +1121,7 @@ export default function module() {
                     .attr('y', y)
                     .style('fill', singleNameTextFillColor)
                     .style('font-size', singleTextSize)
-                    .text(name)
+                    .text(String(name))
             );
             y += lineHeight;
         }
@@ -1004,7 +1136,7 @@ export default function module() {
                     .style('fill', singleValueTextFillColor)
                     .style('font-size', singleValueTextSize)
                     .style('font-weight', singleValueTextWeight)
-                    .text(getFormattedValue(value))
+                    .text(getFormattedValue(value as number))
             );
             y += valueLineHeight;
         }
@@ -1024,8 +1156,10 @@ export default function module() {
      * @return void
      * @private
      */
-    function renderList(dataPoint) {
-        let topics = dataPoint[topicLabel] || [];
+    function renderList(dataPoint: TooltipDatum) {
+        // Read by the topic label, which a chart can rename, so the cast is
+        // that accessor rather than an assumption about the shape.
+        let topics = (dataPoint[topicLabel] as TooltipEntry[]) || [];
 
         tooltipTitle.style('display', null);
         tooltipBody.style('display', null);
@@ -1050,7 +1184,7 @@ export default function module() {
                     [nameLabel]: MORE_ROW_KEY,
                     isMoreRow: true,
                     hiddenCount: topics.length - shown.length,
-                },
+                } as TooltipEntry,
             ]);
         }
 
@@ -1061,8 +1195,8 @@ export default function module() {
         // over the chart re-sets text and positions instead of rebuilding
         // every node
         const entries = tooltipBody
-            .selectAll('.tooltip-entry')
-            .data(topics, (topic) => topic[nameLabel]);
+            .selectAll<SVGGElement, TooltipEntry>('.tooltip-entry')
+            .data(topics, (topic) => String(topic[nameLabel]));
 
         entries.exit().remove();
 
@@ -1075,7 +1209,7 @@ export default function module() {
         entered
             .merge(entries)
             .order()
-            .each(function (topic) {
+            .each(function (this: SVGGElement, topic) {
                 layoutEntry(select(this), topic);
             });
     }
@@ -1089,7 +1223,11 @@ export default function module() {
      * @return void
      * @private
      */
-    function updateTooltip(dataPoint, xPosition, yPosition) {
+    function updateTooltip(
+        dataPoint: TooltipDatum,
+        xPosition: number,
+        yPosition: number
+    ) {
         updateContent(dataPoint);
         updatePositionAndSize(xPosition, yPosition);
     }
@@ -1101,7 +1239,7 @@ export default function module() {
      * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
      * @example tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
      */
-    exports.axisTimeCombinations = axisTimeCombinations;
+    (exports as TooltipModule).axisTimeCombinations = axisTimeCombinations;
 
     /**
      * Exposes the ability to force the tooltip to use a certain date format
@@ -1109,14 +1247,14 @@ export default function module() {
      * @return {String | module}  Current format or module to chain calls
      * @public
      */
-    exports.dateFormat = function (_x) {
+    (exports as TooltipModule).dateFormat = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return dateFormat || defaultAxisSettings;
         }
         dateFormat = _x;
 
         return this;
-    };
+    } as TooltipModule['dateFormat'];
 
     /**
      * Exposes the ability to use a custom date format
@@ -1126,14 +1264,17 @@ export default function module() {
      * @example tooltip.dateFormat(tooltip.axisTimeCombinations.CUSTOM);
      * tooltip.dateCustomFormat('%H:%M %p')
      */
-    exports.dateCustomFormat = function (_x) {
+    (exports as TooltipModule).dateCustomFormat = function (
+        this: TooltipModule,
+        _x
+    ) {
         if (!arguments.length) {
             return dateCustomFormat;
         }
         dateCustomFormat = _x;
 
         return this;
-    };
+    } as TooltipModule['dateCustomFormat'];
 
     /**
      * Gets or Sets the dateLabel of the data: the field of the data point
@@ -1145,7 +1286,7 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.dateLabel = function (_x) {
+    (exports as TooltipModule).dateLabel = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return dateLabel;
         }
@@ -1153,18 +1294,18 @@ export default function module() {
         dataKeyDeprecationMessage('date');
 
         return this;
-    };
+    } as TooltipModule['dateLabel'];
 
     /**
      * Hides the tooltip
      * @return {module} Tooltip module to chain calls
      * @public
      */
-    exports.hide = function () {
+    (exports as TooltipModule).hide = function (this: TooltipModule) {
         hideTooltip();
 
         return this;
-    };
+    } as TooltipModule['hide'];
 
     /**
      * Pass locale for the tooltip to render the date in
@@ -1172,14 +1313,14 @@ export default function module() {
      * @return {String | module}    Current locale or module to chain calls
      * @public
      */
-    exports.locale = function (_x) {
+    (exports as TooltipModule).locale = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return locale;
         }
         locale = _x;
 
         return this;
-    };
+    } as TooltipModule['locale'];
 
     /**
      * Gets or Sets the nameLabel of the data
@@ -1188,7 +1329,7 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.nameLabel = function (_x) {
+    (exports as TooltipModule).nameLabel = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return nameLabel;
         }
@@ -1196,7 +1337,7 @@ export default function module() {
         dataKeyDeprecationMessage('name');
 
         return this;
-    };
+    } as TooltipModule['nameLabel'];
 
     /**
      * Gets or Sets the number format for the value displayed on the tooltip
@@ -1204,14 +1345,17 @@ export default function module() {
      * @return {string | module}        Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function (_x) {
+    (exports as TooltipModule).numberFormat = function (
+        this: TooltipModule,
+        _x
+    ) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    };
+    } as TooltipModule['numberFormat'];
 
     /**
      * Gets or Sets the formatter function for the value displayed on the tooltip.
@@ -1221,14 +1365,17 @@ export default function module() {
      * @public
      * @example tooltipChart.valueFormatter(value => value.toString().length.toString())
      */
-    exports.valueFormatter = function (_x) {
+    (exports as TooltipModule).valueFormatter = function (
+        this: TooltipModule,
+        _x
+    ) {
         if (!arguments.length) {
             return valueFormatter;
         }
         valueFormatter = _x;
 
         return this;
-    };
+    } as TooltipModule['valueFormatter'];
 
     /**
      * Gets or Sets shouldShowDateInTitle
@@ -1236,14 +1383,17 @@ export default function module() {
      * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
      * @public
      */
-    exports.shouldShowDateInTitle = function (_x) {
+    (exports as TooltipModule).shouldShowDateInTitle = function (
+        this: TooltipModule,
+        _x
+    ) {
         if (!arguments.length) {
             return shouldShowDateInTitle;
         }
         shouldShowDateInTitle = _x;
 
         return this;
-    };
+    } as TooltipModule['shouldShowDateInTitle'];
 
     /**
      * Shows the tooltip. Given the hovered data point and its position, as
@@ -1255,11 +1405,15 @@ export default function module() {
      * @return {module} Tooltip module to chain calls
      * @public
      */
-    exports.show = function (dataPoint, position) {
+    (exports as TooltipModule).show = function (
+        this: TooltipModule,
+        dataPoint,
+        position
+    ) {
         showTooltip(dataPoint, position);
 
         return this;
-    };
+    } as TooltipModule['show'];
 
     /**
      * Gets or Sets the title of the tooltip (to only show the date, set a blank title)
@@ -1267,14 +1421,14 @@ export default function module() {
      * @return {String | module}   Current title or module to chain calls
      * @public
      */
-    exports.title = function (_x) {
+    (exports as TooltipModule).title = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return title;
         }
         title = _x;
 
         return this;
-    };
+    } as TooltipModule['title'];
 
     /**
      * Gets or Sets an offset, in pixels, applied to the point the tooltip is
@@ -1285,14 +1439,17 @@ export default function module() {
      * @public
      * @example tooltip.tooltipOffset({ x: 0, y: -20 })
      */
-    exports.tooltipOffset = function (_x) {
+    (exports as TooltipModule).tooltipOffset = function (
+        this: TooltipModule,
+        _x
+    ) {
         if (!arguments.length) {
             return tooltipOffset;
         }
         tooltipOffset = _x;
 
         return this;
-    };
+    } as TooltipModule['tooltipOffset'];
 
     /**
      * Gets or Sets the layout: 'list' shows the title and one row per topic,
@@ -1308,14 +1465,14 @@ export default function module() {
      * @public
      * @example tooltip.layout('single')
      */
-    exports.layout = function (_x) {
+    (exports as TooltipModule).layout = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return layout;
         }
         layout = _x;
 
         return this;
-    };
+    } as TooltipModule['layout'];
 
     /**
      * Gets or Sets the most rows the tooltip shows. Past that, the last row
@@ -1326,14 +1483,14 @@ export default function module() {
      * @public
      * @example tooltip.maxEntries(6)
      */
-    exports.maxEntries = function (_x) {
+    (exports as TooltipModule).maxEntries = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return maxEntries;
         }
         maxEntries = _x;
 
         return this;
-    };
+    } as TooltipModule['maxEntries'];
 
     /**
      * Pass an override for the ordering of your tooltip
@@ -1341,14 +1498,17 @@ export default function module() {
      * @return {String[] | module}    Current overrideOrder or Chart module to chain calls
      * @public
      */
-    exports.topicsOrder = function (_x) {
+    (exports as TooltipModule).topicsOrder = function (
+        this: TooltipModule,
+        _x
+    ) {
         if (!arguments.length) {
             return topicsOrder;
         }
         topicsOrder = _x;
 
         return this;
-    };
+    } as TooltipModule['topicsOrder'];
 
     /**
      * Gets or Sets the topicLabel of the data
@@ -1357,7 +1517,7 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.topicLabel = function (_x) {
+    (exports as TooltipModule).topicLabel = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return topicLabel;
         }
@@ -1365,7 +1525,7 @@ export default function module() {
         dataKeyDeprecationMessage('topic');
 
         return this;
-    };
+    } as TooltipModule['topicLabel'];
 
     /**
      * Updates the content and position of the tooltip. The arguments are
@@ -1384,9 +1544,19 @@ export default function module() {
      * @public
      * @example chart.on('customMouseMove', tooltip.update)
      */
-    exports.update = function (dataPoint, position, chartSize, colorMapping) {
-        let anchor = position;
-        let colors = colorMapping;
+    (exports as TooltipModule).update = function (
+        this: TooltipModule,
+        dataPoint,
+        position,
+        chartSize,
+        colorMapping
+    ) {
+        // Two argument orders reach here -- the one the charts dispatch and
+        // the one they used before 3.0 -- and which is which is only known
+        // after the checks below. So the locals hold whatever their position
+        // can carry until then, rather than what the first overload says.
+        let anchor: unknown = position;
+        let colors: unknown = colorMapping;
 
         if (
             !Array.isArray(position) &&
@@ -1414,17 +1584,22 @@ export default function module() {
         }
 
         if (colors) {
-            colorMap = colors;
+            colorMap = colors as TopicColorMap;
         }
 
+        const [anchorX, anchorY] = (anchor ?? []) as [
+            number | undefined,
+            number | undefined,
+        ];
+
         updateTooltip(
-            dataPoint,
-            anchor ? anchor[0] : undefined,
-            anchor ? anchor[1] : undefined
+            dataPoint as TooltipDatum,
+            anchorX as number,
+            anchorY as number
         );
 
         return this;
-    };
+    } as TooltipModule['update'];
 
     /**
      * Gets or Sets the valueLabel of the data
@@ -1433,7 +1608,7 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.valueLabel = function (_x) {
+    (exports as TooltipModule).valueLabel = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return valueLabel;
         }
@@ -1441,7 +1616,7 @@ export default function module() {
         dataKeyDeprecationMessage('value');
 
         return this;
-    };
+    } as TooltipModule['valueLabel'];
 
     /**
      * Gets or Sets how the key of the data point is shown in the title:
@@ -1456,14 +1631,17 @@ export default function module() {
      * @public
      * @example tooltip.xAxisValueType('category')
      */
-    exports.xAxisValueType = function (_x) {
+    (exports as TooltipModule).xAxisValueType = function (
+        this: TooltipModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisValueType;
         }
         xAxisValueType = _x;
 
         return this;
-    };
+    } as TooltipModule['xAxisValueType'];
 
-    return exports;
+    return exports as unknown as TooltipModule;
 }
