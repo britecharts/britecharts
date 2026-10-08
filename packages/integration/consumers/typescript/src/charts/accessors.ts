@@ -250,7 +250,17 @@ const tooltipTitle: string = tooltipChart.title();
 const tooltipShowsDate: boolean = tooltipChart.shouldShowDateInTitle();
 const tooltipMaxEntries: number = tooltipChart.maxEntries();
 const tooltipOffset: TooltipOffset = tooltipChart.tooltipOffset();
-const tooltipTopicsOrder: string[] = tooltipChart.topicsOrder();
+// `string | number` because the two charts that feed the tooltip name their
+// topics differently: line sends numeric ids, stacked area sends string names,
+// and the tooltip orders with `topic.name === orderName`. Both have to be
+// expressible, so both are asserted below.
+const tooltipTopicsOrder: (string | number)[] = tooltipChart.topicsOrder();
+const tooltipOrderByIds: (string | number)[] = tooltipFactory()
+    .topicsOrder([1, 2, 3])
+    .topicsOrder();
+const tooltipOrderByNames: (string | number)[] = tooltipFactory()
+    .topicsOrder(['Other', 'Sunny'])
+    .topicsOrder();
 const tooltipValueType: TooltipXAxisValueType = tooltipChart.xAxisValueType();
 
 // Null until set, where `dateFormat` above falls back instead.
@@ -285,6 +295,8 @@ export const tooltipAccessors = {
     tooltipMaxEntries,
     tooltipOffset,
     tooltipTopicsOrder,
+    tooltipOrderByIds,
+    tooltipOrderByNames,
     tooltipValueType,
     tooltipCustomFormat,
     tooltipNumberFormat,

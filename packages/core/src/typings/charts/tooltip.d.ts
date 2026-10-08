@@ -15,19 +15,22 @@ export enum tooltipKeys {
  * the rows as they were bound), so `name` here is the same numeric topic
  * identifier it is there -- not a label. `topicName` is the label.
  *
- * It was declared `string`, which only became visibly wrong when
- * `LineChartDataShape.name` was corrected to `number`: core then described the
- * same runtime object two different ways, and anyone wiring `customMouseMove`
- * into the tooltip in TypeScript got an incompatible assignment at that
- * boundary.
+ * It was declared `string`, then `number` once `LineChartDataShape.name` was
+ * corrected -- and both were half the story. Two charts feed this type and
+ * their names are different kinds: line hands over its raw flat rows, where
+ * `name` is a numeric topic id, while stacked area's topics are named by
+ * string (`"Direct"`, as its own data-shape example shows, and as its story
+ * passes to `topicsOrder`). The tooltip only ever compares this field or sorts
+ * by it, so both work at runtime; only the declaration had to pick one, and
+ * picking either made the other chart's correct usage a type error.
  *
- * `TooltipSingleDataShape.name` below is genuinely a string -- that is the
- * category name from bar, donut and scatter plot -- so the two are not the
- * same field and must not be collapsed.
+ * `TooltipSingleDataShape.name` below is a string for a different reason --
+ * that is the category name from bar, donut and scatter plot -- so the two are
+ * not the same field and must not be collapsed.
  */
 export type TooltipTopic = {
     date: string;
-    name: number;
+    name: string | number;
     value: number;
     topicName: string;
 };
@@ -166,9 +169,16 @@ export interface TooltipAPI {
     /** Pass an override for the offset of your tooltip */
     tooltipOffset(): TooltipOffset;
     tooltipOffset(offset: TooltipOffset): TooltipModule;
-    /** Pass an override for the ordering of your tooltip */
-    topicsOrder(): string[];
-    topicsOrder(namesOrder: string[]): TooltipModule;
+    /**
+     * Pass an override for the ordering of your tooltip
+     *
+     * Matched to `TooltipTopic['name']`, because the tooltip orders with
+     * `topic.name === orderName`: the ids line sends and the names stacked
+     * area sends both have to be expressible here, and the tooltip's own spec
+     * passes numbers while stacked area's story passes strings.
+     */
+    topicsOrder(): TooltipTopic['name'][];
+    topicsOrder(namesOrder: TooltipTopic['name'][]): TooltipModule;
     /** Gets or Sets the topicLabel of the data */
     topicLabel(): string;
     topicLabel(label: string): TooltipModule;
