@@ -119,6 +119,10 @@ import type { BarChartDataShape, BarSelection } from '@britecharts/core';
 import { scatterPlot } from '@britecharts/core';
 import { tooltip as tooltipFactory } from '@britecharts/core';
 import type {
+    StackedAreaChartModule,
+    StackedAreaEmptyDataConfig,
+} from '@britecharts/core';
+import type {
     TooltipLayout,
     TooltipOffset,
     TooltipXAxisValueType,
@@ -282,6 +286,78 @@ const tooltipChained: number = tooltipFactory()
 const tooltipFormatted: number | undefined = tooltipFactory()
     .valueFormatter((value) => value * 2)
     .valueFormatter()?.(21);
+
+// The stacked area's seventeen accessors, and the generic that made its `on`
+// unusable.
+//
+// `InteractiveChartAPI` was parameterised with `StackedBarChartModule` -- the
+// wrong chart. So `stackedArea().on(...)` reported the stacked bar's API, and
+// the two assertions below are what that broke: a chain crossing from `on`
+// back to one of this chart's own accessors, and the result still being
+// drawable. Both are errors against the old declaration.
+//
+// `emptyDataConfig` was missing `minY`, which the chart reads, and
+// `xAxisValueType` accepted `'numeric'` while the chart compares against
+// `'number'` -- so the value that works was rejected and the one accepted did
+// nothing. Both are asserted here with the values the chart actually uses.
+const areaChart = stackedArea();
+
+const areaDrawable: StackedAreaChartModule = stackedArea().on(
+    'customMouseOver',
+    () => undefined
+);
+const areaChainedFromOn: string = stackedArea()
+    .on('customMouseOver', () => undefined)
+    .areaCurve('monotoneX')
+    .areaCurve();
+
+const areaCurve: string = areaChart.areaCurve();
+const areaOpacity: number = areaChart.areaOpacity();
+const areaOutline: boolean = areaChart.hasOutline();
+const areaKeyLabel: string = areaChart.keyLabel();
+const areaThreshold: number = areaChart.tooltipThreshold();
+const areaBaseline: number = areaChart.yAxisBaseline();
+const areaYLabelOffset: number = areaChart.yAxisLabelOffset();
+const areaYTicks: number = areaChart.yTicks();
+const areaXScale: 'linear' | 'logarithmic' = areaChart.xAxisScale();
+const areaXValueType: 'date' | 'number' = areaChart.xAxisValueType();
+
+// The empty-data window carries all four bounds, `minY` included.
+const areaEmptyData: StackedAreaEmptyDataConfig = areaChart.emptyDataConfig();
+const areaEmptyMinY: number = areaEmptyData.minY;
+
+// Null or undefined until set.
+const areaGrid: 'vertical' | 'horizontal' | 'full' | null = areaChart.grid();
+const areaXTicks: number | null = areaChart.xTicks();
+const areaTopicsOrder: string[] | undefined = areaChart.topicsOrder();
+const areaYLabel: string | undefined = areaChart.yAxisLabel();
+
+// `'number'` is the value that switches the axis, and it type-checks now.
+const areaNumericAxis: StackedAreaChartModule = stackedArea()
+    .xAxisValueType('number')
+    .xAxisScale('logarithmic');
+
+export const stackedAreaAccessors = {
+    areaDrawable,
+    areaChainedFromOn,
+    areaCurve,
+    areaOpacity,
+    areaOutline,
+    areaKeyLabel,
+    areaThreshold,
+    areaBaseline,
+    areaYLabelOffset,
+    areaYTicks,
+    areaXScale,
+    areaXValueType,
+    areaEmptyData,
+    areaEmptyMinY,
+    areaGrid,
+    areaXTicks,
+    areaTopicsOrder,
+    areaYLabel,
+    areaNumericAxis,
+};
 
 export const tooltipAccessors = {
     tooltipLayout,

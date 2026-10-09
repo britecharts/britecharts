@@ -130,3 +130,16 @@ tooltip().numberFormat().length;
 tooltip().valueFormatter()(1);
 // @ts-expect-error possibly null or undefined
 tooltip().locale().length;
+
+// The stacked area's nullable getters, and the x-axis value the chart does not
+// recognise -- `'numeric'` used to type-check and do nothing.
+// @ts-expect-error possibly null
+stackedArea().grid().length;
+// @ts-expect-error possibly null
+stackedArea().xTicks().toFixed(0);
+// @ts-expect-error possibly undefined
+stackedArea().topicsOrder().length;
+// @ts-expect-error possibly undefined
+stackedArea().yAxisLabel().length;
+// @ts-expect-error the chart compares against 'number', not 'numeric'
+stackedArea().xAxisValueType('numeric');
