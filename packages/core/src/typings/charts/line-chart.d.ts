@@ -7,6 +7,7 @@ import {
     TimeSeriesChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
+import { ColorGradientType } from '../helpers/colors';
 import { ChartModuleSelection } from '../common/selection';
 
 export enum LineChartKeys {
@@ -50,6 +51,30 @@ export interface CustomLine {
     color: string;
 }
 
+/**
+ * Whether the x axis carries dates or plain numbers.
+ *
+ * `'number'`, not `'numeric'`: the chart compares this against `'number'` in
+ * four places, so `'numeric'` -- which the declaration used to accept -- type
+ * checked and did nothing, while the value that actually switches the axis was
+ * rejected. The accessor's own `@example` is `line.xAxisValueType('number')`.
+ * Shares its shape with the stacked area chart, which had the same defect.
+ */
+export type LineChartXAxisValueType = 'date' | 'number';
+
+/** Whether a numeric x axis is scaled linearly or logarithmically. */
+export type LineChartXAxisScale = 'linear' | 'logarithmic';
+
+// The thirteen accessors below were setter-only -- a single signature
+// returning the chart -- so reading one reported the chart rather than its
+// value. Each is a getter/setter overload pair now, getter first and setter
+// last, with the getter typed from the implementation's own default.
+//
+// Five getters are wider than their setter: `grid`, `xAxisLabel`, `yAxisLabel`
+// and `xTicks` are `null` by default, and `xTicks` hands that straight to d3
+// to mean "use the scale's own count". Unlike the grouped and stacked bars,
+// this chart initialises its axis labels to `null` rather than leaving them
+// undefined -- the same split the bar chart has.
 export interface LineChartAPI
     extends ChartBaseAPI<LineChartModule>,
         InteractiveChartAPI<LineChartModule>,
@@ -57,49 +82,78 @@ export interface LineChartAPI
         AnimatedChartAPI<LineChartModule>,
         TimeSeriesChartAPI<LineChartModule>,
         ThemableChartAPI<LineChartModule> {
-    /** Gets or Sets the grid mode. */
-    grid(gridType?: GridTypes): LineChartModule;
+    /**
+     * Gets or Sets the grid mode.
+     *
+     * The getter is `null` until one is set, and the setter takes `null` to
+     * put the default back, as on the other grid-drawing charts.
+     */
+    grid(): GridTypes | null;
+    grid(gridType: GridTypes | null): LineChartModule;
     /** Gets or Sets the curve of the line chart */
-    lineCurve(curveType?: string): LineChartModule;
+    lineCurve(): string;
+    lineCurve(curveType: string): LineChartModule;
     /** Gets or Sets the gradient colors of the line chart when there is only one line */
-    lineGradient(gradient?: [string, string]): LineChartModule;
+    lineGradient(): ColorGradientType;
+    lineGradient(gradient: ColorGradientType): LineChartModule;
     /**
      * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
      * onto the chart with a specific color and a text annotation over the line.
      */
+    lines(): CustomLine[];
     lines(customLines: CustomLine[]): LineChartModule;
     /** Gets or Sets the topicLabel of the chart */
-    shouldShowAllDataPoints(showAllDataPoints?: boolean): LineChartModule;
+    shouldShowAllDataPoints(): boolean;
+    shouldShowAllDataPoints(
+        showAllDataPoints: boolean
+    ): LineChartModule;
     /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
      * NOTE: This could also depend on the aspect ratio
      */
-    tooltipThreshold(threshold?: number): LineChartModule;
-    /** Gets or Sets the label of the X axis of the chart */
+    tooltipThreshold(): number;
+    tooltipThreshold(threshold: number): LineChartModule;
+    /**
+     * Gets or Sets the label of the X axis of the chart
+     *
+     * The getter is `null` until one is set: the chart appends no label
+     * element until then.
+     */
+    xAxisLabel(): string | null;
     xAxisLabel(label: string): LineChartModule;
     /**
      * Gets or Sets the `xAxisScale`.
      * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
      * 'number' as well, otherwise it won't influence the visualization.
      */
-    xAxisScale(scale?: 'linear' | 'logarithmic'): LineChartModule;
+    xAxisScale(): LineChartXAxisScale;
+    xAxisScale(scale: LineChartXAxisScale): LineChartModule;
     /**
      * Gets or Sets the `xAxisValueType`.
      * Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
      * be dates anymore, but can be arbitrary numbers.
      */
-    xAxisValueType(valueType?: 'date' | 'numeric'): LineChartModule;
+    xAxisValueType(): LineChartXAxisValueType;
+    xAxisValueType(valueType: LineChartXAxisValueType): LineChartModule;
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
      * how many and where the ticks will appear.
      */
+    xTicks(): number | null;
     xTicks(ticks: number): LineChartModule;
-    /** Gets or Sets the label of the Y axis of the chart */
+    /**
+     * Gets or Sets the label of the Y axis of the chart
+     *
+     * The getter is `null` until one is set, as `xAxisLabel`'s is.
+     */
+    yAxisLabel(): string | null;
     yAxisLabel(label: string): LineChartModule;
     /** Gets or Sets the yAxisLabelPadding of the chart. */
+    yAxisLabelPadding(): number;
     yAxisLabelPadding(padding: number): LineChartModule;
     /** Gets or Sets the number of ticks of the y axis on the chart */
+    yTicks(): number;
     yTicks(ticks: number): LineChartModule;
     /** Gets or Sets the `date` key of the data */
     dateLabel(): string;

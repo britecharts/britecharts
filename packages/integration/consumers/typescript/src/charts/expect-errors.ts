@@ -143,3 +143,16 @@ stackedArea().topicsOrder().length;
 stackedArea().yAxisLabel().length;
 // @ts-expect-error the chart compares against 'number', not 'numeric'
 stackedArea().xAxisValueType('numeric');
+
+// The line chart's four nullable getters, and the same x-axis value it does
+// not recognise.
+// @ts-expect-error possibly null
+line().grid().length;
+// @ts-expect-error possibly null
+line().xAxisLabel().length;
+// @ts-expect-error possibly null
+line().yAxisLabel().length;
+// @ts-expect-error possibly null
+line().xTicks().toFixed(0);
+// @ts-expect-error the chart compares against 'number', not 'numeric'
+line().xAxisValueType('numeric');

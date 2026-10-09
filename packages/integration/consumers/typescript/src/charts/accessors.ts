@@ -123,6 +123,11 @@ import type {
     StackedAreaEmptyDataConfig,
 } from '@britecharts/core';
 import type {
+    ColorGradientType,
+    CustomLine,
+    LineChartModule,
+} from '@britecharts/core';
+import type {
     TooltipLayout,
     TooltipOffset,
     TooltipXAxisValueType,
@@ -336,6 +341,69 @@ const areaYLabel: string | undefined = areaChart.yAxisLabel();
 const areaNumericAxis: StackedAreaChartModule = stackedArea()
     .xAxisValueType('number')
     .xAxisScale('logarithmic');
+
+// The line chart's thirteen accessors. Its data shape and `name` were
+// corrected earlier; this is the getters.
+//
+// `xAxisValueType` had the same defect as the stacked area's: `'numeric'` type
+// checked and did nothing while the chart compares against `'number'`.
+//
+// The `on` chain below is the assertion that catches a wrong generic on an
+// inherited surface -- the class of defect brush had three of and the stacked
+// area one of. Neither `check:api-parity` nor any setter-only assertion sees
+// it; it takes chaining off `on` back to one of the chart's own accessors and
+// assigning the result to the chart's module type.
+const lineOwn = line();
+
+const lineDrawable: LineChartModule = line().on(
+    'customMouseOver',
+    () => undefined
+);
+const lineChainedFromOn: string = line()
+    .on('customMouseOver', () => undefined)
+    .lineCurve('linear')
+    .lineCurve();
+
+const lineCurve: string = lineOwn.lineCurve();
+const lineGradient: ColorGradientType = lineOwn.lineGradient();
+const lineCustomLines: CustomLine[] = lineOwn.lines();
+const lineAllPoints: boolean = lineOwn.shouldShowAllDataPoints();
+const lineThreshold: number = lineOwn.tooltipThreshold();
+const lineXScale: 'linear' | 'logarithmic' = lineOwn.xAxisScale();
+const lineXValueType: 'date' | 'number' = lineOwn.xAxisValueType();
+const lineYLabelPadding: number = lineOwn.yAxisLabelPadding();
+const lineYTicks: number = lineOwn.yTicks();
+
+// Null until set, where the grouped and stacked bars leave their axis labels
+// undefined instead -- this chart initialises them to null, as the bar does.
+const lineGrid: 'vertical' | 'horizontal' | 'full' | null = lineOwn.grid();
+const lineXLabel: string | null = lineOwn.xAxisLabel();
+const lineYLabel: string | null = lineOwn.yAxisLabel();
+const lineXTicks: number | null = lineOwn.xTicks();
+
+// `'number'` is the value that switches the axis, and it type-checks now.
+const lineNumericAxis: LineChartModule = line()
+    .xAxisValueType('number')
+    .xAxisScale('logarithmic');
+
+export const lineAccessors = {
+    lineDrawable,
+    lineChainedFromOn,
+    lineCurve,
+    lineGradient,
+    lineCustomLines,
+    lineAllPoints,
+    lineThreshold,
+    lineXScale,
+    lineXValueType,
+    lineYLabelPadding,
+    lineYTicks,
+    lineGrid,
+    lineXLabel,
+    lineYLabel,
+    lineXTicks,
+    lineNumericAxis,
+};
 
 export const stackedAreaAccessors = {
     areaDrawable,
