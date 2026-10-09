@@ -2,7 +2,7 @@ const path = require('path');
 
 const PATHS = {
     vendor: path.resolve('./node_modules'),
-    bundleIndex: path.resolve('./src/index.js'),
+    bundleIndex: path.resolve('./src/index.ts'),
     charts: path.resolve('./src/charts'),
     styles: path.resolve('./src/styles/britecharts.scss'),
 };
