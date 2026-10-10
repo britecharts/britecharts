@@ -28,9 +28,13 @@ module.exports = {
         '^@britecharts/core$': '<rootDir>/../core/src/index',
         '^@britecharts/wrappers$': '<rootDir>/../wrappers/src/index',
     },
+    // Every extension, not just .js. A converted file would otherwise drop out
+    // of coverage silently: the per-file threshold fails loudly ("Coverage
+    // data for ... was not found"), but the global ones would simply be
+    // computed over a smaller set and keep passing.
     collectCoverageFrom: [
-        'src/charts/**/*.js',
-        '!src/charts/**/*.{spec,stories,fixtures}.js',
+        'src/charts/**/*.{js,ts,tsx}',
+        '!src/charts/**/*.{spec,stories,fixtures}.{js,ts,tsx}',
     ],
     setupFiles: ['jest-canvas-mock'],
     setupFilesAfterEnv: ['./jest.setup.js'],
