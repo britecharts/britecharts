@@ -140,8 +140,20 @@ const PACKAGES = {
             ['dist/umd/bundle/react.bundled.min.js', 1],
             ['dist/umd/charts/*.js', 10],
             ['dist/cjs/charts/*.js', 10],
-            ['src/index.js', 1],
-            ['src/charts/*/*.js', 10],
+            // The ESM entry, which `module` and `exports.import` resolve to.
+            // Built for the same reason wrappers' and core's are: src/ holds
+            // authored TypeScript now, and no consumer can be expected to
+            // compile it.
+            ['dist/esm/index.js', 1],
+            ['dist/esm/charts/*/*.js', 15],
+            // Source still ships, so deep `./src/*` imports keep resolving.
+            // The extensions are deliberately loose: each conversion turns one
+            // of these from .js into .tsx, and the count has to hold either
+            // way. Spelled `*.js`, this would quietly count down as the
+            // components convert -- the bug wrappers' list had, and the one
+            // core's `src/index.?s` was widened to avoid.
+            ['src/index.?s*', 1],
+            ['src/charts/*/*.?s*', 15],
             ['src/typings/index.d.ts', 1],
             ['src/typings/charts/*.d.ts', 11],
         ],

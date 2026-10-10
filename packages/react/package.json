@@ -2,15 +2,17 @@
   "name": "@britecharts/react",
   "version": "3.0.0-beta.2",
   "main": "dist/umd/bundle/react.bundled.min.js",
-  "module": "src/index.js",
+  "module": "dist/esm/index.js",
   "types": "src/typings/index.d.ts",
   "dependencies": {
     "@britecharts/core": "workspace:^",
     "@britecharts/wrappers": "workspace:^"
   },
   "devDependencies": {
+    "@babel/cli": "7.29.7",
     "@babel/core": "7.29.7",
     "@babel/parser": "7.29.9",
+    "@babel/preset-react": "7.29.7",
     "@babel/preset-typescript": "7.29.7",
     "@storybook/addon-a11y": "8.6.14",
     "@storybook/addon-essentials": "8.6.14",
@@ -53,7 +55,8 @@
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
-    "build": "pnpm run clean && webpack --env=production",
+    "build": "pnpm run clean && pnpm run build:esm && webpack --env=production",
+    "build:esm": "babel src --out-dir dist/esm --extensions .tsx,.ts,.js --config-file ./babel.config.esm.js --ignore \"src/**/*.d.ts,src/**/*.spec.js,src/**/*.spec.ts,src/**/*.spec.tsx,src/**/*.stories.js,src/**/*.stories.ts,src/**/*.stories.tsx,src/**/*.fixtures.js,src/**/*.fixtures.ts,src/docs\"",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig",
     "build:charts:cjs": "webpack --env=prodCJSChartsConfig",
@@ -75,6 +78,7 @@
     "CHANGELOG.md",
     "dist/umd/**",
     "dist/cjs/**",
+    "dist/esm/**",
     "src/**",
     "!src/docs/**",
     "!**/*.map",
@@ -93,7 +97,7 @@
   "exports": {
     ".": {
       "types": "./src/typings/index.d.ts",
-      "import": "./dist/umd/bundle/react.bundled.min.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/umd/bundle/react.bundled.min.js",
       "default": "./dist/umd/bundle/react.bundled.min.js"
     },
