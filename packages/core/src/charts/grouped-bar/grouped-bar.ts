@@ -1,4 +1,4 @@
-import { max, range, permute, rollups, sum } from 'd3-array';
+import { range, permute, rollups, sum } from 'd3-array';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { color } from 'd3-color';
 import { dispatch } from 'd3-dispatch';
@@ -7,6 +7,11 @@ import { easeQuadInOut } from 'd3-ease';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleLinear, scaleBand, scaleOrdinal } from 'd3-scale';
 import { select, pointer } from 'd3-selection';
+import type { Axis, AxisDomain } from 'd3-axis';
+import type { Dispatch } from 'd3-dispatch';
+import type { FormatLocaleObject } from 'd3-format';
+import type { ScaleOrdinal } from 'd3-scale';
+import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -17,10 +22,74 @@ import { barLoadingMarkup } from '../helpers/load';
 import { setDefaultLocale } from '../helpers/locale';
 import { motion } from '../helpers/constants';
 import { gridHorizontal, gridVertical } from '../helpers/grid';
+import { asCategoryScale, asValueScale } from '../helpers/scale';
+import type { AxisScale } from '../helpers/scale';
+import type { GridTypes } from '../../typings/common/grid';
+import type { LocalObject } from '../../typings/common/local';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type { Offset } from '../../typings/common/position';
+import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import type {
+    GroupedBarChartDataShape,
+    GroupedBarChartModule,
+} from '../../typings/charts/grouped-bar-chart';
 
 const NUMBER_FORMAT = ',f';
-const uniq = (arrArg) =>
+const uniq = <T>(arrArg: T[]) =>
     arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+
+/**
+ * The chart's own svg, and the selections derived from it. The datum and parent
+ * generics are the migration plan's bounded `any`, as in `bullet.ts` and
+ * `donut.ts`: these are module-level variables reassigned from several
+ * differently-shaped selections, so naming one concrete datum would reject the
+ * others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/**
+ * What `cleanData` hands the drawing functions. The index signature is the
+ * deprecated `nameLabel`/`valueLabel`/`groupLabel` accessors: they let the data
+ * carry those three values under any key, so the reads in `cleanData`,
+ * `prepareData` and the two nearest-point searches really are dynamic.
+ *
+ * `topicName` is `cleanData`'s own addition, a copy of the group under the name
+ * the tooltip reads, and it is not part of the published data shape.
+ */
+type GroupedBarDatum = GroupedBarChartDataShape & {
+    topicName: string;
+    [key: string]: unknown;
+};
+
+/**
+ * One group of bars, as `prepareData` builds it: a key naming the group, the
+ * total across it, every group name as its own member, and the entries
+ * themselves under `values` for the tooltip.
+ */
+type GroupedBarLayer = {
+    key: string;
+    total: number;
+    values: GroupedBarDatum[];
+    [groupName: string]: unknown;
+};
+
+/**
+ * An entry the nearest-point search found, which it mutates before returning:
+ * `values` is the whole group it belongs to and `key` its own name, both read
+ * by the tooltip.
+ */
+type NearestDatum = GroupedBarDatum & {
+    values: GroupedBarDatum[];
+    key: string;
+};
 
 /**
  * Grouped Bar Chart reusable API module that allows us
@@ -65,8 +134,11 @@ const uniq = (arrArg) =>
  * ]
  */
 
-export default function module() {
-    let margin = {
+export default function module(): GroupedBarChartModule {
+    // Split into `let` and `const` rather than the one `let` chain the
+    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
+    // error, and the bindings below it are never reassigned.
+    let margin: ChartMarginParams = {
             top: 40,
             right: 30,
             bottom: 60,
@@ -75,69 +147,84 @@ export default function module() {
         width = 960,
         height = 500,
         isLoading = false,
-        xScale,
-        xScale2,
-        xAxis,
-        yScale,
-        yScale2,
-        yAxis,
-        yTickTextOffset = {
+        xScale: AxisScale,
+        xScale2: AxisScale,
+        xAxis: Axis<AxisDomain>,
+        yScale: AxisScale,
+        yScale2: AxisScale,
+        yAxis: Axis<AxisDomain>,
+        yTickTextOffset: Offset = {
             y: -8,
             x: -20,
         },
         yTicks = 5,
         xTicks = 5,
-        colorSchema = colorHelper.colorSchemas.britecharts,
-        nameToColorMap = null,
+        colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
+        nameToColorMap: Record<string, string> | null = null,
         // Whether the pointer is over one of the bars (not the empty space
         // of the chart), which is when the tooltip events are dispatched
         isPointerOverBars = false,
-        colorScale,
-        layers,
-        locale = null,
-        localeFormatter = d3Format,
-        ease = easeQuadInOut,
+        colorScale: ScaleOrdinal<string, string>,
+        layers: GroupedBarLayer[],
+        locale: LocalObject | null = null,
+        // The d3-format namespace to start with, replaced by a locale-specific
+        // formatter once `valueLocale` is set. Both carry `format`, which is
+        // all `buildAxis` reads off it.
+        localeFormatter: FormatLocaleObject = d3Format,
         isHorizontal = false,
-        svg,
-        chartWidth,
-        chartHeight,
-        data,
-        groups,
-        layerElements,
-        transformedData,
+        svg: ChartSelection<SVGSVGElement>,
+        chartWidth: number,
+        chartHeight: number,
+        data: GroupedBarDatum[],
+        groups: string[],
+        layerElements: ChartSelection<SVGGElement>,
+        transformedData: GroupedBarLayer[],
         tooltipThreshold = 480,
-        xAxisPadding = {
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-        },
-        yAxisLabel,
-        yAxisLabelEl,
+        // No default: the chart appends no label element until one is set,
+        // which is what the declaration now says.
+        yAxisLabel: string | undefined,
+        yAxisLabelEl: ChartSelection<SVGTextElement>,
         yAxisLabelOffset = -60,
-        barOpacity = 0.24,
-        animationDelayStep = 20,
-        animationDelays,
+        animationDelays: number[],
         animationDuration = motion.duration,
-        grid = null,
+        grid: GridTypes | null = null,
         nameLabel = 'name',
         valueLabel = 'value',
         groupLabel = 'group',
         numberFormat = NUMBER_FORMAT,
         betweenBarsPadding = 0.1,
         betweenGroupsPadding = 0.1,
-        // getters
-        getName = ({ name }) => name,
-        getValue = ({ value }) => value,
-        getGroup = ({ group }) => group,
-        isAnimated = false,
-        // events
-        dispatcher = dispatch(
-            'customMouseOver',
-            'customMouseOut',
-            'customMouseMove',
-            'customClick'
-        );
+        isAnimated = false;
+
+    const ease = easeQuadInOut;
+    const xAxisPadding = {
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+    };
+    const barOpacity = 0.24;
+    const animationDelayStep = 20;
+    // getters
+    /**
+     * The colour a group's bars are filled with.
+     *
+     * `buildScales` fills `nameToColorMap` before anything is drawn, so it is
+     * non-null everywhere this is reached -- the same reasoning, and the same
+     * shape, as `getSliceFill` in donut.ts.
+     */
+    const colorForGroup = (group: string) =>
+        (nameToColorMap as Record<string, string>)[group];
+    const getName = ({ name }: GroupedBarDatum) => name;
+    const getValue = ({ value }: GroupedBarDatum) => value;
+    const getGroup = ({ group }: GroupedBarDatum) => group;
+    // events
+    const dispatcher: Dispatch<object> = dispatch(
+        'customMouseOver',
+        'customMouseOut',
+        'customMouseMove',
+        'customClick'
+    );
 
     /**
      * This function creates the graph using the selection and data provided
@@ -145,14 +232,25 @@ export default function module() {
      * the container(s) where the chart(s) will be rendered
      * @param {GroupedBarChartData} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            GroupedBarChartDataShape[],
+            TParent,
+            TParentDatum
+        >
+    ) {
         if (locale) {
             localeFormatter = setDefaultLocale(locale);
         }
 
         _selection.each(function (_data) {
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
             data = cleanData(_data);
 
             buildSVG(this);
@@ -197,7 +295,7 @@ export default function module() {
                 });
         }
 
-        svg.selectAll('.bar')
+        svg.selectAll<SVGRectElement, GroupedBarDatum>('.bar')
             .on('mouseover', function (event, d) {
                 handleBarsMouseOver(this, d, event);
             })
@@ -211,7 +309,7 @@ export default function module() {
      * @param  {D3Selection} selection Y axis group
      * @return void
      */
-    function adjustYTickLabels(selection) {
+    function adjustYTickLabels(selection: ChartSelection<SVGGElement>) {
         selection
             .selectAll('.tick text')
             .attr(
@@ -231,7 +329,7 @@ export default function module() {
      * @return {Array}               Subset of domainValues to pass to tickValues
      * @private
      */
-    function getEvenlySpacedTickValues(domainValues, numTicks) {
+    function getEvenlySpacedTickValues<T>(domainValues: T[], numTicks: number) {
         const total = domainValues.length;
 
         if (!numTicks || numTicks >= total) {
@@ -253,7 +351,7 @@ export default function module() {
      * Creates the d3 x and y axis, setting orientations
      * @private
      */
-    function buildAxis(locale) {
+    function buildAxis(locale: FormatLocaleObject) {
         if (isHorizontal) {
             xAxis = axisBottom(xScale).ticks(
                 xTicks,
@@ -275,7 +373,7 @@ export default function module() {
      * @private
      */
     function buildContainerGroups() {
-        let container = svg
+        const container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
@@ -301,7 +399,7 @@ export default function module() {
      */
     function buildLayers() {
         layers = transformedData.map((item) => {
-            let ret = {};
+            const ret: Record<string, unknown> = {};
 
             groups.forEach((key) => {
                 ret[key] = item[key];
@@ -316,7 +414,7 @@ export default function module() {
      * @private
      */
     function buildScales() {
-        let valueDomain = getValueAxisDomain();
+        const valueDomain = getValueAxisDomain();
 
         if (isHorizontal) {
             xScale = scaleLinear()
@@ -331,7 +429,7 @@ export default function module() {
 
             yScale2 = scaleBand()
                 .domain(data.map(getGroup))
-                .rangeRound([yScale.bandwidth(), 0])
+                .rangeRound([asCategoryScale(yScale).bandwidth(), 0])
                 .padding(betweenBarsPadding);
         } else {
             xScale = scaleBand()
@@ -340,7 +438,7 @@ export default function module() {
                 .padding(betweenGroupsPadding);
             xScale2 = scaleBand()
                 .domain(data.map(getGroup))
-                .rangeRound([0, xScale.bandwidth()])
+                .rangeRound([0, asCategoryScale(xScale).bandwidth()])
                 .padding(betweenGroupsPadding);
 
             yScale = scaleLinear()
@@ -349,7 +447,7 @@ export default function module() {
                 .nice();
         }
 
-        colorScale = scaleOrdinal()
+        colorScale = scaleOrdinal<string, string>()
             .range(colorSchema)
             .domain(data.map(getGroup));
 
@@ -358,7 +456,7 @@ export default function module() {
             colorScale
                 .domain(data.map(getName))
                 .domain()
-                .reduce((memo, item) => {
+                .reduce<Record<string, string>>((memo, item) => {
                     data.forEach(({ name, group }) => {
                         if (name == item) {
                             memo[group] = colorScale(group);
@@ -373,7 +471,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element) {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -395,14 +493,21 @@ export default function module() {
      * @return {GroupedBarChartData}                Parsed data with values and dates
      * @private
      */
-    function cleanData(originalData) {
-        return originalData.reduce((acc, d) => {
-            d.value = +d[valueLabel];
-            d.group = d[groupLabel];
+    function cleanData(originalData: GroupedBarChartDataShape[]) {
+        return originalData.reduce<GroupedBarDatum[]>((acc, datum) => {
+            // Written onto the caller's own objects rather than copies, which
+            // is the runtime this preserves. The cast covers the reads the
+            // label accessors make dynamic -- the data may carry its value,
+            // group and name under any key -- and `topicName`, which is this
+            // function's own addition for the tooltip.
+            const d = datum as GroupedBarDatum;
+
+            d.value = +(d[valueLabel] as number);
+            d.group = d[groupLabel] as string;
 
             // for tooltip
-            d.topicName = d[groupLabel];
-            d.name = d[nameLabel];
+            d.topicName = d[groupLabel] as string;
+            d.name = d[nameLabel] as string;
 
             return [...acc, d];
         }, []);
@@ -423,19 +528,19 @@ export default function module() {
      */
     function drawAxis() {
         if (isHorizontal) {
-            svg.select('.x-axis-group .axis.x')
+            svg.select<SVGGElement>('.x-axis-group .axis.x')
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            svg.select('.y-axis-group.axis')
+            svg.select<SVGGElement>('.y-axis-group.axis')
                 .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
                 .call(yAxis);
         } else {
-            svg.select('.x-axis-group .axis.x')
+            svg.select<SVGGElement>('.x-axis-group .axis.x')
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            svg.select('.y-axis-group.axis')
+            svg.select<SVGGElement>('.y-axis-group.axis')
                 .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
                 .call(yAxis)
                 .call(adjustYTickLabels);
@@ -493,28 +598,35 @@ export default function module() {
      * @param  {D3Selection} layersSelection Selection of layers
      * @return {void}
      */
-    function drawHorizontalBars(layersSelection) {
-        let layerJoin = layersSelection.data(layers);
+    function drawHorizontalBars(layersSelection: ChartSelection<BaseType>) {
+        const layerJoin = layersSelection.data(layers);
 
         layerElements = layerJoin
             .enter()
             .append('g')
-            .attr('transform', ({ key }) => `translate(0,${yScale(key)})`)
+            .attr(
+                'transform',
+                ({ key }) => `translate(0,${asCategoryScale(yScale)(key)})`
+            )
             .classed('layer', true);
 
-        let barJoin = layerElements
-            .selectAll('.bar')
-            .data(({ values }) => values);
+        const barJoin = layerElements
+            .selectAll<SVGRectElement, GroupedBarDatum>('.bar')
+            .data((layer: GroupedBarLayer) => layer.values);
 
         // Enter + Update
-        let bars = barJoin
+        const bars = barJoin
             .enter()
             .append('rect')
             .classed('bar', true)
-            .attr('x', (d) => getBaselineExtent(xScale, getValue(d)).start)
-            .attr('y', (d) => yScale2(getGroup(d)))
-            .attr('height', yScale2.bandwidth())
-            .attr('fill', ({ group }) => nameToColorMap[group]);
+            .attr(
+                'x',
+                (d) =>
+                    getBaselineExtent(asValueScale(xScale), getValue(d)).start
+            )
+            .attr('y', (d) => asCategoryScale(yScale2)(getGroup(d)))
+            .attr('height', asCategoryScale(yScale2).bandwidth())
+            .attr('fill', ({ group }) => colorForGroup(group));
 
         if (isAnimated) {
             bars.style('opacity', barOpacity)
@@ -526,7 +638,7 @@ export default function module() {
         } else {
             bars.attr(
                 'width',
-                (d) => getBaselineExtent(xScale, getValue(d)).size
+                (d) => getBaselineExtent(asValueScale(xScale), getValue(d)).size
             );
         }
     }
@@ -550,27 +662,38 @@ export default function module() {
      * @param  {D3Selection} layersSelection Selection of layers
      * @return {void}
      */
-    function drawVerticalBars(layersSelection) {
-        let layerJoin = layersSelection.data(layers);
+    function drawVerticalBars(layersSelection: ChartSelection<BaseType>) {
+        const layerJoin = layersSelection.data(layers);
 
         layerElements = layerJoin
             .enter()
             .append('g')
-            .attr('transform', ({ key }) => `translate(${xScale(key)},0)`)
+            .attr(
+                'transform',
+                ({ key }) => `translate(${asCategoryScale(xScale)(key)},0)`
+            )
             .classed('layer', true);
 
-        let barJoin = layerElements
-            .selectAll('.bar')
-            .data(({ values }) => values);
+        const barJoin = layerElements
+            .selectAll<SVGRectElement, GroupedBarDatum>('.bar')
+            .data((layer: GroupedBarLayer) => layer.values);
 
-        let bars = barJoin
+        const bars = barJoin
             .enter()
             .append('rect')
             .classed('bar', true)
-            .attr('x', (d) => xScale2(getGroup(d)))
-            .attr('y', ({ value }) => getBaselineExtent(yScale, value).start)
-            .attr('width', xScale2.bandwidth)
-            .attr('fill', ({ group }) => nameToColorMap[group]);
+            .attr('x', (d) => asCategoryScale(xScale2)(getGroup(d)))
+            .attr(
+                'y',
+                ({ value }) =>
+                    getBaselineExtent(asValueScale(yScale), value).start
+            )
+            // The function itself, not a call: d3 invokes a value accessor per
+            // element, which is how this has always read the band width. Its
+            // sibling in `drawHorizontalBars` calls it instead, and the two
+            // produce the same number.
+            .attr('width', asCategoryScale(xScale2).bandwidth)
+            .attr('fill', ({ group }) => colorForGroup(group));
 
         if (isAnimated) {
             bars.style('opacity', barOpacity)
@@ -582,7 +705,7 @@ export default function module() {
         } else {
             bars.attr(
                 'height',
-                (d) => getBaselineExtent(yScale, getValue(d)).size
+                (d) => getBaselineExtent(asValueScale(yScale), getValue(d)).size
             );
         }
     }
@@ -647,7 +770,7 @@ export default function module() {
      * @return {Number[]}    [x, y] in the svg's coordinate space
      * @private
      */
-    function getMousePosition(event) {
+    function getMousePosition(event: Event) {
         return pointer(event, svg.node());
     }
 
@@ -656,30 +779,52 @@ export default function module() {
      * @param  {Number} mouseX X position of the mouse
      * @return {obj}        Data entry that is closer to that x axis position
      */
-    function getNearestDataPoint(mouseX) {
-        let adjustedMouseX = mouseX - margin.left,
-            epsilon = xScale2.bandwidth(),
-            nearest = [];
+    function getNearestDataPoint(mouseX: number) {
+        const adjustedMouseX = mouseX - (margin.left ?? 0);
+        const epsilon = asCategoryScale(xScale2).bandwidth();
+        const nearest: NearestDatum[] = [];
 
         layers.forEach(function (data) {
-            let found = data.values.find(
+            const found = data.values.find(
                 (d2) =>
+                    // `Math.abs` of a comparison, which is a boolean: it comes
+                    // back 1 for true and 0 for false, so each half of this
+                    // reads as the plain test it looks like. Preserved as it
+                    // stands, `Number` where the booleans are, because a
+                    // conversion is the wrong place to change what a chart
+                    // finds under the pointer. `Number(x)` is the coercion
+                    // `Math.abs` already performs.
                     Math.abs(
-                        adjustedMouseX >=
-                            xScale(d2[nameLabel]) + xScale2(d2[groupLabel])
+                        Number(
+                            adjustedMouseX >=
+                                asCategoryScale(xScale)(
+                                    d2[nameLabel] as string
+                                ) +
+                                    asCategoryScale(xScale2)(
+                                        d2[groupLabel] as string
+                                    )
+                        )
                     ) &&
                     Math.abs(
-                        adjustedMouseX -
-                            xScale2(d2[groupLabel]) -
-                            xScale(d2[nameLabel]) <=
-                            epsilon
+                        Number(
+                            adjustedMouseX -
+                                asCategoryScale(xScale2)(
+                                    d2[groupLabel] as string
+                                ) -
+                                asCategoryScale(xScale)(
+                                    d2[nameLabel] as string
+                                ) <=
+                                epsilon
+                        )
                     )
             );
 
             if (found) {
-                found.values = data.values;
-                found.key = found.name;
-                nearest.push(found);
+                const entry = found as NearestDatum;
+
+                entry.values = data.values;
+                entry.key = entry.name;
+                nearest.push(entry);
             }
         });
 
@@ -691,24 +836,38 @@ export default function module() {
      * @param  {Number} mouseX X position of the mouse
      * @return {obj}        Data entry that is closer to that x axis position
      */
-    function getNearestDataPoint2(mouseY) {
-        let adjustedMouseY = mouseY - margin.bottom,
-            epsilon = yScale.bandwidth(),
-            nearest = [];
+    function getNearestDataPoint2(mouseY: number) {
+        const adjustedMouseY = mouseY - (margin.bottom ?? 0);
+        const epsilon = asCategoryScale(yScale).bandwidth();
+        const nearest: NearestDatum[] = [];
 
         layers.map(function (data) {
-            let found = data.values.find(
+            const found = data.values.find(
                 (d2) =>
-                    Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) &&
+                    // The same `Math.abs` of a boolean as the function above.
                     Math.abs(
-                        adjustedMouseY - yScale(d2[nameLabel]) <= epsilon * 2
+                        Number(
+                            adjustedMouseY >=
+                                asCategoryScale(yScale)(d2[nameLabel] as string)
+                        )
+                    ) &&
+                    Math.abs(
+                        Number(
+                            adjustedMouseY -
+                                asCategoryScale(yScale)(
+                                    d2[nameLabel] as string
+                                ) <=
+                                epsilon * 2
+                        )
                     )
             );
 
             if (found) {
-                found.values = data.values;
-                found.key = found.name;
-                nearest.push(found);
+                const entry = found as NearestDatum;
+
+                entry.values = data.values;
+                entry.key = entry.name;
+                nearest.push(entry);
             }
         });
 
@@ -721,8 +880,13 @@ export default function module() {
      * @param  {obj} d data of bar
      * @return {void}
      */
-    function handleBarsMouseOver(e, d, event) {
-        select(e).attr('fill', () => color(nameToColorMap[d.group]).darker());
+    function handleBarsMouseOver(e: Element, d: GroupedBarDatum, event: Event) {
+        select(e).attr('fill', () =>
+            // `color` gives null for a string it cannot parse; what it is
+            // handed here is the colour scale's own output, so it parses.
+            // `String` is what d3's `attr` does to the result anyway.
+            String(color(colorForGroup(d.group))!.darker())
+        );
     }
 
     /**
@@ -731,8 +895,8 @@ export default function module() {
      * @param  {obj} d data of bar
      * @return {void}
      */
-    function handleBarsMouseOut(e, d, event) {
-        select(e).attr('fill', () => nameToColorMap[d.group]);
+    function handleBarsMouseOut(e: Element, d: GroupedBarDatum, event: Event) {
+        select(e).attr('fill', () => colorForGroup(d.group));
     }
 
     /**
@@ -741,7 +905,7 @@ export default function module() {
      * @param  {obj} e the fired event
      * @private
      */
-    function handleMouseMove(e, d, event) {
+    function handleMouseMove(e: Element, d: unknown, event: Event) {
         // The listener is on the svg, so it sees every move; the tooltip
         // is only for the bars, not the empty space around them. Entering
         // a bar from that space is a mouse over; leaving the bars for it
@@ -758,19 +922,18 @@ export default function module() {
             handleMouseOver(e, d, event);
         }
 
-        let [mouseX, mouseY] = getMousePosition(event),
-            dataPoint = isHorizontal
-                ? getNearestDataPoint2(mouseY)
-                : getNearestDataPoint(mouseX),
-            x,
-            y;
+        const [mouseX, mouseY] = getMousePosition(event);
+        const dataPoint = isHorizontal
+            ? getNearestDataPoint2(mouseY)
+            : getNearestDataPoint(mouseX);
+        let x, y;
 
         if (dataPoint) {
             // The tooltip follows the pointer, like on every other chart.
             // The pointer is measured on the root svg; the tooltip lives in
             // the margin-translated container, hence the offsets.
-            x = mouseX - margin.left;
-            y = mouseY - margin.top;
+            x = mouseX - (margin.left ?? 0);
+            y = mouseY - (margin.top ?? 0);
             moveTooltipOriginXY(x, y);
 
             // Emit event with xPosition for tooltip or similar feature
@@ -791,14 +954,14 @@ export default function module() {
      * Click handler, shows data that was clicked and passes to the user
      * @private
      */
-    function handleCustomClick(e, d, event) {
+    function handleCustomClick(e: Element, d: unknown, event: Event) {
         // Like the hover, clicks are for the bars only
         if (!isPointerOverBar(event)) {
             return;
         }
 
-        let [mouseX, mouseY] = getMousePosition(event);
-        let dataPoint = isHorizontal
+        const [mouseX, mouseY] = getMousePosition(event);
+        const dataPoint = isHorizontal
             ? getNearestDataPoint2(mouseY)
             : getNearestDataPoint(mouseX);
 
@@ -808,7 +971,7 @@ export default function module() {
             e,
             dataPoint,
             pointer(event, e),
-            select(event.target).datum()
+            select(event.target as Element).datum()
         );
     }
 
@@ -817,7 +980,7 @@ export default function module() {
      * It also resets the container of the vertical marker
      * @private
      */
-    function handleMouseOut(e, d, event) {
+    function handleMouseOut(e: Element, d: unknown, event: Event) {
         if (!isPointerOverBars) {
             return;
         }
@@ -830,7 +993,7 @@ export default function module() {
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d, event) {
+    function handleMouseOver(e: Element, d: unknown, event: Event) {
         if (isPointerOverBars || !isPointerOverBar(event)) {
             return;
         }
@@ -844,8 +1007,12 @@ export default function module() {
      * @return {Boolean}
      * @private
      */
-    function isPointerOverBar(event) {
-        return !!event && !!event.target && select(event.target).classed('bar');
+    function isPointerOverBar(event: Event) {
+        return (
+            !!event &&
+            !!event.target &&
+            select(event.target as Element).classed('bar')
+        );
     }
 
     /**
@@ -853,14 +1020,15 @@ export default function module() {
      * @param  {obj} d data of bar
      * @return {void}
      */
-    function horizontalBarsTween(d) {
-        const { start, size } = getBaselineExtent(xScale, getValue(d));
+    function horizontalBarsTween(this: SVGRectElement, d: GroupedBarDatum) {
+        const valueScale = asValueScale(xScale);
+        const { start, size } = getBaselineExtent(valueScale, getValue(d));
         const node = select(this);
-        const x = interpolateRound(xScale(0), start);
+        const x = interpolateRound(valueScale(0), start);
         const i = interpolateRound(0, size);
         const j = interpolateNumber(0, 1);
 
-        return function (t) {
+        return function (t: number) {
             node.attr('x', x(t)).attr('width', i(t)).style('opacity', j(t));
         };
     }
@@ -879,7 +1047,10 @@ export default function module() {
      * @param  {obj} dataPoint Data entry to extract info
      * @return void
      */
-    function moveTooltipOriginXY(originXPosition, originYPosition) {
+    function moveTooltipOriginXY(
+        originXPosition: number,
+        originYPosition: number
+    ) {
         svg.select('.metadata-group').attr(
             'transform',
             `translate(${originXPosition},${originYPosition})`
@@ -890,7 +1061,7 @@ export default function module() {
      * Prepare data for create chart.
      * @private
      */
-    function prepareData(data) {
+    function prepareData(data: GroupedBarDatum[]) {
         groups = uniq(data.map(getGroup));
 
         // d3-collection's nest() is gone; rollups() is the d3-array
@@ -899,11 +1070,14 @@ export default function module() {
         transformedData = rollups(
             data,
             function (values) {
-                let ret = {};
+                // Every group's own value goes on under its own name, which is
+                // what `permute` reads back below, so this is a bag of dynamic
+                // keys rather than a fixed shape.
+                const ret: Record<string, unknown> = {};
 
                 values.forEach((entry) => {
                     if (entry && entry[groupLabel]) {
-                        ret[entry[groupLabel]] = getValue(entry);
+                        ret[entry[groupLabel] as string] = getValue(entry);
                     }
                 });
                 //for tooltip
@@ -915,14 +1089,22 @@ export default function module() {
         )
             .map(([key, value]) => ({ key, value }))
             .map(function (data) {
+                // `total`, `key` and the group members, which together are
+                // what `GroupedBarLayer` describes -- `values` arrives with the
+                // spread rather than being named here.
                 return Object.assign(
                     {},
                     {
-                        total: sum(permute(data.value, groups)),
+                        total: sum(
+                            permute(
+                                data.value as Record<string, number>,
+                                groups
+                            )
+                        ),
                         key: data.key,
                     },
                     data.value
-                );
+                ) as GroupedBarLayer;
             });
     }
 
@@ -941,14 +1123,17 @@ export default function module() {
      * @param  {obj} d data of bar
      * @return {void}
      */
-    function verticalBarsTween(d) {
-        const { start, size } = getBaselineExtent(yScale, getValue(d));
-        let node = select(this),
-            i = interpolateRound(0, size),
-            y = interpolateRound(yScale(0), start),
-            j = interpolateNumber(0, 1);
+    function verticalBarsTween(this: SVGRectElement, d: GroupedBarDatum) {
+        const valueScale = asValueScale(yScale);
+        const { start, size } = getBaselineExtent(valueScale, getValue(d));
+        // One statement each, matching its horizontal twin: the `let` chain
+        // this replaced is a `one-var` warning once it becomes `const`.
+        const node = select(this);
+        const i = interpolateRound(0, size);
+        const y = interpolateRound(valueScale(0), start);
+        const j = interpolateNumber(0, 1);
 
-        return function (t) {
+        return function (t: number) {
             node.attr('y', y(t)).attr('height', i(t)).style('opacity', j(t));
         };
     }
@@ -960,14 +1145,17 @@ export default function module() {
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.animationDuration = function (_x) {
+    (exports as GroupedBarChartModule).animationDuration = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return animationDuration;
         }
         animationDuration = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['animationDuration'];
 
     /**
      * Gets or Sets the padding between bars.
@@ -975,14 +1163,17 @@ export default function module() {
      * @return {Number | module} Current padding or Chart module to chain calls
      * @public
      */
-    exports.betweenBarsPadding = function (_x) {
+    (exports as GroupedBarChartModule).betweenBarsPadding = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return betweenBarsPadding;
         }
         betweenBarsPadding = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['betweenBarsPadding'];
 
     /**
      * Gets or Sets the padding between groups of bars.
@@ -990,14 +1181,17 @@ export default function module() {
      * @return {Number | module} Current group padding or Chart module to chain calls
      * @public
      */
-    exports.betweenGroupsPadding = function (_x) {
+    (exports as GroupedBarChartModule).betweenGroupsPadding = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return betweenGroupsPadding;
         }
         betweenGroupsPadding = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['betweenGroupsPadding'];
 
     /**
      * Gets or Sets the colorMap of the chart
@@ -1006,14 +1200,17 @@ export default function module() {
      * @example groupedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
      * @public
      */
-    exports.colorMap = function (_x) {
+    (exports as GroupedBarChartModule).colorMap = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return nameToColorMap;
         }
         nameToColorMap = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['colorMap'];
 
     /**
      * Gets or Sets the colorSchema of the chart
@@ -1021,14 +1218,17 @@ export default function module() {
      * @return { colorSchema | module}  Current colorSchema or Chart module to chain calls
      * @public
      */
-    exports.colorSchema = function (_x) {
+    (exports as GroupedBarChartModule).colorSchema = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return colorSchema;
         }
         colorSchema = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['colorSchema'];
 
     /**
      * Chart exported to png and a download action is fired
@@ -1037,9 +1237,17 @@ export default function module() {
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
-    exports.exportChart = function (filename, title) {
-        return exportChart.call(exports, svg, filename, title);
-    };
+    (exports as GroupedBarChartModule).exportChart = function (
+        filename,
+        title
+    ) {
+        return exportChart.call(
+            exports as GroupedBarChartModule,
+            svg,
+            filename,
+            title
+        );
+    } as GroupedBarChartModule['exportChart'];
 
     /**
      * Gets or Sets the groupLabel of the chart
@@ -1048,7 +1256,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.groupLabel = function (_x) {
+    (exports as GroupedBarChartModule).groupLabel = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return groupLabel;
         }
@@ -1056,7 +1267,7 @@ export default function module() {
         dataKeyDeprecationMessage('group');
 
         return this;
-    };
+    } as GroupedBarChartModule['groupLabel'];
 
     /**
      * Gets or Sets the grid mode.
@@ -1064,14 +1275,17 @@ export default function module() {
      * @return { String | module}   Current mode of the grid or Area Chart module to chain calls
      * @public
      */
-    exports.grid = function (_x) {
+    (exports as GroupedBarChartModule).grid = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return grid;
         }
         grid = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['grid'];
 
     /**
      * Gets or Sets the height of the chart
@@ -1079,14 +1293,17 @@ export default function module() {
      * @return { height | module} Current height or Area Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    (exports as GroupedBarChartModule).height = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return height;
         }
         height = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['height'];
 
     /**
      * Gets or Sets the horizontal direction of the chart
@@ -1094,14 +1311,17 @@ export default function module() {
      * @return { isHorizontal | module}     If it is horizontal or Bar Chart module to chain calls
      * @public
      */
-    exports.isHorizontal = function (_x) {
+    (exports as GroupedBarChartModule).isHorizontal = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isHorizontal;
         }
         isHorizontal = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['isHorizontal'];
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
@@ -1111,28 +1331,34 @@ export default function module() {
      * @return { isAnimated | module}   Current isAnimated flag or Chart module
      * @public
      */
-    exports.isAnimated = function (_x) {
+    (exports as GroupedBarChartModule).isAnimated = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isAnimated;
         }
         isAnimated = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['isAnimated'];
 
     /**
      * Gets or Sets the loading state of the chart
      * @param  {boolean} flag       Desired value for the loading state
      * @return {boolean | module}   Current loading state flag or Chart module to chain calls     * @public
      */
-    exports.isLoading = function (_flag) {
+    (exports as GroupedBarChartModule).isLoading = function (
+        this: GroupedBarChartModule,
+        _flag
+    ) {
         if (!arguments.length) {
             return isLoading;
         }
         isLoading = _flag;
 
         return this;
-    };
+    } as GroupedBarChartModule['isLoading'];
 
     /**
      * Gets or Sets the margin of the chart
@@ -1140,7 +1366,10 @@ export default function module() {
      * @return { margin | module}   Current margin or Area Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    (exports as GroupedBarChartModule).margin = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return margin;
         }
@@ -1150,7 +1379,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as GroupedBarChartModule['margin'];
 
     /**
      * Gets or Sets the nameLabel of the chart
@@ -1159,7 +1388,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.nameLabel = function (_x) {
+    (exports as GroupedBarChartModule).nameLabel = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return nameLabel;
         }
@@ -1167,7 +1399,7 @@ export default function module() {
         dataKeyDeprecationMessage('name');
 
         return this;
-    };
+    } as GroupedBarChartModule['nameLabel'];
 
     /**
      * Gets or Sets the numberFormat of the chart
@@ -1175,14 +1407,17 @@ export default function module() {
      * @return {string[] | module}      Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function (_x) {
+    (exports as GroupedBarChartModule).numberFormat = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['numberFormat'];
 
     /**
      * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -1192,11 +1427,20 @@ export default function module() {
      * @return {module} Bar Chart
      * @public
      */
-    exports.on = function () {
-        let value = dispatcher.on.apply(dispatcher, arguments);
+    (exports as GroupedBarChartModule).on = function (
+        ...args: [string] | [string, () => void]
+    ) {
+        // Rest parameters and a spread where this read `arguments` and used
+        // `.apply`, following donut.ts and heatmap.ts: the TypeScript lint
+        // override makes `prefer-spread` an error, and the two shapes `on` is
+        // called with -- a lookup and a registration -- are what the tuple
+        // says.
+        const value = dispatcher.on(
+            ...(args as Parameters<typeof dispatcher.on>)
+        );
 
         return value === dispatcher ? exports : value;
-    };
+    } as unknown as GroupedBarChartModule['on'];
 
     /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
@@ -1206,14 +1450,17 @@ export default function module() {
      * @return {Number | module}    Current tooltipThreshold or Area Chart module to chain calls
      * @public
      */
-    exports.tooltipThreshold = function (_x) {
+    (exports as GroupedBarChartModule).tooltipThreshold = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return tooltipThreshold;
         }
         tooltipThreshold = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['tooltipThreshold'];
 
     /**
      * Gets or Sets the valueLabel of the chart
@@ -1222,7 +1469,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.valueLabel = function (_x) {
+    (exports as GroupedBarChartModule).valueLabel = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return valueLabel;
         }
@@ -1230,7 +1480,7 @@ export default function module() {
         dataKeyDeprecationMessage('value');
 
         return this;
-    };
+    } as GroupedBarChartModule['valueLabel'];
 
     /**
      * Gets or Sets the locale which our formatting functions use.
@@ -1243,14 +1493,17 @@ export default function module() {
      * @return {LocaleObject | module}           Current locale object or Chart module to chain calls
      * @public
      */
-    exports.valueLocale = function (_x) {
+    (exports as GroupedBarChartModule).valueLocale = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return locale;
         }
         locale = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['valueLocale'];
 
     /**
      * Gets or Sets the width of the chart
@@ -1258,14 +1511,17 @@ export default function module() {
      * @return {Number | module}    Current width or Area Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    (exports as GroupedBarChartModule).width = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return width;
         }
         width = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['width'];
 
     /**
      * Gets or Sets the number of ticks of the x axis on the chart
@@ -1273,14 +1529,17 @@ export default function module() {
      * @return {Number | module}    Current xTicks or Chart module to chain calls
      * @public
      */
-    exports.xTicks = function (_x) {
+    (exports as GroupedBarChartModule).xTicks = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xTicks;
         }
         xTicks = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['xTicks'];
 
     /**
      * Gets or Sets the y-axis label of the chart
@@ -1289,14 +1548,17 @@ export default function module() {
      * @public
      * @example groupedBar.yAxisLabel('Ticket Sales')
      */
-    exports.yAxisLabel = function (_x) {
+    (exports as GroupedBarChartModule).yAxisLabel = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisLabel;
         }
         yAxisLabel = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['yAxisLabel'];
 
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
@@ -1306,14 +1568,17 @@ export default function module() {
      * @public
      * @example groupedBar.yAxisLabelOffset(-55)
      */
-    exports.yAxisLabelOffset = function (_x) {
+    (exports as GroupedBarChartModule).yAxisLabelOffset = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisLabelOffset;
         }
         yAxisLabelOffset = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['yAxisLabelOffset'];
 
     /**
      * Gets or Sets the number of ticks of the y axis on the chart
@@ -1321,14 +1586,17 @@ export default function module() {
      * @return {Number | module}    Current yTicks or Chart module to chain calls
      * @public
      */
-    exports.yTicks = function (_x) {
+    (exports as GroupedBarChartModule).yTicks = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yTicks;
         }
         yTicks = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['yTicks'];
 
     /**
      * Gets or Sets the x and y offset of ticks of the y axis on the chart
@@ -1336,14 +1604,17 @@ export default function module() {
      * @return {Object | module}                    Current offset or Chart module to chain calls
      * @public
      */
-    exports.yTickTextOffset = function (_x) {
+    (exports as GroupedBarChartModule).yTickTextOffset = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yTickTextOffset;
         }
         yTickTextOffset = _x;
 
         return this;
-    };
+    } as GroupedBarChartModule['yTickTextOffset'];
 
-    return exports;
+    return exports as unknown as GroupedBarChartModule;
 }

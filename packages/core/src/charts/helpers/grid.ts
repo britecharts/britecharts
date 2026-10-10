@@ -72,6 +72,75 @@ type LineSelectionOrTransition =
 export type HideEdges = boolean | 'both' | 'first' | 'last';
 
 /**
+ * The one-dimensional grid `gridHorizontal` and `gridVertical` return.
+ *
+ * Each accessor is a getter/setter overload pair, getter first and setter last.
+ * The implementation below assigns a single `function (_?: X)` per accessor,
+ * which infers the return as `X | typeof gridBaseGenerator` -- a union with no
+ * accessor on it, so the chain every chart writes stopped compiling at the
+ * second call:
+ *
+ *     gridHorizontal(yScale).range([0, chartWidth]).hideEdges('first')
+ *
+ * All six charts that draw a grid chain like that -- bar, grouped-bar, line,
+ * scatter-plot, stacked-area and stacked-bar -- so this blocked every one of
+ * them. The overloads say what the runtime has always done:
+ * `if (!arguments.length) { return value; }`, else return the generator.
+ *
+ * Setter last is load-bearing beyond readability: conditional inference against
+ * an overloaded method reads the last overload, which is how
+ * `ChartConfiguration` in the wrappers package derives a config value's type.
+ */
+export interface GridBaseGenerator {
+    (context: GridContext): void;
+    /** Gets or sets the scale whose ticks the grid draws. */
+    scale(): GridScale;
+    scale(value: GridScale): GridBaseGenerator;
+    /** Gets or sets the length and positioning of the lines. */
+    range(): number[];
+    range(value: number[]): GridBaseGenerator;
+    /** Gets or sets the inset at the start of each line. */
+    offsetStart(): number;
+    offsetStart(value: number): GridBaseGenerator;
+    /** Gets or sets the inset at the end of each line. */
+    offsetEnd(): number;
+    offsetEnd(value: number): GridBaseGenerator;
+    /** Gets or sets which edge lines are suppressed. */
+    hideEdges(): HideEdges;
+    hideEdges(value: HideEdges): GridBaseGenerator;
+    /**
+     * Gets or sets the approximate tick count.
+     *
+     * The getter is `null` until one is set: the generator falls back to the
+     * scale's own ticks.
+     */
+    ticks(): number | null;
+    ticks(value: number): GridBaseGenerator;
+    /**
+     * Gets or sets the exact domain values to place ticks at.
+     *
+     * The getter is `null` until they are set, and returns a copy rather than
+     * the stored array. `null` goes in to clear them again.
+     */
+    tickValues(): unknown[] | null;
+    tickValues(value: unknown[] | null): GridBaseGenerator;
+    /**
+     * Gets or sets the axis baseline's inset in px.
+     *
+     * The getter is `null` until one is set, which draws no baseline.
+     */
+    extendedLine(): number | null;
+    extendedLine(value: number): GridBaseGenerator;
+    /**
+     * Gets or sets the tick value whose line is highlighted.
+     *
+     * The getter is `null` until one is set, which highlights nothing.
+     */
+    highlight(): unknown;
+    highlight(value: unknown): GridBaseGenerator;
+}
+
+/**
  * A d3 selection to render into, or a d3 transition on one. Given a
  * transition, entering and exiting lines fade and slide between positions.
  * @typedef {Object} GridContext
@@ -128,7 +197,7 @@ function positionCenter(scale: GridScale) {
  * Constructor for a one-dimensional grid helper
  * @param {string} orient - orientation string to define the direction
  * @param {GridScale} scale - d3 scale for the grid's ticks
- * @return {gridBaseGenerator}
+ * @return The grid generator, so the accessor calls chain
  * @private
  */
 function gridBase(orient: string, scale: GridScale) {
@@ -520,7 +589,11 @@ function gridBase(orient: string, scale: GridScale) {
         return gridBaseGenerator;
     };
 
-    return gridBaseGenerator;
+    // The accessors above are assigned one `function (_?: X)` each, so their
+    // inferred return is `X | typeof gridBaseGenerator`. `GridBaseGenerator`
+    // declares the overload pair each one really is, which is what lets the
+    // charts chain; the cast is the one place the two descriptions meet.
+    return gridBaseGenerator as unknown as GridBaseGenerator;
 }
 
 /**
@@ -585,12 +658,17 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
      * @return {GridScale|gridGenerator}
      * @public
      */
+    // The 2D accessors from here down forward to the two one-dimensional grids,
+    // whose setters now declare a required parameter. Each forwarding call
+    // therefore passes `_!`, the same assertion the stored assignment beside it
+    // already used: the `arguments.length` guard above is what establishes the
+    // value is there, and it is not something TypeScript can follow.
     gridGenerator.scaleX = function (_?: GridScale) {
         if (!arguments.length) {
             return scaleX;
         }
         scaleX = _!;
-        gridV.scale(_);
+        gridV.scale(_!);
 
         return gridGenerator;
     };
@@ -607,7 +685,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
             return scaleY;
         }
         scaleY = _!;
-        gridH.scale(_);
+        gridH.scale(_!);
 
         return gridGenerator;
     };
@@ -642,8 +720,8 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.offsetStart();
         }
-        gridH.offsetStart(_);
-        gridV.offsetStart(_);
+        gridH.offsetStart(_!);
+        gridV.offsetStart(_!);
 
         return gridGenerator;
     };
@@ -660,7 +738,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.offsetStart();
         }
-        gridH.offsetStart(_);
+        gridH.offsetStart(_!);
 
         return gridGenerator;
     };
@@ -677,7 +755,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridV.offsetStart();
         }
-        gridV.offsetStart(_);
+        gridV.offsetStart(_!);
 
         return gridGenerator;
     };
@@ -695,8 +773,8 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.offsetEnd();
         }
-        gridH.offsetEnd(_);
-        gridV.offsetEnd(_);
+        gridH.offsetEnd(_!);
+        gridV.offsetEnd(_!);
 
         return gridGenerator;
     };
@@ -713,7 +791,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.offsetEnd();
         }
-        gridH.offsetEnd(_);
+        gridH.offsetEnd(_!);
 
         return gridGenerator;
     };
@@ -730,7 +808,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridV.offsetEnd();
         }
-        gridV.offsetEnd(_);
+        gridV.offsetEnd(_!);
 
         return gridGenerator;
     };
@@ -749,8 +827,8 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.hideEdges();
         }
-        gridH.hideEdges(_);
-        gridV.hideEdges(_);
+        gridH.hideEdges(_!);
+        gridV.hideEdges(_!);
 
         return gridGenerator;
     };
@@ -768,7 +846,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.hideEdges();
         }
-        gridH.hideEdges(_);
+        gridH.hideEdges(_!);
 
         return gridGenerator;
     };
@@ -786,7 +864,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridV.hideEdges();
         }
-        gridV.hideEdges(_);
+        gridV.hideEdges(_!);
 
         return gridGenerator;
     };
@@ -803,8 +881,8 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.ticks();
         }
-        gridH.ticks(_);
-        gridV.ticks(_);
+        gridH.ticks(_!);
+        gridV.ticks(_!);
 
         return gridGenerator;
     };
@@ -820,7 +898,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.ticks();
         }
-        gridH.ticks(_);
+        gridH.ticks(_!);
 
         return gridGenerator;
     };
@@ -836,7 +914,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridV.ticks();
         }
-        gridV.ticks(_);
+        gridV.ticks(_!);
 
         return gridGenerator;
     };
@@ -901,7 +979,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridH.extendedLine();
         }
-        gridH.extendedLine(_);
+        gridH.extendedLine(_!);
 
         return gridGenerator;
     };
@@ -917,7 +995,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         if (!arguments.length) {
             return gridV.extendedLine();
         }
-        gridV.extendedLine(_);
+        gridV.extendedLine(_!);
 
         return gridGenerator;
     };
@@ -960,7 +1038,7 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
 /**
  * Constructor for a horizontal grid helper
  * @param {GridScale} scale - d3 scale to initialize the grid
- * @return {gridBaseGenerator}
+ * @return The grid generator, so the accessor calls chain
  * @public
  * @memberof Grid
  * @alias module:Grid.gridHorizontal
@@ -972,14 +1050,14 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
 
     grid(svg.select('.grid-lines-group'));
  */
-export function gridHorizontal(scale: GridScale) {
+export function gridHorizontal(scale: GridScale): GridBaseGenerator {
     return gridBase(DIR.H, scale);
 }
 
 /**
  * Constructor for a vertical grid helper
  * @param {GridScale} scale - d3 scale to initialize the grid
- * @return {gridBaseGenerator}
+ * @return The grid generator, so the accessor calls chain
  * @public
  * @memberof Grid
  * @alias module:Grid.gridVertical
@@ -991,7 +1069,7 @@ export function gridHorizontal(scale: GridScale) {
 
     grid(svg.select('.grid-lines-group'));
  */
-export function gridVertical(scale: GridScale) {
+export function gridVertical(scale: GridScale): GridBaseGenerator {
     return gridBase(DIR.V, scale);
 }
 

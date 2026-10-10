@@ -7,14 +7,26 @@ import { scaleLinear, scaleTime, scaleLog } from 'd3-scale';
 import { line, area, stackOffsetNone, stackOrderNone, stack } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
+import type { Axis, AxisDomain } from 'd3-axis';
+import type { Dispatch } from 'd3-dispatch';
+import type {
+    NumberValue,
+    ScaleLinear,
+    ScaleLogarithmic,
+    ScaleTime,
+} from 'd3-scale';
+import type { BaseType, Selection } from 'd3-selection';
+import type { Area, Line, Series, SeriesPoint } from 'd3-shape';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import colorHelper from '../helpers/color';
 import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis';
+import type { AxisDatumSorted, AxisTickSettings } from '../helpers/axis';
 import { castValueToType } from '../helpers/type';
 import { axisTimeCombinations, curveMap, motion } from '../helpers/constants';
+import type { AxisTimeCombinationValue } from '../helpers/constants';
 import {
     formatIntegerValue,
     formatDecimalValue,
@@ -29,8 +41,83 @@ import { addDays, diffDays } from '../helpers/date';
 import { stackedAreaLoadingMarkup } from '../helpers/load';
 import { gridHorizontal, gridVertical } from '../helpers/grid';
 
-const uniq = (arrArg) =>
+import type { GridTypes } from '../../typings/common/grid';
+import type { LocaleString } from '../../typings/common/local';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import type {
+    StackedAreaChartDataShape,
+    StackedAreaChartModule,
+    StackedAreaEmptyDataConfig,
+    StackedAreaXAxisScale,
+    StackedAreaXAxisValueType,
+} from '../../typings/charts/stacked-area';
+
+const uniq = <T>(arrArg: T[]) =>
     arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
+
+/**
+ * The chart's own svg, and the selections derived from it. The datum and parent
+ * generics are the migration plan's bounded `any`, as in the other charts:
+ * these are module-level variables reassigned from several differently-shaped
+ * selections, so naming one concrete datum would reject the others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/**
+ * What `cleanData` hands the drawing functions. `date` is a Date or a number
+ * once `castValueToType` has run over it -- which of the two depends on
+ * `xAxisValueType` -- where the published shape describes the string a
+ * consumer passes in.
+ *
+ * The index signature is the `dateLabel`, `valueLabel` and `keyLabel`
+ * accessors: a chart's data may carry those three under any key, so the reads
+ * really are dynamic.
+ */
+type StackedAreaDatum = Omit<StackedAreaChartDataShape, 'date'> & {
+    date: Date | number;
+    [key: string]: unknown;
+};
+
+/**
+ * One date's worth of rows, as `getSortedData` groups them: the grouping key as
+ * a string, the rows themselves, and the key cast to what the x axis places.
+ */
+type StackedAreaDateGroup = {
+    key: string;
+    values: StackedAreaDatum[];
+    date: Date | number;
+};
+
+/**
+ * One column handed to d3's stack: a date plus every topic's value on it under
+ * the topic's own name.
+ */
+type StackedAreaColumn = {
+    date: Date | number;
+    [topicName: string]: unknown;
+};
+
+/** One stacked band's point, carrying the column it came from. */
+type StackedAreaPoint = SeriesPoint<StackedAreaColumn>;
+
+/**
+ * The x axis' scale: time by default, and linear or logarithmic when
+ * `xAxisValueType` is 'number'. All three are called with a value and report a
+ * pixel, which is all the drawing code asks of them.
+ */
+type StackedAreaXScale =
+    | ScaleTime<number, number>
+    | ScaleLinear<number, number>
+    | ScaleLogarithmic<number, number>;
 
 /**
  * Stacked Area Chart reusable API module that allows us
@@ -73,8 +160,11 @@ const uniq = (arrArg) =>
  *     }
  * ]
  */
-export default function module() {
-    let margin = {
+export default function module(): StackedAreaChartModule {
+    // Split into `let` and `const` rather than the one `let` chain the
+    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
+    // error, and the bindings below it are never reassigned.
+    let margin: ChartMarginParams = {
             top: 70,
             right: 30,
             bottom: 60,
@@ -83,100 +173,112 @@ export default function module() {
         width = 960,
         height = 500,
         isLoading = false,
-        xScale,
-        xAxis,
-        xSubAxis,
-        yScale,
-        yAxis,
-        monthAxisPadding = 30,
-        xAxisValueType = 'date',
-        xAxisScale = 'linear',
+        xScale: StackedAreaXScale,
+        xAxis: Axis<AxisDomain>,
+        xSubAxis: Axis<AxisDomain>,
+        yScale: ScaleLinear<number, number>,
+        yAxis: Axis<NumberValue>,
+        xAxisValueType: StackedAreaXAxisValueType = 'date',
+        xAxisScale: StackedAreaXAxisScale = 'linear',
         yTicks = 5,
-        yTickTextYOffset = -8,
         yAxisBaseline = 0,
-        yAxisLabel,
-        yAxisLabelEl,
+        // No default: the chart appends no label element until one is set.
+        yAxisLabel: string | undefined,
+        yAxisLabelEl: ChartSelection<SVGTextElement>,
         yAxisLabelOffset = -60,
-        yTickTextXOffset = -20,
-        tickPadding = 5,
-        colorSchema = colorHelper.colorSchemas.britecharts,
-        lineGradient = colorHelper.colorGradients.greenBlue,
-        nameToColorMap = null,
-        highlightFilter = null,
-        highlightFilterId = null,
-        highlightCircleSize = 12,
-        highlightCircleRadius = 5,
-        highlightCircleStroke = 1.2,
-        highlightCircleActiveRadius = highlightCircleRadius + 2,
-        highlightCircleActiveStrokeWidth = 5,
-        highlightCircleActiveStrokeOpacity = 0.6,
+        colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
+        nameToColorMap: Record<string, string> | null = null,
+        highlightFilter: ChartSelection<SVGFilterElement> | null = null,
+        highlightFilterId: string | null = null,
         areaOpacity = 0.24,
-        order,
-        topicsOrder,
-        xAxisFormat = null,
-        xTicks = null,
-        xAxisCustomFormat = null,
-        numberFormat,
-        locale,
+        order: string[],
+        // No default: the chart orders by each topic's total until one is set.
+        topicsOrder: string[] | undefined,
+        xAxisFormat: string | null = null,
+        // Null by default, which d3 reads as "use the scale's own count".
+        xTicks: number | null = null,
+        xAxisCustomFormat: string | null = null,
+        numberFormat: string | undefined,
+        locale: LocaleString | null | undefined,
         areaCurve = 'monotoneX',
-        layers,
-        series,
-        layersInitial,
-        areaShape,
-        areaOutline,
-        // Area Animation
-        maxAreaNumber = 10,
-        areaAnimationDelayStep = 20,
-        areaAnimationDelays = range(
-            areaAnimationDelayStep,
-            maxAreaNumber * areaAnimationDelayStep,
-            areaAnimationDelayStep
-        ),
-        overlay,
-        overlayColor = 'rgba(0, 0, 0, 0)',
-        verticalMarkerContainer,
-        verticalMarkerLine,
-        epsilon,
+        layers: Series<StackedAreaColumn, string>[],
+        series: ChartSelection<SVGGElement>,
+        layersInitial: Series<StackedAreaColumn, string>[],
+        areaShape: Area<StackedAreaPoint>,
+        areaOutline: Line<StackedAreaPoint>,
+        overlay: ChartSelection<SVGRectElement>,
+        verticalMarkerContainer: ChartSelection<SVGGElement>,
+        verticalMarkerLine: ChartSelection<SVGLineElement>,
+        epsilon: number,
         isAnimated = false,
-        ease = easeQuadInOut,
         areaAnimationDuration = motion.duration,
         hasOutline = true,
-        svg,
-        chartWidth,
-        chartHeight,
-        data,
-        dataSorted,
-        dataSortedFormatted,
-        dataSortedZeroed,
-        grid = null,
+        svg: ChartSelection<SVGSVGElement>,
+        chartWidth: number,
+        chartHeight: number,
+        data: StackedAreaDatum[],
+        dataSorted: StackedAreaDateGroup[],
+        dataSortedFormatted: StackedAreaColumn[],
+        dataSortedZeroed: StackedAreaColumn[],
+        grid: GridTypes | null = null,
         tooltipThreshold = 480,
-        xAxisPadding = {
-            top: 0,
-            left: 15,
-            bottom: 0,
-            right: 0,
-        },
         dateLabel = 'date',
         valueLabel = 'value',
         keyLabel = 'name',
-        emptyDataConfig = {
+        emptyDataConfig: StackedAreaEmptyDataConfig = {
             minDate: new Date(new Date().setDate(new Date().getDate() - 30)),
             maxDate: new Date(),
             minY: 0,
             maxY: 500,
         },
-        isUsingFakeData = false,
-        // getters
-        getName = ({ name }) => name,
-        getDate = ({ date }) => date,
-        // events
-        dispatcher = dispatch(
-            'customMouseOver',
-            'customMouseOut',
-            'customMouseMove',
-            'customDataEntryClick',
-            'customTouchMove'
-        );
+        isUsingFakeData = false;
+
+    const monthAxisPadding = 30;
+    const yTickTextYOffset = -8;
+    const yTickTextXOffset = -20;
+    const tickPadding = 5;
+    const lineGradient = colorHelper.colorGradients.greenBlue;
+    const highlightCircleSize = 12;
+    const highlightCircleRadius = 5;
+    const highlightCircleStroke = 1.2;
+    const highlightCircleActiveRadius = highlightCircleRadius + 2;
+    const highlightCircleActiveStrokeWidth = 5;
+    const highlightCircleActiveStrokeOpacity = 0.6;
+    const maxAreaNumber = 10;
+    const areaAnimationDelayStep = 20;
+    const areaAnimationDelays = range(
+        areaAnimationDelayStep,
+        maxAreaNumber * areaAnimationDelayStep,
+        areaAnimationDelayStep
+    );
+    const overlayColor = 'rgba(0, 0, 0, 0)';
+    const ease = easeQuadInOut;
+    const xAxisPadding = {
+        top: 0,
+        left: 15,
+        bottom: 0,
+        right: 0,
+    };
+    // getters
+    /**
+     * The colour a topic is drawn in.
+     *
+     * `buildScales` fills `nameToColorMap` before anything is drawn, so it is
+     * non-null everywhere this is reached -- the same reasoning, and the same
+     * shape, as `colorForGroup` in grouped-bar.ts.
+     */
+    const colorForName = (name: string) =>
+        (nameToColorMap as Record<string, string>)[name];
+    const getName = ({ name }: StackedAreaDatum) => name;
+    const getDate = ({ date }: StackedAreaDatum) => date;
+    // events
+    const dispatcher: Dispatch<object> = dispatch(
+        'customMouseOver',
+        'customMouseOut',
+        'customMouseMove',
+        'customDataEntryClick',
+        'customTouchMove'
+    );
 
     /**
      * This function creates the graph using the selection and data provided
@@ -184,10 +286,21 @@ export default function module() {
      * the container(s) where the chart(s) will be rendered
      * @param {AreaChartData} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            StackedAreaChartDataShape[],
+            TParent,
+            TParentDatum
+        >
+    ) {
         _selection.each(function (_data) {
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
             data = cleanData(_data);
             dataSorted = getSortedData(data);
 
@@ -219,7 +332,7 @@ export default function module() {
      * @param {DOMElement} el
      * @private
      */
-    function addGlowFilter(el) {
+    function addGlowFilter(el: BaseType) {
         if (!highlightFilter) {
             highlightFilter = createFilterContainer(
                 svg.select('.metadata-group')
@@ -227,7 +340,7 @@ export default function module() {
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
 
-        let glowEl = select(el);
+        const glowEl = select(el);
 
         glowEl
             .style('stroke-width', highlightCircleActiveStrokeWidth)
@@ -270,10 +383,14 @@ export default function module() {
      * @param  {Number} value Value to format
      * @return {Number}       Formatted value
      */
-    function getFormattedValue(value) {
+    function getFormattedValue(value: NumberValue) {
+        // d3's `tickFormat` declares the value as `NumberValue`, which is a
+        // number or anything with `valueOf`. Coerced once here, where the
+        // helpers below want a number.
+        const numeric = Number(value);
         let formatFn;
 
-        if (isInteger(value)) {
+        if (isInteger(numeric)) {
             formatFn = formatIntegerValue;
         } else {
             formatFn = formatDecimalValue;
@@ -290,7 +407,7 @@ export default function module() {
             formatFn = format(numberFormat);
         }
 
-        return formatFn(value);
+        return formatFn(numeric);
     }
 
     /**
@@ -298,26 +415,42 @@ export default function module() {
      * @private
      */
     function buildAxis() {
-        let minor, major;
+        // d3's axis generics follow the scale it is built over, and this chart
+        // builds its x axis over three different scales. The axis is held as
+        // `Axis<AxisDomain>`, so each construction is cast once here rather
+        // than every call on it being narrowed downstream.
+        const asAxis = (axis: unknown) => axis as Axis<AxisDomain>;
+        let minor: AxisTickSettings;
+        let major: AxisTickSettings | null;
 
         if (xAxisValueType === 'number') {
-            minor = getSortedNumberAxis(dataSorted, width);
+            // `date` holds a number on this path: `castValueToType` returns
+            // `Number(...)` for it when `xAxisValueType` is 'number', which is
+            // what the helper's own `AxisDatumSorted` describes.
+            minor = getSortedNumberAxis(
+                dataSorted as unknown as AxisDatumSorted[],
+                width
+            );
             major = null;
 
             if (xAxisScale === 'logarithmic') {
-                xAxis = axisBottom(xScale)
-                    .ticks(minor.tick, 'e')
-                    .tickFormat(function (d) {
-                        const log = Math.log(d) / Math.LN10;
+                xAxis = asAxis(
+                    axisBottom(xScale as ScaleLogarithmic<number, number>)
+                        .ticks(minor.tick as number, 'e')
+                        .tickFormat(function (d) {
+                            const log = Math.log(Number(d)) / Math.LN10;
 
-                        return Math.abs(Math.round(log) - log) < 1e-6
-                            ? '10^' + Math.round(log)
-                            : '';
-                    });
+                            return Math.abs(Math.round(log) - log) < 1e-6
+                                ? '10^' + Math.round(log)
+                                : '';
+                        })
+                );
             } else {
-                xAxis = axisBottom(xScale)
-                    .ticks(minor.tick)
-                    .tickFormat(getFormattedValue);
+                xAxis = asAxis(
+                    axisBottom(xScale as ScaleLinear<number, number>)
+                        .ticks(minor.tick as number)
+                        .tickFormat(getFormattedValue)
+                );
             }
         } else {
             if (
@@ -333,30 +466,55 @@ export default function module() {
                 ({ minor, major } = getTimeSeriesAxis(
                     dataSorted,
                     width,
-                    xAxisFormat,
-                    locale
+                    xAxisFormat as AxisTimeCombinationValue | null,
+                    locale ?? null
                 ));
 
-                xSubAxis = axisBottom(xScale)
-                    .ticks(major.tick)
-                    .tickSize(0, 0)
-                    .tickFormat(major.format);
+                xSubAxis = asAxis(
+                    axisBottom(xScale as ScaleTime<number, number>)
+                        .ticks(major.tick as number)
+                        // One argument: d3's `tickSize` sets both the inner
+                        // and the outer size from it, and the second argument
+                        // this used to pass has always been ignored.
+                        .tickSize(0)
+                        .tickFormat(
+                            major.format as (
+                                domainValue: unknown
+                            ) => string as (
+                                domainValue: NumberValue | Date,
+                                index: number
+                            ) => string
+                        )
+                );
             }
 
-            xAxis = axisBottom(xScale)
-                .ticks(minor.tick)
-                .tickSize(10, 0)
-                .tickPadding(tickPadding)
-                .tickFormat(minor.format);
+            xAxis = asAxis(
+                axisBottom(xScale as ScaleTime<number, number>)
+                    .ticks(minor.tick as number)
+                    // One argument, as above: the second was ignored.
+                    .tickSize(10)
+                    .tickPadding(tickPadding)
+                    .tickFormat(
+                        minor.format as unknown as (
+                            domainValue: NumberValue | Date,
+                            index: number
+                        ) => string
+                    )
+            );
         }
 
         yAxis = axisRight(yScale)
             .ticks(yTicks)
-            .tickSize([0])
+            // An array where d3 wants a number, as in bar.ts: `tickSize`
+            // assigns `+_`, and `+[0]` is 0 for a one-element array, so this
+            // has always set the size it looks like it does.
+            .tickSize(+[0])
             .tickPadding(tickPadding)
             .tickFormat(getFormattedValue);
 
-        drawGridLines(minor.tick, yTicks);
+        // `drawGridLines` takes no parameters: the two it was handed here
+        // were ignored, and it reads `xTicks` and `yTicks` off the module.
+        drawGridLines();
     }
 
     /**
@@ -366,7 +524,7 @@ export default function module() {
      * @private
      */
     function buildContainerGroups() {
-        let container = svg
+        const container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
@@ -395,44 +553,39 @@ export default function module() {
      * @private
      */
     function buildLayers() {
-        dataSortedFormatted = dataSorted
-            .map((d) => Object.assign({}, d, d.values))
-            .map((d) => {
-                Object.keys(d).forEach((k) => {
-                    const entry = d[k];
+        // Each group's rows are spread onto the group itself, so the column
+        // carries numeric indices alongside `key`, `values` and `date`. The
+        // loop then puts every row's value under its own topic name, which is
+        // what `d3.stack` reads by key. `StackedAreaColumn`'s index signature
+        // is that bag of names.
+        const toColumn = (zeroed: boolean) => (group: StackedAreaDateGroup) => {
+            const column = Object.assign(
+                {},
+                group,
+                group.values
+            ) as unknown as Record<string, unknown>;
 
-                    if (entry && entry.name) {
-                        d[entry.name] = entry.value;
-                    }
-                });
+            Object.keys(column).forEach((k) => {
+                const entry = column[k] as StackedAreaDatum | undefined;
 
-                return Object.assign({}, d, {
-                    date: castValueToType(d['key'], xAxisValueType),
-                });
+                if (entry && entry.name) {
+                    column[entry.name] = zeroed ? 0 : entry.value;
+                }
             });
 
-        dataSortedZeroed = dataSorted
-            .map((d) => Object.assign({}, d, d.values))
-            .map((d) => {
-                Object.keys(d).forEach((k) => {
-                    const entry = d[k];
+            return Object.assign({}, column, {
+                date: castValueToType(column['key'] as string, xAxisValueType),
+            }) as StackedAreaColumn;
+        };
 
-                    if (entry && entry.name) {
-                        d[entry.name] = 0;
-                    }
-                });
+        dataSortedFormatted = dataSorted.map(toColumn(false));
+        dataSortedZeroed = dataSorted.map(toColumn(true));
 
-                return Object.assign({}, d, {
-                    date: castValueToType(d['key'], xAxisValueType),
-                });
-            });
+        const initialTotalsObject = uniq(data.map(getName)).reduce<
+            Record<string, number>
+        >((memo, key) => Object.assign({}, memo, { [key]: 0 }), {});
 
-        let initialTotalsObject = uniq(data.map(getName)).reduce(
-            (memo, key) => Object.assign({}, memo, { [key]: 0 }),
-            {}
-        );
-
-        let totals = data.reduce(
+        const totals = data.reduce<Record<string, number>>(
             (memo, item) =>
                 Object.assign({}, memo, {
                     [item.name]: (memo[item.name] += item.value),
@@ -442,7 +595,7 @@ export default function module() {
 
         order = topicsOrder || formatOrder(totals);
 
-        let stack3 = stack()
+        const stack3 = stack<StackedAreaColumn, string>()
             .keys(order)
             .order(stackOrderNone)
             .offset(stackOffsetNone);
@@ -457,7 +610,7 @@ export default function module() {
      * @param layers
      * @return Manipulated Layers
      */
-    function moveLayersByBaseline(layers) {
+    function moveLayersByBaseline(layers: Series<StackedAreaColumn, string>[]) {
         if (yAxisBaseline === 0) {
             return layers;
         }
@@ -482,7 +635,7 @@ export default function module() {
      * @param  {Object} totals  Keys of all the topics and their corresponding totals
      * @return {Array}          List of topic names in aggregate order
      */
-    function formatOrder(totals) {
+    function formatOrder(totals: Record<string, number>) {
         let order = Object.keys(totals).sort((a, b) => {
             if (totals[a] > totals[b]) return -1;
             if (totals[a] === totals[b]) return 0;
@@ -490,10 +643,10 @@ export default function module() {
             return 1;
         });
 
-        let otherIndex = order.indexOf('Other');
+        const otherIndex = order.indexOf('Other');
 
         if (otherIndex >= 0) {
-            let other = order.splice(otherIndex, 1);
+            const other = order.splice(otherIndex, 1);
 
             order = order.concat(other);
         }
@@ -524,20 +677,24 @@ export default function module() {
      * @private
      */
     function buildXAxisScale() {
+        // `extent` reports `[undefined, undefined]` for empty data, which the
+        // chart never reaches here: `cleanData` substitutes fake data for an
+        // empty set, so `dataSorted` always has at least one group.
+        const dateExtent = () =>
+            extent(dataSorted, ({ date }) => Number(date)) as [number, number];
+
         if (xAxisValueType === 'number') {
             if (xAxisScale === 'logarithmic') {
                 return scaleLog()
-                    .domain(extent(dataSorted, ({ date }) => date))
+                    .domain(dateExtent())
                     .rangeRound([0, chartWidth]);
             } else {
                 return scaleLinear()
-                    .domain(extent(dataSorted, ({ date }) => date))
+                    .domain(dateExtent())
                     .rangeRound([0, chartWidth]);
             }
         } else {
-            return scaleTime()
-                .domain(extent(dataSorted, ({ date }) => date))
-                .rangeRound([0, chartWidth]);
+            return scaleTime().domain(dateExtent()).rangeRound([0, chartWidth]);
         }
     }
 
@@ -546,8 +703,8 @@ export default function module() {
      * @private
      */
     function buildYAxisScale() {
-        const minY = getMinYAxisScale();
-        const maxY = getMaxYAxisScale();
+        const minY = Number(getMinYAxisScale());
+        const maxY = Number(getMaxYAxisScale());
 
         return scaleLinear()
             .domain([minY, maxY])
@@ -559,7 +716,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element) {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -583,10 +740,16 @@ export default function module() {
             emptyDataConfig.minDate,
             emptyDataConfig.maxDate
         );
-        const emptyArray = Array.apply(null, Array(numDays));
+        // `[...Array(n)]` where this read `Array.apply(null, Array(n))`: both
+        // give an n-length array of undefined, and the lint override makes
+        // `prefer-spread` an error.
+        const emptyArray = [...Array(numDays)];
 
         isUsingFakeData = true;
 
+        // Keyed by the label accessors, and `date` holds a Date where the
+        // published shape describes the string a consumer passes -- which is
+        // what `cleanData` then casts either way.
         return [
             ...emptyArray.map((el, i) => ({
                 [dateLabel]: addDays(emptyDataConfig.minDate, i),
@@ -608,13 +771,23 @@ export default function module() {
      * @return {AreaChartData}                Parsed data with values and dates
      * @private
      */
-    function cleanData(originalData) {
+    function cleanData(
+        originalData: StackedAreaChartDataShape[]
+    ): StackedAreaDatum[] {
         originalData =
-            originalData.length === 0 ? createFakeData() : originalData;
+            originalData.length === 0
+                ? (createFakeData() as unknown as StackedAreaChartDataShape[])
+                : originalData;
 
-        return originalData.reduce((acc, d) => {
-            ((d.date = castValueToType(d[dateLabel], xAxisValueType)),
-                (d.value = +d[valueLabel]));
+        return originalData.reduce<StackedAreaDatum[]>((acc, datum) => {
+            // Written onto the caller's own objects rather than copies, which
+            // is the runtime this preserves. The cast covers the two reads the
+            // label accessors make dynamic, and `date` becoming a Date or a
+            // number where the published shape has the string that went in.
+            const d = datum as unknown as StackedAreaDatum;
+
+            d.date = castValueToType(d[dateLabel] as string, xAxisValueType);
+            d.value = +(d[valueLabel] as number);
 
             return [...acc, d];
         }, []);
@@ -634,12 +807,12 @@ export default function module() {
      * @private
      */
     function drawAxis() {
-        svg.select('.x-axis-group .axis.x')
+        svg.select<SVGGElement>('.x-axis-group .axis.x')
             .attr('transform', `translate( 0, ${chartHeight} )`)
             .call(xAxis);
 
         if (xAxisFormat !== 'custom' && xAxisValueType !== 'number') {
-            svg.select('.x-axis-group .axis.sub-x')
+            svg.select<SVGGElement>('.x-axis-group .axis.sub-x')
                 .attr(
                     'transform',
                     `translate(0, ${chartHeight + monthAxisPadding})`
@@ -647,7 +820,7 @@ export default function module() {
                 .call(xSubAxis);
         }
 
-        svg.select('.y-axis-group.axis')
+        svg.select<SVGGElement>('.y-axis-group.axis')
             .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
             .call(yAxis)
             .call(adjustYTickLabels);
@@ -678,7 +851,7 @@ export default function module() {
      * @param  {D3Selection} selection Y axis group
      * @return void
      */
-    function adjustYTickLabels(selection) {
+    function adjustYTickLabels(selection: ChartSelection<SVGGElement>) {
         selection
             .selectAll('.tick text')
             .attr(
@@ -694,7 +867,7 @@ export default function module() {
     function drawGridLines() {
         svg.select('.grid-lines-group').selectAll('grid').remove();
 
-        let shouldHighlightXAxis = getMinYAxisScale() < 0;
+        const shouldHighlightXAxis = Number(getMinYAxisScale()) < 0;
 
         if (grid === 'horizontal' || grid === 'full') {
             drawHorizontalGridLines(shouldHighlightXAxis);
@@ -728,19 +901,19 @@ export default function module() {
         const grid = gridVertical(xScale)
             .range([0, chartHeight])
             .hideEdges('first')
-            .ticks(xTicks)
+            .ticks(xTicks as number)
             .extendedLine(xAxisPadding.bottom);
 
         grid(svg.select('.grid-lines-group'));
     }
 
-    /**
-     * Draws the loading state
-     * @private
-     */
-    function drawLoadingState() {
-        svg.select('.loading-state-group').html(barLoadingMarkup);
-    }
+    // A second `drawLoadingState` stood here, rendering `barLoadingMarkup`.
+    // Function declarations hoist and the later one wins, so the one below --
+    // which draws this chart's own markup -- is the one that has always run,
+    // and this one was unreachable. It referenced an identifier the file never
+    // imported, which is why nothing caught it: the line could not run, so it
+    // could not throw. Removed rather than typed, since TypeScript rejects
+    // both the duplicate implementation and the unresolved name.
 
     /**
      * Draws an overlay element over the graph
@@ -769,11 +942,11 @@ export default function module() {
      * @private
      */
     function drawEmptyDataLine() {
-        let emptyDataLine = line()
-            .x((d) => xScale(d.date))
+        const emptyDataLine = line<StackedAreaColumn>()
+            .x((d) => xScale(Number(d.date)))
             .y(() => yScale(0) - 1);
 
-        let chartGroup = svg.select('.chart-group');
+        const chartGroup = svg.select('.chart-group');
 
         chartGroup
             .append('path')
@@ -786,7 +959,7 @@ export default function module() {
             .attr('id', 'empty-data-line-gradient')
             .attr('gradientUnits', 'userSpaceOnUse')
             .attr('x1', 0)
-            .attr('x2', xScale(data[data.length - 1].date))
+            .attr('x2', xScale(Number(data[data.length - 1].date)))
             .attr('y1', 0)
             .attr('y2', 0)
             .selectAll('stop')
@@ -826,22 +999,33 @@ export default function module() {
             return;
         }
 
-        areaShape = area()
+        areaShape = area<StackedAreaPoint>()
             .curve(curveMap[areaCurve])
-            .x(({ data }) => xScale(data.date))
+            .x(({ data }) => xScale(Number(data.date)))
             .y0((d) => yScale(d[0]))
             .y1((d) => yScale(d[1]));
 
-        areaOutline = line()
+        areaOutline = line<StackedAreaPoint>()
             .curve(areaShape.curve())
-            .x(({ data }) => xScale(data.date))
+            .x(({ data }) => xScale(Number(data.date)))
             .y((d) => yScale(d[1]));
 
         if (isAnimated) {
             series = svg
                 .select('.chart-group')
                 .selectAll('.layer')
-                .data(layersInitial, getName)
+                // Keyed by `name`, which a d3 `Series` does not have: its
+                // topic is under `key`. So every layer keys to "undefined"
+                // and the join collapses them, which is the behaviour this
+                // preserves -- keying by `key` instead would change what the
+                // animated path draws, and the animated path has no spec
+                // beyond its getter and setter. Left as it is, typed as the
+                // read it really performs.
+                .data(
+                    layersInitial,
+                    (layer) =>
+                        (layer as { name?: string }).name as unknown as string
+                )
                 .enter()
                 .append('g')
                 .classed('layer-container', true);
@@ -851,13 +1035,13 @@ export default function module() {
                 .attr('class', 'layer')
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .attr('fill', ({ key }) => nameToColorMap[key]);
+                .attr('fill', ({ key }) => colorForName(key));
 
             series
                 .append('path')
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({ key }) => nameToColorMap[key])
+                .style('stroke', ({ key }) => colorForName(key))
                 .attr('fill', 'none');
 
             // Update
@@ -870,7 +1054,7 @@ export default function module() {
                 .ease(ease)
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .attr('fill', ({ key }) => nameToColorMap[key]);
+                .attr('fill', ({ key }) => colorForName(key));
 
             svg.select('.chart-group')
                 .selectAll('.area-outline')
@@ -895,26 +1079,30 @@ export default function module() {
                 .attr('class', 'layer')
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .attr('fill', ({ key }) => nameToColorMap[key]);
+                .attr('fill', ({ key }) => colorForName(key));
 
             series
                 .append('path')
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({ key }) => nameToColorMap[key]);
+                .style('stroke', ({ key }) => colorForName(key));
 
             // Update
             svg.select('.chart-group')
-                .selectAll('.layer')
+                .selectAll<SVGPathElement, Series<StackedAreaColumn, string>>(
+                    '.layer'
+                )
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .attr('fill', ({ key }) => nameToColorMap[key]);
+                .attr('fill', ({ key }) => colorForName(key));
 
             svg.select('.chart-group')
-                .selectAll('.area-outline')
+                .selectAll<SVGPathElement, Series<StackedAreaColumn, string>>(
+                    '.area-outline'
+                )
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({ key }) => nameToColorMap[key]);
+                .style('stroke', ({ key }) => colorForName(key));
         }
 
         if (!hasOutline) {
@@ -977,11 +1165,14 @@ export default function module() {
      * @return {Object[]}               Chart data ordered by date
      * @private
      */
-    function getSortedData(data) {
+    function getSortedData(data: StackedAreaDatum[]): StackedAreaDateGroup[] {
         // nest().key().entries() -> groups(), which yields [key, values]
         // pairs. String() keeps nest's key coercion.
         return groups(
-            data.sort((a, b) => a.date - b.date),
+            // `a.date - b.date` relied on Date coercing to a number, which is
+            // not something the types allow; `Number` is that coercion
+            // written out, as the axis helper's own sort already spells it.
+            data.sort((a, b) => Number(a.date) - Number(b.date)),
             (d) => String(getDate(d))
         )
             .map(([key, values]) => ({ key, values }))
@@ -1007,9 +1198,9 @@ export default function module() {
      * @return {Number} Min value
      */
     function getMinValueByDate() {
-        let keys = uniq(data.map((o) => o.name));
-        let minValueByDate = min(dataSortedFormatted, function (d) {
-            let vals = keys.map((key) => d[key]);
+        const keys = uniq(data.map((o) => o.name));
+        const minValueByDate = min(dataSortedFormatted, function (d) {
+            const vals = keys.map((key) => Number(d[key]));
 
             return sum(vals);
         });
@@ -1023,9 +1214,9 @@ export default function module() {
      * @return {Number} Max value
      */
     function getMaxValueByDate() {
-        let keys = uniq(data.map((o) => o.name));
-        let maxValueByDate = max(dataSortedFormatted, function (d) {
-            let vals = keys.map((key) => d[key]);
+        const keys = uniq(data.map((o) => o.name));
+        const maxValueByDate = max(dataSortedFormatted, function (d) {
+            const vals = keys.map((key) => Number(d[key]));
 
             return sum(vals);
         });
@@ -1043,7 +1234,12 @@ export default function module() {
             return emptyDataConfig.minY;
         }
 
-        return min([getMinValue(), getMinValueByDate(), yAxisBaseline, 0]);
+        return min([
+            Number(getMinValue()),
+            Number(getMinValueByDate()),
+            yAxisBaseline,
+            0,
+        ]);
     }
 
     /**
@@ -1056,7 +1252,7 @@ export default function module() {
             return emptyDataConfig.maxY;
         }
 
-        return max([getMaxValueByDate(), yAxisBaseline]);
+        return max([Number(getMaxValueByDate()), yAxisBaseline]);
     }
 
     /**
@@ -1064,8 +1260,8 @@ export default function module() {
      * @param  {Number} mouseX X position of the mouse
      * @return {obj}        Data entry that is closer to that x axis position
      */
-    function getNearestDataPoint(mouseX) {
-        let points = dataSorted.filter(
+    function getNearestDataPoint(mouseX: number) {
+        const points = dataSorted.filter(
             ({ date }) => Math.abs(xScale(date) - mouseX) <= epsilon
         );
 
@@ -1080,7 +1276,7 @@ export default function module() {
      * @return {Number} half distance between any two points
      */
     function setEpsilon() {
-        let dates = dataSorted.map(({ date }) => date);
+        const dates = dataSorted.map(({ date }) => date);
 
         epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
     }
@@ -1090,16 +1286,20 @@ export default function module() {
      * and updates metadata related to it
      * @private
      */
-    function handleMouseMove(e, d, event) {
-        epsilon || setEpsilon();
+    function handleMouseMove(e: Element, d: unknown, event: Event) {
+        // `epsilon || setEpsilon()` as a statement, which the lint override
+        // reads as an unused expression. Same short-circuit, spelled out.
+        if (!epsilon) {
+            setEpsilon();
+        }
 
         // The listener is on the root svg, so the pointer arrives in svg
         // coordinates; everything the chart draws (the tooltip included)
         // lives inside the margin-translated container, hence the offsets.
-        let [xPosition, yPosition] = pointer(event, e),
-            dataPoint = getNearestDataPoint(xPosition - margin.left),
-            pointerYPosition = yPosition - margin.top,
-            dataPointXPosition;
+        const [xPosition, yPosition] = pointer(event, e);
+        const dataPoint = getNearestDataPoint(xPosition - (margin.left ?? 0));
+        const pointerYPosition = yPosition - (margin.top ?? 0);
+        let dataPointXPosition;
 
         if (dataPoint) {
             dataPointXPosition = xScale(new Date(dataPoint.key));
@@ -1126,7 +1326,7 @@ export default function module() {
      * It also resets the container of the vertical marker
      * @private
      */
-    function handleMouseOut(e, d, event) {
+    function handleMouseOut(e: Element, d: unknown, event: Event) {
         overlay.style('display', 'none');
         verticalMarkerLine.classed('bc-is-active', false);
         verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
@@ -1138,7 +1338,7 @@ export default function module() {
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d, event) {
+    function handleMouseOver(e: Element, d: unknown, event: Event) {
         overlay.style('display', 'block');
         verticalMarkerLine.classed('bc-is-active', true);
 
@@ -1150,7 +1350,7 @@ export default function module() {
      * It will only pass the information with the event
      * @private
      */
-    function handleTouchMove(e, d, event) {
+    function handleTouchMove(e: Element, d: unknown, event: Event) {
         dispatcher.call('customTouchMove', e, d, pointer(event, e));
     }
 
@@ -1159,7 +1359,7 @@ export default function module() {
      * It will only pass the information with the event
      * @private
      */
-    function handleHighlightClick(e, d, event) {
+    function handleHighlightClick(e: Element, d: unknown, event: Event) {
         dispatcher.call('customDataEntryClick', e, d, pointer(event, e));
     }
 
@@ -1168,18 +1368,28 @@ export default function module() {
      * @param  {obj} dataPoint Data point to extract info from
      * @private
      */
-    function highlightDataPoints({ values }) {
+    function highlightDataPoints({ values }: StackedAreaDateGroup) {
         let accumulator = 0;
 
         cleanDataPointHighlights();
 
         // ensure order stays constant
-        let sortedValues = order.reduce((acc, current) => {
-            return [...acc, values.find(({ name }) => name === current)];
-        }, []);
+        // One entry per topic in `order`, and `find` reports undefined for a
+        // topic with no row at this date -- which is why the reads below are
+        // guarded by the type rather than assumed.
+        const sortedValues = order.reduce<(StackedAreaDatum | undefined)[]>(
+            (acc, current) => {
+                return [...acc, values.find(({ name }) => name === current)];
+            },
+            []
+        );
 
         sortedValues.forEach((d, index) => {
-            let marker = verticalMarkerContainer
+            if (!d) {
+                return;
+            }
+
+            const marker = verticalMarkerContainer
                 .append('g')
                 .classed('circle-container', true)
                 .append('circle')
@@ -1188,7 +1398,7 @@ export default function module() {
                 .attr('cy', 0)
                 .attr('r', highlightCircleRadius)
                 .style('stroke-width', highlightCircleStroke)
-                .style('stroke', nameToColorMap[d.name])
+                .style('stroke', colorForName(d.name))
                 .style('cursor', 'pointer')
                 .on('click', function (event) {
                     addGlowFilter(this);
@@ -1198,7 +1408,8 @@ export default function module() {
                     removeFilter(this);
                 });
 
-            accumulator = accumulator + sortedValues[index][valueLabel];
+            accumulator =
+                accumulator + Number(sortedValues[index]?.[valueLabel]);
 
             marker.attr(
                 'transform',
@@ -1212,7 +1423,7 @@ export default function module() {
      * @param  {obj} dataPoint Data entry to extract info
      * @return void
      */
-    function moveVerticalMarker(verticalMarkerXPosition) {
+    function moveVerticalMarker(verticalMarkerXPosition: number) {
         verticalMarkerContainer.attr(
             'transform',
             `translate(${verticalMarkerXPosition},0)`
@@ -1223,7 +1434,7 @@ export default function module() {
      * Resets a point filter
      * @param {DOMElement} point  Point to reset
      */
-    function removeFilter(point) {
+    function removeFilter(point: BaseType) {
         select(point).attr('filter', 'none');
     }
 
@@ -1244,14 +1455,17 @@ export default function module() {
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.animationDuration = function (_x) {
+    (exports as StackedAreaChartModule).animationDuration = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return areaAnimationDuration;
         }
         areaAnimationDuration = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['animationDuration'];
 
     /**
      * Gets or Sets the area curve of the stacked area.
@@ -1262,14 +1476,17 @@ export default function module() {
      * @public
      * @example stackedArea.areaCurve('step')
      */
-    exports.areaCurve = function (_x) {
+    (exports as StackedAreaChartModule).areaCurve = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return areaCurve;
         }
         areaCurve = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['areaCurve'];
 
     /**
      * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
@@ -1277,14 +1494,17 @@ export default function module() {
      * @return {Number | module}    Current opacity or Area Chart module to chain calls
      * @public
      */
-    exports.areaOpacity = function (_x) {
+    (exports as StackedAreaChartModule).areaOpacity = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return areaOpacity;
         }
         areaOpacity = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['areaOpacity'];
 
     /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity
@@ -1292,7 +1512,8 @@ export default function module() {
      * @example
      *     area.xAxisCustomFormat(area.axisTimeCombinations.HOUR_DAY)
      */
-    exports.axisTimeCombinations = axisTimeCombinations;
+    (exports as StackedAreaChartModule).axisTimeCombinations =
+        axisTimeCombinations as StackedAreaChartModule['axisTimeCombinations'];
 
     /**
      * Gets or Sets the colorMap of the chart
@@ -1301,14 +1522,17 @@ export default function module() {
      * @example stackedArea.colorMap({name: 'colorHex', name2: 'colorString'})
      * @public
      */
-    exports.colorMap = function (_x) {
+    (exports as StackedAreaChartModule).colorMap = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return nameToColorMap;
         }
         nameToColorMap = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['colorMap'];
 
     /**
      * Gets or Sets the colorSchema of the chart
@@ -1316,14 +1540,17 @@ export default function module() {
      * @return {String[] | module}  Current colorSchema or Chart module to chain calls
      * @public
      */
-    exports.colorSchema = function (_x) {
+    (exports as StackedAreaChartModule).colorSchema = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return colorSchema;
         }
         colorSchema = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['colorSchema'];
 
     /**
      * Gets or Sets the dateLabel of the chart
@@ -1332,7 +1559,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.dateLabel = function (_x) {
+    (exports as StackedAreaChartModule).dateLabel = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return dateLabel;
         }
@@ -1340,7 +1570,7 @@ export default function module() {
         dataKeyDeprecationMessage('date');
 
         return this;
-    };
+    } as StackedAreaChartModule['dateLabel'];
 
     /**
      * Gets or Sets the emptyDataConfig of the chart
@@ -1348,14 +1578,17 @@ export default function module() {
      * @return {Object | module}    Current config for when chart data is an empty array
      * @public
      */
-    exports.emptyDataConfig = function (_x) {
+    (exports as StackedAreaChartModule).emptyDataConfig = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return emptyDataConfig;
         }
         emptyDataConfig = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['emptyDataConfig'];
 
     /**
      * Gets or Sets the grid mode
@@ -1363,14 +1596,17 @@ export default function module() {
      * @return {String | module}    Current mode of the grid or Area Chart module to chain calls
      * @public
      */
-    exports.grid = function (_x) {
+    (exports as StackedAreaChartModule).grid = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return grid;
         }
         grid = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['grid'];
 
     /**
      * Enables or disables the outline at the top of the areas
@@ -1378,14 +1614,17 @@ export default function module() {
      * @return {Boolean | module}   Current state of the flag
      * @public
      */
-    exports.hasOutline = function (_x) {
+    (exports as StackedAreaChartModule).hasOutline = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasOutline;
         }
         hasOutline = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['hasOutline'];
 
     /**
      * Gets or Sets the height of the chart
@@ -1393,14 +1632,17 @@ export default function module() {
      * @return {Number | module}    Current height or Area Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    (exports as StackedAreaChartModule).height = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return height;
         }
         height = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['height'];
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
@@ -1408,14 +1650,17 @@ export default function module() {
      * @return {Boolean | module}       Current isAnimated flag or Chart module
      * @public
      */
-    exports.isAnimated = function (_x) {
+    (exports as StackedAreaChartModule).isAnimated = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isAnimated;
         }
         isAnimated = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['isAnimated'];
 
     /**
      * Gets or Sets the keyLabel of the chart
@@ -1424,7 +1669,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.keyLabel = function (_x) {
+    (exports as StackedAreaChartModule).keyLabel = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return keyLabel;
         }
@@ -1432,7 +1680,7 @@ export default function module() {
         dataKeyDeprecationMessage('name');
 
         return this;
-    };
+    } as StackedAreaChartModule['keyLabel'];
 
     /**
      * Gets or Sets the number format of the stacked area chart
@@ -1440,14 +1688,17 @@ export default function module() {
      * @return {string | module}        Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function (_x) {
+    (exports as StackedAreaChartModule).numberFormat = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['numberFormat'];
 
     /**
      * Gets or Sets the margin of the chart
@@ -1455,7 +1706,10 @@ export default function module() {
      * @return {Object | module}    Current margin or Area Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    (exports as StackedAreaChartModule).margin = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return margin;
         }
@@ -1465,7 +1719,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as StackedAreaChartModule['margin'];
 
     /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
@@ -1474,14 +1728,17 @@ export default function module() {
      * @return {Number | module}    Current tooltipThreshold or Area Chart module to chain calls
      * @public
      */
-    exports.tooltipThreshold = function (_x) {
+    (exports as StackedAreaChartModule).tooltipThreshold = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return tooltipThreshold;
         }
         tooltipThreshold = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['tooltipThreshold'];
 
     /**
      * Pass an override for the ordering of the topics
@@ -1489,14 +1746,17 @@ export default function module() {
      * @return {String[] | module}    Current override order or Chart module to chain calls
      * @public
      */
-    exports.topicsOrder = function (_x) {
+    (exports as StackedAreaChartModule).topicsOrder = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return topicsOrder;
         }
         topicsOrder = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['topicsOrder'];
 
     /**
      * Gets or Sets the loading state of the chart
@@ -1504,14 +1764,17 @@ export default function module() {
      * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.isLoading = function (_flag) {
+    (exports as StackedAreaChartModule).isLoading = function (
+        this: StackedAreaChartModule,
+        _flag
+    ) {
         if (!arguments.length) {
             return isLoading;
         }
         isLoading = _flag;
 
         return this;
-    };
+    } as StackedAreaChartModule['isLoading'];
 
     /**
      * Pass language tag for the tooltip to localize the date.
@@ -1521,14 +1784,17 @@ export default function module() {
      * @return {String | Module}    Current locale or module to chain calls
      * @public
      */
-    exports.locale = function (_x) {
+    (exports as StackedAreaChartModule).locale = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return locale;
         }
         locale = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['locale'];
 
     /**
      * Chart exported to png and a download action is fired
@@ -1537,9 +1803,17 @@ export default function module() {
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
-    exports.exportChart = function (filename, title) {
-        return exportChart.call(exports, svg, filename, title);
-    };
+    (exports as StackedAreaChartModule).exportChart = function (
+        filename,
+        title
+    ) {
+        return exportChart.call(
+            exports as StackedAreaChartModule,
+            svg,
+            filename,
+            title
+        );
+    } as StackedAreaChartModule['exportChart'];
 
     /**
      * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -1549,11 +1823,17 @@ export default function module() {
      * @return {module}     Stacked Area
      * @public
      */
-    exports.on = function () {
-        let value = dispatcher.on.apply(dispatcher, arguments);
+    (exports as StackedAreaChartModule).on = function (
+        ...args: [string] | [string, () => void]
+    ) {
+        // Rest parameters and a spread where this read `arguments` and used
+        // `.apply`, following the other converted charts.
+        const value = dispatcher.on(
+            ...(args as Parameters<typeof dispatcher.on>)
+        );
 
         return value === dispatcher ? exports : value;
-    };
+    } as unknown as StackedAreaChartModule['on'];
 
     /**
      * Gets or Sets the valueLabel of the chart
@@ -1562,7 +1842,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.valueLabel = function (_x) {
+    (exports as StackedAreaChartModule).valueLabel = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return valueLabel;
         }
@@ -1570,7 +1853,7 @@ export default function module() {
         dataKeyDeprecationMessage('value');
 
         return this;
-    };
+    } as StackedAreaChartModule['valueLabel'];
 
     /**
      * Gets or Sets the width of the chart
@@ -1578,14 +1861,17 @@ export default function module() {
      * @return {Number | module}    Current width or Area Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    (exports as StackedAreaChartModule).width = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return width;
         }
         width = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['width'];
 
     /**
      * Exposes the ability to force the chart to show a certain x format
@@ -1597,14 +1883,17 @@ export default function module() {
      * @example
      *     stackedArea.xAxisCustomFormat(stackedArea.axisTimeCombinations.HOUR_DAY)
      */
-    exports.xAxisCustomFormat = function (_x) {
+    (exports as StackedAreaChartModule).xAxisCustomFormat = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisCustomFormat;
         }
         xAxisCustomFormat = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['xAxisCustomFormat'];
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
@@ -1615,14 +1904,17 @@ export default function module() {
      * @example
      *     stackedArea.xAxisCustomFormat(stackedArea.axisTimeCombinations.HOUR_DAY)
      */
-    exports.xAxisFormat = function (_x) {
+    (exports as StackedAreaChartModule).xAxisFormat = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisFormat;
         }
         xAxisFormat = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['xAxisFormat'];
 
     /**
      * Gets or Sets the `xAxisValueType`.
@@ -1633,14 +1925,17 @@ export default function module() {
      * @public
      * @example stackedArea.xAxisValueType('number')
      */
-    exports.xAxisValueType = function (_x) {
+    (exports as StackedAreaChartModule).xAxisValueType = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisValueType;
         }
         xAxisValueType = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['xAxisValueType'];
 
     /**
      * Gets or Sets the `xAxisScale`.
@@ -1651,14 +1946,17 @@ export default function module() {
      * @public
      * @example stackedArea.xAxisValueType('number').xAxisScale('logarithmic')
      */
-    exports.xAxisScale = function (_x) {
+    (exports as StackedAreaChartModule).xAxisScale = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisScale;
         }
         xAxisScale = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['xAxisScale'];
 
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
@@ -1668,14 +1966,17 @@ export default function module() {
      * @return {Number | Module}      Current number or ticks or module to chain calls
      * @public
      */
-    exports.xTicks = function (_x) {
+    (exports as StackedAreaChartModule).xTicks = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xTicks;
         }
         xTicks = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['xTicks'];
 
     /**
      * Gets or Sets the y-axis label of the chart
@@ -1684,14 +1985,17 @@ export default function module() {
      * @public
      * @example stackedArea.yAxisLabel('Ticket Sales')
      */
-    exports.yAxisLabel = function (_x) {
+    (exports as StackedAreaChartModule).yAxisLabel = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisLabel;
         }
         yAxisLabel = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['yAxisLabel'];
 
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
@@ -1701,14 +2005,17 @@ export default function module() {
      * @public
      * @example stackedArea.yAxisLabelOffset(-55)
      */
-    exports.yAxisLabelOffset = function (_x) {
+    (exports as StackedAreaChartModule).yAxisLabelOffset = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisLabelOffset;
         }
         yAxisLabelOffset = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['yAxisLabelOffset'];
 
     /**
      * Gets or Sets the number of ticks of the y axis on the chart
@@ -1716,14 +2023,17 @@ export default function module() {
      * @return {Number | module}    Current vertical ticks or Chart module to chain calls
      * @public
      */
-    exports.yTicks = function (_x) {
+    (exports as StackedAreaChartModule).yTicks = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yTicks;
         }
         yTicks = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['yTicks'];
 
     /**
      * Gets or Sets the yAxisBaseline - this is the y-value where the area starts from in y-direction
@@ -1733,14 +2043,17 @@ export default function module() {
      * @public
      * @example stackedArea.yAxisBaseline(20)
      */
-    exports.yAxisBaseline = function (_x) {
+    (exports as StackedAreaChartModule).yAxisBaseline = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisBaseline;
         }
         yAxisBaseline = _x;
 
         return this;
-    };
+    } as StackedAreaChartModule['yAxisBaseline'];
 
-    return exports;
+    return exports as unknown as StackedAreaChartModule;
 }

@@ -8,7 +8,19 @@ import { scaleSqrt, scaleOrdinal, scaleLinear } from 'd3-scale';
 import { curveBasis, line } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
 import { Delaunay } from 'd3-delaunay';
-import { zoom as d3Zoom, zoomTransform } from 'd3-zoom';
+import { zoom as d3Zoom } from 'd3-zoom';
+import type { Axis } from 'd3-axis';
+import type { Dispatch } from 'd3-dispatch';
+import type { FormatLocaleObject } from 'd3-format';
+import type {
+    NumberValue,
+    ScaleLinear,
+    ScaleOrdinal,
+    ScalePower,
+} from 'd3-scale';
+import type { BaseType, Selection } from 'd3-selection';
+import type { CurveFactory, Line } from 'd3-shape';
+import type { D3ZoomEvent } from 'd3-zoom';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -24,8 +36,67 @@ import { setDefaultLocale } from '../helpers/locale';
 import { motion } from '../helpers/constants';
 import { gridHorizontal, gridVertical } from '../helpers/grid';
 
+import type { LocalObject } from '../../typings/common/local';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type { GridTypes } from '../../typings/common/grid';
+import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import type {
+    ScatterPlotDataShape,
+    ScatterPlotModule,
+} from '../../typings/charts/scatter-plot';
+
 const DEFAULT_ANIMATION_DELAY = 300;
 const DEFAULT_TREND_LINE_ANIMATION_DELAY = 1500;
+
+/**
+ * The chart's own svg, and the selections derived from it. The datum and parent
+ * generics are the migration plan's bounded `any`, as in the bar charts: these
+ * are module-level variables reassigned from several differently-shaped
+ * selections, so naming one concrete datum would reject the others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/**
+ * What `cleanData` hands the drawing functions. The index signature is the
+ * `xKey`/`yKey`/`nameKey` reads, which name the members this chart takes its
+ * positions from.
+ */
+type ScatterPlotDatum = ScatterPlotDataShape & {
+    [key: string]: unknown;
+};
+
+/**
+ * The two ends of the trendline, as `calcLinearRegression` gives them and
+ * `drawTrendline` reads them.
+ */
+type TrendLineData = {
+    x1?: number;
+    y1: number;
+    x2?: number;
+    y2: number;
+};
+
+/**
+ * One end of the trendline's path, which the line generator is built over.
+ *
+ * `x` is optional because `calcLinearRegression` leaves `x1` and `x2` so: it
+ * returns them only when the slope is finite. The generator is given
+ * `defined`-free data, so an undefined x reaches `xScale` and produces a path
+ * with NaN in it -- the chart's existing behaviour for a degenerate
+ * regression, and not something a conversion decides.
+ */
+type TrendLinePoint = {
+    x?: number;
+    y: number;
+};
 
 /**
  * Reusable Scatter Plot API class that renders a
@@ -78,8 +149,11 @@ const DEFAULT_TREND_LINE_ANIMATION_DELAY = 1500;
  *     }
  * ]
  */
-export default function module() {
-    let margin = {
+export default function module(): ScatterPlotModule {
+    // Split into `let` and `const` rather than the one `let` chain the
+    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
+    // error, and the bindings below it are never reassigned.
+    let margin: ChartMarginParams = {
             top: 20,
             right: 10,
             bottom: 20,
@@ -88,85 +162,107 @@ export default function module() {
         width = 960,
         height = 500,
         isLoading = false,
-        nameToColorMap = null,
-        dataPoints,
-        xKey = 'x',
-        yKey = 'y',
-        nameKey = 'name',
+        nameToColorMap: Record<string, string> | null = null,
+        dataPoints: ScatterPlotDatum[],
         xTicks = 6,
-        yTicks = null,
-        tickPadding = 5,
-        hollowColor = '#fff',
-        grid = null,
-        maskGridLines,
-        delaunayMesh,
-        xAxis,
+        // Null by default, which the chart hands straight to d3's `axis.ticks`
+        // to mean "use the scale's own tick count". `xTicks` above is a plain
+        // number, so the two differ on the same chart.
+        yTicks: number | null = null,
+        grid: GridTypes | null = null,
+        maskGridLines: ChartSelection<SVGRectElement>,
+        delaunayMesh: Delaunay<ScatterPlotDatum>,
+        xAxis: Axis<NumberValue>,
         xAxisFormatType = 'number',
         xAxisFormat = '',
-        xScale,
-        xOriginalScale,
-        yAxis,
+        xScale: ScaleLinear<number, number>,
+        xOriginalScale: ScaleLinear<number, number>,
+        yAxis: Axis<NumberValue>,
         yAxisFormat = '',
-        yScale,
-        yOriginalScale,
-        areaScale,
-        colorScale,
-        yAxisLabel,
-        yAxisLabelEl,
+        yScale: ScaleLinear<number, number>,
+        yOriginalScale: ScaleLinear<number, number>,
+        areaScale: ScalePower<number, number>,
+        colorScale: ScaleOrdinal<string, string>,
+        // No default: the chart appends no label element until one is set,
+        // which is what the declarations now say for both axes.
+        yAxisLabel: string | undefined,
+        yAxisLabelEl: ChartSelection<SVGTextElement>,
         yAxisLabelOffset = -50,
-        xAxisLabel,
-        xAxisLabelEl,
+        xAxisLabel: string | undefined,
+        xAxisLabelEl: ChartSelection<SVGTextElement>,
         xAxisLabelOffset = -50,
-        minZoom = 0.5,
-        maxZoom = 20,
-        trendLinePath,
-        trendLineCurve = curveBasis,
-        trendLineStrokWidth = '2',
-        trendLineDelay = DEFAULT_TREND_LINE_ANIMATION_DELAY,
-        trendLineDuration = 2000,
-        highlightPointData,
-        highlightFilter,
-        highlightFilterId,
-        highlightStrokeWidth = 10,
-        highlightCrossHairContainer,
-        highlightCrossHairLabelsContainer,
+        trendLinePath: ChartSelection<SVGPathElement>,
+        // Only set once a point has been hovered, which is why the zoom
+        // handler guards on it -- see 3c45ee50.
+        highlightPointData: ScatterPlotDatum | undefined,
+        highlightFilter: ChartSelection<SVGFilterElement>,
+        highlightFilterId: string,
+        highlightCrossHairContainer: ChartSelection<SVGGElement>,
+        highlightCrossHairLabelsContainer: ChartSelection<SVGGElement>,
         highlightTextLegendOffset = -45,
-        xAxisPadding = {
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-        },
         circleOpacity = 0.24,
         circleStrokeOpacity = 1,
         circleStrokeWidth = 1,
-        highlightCircle = null,
-        highlightCircleOpacity = circleOpacity,
+        highlightCircle: ChartSelection<SVGCircleElement> | null = null,
         maxCircleArea = 10,
-        maskingRectangle,
-        maskingRectangleId = 'scatter-clip-path',
-        colorSchema = colorHelper.colorSchemas.britecharts,
+        maskingRectangle: ChartSelection<SVGRectElement>,
+        colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
         isAnimated = false,
         hasCrossHairs = false,
         hasTrendline = false,
         enableZoom = false,
-        ease = easeCircleIn,
-        delay = DEFAULT_ANIMATION_DELAY,
-        duration = motion.mediumDuration,
         hasHollowCircles = false,
-        locale = null,
-        localeFormatter = d3Format,
-        svg,
-        chartWidth,
-        chartHeight,
-        dispatcher = dispatch(
-            'customClick',
-            'customMouseMove',
-            'customMouseOver',
-            'customMouseOut'
-        ),
-        getName = ({ name }) => name,
-        getPointData = ({ data }) => data;
+        locale: LocalObject | null = null,
+        // The d3-format namespace to start with, replaced by a locale-specific
+        // formatter once `valueLocale` is set. Both carry `format`, which is
+        // all `buildAxis` reads off it.
+        localeFormatter: FormatLocaleObject = d3Format,
+        svg: ChartSelection<SVGSVGElement>,
+        chartWidth: number,
+        chartHeight: number,
+        // Reassigned by the `animationDuration` accessor, so it stays a `let`.
+        duration = motion.mediumDuration;
+
+    const highlightCircleOpacity = circleOpacity;
+    const xKey = 'x';
+    const yKey = 'y';
+    const nameKey = 'name';
+    const tickPadding = 5;
+    const hollowColor = '#fff';
+    const minZoom = 0.5;
+    const maxZoom = 20;
+    const trendLineCurve: CurveFactory = curveBasis;
+    const trendLineStrokWidth = '2';
+    const trendLineDelay = DEFAULT_TREND_LINE_ANIMATION_DELAY;
+    const trendLineDuration = 2000;
+    const highlightStrokeWidth = 10;
+    const xAxisPadding = {
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+    };
+    const maskingRectangleId = 'scatter-clip-path';
+    const ease = easeCircleIn;
+    const delay = DEFAULT_ANIMATION_DELAY;
+
+    const dispatcher: Dispatch<object> = dispatch(
+        'customClick',
+        'customMouseMove',
+        'customMouseOver',
+        'customMouseOut'
+    );
+    /**
+     * The colour a point's category is drawn in.
+     *
+     * `buildScales` fills `nameToColorMap` before anything is drawn, so it is
+     * non-null everywhere this is reached -- the same reasoning, and the same
+     * shape, as `colorForGroup` in grouped-bar.ts.
+     */
+    const colorForName = (name: string) =>
+        (nameToColorMap as Record<string, string>)[name];
+    const getName = ({ name }: ScatterPlotDatum) => name;
+    const getPointData = ({ data }: { data: ScatterPlotDatum }) => data;
 
     /**
      * This function creates the graph using the selection as container
@@ -174,7 +270,18 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      * @param {ScatterPlotData} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(
+        _selection: Selection<
+            TElement,
+            ScatterPlotDataShape[],
+            TParent,
+            TParentDatum
+        >
+    ) {
         if (locale) {
             localeFormatter = setDefaultLocale(locale);
         }
@@ -182,8 +289,8 @@ export default function module() {
         _selection.each(function (_data) {
             dataPoints = cleanData(_data);
 
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
 
             buildSVG(this);
             if (isLoading) {
@@ -235,14 +342,15 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function buildAxis(localeFormatter) {
+    function buildAxis(localeFormatter: FormatLocaleObject) {
         xAxis = axisBottom(xScale)
             .ticks(xTicks)
             .tickPadding(tickPadding)
             .tickFormat(getXAxisFormat());
 
         yAxis = axisLeft(yScale)
-            .ticks(yTicks)
+            // Null by default, which d3 reads as "use the scale's own count".
+            .ticks(yTicks as number)
             .tickPadding(tickPadding)
             .tickFormat(localeFormatter.format(yAxisFormat));
     }
@@ -272,10 +380,13 @@ export default function module() {
      * @private
      */
     function buildContainerGroups() {
-        let container = svg
+        const container = svg
             .append('g')
             .classed('container-group', true)
-            .attr('transform', `translate(${margin.left}, ${margin.top})`);
+            .attr(
+                'transform',
+                `translate(${margin.left ?? 0}, ${margin.top ?? 0})`
+            );
 
         container.append('g').classed('grid-lines-group', true);
         svg.append('g').classed('loading-state-group', true);
@@ -324,24 +435,30 @@ export default function module() {
             max(dataPoints, ({ x }) => x),
             max(dataPoints, ({ y }) => y),
         ];
-        const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
+        // `Math.abs` is never negative, so this condition is always false and
+        // the bottom of the value scale is always 0. Preserved as it stands --
+        // a conversion is the wrong place to change where a chart's axis
+        // starts. `?? 0` keeps the same answer for empty data, where `minY` is
+        // undefined and `Math.abs(undefined) < 0` was already false.
+        const yScaleBottomValue =
+            Math.abs(minY ?? 0) < 0 ? Math.abs(minY ?? 0) : 0;
 
         xOriginalScale = xScale = scaleLinear()
-            .domain([minX, maxX])
+            .domain([minX as number, maxX as number])
             .rangeRound([0, chartWidth])
             .nice();
 
         yOriginalScale = yScale = scaleLinear()
-            .domain([yScaleBottomValue, maxY])
+            .domain([yScaleBottomValue, maxY as number])
             .rangeRound([chartHeight, 0])
             .nice();
 
-        colorScale = scaleOrdinal()
+        colorScale = scaleOrdinal<string, string>()
             .domain(dataPoints.map(getName))
             .range(colorSchema);
 
-        areaScale = scaleSqrt()
-            .domain([yScaleBottomValue, maxY])
+        areaScale = scaleSqrt<number, number>()
+            .domain([yScaleBottomValue, maxY as number])
             .range([0, maxCircleArea]);
 
         const colorRange = colorScale.range();
@@ -358,11 +475,13 @@ export default function module() {
          */
         nameToColorMap =
             nameToColorMap ||
-            colorScale.domain().reduce((accum, item, i) => {
-                accum[item] = colorRange[i];
+            colorScale
+                .domain()
+                .reduce<Record<string, string>>((accum, item, i) => {
+                    accum[item] = colorRange[i];
 
-                return accum;
-            }, {});
+                    return accum;
+                }, {});
     }
 
     /**
@@ -372,7 +491,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element) {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -394,11 +513,18 @@ export default function module() {
      * @return  {ScatterPlotData}              Clean data
      * @private
      */
-    function cleanData(originalData) {
-        return originalData.reduce((acc, d) => {
+    function cleanData(
+        originalData: ScatterPlotDataShape[]
+    ): ScatterPlotDatum[] {
+        return originalData.reduce<ScatterPlotDatum[]>((acc, datum) => {
+            // Written onto the caller's own objects rather than copies, which
+            // is the runtime this preserves. The cast covers the three reads
+            // by key name.
+            const d = datum as ScatterPlotDatum;
+
             d.name = String(d[nameKey]);
-            d.x = d[xKey];
-            d.y = d[yKey];
+            d.x = d[xKey] as number;
+            d.y = d[yKey] as number;
 
             return [...acc, d];
         }, []);
@@ -411,11 +537,11 @@ export default function module() {
      * @private
      */
     function drawAxis() {
-        svg.select('.x-axis-group .axis.x')
+        svg.select<SVGGElement>('.x-axis-group .axis.x')
             .attr('transform', `translate(0, ${chartHeight})`)
             .call(xAxis);
 
-        svg.select('.y-axis-group .axis.y').call(yAxis);
+        svg.select<SVGGElement>('.y-axis-group .axis.y').call(yAxis);
 
         drawAxisLabels();
     }
@@ -494,7 +620,7 @@ export default function module() {
             return;
         }
 
-        const zoom = d3Zoom();
+        const zoom = d3Zoom<SVGRectElement, unknown>();
         zoom.scaleExtent([minZoom, maxZoom]) // This control how much you can unzoom (x0.5) and zoom (x20)
             .extent([
                 [0, 0],
@@ -509,7 +635,10 @@ export default function module() {
             .attr('height', chartHeight)
             .style('fill', 'none')
             .style('pointer-events', 'all')
-            .attr('transform', `translate(${margin.left}, ${margin.top})`)
+            .attr(
+                'transform',
+                `translate(${margin.left ?? 0}, ${margin.top ?? 0})`
+            )
             .call(zoom);
     }
 
@@ -518,27 +647,43 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function updateChartAfterZoom(data, index, elements) {
+    function updateChartAfterZoom(event: D3ZoomEvent<SVGRectElement, unknown>) {
+        // d3-zoom calls this with (event, datum) and the event carries the
+        // transform. It used to read `zoomTransform(elements[0])` from a third
+        // parameter, which is d3 v5's `(d, i, nodes)` signature -- v6 and
+        // later pass no such argument, so the line threw on the first zoom
+        // event and the whole feature was dead.
+        const transform = event.transform;
+
         //update scale
-        const transform = zoomTransform(elements[0]);
         xScale = transform.rescaleX(xOriginalScale);
         yScale = transform.rescaleY(yOriginalScale);
         //update axes
         xAxis.scale(xScale);
         yAxis.scale(yScale);
-        svg.select('.x-axis-group .axis.x').call(xAxis);
-        svg.select('.y-axis-group .axis.y').call(yAxis);
+        svg.select<SVGGElement>('.x-axis-group .axis.x').call(xAxis);
+        svg.select<SVGGElement>('.y-axis-group .axis.y').call(yAxis);
 
         // update circle position
         svg.select('.chart-group')
             .selectAll('circle')
-            .attr('cx', (d) => xScale(d.x))
-            .attr('cy', (d) => yScale(d.y));
+            .attr('cx', (d) => xScale((d as ScatterPlotDatum).x))
+            .attr('cy', (d) => yScale((d as ScatterPlotDatum).y));
 
         // update highlight location
-        highlightCircle
-            .attr('cx', () => xScale(highlightPointData.x))
-            .attr('cy', () => yScale(highlightPointData.y));
+        //
+        // Guarded because `highlightCircle` is bound to a single placeholder
+        // datum by initHighlightComponents, so its accessors always run, while
+        // `highlightPointData` is only set once a point has been hovered.
+        // Before the first hover there is no highlight to move, and reading
+        // `.x` off it threw.
+        if (highlightCircle && highlightPointData) {
+            const hovered = highlightPointData;
+
+            highlightCircle
+                .attr('cx', () => xScale(hovered.x))
+                .attr('cy', () => yScale(hovered.y));
+        }
     }
 
     /**
@@ -549,7 +694,7 @@ export default function module() {
      * @returns {void}
      * @private
      */
-    function drawTrendline(linearData) {
+    function drawTrendline(linearData: TrendLineData) {
         if (trendLinePath) {
             trendLinePath.remove();
         }
@@ -565,9 +710,9 @@ export default function module() {
             },
         ];
 
-        let trendLine = line()
+        const trendLine: Line<TrendLinePoint> = line<TrendLinePoint>()
             .curve(trendLineCurve)
-            .x(({ x }) => xScale(x))
+            .x(({ x }) => xScale(x as number))
             .y(({ y }) => yScale(y));
 
         trendLinePath = svg
@@ -583,7 +728,7 @@ export default function module() {
         // computed length; getTotalLength() is the geometry API.
         const trendLineNode = trendLinePath.node();
         const totalLength =
-            typeof trendLineNode.getTotalLength === 'function'
+            trendLineNode && typeof trendLineNode.getTotalLength === 'function'
                 ? trendLineNode.getTotalLength()
                 : 0;
 
@@ -619,7 +764,7 @@ export default function module() {
      * @private
      */
     function drawDataPoints() {
-        let circles = svg
+        const circles = svg
             .select('.chart-group')
             .attr('clip-path', `url(#${maskingRectangleId})`)
             .selectAll('circle')
@@ -636,9 +781,9 @@ export default function module() {
                 .ease(ease)
                 .attr('stroke-opacity', circleStrokeOpacity)
                 .attr('stroke-width', circleStrokeWidth)
-                .style('stroke', (d) => nameToColorMap[d.name])
+                .style('stroke', (d) => colorForName(d.name))
                 .attr('fill', (d) =>
-                    hasHollowCircles ? hollowColor : nameToColorMap[d.name]
+                    hasHollowCircles ? hollowColor : colorForName(d.name)
                 )
                 .attr('fill-opacity', circleOpacity)
                 .attr('r', (d) => areaScale(d.y))
@@ -651,9 +796,9 @@ export default function module() {
                 .attr('class', 'data-point')
                 .attr('stroke-opacity', circleStrokeOpacity)
                 .attr('stroke-width', circleStrokeWidth)
-                .style('stroke', (d) => nameToColorMap[d.name])
+                .style('stroke', (d) => colorForName(d.name))
                 .attr('fill', (d) =>
-                    hasHollowCircles ? hollowColor : nameToColorMap[d.name]
+                    hasHollowCircles ? hollowColor : colorForName(d.name)
                 )
                 .attr('fill-opacity', circleOpacity)
                 .attr('r', (d) => areaScale(d.y))
@@ -673,13 +818,13 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawDataPointsValueHighlights(data) {
+    function drawDataPointsValueHighlights(data: ScatterPlotDatum) {
         showCrossHairComponentsWithLabels(true);
 
         // Draw line perpendicular to y-axis
         highlightCrossHairContainer
             .selectAll('line.highlight-y-line')
-            .attr('stroke', nameToColorMap[data.name])
+            .attr('stroke', colorForName(data.name))
             .attr('class', 'highlight-y-line')
             .attr('x1', xScale(data.x) - areaScale(data.y))
             .attr('x2', 0)
@@ -689,7 +834,7 @@ export default function module() {
         // Draw line perpendicular to x-axis
         highlightCrossHairContainer
             .selectAll('line.highlight-x-line')
-            .attr('stroke', nameToColorMap[data.name])
+            .attr('stroke', colorForName(data.name))
             .attr('class', 'highlight-x-line')
             .attr('x1', xScale(data.x))
             .attr('x2', xScale(data.x))
@@ -700,7 +845,7 @@ export default function module() {
         highlightCrossHairLabelsContainer
             .selectAll('text.highlight-y-legend')
             .attr('text-anchor', 'middle')
-            .attr('fill', nameToColorMap[data.name])
+            .attr('fill', colorForName(data.name))
             .attr('class', 'highlight-y-legend')
             .attr('y', yScale(data.y) + areaScale(data.y) / 2)
             .attr('x', highlightTextLegendOffset)
@@ -710,7 +855,7 @@ export default function module() {
         highlightCrossHairLabelsContainer
             .selectAll('text.highlight-x-legend')
             .attr('text-anchor', 'middle')
-            .attr('fill', nameToColorMap[data.name])
+            .attr('fill', colorForName(data.name))
             .attr('class', 'highlight-x-legend')
             .attr(
                 'transform',
@@ -747,7 +892,9 @@ export default function module() {
         const grid = gridHorizontal(yScale)
             .range([0, chartWidth])
             .hideEdges('first')
-            .ticks(yTicks)
+            // `yTicks` is null by default, which the grid passes on to the
+            // scale the same way the axis does.
+            .ticks(yTicks as number)
             .extendedLine(xAxisPadding.left);
 
         grid(svg.select('.grid-lines-group'));
@@ -758,7 +905,7 @@ export default function module() {
      * @param {SVGHtmlElement} svg
      * @private
      */
-    function getClosestPoint(svg, event) {
+    function getClosestPoint(svg: SVGSVGElement, event: Event) {
         const [pointerX, pointerY] = pointer(event, svg);
 
         // A synthetic event carries no clientX/clientY, so the position comes
@@ -773,8 +920,8 @@ export default function module() {
         // d3-delaunay's find() returns an index, where d3-voronoi returned a
         // site object; wrap it back into the { data } shape getPointData reads.
         const index = delaunayMesh.find(
-            pointerX - margin.left,
-            pointerY - margin.top
+            pointerX - (margin.left ?? 0),
+            pointerY - (margin.top ?? 0)
         );
 
         return { data: dataPoints[index] };
@@ -787,11 +934,21 @@ export default function module() {
      * @return {function(String): String}
      * @private
      */
-    function getXAxisFormat() {
+    function getXAxisFormat(): (value: NumberValue) => string {
         if (xAxisFormatType === 'number') {
             return d3Format.format(xAxisFormat);
         } else {
-            return timeFormat(xAxisFormat);
+            // `timeFormat` takes a Date, and every caller here passes a
+            // number: the x scale is linear, so both the axis's tick values
+            // and the cross-hair label are numbers. Setting
+            // `xAxisFormatType` to anything but 'number' therefore hands a
+            // number to a formatter that reads Date methods off it.
+            // Preserved as it stands and typed at the boundary -- the default
+            // is 'number', so the branch is dormant, and changing what it
+            // accepts is a published-behaviour decision.
+            return timeFormat(xAxisFormat) as unknown as (
+                value: NumberValue
+            ) => string;
         }
     }
 
@@ -800,7 +957,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseMove(e, d, event) {
+    function handleMouseMove(e: SVGSVGElement, d: unknown, event: Event) {
         const closestPoint = getClosestPoint(e, event);
         const pointData = getPointData(closestPoint);
 
@@ -828,7 +985,7 @@ export default function module() {
      * @return {Number[]}           [x, y] in pixels
      * @private
      */
-    function getPointPosition(pointData) {
+    function getPointPosition(pointData: ScatterPlotDatum) {
         return [xScale(pointData.x), yScale(pointData.y)];
     }
 
@@ -837,7 +994,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOver(e, d, event) {
+    function handleMouseOver(e: SVGSVGElement, d: unknown, event: Event) {
         const pointData = getPointData(getClosestPoint(e, event));
 
         dispatcher.call(
@@ -853,7 +1010,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOut(e, d, event) {
+    function handleMouseOut(e: SVGSVGElement, d: unknown, event: Event) {
         removePointHighlight();
 
         if (hasCrossHairs) {
@@ -867,7 +1024,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleClick(e, event) {
+    function handleClick(e: SVGSVGElement, event: Event) {
         const closestPoint = getClosestPoint(e, event);
         const d = getPointData(closestPoint);
 
@@ -885,9 +1042,12 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleClickAnimation(dataPoint) {
+    function handleClickAnimation(dataPoint: ScatterPlotDatum) {
         bounceCircleHighlight(
-            highlightCircle,
+            // Created by `initHighlightComponents` on every render, before any
+            // handler can reach it. The `= null` initialiser is never read:
+            // nothing tests it.
+            highlightCircle!,
             ease,
             areaScale(dataPoint.y),
             areaScale(dataPoint.y * 2)
@@ -899,7 +1059,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function highlightDataPoint(data) {
+    function highlightDataPoint(data: ScatterPlotDatum) {
         highlightPointData = data;
 
         removePointHighlight();
@@ -911,10 +1071,10 @@ export default function module() {
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
 
-        highlightCircle
+        highlightCircle!
             .attr('opacity', 1)
-            .attr('stroke', () => nameToColorMap[data.name])
-            .attr('fill', () => nameToColorMap[data.name])
+            .attr('stroke', () => colorForName(data.name))
+            .attr('fill', () => colorForName(data.name))
             .attr('fill-opacity', circleOpacity)
             .attr('cx', () => xScale(data.x))
             .attr('cy', () => yScale(data.y))
@@ -923,7 +1083,7 @@ export default function module() {
             .style('stroke-opacity', highlightCircleOpacity);
 
         // apply glow container overlay
-        highlightCircle.attr('filter', `url(#${highlightFilterId})`);
+        highlightCircle!.attr('filter', `url(#${highlightFilterId})`);
     }
 
     /**
@@ -1026,14 +1186,17 @@ export default function module() {
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.animationDuration = function (_x) {
+    (exports as ScatterPlotModule).animationDuration = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return duration;
         }
         duration = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['animationDuration'];
 
     /**
      * Gets or Sets each circle's border opacity value of the chart.
@@ -1044,14 +1207,17 @@ export default function module() {
      * @example
      * scatterPlot.circleStrokeOpacity(0.6)
      */
-    exports.circleStrokeOpacity = function (_x) {
+    (exports as ScatterPlotModule).circleStrokeOpacity = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return circleStrokeOpacity;
         }
         circleStrokeOpacity = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['circleStrokeOpacity'];
 
     /**
      * Gets or Sets each circle's border width value of the chart.
@@ -1062,14 +1228,17 @@ export default function module() {
      * @example
      * scatterPlot.circleStrokeWidth(10)
      */
-    exports.circleStrokeWidth = function (_x) {
+    (exports as ScatterPlotModule).circleStrokeWidth = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return circleStrokeWidth;
         }
         circleStrokeWidth = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['circleStrokeWidth'];
 
     /**
      * Gets or Sets the circles opacity value of the chart.
@@ -1081,14 +1250,17 @@ export default function module() {
      * @example
      * scatterPlot.circleOpacity(0.6)
      */
-    exports.circleOpacity = function (_x) {
+    (exports as ScatterPlotModule).circleOpacity = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return circleOpacity;
         }
         circleOpacity = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['circleOpacity'];
 
     /**
      * Gets or Sets the colorMap of the chart
@@ -1097,14 +1269,17 @@ export default function module() {
      * @example scatterPlot.colorMap({name: 'colorHex', name2: 'colorString'})
      * @public
      */
-    exports.colorMap = function (_x) {
+    (exports as ScatterPlotModule).colorMap = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return nameToColorMap;
         }
         nameToColorMap = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['colorMap'];
 
     /**
      * Gets or Sets the colorSchema of the chart
@@ -1114,14 +1289,17 @@ export default function module() {
      * @example
      * scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
      */
-    exports.colorSchema = function (_x) {
+    (exports as ScatterPlotModule).colorSchema = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return colorSchema;
         }
         colorSchema = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['colorSchema'];
 
     /**
      * Chart exported to png and a download action is fired
@@ -1130,9 +1308,14 @@ export default function module() {
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
-    exports.exportChart = function (filename, title) {
-        return exportChart.call(exports, svg, filename, title);
-    };
+    (exports as ScatterPlotModule).exportChart = function (filename, title) {
+        return exportChart.call(
+            exports as ScatterPlotModule,
+            svg,
+            filename,
+            title
+        );
+    } as ScatterPlotModule['exportChart'];
 
     /**
      * Gets or Sets the grid mode.
@@ -1140,14 +1323,17 @@ export default function module() {
      * @return {String | module}    Current mode of the grid or Chart module to chain calls
      * @public
      */
-    exports.grid = function (_x) {
+    (exports as ScatterPlotModule).grid = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return grid;
         }
         grid = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['grid'];
 
     /**
      * Gets or Sets the hasCrossHairs status. If true,
@@ -1159,14 +1345,17 @@ export default function module() {
      * @return {boolean | module}   Current hasCrossHairs or Chart module to chain calls
      * @public
      */
-    exports.hasCrossHairs = function (_x) {
+    (exports as ScatterPlotModule).hasCrossHairs = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasCrossHairs;
         }
         hasCrossHairs = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['hasCrossHairs'];
 
     /**
      * Gets or Sets the hasHollowCircles value of the chart area
@@ -1174,14 +1363,17 @@ export default function module() {
      * @return {boolean | module}    Current hasHollowCircles value or Chart module to chain calls
      * @public
      */
-    exports.hasHollowCircles = function (_x) {
+    (exports as ScatterPlotModule).hasHollowCircles = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasHollowCircles;
         }
         hasHollowCircles = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['hasHollowCircles'];
 
     /**
      * Gets or Sets the hasTrendline value of the chart area
@@ -1191,14 +1383,17 @@ export default function module() {
      * @return {boolean | module}       Current hasTrendline value or Chart module to chain calls
      * @public
      */
-    exports.hasTrendline = function (_x) {
+    (exports as ScatterPlotModule).hasTrendline = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasTrendline;
         }
         hasTrendline = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['hasTrendline'];
 
     /**
      * Gets or Sets weather the chart support zoom controls
@@ -1207,14 +1402,17 @@ export default function module() {
      * @return {boolean | module}       Current enableZoom value or Chart module to chain calls
      * @public
      */
-    exports.enableZoom = function (_x) {
+    (exports as ScatterPlotModule).enableZoom = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return enableZoom;
         }
         enableZoom = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['enableZoom'];
 
     /**
      * Gets or Sets the loading state of the chart
@@ -1223,14 +1421,17 @@ export default function module() {
      * @public
      * @example chart.isLoading(true)
      */
-    exports.isLoading = function (_flag) {
+    (exports as ScatterPlotModule).isLoading = function (
+        this: ScatterPlotModule,
+        _flag
+    ) {
         if (!arguments.length) {
             return isLoading;
         }
         isLoading = _flag;
 
         return this;
-    };
+    } as ScatterPlotModule['isLoading'];
 
     /**
      * Gets or Sets the height of the chart
@@ -1238,14 +1439,17 @@ export default function module() {
      * @return {Number | module}    Current height or Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    (exports as ScatterPlotModule).height = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return height;
         }
         height = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['height'];
 
     /**
      * Sets a custom distance between legend
@@ -1257,14 +1461,17 @@ export default function module() {
      * @example
      * scatterPlot.highlightTextLegendOffset(-55)
      */
-    exports.highlightTextLegendOffset = function (_x) {
+    (exports as ScatterPlotModule).highlightTextLegendOffset = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return highlightTextLegendOffset;
         }
         highlightTextLegendOffset = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['highlightTextLegendOffset'];
 
     /**
      * Gets or Sets isAnimated value. If set to true,
@@ -1273,14 +1480,17 @@ export default function module() {
      * @return {boolean | module}    Current isAnimated or Chart module to chain calls
      * @public
      */
-    exports.isAnimated = function (_x) {
+    (exports as ScatterPlotModule).isAnimated = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isAnimated;
         }
         isAnimated = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['isAnimated'];
 
     /**
      * Gets or Sets the margin object of the chart
@@ -1288,7 +1498,10 @@ export default function module() {
      * @return {Object | module}    Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    (exports as ScatterPlotModule).margin = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return margin;
         }
@@ -1298,7 +1511,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as ScatterPlotModule['margin'];
 
     /**
      * Gets or Sets the maximum value of the chart area
@@ -1306,14 +1519,17 @@ export default function module() {
      * @return {Number | module}    Current maxCircleArea or Chart module to chain calls
      * @public
      */
-    exports.maxCircleArea = function (_x) {
+    (exports as ScatterPlotModule).maxCircleArea = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return maxCircleArea;
         }
         maxCircleArea = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['maxCircleArea'];
 
     /**
      * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -1322,11 +1538,17 @@ export default function module() {
      * @return {module} Scatter Plot
      * @public
      */
-    exports.on = function () {
-        let value = dispatcher.on.apply(dispatcher, arguments);
+    (exports as ScatterPlotModule).on = function (
+        ...args: [string] | [string, () => void]
+    ) {
+        // Rest parameters and a spread where this read `arguments` and used
+        // `.apply`, following the other converted charts.
+        const value = dispatcher.on(
+            ...(args as Parameters<typeof dispatcher.on>)
+        );
 
         return value === dispatcher ? exports : value;
-    };
+    } as unknown as ScatterPlotModule['on'];
 
     /**
      * Gets or Sets the locale which our formatting functions use.
@@ -1338,14 +1560,17 @@ export default function module() {
      * @return {LocaleObject | module}              Current locale object or Chart module to chain calls
      * @public
      */
-    exports.valueLocale = function (_x) {
+    (exports as ScatterPlotModule).valueLocale = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return locale;
         }
         locale = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['valueLocale'];
 
     /**
      * Gets or Sets the height of the chart
@@ -1353,14 +1578,17 @@ export default function module() {
      * @return {Number | module}     Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    (exports as ScatterPlotModule).width = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return width;
         }
         width = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['width'];
 
     /**
      * Gets or Sets the xAxisLabel of the chart. Adds a
@@ -1369,14 +1597,17 @@ export default function module() {
      * @return {String | module}        Current xAxisLabel or Chart module to chain calls
      * @public
      */
-    exports.xAxisLabel = function (_x) {
+    (exports as ScatterPlotModule).xAxisLabel = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisLabel;
         }
         xAxisLabel = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['xAxisLabel'];
 
     /**
      * Gets or Sets the offset of the xAxisLabel of the chart.
@@ -1386,14 +1617,17 @@ export default function module() {
      * @public
      * @example scatterPlot.xAxisLabelOffset(-55)
      */
-    exports.xAxisLabelOffset = function (_x) {
+    (exports as ScatterPlotModule).xAxisLabelOffset = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisLabelOffset;
         }
         xAxisLabelOffset = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['xAxisLabelOffset'];
 
     /**
      * Exposes ability to set the format of x-axis values
@@ -1401,14 +1635,17 @@ export default function module() {
      * @return {String | module}  Current xAxisFormat or Chart module to chain calls
      * @public
      */
-    exports.xAxisFormat = function (_x) {
+    (exports as ScatterPlotModule).xAxisFormat = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisFormat;
         }
         xAxisFormat = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['xAxisFormat'];
 
     /**
      * Exposes ability to set the formatter of x-axis values
@@ -1418,14 +1655,17 @@ export default function module() {
      * @return {string | module}    current xAxisFormatType or Chart module to chain calls
      * @public
      */
-    exports.xAxisFormatType = function (_x) {
+    (exports as ScatterPlotModule).xAxisFormatType = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisFormatType;
         }
         xAxisFormatType = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['xAxisFormatType'];
 
     /**
      * Gets or Sets the xTicks of the chart
@@ -1433,14 +1673,17 @@ export default function module() {
      * @return {Number | module}   Current xTicks or Chart module to chain calls
      * @public
      */
-    exports.xTicks = function (_x) {
+    (exports as ScatterPlotModule).xTicks = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xTicks;
         }
         xTicks = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['xTicks'];
 
     /**
      * Exposes ability to set the format of y-axis values
@@ -1448,14 +1691,17 @@ export default function module() {
      * @return {String | module}    Current yAxisFormat or Chart module to chain calls
      * @public
      */
-    exports.yAxisFormat = function (_x) {
+    (exports as ScatterPlotModule).yAxisFormat = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisFormat;
         }
         yAxisFormat = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['yAxisFormat'];
 
     /**
      * Gets or Sets the y-axis label of the chart
@@ -1464,14 +1710,17 @@ export default function module() {
      * @public
      * @example scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
      */
-    exports.yAxisLabel = function (_x) {
+    (exports as ScatterPlotModule).yAxisLabel = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisLabel;
         }
         yAxisLabel = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['yAxisLabel'];
 
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
@@ -1481,14 +1730,17 @@ export default function module() {
      * @public
      * @example scatterPlot.yAxisLabelOffset(-55)
      */
-    exports.yAxisLabelOffset = function (_x) {
+    (exports as ScatterPlotModule).yAxisLabelOffset = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisLabelOffset;
         }
         yAxisLabelOffset = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['yAxisLabelOffset'];
 
     /**
      * Gets or Sets the xTicks of the chart
@@ -1496,14 +1748,17 @@ export default function module() {
      * @return {Number | module}    Current yTicks or Chart module to chain calls
      * @public
      */
-    exports.yTicks = function (_x) {
+    (exports as ScatterPlotModule).yTicks = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yTicks;
         }
         yTicks = _x;
 
         return this;
-    };
+    } as ScatterPlotModule['yTicks'];
 
-    return exports;
+    return exports as unknown as ScatterPlotModule;
 }

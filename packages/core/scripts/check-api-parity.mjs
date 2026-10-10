@@ -77,9 +77,28 @@ for (const file of program.getSourceFiles()) {
     }
 }
 
+/** The first of these paths that exists, read. */
+const readSource = (candidates) => {
+    for (const candidate of candidates) {
+        try {
+            return readFileSync(candidate, 'utf8');
+        } catch {
+            // try the next extension
+        }
+    }
+
+    throw new Error(`None of these exist: ${candidates.join(', ')}`);
+};
+
 // Chart factory name -> its source file, taken from the barrel so the mapping
 // is the library's own rather than guessed from directory names.
-const barrel = readFileSync(path.join(srcRoot, 'index.js'), 'utf8');
+// Read across both extensions, as the chart files below are: the barrel is
+// TypeScript now, and the import specifiers inside it stay '.js' either way,
+// which is what webpack's `extensionAlias` and TypeScript's bundler resolution
+// both expect.
+const barrel = readSource(
+    ['index.ts', 'index.js'].map((name) => path.join(srcRoot, name))
+);
 const sources = new Map();
 
 for (const [, name, relative] of barrel.matchAll(

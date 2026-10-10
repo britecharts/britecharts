@@ -17,8 +17,8 @@ and ticksV() those of the vertical lines (from scaleX()).
 
 * [Grid](#module_Grid)
     * [.grid(scaleX, scaleY)](#module_Grid.grid) ⇒ <code>gridGenerator</code>
-    * [.gridHorizontal(scale)](#module_Grid.gridHorizontal) ⇒ <code>gridBaseGenerator</code>
-    * [.gridVertical(scale)](#module_Grid.gridVertical) ⇒ <code>gridBaseGenerator</code>
+    * [.gridHorizontal(scale)](#module_Grid.gridHorizontal) ⇒ <code>GridBaseGenerator</code>
+    * [.gridVertical(scale)](#module_Grid.gridVertical) ⇒ <code>GridBaseGenerator</code>
 
 <a name="module_Grid.grid" id="module_Grid.grid"></a>
 
@@ -43,10 +43,11 @@ const grid = grid(xScale, yScale)
 ```
 <a name="module_Grid.gridHorizontal" id="module_Grid.gridHorizontal"></a>
 
-## Grid.gridHorizontal(scale) ⇒ <code>gridBaseGenerator</code>
+## Grid.gridHorizontal(scale) ⇒ <code>GridBaseGenerator</code>
 Constructor for a horizontal grid helper
 
 **Kind**: static method of [<code>Grid</code>](#module_Grid)  
+**Returns**: <code>GridBaseGenerator</code> - The grid generator, so the accessor calls chain  
 **Access**: public  
 
 | Param | Type | Description |
@@ -64,10 +65,11 @@ const grid = gridHorizontal(yScale)
 ```
 <a name="module_Grid.gridVertical" id="module_Grid.gridVertical"></a>
 
-## Grid.gridVertical(scale) ⇒ <code>gridBaseGenerator</code>
+## Grid.gridVertical(scale) ⇒ <code>GridBaseGenerator</code>
 Constructor for a vertical grid helper
 
 **Kind**: static method of [<code>Grid</code>](#module_Grid)  
+**Returns**: <code>GridBaseGenerator</code> - The grid generator, so the accessor calls chain  
 **Access**: public  
 
 | Param | Type | Description |

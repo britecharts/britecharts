@@ -7,6 +7,17 @@ import { timeFormat } from 'd3-time-format';
 import { scaleOrdinal, scaleTime, scaleLinear, scaleLog } from 'd3-scale';
 import { line } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
+import type { Axis, AxisDomain } from 'd3-axis';
+import type { Dispatch } from 'd3-dispatch';
+import type {
+    NumberValue,
+    ScaleLinear,
+    ScaleLogarithmic,
+    ScaleOrdinal,
+    ScaleTime,
+} from 'd3-scale';
+import type { BaseType, Selection } from 'd3-selection';
+import type { Line } from 'd3-shape';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -28,6 +39,106 @@ import {
 } from '../helpers/number';
 import { castValueToType } from '../helpers/type';
 import { gridHorizontal, gridVertical } from '../helpers/grid';
+import type { AxisDatumSorted, AxisTickSettings } from '../helpers/axis';
+import type { AxisTimeCombinationValue } from '../helpers/constants';
+
+import type { GridTypes } from '../../typings/common/grid';
+import type { LocaleString } from '../../typings/common/local';
+import type { ChartMarginParams } from '../../typings/common/margin';
+import type {
+    ColorGradientType,
+    ColorsSchemasType,
+} from '../../typings/helpers/colors';
+import type {
+    CustomLine,
+    LineChartData,
+    LineChartDataShape,
+    LineChartModule,
+    LineChartXAxisScale,
+    LineChartXAxisValueType,
+} from '../../typings/charts/line-chart';
+
+/**
+ * The chart's own svg, and the selections derived from it. The datum and parent
+ * generics are the migration plan's bounded `any`, as in the other charts:
+ * these are module-level variables reassigned from several differently-shaped
+ * selections, so naming one concrete datum would reject the others.
+ */
+type ChartSelection<TElement extends BaseType> = Selection<
+    TElement,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+/**
+ * What `cleanData` hands the drawing functions. `date` is a Date or a number
+ * once `castValueToType` has run over it -- which of the two depends on
+ * `xAxisValueType` -- where the published shape describes the string a
+ * consumer passes in. `value` is nullable because `acceptNullValue` preserves
+ * a null rather than coercing it to zero: the line is broken at that point
+ * rather than dropped to the axis.
+ *
+ * Only the two fields: `cleanData` builds these points itself and the drawing
+ * code reads nothing else off them. A row still in the consumer's own shape is
+ * a `LabelledRow`.
+ */
+type LineDatum = {
+    date: Date | number;
+    value: number | null;
+};
+
+/**
+ * A row read through the label accessors -- `dateLabel`, `valueLabel`,
+ * `topicLabel`, `topicNameLabel`. A chart's data may carry those under any
+ * key, so the reads really are dynamic, and what comes back is one of the
+ * things `castValueToType` and `acceptNullValue` accept.
+ */
+type LabelledRow = Record<string, string | number | Date | null>;
+
+/**
+ * One date's rows, as `cleanData` nests them: the x value cast to the axis'
+ * own type, and every topic's row at that date, still in the shape the
+ * consumer passed in. This is what the pointer handlers bisect over to find
+ * the date nearest the mouse.
+ */
+type LineDateGroup = {
+    date: Date | number;
+    topics: LineChartDataShape[];
+};
+
+/**
+ * A topic's row at one date, paired with the path node its line was drawn
+ * into. The data point highlighters need both: the row for the value and the
+ * colour, the node to measure the line's y at a given x.
+ */
+type TopicWithNode = {
+    topic: LineChartDataShape;
+    node: SVGPathElement;
+};
+
+/**
+ * One topic's line, as `getDataByTopic` groups it: the topic's identifier and
+ * label, and its points in date order.
+ */
+type LineTopic = {
+    topic: number;
+    topicName: string;
+    dates: LineDatum[];
+};
+
+/**
+ * The x axis' scale: time by default, and linear or logarithmic when
+ * `xAxisValueType` is 'number'. All three are called with a value and report a
+ * pixel, which is all the drawing code asks of them.
+ */
+type LineXScale =
+    | ScaleTime<number, number>
+    | ScaleLinear<number, number>
+    | ScaleLogarithmic<number, number>;
 
 /**
  * Line Chart reusable API module that allows us
@@ -145,8 +256,11 @@ import { gridHorizontal, gridVertical } from '../helpers/grid';
  *     ]
  * }
  */
-export default function module() {
-    let margin = {
+export default function module(): LineChartModule {
+    // Split into `let` and `const` rather than the one `let` chain the
+    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
+    // error, and the bindings below it are never reassigned.
+    let margin: ChartMarginParams = {
             top: 60,
             right: 30,
             bottom: 40,
@@ -156,91 +270,116 @@ export default function module() {
         height = 500,
         isLoading = false,
         tooltipThreshold = 480,
-        svg,
-        paths,
-        chartWidth,
-        chartHeight,
-        xScale,
-        yScale,
-        colorScale,
-        xAxis,
-        xSubAxis,
-        yAxis,
-        xAxisPadding = {
-            top: 0,
-            left: 15,
-            bottom: 0,
-            right: 0,
-        },
-        verticalShift = 30,
-        monthAxisPadding = 30,
-        tickPadding = 5,
-        colorSchema = colorHelper.colorSchemas.britecharts,
-        nameToColorMap = null,
-        singleLineGradientColors = colorHelper.colorGradients.greenBlue,
-        linearGradient,
-        lineGradientId = uniqueId('one-line-gradient'),
-        highlightFilter = null,
-        highlightFilterId = null,
-        highlightCircleSize = 12,
-        highlightCircleRadius = 5,
-        highlightCircleStroke = 2,
-        highlightCircleStrokeAll = 5,
-        highlightCircleActiveRadius = highlightCircleRadius + 2,
-        highlightCircleActiveStrokeWidth = 5,
-        highlightCircleActiveStrokeOpacity = 0.6,
-        xAxisValueType = 'date',
-        xAxisScale = 'linear',
-        xAxisFormat = null,
-        xTicks = null,
-        xAxisCustomFormat = null,
-        locale,
+        svg: ChartSelection<SVGSVGElement>,
+        paths: ChartSelection<SVGPathElement>,
+        chartWidth: number,
+        chartHeight: number,
+        xScale: LineXScale,
+        yScale: ScaleLinear<number, number>,
+        colorScale: ScaleOrdinal<string, string>,
+        xAxis: Axis<AxisDomain>,
+        xSubAxis: Axis<AxisDomain>,
+        yAxis: Axis<NumberValue>,
+        colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
+        nameToColorMap: Record<string, string> | null = null,
+        singleLineGradientColors: ColorGradientType =
+            colorHelper.colorGradients.greenBlue,
+        linearGradient: ChartSelection<SVGStopElement>,
+        highlightFilter: ChartSelection<SVGFilterElement> | null = null,
+        highlightFilterId: string | null = null,
+        xAxisValueType: LineChartXAxisValueType = 'date',
+        xAxisScale: LineChartXAxisScale = 'linear',
+        xAxisFormat: string | null = null,
+        // Null by default, which d3 reads as "use the scale's own count".
+        xTicks: number | null = null,
+        xAxisCustomFormat: string | null = null,
+        locale: LocaleString | null | undefined,
         shouldShowAllDataPoints = false,
         isAnimated = false,
-        ease = easeQuadInOut,
         animationDuration = motion.duration,
-        strokeDashoffset = 10,
-        strokeDasharrayOffset = 3,
         lineCurve = 'linear',
-        dataByTopic,
-        dataSorted,
+        dataByTopic: LineTopic[],
+        dataSorted: LineDateGroup[],
         dateLabel = 'date',
         valueLabel = 'value',
         topicLabel = 'topic',
-        topicNameLabel = 'topicName',
-        xAxisLabel = null,
-        xAxisLabelEl = null,
-        xAxisLabelPadding = 36,
-        yAxisLabel = null,
-        yAxisLabelEl = null,
+        // Null, not undefined: this chart initialises its axis labels where
+        // the grouped and stacked bars leave theirs unset, which is what their
+        // declarations each now say.
+        xAxisLabel: string | null = null,
+        xAxisLabelEl: ChartSelection<SVGTextElement> | null = null,
+        yAxisLabel: string | null = null,
+        yAxisLabelEl: ChartSelection<SVGTextElement> | null = null,
         yAxisLabelPadding = 36,
         yTicks = 5,
         hasMinimumValueScale = false,
-        overlay,
-        overlayColor = 'rgba(0, 0, 0, 0)',
-        verticalMarkerContainer,
-        verticalMarkerLine,
-        numberFormat,
-        customLines = [],
-        defaultCustomLineColor = colorHelper.colorSchemas.grey[3],
-        grid = null,
-        pathYCache = {},
-        // extractors
-        getDate = ({ date }) => date,
-        getValue = ({ value }) => value,
-        getTopic = ({ topic }) => topic,
-        getVariableTopicName = (d) => d[topicNameLabel],
-        getLineColor = ({ topic }) => nameToColorMap[topic],
-        // events
-        dispatcher = dispatch(
-            'customMouseOver',
-            'customMouseOut',
-            'customMouseMove',
-            'customDataEntryClick',
-            'customTouchMove'
-        );
+        overlay: ChartSelection<SVGRectElement>,
+        verticalMarkerContainer: ChartSelection<SVGGElement>,
+        verticalMarkerLine: ChartSelection<SVGLineElement>,
+        numberFormat: string | undefined,
+        customLines: CustomLine[] = [],
+        grid: GridTypes | null = null,
+        pathYCache: Record<string, number> = {};
 
-    const acceptNullValue = (value) => (value === null ? null : +value);
+    const topicNameLabel = 'topicName';
+    const xAxisLabelPadding = 36;
+    const xAxisPadding = {
+        top: 0,
+        left: 15,
+        bottom: 0,
+        right: 0,
+    };
+    const verticalShift = 30;
+    const monthAxisPadding = 30;
+    const tickPadding = 5;
+    const lineGradientId = uniqueId('one-line-gradient');
+    const highlightCircleSize = 12;
+    const highlightCircleRadius = 5;
+    const highlightCircleStroke = 2;
+    const highlightCircleStrokeAll = 5;
+    const highlightCircleActiveRadius = highlightCircleRadius + 2;
+    const highlightCircleActiveStrokeWidth = 5;
+    const highlightCircleActiveStrokeOpacity = 0.6;
+    const ease = easeQuadInOut;
+    const strokeDashoffset = 10;
+    const strokeDasharrayOffset = 3;
+    const overlayColor = 'rgba(0, 0, 0, 0)';
+    const defaultCustomLineColor = colorHelper.colorSchemas.grey[3];
+    // extractors
+    // These three read a single field, and they are reached with a row at
+    // every stage of `cleanData`: the raw shape the consumer passed in, the
+    // cast one it hands the drawing code, and the date groups it nests. So
+    // each one asks for its own field and nothing else.
+    const getDate = ({ date }: { date: Date | number | string }) => date;
+    const getValue = ({ value }: { value: number | null }) => value;
+    const getTopic = ({ topic }: LineTopic) => topic;
+    const getVariableTopicName = (d: Record<string, unknown>) =>
+        d[topicNameLabel] as string;
+    /**
+     * The colour a topic's line is drawn in.
+     *
+     * `buildColorScale` fills `nameToColorMap` before anything is drawn, so it
+     * is non-null everywhere this is reached -- the same reasoning, and the
+     * same shape, as `colorForGroup` in grouped-bar.ts.
+     */
+    const getLineColor = ({ topic }: { topic: number }) =>
+        (nameToColorMap as Record<string, string>)[topic];
+    /** The same read, where what is at hand is a topic's name. */
+    const getTopicColor = (name: string | number) =>
+        (nameToColorMap as Record<string, string>)[name];
+    // events
+    const dispatcher: Dispatch<object> = dispatch(
+        'customMouseOver',
+        'customMouseOut',
+        'customMouseMove',
+        'customDataEntryClick',
+        'customTouchMove'
+    );
+
+    // A null stays null rather than becoming zero: the line is broken at that
+    // point rather than dropped to the axis.
+    const acceptNullValue = (value: unknown) =>
+        value === null ? null : +(value as number);
 
     /**
      * This function creates the graph using the selection and data provided
@@ -249,12 +388,16 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      * @param {LineChartData} _data The data to attach and generate the chart
      */
-    function exports(_selection) {
+    function exports<
+        TElement extends Element,
+        TParent extends Element | null,
+        TParentDatum,
+    >(_selection: Selection<TElement, LineChartData, TParent, TParentDatum>) {
         _selection.each(function (_data) {
             ({ dataByTopic, dataSorted: dataSorted } = cleanData(_data));
 
-            chartWidth = width - margin.left - margin.right;
-            chartHeight = height - margin.top - margin.bottom;
+            chartWidth = width - (margin.left ?? 0) - (margin.right ?? 0);
+            chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
 
             buildSVG(this);
             if (isLoading) {
@@ -289,7 +432,7 @@ export default function module() {
      * @param {DOMElement} el
      * @private
      */
-    function addGlowFilter(el) {
+    function addGlowFilter(el: BaseType) {
         if (!highlightFilter) {
             highlightFilter = createFilterContainer(
                 svg.select('.metadata-group')
@@ -297,7 +440,7 @@ export default function module() {
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
 
-        let glowEl = select(el);
+        const glowEl = select(el);
 
         glowEl
             .style('stroke-width', highlightCircleActiveStrokeWidth)
@@ -339,7 +482,7 @@ export default function module() {
      * @param  {D3Selection} selection Y axis group
      * @return void
      */
-    function adjustYTickLabels(selection) {
+    function adjustYTickLabels(selection: ChartSelection<SVGGElement>) {
         selection.selectAll('.tick text').attr('transform', 'translate(0, -7)');
     }
 
@@ -348,10 +491,13 @@ export default function module() {
      * @param  {number} value Value to format
      * @return {number}       Formatted value
      */
-    function getFormattedValue(value) {
+    function getFormattedValue(value: NumberValue) {
+        // d3's `tickFormat` declares the value as `NumberValue`. Coerced once
+        // here, where the helpers below want a number.
+        const numeric = Number(value);
         let formatFn;
 
-        if (isInteger(value)) {
+        if (isInteger(numeric)) {
             formatFn = formatIntegerValue;
         } else {
             formatFn = formatDecimalValue;
@@ -361,7 +507,7 @@ export default function module() {
             formatFn = format(numberFormat);
         }
 
-        return formatFn(value);
+        return formatFn(numeric);
     }
 
     /**
@@ -369,26 +515,42 @@ export default function module() {
      * @private
      */
     function buildAxis() {
-        let minor, major;
+        // d3's axis generics follow the scale it is built over, and this chart
+        // builds its x axis over three different scales. The axis is held as
+        // `Axis<AxisDomain>`, so each construction is cast once here rather
+        // than every call on it being narrowed downstream -- the same shape
+        // the stacked area's `buildAxis` has.
+        const asAxis = (axis: unknown) => axis as Axis<AxisDomain>;
+        let minor: AxisTickSettings;
+        let major: AxisTickSettings | null;
 
         if (xAxisValueType === 'number') {
-            minor = getSortedNumberAxis(dataSorted, width);
+            // `date` holds a number on this path: `castValueToType` returns
+            // `Number(...)` for it when `xAxisValueType` is 'number'.
+            minor = getSortedNumberAxis(
+                dataSorted as unknown as AxisDatumSorted[],
+                width
+            );
             major = null;
 
             if (xAxisScale === 'logarithmic') {
-                xAxis = axisBottom(xScale)
-                    .ticks(minor.tick, 'e')
-                    .tickFormat(function (d) {
-                        const log = Math.log(d) / Math.LN10;
+                xAxis = asAxis(
+                    axisBottom(xScale as ScaleLogarithmic<number, number>)
+                        .ticks(minor.tick as number, 'e')
+                        .tickFormat(function (d) {
+                            const log = Math.log(Number(d)) / Math.LN10;
 
-                        return Math.abs(Math.round(log) - log) < 1e-6
-                            ? '10^' + Math.round(log)
-                            : '';
-                    });
+                            return Math.abs(Math.round(log) - log) < 1e-6
+                                ? '10^' + Math.round(log)
+                                : '';
+                        })
+                );
             } else {
-                xAxis = axisBottom(xScale)
-                    .ticks(minor.tick)
-                    .tickFormat(getFormattedValue);
+                xAxis = asAxis(
+                    axisBottom(xScale as ScaleLinear<number, number>)
+                        .ticks(minor.tick as number)
+                        .tickFormat(getFormattedValue)
+                );
             }
         } else {
             if (
@@ -404,30 +566,50 @@ export default function module() {
                 ({ minor, major } = getTimeSeriesAxis(
                     dataSorted,
                     width,
-                    xAxisFormat,
-                    locale
+                    xAxisFormat as AxisTimeCombinationValue | null,
+                    locale ?? null
                 ));
 
-                xSubAxis = axisBottom(xScale)
-                    .ticks(major.tick)
-                    .tickSize(0, 0)
-                    .tickFormat(major.format);
+                xSubAxis = asAxis(
+                    axisBottom(xScale as ScaleTime<number, number>)
+                        .ticks(major.tick as number)
+                        // One argument: d3's `tickSize` sets both the inner
+                        // and the outer size from it, and the second argument
+                        // this used to pass has always been ignored.
+                        .tickSize(0)
+                        .tickFormat(
+                            major.format as unknown as (
+                                domainValue: NumberValue | Date,
+                                index: number
+                            ) => string
+                        )
+                );
             }
 
-            xAxis = axisBottom(xScale)
-                .ticks(minor.tick)
-                .tickSize(10, 0)
-                .tickPadding(tickPadding)
-                .tickFormat(minor.format);
+            xAxis = asAxis(
+                axisBottom(xScale as ScaleTime<number, number>)
+                    .ticks(minor.tick as number)
+                    // One argument, as above: the second was ignored.
+                    .tickSize(10)
+                    .tickPadding(tickPadding)
+                    .tickFormat(
+                        minor.format as unknown as (
+                            domainValue: NumberValue | Date,
+                            index: number
+                        ) => string
+                    )
+            );
         }
 
         yAxis = axisLeft(yScale)
             .ticks(yTicks)
-            .tickSize([0])
+            // An array where d3 wants a number, as in bar.ts and the stacked
+            // area: `tickSize` assigns `+_`, and `+[0]` is 0.
+            .tickSize(+[0])
             .tickPadding(tickPadding)
             .tickFormat(getFormattedValue);
 
-        drawGridLines(minor.tick, yTicks);
+        drawGridLines(minor.tick as number | null, yTicks);
         drawCustomLines();
     }
 
@@ -438,7 +620,7 @@ export default function module() {
      * @private
      */
     function buildContainerGroups() {
-        let container = svg
+        const container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
@@ -500,19 +682,21 @@ export default function module() {
         xScale = buildXAxisScale();
         yScale = buildYAxisScale();
 
-        colorScale = scaleOrdinal()
+        colorScale = scaleOrdinal<string, string>()
             .range(colorSchema)
-            .domain(dataByTopic.map(getTopic));
+            .domain(dataByTopic.map((topic) => String(getTopic(topic))));
 
-        let range = colorScale.range();
+        const range = colorScale.range();
 
         nameToColorMap =
             nameToColorMap ||
-            colorScale.domain().reduce((memo, item, i) => {
-                memo[item] = range[i];
+            colorScale
+                .domain()
+                .reduce<Record<string, string>>((memo, item, i) => {
+                    memo[item] = range[i];
 
-                return memo;
-            }, {});
+                    return memo;
+                }, {});
     }
 
     /**
@@ -521,8 +705,18 @@ export default function module() {
      * @private
      */
     function buildXAxisScale() {
-        let minX = min(dataByTopic, ({ dates }) => min(dates, getDate)),
-            maxX = max(dataByTopic, ({ dates }) => max(dates, getDate));
+        // Dates compare and coerce as numbers here, which is what made the
+        // original work; `Number` is that coercion written out.
+        const minX = Number(
+            min(dataByTopic, ({ dates }) =>
+                min(dates, (d) => Number(getDate(d)))
+            )
+        );
+        const maxX = Number(
+            max(dataByTopic, ({ dates }) =>
+                max(dates, (d) => Number(getDate(d)))
+            )
+        );
 
         if (xAxisValueType === 'number') {
             if (xAxisScale === 'logarithmic') {
@@ -544,10 +738,16 @@ export default function module() {
      * @private
      */
     function buildYAxisScale() {
-        let maxY = max(dataByTopic, ({ dates }) => max(dates, getValue)),
-            minY = min(dataByTopic, ({ dates }) => min(dates, getValue));
-        let yScaleBottomValue = minY < 0 || hasMinimumValueScale ? minY : 0;
-        let yScaleTopValue = minY === 0 && maxY === 0 ? 1 : maxY;
+        // `getValue` is nullable -- a broken line keeps its nulls -- and d3's
+        // `min`/`max` skip them, so the bounds are numbers once they are read.
+        const maxY = Number(
+            max(dataByTopic, ({ dates }) => max(dates, getValue))
+        );
+        const minY = Number(
+            min(dataByTopic, ({ dates }) => min(dates, getValue))
+        );
+        const yScaleBottomValue = minY < 0 || hasMinimumValueScale ? minY : 0;
+        const yScaleTopValue = minY === 0 && maxY === 0 ? 1 : maxY;
 
         return scaleLinear()
             .domain([yScaleBottomValue, yScaleTopValue])
@@ -561,7 +761,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container) {
+    function buildSVG(container: Element) {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -581,7 +781,13 @@ export default function module() {
      * @param  {LineChartData} _data    Chart data with a flat `data` array
      * @return {obj}                    Parsed data, grouped by topic and by date
      */
-    function cleanData({ dataSorted, data }) {
+    function cleanData({
+        dataSorted,
+        data,
+    }: {
+        dataSorted?: LineDateGroup[];
+        data: LineChartDataShape[];
+    }) {
         if (!data) {
             throw new Error(
                 'Data needs to have a data property. See more in https://britecharts.github.io/britecharts/docs/API/line'
@@ -590,7 +796,7 @@ export default function module() {
 
         // Group the flat data by topic for the internal accessors.
         // String() keeps the key coercion d3-collection's nest() used to do.
-        let dataByTopic = groups(data, (d) =>
+        const dataByTopic = groups(data, (d) =>
             String(getVariableTopicName(d))
         ).map(([key, values]) => ({
             topic: values[0]['name'],
@@ -609,11 +815,14 @@ export default function module() {
         );
 
         const normalizedDataByTopic = dataByTopic.reduce((accum, topic) => {
-            let { dates, ...restProps } = topic;
+            const { dates, ...restProps } = topic;
 
-            let newDates = dates.map((d) => {
+            const newDates = dates.map((d: LabelledRow) => {
                 return {
-                    date: castValueToType(d[dateLabel], xAxisValueType),
+                    date: castValueToType(
+                        d[dateLabel] as string | number | Date,
+                        xAxisValueType
+                    ),
                     value: acceptNullValue(d[valueLabel]),
                 };
             });
@@ -621,7 +830,7 @@ export default function module() {
             accum.push({ dates: newDates, ...restProps });
 
             return accum;
-        }, []);
+        }, [] as LineTopic[]);
 
         return {
             dataByTopic: normalizedDataByTopic,
@@ -675,12 +884,12 @@ export default function module() {
      * @private
      */
     function drawAxis() {
-        svg.select('.x-axis-group .axis.x')
+        svg.select<SVGGElement>('.x-axis-group .axis.x')
             .attr('transform', `translate(0, ${chartHeight})`)
             .call(xAxis);
 
         if (xAxisFormat !== 'custom' && xAxisValueType !== 'number') {
-            svg.select('.x-axis-group .axis.sub-x')
+            svg.select<SVGGElement>('.x-axis-group .axis.sub-x')
                 .attr(
                     'transform',
                     `translate(0, ${chartHeight + monthAxisPadding})`
@@ -692,8 +901,8 @@ export default function module() {
             if (xAxisLabelEl) {
                 svg.selectAll('.x-axis-label').remove();
             }
-            let xLabelXPosition = chartWidth / 2;
-            let xLabelYPosition =
+            const xLabelXPosition = chartWidth / 2;
+            const xLabelYPosition =
                 chartHeight + monthAxisPadding + xAxisLabelPadding;
 
             xAxisLabelEl = svg
@@ -706,7 +915,7 @@ export default function module() {
                 .text(xAxisLabel);
         }
 
-        svg.select('.y-axis-group .axis.y')
+        svg.select<SVGGElement>('.y-axis-group .axis.y')
             .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
             .call(yAxis)
             .call(adjustYTickLabels);
@@ -716,8 +925,8 @@ export default function module() {
                 svg.selectAll('.y-axis-label').remove();
             }
             // Note this coordinates are rotated, so they are not what they look
-            let yLabelYPosition = -yAxisLabelPadding - xAxisPadding.left;
-            let yLabelXPosition = -chartHeight / 2;
+            const yLabelYPosition = -yAxisLabelPadding - xAxisPadding.left;
+            const yLabelXPosition = -chartHeight / 2;
 
             yAxisLabelEl = svg
                 .select('.y-axis-group')
@@ -736,20 +945,22 @@ export default function module() {
      * @private
      */
     function drawLines() {
-        let lines, topicLine;
-
         // clear tooltip chache on path redraw
         pathYCache = {};
 
-        topicLine = line()
+        const topicLine = line<LineDatum>()
             .curve(curveMap[lineCurve])
-            .x(({ date }) => xScale(date))
+            // Number() of a Date is the epoch milliseconds a time scale reads
+            // anyway, and it is the one argument all three x scales accept.
+            .x(({ date }) => xScale(Number(date)))
             .defined(({ value }) => value !== null)
-            .y(({ value }) => yScale(value));
+            // `defined` above drops the null points, so this reads a number
+            // wherever d3 reaches it.
+            .y(({ value }) => yScale(value as number));
 
-        lines = svg
+        const lines = svg
             .select('.chart-group')
-            .selectAll('.line')
+            .selectAll<SVGPathElement, LineTopic>('.line')
             .data(dataByTopic, getTopic);
 
         paths = lines
@@ -783,11 +994,13 @@ export default function module() {
      * Draws grid lines on the background of the chart
      * @return void
      */
-    function drawGridLines(xTicks, yTicks) {
+    function drawGridLines(xTicks: number | null, yTicks: number) {
         svg.select('.grid-lines-group').selectAll('grid').remove();
 
-        let minY = min(dataByTopic, ({ dates }) => min(dates, getValue));
-        let shouldHighlightXAxis = minY < 0;
+        const minY = min(dataByTopic, ({ dates }) => min(dates, getValue));
+        // No data at all leaves this undefined, and `undefined < 0` is false,
+        // which is what the zero default reports too.
+        const shouldHighlightXAxis = (minY ?? 0) < 0;
 
         if (grid === 'horizontal' || grid === 'full') {
             drawHorizontalGridLines(yTicks, shouldHighlightXAxis);
@@ -804,11 +1017,11 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawVerticalGridLines(xTicks) {
+    function drawVerticalGridLines(xTicks: number | null) {
         const grid = gridVertical(xScale)
             .range([0, chartHeight])
             .hideEdges('first')
-            .ticks(xTicks)
+            .ticks(xTicks as number)
             .extendedLine(xAxisPadding.bottom);
 
         grid(svg.select('.grid-lines-group'));
@@ -820,7 +1033,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function drawHorizontalGridLines(yTicks, highlightZero = false) {
+    function drawHorizontalGridLines(yTicks: number, highlightZero = false) {
         const grid = gridHorizontal(yScale)
             .range([0, chartWidth])
             .hideEdges('first')
@@ -841,12 +1054,14 @@ export default function module() {
             .selectAll('.custom-line-annotation')
             .remove();
 
-        let yValues = customLines.map((line) => line.y);
+        const yValues = customLines.map((line) => line.y);
 
-        let getColor = (yValue) => {
+        const getColor = (yValue: number) => {
+            // `yValues` is these very lines' own `y` values, so the lookup
+            // always finds one -- and a miss threw here before, too.
             const definedColor = customLines.find(
                 (line) => line.y === yValue
-            ).color;
+            )!.color;
 
             if (definedColor) {
                 return definedColor;
@@ -870,7 +1085,7 @@ export default function module() {
             .attr('fill', 'none');
 
         // draw the annotations right above the line at the right end of the chart
-        for (let line of customLines) {
+        for (const line of customLines) {
             if (line.name) {
                 svg.select('.custom-lines-group')
                     .append('text')
@@ -913,11 +1128,14 @@ export default function module() {
     function drawAllDataPoints() {
         svg.select('.chart-group').selectAll('.data-points-container').remove();
 
-        const nodesById = paths.nodes().reduce((acc, node) => {
-            acc[node.id] = node;
+        const nodesById = paths.nodes().reduce(
+            (acc, node) => {
+                acc[node.id] = node;
 
-            return acc;
-        }, {});
+                return acc;
+            },
+            {} as Record<string, SVGPathElement>
+        );
 
         const allTopics = dataSorted.reduce((accum, dataPoint) => {
             const dataPointTopics = dataPoint.topics.map((topic) => ({
@@ -928,9 +1146,9 @@ export default function module() {
             accum = [...accum, ...dataPointTopics];
 
             return accum;
-        }, []);
+        }, [] as TopicWithNode[]);
 
-        let allDataPoints = svg
+        const allDataPoints = svg
             .select('.chart-group')
             .append('g')
             .classed('data-points-container', true)
@@ -941,7 +1159,7 @@ export default function module() {
             .classed('data-point-mark', true)
             .attr('r', highlightCircleRadius)
             .style('stroke-width', highlightCircleStroke)
-            .style('stroke', (d) => nameToColorMap[d.topic.name])
+            .style('stroke', (d) => getTopicColor(d.topic.name))
             .style('cursor', 'pointer')
             .attr('cx', (d) => xScale(new Date(d.topic.date)))
             .attr('cy', (d) =>
@@ -992,7 +1210,7 @@ export default function module() {
      * @returns {number}            Longest between the accumulated length or the current path's length
      * @private
      */
-    function findLongestPath(acc, path) {
+    function findLongestPath(acc: number, path: SVGPathElement) {
         const length = getPathLength(path);
 
         return acc > length ? acc : length;
@@ -1007,7 +1225,7 @@ export default function module() {
      * @returns {number}         Length of the path, 0 when it cannot be measured
      * @private
      */
-    function getPathLength(path) {
+    function getPathLength(path: SVGPathElement) {
         return typeof path.getTotalLength === 'function'
             ? path.getTotalLength()
             : 0;
@@ -1020,9 +1238,17 @@ export default function module() {
      * @param  {object} d1 Next datapoint
      * @return {object}    d0 or d1, the datapoint with closest date to x0
      */
-    function findOutNearestDate(x0, d0, d1) {
+    function findOutNearestDate(
+        x0: Date | number,
+        d0: LineDateGroup,
+        d1: LineDateGroup
+    ) {
         if (xAxisValueType === 'number') {
-            return x0 - d0.date > d1.date - x0 ? d0 : d1;
+            // Both are numbers down this branch; Number() is what the
+            // subtraction did implicitly.
+            return Number(x0) - Number(d0.date) > Number(d1.date) - Number(x0)
+                ? d0
+                : d1;
         }
 
         return new Date(x0).getTime() - new Date(d0.date).getTime() >
@@ -1036,12 +1262,12 @@ export default function module() {
      * @param  {number} mouseX X position of the mouse
      * @return {object}        Data entry that is closer to that x axis position
      */
-    function getNearestDataPoint(mouseX) {
-        let dateFromInvertedX = xScale.invert(mouseX);
-        let bisectDate = bisector(getDate).left;
-        let dataEntryIndex = bisectDate(dataSorted, dateFromInvertedX, 1);
-        let dataEntryForXPosition = dataSorted[dataEntryIndex];
-        let previousDataEntryForXPosition = dataSorted[dataEntryIndex - 1];
+    function getNearestDataPoint(mouseX: number) {
+        const dateFromInvertedX = xScale.invert(mouseX);
+        const bisectDate = bisector(getDate).left;
+        const dataEntryIndex = bisectDate(dataSorted, dateFromInvertedX, 1);
+        const dataEntryForXPosition = dataSorted[dataEntryIndex];
+        const previousDataEntryForXPosition = dataSorted[dataEntryIndex - 1];
         let nearestDataPoint;
 
         if (previousDataEntryForXPosition && dataEntryForXPosition) {
@@ -1062,14 +1288,14 @@ export default function module() {
      * and updates metadata related to it
      * @private
      */
-    function handleMouseMove(e, d, event) {
+    function handleMouseMove(e: Element, d: unknown, event: Event) {
         // The listener is on the root svg, so the pointer arrives in svg
         // coordinates; everything the chart draws (the tooltip included)
         // lives inside the margin-translated container, hence the offsets.
-        let [xPosition, yPosition] = pointer(event, e),
-            dataPoint = getNearestDataPoint(xPosition - margin.left),
-            pointerYPosition = yPosition - margin.top,
-            dataPointXPosition;
+        const [xPosition, yPosition] = pointer(event, e);
+        const dataPoint = getNearestDataPoint(xPosition - (margin.left ?? 0));
+        const pointerYPosition = yPosition - (margin.top ?? 0);
+        let dataPointXPosition;
 
         if (dataPoint) {
             dataPointXPosition = xScale(new Date(dataPoint.date));
@@ -1096,7 +1322,7 @@ export default function module() {
      * It also resets the container of the vertical marker
      * @private
      */
-    function handleMouseOut(e, d, event) {
+    function handleMouseOut(e: Element, d: unknown, event: Event) {
         overlay.style('display', 'none');
         verticalMarkerLine.classed('bc-is-active', false);
         verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
@@ -1108,7 +1334,7 @@ export default function module() {
      * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
      * @private
      */
-    function handleMouseOver(e, d, event) {
+    function handleMouseOver(e: Element, d: unknown, event: Event) {
         overlay.style('display', 'block');
         verticalMarkerLine.classed('bc-is-active', true);
 
@@ -1120,7 +1346,7 @@ export default function module() {
      * It will only pass the information with the event
      * @private
      */
-    function handleHighlightClick(e, d, event) {
+    function handleHighlightClick(e: Element, d: unknown, event: Event) {
         dispatcher.call('customDataEntryClick', e, d, pointer(event, e));
     }
 
@@ -1129,7 +1355,7 @@ export default function module() {
      * It will only pass the information with the event
      * @private
      */
-    function handleTouchMove(e, d, event) {
+    function handleTouchMove(e: Element, d: unknown, event: Event) {
         dispatcher.call('customTouchMove', e, d, pointer(event, e));
     }
 
@@ -1138,15 +1364,18 @@ export default function module() {
      * @param  {object} dataPoint Data point to extract info from
      * @private
      */
-    function highlightDataPoints(dataPoint) {
+    function highlightDataPoints(dataPoint: LineDateGroup) {
         cleanDataPointHighlights();
 
         const nodes = paths.nodes();
-        const nodesById = nodes.reduce((acc, node) => {
-            acc[node.id] = node;
+        const nodesById = nodes.reduce(
+            (acc, node) => {
+                acc[node.id] = node;
 
-            return acc;
-        }, {});
+                return acc;
+            },
+            {} as Record<string, SVGPathElement>
+        );
 
         // Group corresponding path node with its topic, and
         // sorting the topics based on the order of the colors,
@@ -1159,13 +1388,13 @@ export default function module() {
             .filter(({ topic }) => !!topic)
             .sort(
                 (a, b) =>
-                    nameToColorMap[a.topic.name] < nameToColorMap[b.topic.name]
+                    +(getTopicColor(a.topic.name) < getTopicColor(b.topic.name))
             );
 
         dataPoint.topics = topicsWithNode.map(({ topic }) => topic);
 
         dataPoint.topics.forEach((d, index) => {
-            let marker = verticalMarkerContainer
+            const marker = verticalMarkerContainer
                 .append('g')
                 .classed('circle-container', true)
                 .append('circle')
@@ -1178,7 +1407,7 @@ export default function module() {
                         ? highlightCircleStrokeAll
                         : highlightCircleStroke
                 )
-                .style('stroke', nameToColorMap[d.name])
+                .style('stroke', getTopicColor(d.name))
                 .style('cursor', 'pointer')
                 .on('click', function (event) {
                     addGlowFilter(this);
@@ -1207,7 +1436,12 @@ export default function module() {
      * @param  {number} error The margin of error from the actual x coordinate. Default 0.01
      * @private
      */
-    function getPathYFromX(x, path, name, error) {
+    function getPathYFromX(
+        x: number,
+        path: SVGPathElement,
+        name: string | number,
+        error?: number
+    ) {
         const key = `${name}-${x}`;
 
         if (key in pathYCache) {
@@ -1224,7 +1458,7 @@ export default function module() {
 
         try {
             point = path.getPointAtLength((lengthEnd + lengthStart) / 2);
-        } catch (e) {
+        } catch {
             point = { x: 0, y: 0 };
         }
         let iterations = 0;
@@ -1234,7 +1468,7 @@ export default function module() {
 
             try {
                 point = path.getPointAtLength(midpoint);
-            } catch (e) {
+            } catch {
                 point = { x: 0, y: 0 };
             }
 
@@ -1260,7 +1494,7 @@ export default function module() {
      * @param  {object} dataPoint Data entry to extract info
      * @return void
      */
-    function moveVerticalMarker(verticalMarkerXPosition) {
+    function moveVerticalMarker(verticalMarkerXPosition: number) {
         verticalMarkerContainer.attr(
             'transform',
             `translate(${verticalMarkerXPosition},0)`
@@ -1271,7 +1505,7 @@ export default function module() {
      * Resets a point filter
      * @param {DOMElement} point  Point to reset
      */
-    function removeFilter(point) {
+    function removeFilter(point: BaseType) {
         select(point).attr('filter', 'none');
     }
 
@@ -1291,14 +1525,17 @@ export default function module() {
      * @return {duration | module}      Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.animationDuration = function (_x) {
+    (exports as LineChartModule).animationDuration = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return animationDuration;
         }
         animationDuration = _x;
 
         return this;
-    };
+    } as LineChartModule['animationDuration'];
 
     /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity
@@ -1306,7 +1543,8 @@ export default function module() {
      * @example
      *     line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
      */
-    exports.axisTimeCombinations = axisTimeCombinations;
+    (exports as LineChartModule).axisTimeCombinations =
+        axisTimeCombinations as LineChartModule['axisTimeCombinations'];
 
     /**
      * Gets or Sets the label of the X axis of the chart
@@ -1314,14 +1552,17 @@ export default function module() {
      * @return { (string | module) }    Current label of the X axis or Line Chart module to chain calls
      * @public
      */
-    exports.xAxisLabel = function (_x) {
+    (exports as LineChartModule).xAxisLabel = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisLabel;
         }
         xAxisLabel = _x;
 
         return this;
-    };
+    } as LineChartModule['xAxisLabel'];
 
     /**
      * Gets or Sets the label of the Y axis of the chart
@@ -1329,14 +1570,17 @@ export default function module() {
      * @return { (String | module) }    Current label of the Y axis or Line Chart module to chain calls
      * @public
      */
-    exports.yAxisLabel = function (_x) {
+    (exports as LineChartModule).yAxisLabel = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisLabel;
         }
         yAxisLabel = _x;
 
         return this;
-    };
+    } as LineChartModule['yAxisLabel'];
 
     /**
      * Gets or Sets the colorSchema of the chart
@@ -1344,14 +1588,17 @@ export default function module() {
      * @return { string[] | module} Current colorSchema or Chart module to chain calls
      * @public
      */
-    exports.colorSchema = function (_x) {
+    (exports as LineChartModule).colorSchema = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return colorSchema;
         }
         colorSchema = _x;
 
         return this;
-    };
+    } as LineChartModule['colorSchema'];
 
     /**
      * Gets or Sets the colorMap of the chart
@@ -1360,14 +1607,17 @@ export default function module() {
      * @example lineChart.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
      * @public
      */
-    exports.colorMap = function (_x) {
+    (exports as LineChartModule).colorMap = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return nameToColorMap;
         }
         nameToColorMap = _x;
 
         return this;
-    };
+    } as LineChartModule['colorMap'];
 
     /**
      * Gets or Sets the dateLabel of the chart
@@ -1376,7 +1626,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.dateLabel = function (_x) {
+    (exports as LineChartModule).dateLabel = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return dateLabel;
         }
@@ -1384,7 +1637,7 @@ export default function module() {
         dataKeyDeprecationMessage('date');
 
         return this;
-    };
+    } as LineChartModule['dateLabel'];
 
     /**
      * Exposes the ability to force the chart to show a certain x format
@@ -1394,14 +1647,17 @@ export default function module() {
      * @return { string|module }        Current format or module to chain calls
      * @public
      */
-    exports.xAxisCustomFormat = function (_x) {
+    (exports as LineChartModule).xAxisCustomFormat = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisCustomFormat;
         }
         xAxisCustomFormat = _x;
 
         return this;
-    };
+    } as LineChartModule['xAxisCustomFormat'];
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
@@ -1412,14 +1668,17 @@ export default function module() {
      * @example
      *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
      */
-    exports.xAxisFormat = function (_x) {
+    (exports as LineChartModule).xAxisFormat = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisFormat;
         }
         xAxisFormat = _x;
 
         return this;
-    };
+    } as LineChartModule['xAxisFormat'];
 
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
@@ -1430,14 +1689,14 @@ export default function module() {
      * @return { (Number|module) }      Current number or ticks or module to chain calls
      * @public
      */
-    exports.xTicks = function (_x) {
+    (exports as LineChartModule).xTicks = function (this: LineChartModule, _x) {
         if (!arguments.length) {
             return xTicks;
         }
         xTicks = _x;
 
         return this;
-    };
+    } as LineChartModule['xTicks'];
 
     /**
      * Gets or Sets the grid mode.
@@ -1446,14 +1705,14 @@ export default function module() {
      * @return { String | module}   Current mode of the grid or Line Chart module to chain calls
      * @public
      */
-    exports.grid = function (_x) {
+    (exports as LineChartModule).grid = function (this: LineChartModule, _x) {
         if (!arguments.length) {
             return grid;
         }
         grid = _x;
 
         return this;
-    };
+    } as LineChartModule['grid'];
 
     /**
      * Gets or Sets the hasMinimumValueScale property of the chart, making yAxix bottom value
@@ -1464,14 +1723,17 @@ export default function module() {
      * @return { hasMinimumValueScale | module} Current hasMinimumValueScale flag or Chart module
      * @public
      */
-    exports.hasMinimumValueScale = function (_x) {
+    (exports as LineChartModule).hasMinimumValueScale = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return hasMinimumValueScale;
         }
         hasMinimumValueScale = _x;
 
         return this;
-    };
+    } as LineChartModule['hasMinimumValueScale'];
 
     /**
      * Gets or Sets the height of the chart
@@ -1479,14 +1741,14 @@ export default function module() {
      * @return { (Number | module) }    Current height or Line Chart module to chain calls
      * @public
      */
-    exports.height = function (_x) {
+    (exports as LineChartModule).height = function (this: LineChartModule, _x) {
         if (!arguments.length) {
             return height;
         }
         height = _x;
 
         return this;
-    };
+    } as LineChartModule['height'];
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
@@ -1494,14 +1756,17 @@ export default function module() {
      * @return { isAnimated | module}   Current isAnimated flag or Chart module
      * @public
      */
-    exports.isAnimated = function (_x) {
+    (exports as LineChartModule).isAnimated = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return isAnimated;
         }
         isAnimated = _x;
 
         return this;
-    };
+    } as LineChartModule['isAnimated'];
 
     /**
      * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
@@ -1515,14 +1780,14 @@ export default function module() {
      *   color: '#ff0000'
      * }])
      */
-    exports.lines = function (_x) {
+    (exports as LineChartModule).lines = function (this: LineChartModule, _x) {
         if (!arguments.length) {
             return customLines;
         }
         customLines = _x;
 
         return this;
-    };
+    } as LineChartModule['lines'];
 
     /**
      * Gets or Sets the curve of the line chart
@@ -1532,14 +1797,17 @@ export default function module() {
      * @return { (curve | module) } Current line curve or Line Chart module to chain calls
      * @public
      */
-    exports.lineCurve = function (_x) {
+    (exports as LineChartModule).lineCurve = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return lineCurve;
         }
         lineCurve = _x;
 
         return this;
-    };
+    } as LineChartModule['lineCurve'];
 
     /**
      * Gets or Sets the gradient colors of the line chart when there is only one line
@@ -1547,14 +1815,17 @@ export default function module() {
      * @return { (Number | module) }    Current color gradient or Line Chart module to chain calls
      * @public
      */
-    exports.lineGradient = function (_x) {
+    (exports as LineChartModule).lineGradient = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return singleLineGradientColors;
         }
         singleLineGradientColors = _x;
 
         return this;
-    };
+    } as LineChartModule['lineGradient'];
 
     /**
      * Gets or Sets the loading state of the chart
@@ -1562,14 +1833,17 @@ export default function module() {
      * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.isLoading = function (_flag) {
+    (exports as LineChartModule).isLoading = function (
+        this: LineChartModule,
+        _flag
+    ) {
         if (!arguments.length) {
             return isLoading;
         }
         isLoading = _flag;
 
         return this;
-    };
+    } as LineChartModule['isLoading'];
 
     /**
      * Pass language tag for the tooltip to localize the date.
@@ -1579,14 +1853,14 @@ export default function module() {
      * @return { (string|module) }    Current locale or module to chain calls
      * @public
      */
-    exports.locale = function (_x) {
+    (exports as LineChartModule).locale = function (this: LineChartModule, _x) {
         if (!arguments.length) {
             return locale;
         }
         locale = _x;
 
         return this;
-    };
+    } as LineChartModule['locale'];
 
     /**
      * Gets or Sets the margin object of the chart (top, bottom, left and right)
@@ -1594,7 +1868,7 @@ export default function module() {
      * @return { (object | module) }    Current margin or Line Chart module to chain calls
      * @public
      */
-    exports.margin = function (_x) {
+    (exports as LineChartModule).margin = function (this: LineChartModule, _x) {
         if (!arguments.length) {
             return margin;
         }
@@ -1604,7 +1878,7 @@ export default function module() {
         };
 
         return this;
-    };
+    } as LineChartModule['margin'];
 
     /**
      * Gets or Sets the number format of the line chart
@@ -1612,14 +1886,17 @@ export default function module() {
      * @return {string | module}        Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function (_x) {
+    (exports as LineChartModule).numberFormat = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    };
+    } as LineChartModule['numberFormat'];
 
     /**
      * Gets or Sets the topicLabel of the chart
@@ -1627,14 +1904,17 @@ export default function module() {
      * @return {shouldShowAllDataPoints | module}   Current shouldShowAllDataPoints or Chart module to chain calls
      * @public
      */
-    exports.shouldShowAllDataPoints = function (_x) {
+    (exports as LineChartModule).shouldShowAllDataPoints = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return shouldShowAllDataPoints;
         }
         shouldShowAllDataPoints = _x;
 
         return this;
-    };
+    } as LineChartModule['shouldShowAllDataPoints'];
 
     /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
@@ -1643,14 +1923,17 @@ export default function module() {
      * @return { (Number | module) }    Current tooltip threshold or Line Chart module to chain calls
      * @public
      */
-    exports.tooltipThreshold = function (_x) {
+    (exports as LineChartModule).tooltipThreshold = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return tooltipThreshold;
         }
         tooltipThreshold = _x;
 
         return this;
-    };
+    } as LineChartModule['tooltipThreshold'];
 
     /**
      * Gets or Sets the topicLabel of the chart
@@ -1659,7 +1942,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.topicLabel = function (_x) {
+    (exports as LineChartModule).topicLabel = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return topicLabel;
         }
@@ -1667,7 +1953,7 @@ export default function module() {
         dataKeyDeprecationMessage('topic');
 
         return this;
-    };
+    } as LineChartModule['topicLabel'];
 
     /**
      * Gets or Sets the valueLabel of the chart
@@ -1676,7 +1962,10 @@ export default function module() {
      * @public
      * @deprecated
      */
-    exports.valueLabel = function (_x) {
+    (exports as LineChartModule).valueLabel = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return valueLabel;
         }
@@ -1684,7 +1973,7 @@ export default function module() {
         dataKeyDeprecationMessage('value');
 
         return this;
-    };
+    } as LineChartModule['valueLabel'];
 
     /**
      * Gets or Sets the yAxisLabelPadding of the chart.
@@ -1692,14 +1981,17 @@ export default function module() {
      * @return {yAxisLabelPadding | module}     Current yAxisLabelPadding or Chart module to chain calls
      * @public
      */
-    exports.yAxisLabelPadding = function (_x) {
+    (exports as LineChartModule).yAxisLabelPadding = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return yAxisLabelPadding;
         }
         yAxisLabelPadding = _x;
 
         return this;
-    };
+    } as LineChartModule['yAxisLabelPadding'];
 
     /**
      * Gets or Sets the number of ticks of the y axis on the chart
@@ -1707,14 +1999,14 @@ export default function module() {
      * @return {number | module}   Current yTicks or Chart module to chain calls
      * @public
      */
-    exports.yTicks = function (_x) {
+    (exports as LineChartModule).yTicks = function (this: LineChartModule, _x) {
         if (!arguments.length) {
             return yTicks;
         }
         yTicks = _x;
 
         return this;
-    };
+    } as LineChartModule['yTicks'];
 
     /**
      * Gets or Sets the width of the chart
@@ -1722,14 +2014,14 @@ export default function module() {
      * @return {number | Module}    Current width or Line Chart module to chain calls
      * @public
      */
-    exports.width = function (_x) {
+    (exports as LineChartModule).width = function (this: LineChartModule, _x) {
         if (!arguments.length) {
             return width;
         }
         width = _x;
 
         return this;
-    };
+    } as LineChartModule['width'];
 
     /**
      * Chart exported to png and a download action is fired
@@ -1738,9 +2030,14 @@ export default function module() {
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public
      */
-    exports.exportChart = function (filename, title) {
-        return exportChart.call(exports, svg, filename, title);
-    };
+    (exports as LineChartModule).exportChart = function (filename, title) {
+        return exportChart.call(
+            exports as LineChartModule,
+            svg,
+            filename,
+            title
+        );
+    } as LineChartModule['exportChart'];
 
     /**
      * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -1751,11 +2048,17 @@ export default function module() {
      * @return {module} Bar Chart
      * @public
      */
-    exports.on = function () {
-        let value = dispatcher.on.apply(dispatcher, arguments);
+    (exports as LineChartModule).on = function (
+        ...args: [string] | [string, () => void]
+    ) {
+        // Rest parameters and a spread where this read `arguments` and used
+        // `.apply`, following the other converted charts.
+        const value = dispatcher.on(
+            ...(args as Parameters<typeof dispatcher.on>)
+        );
 
         return value === dispatcher ? exports : value;
-    };
+    } as unknown as LineChartModule['on'];
 
     /**
      * Gets or Sets the `xAxisValueType`.
@@ -1766,14 +2069,17 @@ export default function module() {
      * @public
      * @example line.xAxisValueType('number')
      */
-    exports.xAxisValueType = function (_x) {
+    (exports as LineChartModule).xAxisValueType = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisValueType;
         }
         xAxisValueType = _x;
 
         return this;
-    };
+    } as LineChartModule['xAxisValueType'];
 
     /**
      * Gets or Sets the `xAxisScale`.
@@ -1784,14 +2090,17 @@ export default function module() {
      * @public
      * @example line.xAxisValueType('number').xAxisScale('logarithmic')
      */
-    exports.xAxisScale = function (_x) {
+    (exports as LineChartModule).xAxisScale = function (
+        this: LineChartModule,
+        _x
+    ) {
         if (!arguments.length) {
             return xAxisScale;
         }
         xAxisScale = _x;
 
         return this;
-    };
+    } as LineChartModule['xAxisScale'];
 
-    return exports;
+    return exports as unknown as LineChartModule;
 }

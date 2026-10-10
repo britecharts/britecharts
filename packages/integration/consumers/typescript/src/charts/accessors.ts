@@ -114,8 +114,392 @@ import {
     stackedArea,
     stackedBar,
 } from '@britecharts/core';
+import type { LocalObject } from '@britecharts/core';
+import type { BarChartDataShape, BarSelection } from '@britecharts/core';
+import { scatterPlot } from '@britecharts/core';
+import { tooltip as tooltipFactory } from '@britecharts/core';
+import type {
+    StackedAreaChartModule,
+    StackedAreaEmptyDataConfig,
+} from '@britecharts/core';
+import type {
+    ColorGradientType,
+    CustomLine,
+    LineChartModule,
+} from '@britecharts/core';
+import type {
+    TooltipLayout,
+    TooltipOffset,
+    TooltipXAxisValueType,
+} from '@britecharts/core';
 
 const barNameLabel: string = bar().nameLabel();
+
+// The bar chart's other twenty-two accessors, corrected with its conversion for
+// the same reason the grouped and stacked bars' were: setter-only, so reading
+// one reported the chart instead of its value. `nameLabel` just above was never
+// part of that.
+//
+// `orderingFunction` is the one that was declared wrong rather than merely
+// incomplete. It was `=> void`, and the chart hands it to
+// `Array.prototype.sort`, which reads the sign of the result -- so the
+// assertion below is that the comparator comes back usable for what the chart
+// uses it for, and `expect-errors.ts` holds the control for the callback that
+// returns nothing.
+//
+// Four getters are wider than their setter: `chartGradient`, `xAxisLabel`,
+// `yAxisLabel` and `valueLocale` are `null` until set, where the grouped and
+// stacked bars left their axis labels `undefined` instead. `orderingFunction`
+// reads `undefined`, having no initialiser. Worth asserting separately, since
+// the shape a consumer has to write differs between the two.
+const barOwn = bar();
+
+const barPadding: number = barOwn.betweenBarsPadding();
+const barLabelsEnabled: boolean = barOwn.enableLabels();
+const barPercentage: boolean = barOwn.hasPercentage();
+const barSingleHighlight: boolean = barOwn.hasSingleBarHighlight();
+const barHorizontal: boolean = barOwn.isHorizontal();
+const barLabelsMargin: number = barOwn.labelsMargin();
+const barLabelsFormat: string = barOwn.labelsNumberFormat();
+const barLabelsSize: number = barOwn.labelsSize();
+const barAxisRatio: number = barOwn.percentageAxisToMaxRatio();
+const barReverseColors: boolean = barOwn.shouldReverseColorList();
+const barValueLabel: string = barOwn.valueLabel();
+const barXLabelOffset: number = barOwn.xAxisLabelOffset();
+const barXTicks: number = barOwn.xTicks();
+const barYLabelOffset: number = barOwn.yAxisLabelOffset();
+const barYAxisPadding: number = barOwn.yAxisPaddingBetweenChart();
+const barYTicks: number = barOwn.yTicks();
+
+// Null until set, each needing the guard a consumer now has to write.
+const barGradient: [string, string] | null = barOwn.chartGradient();
+const barXAxisLabel: string | null = barOwn.xAxisLabel();
+const barYAxisLabel: string | null = barOwn.yAxisLabel();
+const barLocale: LocalObject | null = barOwn.valueLocale();
+const barHighlight: ((barSelection: BarSelection) => void) | null =
+    barOwn.highlightBarFunction();
+
+// Undefined until set, and read back usable for what the chart does with it:
+// the sign of the number is what `Array.prototype.sort` reads.
+const barOrdering = bar()
+    .orderingFunction((a, b) => a.value - b.value)
+    .orderingFunction();
+const barSorted: BarChartDataShape[] = [
+    { name: 'b', value: 2 },
+    { name: 'a', value: 1 },
+].sort(barOrdering);
+
+// The setters chain, and a chain crossing from an inherited surface back to a
+// bar-specific one still resolves.
+const barChained: number = bar()
+    .isAnimated(true)
+    .enableLabels(true)
+    .labelsSize(14)
+    .labelsSize();
+
+// The scatter plot's twenty-one accessors, corrected with its conversion for
+// the same reason the three bar charts' were.
+//
+// Four getters are wider than their setter, and `yTicks` is the one worth
+// noticing: it is `null` by default and the chart hands that straight to d3's
+// `axis.ticks`, where null means "use the scale's own count". So a consumer
+// reading it back before setting one gets null, not a number -- the same shape
+// brush's `xTicks` already has. `grid` and `valueLocale` are null too, and the
+// two axis labels read `undefined`.
+const scatterChart = scatterPlot();
+
+const scatterStrokeOpacity: number = scatterChart.circleStrokeOpacity();
+const scatterStrokeWidth: number = scatterChart.circleStrokeWidth();
+const scatterOpacity: number = scatterChart.circleOpacity();
+const scatterZoom: boolean = scatterChart.enableZoom();
+const scatterCrossHairs: boolean = scatterChart.hasCrossHairs();
+const scatterHollow: boolean = scatterChart.hasHollowCircles();
+const scatterTrendline: boolean = scatterChart.hasTrendline();
+const scatterLegendOffset: number = scatterChart.highlightTextLegendOffset();
+const scatterMaxArea: number = scatterChart.maxCircleArea();
+const scatterXFormat: string = scatterChart.xAxisFormat();
+const scatterXFormatType: string = scatterChart.xAxisFormatType();
+const scatterXLabelOffset: number = scatterChart.xAxisLabelOffset();
+const scatterXTicks: number = scatterChart.xTicks();
+const scatterYFormat: string = scatterChart.yAxisFormat();
+const scatterYLabelOffset: number = scatterChart.yAxisLabelOffset();
+
+// Null or undefined until set.
+const scatterGrid: 'vertical' | 'horizontal' | 'full' | null =
+    scatterChart.grid();
+const scatterLocale: LocalObject | null = scatterChart.valueLocale();
+const scatterXLabel: string | undefined = scatterChart.xAxisLabel();
+const scatterYLabel: string | undefined = scatterChart.yAxisLabel();
+const scatterYTicks: number | null = scatterChart.yTicks();
+
+// The setters chain, and the nullable ticks still reads a number once set.
+const scatterChained: number | null = scatterPlot()
+    .isAnimated(true)
+    .hasTrendline(true)
+    .yTicks(8)
+    .yTicks();
+
+// The tooltip's sixteen accessors, corrected with its conversion. Its
+// declaration was already careful about the data shapes -- `TooltipTopic.name`
+// is a number, not a label -- but every accessor was still setter-only.
+//
+// `dateFormat` is the one worth an assertion of its own: its getter never
+// reports null, because it falls back to the default axis setting when none is
+// set, where `dateCustomFormat` and `numberFormat` beside it do report null.
+// Three accessors on one module, two shapes.
+const tooltipChart = tooltipFactory();
+
+const tooltipLayout: TooltipLayout = tooltipChart.layout();
+const tooltipDateFormat: string = tooltipChart.dateFormat();
+const tooltipDateLabel: string = tooltipChart.dateLabel();
+const tooltipNameLabel: string = tooltipChart.nameLabel();
+const tooltipTopicLabel: string = tooltipChart.topicLabel();
+const tooltipValueLabel: string = tooltipChart.valueLabel();
+const tooltipTitle: string = tooltipChart.title();
+const tooltipShowsDate: boolean = tooltipChart.shouldShowDateInTitle();
+const tooltipMaxEntries: number = tooltipChart.maxEntries();
+const tooltipOffset: TooltipOffset = tooltipChart.tooltipOffset();
+// `string | number` because the two charts that feed the tooltip name their
+// topics differently: line sends numeric ids, stacked area sends string names,
+// and the tooltip orders with `topic.name === orderName`. Both have to be
+// expressible, so both are asserted below.
+const tooltipTopicsOrder: (string | number)[] = tooltipChart.topicsOrder();
+const tooltipOrderByIds: (string | number)[] = tooltipFactory()
+    .topicsOrder([1, 2, 3])
+    .topicsOrder();
+const tooltipOrderByNames: (string | number)[] = tooltipFactory()
+    .topicsOrder(['Other', 'Sunny'])
+    .topicsOrder();
+const tooltipValueType: TooltipXAxisValueType = tooltipChart.xAxisValueType();
+
+// Null until set, where `dateFormat` above falls back instead.
+const tooltipCustomFormat: string | null = tooltipChart.dateCustomFormat();
+const tooltipNumberFormat: string | null = tooltipChart.numberFormat();
+const tooltipFormatter: ((value: number) => number) | null =
+    tooltipChart.valueFormatter();
+// Undefined until set, and nullable because the setter takes null: the tooltip
+// has no initialiser where the time-series charts default theirs to null.
+const tooltipLocale: string | null | undefined = tooltipChart.locale();
+
+// The setters chain, and a formatter read back is usable for what the tooltip
+// uses it for.
+const tooltipChained: number = tooltipFactory()
+    .layout('single')
+    .maxEntries(5)
+    .valueFormatter((value) => value * 2)
+    .maxEntries();
+const tooltipFormatted: number | undefined = tooltipFactory()
+    .valueFormatter((value) => value * 2)
+    .valueFormatter()?.(21);
+
+// The stacked area's seventeen accessors, and the generic that made its `on`
+// unusable.
+//
+// `InteractiveChartAPI` was parameterised with `StackedBarChartModule` -- the
+// wrong chart. So `stackedArea().on(...)` reported the stacked bar's API, and
+// the two assertions below are what that broke: a chain crossing from `on`
+// back to one of this chart's own accessors, and the result still being
+// drawable. Both are errors against the old declaration.
+//
+// `emptyDataConfig` was missing `minY`, which the chart reads, and
+// `xAxisValueType` accepted `'numeric'` while the chart compares against
+// `'number'` -- so the value that works was rejected and the one accepted did
+// nothing. Both are asserted here with the values the chart actually uses.
+const areaChart = stackedArea();
+
+const areaDrawable: StackedAreaChartModule = stackedArea().on(
+    'customMouseOver',
+    () => undefined
+);
+const areaChainedFromOn: string = stackedArea()
+    .on('customMouseOver', () => undefined)
+    .areaCurve('monotoneX')
+    .areaCurve();
+
+const areaCurve: string = areaChart.areaCurve();
+const areaOpacity: number = areaChart.areaOpacity();
+const areaOutline: boolean = areaChart.hasOutline();
+const areaKeyLabel: string = areaChart.keyLabel();
+const areaThreshold: number = areaChart.tooltipThreshold();
+const areaBaseline: number = areaChart.yAxisBaseline();
+const areaYLabelOffset: number = areaChart.yAxisLabelOffset();
+const areaYTicks: number = areaChart.yTicks();
+const areaXScale: 'linear' | 'logarithmic' = areaChart.xAxisScale();
+const areaXValueType: 'date' | 'number' = areaChart.xAxisValueType();
+
+// The empty-data window carries all four bounds, `minY` included.
+const areaEmptyData: StackedAreaEmptyDataConfig = areaChart.emptyDataConfig();
+const areaEmptyMinY: number = areaEmptyData.minY;
+
+// Null or undefined until set.
+const areaGrid: 'vertical' | 'horizontal' | 'full' | null = areaChart.grid();
+const areaXTicks: number | null = areaChart.xTicks();
+const areaTopicsOrder: string[] | undefined = areaChart.topicsOrder();
+const areaYLabel: string | undefined = areaChart.yAxisLabel();
+
+// `'number'` is the value that switches the axis, and it type-checks now.
+const areaNumericAxis: StackedAreaChartModule = stackedArea()
+    .xAxisValueType('number')
+    .xAxisScale('logarithmic');
+
+// The line chart's thirteen accessors. Its data shape and `name` were
+// corrected earlier; this is the getters.
+//
+// `xAxisValueType` had the same defect as the stacked area's: `'numeric'` type
+// checked and did nothing while the chart compares against `'number'`.
+//
+// The `on` chain below is the assertion that catches a wrong generic on an
+// inherited surface -- the class of defect brush had three of and the stacked
+// area one of. Neither `check:api-parity` nor any setter-only assertion sees
+// it; it takes chaining off `on` back to one of the chart's own accessors and
+// assigning the result to the chart's module type.
+const lineOwn = line();
+
+const lineDrawable: LineChartModule = line().on(
+    'customMouseOver',
+    () => undefined
+);
+const lineChainedFromOn: string = line()
+    .on('customMouseOver', () => undefined)
+    .lineCurve('linear')
+    .lineCurve();
+
+const lineCurve: string = lineOwn.lineCurve();
+const lineGradient: ColorGradientType = lineOwn.lineGradient();
+const lineCustomLines: CustomLine[] = lineOwn.lines();
+const lineAllPoints: boolean = lineOwn.shouldShowAllDataPoints();
+const lineThreshold: number = lineOwn.tooltipThreshold();
+const lineXScale: 'linear' | 'logarithmic' = lineOwn.xAxisScale();
+const lineXValueType: 'date' | 'number' = lineOwn.xAxisValueType();
+const lineYLabelPadding: number = lineOwn.yAxisLabelPadding();
+const lineYTicks: number = lineOwn.yTicks();
+
+// Null until set, where the grouped and stacked bars leave their axis labels
+// undefined instead -- this chart initialises them to null, as the bar does.
+const lineGrid: 'vertical' | 'horizontal' | 'full' | null = lineOwn.grid();
+const lineXLabel: string | null = lineOwn.xAxisLabel();
+const lineYLabel: string | null = lineOwn.yAxisLabel();
+const lineXTicks: number | null = lineOwn.xTicks();
+
+// `'number'` is the value that switches the axis, and it type-checks now.
+const lineNumericAxis: LineChartModule = line()
+    .xAxisValueType('number')
+    .xAxisScale('logarithmic');
+
+export const lineAccessors = {
+    lineDrawable,
+    lineChainedFromOn,
+    lineCurve,
+    lineGradient,
+    lineCustomLines,
+    lineAllPoints,
+    lineThreshold,
+    lineXScale,
+    lineXValueType,
+    lineYLabelPadding,
+    lineYTicks,
+    lineGrid,
+    lineXLabel,
+    lineYLabel,
+    lineXTicks,
+    lineNumericAxis,
+};
+
+export const stackedAreaAccessors = {
+    areaDrawable,
+    areaChainedFromOn,
+    areaCurve,
+    areaOpacity,
+    areaOutline,
+    areaKeyLabel,
+    areaThreshold,
+    areaBaseline,
+    areaYLabelOffset,
+    areaYTicks,
+    areaXScale,
+    areaXValueType,
+    areaEmptyData,
+    areaEmptyMinY,
+    areaGrid,
+    areaXTicks,
+    areaTopicsOrder,
+    areaYLabel,
+    areaNumericAxis,
+};
+
+export const tooltipAccessors = {
+    tooltipLayout,
+    tooltipDateFormat,
+    tooltipDateLabel,
+    tooltipNameLabel,
+    tooltipTopicLabel,
+    tooltipValueLabel,
+    tooltipTitle,
+    tooltipShowsDate,
+    tooltipMaxEntries,
+    tooltipOffset,
+    tooltipTopicsOrder,
+    tooltipOrderByIds,
+    tooltipOrderByNames,
+    tooltipValueType,
+    tooltipCustomFormat,
+    tooltipNumberFormat,
+    tooltipFormatter,
+    tooltipLocale,
+    tooltipChained,
+    tooltipFormatted,
+};
+
+export const scatterPlotAccessors = {
+    scatterStrokeOpacity,
+    scatterStrokeWidth,
+    scatterOpacity,
+    scatterZoom,
+    scatterCrossHairs,
+    scatterHollow,
+    scatterTrendline,
+    scatterLegendOffset,
+    scatterMaxArea,
+    scatterXFormat,
+    scatterXFormatType,
+    scatterXLabelOffset,
+    scatterXTicks,
+    scatterYFormat,
+    scatterYLabelOffset,
+    scatterGrid,
+    scatterLocale,
+    scatterXLabel,
+    scatterYLabel,
+    scatterYTicks,
+    scatterChained,
+};
+
+export const barOwnAccessors = {
+    barPadding,
+    barLabelsEnabled,
+    barPercentage,
+    barSingleHighlight,
+    barHorizontal,
+    barLabelsMargin,
+    barLabelsFormat,
+    barLabelsSize,
+    barAxisRatio,
+    barReverseColors,
+    barValueLabel,
+    barXLabelOffset,
+    barXTicks,
+    barYLabelOffset,
+    barYAxisPadding,
+    barYTicks,
+    barGradient,
+    barXAxisLabel,
+    barYAxisLabel,
+    barLocale,
+    barHighlight,
+    barOrdering,
+    barSorted,
+    barChained,
+};
 const donutCenterLegend: boolean = donut().hasCenterLegend();
 const legendUnit: string = legend().unit();
 
@@ -123,6 +507,78 @@ const groupedBarChart = groupedBar();
 const groupLabel: string = groupedBarChart.groupLabel();
 const groupedNameLabel: string = groupedBarChart.nameLabel();
 const groupedValueLabel: string = groupedBarChart.valueLabel();
+
+// The grouped bar's other eleven accessors, corrected with its conversion for
+// the same reason bullet's seven and the sparkline's four were: setter-only, so
+// reading one reported the chart instead of its value. The three label getters
+// just above already read correctly and were never part of that.
+//
+// Three of the eleven have a getter wider than their setter, which is the whole
+// of what reading one before setting it gives you: `grid` and `valueLocale` are
+// `null` in the module's own `let` block, and `yAxisLabel` has no initialiser at
+// all. `expect-errors.ts` holds the control for those three -- a positive
+// assertion proves a getter is not too narrow, and only a call that should fail
+// proves it is not too wide.
+//
+// `GridTypes` and `Offset` are spelled out rather than imported: `common/grid`
+// and `common/position` are not in `index.d.ts`, the same gap the margin read at
+// the top of this file works around. Exporting them is a separate, additive
+// change, and it would let these two assertions name the real types.
+const groupedBarPadding: number = groupedBarChart.betweenBarsPadding();
+const groupedGroupsPadding: number = groupedBarChart.betweenGroupsPadding();
+const groupedHorizontal: boolean = groupedBarChart.isHorizontal();
+const groupedThreshold: number = groupedBarChart.tooltipThreshold();
+const groupedXTicks: number = groupedBarChart.xTicks();
+const groupedYTicks: number = groupedBarChart.yTicks();
+const groupedLabelOffset: number = groupedBarChart.yAxisLabelOffset();
+const groupedTickOffset: { x: number; y: number } =
+    groupedBarChart.yTickTextOffset();
+
+// Null or undefined until set, so each read needs the guard a consumer now has
+// to write.
+const groupedGrid: 'vertical' | 'horizontal' | 'full' | null =
+    groupedBarChart.grid();
+const groupedLocale: LocalObject | null = groupedBarChart.valueLocale();
+const groupedLocaleDecimal: string | undefined = groupedLocale?.decimal;
+const groupedAxisLabel: string | undefined = groupedBarChart.yAxisLabel();
+
+// The setters still chain, and a chain crossing from an inherited surface back
+// to a grouped-bar-specific one still resolves.
+const groupedChained: number = groupedBar()
+    .isAnimated(true)
+    .grid('horizontal')
+    .yAxisLabel('Ticket Sales')
+    .betweenBarsPadding(0.2)
+    .betweenBarsPadding();
+
+// `grid` and `valueLocale` take their own empty value back, which is how either
+// one is turned off again. The chart's JSDoc documents `null` as the default
+// for both, and both assign it straight through.
+const groupedGridReset: 'vertical' | 'horizontal' | 'full' | null = groupedBar()
+    .grid('full')
+    .grid(null)
+    .grid();
+const groupedLocaleReset: LocalObject | null = groupedBar()
+    .valueLocale(null)
+    .valueLocale();
+
+export const groupedBarAccessors = {
+    groupedBarPadding,
+    groupedGroupsPadding,
+    groupedHorizontal,
+    groupedThreshold,
+    groupedXTicks,
+    groupedYTicks,
+    groupedLabelOffset,
+    groupedTickOffset,
+    groupedGrid,
+    groupedLocale,
+    groupedLocaleDecimal,
+    groupedAxisLabel,
+    groupedChained,
+    groupedGridReset,
+    groupedLocaleReset,
+};
 
 const lineChart = line();
 const lineDateLabel: string = lineChart.dateLabel();
@@ -143,6 +599,68 @@ const stackedBarChart = stackedBar();
 const barStackLabel: string = stackedBarChart.stackLabel();
 const stackedNameLabel: string = stackedBarChart.nameLabel();
 const stackedValueLabel: string = stackedBarChart.valueLabel();
+
+// The stacked bar's other twelve accessors, corrected with its conversion for
+// the same reason the grouped bar's eleven were: setter-only, so reading one
+// reported the chart instead of its value. Its three label getters just above
+// were never part of that.
+//
+// `hasPercentage` is the odd one: its getter is computed rather than stored,
+// reporting whether `numberFormat` is currently the percentage one. Setting it
+// and reading it back is the assertion that actually covers it.
+//
+// `grid`, `valueLocale` and `yAxisLabel` have a getter wider than their setter,
+// the same three as on the grouped bar and for the same reasons.
+// `expect-errors.ts` holds the control for those.
+const stackedPadding: number = stackedBarChart.betweenBarsPadding();
+const stackedReversed: boolean = stackedBarChart.hasReversedStacks();
+const stackedHorizontal: boolean = stackedBarChart.isHorizontal();
+const stackedAxisRatio: number = stackedBarChart.percentageAxisToMaxRatio();
+const stackedThreshold: number = stackedBarChart.tooltipThreshold();
+const stackedXTicks: number = stackedBarChart.xTicks();
+const stackedYTicks: number = stackedBarChart.yTicks();
+const stackedLabelOffset: number = stackedBarChart.yAxisLabelOffset();
+
+// Null or undefined until set.
+const stackedGrid: 'vertical' | 'horizontal' | 'full' | null =
+    stackedBarChart.grid();
+const stackedLocale: LocalObject | null = stackedBarChart.valueLocale();
+const stackedAxisLabel: string | undefined = stackedBarChart.yAxisLabel();
+
+// Computed from `numberFormat`, so it reads back what was set rather than a
+// stored flag -- and `numberFormat` itself moves with it.
+const stackedPercentage: boolean = stackedBar().hasPercentage(true)
+    .hasPercentage();
+const stackedPercentageFormat: string = stackedBar()
+    .hasPercentage(true)
+    .numberFormat();
+
+// The setters chain, and a chain crossing from an inherited surface back to a
+// stacked-bar-specific one still resolves.
+const stackedChained: number = stackedBar()
+    .isAnimated(true)
+    .grid('full')
+    .grid(null)
+    .hasReversedStacks(true)
+    .betweenBarsPadding(0.2)
+    .betweenBarsPadding();
+
+export const stackedBarAccessors = {
+    stackedPadding,
+    stackedReversed,
+    stackedHorizontal,
+    stackedAxisRatio,
+    stackedThreshold,
+    stackedXTicks,
+    stackedYTicks,
+    stackedLabelOffset,
+    stackedGrid,
+    stackedLocale,
+    stackedAxisLabel,
+    stackedPercentage,
+    stackedPercentageFormat,
+    stackedChained,
+};
 
 // Setting one still chains, so the overloads did not cost the setter anything.
 const chainedLabels: string = stackedBar()
