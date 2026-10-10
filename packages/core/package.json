@@ -1,6 +1,6 @@
 {
   "name": "@britecharts/core",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.3",
   "main": "dist/umd/bundle/core.bundled.min.js",
   "module": "dist/esm/index.js",
   "types": "src/typings/index.d.ts",
