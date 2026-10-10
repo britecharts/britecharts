@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { TooltipWrapper } from '@britecharts/wrappers';
 
-import { axisTimeCombinations as combinations } from '../constants';
+import { axisTimeCombinations as combinations } from '../constants.js';
 
 const tooltipContainerWithMarkerSelector =
     '.metadata-group .vertical-marker-container';

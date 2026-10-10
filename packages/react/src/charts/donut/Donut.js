@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { DonutWrapper } from '@britecharts/wrappers';
-import useChart from '../helpers/useChart';
+import useChart from '../helpers/useChart.js';
 
 // isAnimated reaches the chart only because it is put back into the
 // configuration here: the rest of the props do not carry a default, so leaving

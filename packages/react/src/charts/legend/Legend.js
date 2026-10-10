@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { LegendWrapper } from '@britecharts/wrappers';
-import useChart from '../helpers/useChart';
+import useChart from '../helpers/useChart.js';
 
 // createTooltip is handed to every chart by a Tooltip, but is not a
 // configuration key of the wrapper, and a legend has no tooltip to redraw.

@@ -14,4 +14,4 @@ export { default as Tooltip } from './charts/tooltip/Tooltip.js';
 export { default as ResponsiveContainer } from './charts/helpers/responsiveContainer.js';
 export { default as withResponsiveness } from './charts/helpers/withResponsiveness.js';
 
-export * from './charts/constants';
+export * from './charts/constants.js';

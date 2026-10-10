@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ScatterPlotWrapper } from '@britecharts/wrappers';
-import useChart from '../helpers/useChart';
+import useChart from '../helpers/useChart.js';
 
 const ScatterPlot = ({
     chart = ScatterPlotWrapper,

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { StackedAreaWrapper } from '@britecharts/wrappers';
-import useChart from '../helpers/useChart';
+import useChart from '../helpers/useChart.js';
 
-import { axisTimeCombinations as combinations } from '../constants';
+import { axisTimeCombinations as combinations } from '../constants.js';
 
 const StackedArea = ({
     chart = StackedAreaWrapper,

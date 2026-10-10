@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { LineWrapper } from '@britecharts/wrappers';
 
-import { axisTimeCombinations as combinations } from '../constants';
-import useChart from '../helpers/useChart';
+import { axisTimeCombinations as combinations } from '../constants.js';
+import useChart from '../helpers/useChart.js';
 
 const Line = ({
     chart = LineWrapper,
