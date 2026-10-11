@@ -1,5 +1,11 @@
 import { FunctionComponent } from 'react';
-import { LocalObject } from '@britecharts/core';
+import {
+    ColorsSchemasType,
+    LocalObject,
+    StackedBarChartDataShape,
+    StackedBarChartModule,
+} from '@britecharts/core';
+import { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
 
 export interface StackedBarProps {
     /**
@@ -8,13 +14,7 @@ export interface StackedBarProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data:
-        | {
-              name: string;
-              stack: string;
-              value: number;
-          }[]
-        | null;
+    data: StackedBarChartDataShape[] | null;
 
     /**
      * Gets or Sets the duration of the animation
@@ -34,17 +34,21 @@ export interface StackedBarProps {
     /**
      * Gets or Sets the colorSchema of the chart
      */
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
-     * Chart exported to png and a download action is fired
+     * The filename to export the chart to. Setting it exports a png and fires
+     * a download, which is what the chart's `exportChart` command does; it is
+     * not a callback.
      */
-    exportChart?: Function;
+    exportChart?: string;
 
     /**
      * Gets or Sets the grid mode.
      */
-    grid?: string;
+    // `GridTypes | null` as core declares it, spelled out because core's
+    // typings barrel does not export `common/grid` yet.
+    grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
      * Gets or Sets the hasPercentage status
@@ -90,12 +94,7 @@ export interface StackedBarProps {
     /**
      * Gets or Sets the nameLabel of the chart
      */
-    nameLabel?: number;
-
-    /**
-     * Gets or Sets the nameLabelFormat of the chart
-     */
-    nameLabelFormat?: string[];
+    nameLabel?: string;
 
     /**
      * Configurable extension of the x axis
@@ -117,7 +116,7 @@ export interface StackedBarProps {
     /**
      * Gets or Sets the valueLabel of the chart
      */
-    valueLabel?: number;
+    valueLabel?: string;
 
     /**
      * Current locale object or Chart module to chain calls
@@ -152,16 +151,16 @@ export interface StackedBarProps {
      */
     yTicks?: number;
 
-    customMouseOver?: Function;
-    customMouseMove?: Function;
-    customMouseOut?: Function;
+    customMouseOver?: ChartEventHandler;
+    customMouseMove?: ChartEventHandler;
+    customMouseOut?: ChartEventHandler;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<StackedBarChartDataShape[], StackedBarChartModule>;
 
     /**
      * Internally used, do not overwrite.
@@ -169,7 +168,7 @@ export interface StackedBarProps {
      * @ignore
      * @internal
      */
-    createTooltip?: Function;
+    createTooltip?: () => void;
 }
 
 declare const StackedBar: FunctionComponent<StackedBarProps>;
