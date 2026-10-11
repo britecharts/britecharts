@@ -1,5 +1,12 @@
 import { FunctionComponent } from 'react';
-import { LocalObject } from '@britecharts/core';
+import {
+    BarChartDataShape,
+    BarChartModule,
+    BarSelection,
+    ColorsSchemasType,
+    LocalObject,
+} from '@britecharts/core';
+import { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
 
 export interface BarChartProps {
     /**
@@ -8,7 +15,7 @@ export interface BarChartProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data: { value: number; name: string }[] | null;
+    data: BarChartDataShape[] | null;
 
     /**
      * Gets or Sets the duration of the animation
@@ -28,7 +35,7 @@ export interface BarChartProps {
     /**
      * Gets or Sets the colorSchema of the chart
      */
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
      * Current colorMap or Chart module to chain calls
@@ -58,7 +65,7 @@ export interface BarChartProps {
     /**
      * Gets or Sets the highlightBarFunction function. The callback passed to this function returns a bar selection from the bar chart. Use this function if you want to apply a custom behavior to the highlighted bar on hover. When hasSingleBarHighlight is true the highlighted bar will be the one that was hovered by the user. When hasSingleBarHighlight is false the highlighted bars are all the bars but the hovered one. The default highlight effect on a bar is darkening the highlighted bar(s) color.
      */
-    highlightBarFunction?: Function;
+    highlightBarFunction?: ((bar: BarSelection) => void) | null;
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate
@@ -103,7 +110,7 @@ export interface BarChartProps {
     /**
      * Gets or Sets the nameLabel of the chart
      */
-    nameLabel?: number;
+    nameLabel?: string;
 
     /**
      * Gets or Sets the number format of the bar chart
@@ -113,7 +120,7 @@ export interface BarChartProps {
     /**
      * Changes the order of items given the custom function
      */
-    orderingFunction?: Function;
+    orderingFunction?: (a: BarChartDataShape, b: BarChartDataShape) => number;
 
     /**
      * Configurable extension of the x axis if your max point was 50%
@@ -129,7 +136,7 @@ export interface BarChartProps {
     /**
      * Gets or Sets the valueLabel of the chart
      */
-    valueLabel?: number;
+    valueLabel?: string;
 
     /**
      * Current locale object or Chart module to chain calls
@@ -176,18 +183,29 @@ export interface BarChartProps {
      */
     yTicks?: number;
 
-    customMouseOver?: Function;
+    /**
+     * Called when the pointer enters a bar, with what the chart dispatches.
+     *
+     * `ChartEventHandler` is the type the wrappers package publishes for these
+     * four, and it is what `applyConfiguration` registers them through. They
+     * were declared as the bare `Function` type, which no handler satisfies
+     * structurally -- so these were unusable from TypeScript in practice,
+     * which the conversion found rather than a reader.
+     */
+    customMouseOver?: ChartEventHandler;
 
-    customMouseMove?: Function;
+    /** Called on every pointer move over the chart. */
+    customMouseMove?: ChartEventHandler;
 
-    customMouseOut?: Function;
+    /** Called when the pointer leaves a bar. */
+    customMouseOut?: ChartEventHandler;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<BarChartDataShape[], BarChartModule>;
 
     /**
      * Internally used, do not overwrite.
@@ -195,7 +213,7 @@ export interface BarChartProps {
      * @ignore
      * @internal
      */
-    createTooltip?: Function;
+    createTooltip?: () => void;
 }
 
 declare const Bar: FunctionComponent<BarChartProps>;
