@@ -14,11 +14,25 @@ export enum DonutChartKeys {
     Percentage = 'percentage',
 }
 
+/**
+ * Two of these four are optional, and this declared all four as required --
+ * so the data the chart documents, and draws, did not compile.
+ *
+ * The chart's own `@typedef DonutChartData` says so: "Percentage of the total
+ * (optional)" and "Identifier for the group required for legend feature
+ * (optional)". `cleanData` backs it up, computing the percentage whenever one
+ * is absent (`datum.percentage = d[percentageLabel] || null`, then
+ * `String(d.percentage || calculatePercent(...))`), and skipping a datum only
+ * for a missing `quantity`. `id` is read by the legend bridge and by
+ * `highlightSliceById`, neither of which the chart needs to draw.
+ */
 export type DonutChartDataShape = {
-    [DonutChartKeys.ID]: number;
     [DonutChartKeys.Name]: string;
     [DonutChartKeys.Quantity]: number;
-    [DonutChartKeys.Percentage]: number;
+    /** Computed from the quantities when not given. */
+    [DonutChartKeys.Percentage]?: number;
+    /** Only the legend feature needs it. */
+    [DonutChartKeys.ID]?: number;
 };
 
 export interface DonutEmptyDataConfig {
@@ -92,8 +106,12 @@ export interface DonutChartAPI
      * The getter is `undefined` until one is set: the chart has no default and
      * only highlights a slice once an id arrives.
      */
-    highlightSliceById(): DonutChartDataShape['id'] | undefined;
-    highlightSliceById(id: DonutChartDataShape['id']): DonutChartModule;
+    highlightSliceById(): DonutChartDataShape['id'];
+    // `NonNullable`, so the setter keeps rejecting an explicit undefined now
+    // that the field it points at is optional.
+    highlightSliceById(
+        id: NonNullable<DonutChartDataShape['id']>
+    ): DonutChartModule;
     /** Gets or Sets the internalRadius of the chart */
     internalRadius(): number;
     internalRadius(radius: number): DonutChartModule;
