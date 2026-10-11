@@ -4,23 +4,55 @@ import type { BritechartsCustomEvent } from '../constants';
 export type ChartEventHandler = (...args: never[]) => void;
 
 /**
- * Every accessor on the chart, paired with the type that accessor accepts.
+ * What an accessor accepts, or `never` when the member is not one.
  *
- * Core declares each accessor as one optional-parameter signature
- * (`width(width?: number): T & ChartBaseAPI<T>`), so `infer` reads the value
- * type straight off it. An overloaded getter/setter pair would not infer
- * reliably in this position, which is why the mixin form core already uses is
- * the one to keep.
+ * Core declares an accessor as a getter/setter overload pair, and conditional
+ * inference in this position reads the **last** overload -- the setter -- which
+ * is why core keeps the getter first. A single optional-parameter signature,
+ * the older mixin form, infers the same way.
+ */
+type AccessorValue<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
+    value?: infer TValue
+) => unknown
+    ? TValue
+    : never;
+
+/**
+ * What a command is called with: its first argument.
  *
- * Anything that is not an accessor maps to `never`, so passing it is an error
+ * A command acts when called rather than getting or setting -- legend's
+ * `highlight(id)`, a chart's `exportChart(filename, title)` -- so it has a
+ * required parameter and does not match {@link AccessorValue} at all. Left out
+ * of the configuration it maps to `never`, and passing it is an error even
+ * though `applyConfiguration` calls it perfectly well: `highlight` has always
+ * worked at run time and never type-checked.
+ *
+ * Only the first argument, because that is all a single configuration value
+ * can carry. `exportChart`'s `title` is therefore not reachable this way, and
+ * the helper behind it already treats both as optional.
+ */
+type CommandArgument<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
+    ...args: infer TArgs
+) => unknown
+    ? TArgs[0]
+    : never;
+
+/**
+ * Every member of the chart a wrapper may be handed a value for, paired with
+ * the type that member takes: an accessor's value, or a command's argument.
+ *
+ * The two are chosen per key rather than intersected. Intersecting
+ * `{ highlight?: never }` with `{ highlight?: number }` gives `never & number`
+ * -- `never` -- so a command channel added that way would reject the very
+ * props it exists to allow.
+ *
+ * Anything that is neither maps to `never`, so passing it is still an error
  * rather than silently doing nothing.
  */
 export type ChartConfiguration<TChart> = Partial<{
-    [TKey in keyof TChart]: TChart[TKey] extends (
-        value?: infer TValue
-    ) => unknown
-        ? TValue
-        : never;
+    [TKey in keyof TChart]: [AccessorValue<TChart, TKey>] extends [never]
+        ? CommandArgument<TChart, TKey>
+        : AccessorValue<TChart, TKey>;
 }>;
 
 /**

@@ -1,5 +1,46 @@
 import { applyConfiguration } from './configuration';
-import type { ChartEventHandler } from './configuration';
+import type { ChartConfiguration, ChartEventHandler } from './configuration';
+import type { LegendModule, SparklineChartModule } from '@britecharts/core';
+
+// Type-level assertions: `tsc --noEmit` covers this file, so a wrong type here
+// fails the type-check rather than a test.
+type Expect<T extends true> = T;
+type Equal<A, B> =
+    (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2
+        ? true
+        : false;
+
+// An accessor still contributes the type its setter takes. Core declares these
+// as overload pairs, and inference in this position reads the last overload,
+// which is the setter -- the reason the getter comes first.
+export type AccessorKeepsItsValueType = Expect<
+    Equal<
+        ChartConfiguration<SparklineChartModule>['dateLabel'],
+        string | undefined
+    >
+>;
+
+// A command contributes the argument it is called with. Both of these used to
+// be `never`, so passing them was an error even though `applyConfiguration`
+// calls them perfectly well: legend's `highlight` has always worked at run
+// time and never type-checked.
+export type CommandCarriesItsArgument = Expect<
+    Equal<ChartConfiguration<LegendModule>['highlight'], number | undefined>
+>;
+export type ExportChartTakesAFilename = Expect<
+    Equal<
+        ChartConfiguration<SparklineChartModule>['exportChart'],
+        string | undefined
+    >
+>;
+
+// And a command's argument is still checked, so the channel is not a hole.
+const wrongCommandArgument: ChartConfiguration<LegendModule> = {
+    // @ts-expect-error -- highlight takes an entry id, not a string
+    highlight: 'three',
+};
+
+void wrongCommandArgument;
 
 // A chart double whose accessors record what they were called with, and how
 // many times: an accessor that was never called is a value that never arrived.
@@ -31,6 +72,20 @@ const makeChart = <TName extends string>(
 
 describe('configuration', () => {
     describe('applyConfiguration', () => {
+        describe('a command', () => {
+            // `applyConfiguration` has always called these the same way it
+            // calls an accessor -- the chart's member, with the value -- which
+            // is why `highlight` worked while being a type error. The test is
+            // here so the runtime half stays pinned now that the types allow it.
+            it('should be called with its argument', () => {
+                const chart = makeChart('highlight');
+
+                applyConfiguration(chart, { highlight: 3 });
+
+                expect(chart.calls.highlight).toEqual([3]);
+            });
+        });
+
         describe('a value that is set', () => {
             it.each([
                 ['true', true],
