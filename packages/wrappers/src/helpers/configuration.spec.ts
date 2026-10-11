@@ -34,6 +34,17 @@ export type ExportChartTakesAFilename = Expect<
     >
 >;
 
+// A command that takes nothing is a trigger: any set value calls it and the
+// value is discarded, so `boolean` is what the type offers. The first element
+// of an empty parameter list is `undefined`, which would leave the only
+// compiling value the one `isSet` skips.
+export type ZeroArgumentCommandIsATrigger = Expect<
+    Equal<
+        ChartConfiguration<LegendModule>['clearHighlight'],
+        boolean | undefined
+    >
+>;
+
 // And a command's argument is still checked, so the channel is not a hole.
 const wrongCommandArgument: ChartConfiguration<LegendModule> = {
     // @ts-expect-error -- highlight takes an entry id, not a string
@@ -83,6 +94,17 @@ describe('configuration', () => {
                 applyConfiguration(chart, { highlight: 3 });
 
                 expect(chart.calls.highlight).toEqual([3]);
+            });
+
+            // The trigger case, and the reason `boolean` is its type: the
+            // chart's member takes nothing, so whatever arrives is discarded --
+            // being set at all is the whole signal.
+            it('should be called when it takes no argument and a value is set', () => {
+                const chart = makeChart('clearHighlight');
+
+                applyConfiguration(chart, { clearHighlight: true });
+
+                expect(chart.calls.clearHighlight).toEqual([true]);
             });
         });
 

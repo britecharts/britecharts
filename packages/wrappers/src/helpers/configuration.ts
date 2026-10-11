@@ -30,11 +30,31 @@ type AccessorValue<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
  * Only the first argument, because that is all a single configuration value
  * can carry. `exportChart`'s `title` is therefore not reachable this way, and
  * the helper behind it already treats both as optional.
+ *
+ * A command that takes nothing is handled before this, by {@link Arity}.
  */
 type CommandArgument<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
     ...args: infer TArgs
 ) => unknown
     ? TArgs[0]
+    : never;
+
+/**
+ * How many arguments a member declares, as the literal union of lengths its
+ * parameter list allows.
+ *
+ * An accessor with one optional parameter reports `0 | 1`; a command with one
+ * required parameter reports `1`; a member that takes nothing reports `0`.
+ * Exactly `0` is the only case that cannot be an accessor, which is what makes
+ * this the test to use -- a zero-parameter function **is** assignable to
+ * `(value?: infer TValue) => unknown`, inferring `unknown`, so
+ * {@link AccessorValue} matches it and the fallback below is never reached
+ * without this.
+ */
+type Arity<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
+    ...args: infer TArgs
+) => unknown
+    ? TArgs['length']
     : never;
 
 /**
@@ -46,13 +66,21 @@ type CommandArgument<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
  * -- `never` -- so a command channel added that way would reject the very
  * props it exists to allow.
  *
- * Anything that is neither maps to `never`, so passing it is still an error
- * rather than silently doing nothing.
+ * A member that takes no arguments at all -- legend's `clearHighlight()` -- is
+ * a trigger rather than either: `applyConfiguration` calls it for any value
+ * that is set and the chart discards what arrives, so `boolean` is what the
+ * type offers. Its first argument would be `undefined`, which would leave the
+ * only compiling value the one `isSet` skips.
+ *
+ * Anything that is none of the three maps to `never`, so passing it is still
+ * an error rather than silently doing nothing.
  */
 export type ChartConfiguration<TChart> = Partial<{
-    [TKey in keyof TChart]: [AccessorValue<TChart, TKey>] extends [never]
-        ? CommandArgument<TChart, TKey>
-        : AccessorValue<TChart, TKey>;
+    [TKey in keyof TChart]: [Arity<TChart, TKey>] extends [0]
+        ? boolean
+        : [AccessorValue<TChart, TKey>] extends [never]
+          ? CommandArgument<TChart, TKey>
+          : AccessorValue<TChart, TKey>;
 }>;
 
 /**
