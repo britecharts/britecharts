@@ -697,6 +697,9 @@ importers:
       react:
         specifier: 19.3.0
         version: 19.3.0
+      react-docgen:
+        specifier: 7.1.1
+        version: 7.1.1(supports-color@6.1.0)
       react-dom:
         specifier: 19.3.0
         version: 19.3.0(react@19.3.0)

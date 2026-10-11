@@ -1,10 +1,53 @@
 import fs from 'fs';
 import path from 'path';
+import { execFileSync } from 'child_process';
 
 import * as exported from './index';
 import { LEGACY_DEFAULT_PROPS } from './legacyComponents.fixtures';
 
 const source = fs.readFileSync(path.join(__dirname, 'index.js'), 'utf8');
+
+// Where each component's source really is. The entry file names them `.js`
+// -- deliberately, since that is what the built ESM output resolves against
+// -- so a converted component is on disk as `.tsx` under the same name.
+const sourceFileFor = (from) => {
+    const base = path.join(__dirname, from).replace(/\.js$/, '');
+
+    return ['.tsx', '.ts', '.js']
+        .map((extension) => base + extension)
+        .find((candidate) => fs.existsSync(candidate));
+};
+
+// The props Storybook's own docgen can see in a component's source, asked of
+// react-docgen itself rather than of a stand-in. It is ESM-only, so it answers
+// in a child process instead of being imported here.
+//
+// react-docgen-typescript was tried first and is the wrong tool for this
+// assertion: it resolves types through the TypeScript compiler, so it follows
+// an imported props interface and reports every prop either way -- which is
+// precisely the regression this is meant to catch.
+const docgenPropsFor = (file) =>
+    JSON.parse(
+        execFileSync(
+            'node',
+            [
+                '--input-type=module',
+                '-e',
+                `import { parse } from 'react-docgen';
+                 import fs from 'fs';
+                 const file = process.argv[1];
+                 const parsed = parse(fs.readFileSync(file, 'utf8'), {
+                     filename: file,
+                     babelOptions: { filename: file },
+                 });
+                 process.stdout.write(
+                     JSON.stringify(Object.keys(parsed[0]?.props ?? {}))
+                 );`,
+                file,
+            ],
+            { cwd: path.join(__dirname, '..'), encoding: 'utf8' }
+        )
+    );
 
 // Every `export { default as Name } from '...'` line, read from the source so
 // the list of components is never written out by hand here.
@@ -28,11 +71,38 @@ describe('package surface', () => {
             expect(typeof exported[name]).toBe('function');
         });
 
-        it('should keep its propTypes', () => {
-            // react-docgen reads them for Storybook's Controls; nothing else
-            // would notice them vanishing
-            expect(exported[name].propTypes).toBeDefined();
-        });
+        // Storybook builds each chart's Controls from whatever its docgen can
+        // read off the source, and nothing else in CI would notice those
+        // vanishing. Which mechanism applies depends on the file, so the
+        // assertion follows the file:
+        //
+        //   .js  -- react-docgen reads `Component.propTypes`, so asserting
+        //           those exist is asserting exactly what it reads.
+        //   .tsx -- it reads the props interface, which therefore has to be
+        //           declared in the component file. Imported from
+        //           src/typings instead, extraction collapses to the single
+        //           destructured `chart` default and every Control for the
+        //           chart's own accessors disappears silently. Verified by
+        //           probe: the imported form reports ["chart"] and nothing
+        //           else.
+        const file = sourceFileFor(
+            reExports.find((re) => re.name === name).from
+        );
+
+        if (file.endsWith('.js')) {
+            it('should keep its propTypes, which its Controls are built from', () => {
+                expect(exported[name].propTypes).toBeDefined();
+            });
+        } else {
+            it('should declare props in the component file, where the docgen can read them', () => {
+                // `data` is the signal for a chart component, and every one of
+                // them takes it. It is never a destructured default, so finding
+                // it means the props interface itself was read. When a layout
+                // helper converts -- ResponsiveContainer, whose only prop is
+                // `render` -- assert on its own entry prop instead.
+                expect(docgenPropsFor(file)).toContain('data');
+            });
+        }
 
         if (LEGACY_DEFAULT_PROPS.includes(name)) {
             it('should still declare defaultProps, and so be on the legacy list', () => {
