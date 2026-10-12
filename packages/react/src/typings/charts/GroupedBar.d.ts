@@ -1,5 +1,11 @@
 import { FunctionComponent } from 'react';
-import { LocalObject } from '@britecharts/core';
+import {
+    ColorsSchemasType,
+    GroupedBarChartDataShape,
+    GroupedBarChartModule,
+    LocalObject,
+} from '@britecharts/core';
+import { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
 
 export interface GroupedBarProps {
     /**
@@ -8,13 +14,7 @@ export interface GroupedBarProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data:
-        | {
-              name: string;
-              group: string;
-              value: number;
-          }[]
-        | null;
+    data: GroupedBarChartDataShape[] | null;
 
     /**
      * Gets or Sets the duration of the animation
@@ -39,17 +39,24 @@ export interface GroupedBarProps {
     /**
      * Gets or Sets the colorSchema of the chart
      */
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
-     * Chart exported to png and a download action is fired
+     * The filename to export the chart to. Setting it exports a png and fires
+     * a download, which is what the chart's `exportChart` command does -- it
+     * is not a callback, which is what this declared and what a reader would
+     * have passed. The chart's exporter treats the title as optional, so a
+     * filename on its own is enough.
      */
-    exportChart?: Function;
+    exportChart?: string;
 
     /**
      * Gets or Sets the grid mode.
      */
-    grid?: string;
+    // `GridTypes | null` as core declares it, spelled out because core's
+    // typings barrel does not export `common/grid` yet. `string` accepted any
+    // string, and only three of them do anything.
+    grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
      * Gets or Sets the groupLabel of the chart
@@ -90,7 +97,7 @@ export interface GroupedBarProps {
     /**
      * Gets or Sets the nameLabel of the chart
      */
-    nameLabel?: number;
+    nameLabel?: string;
 
     /**
      * Gets or Sets the number format of the bar chart
@@ -105,7 +112,7 @@ export interface GroupedBarProps {
     /**
      * Gets or Sets the valueLabel of the chart
      */
-    valueLabel?: number;
+    valueLabel?: string;
 
     /**
      * Current locale object or Chart module to chain calls
@@ -143,21 +150,22 @@ export interface GroupedBarProps {
     /**
      * Gets or Sets the x and y offset of ticks of the y axis on the chart
      */
-    yTickTextOffset?: {
-        x?: number;
-        y?: number;
-    };
+    // Both required, as core's `Offset` declares them: the chart reads x and
+    // y off it to place the tick text, so half an offset is not an offset.
+    // Spelled out because `common/position` is not exported from core's
+    // barrel either.
+    yTickTextOffset?: { x: number; y: number };
 
-    customMouseOver?: Function;
-    customMouseMove?: Function;
-    customMouseOut?: Function;
+    customMouseOver?: ChartEventHandler;
+    customMouseMove?: ChartEventHandler;
+    customMouseOut?: ChartEventHandler;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<GroupedBarChartDataShape[], GroupedBarChartModule>;
 
     /**
      * Internally used, do not overwrite.
@@ -165,7 +173,7 @@ export interface GroupedBarProps {
      * @ignore
      * @internal
      */
-    createTooltip?: Function;
+    createTooltip?: () => void;
 }
 
 declare const GroupedBar: FunctionComponent<GroupedBarProps>;

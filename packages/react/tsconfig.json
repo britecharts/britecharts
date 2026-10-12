@@ -1,7 +1,28 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "jsx": "react"
+        "jsx": "react",
+        // Resolve the sibling workspace to its source, the way jest's
+        // moduleNameMapper already does for the specs.
+        //
+        // Without this, `@britecharts/wrappers` resolves through its
+        // package.json `types`, which points at `dist/esm/index.d.ts` -- so
+        // type-checking this package would require having built that one
+        // first. It passed locally only because a previous build had left the
+        // output there, and failed in CI, which builds nothing before the
+        // type-check step. A check that depends on a build artifact is a check
+        // that reports whatever was lying around.
+        //
+        // `@britecharts/core` needs no entry: its `types` already points at
+        // source. The published declarations are not going unchecked --
+        // `packages/integration` compiles a consumer against the packed
+        // tarballs, which is the view this one deliberately does not take.
+        //
+        // No `baseUrl`: TypeScript 6 deprecates it, and `paths` has resolved
+        // relative to the tsconfig without it since 5.0.
+        "paths": {
+            "@britecharts/wrappers": ["../wrappers/src/index.ts"]
+        }
     },
     "include": ["src"]
 }

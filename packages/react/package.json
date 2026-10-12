@@ -2,15 +2,17 @@
   "name": "@britecharts/react",
   "version": "3.0.0-beta.2",
   "main": "dist/umd/bundle/react.bundled.min.js",
-  "module": "src/index.js",
+  "module": "dist/esm/index.js",
   "types": "src/typings/index.d.ts",
   "dependencies": {
     "@britecharts/core": "workspace:^",
     "@britecharts/wrappers": "workspace:^"
   },
   "devDependencies": {
+    "@babel/cli": "7.29.7",
     "@babel/core": "7.29.7",
     "@babel/parser": "7.29.9",
+    "@babel/preset-react": "7.29.7",
     "@babel/preset-typescript": "7.29.7",
     "@storybook/addon-a11y": "8.6.14",
     "@storybook/addon-essentials": "8.6.14",
@@ -33,6 +35,7 @@
     "jest": "29.7.0",
     "raw-loader": "4.0.2",
     "react": "19.3.0",
+    "react-docgen": "7.1.1",
     "react-dom": "19.3.0",
     "require-from-string": "2.0.2",
     "rimraf": "2.7.1",
@@ -53,7 +56,8 @@
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
-    "build": "pnpm run clean && webpack --env=production",
+    "build": "pnpm run clean && pnpm run build:esm && webpack --env=production",
+    "build:esm": "babel src --out-dir dist/esm --extensions .tsx,.ts,.js --config-file ./babel.config.esm.js --ignore \"src/**/*.d.ts,src/**/*.spec.js,src/**/*.spec.ts,src/**/*.spec.tsx,src/**/*.stories.js,src/**/*.stories.ts,src/**/*.stories.tsx,src/**/*.fixtures.js,src/**/*.fixtures.ts,src/docs\"",
     "build:bundle": "webpack --env=prodBundleConfig",
     "build:charts": "webpack --env=prodChartsConfig",
     "build:charts:cjs": "webpack --env=prodCJSChartsConfig",
@@ -63,10 +67,10 @@
     "demo": "pnpm run storybook",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
     "lint": "pnpm run lint:js",
-    "lint:js": "eslint src/charts src/index.js webpack.*.js --ext .js,.ts,.tsx --ignore-pattern \"*.spec.js\" --cache",
+    "lint:js": "eslint src/charts src/index.ts webpack.*.js --ext .js,.ts,.tsx --ignore-pattern \"*.spec.js\" --cache",
     "start": "webpack-dev-server --env=test --open --hot",
     "storybook": "storybook dev -p 2002 --exact-port",
-    "test": "jest --colors --coverage --coverageThreshold='{\"global\":{\"statements\":93,\"branches\":85,\"functions\":93,\"lines\":94},\"./src/charts/helpers/useChart.js\":{\"statements\":95,\"branches\":90,\"functions\":95,\"lines\":95}}'",
+    "test": "jest --colors --coverage --coverageThreshold='{\"global\":{\"statements\":93,\"branches\":85,\"functions\":93,\"lines\":94},\"./src/charts/helpers/useChart.ts\":{\"statements\":95,\"branches\":90,\"functions\":95,\"lines\":95}}'",
     "test:watch": "jest --watch --colors",
     "type-check": "tsc --noEmit",
     "verify:suite": "node testing/verify-suite.mjs"
@@ -75,6 +79,7 @@
     "CHANGELOG.md",
     "dist/umd/**",
     "dist/cjs/**",
+    "dist/esm/**",
     "src/**",
     "!src/docs/**",
     "!**/*.map",
@@ -93,7 +98,7 @@
   "exports": {
     ".": {
       "types": "./src/typings/index.d.ts",
-      "import": "./dist/umd/bundle/react.bundled.min.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/umd/bundle/react.bundled.min.js",
       "default": "./dist/umd/bundle/react.bundled.min.js"
     },

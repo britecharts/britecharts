@@ -1,4 +1,11 @@
 import { FunctionComponent } from 'react';
+import {
+    ColorGradientType,
+    SparkelineTitleTextStyle,
+    SparklineChartDataShape,
+    SparklineChartModule,
+} from '@britecharts/core';
+import { Wrapper } from '@britecharts/wrappers';
 
 export interface SparklineProps {
     /**
@@ -7,12 +14,7 @@ export interface SparklineProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data:
-        | {
-              value: number;
-              date: string;
-          }[]
-        | null;
+    data: SparklineChartDataShape[] | null;
 
     /**
      * Gets or Sets the duration of the animation
@@ -22,7 +24,9 @@ export interface SparklineProps {
     /**
      * Gets or Sets the areaGradient of the chart
      */
-    areaGradient?: string[];
+    // A two-element tuple, as core declares it: the chart reads [0] and [1]
+    // and nothing else. `string[]` accepted a one-element or empty array.
+    areaGradient?: ColorGradientType;
 
     /**
      * Gets or Sets the dateLabel of the chart
@@ -30,7 +34,11 @@ export interface SparklineProps {
     dateLabel?: string;
 
     /**
-     * Chart exported to png and a download action is fired
+     * The filename to export the chart to. Setting it exports a png and fires
+     * a download, which is what the chart's `exportChart` command does; it is
+     * not a callback, and the four other components that declare this prop had
+     * it as one. The chart's exporter treats the title as optional, so a
+     * filename on its own is enough.
      */
     exportChart?: string;
 
@@ -54,7 +62,7 @@ export interface SparklineProps {
     /**
      * Gets or Sets the lineGradient of the chart
      */
-    lineGradient?: string[];
+    lineGradient?: ColorGradientType;
 
     /**
      * Gets or Sets the margin of the chart
@@ -93,13 +101,7 @@ export interface SparklineProps {
      * within the object will set custom 'font-family` while the rest
      * of the attributes will have the default values provided above.
      */
-    titleTextStyle?: {
-        'font-family'?: string;
-        'font-size'?: string;
-        'font-weight'?: number;
-        'font-style'?: string;
-        fill?: string;
-    };
+    titleTextStyle?: SparkelineTitleTextStyle;
 
     /**
      * Gets or Sets the valueLabel of the chart
@@ -116,7 +118,7 @@ export interface SparklineProps {
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<SparklineChartDataShape[], SparklineChartModule>;
 
     /**
      * Internally used, do not overwrite.
@@ -124,7 +126,7 @@ export interface SparklineProps {
      * @ignore
      * @internal
      */
-    createTooltip?: Function;
+    createTooltip?: () => void;
 }
 
 declare const Sparkline: FunctionComponent<SparklineProps>;

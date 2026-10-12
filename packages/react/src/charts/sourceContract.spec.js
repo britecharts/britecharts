@@ -13,8 +13,14 @@ import { LEGACY_DEFAULT_PROPS } from '../legacyComponents.fixtures';
 const srcRoot = path.join(__dirname, '..');
 const chartsRoot = __dirname;
 
+// Every extension, not just .js. Spelled `.js` these guards would quietly
+// stop covering each component as it converts -- the structural checks below
+// would keep passing over a shrinking set of files, which is the failure mode
+// that does not announce itself.
 const isSource = (file) =>
-    /\.js$/.test(file) && !/\.(spec|stories|fixtures)\.js$/.test(file);
+    /\.[jt]sx?$/.test(file) &&
+    !/\.(spec|stories|fixtures)\.[jt]sx?$/.test(file) &&
+    !/\.d\.ts$/.test(file);
 
 const sourceFilesUnder = (dir) =>
     fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -31,14 +37,28 @@ const read = (file) => fs.readFileSync(file, 'utf8');
 const relative = (file) => path.relative(srcRoot, file);
 
 // Every `export { default as Name } from '...'` line of the entry file
+// The entry file names every export `.js`, which is what the built ESM output
+// resolves against, so a converted component is on disk as `.tsx` under the
+// same name.
+const resolveSource = (from) => {
+    const base = path.join(srcRoot, from).replace(/\.js$/, '');
+
+    return (
+        ['.tsx', '.ts', '.js']
+            .map((extension) => base + extension)
+            .find((candidate) => fs.existsSync(candidate)) ?? base + '.js'
+    );
+};
+
+const barrelFile = ['index.ts', 'index.js']
+    .map((name) => path.join(srcRoot, name))
+    .find((candidate) => fs.existsSync(candidate));
+
 const components = [
-    ...read(path.join(srcRoot, 'index.js')).matchAll(
+    ...read(barrelFile).matchAll(
         /export \{ default as (\w+) \} from '([^']+)'/g
     ),
-].map(([, name, from]) => ({
-    name,
-    file: path.join(srcRoot, /\.js$/.test(from) ? from : `${from}.js`),
-}));
+].map(([, name, from]) => ({ name, file: resolveSource(from) }));
 
 // Layout effects only, never mixed: they are the ones that flush inside
 // React's commit, which is what the lifecycle-order guarantees and the test
@@ -118,7 +138,7 @@ describe('source contract', () => {
         const classFieldsIn = (source) => {
             const ast = parse(source, {
                 sourceType: 'module',
-                plugins: ['jsx'],
+                plugins: ['jsx', 'typescript'],
             });
             const found = [];
             const visit = (node) => {
@@ -142,7 +162,11 @@ describe('source contract', () => {
 
         it('should find the files the package publishes', () => {
             expect(publishedFiles.length).toBeGreaterThan(10);
-            expect(publishedFiles.map(relative)).toContain('index.js');
+            expect(publishedFiles.map(relative)).toContain('index.ts');
+            // The converted files are in the set these guards run over
+            expect(
+                publishedFiles.map(relative).filter((f) => /\.tsx?$/.test(f))
+            ).not.toEqual([]);
             expect(publishedFiles.map(relative)).not.toContain(
                 path.join('templates', 'Component.js')
             );

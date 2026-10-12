@@ -1,5 +1,11 @@
 import { FunctionComponent } from 'react';
-import { LocalObject } from '@britecharts/core';
+import {
+    ColorsSchemasType,
+    LocalObject,
+    ScatterPlotDataShape,
+    ScatterPlotModule,
+} from '@britecharts/core';
+import { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
 
 export interface ScatterPlotProps {
     /**
@@ -8,7 +14,7 @@ export interface ScatterPlotProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data: { name: string; x: number; y: number }[] | null;
+    data: ScatterPlotDataShape[] | null;
 
     /**
      * Gets or Sets the duration of the animation
@@ -40,7 +46,7 @@ export interface ScatterPlotProps {
     /**
      * Gets or Sets the colorSchema of the chart
      */
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
      * Gets or Sets whether the chart supports zoom controls. `false` by default.
@@ -51,7 +57,11 @@ export interface ScatterPlotProps {
     /**
      * Gets or Sets the grid mode
      */
-    grid?: 'vertical' | 'horizontal' | 'full';
+    // `GridTypes | null` as core declares it. Spelled out rather than
+    // imported because core's typings barrel does not export `common/grid`
+    // yet -- a Phase 5 item -- and `null` is the default, which this was
+    // missing: assigning the default back is how a grid is turned off.
+    grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
      * Gets or Sets the hasCrossHairs status. If true, the hovered data point
@@ -110,7 +120,7 @@ export interface ScatterPlotProps {
     /**
      * Current locale object or Chart module to chain calls
      */
-    valueLocale?: LocalObject;
+    valueLocale?: LocalObject | null;
 
     /**
      * Gets or Sets the width of the chart
@@ -168,29 +178,29 @@ export interface ScatterPlotProps {
      * Called with the hovered point ({ name, x, y }), its position [x, y]
      * and the chart's size [width, height]
      */
-    customMouseMove?: Function;
+    customMouseMove?: ChartEventHandler;
 
     /**
      * Called when the pointer enters a point
      */
-    customMouseOver?: Function;
+    customMouseOver?: ChartEventHandler;
 
     /**
      * Called when the pointer leaves the chart
      */
-    customMouseOut?: Function;
+    customMouseOut?: ChartEventHandler;
 
     /**
      * Called with the clicked point, its position and the chart's size
      */
-    customClick?: Function;
+    customClick?: ChartEventHandler;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<ScatterPlotDataShape[], ScatterPlotModule>;
 
     /**
      * Internally used, do not overwrite.
@@ -198,7 +208,7 @@ export interface ScatterPlotProps {
      * @ignore
      * @internal
      */
-    createTooltip?: Function;
+    createTooltip?: () => void;
 }
 
 declare const ScatterPlot: FunctionComponent<ScatterPlotProps>;

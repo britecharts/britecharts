@@ -1,4 +1,10 @@
 import { FunctionComponent } from 'react';
+import {
+    BulletChartDataShape,
+    BulletChartModule,
+    ColorsSchemasType,
+} from '@britecharts/core';
+import { Wrapper } from '@britecharts/wrappers';
 
 export interface BulletChartProps {
     /**
@@ -7,20 +13,12 @@ export interface BulletChartProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data:
-        | {
-              ranges: number[];
-              measures: number[];
-              markers: number[];
-              title?: string;
-              subtitle?: string;
-          }[]
-        | null;
+    data: BulletChartDataShape[] | null;
 
     /**
      * Gets or Sets the colorSchema of the chart. The first color from the array will be applied to range bars (the wider bars). The second color from the array will be applied to measure bars (the narrow bars) and marker lines.
      */
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
      * Gets or Sets the subtitle for measure identifier range.
@@ -79,7 +77,17 @@ export interface BulletChartProps {
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<BulletChartDataShape[], BulletChartModule>;
+
+    /**
+     * Internally used, do not overwrite.
+     *
+     * Asked for again after each update, so a tooltip can be attached to the
+     * chart the wrapper has just drawn.
+     *
+     * @ignore
+     */
+    createTooltip?: () => void;
 }
 
 declare const Bullet: FunctionComponent<BulletChartProps>;

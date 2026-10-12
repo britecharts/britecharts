@@ -1,4 +1,11 @@
 import { FunctionComponent } from 'react';
+import {
+    ColorsSchemasType,
+    DonutChartDataShape,
+    DonutChartModule,
+    DonutEmptyDataConfig,
+} from '@britecharts/core';
+import { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
 
 export interface DonutChartProps {
     /**
@@ -7,14 +14,7 @@ export interface DonutChartProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data:
-        | {
-              quantity: number;
-              percentage?: number;
-              name: string;
-              id?: number;
-          }[]
-        | null;
+    data: DonutChartDataShape[] | null;
 
     /**
      * Gets or Sets the duration of the animation
@@ -24,7 +24,7 @@ export interface DonutChartProps {
     /**
      * Gets or Sets the centeredTextFunction of the chart. If function is provided the format will be changed by the custom function's value format. The default format function value is "${d.percentage}% ${d.name}". The callback will provide the data object with id, name, percentage, and quantity. Also provides the component added by the user in each data entry
      */
-    centeredTextFunction?: Function;
+    centeredTextFunction?: (datum: DonutChartDataShape) => string;
 
     /**
      * Current colorMap or Chart module to chain calls
@@ -34,12 +34,12 @@ export interface DonutChartProps {
     /**
      * Gets or Sets the colorSchema of the chart
      */
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
      * Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity adds up to zero or there are no entries), the chart will render an empty slice with a given color (light gray by default)
      */
-    emptyDataConfig?: any;
+    emptyDataConfig?: DonutEmptyDataConfig;
 
     /**
      * Gets or Sets the externalRadius of the chart
@@ -108,7 +108,10 @@ export interface DonutChartProps {
     /**
      * Changes the order of items given custom function
      */
-    orderingFunction?: Function;
+    orderingFunction?: (
+        a: DonutChartDataShape,
+        b: DonutChartDataShape
+    ) => number;
 
     /**
      * Gets or Sets the percentage format for the percentage label
@@ -125,18 +128,30 @@ export interface DonutChartProps {
      */
     width?: number;
 
-    customMouseOver?: Function;
+    customMouseOver?: ChartEventHandler;
 
-    customMouseOut?: Function;
+    customMouseOut?: ChartEventHandler;
 
-    customMouseMove?: Function;
+    customMouseMove?: ChartEventHandler;
 
-    customClick?: Function;
+    customClick?: ChartEventHandler;
 
     /**
      * Internally used, do not overwrite.
      */
-    chart?: any;
+    chart?: Wrapper<DonutChartDataShape[], DonutChartModule>;
+
+    /**
+     * Internally used, do not overwrite.
+     *
+     * Accepted and deliberately dropped: a Tooltip hands this to every chart
+     * it decorates, and this component takes it out of the configuration
+     * rather than passing it on. It was undeclared, so a TypeScript consumer
+     * using Tooltip's render prop around a Donut could not pass it.
+     *
+     * @ignore
+     */
+    createTooltip?: () => void;
 }
 
 declare const Donut: FunctionComponent<DonutChartProps>;

@@ -1,7 +1,10 @@
 // Optimized resize handler based on https://developer.mozilla.org/en-US/docs/Web/Events/resize
 
+/** What a caller registers: called with nothing, on a width change. */
+type ResizeCallback = () => void;
+
 const optimizedResize = (function () {
-    const callbacks = [];
+    const callbacks: ResizeCallback[] = [];
     const isBrowser = typeof window === 'object';
     let running = false;
     let cachedWidth = 0;
@@ -45,9 +48,12 @@ const optimizedResize = (function () {
          * Calls the callback, on the next animation frame, whenever the width of
          * the window changes. The window is listened to while at least one
          * callback is registered
-         * @param {Function} callback   What to call. Pass it to remove() to stop
+         *
+         * @param callback What to call. Pass it to remove() to stop.
+         * Falsy is allowed and does nothing, which is the guard below: the
+         * components that call this pass whatever they were given.
          */
-        addHorizontal(callback) {
+        addHorizontal(callback?: ResizeCallback | null) {
             if (!isBrowser || !callback) {
                 return;
             }
@@ -63,10 +69,11 @@ const optimizedResize = (function () {
         /**
          * Stops calling a callback. The window is no longer listened to once the
          * last one is gone, and is listened to again by the next one added
-         * @param {Function} callback   What was passed to addHorizontal
+         *
+         * @param callback What was passed to addHorizontal
          */
-        remove(callback) {
-            const index = callbacks.indexOf(callback);
+        remove(callback?: ResizeCallback | null) {
+            const index = callbacks.indexOf(callback as ResizeCallback);
 
             if (index === -1) {
                 return;

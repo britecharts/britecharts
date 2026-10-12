@@ -1,4 +1,10 @@
 import { FunctionComponent } from 'react';
+import {
+    ColorsSchemasType,
+    LegendDataShape,
+    LegendModule,
+} from '@britecharts/core';
+import { Wrapper } from '@britecharts/wrappers';
 
 export interface LegendProps {
     /**
@@ -7,18 +13,21 @@ export interface LegendProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data:
-        | {
-              id: number;
-              quantity: number;
-              name?: string;
-          }[]
-        | null;
+    // `LegendDataShape[]`, which had both fields' optionality the other way
+    // round here: `name` was optional though the component renders it for
+    // every entry, and `quantity` was required though the component supports
+    // data without it -- `hasQuantity` exists to ask. The chart's own
+    // `@typedef` says id and name are required and quantity is optional.
+    data: LegendDataShape[] | null;
 
     /**
      * Clears all highlighted entries
      */
-    clearHighlight?: Function;
+    // A trigger, not a callback: the chart's `clearHighlight()` takes no
+    // arguments, so `applyConfiguration` calls it for any value that is set
+    // and discards what arrives. It was declared as a function, which is what
+    // a reader would pass and the chart would ignore.
+    clearHighlight?: boolean;
 
     /**
      * Current colorMap or Chart module to chain calls
@@ -28,7 +37,7 @@ export interface LegendProps {
     /**
      * Gets or Sets the colorSchema of the chart
      */
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
      * Gets or Sets the height of the legend chart
@@ -92,7 +101,18 @@ export interface LegendProps {
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<LegendDataShape[], LegendModule>;
+
+    /**
+     * Internally used, do not overwrite.
+     *
+     * Accepted and deliberately dropped: a Tooltip hands this to every chart
+     * it decorates, and a legend has no tooltip to redraw. It was undeclared,
+     * so a TypeScript consumer could not pass it.
+     *
+     * @ignore
+     */
+    createTooltip?: () => void;
 }
 
 declare const Legend: FunctionComponent<LegendProps>;

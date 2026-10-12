@@ -1,4 +1,14 @@
 import { FunctionComponent } from 'react';
+import {
+    AxisTimeCombination,
+    ColorGradientType,
+    ColorsSchemasType,
+    LineChartData,
+    LineChartModule,
+    LineChartXAxisScale,
+    LineChartXAxisValueType,
+} from '@britecharts/core';
+import { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
 
 export interface LineProps {
     /**
@@ -7,25 +17,12 @@ export interface LineProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data: {
-        data: {
-            topicName: string;
-            name: number;
-            date: string;
-            value: number;
-        }[];
-    } | null;
+    data: LineChartData | null;
 
     /**
      * Gets or Sets the duration of the animation
      */
     animationDuration?: number;
-
-    /**
-     * Exposes the constants to be used to force the x axis to respect a
-     * certain granularity current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-     */
-    axisTimeCombinations?: string;
 
     /**
      * Current colorMap or Chart module to chain calls
@@ -36,7 +33,7 @@ export interface LineProps {
      * Gets or Sets the colorSchema of the chart
      */
 
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
      * Gets or Sets the dateLabel of the chart
@@ -46,12 +43,14 @@ export interface LineProps {
     /**
      * Chart exported to png and a download action is fired
      */
-    exportChart?: Function;
+    exportChart?: string;
 
     /**
      * Gets or Sets the grid mode.
      */
-    grid?: string;
+    // `GridTypes | null` as core declares it, spelled out because core's
+    // typings barrel does not export `common/grid` yet.
+    grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
      * Gets or Sets the height of the chart
@@ -77,7 +76,10 @@ export interface LineProps {
     /**
      * Gets or Sets the gradient colors of the line chart when there is only one line
      */
-    lineGradient?: string[];
+    // The two-element tuple core declares: the chart reads [0] and [1] and
+    // nothing else, so `string[]` accepted an array that leaves a stop
+    // undefined.
+    lineGradient?: ColorGradientType;
 
     /**
      * Pass language tag for the tooltip to localize the date. Feature
@@ -110,12 +112,12 @@ export interface LineProps {
     /**
      * Gets or Sets the topicLabel of the chart
      */
-    topicLabel?: number;
+    topicLabel?: string;
 
     /**
      * Gets or Sets the valueLabel of the chart
      */
-    valueLabel?: number;
+    valueLabel?: string;
 
     /**
      * Gets or Sets the width of the chart
@@ -132,7 +134,7 @@ export interface LineProps {
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
      */
-    xAxisFormat?: string;
+    xAxisFormat?: AxisTimeCombination | `${AxisTimeCombination}`;
 
     /**
      * Gets or Sets the label of the X axis of the chart
@@ -143,13 +145,13 @@ export interface LineProps {
      * Gets or Sets the `xAxisScale`. Choose between 'linear' and 'logarithmic'.
      * The setting will only work if `xAxisValueType` is set to 'number' as well, otherwise it won't influence the visualization.
      */
-    xAxisScale?: string;
+    xAxisScale?: LineChartXAxisScale;
 
     /**
      * Gets or Sets the `xAxisValueType`. Choose between 'date' and 'number'.
      * When set to `number` the values of the x-axis must not be dates anymore, but can be arbitrary numbers.
      */
-    xAxisValueType?: string;
+    xAxisValueType?: LineChartXAxisValueType;
 
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It
@@ -174,16 +176,16 @@ export interface LineProps {
      */
     yTicks?: number;
 
-    customMouseOver?: Function;
-    customMouseMove?: Function;
-    customMouseOut?: Function;
+    customMouseOver?: ChartEventHandler;
+    customMouseMove?: ChartEventHandler;
+    customMouseOut?: ChartEventHandler;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<LineChartData, LineChartModule>;
 
     /**
      * Internally used, do not overwrite.
@@ -191,7 +193,7 @@ export interface LineProps {
      * @ignore
      * @internal
      */
-    createTooltip?: Function;
+    createTooltip?: () => void;
 }
 
 declare const Line: FunctionComponent<LineProps>;

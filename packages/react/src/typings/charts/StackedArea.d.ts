@@ -1,4 +1,12 @@
 import { FunctionComponent } from 'react';
+import {
+    AxisTimeCombination,
+    ColorsSchemasType,
+    StackedAreaChartDataShape,
+    StackedAreaChartModule,
+    StackedAreaEmptyDataConfig,
+} from '@britecharts/core';
+import { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
 
 export interface StackedAreaProps {
     /**
@@ -7,24 +15,12 @@ export interface StackedAreaProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    data:
-        | {
-              date: string;
-              name: string;
-              value: number;
-          }[]
-        | null;
+    data: StackedAreaChartDataShape[] | null;
 
     /**
      * Gets or Sets the duration of the animation
      */
     animationDuration?: number;
-
-    /**
-     * Exposes the constants to be used to force the x axis to respect a
-     * certain granularity current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-     */
-    axisTimeCombinations?: string;
 
     /**
      * Gets or Sets the area curve of the stacked area.
@@ -45,27 +41,31 @@ export interface StackedAreaProps {
     /**
      * Gets or Sets the colorSchema of the chart
      */
-    colorSchema?: string[];
+    colorSchema?: ColorsSchemasType;
 
     /**
      * Gets or Sets the dateLabel of the chart
      */
-    dateLabel?: number;
+    dateLabel?: string;
 
     /**
      * Gets or Sets the emptyDataConfig of the chart
      */
-    emptyDataConfig?: any;
+    emptyDataConfig?: StackedAreaEmptyDataConfig;
 
     /**
-     * Chart exported to png and a download action is fired
+     * The filename to export the chart to. Setting it exports a png and fires
+     * a download, which is what the chart's `exportChart` command does; it is
+     * not a callback.
      */
-    exportChart?: Function;
+    exportChart?: string;
 
     /**
      * Gets or Sets the grid mode.
      */
-    grid?: string;
+    // `GridTypes | null` as core declares it, spelled out because core's
+    // typings barrel does not export `common/grid` yet.
+    grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
      * Gets or Sets the height of the chart
@@ -86,7 +86,7 @@ export interface StackedAreaProps {
     /**
      * Gets or Sets the keyLabel of the chart
      */
-    keyLabel?: number;
+    keyLabel?: string;
 
     /**
      * Pass language tag for the tooltip to localize the date. Feature
@@ -119,7 +119,7 @@ export interface StackedAreaProps {
     /**
      * Gets or Sets the valueLabel of the chart
      */
-    valueLabel?: number;
+    valueLabel?: string;
 
     /**
      * Gets or Sets the width of the chart
@@ -136,7 +136,11 @@ export interface StackedAreaProps {
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
      */
-    xAxisFormat?: string;
+    // The four granularities plus 'custom', as core declares it. `string`
+    // accepted anything and only those five do something; the enum and its
+    // string values are both allowed, which is what core's
+    // `AxisTimeCombination | `${AxisTimeCombination}`` says.
+    xAxisFormat?: AxisTimeCombination | `${AxisTimeCombination}`;
 
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It
@@ -167,16 +171,16 @@ export interface StackedAreaProps {
      */
     yTicks?: number;
 
-    customMouseOver?: Function;
-    customMouseMove?: Function;
-    customMouseOut?: Function;
+    customMouseOver?: ChartEventHandler;
+    customMouseMove?: ChartEventHandler;
+    customMouseOut?: ChartEventHandler;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    chart?: any;
+    chart?: Wrapper<StackedAreaChartDataShape[], StackedAreaChartModule>;
 
     /**
      * Internally used, do not overwrite.
@@ -184,7 +188,7 @@ export interface StackedAreaProps {
      * @ignore
      * @internal
      */
-    createTooltip?: Function;
+    createTooltip?: () => void;
 }
 
 declare const StackedArea: FunctionComponent<StackedAreaProps>;

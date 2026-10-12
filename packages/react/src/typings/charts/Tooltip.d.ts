@@ -1,12 +1,12 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
+import {
+    TooltipDataShape,
+    TooltipListDataShape,
+    TooltipTopic,
+} from '@britecharts/core';
+import { TooltipWrapperShape } from '@britecharts/wrappers';
 
 export interface TooltipProps {
-    /**
-     * Exposes the constants to be used to force the x axis to respect a
-     * certain granularity current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-     */
-    axisTimeCombinations?: string;
-
     /**
      * Exposes the ability to use a custom date format
      */
@@ -25,7 +25,9 @@ export interface TooltipProps {
     /**
      * Hides the tooltip
      */
-    hide?: Function;
+    // A trigger, not a callback: the tooltip's `hide()` takes no arguments,
+    // so any value that is set calls it and the value is discarded.
+    hide?: boolean;
 
     /**
      * Pass locale for the tooltip to render the date in
@@ -50,7 +52,10 @@ export interface TooltipProps {
     /**
      * Shows the tooltip
      */
-    show?: Function;
+    // The data point to show, which is what the tooltip's `show` command
+    // takes. It was declared as a function, which the tooltip would have
+    // rendered as a data point.
+    show?: TooltipDataShape;
 
     /**
      * Gets or Sets the title of the tooltip (to only show the date, set a blank title)
@@ -73,17 +78,29 @@ export interface TooltipProps {
     /**
      * Pass an override for the ordering of your tooltip
      */
-    topicsOrder?: string[];
+    // `TooltipTopic['name'][]`, which is `(string | number)[]`: line hands
+    // the tooltip numeric topic ids and stacked area hands it string names,
+    // and this migration corrected core to say so. `string[]` rejected the
+    // numeric order the tooltip's own spec uses.
+    topicsOrder?: TooltipTopic['name'][];
 
     /**
      * Updates the position and content of the tooltip
      */
-    update?: Function;
+    // The data point to update with. The tooltip's `update` is overloaded,
+    // and this is the first argument of the signature a configuration can
+    // reach -- the other three arrive from the chart's own dispatch, not from
+    // a prop.
+    update?: TooltipListDataShape;
 
     /**
      * Gets or Sets the formatter function for the value displayed on the tooltip.
      */
-    valueFormatter?: Function;
+    // `(value: number) => number`, as core declares it. Spelled out because
+    // core's `TooltipFormattingFunction` is not exported; the bare `Function`
+    // type that stood here accepts any function-like value and tells a
+    // consumer nothing.
+    valueFormatter?: (value: number) => number;
 
     /**
      * Gets or Sets the valueLabel of the data
@@ -113,14 +130,25 @@ export interface TooltipProps {
      *
      * @ignore
      */
-    chart?: any;
+    chart?: TooltipWrapperShape;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    render?: Function;
+    render?: (args: {
+        data: TooltipProps['data'];
+        createTooltip: () => void;
+        customMouseMove: (
+            dataPoint: object,
+            position: [number, number],
+            size?: [number, number],
+            topicColorMap?: Record<string, string>
+        ) => void;
+        customMouseOut: () => void;
+        customMouseOver: () => void;
+    }) => ReactNode;
 
     /**
      * Internally used, do not overwrite.
