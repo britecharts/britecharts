@@ -12,3 +12,5 @@ Every chart's types live beside the chart now, and the declarations are compiled
 - The `*Keys` enums are type-only exports. The old declarations said `export enum`, but the built output never contained them, so a value import compiled and then gave `undefined` at run time. Now it is a compile error (TS1362). Use them in type position, as the data shapes do.
 
 The surface is otherwise unchanged. Compiling the old barrel and the generated one and comparing their exports gives the same 116 names, plus `default`: the `britecharts` default export, which has always existed at run time and was never declared. It is declared for `import`, which is what bundlers use. Under `require`, the UMD bundle is that object itself, so `require('@britecharts/core').default` is still `undefined`: use the named exports or the module object directly.
+
+`GridTypes` is newly exported: the type of the `grid` accessor on the line, stacked-area, stacked-bar, grouped-bar and scatter-plot charts, which consumers could see in those signatures and could not name.

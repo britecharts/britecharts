@@ -1,16 +1,12 @@
-// Checked against the published typings with `satisfies`, rather than typed
-// independently and hoped to match. `src/typings/helpers/colors.d.ts` is what
-// consumers actually get, and it describes this file's default export down to
+// Checked against the published colour types with `satisfies`, rather than
+// left to infer. `src/typings/helpers/colors.ts` declares them, core exports
+// them from its barrel, and they describe this file's default export down to
 // `ColorGradientType` being a two-element tuple -- which these arrays would
 // not satisfy if they were left to infer as `string[]`.
 //
 // The import is type-only: those declarations include numeric enums that exist
 // solely to be read with `keyof typeof`, and have no runtime counterpart to
 // import.
-//
-// When Phase 5 retires src/typings in favour of generated declarations, these
-// `satisfies` clauses go with it -- which is the point: the removal has to be
-// deliberate, not silent.
 import type {
     ColorGradients,
     ColorGradientsHuman,

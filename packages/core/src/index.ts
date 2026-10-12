@@ -47,6 +47,7 @@ export type * from './charts/sparkline/sparkline.js';
 export type * from './charts/stacked-area/stacked-area.js';
 export type * from './charts/stacked-bar/stacked-bar.js';
 export type * from './charts/tooltip/tooltip.js';
+export type * from './typings/common/grid.js';
 export type * from './typings/common/local.js';
 export type * from './typings/helpers/colors.js';
 export type * from './typings/helpers/constants.js';

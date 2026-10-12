@@ -116,7 +116,7 @@ Name stories in PascalCase, describing what is shown, not the API call: `WithHor
 1. **Read the chart source** — enumerate its public accessors; those are the candidate stories.
 2. **Read the existing stories** for that chart and for a sibling chart in the same package — match their shape exactly.
 3. **Read the data builder** (`<chart>ChartDataBuilder.js`) or the fixtures file to see what datasets already exist.
-4. **Check the typings** (`core/src/typings/charts/<chart>-chart.d.ts`) if an accessor's argument shape is unclear.
+4. **Check the chart's module type** (declared in the chart file, `core/src/charts/<chart>/<chart>.ts`) if an accessor's argument shape is unclear.
 5. **Write the stories**, one variant per export.
 6. **Verify.** Lint the file with `pnpm exec eslint <path>` and format with `pnpm exec oxfmt --write <path>`. If you changed anything the Storybook build touches, confirm it still builds: `pnpm --filter @britecharts/core run demo:build` (or `@britecharts/react`). To view them, `pnpm run demos:core` serves on port 2001 and `pnpm run demos:react` on 2002.
 

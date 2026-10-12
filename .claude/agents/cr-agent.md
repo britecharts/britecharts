@@ -13,7 +13,7 @@ pnpm workspaces monorepo (`packageManager: pnpm@12.6.0`), Node 24 (`.nvmrc`). **
 
 | Package | What it is |
 |---|---|
-| `packages/core` | The D3 charts themselves (`src/charts/<chart>/<chart>.{js,ts}`), shared helpers (`src/charts/helpers/`, now all TypeScript), SCSS (`src/styles/`), and hand-written typings (`src/typings/`) |
+| `packages/core` | The D3 charts themselves (`src/charts/<chart>/<chart>.{js,ts}`), shared helpers (`src/charts/helpers/`, now all TypeScript), SCSS (`src/styles/`), and the shared types (`src/typings/`). Each chart's own types live in the chart file |
 | `packages/wrappers` | Framework-agnostic wrappers over core charts |
 | `packages/react` | React components wrapping core charts |
 | `packages/demos`, `packages/docs` | Storybook composition and the Docusaurus site — not published |
@@ -37,7 +37,7 @@ The diff can be large. Get the shape first with `--stat`, then pull the content 
 - Helpers (`packages/core/src/charts/helpers/`)
 - Specs (`*.spec.js`)
 - Stories (`*.stories.js`, `*.stories.mdx`)
-- Typings (`packages/*/src/typings/**/*.d.ts`)
+- Shared types (`packages/core/src/typings/**/*.ts`)
 - Styles (`*.scss`)
 - Build and config (`webpack.*.js`, `jest.config*.js`, `babel.config*.js`, `package.json`, `.github/workflows/`)
 - Changesets (`.changeset/*.md`)
@@ -65,7 +65,7 @@ Beyond general correctness, Britecharts has recurring failure modes worth checki
 
 **Reusable-chart API pattern.** Charts are closures returning an `exports` function. Every accessor must be a getter *and* a setter, must `return this;` on set (chaining is the whole API), and must guard `if (!arguments.length) return _value;`. A setter that forgets the return silently breaks every chained call downstream.
 
-**Public API parity.** A new or renamed accessor in `packages/core` is only half done. Check that it also lands in `packages/core/src/typings/charts/<chart>.d.ts`, in `packages/wrappers/src/charts/` and in `packages/react/src/charts/` where those wrappers exist. Nothing type-checks the `.d.ts` files, so drift there ships silently — treat a missing or wrong typing as P1, not a nitpick.
+**Public API parity.** A new or renamed accessor in `packages/core` is only half done. Check that it also lands in the chart's module type (declared in the chart file itself; the published declarations are generated from it), in `packages/wrappers/src/charts/` and in the props of `packages/react/src/charts/` where those wrappers exist. `pnpm --filter @britecharts/core run check:api-parity` compares a chart's accessors with its module type in both directions; nothing compares core with the wrappers or the React props, so treat a missing or wrong one there as P1, not a nitpick.
 
 **Changesets.** A user-facing change to `core`, `wrappers` or `react` needs a changeset in `.changeset/`. Those three packages are version-`fixed` together; `docs` and `demos` are ignored. A missing changeset means the change never reaches npm consumers' changelog — P2.
 

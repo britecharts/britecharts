@@ -1,9 +1,9 @@
 export enum AxisTimeCombination {
-  MINUTE_HOUR = 'minute-hour',
-  HOUR_DAY = 'hour-daymonth',
-  DAY_MONTH = 'day-month',
-  MONTH_YEAR = 'month-year',
-  CUSTOM = 'custom',
+    MINUTE_HOUR = 'minute-hour',
+    HOUR_DAY = 'hour-daymonth',
+    DAY_MONTH = 'day-month',
+    MONTH_YEAR = 'month-year',
+    CUSTOM = 'custom',
 }
 
 // The `constants` object the package exports used to be declared here, as an

@@ -67,10 +67,10 @@ export interface ScatterPlotProps {
     /**
      * Gets or Sets the grid mode
      */
-    // `GridTypes | null` as core declares it. Spelled out rather than
-    // imported because core's typings barrel does not export `common/grid`
-    // yet -- a Phase 5 item -- and `null` is the default, which this was
-    // missing: assigning the default back is how a grid is turned off.
+    // `GridTypes | null` as core declares it, spelled out rather than
+    // imported: Storybook's docgen reads this file alone, so an imported alias
+    // reaches it as a bare name and the grid Control loses its three options.
+    // `null` is the default: assigning it back is how a grid is turned off.
     grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**

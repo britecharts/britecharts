@@ -74,8 +74,9 @@ export interface StackedAreaProps {
     /**
      * Gets or Sets the grid mode.
      */
-    // `GridTypes | null` as core declares it, spelled out because core's
-    // typings barrel does not export `common/grid` yet.
+    // `GridTypes | null` as core declares it, spelled out rather than
+    // imported: Storybook's docgen reads this file alone, so an imported alias
+    // reaches it as a bare name and the grid Control loses its three options.
     grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**

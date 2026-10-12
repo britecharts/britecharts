@@ -53,12 +53,12 @@ called. Neither reports formatting — `oxfmt` and ESLint own that, via
   with `pnpm -r`, so a per-package script has to exist in every package the
   root script targets.
 - There **is** a type-check step: `pnpm run type-check` per package and in
-  `lint.yml`, folded into the root `check`. The `.d.ts` typings under
-  `packages/core/src/typings/` are still hand-written, and a TypeScript
-  migration is converting the source that they describe — so these files' notes
-  about typings drift still apply, but the drift is now caught by
-  `pnpm --filter @britecharts/core run check:api-parity`, which compares each
-  chart's runtime surface against its declaration in both directions.
+  `lint.yml`, folded into the root `check`. core and react
+  generate their published declarations from source, so the types cannot drift
+  from the code that declares them. What can still drift is a chart's runtime
+  accessors against its declared module type, which
+  `pnpm --filter @britecharts/core run check:api-parity` compares in both
+  directions.
 - Use `pnpm run test:ci`, not the root `pnpm test`, in tooling. (`test` carries a
   `posttest` format hook that would reformat files mid-run.)
 - `pnpm run test:integration` needs `pnpm run build:packages` first and Chromium
