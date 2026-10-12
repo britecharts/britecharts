@@ -58,11 +58,25 @@ const program = ts.createProgram([typingsEntry], {
 });
 const checker = program.getTypeChecker();
 
-/** Every `export function name(): SomeModule` across the typings. */
+/**
+ * Every `export function name(): SomeModule` the typings entry reaches.
+ *
+ * Both directories, because a chart's module type lives beside the chart now
+ * and the factory declaration stays in the typings barrel: the declaration
+ * naming the factory and the type it returns can be in either place.
+ *
+ * Filtering to `/src/typings/charts/` alone is how this silently stopped
+ * comparing bullet and mini-tooltip the moment their types moved -- the chart
+ * simply left the set, and a comparison over a smaller set reports success
+ * just as loudly. `expectedFactories` below is the guard against that
+ * happening again.
+ */
 const factories = new Map();
+const isOwnSource = (fileName) =>
+    fileName.includes('/src/typings/') || fileName.includes('/src/charts/');
 
 for (const file of program.getSourceFiles()) {
-    if (!file.fileName.includes('/src/typings/charts/')) {
+    if (!isOwnSource(file.fileName)) {
         continue;
     }
 
@@ -189,6 +203,27 @@ for (const [name, { file, source }] of [...sources].sort()) {
     console.log(
         `  ${name.padEnd(13)} ${counts}${notes.length ? '  ' + notes.join('; ') : ''}`
     );
+}
+
+// Every chart the barrel exports has to have been compared. Without this, a
+// chart whose declaration moves out of the set this script looks in simply
+// stops being checked, and the run still ends with a tick: that is how bullet
+// and mini-tooltip went uncompared for one commit.
+// `colors` is the one barrel export that is not a chart: it is the object of
+// colour schemas, with no factory to declare.
+const NOT_A_FACTORY = new Set(['colors']);
+const uncompared = [...sources.keys()].filter(
+    (name) => !factories.has(name) && !NOT_A_FACTORY.has(name)
+);
+
+if (uncompared.length) {
+    console.error(
+        `\n✖ ${uncompared.length} chart(s) the barrel exports have no factory ` +
+            `declaration this script could find: ${uncompared.join(', ')}.\n` +
+            'Nothing was compared for them. Declare the factory where the other\n' +
+            "charts' are, or teach this script where it moved."
+    );
+    process.exit(1);
 }
 
 if (gaps.length) {
