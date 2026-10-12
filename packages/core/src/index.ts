@@ -20,9 +20,9 @@ import { axisTimeCombinations } from './charts/helpers/constants.js';
 const constants = { axisTimeCombinations };
 
 // The public types, re-exported so the generated declaration for this file is
-// the whole package surface -- values above, types here. Until now a
-// hand-written `src/typings/index.d.ts` carried both, and the factory
-// signatures in it were written out by hand beside the real ones.
+// the whole package surface -- values above, types here. `types` points at
+// that declaration. A hand-written `src/typings/index.d.ts` used to carry
+// both, with the factory signatures written out by hand beside the real ones.
 //
 // `export type *` rather than `export *`, which is a deliberate narrowing.
 // Each chart module also exports a `*Keys` enum, and an enum is a value as

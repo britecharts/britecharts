@@ -29,6 +29,13 @@ const WAIVED_PUBLINT = new Set([
 const WAIVED_ATTW = new Set([
     'UnexpectedModuleSyntax', // same: ESM syntax in a file Node treats as CJS
     'NamedExports', // Node ESM cannot see named exports on the webpack UMD bundle
+    // core's generated declarations say `export default britecharts`, which
+    // dist/esm has. The UMD bundle that `require` resolves to is built with
+    // `libraryExport: 'default'`, so it *is* that object rather than carrying
+    // it as `.default`: `require('@britecharts/core').default` is undefined.
+    // Bundlers take the `import` condition and default-import fine. Also
+    // retired by H22, whose CJS output keeps `.default`.
+    'FalseExportDefault',
 ]);
 
 // Things that must never ship from any package.
@@ -97,8 +104,14 @@ const PACKAGES = {
             // charts converted -- it is what failed when heatmap did.
             ['src/index.?s', 1],
             ['src/charts/*/*.?s', 34],
-            ['src/typings/index.d.ts', 1],
-            ['src/typings/charts/*.d.ts', 14],
+            // The generated declarations, which `types` and `exports.types`
+            // resolve to. Each chart's types live in the chart now, so they
+            // arrive beside it rather than in a typings directory of their
+            // own: one declaration per file in dist/esm/charts, helpers
+            // included.
+            ['dist/types/index.d.ts', 1],
+            ['dist/types/charts/*/*.d.ts', 34],
+            ['dist/types/typings/*/*.d.ts', 8],
         ],
         deny: COMMON_DENY,
     },

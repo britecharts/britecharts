@@ -6,7 +6,13 @@
         "emitDeclarationOnly": true,
         "rootDir": "src",
         "declarationDir": "dist/esm",
-        "types": []
+        "types": [],
+        // Drop the type-check config's mapping of `@britecharts/core` to its
+        // source. Under `rootDir` that mapping pulls core's files into this
+        // program and fails with TS6059. Emit resolves core the way a
+        // consumer does, through its `types` field, which is in place by now:
+        // the workspace build runs core first.
+        "paths": {}
     },
     "exclude": [
         "**/*.spec.ts",

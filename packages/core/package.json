@@ -3,7 +3,7 @@
   "version": "3.0.0-beta.2",
   "main": "dist/umd/bundle/core.bundled.min.js",
   "module": "dist/esm/index.js",
-  "types": "src/typings/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "dependencies": {
     "@types/base-64": "1.0.2",
     "@types/d3-array": "3.2.2",
@@ -127,6 +127,7 @@
     "dist/umd/**",
     "dist/cdn/**",
     "dist/styles/**",
+    "dist/types/**",
     "src/**",
     "!**/*.map",
     "!**/*.spec.js",
@@ -141,7 +142,7 @@
   ],
   "exports": {
     ".": {
-      "types": "./src/typings/index.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/umd/bundle/core.bundled.min.js",
       "default": "./dist/umd/bundle/core.bundled.min.js"

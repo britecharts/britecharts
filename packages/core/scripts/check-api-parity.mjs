@@ -1,6 +1,6 @@
 /**
  * Checks that every accessor a chart exposes at runtime is declared in the
- * published typings.
+ * chart's module type, which is what the published declarations carry.
  *
  * Converting the heatmap turned up three accessors it had always shipped and
  * never declared -- `on`, `isAnimated` and `animationDuration`. `on` is the
@@ -31,7 +31,7 @@ import ts from 'typescript';
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(scriptDir, '..');
 const srcRoot = path.join(packageRoot, 'src');
-const typingsEntry = path.join(srcRoot, 'typings', 'index.d.ts');
+const barrelEntry = path.join(srcRoot, 'index.ts');
 
 /** Accessor names assigned onto the chart's `exports` function. */
 const assignedAccessors = (source) => {
@@ -49,7 +49,7 @@ const assignedAccessors = (source) => {
     return names;
 };
 
-const program = ts.createProgram([typingsEntry], {
+const program = ts.createProgram([barrelEntry], {
     target: ts.ScriptTarget.ES2020,
     moduleResolution: ts.ModuleResolutionKind.Bundler,
     strict: true,
@@ -59,35 +59,37 @@ const program = ts.createProgram([typingsEntry], {
 const checker = program.getTypeChecker();
 
 /**
- * Every `export function name(): SomeModule` the typings entry reaches.
+ * Every factory the barrel exports, mapped to the module type it returns.
  *
- * Both directories, because a chart's module type lives beside the chart now
- * and the factory declaration stays in the typings barrel: the declaration
- * naming the factory and the type it returns can be in either place.
- *
- * Filtering to `/src/typings/charts/` alone is how this silently stopped
- * comparing bullet and mini-tooltip the moment their types moved -- the chart
- * simply left the set, and a comparison over a smaller set reports success
- * just as loudly. `expectedFactories` below is the guard against that
- * happening again.
+ * Read from `src/index.ts` itself, which is what the published declarations
+ * are generated from. This used to walk a hand-written barrel for
+ * `export function name(): SomeModule` lines, and filtering that walk to one
+ * directory is how bullet and mini-tooltip silently stopped being compared the
+ * moment their types moved -- the chart simply left the set, and a comparison
+ * over a smaller set reports success just as loudly. Asking the checker for
+ * the barrel's exports leaves nothing to filter. The `uncompared` check below is
+ * still the guard against a chart dropping out.
  */
 const factories = new Map();
-const isOwnSource = (fileName) =>
-    fileName.includes('/src/typings/') || fileName.includes('/src/charts/');
+const barrelSymbol = checker.getSymbolAtLocation(
+    program.getSourceFile(barrelEntry)
+);
 
-for (const file of program.getSourceFiles()) {
-    if (!isOwnSource(file.fileName)) {
+for (const exported of checker.getExportsOfModule(barrelSymbol)) {
+    const target =
+        exported.flags & ts.SymbolFlags.Alias
+            ? checker.getAliasedSymbol(exported)
+            : exported;
+
+    if (!(target.flags & ts.SymbolFlags.Function)) {
         continue;
     }
+    const [signature] = checker
+        .getTypeOfSymbol(target)
+        .getCallSignatures();
 
-    for (const statement of file.statements) {
-        if (
-            ts.isFunctionDeclaration(statement) &&
-            statement.name &&
-            statement.type
-        ) {
-            factories.set(statement.name.text, checker.getTypeAtLocation(statement.type));
-        }
+    if (signature) {
+        factories.set(exported.getName(), signature.getReturnType());
     }
 }
 
