@@ -1,4 +1,5 @@
-export * from './charts/bar-chart';
+export * from '../charts/bar/bar';
+export function bar(): import('../charts/bar/bar').BarChartModule;
 export * from '../charts/brush/brush';
 export function brush(): import('../charts/brush/brush').BrushChartModule;
 // bullet's types live in the chart now; the factory declaration stays here
