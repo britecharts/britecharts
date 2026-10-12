@@ -5,7 +5,13 @@ import { execFileSync } from 'child_process';
 import * as exported from './index';
 import { LEGACY_DEFAULT_PROPS } from './legacyComponents.fixtures';
 
-const source = fs.readFileSync(path.join(__dirname, 'index.js'), 'utf8');
+// The barrel's own extension, read across both: it is TypeScript now, and
+// this file is what tells the rest of the spec which components exist, so
+// naming it `.js` made every assertion below disappear at once.
+const barrelFile = ['index.ts', 'index.js']
+    .map((name) => path.join(__dirname, name))
+    .find((candidate) => fs.existsSync(candidate));
+const source = fs.readFileSync(barrelFile, 'utf8');
 
 // Where each component's source really is. The entry file names them `.js`
 // -- deliberately, since that is what the built ESM output resolves against

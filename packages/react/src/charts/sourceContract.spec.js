@@ -50,8 +50,12 @@ const resolveSource = (from) => {
     );
 };
 
+const barrelFile = ['index.ts', 'index.js']
+    .map((name) => path.join(srcRoot, name))
+    .find((candidate) => fs.existsSync(candidate));
+
 const components = [
-    ...read(path.join(srcRoot, 'index.js')).matchAll(
+    ...read(barrelFile).matchAll(
         /export \{ default as (\w+) \} from '([^']+)'/g
     ),
 ].map(([, name, from]) => ({ name, file: resolveSource(from) }));
@@ -158,7 +162,7 @@ describe('source contract', () => {
 
         it('should find the files the package publishes', () => {
             expect(publishedFiles.length).toBeGreaterThan(10);
-            expect(publishedFiles.map(relative)).toContain('index.js');
+            expect(publishedFiles.map(relative)).toContain('index.ts');
             // The converted files are in the set these guards run over
             expect(
                 publishedFiles.map(relative).filter((f) => /\.tsx?$/.test(f))

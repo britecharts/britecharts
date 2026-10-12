@@ -67,7 +67,7 @@
     "demo": "pnpm run storybook",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
     "lint": "pnpm run lint:js",
-    "lint:js": "eslint src/charts src/index.js webpack.*.js --ext .js,.ts,.tsx --ignore-pattern \"*.spec.js\" --cache",
+    "lint:js": "eslint src/charts src/index.ts webpack.*.js --ext .js,.ts,.tsx --ignore-pattern \"*.spec.js\" --cache",
     "start": "webpack-dev-server --env=test --open --hot",
     "storybook": "storybook dev -p 2002 --exact-port",
     "test": "jest --colors --coverage --coverageThreshold='{\"global\":{\"statements\":93,\"branches\":85,\"functions\":93,\"lines\":94},\"./src/charts/helpers/useChart.ts\":{\"statements\":95,\"branches\":90,\"functions\":95,\"lines\":95}}'",
