@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { GroupedBarWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -10,8 +11,6 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { GroupedBarProps as PublishedGroupedBarProps } from '../../typings/charts/GroupedBar';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -187,12 +186,7 @@ export interface GroupedBarProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<GroupedBarProps, PublishedGroupedBarProps>
->;
-
-const GroupedBar = ({
+const GroupedBar: FunctionComponent<GroupedBarProps> = ({
     chart = GroupedBarWrapper,
     createTooltip,
     data,

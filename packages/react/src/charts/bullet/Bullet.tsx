@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { BulletWrapper } from '@britecharts/wrappers';
 import type { Wrapper } from '@britecharts/wrappers';
@@ -9,20 +10,15 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { BulletChartProps as PublishedBulletChartProps } from '../../typings/charts/Bullet';
 
 /**
- * The props live here rather than being imported from `src/typings`, and that
- * is deliberate: Storybook's docgen reads the component file, and an interface
- * it has to follow an import to find is one it does not find -- the Controls
- * for this chart would drop from every prop to the one destructured default.
+ * The props live in the component file, and that is deliberate: Storybook's
+ * docgen reads the component file, and an interface it has to follow an
+ * import to find is one it does not find -- the Controls for this chart would
+ * drop from every prop to the one destructured default.
  * The JSDoc on each prop is what fills each Control's description, which is
- * the other reason it belongs next to the code.
- *
- * `PropsMatchPublished` below is what stops the two copies drifting while both
- * exist. Phase 5 removes the hand-written declaration and generates it from
- * this interface, and the assertion goes with it.
+ * the other reason it belongs next to the code. The published declaration is
+ * generated from this interface too, so there is one copy to keep.
  */
 export interface BulletChartProps {
     /**
@@ -108,12 +104,7 @@ export interface BulletChartProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<BulletChartProps, PublishedBulletChartProps>
->;
-
-const Bullet = ({
+const Bullet: FunctionComponent<BulletChartProps> = ({
     chart = BulletWrapper,
     createTooltip,
     data,

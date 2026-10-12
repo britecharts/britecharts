@@ -90,7 +90,7 @@ describe('package surface', () => {
         //           those exist is asserting exactly what it reads.
         //   .tsx -- it reads the props interface, which therefore has to be
         //           declared in the component file. Imported from
-        //           src/typings instead, extraction collapses to the single
+        //           another file instead, extraction collapses to the single
         //           destructured `chart` default and every Control for the
         //           chart's own accessors disappears silently. Verified by
         //           probe: the imported form reports ["chart"] and nothing

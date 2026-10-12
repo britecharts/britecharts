@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { ScatterPlotWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -10,8 +11,6 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { ScatterPlotProps as PublishedScatterPlotProps } from '../../typings/charts/ScatterPlot';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -222,12 +221,7 @@ export interface ScatterPlotProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<ScatterPlotProps, PublishedScatterPlotProps>
->;
-
-const ScatterPlot = ({
+const ScatterPlot: FunctionComponent<ScatterPlotProps> = ({
     chart = ScatterPlotWrapper,
     createTooltip,
     data,

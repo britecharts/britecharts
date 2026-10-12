@@ -1,0 +1,31 @@
+{
+    // Declaration emit, as wrappers does it: `tsconfig.json` is the
+    // type-check config, sets nothing to emit, and includes the specs, stories
+    // and fixtures.
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "rootDir": "src",
+        "declarationDir": "dist/esm",
+        "types": [],
+        // Drop the type-check config's mapping of core and wrappers to their
+        // source. Under `rootDir` it pulls their files into this program
+        // (TS6059). Emit resolves them the way a consumer does, through their
+        // `types` fields, which are in place by now: the workspace build runs
+        // both first.
+        "paths": {}
+    },
+    "exclude": [
+        "src/docs",
+        "**/*.spec.js",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.stories.js",
+        "**/*.stories.ts",
+        "**/*.stories.tsx",
+        "**/*.fixtures.js",
+        "**/*.fixtures.ts"
+    ]
+}

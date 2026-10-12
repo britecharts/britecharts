@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { LineWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -14,8 +15,6 @@ import type {
 
 import useChart from '../helpers/useChart.js';
 import { axisTimeCombinations as combinations } from '../constants.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { LineProps as PublishedLineProps } from '../../typings/charts/Line';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -208,10 +207,7 @@ export interface LineProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<Equal<LineProps, PublishedLineProps>>;
-
-const Line = ({
+const Line: FunctionComponent<LineProps> = ({
     chart = LineWrapper,
     createTooltip,
     data,

@@ -2,14 +2,10 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import type { ComponentType, NamedExoticComponent } from 'react';
 
 import optimizedResize from './optimizedResize.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { default as PublishedWithResponsiveness } from '../../typings/charts/withResponsiveness';
 
 /**
  * What the wrapper takes: the wrapped component's props, except that `width`
- * becomes optional because this provides it. Spelled the same way the
- * published declaration spells it, which is what `PropsMatchPublished` below
- * compares.
+ * becomes optional because this provides it.
  */
 type ResponsiveProps<P> = Omit<P, 'width'> & { width?: number };
 
@@ -73,12 +69,3 @@ export default function withResponsiveness<P extends { width?: number }>(
     // props costs nothing
     return React.memo(WithResponsiveness);
 }
-
-/**
- * The signature above and the published declaration are the same type -- the
- * generic included, which is the part worth pinning: this is the one helper
- * whose published shape was drafted before the implementation existed.
- */
-export type PropsMatchPublished = Expect<
-    Equal<typeof withResponsiveness, typeof PublishedWithResponsiveness>
->;

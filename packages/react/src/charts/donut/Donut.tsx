@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { DonutWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -10,8 +11,6 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { DonutChartProps as PublishedDonutChartProps } from '../../typings/charts/Donut';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -165,16 +164,11 @@ export interface DonutChartProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<DonutChartProps, PublishedDonutChartProps>
->;
-
 // isAnimated reaches the chart only because it is put back into the
 // configuration here: the rest of the props do not carry a default, so leaving
 // it out would silently stop the donut animating. createTooltip is handed to
 // every chart by a Tooltip, but is not a configuration key of the wrapper.
-const Donut = ({
+const Donut: FunctionComponent<DonutChartProps> = ({
     chart = DonutWrapper,
     isAnimated = true,
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars

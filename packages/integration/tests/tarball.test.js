@@ -159,6 +159,10 @@ const PACKAGES = {
             // compile it.
             ['dist/esm/index.js', 1],
             ['dist/esm/charts/*/*.js', 15],
+            // And its generated declarations, which `types` resolves to. The
+            // props are declared in each component, so they arrive beside it.
+            ['dist/esm/index.d.ts', 1],
+            ['dist/esm/charts/*/*.d.ts', 15],
             // Source still ships, so deep `./src/*` imports keep resolving.
             // The extensions are deliberately loose: each conversion turns one
             // of these from .js into .tsx, and the count has to hold either
@@ -167,8 +171,6 @@ const PACKAGES = {
             // core's `src/index.?s` was widened to avoid.
             ['src/index.?s*', 1],
             ['src/charts/*/*.?s*', 15],
-            ['src/typings/index.d.ts', 1],
-            ['src/typings/charts/*.d.ts', 11],
         ],
         deny: [
             ...COMMON_DENY,

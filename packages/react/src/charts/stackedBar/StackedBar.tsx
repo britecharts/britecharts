@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { StackedBarWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -10,8 +11,6 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { StackedBarProps as PublishedStackedBarProps } from '../../typings/charts/StackedBar';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -182,12 +181,7 @@ export interface StackedBarProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<StackedBarProps, PublishedStackedBarProps>
->;
-
-const StackedBar = ({
+const StackedBar: FunctionComponent<StackedBarProps> = ({
     chart = StackedBarWrapper,
     createTooltip,
     data,
