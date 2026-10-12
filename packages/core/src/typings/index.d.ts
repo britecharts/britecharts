@@ -1,5 +1,6 @@
 export * from './charts/bar-chart';
-export * from './charts/brush-chart';
+export * from '../charts/brush/brush';
+export function brush(): import('../charts/brush/brush').BrushChartModule;
 // bullet's types live in the chart now; the factory declaration stays here
 // until `types` points at the generated barrel, which is where a named
 // `bullet` really comes from -- the chart module exports it as a default and
