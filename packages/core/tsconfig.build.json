@@ -1,0 +1,33 @@
+{
+    // Declaration emit, which `tsconfig.json` cannot do: that one is the
+    // type-check config and sets `noEmit`, and it includes the specs, stories
+    // and fixtures -- none of which belong in a consumer's declarations.
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        // No `declarationMap`: `files` in package.json excludes `**/*.map`, so
+        // the maps would be built and then not shipped.
+        // Both explicit, as TS 6 asks: without `rootDir` the layout depends on
+        // which files happen to be included, so `src/index.ts` would land at
+        // `dist/types/src/index.d.ts` or `dist/types/index.d.ts` depending on
+        // the day. The `types` field has to name one of them.
+        "rootDir": "src",
+        "outDir": "dist/types",
+        // The specs are the only files that need jest's globals, and they are
+        // excluded below, so the declarations are built without them.
+        "types": []
+    },
+    "include": ["src"],
+    "exclude": [
+        "src/**/*.spec.ts",
+        "src/**/*.spec.js",
+        "src/**/*.stories.js",
+        "src/**/*.stories.ts",
+        "src/**/*.fixtures.ts",
+        "src/**/*.fixtures.js",
+        "src/**/*DataBuilder.js",
+        "src/**/*Data.js"
+    ]
+}
