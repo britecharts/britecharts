@@ -54,11 +54,9 @@ export type SingleColorsHuman = {
   [key in keyof typeof SingleColor]: string
 }
 
-export const colors: {
-  colorSchemas: ColorSchemas
-  colorSchemasHuman: ColorsSchemaHumanType
-  colorGradients: ColorGradients
-  colorGradientsHuman: ColorGradientsHuman
-  singleColors: SingleColors
-  singleColorsHuman: SingleColorsHuman
-}
+// The `colors` object the package exports used to be declared here, as an
+// ambient `const`. Gone for the same reason as `constants`: the real one is
+// `charts/helpers/color.ts`'s default export, which `src/index.ts` exports as
+// `colors`, and its generated declaration says what it is. The six types above
+// stay -- `color.ts` annotates itself with them, so they are still the shared
+// vocabulary rather than a parallel description of it.
