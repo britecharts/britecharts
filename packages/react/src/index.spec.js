@@ -18,6 +18,10 @@ const sourceFileFor = (from) => {
         .find((candidate) => fs.existsSync(candidate));
 };
 
+// What each export takes in place of data, where it takes none.
+const ENTRY_PROPS = { ResponsiveContainer: 'render' };
+const entryPropFor = (name) => ENTRY_PROPS[name] ?? 'data';
+
 // The props Storybook's own docgen can see in a component's source, asked of
 // react-docgen itself rather than of a stand-in. It is ESM-only, so it answers
 // in a child process instead of being imported here.
@@ -95,12 +99,15 @@ describe('package surface', () => {
             });
         } else {
             it('should declare props in the component file, where the docgen can read them', () => {
-                // `data` is the signal for a chart component, and every one of
-                // them takes it. It is never a destructured default, so finding
-                // it means the props interface itself was read. When a layout
-                // helper converts -- ResponsiveContainer, whose only prop is
-                // `render` -- assert on its own entry prop instead.
-                expect(docgenPropsFor(file)).toContain('data');
+                // The prop asserted on is the component's own entry prop:
+                // `data` for a chart, `render` for a layout helper that takes
+                // no data at all. For a chart it is never a destructured
+                // default, so finding it means the props interface itself was
+                // read rather than the parameter list -- the regression this
+                // guards reports `["chart"]` and nothing else. For a one-prop
+                // helper the two coincide, so the assertion is weaker there by
+                // nature; there is nothing else to read.
+                expect(docgenPropsFor(file)).toContain(entryPropFor(name));
             });
         }
 

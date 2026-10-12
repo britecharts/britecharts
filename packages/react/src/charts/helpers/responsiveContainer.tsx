@@ -1,10 +1,30 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
+import type { ReactNode } from 'react';
 
 import optimizedResize from './optimizedResize.js';
+import type { Equal, Expect } from '../../typings/assert';
+import type { ResponsiveContainerProps as PublishedResponsiveContainerProps } from '../../typings/charts/ResponsiveContainer';
 
-const ResponsiveContainer = ({ render }) => {
-    const rootNode = useRef(null);
+/**
+ * The props are declared here rather than imported, for the reason recorded on
+ * Bullet: Storybook's docgen reads the component file, and an interface it has
+ * to follow an import to find is one it does not find.
+ */
+export interface ResponsiveContainerProps {
+    /**
+     * Draws what should fill the container, given the width the container has
+     * measured. Called again when the window is resized.
+     */
+    render?: (size: { width: number }) => ReactNode;
+}
+
+/** The interface above and the published declaration are the same type. */
+export type PropsMatchPublished = Expect<
+    Equal<ResponsiveContainerProps, PublishedResponsiveContainerProps>
+>;
+
+const ResponsiveContainer = ({ render }: ResponsiveContainerProps) => {
+    const rootNode = useRef<HTMLDivElement>(null);
     const measuredWidth = useRef(500);
     // Until it has measured, which it does in the same commit
     const [width, setWidth] = useState(500);
@@ -37,10 +57,6 @@ const ResponsiveContainer = ({ render }) => {
             {render ? render({ width }) : null}
         </div>
     );
-};
-
-ResponsiveContainer.propTypes = {
-    render: PropTypes.func,
 };
 
 export default ResponsiveContainer;
