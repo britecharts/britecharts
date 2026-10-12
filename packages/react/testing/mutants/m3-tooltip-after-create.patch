@@ -1,7 +1,9 @@
---- a/packages/react/src/charts/helpers/useChart.js
-+++ b/packages/react/src/charts/helpers/useChart.js
-@@ -86,6 +86,7 @@
-             data,
+diff --git a/packages/react/src/charts/helpers/useChart.ts b/packages/react/src/charts/helpers/useChart.ts
+index d5760993..bf59dc71 100644
+--- a/packages/react/src/charts/helpers/useChart.ts
++++ b/packages/react/src/charts/helpers/useChart.ts
+@@ -111,6 +111,7 @@ export default function useChart<TData, TChart extends object>(
+             data as TData,
              configuration
          );
 +        createTooltip();
