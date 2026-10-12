@@ -1,161 +1,169 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { LineWrapper } from '@britecharts/wrappers';
+import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
+import type {
+    AxisTimeCombination,
+    ColorGradientType,
+    ColorsSchemasType,
+    LineChartData,
+    LineChartModule,
+    LineChartXAxisScale,
+    LineChartXAxisValueType,
+} from '@britecharts/core';
 
-import { axisTimeCombinations as combinations } from '../constants.js';
 import useChart from '../helpers/useChart.js';
+import { axisTimeCombinations as combinations } from '../constants.js';
+import type { Equal, Expect } from '../../typings/assert';
+import type { LineProps as PublishedLineProps } from '../../typings/charts/Line';
 
-const Line = ({
-    chart = LineWrapper,
-    createTooltip,
-    data,
-    ...configuration
-}) => {
-    const rootNode = useChart(chart, data, configuration, { createTooltip });
-
-    return <div className="line-container" ref={rootNode} />;
-};
-
-Line.propTypes = {
+/**
+ * The props are declared here rather than imported, for the reason recorded on
+ * Bullet: Storybook's docgen reads the component file, and an interface it has
+ * to follow an import to find is one it does not find.
+ */
+export interface LineProps {
     /**
      * Internally used, do not overwrite.
+     *
+     * Required. `null` means the data has not arrived yet: nothing is drawn
+     * until it does. Leaving it out is an error.
      */
-    data: PropTypes.object,
+    data: LineChartData | null;
 
     /**
      * Gets or Sets the duration of the animation
      */
-    animationDuration: PropTypes.number,
-
-    /**
-     * Exposes the constants to be used to force the x axis to respect a certain granularity current options:
-     *  MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-     */
-    axisTimeCombinations: PropTypes.string,
+    animationDuration?: number;
 
     /**
      * Current colorMap or Chart module to chain calls
      */
-    colorMap: PropTypes.object,
+    colorMap?: Record<string, string>;
 
     /**
      * Gets or Sets the colorSchema of the chart
      */
-    colorSchema: PropTypes.arrayOf(PropTypes.string),
+
+    colorSchema?: ColorsSchemasType;
 
     /**
      * Gets or Sets the dateLabel of the chart
      */
-    dateLabel: PropTypes.string,
+    dateLabel?: string;
 
     /**
      * Chart exported to png and a download action is fired
      */
-    exportChart: PropTypes.func,
+    exportChart?: string;
 
     /**
      * Gets or Sets the grid mode.
      */
-    grid: PropTypes.string,
+    // `GridTypes | null` as core declares it, spelled out because core's
+    // typings barrel does not export `common/grid` yet.
+    grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
      * Gets or Sets the height of the chart
      */
-    height: PropTypes.number,
+    height?: number;
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate
      * when render. By default this is 'false'
      */
-    isAnimated: PropTypes.bool,
+    isAnimated?: boolean;
 
     /**
      * Current loading state flag or Chart module to chain calls
      */
-    isLoading: PropTypes.bool,
+    isLoading?: boolean;
 
     /**
      * Gets or Sets the curve of the line chart
      */
-    lineCurve: PropTypes.string,
+    lineCurve?: string;
 
     /**
      * Gets or Sets the gradient colors of the line chart when there is only one line
      */
-    lineGradient: PropTypes.arrayOf(PropTypes.string),
+    // The two-element tuple core declares: the chart reads [0] and [1] and
+    // nothing else, so `string[]` accepted an array that leaves a stop
+    // undefined.
+    lineGradient?: ColorGradientType;
 
     /**
      * Pass language tag for the tooltip to localize the date. Feature
      * uses Intl.DateTimeFormat, for compatability and support, refer
      * to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
      */
-    locale: PropTypes.string,
+    locale?: string;
 
     /**
      * Gets or Sets the margin of the chart
      */
-    margin: PropTypes.shape({
-        top: PropTypes.number,
-        bottom: PropTypes.number,
-        left: PropTypes.number,
-        right: PropTypes.number,
-    }),
+    margin?: {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    };
 
     /**
      * Gets or Sets the number format of the line chart
      */
-    numberFormat: PropTypes.string,
+    numberFormat?: string;
 
     /**
      * Gets or Sets the minimum width of the graph in order
      * to show the tooltip NOTE: This could also depend on the aspect ratio
      */
-    tooltipThreshold: PropTypes.number,
+    tooltipThreshold?: number;
 
     /**
      * Gets or Sets the topicLabel of the chart
      */
-    topicLabel: PropTypes.number,
+    topicLabel?: string;
 
     /**
      * Gets or Sets the valueLabel of the chart
      */
-    valueLabel: PropTypes.number,
+    valueLabel?: string;
 
     /**
      * Gets or Sets the width of the chart
      */
-    width: PropTypes.number,
+    width?: number;
 
     /**
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
      */
-    xAxisCustomFormat: PropTypes.string,
+    xAxisCustomFormat?: string;
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
      */
-    xAxisFormat: PropTypes.string,
+    xAxisFormat?: AxisTimeCombination | `${AxisTimeCombination}`;
 
     /**
      * Gets or Sets the label of the X axis of the chart
      */
-    xAxisLabel: PropTypes.string,
+    xAxisLabel?: string;
 
     /**
      * Gets or Sets the `xAxisScale`. Choose between 'linear' and 'logarithmic'.
      * The setting will only work if `xAxisValueType` is set to 'number' as well, otherwise it won't influence the visualization.
      */
-    xAxisScale: PropTypes.string,
+    xAxisScale?: LineChartXAxisScale;
 
     /**
      * Gets or Sets the `xAxisValueType`. Choose between 'date' and 'number'.
      * When set to `number` the values of the x-axis must not be dates anymore, but can be arbitrary numbers.
      */
-    xAxisValueType: PropTypes.string,
+    xAxisValueType?: LineChartXAxisValueType;
 
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It
@@ -163,46 +171,62 @@ Line.propTypes = {
      * value needs to be a multiple of 2, 5 or 10. They won't always work
      * as expected, as D3 decides at the end how many and where the ticks will appear.
      */
-    xTicks: PropTypes.number,
+    xTicks?: number;
 
     /**
      * Gets or Sets the label of the Y axis of the chart
      */
-    yAxisLabel: PropTypes.string,
+    yAxisLabel?: string;
 
     /**
      * Gets or Sets the yAxisLabelPadding of the chart. The default value is -36
      */
-    yAxisLabelPadding: PropTypes.number,
+    yAxisLabelPadding?: number;
 
     /**
      * Gets or Sets the number of ticks of the y axis on the chart (Default is 5)
      */
-    yTicks: PropTypes.number,
+    yTicks?: number;
 
-    customMouseOver: PropTypes.func,
-    customMouseMove: PropTypes.func,
-    customMouseOut: PropTypes.func,
-
-    /**
-     * Internally used, do not overwrite.
-     *
-     * @ignore
-     */
-    chart: PropTypes.object,
+    customMouseOver?: ChartEventHandler;
+    customMouseMove?: ChartEventHandler;
+    customMouseOut?: ChartEventHandler;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    createTooltip: PropTypes.func,
+    chart?: Wrapper<LineChartData, LineChartModule>;
+
+    /**
+     * Internally used, do not overwrite.
+     *
+     * @ignore
+     * @internal
+     */
+    createTooltip?: () => void;
+}
+
+/** The interface above and the published declaration are the same type. */
+export type PropsMatchPublished = Expect<Equal<LineProps, PublishedLineProps>>;
+
+const Line = ({
+    chart = LineWrapper,
+    createTooltip,
+    data,
+    ...configuration
+}: LineProps) => {
+    const rootNode = useChart(chart, data, configuration, { createTooltip });
+
+    return <div className="line-container" ref={rootNode} />;
 };
 
-export default Line;
-
 /**
- * Exposes the constants to be used to force the x axis to respect a
- * certain granularity current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+ * The x-axis granularity constants, re-exported for a consumer writing
+ * `xAxisFormat`. This is the feature; the prop of the same name that stood
+ * beside it was not one -- see the stacked area's changeset.
  */
 export const axisTimeCombinations = combinations;
+
+export default Line;
