@@ -6,7 +6,7 @@ import type {
     TooltipModule,
     TooltipPosition,
     TooltipSingleDataShape,
-} from '../../typings/charts/tooltip';
+} from '../tooltip/tooltip';
 
 export enum MiniTooltipKeys {
     Value = 'value',
