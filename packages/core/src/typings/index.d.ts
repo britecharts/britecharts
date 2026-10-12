@@ -20,7 +20,8 @@ export function miniTooltip(): import('../charts/mini-tooltip/mini-tooltip').Min
 export * from './charts/scatter-plot';
 export * from '../charts/sparkline/sparkline';
 export function sparkline(): import('../charts/sparkline/sparkline').SparklineChartModule;
-export * from './charts/stacked-area';
+export * from '../charts/stacked-area/stacked-area';
+export function stackedArea(): import('../charts/stacked-area/stacked-area').StackedAreaChartModule;
 export * from '../charts/stacked-bar/stacked-bar';
 export function stackedBar(): import('../charts/stacked-bar/stacked-bar').StackedBarChartModule;
 export * from './charts/tooltip';
