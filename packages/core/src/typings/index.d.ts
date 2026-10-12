@@ -8,7 +8,8 @@ export function brush(): import('../charts/brush/brush').BrushChartModule;
 // only `src/index.ts` names it.
 export * from '../charts/bullet/bullet';
 export function bullet(): import('../charts/bullet/bullet').BulletChartModule;
-export * from './charts/donut-chart';
+export * from '../charts/donut/donut';
+export function donut(): import('../charts/donut/donut').DonutChartModule;
 export * from '../charts/grouped-bar/grouped-bar';
 export function groupedBar(): import('../charts/grouped-bar/grouped-bar').GroupedBarChartModule;
 export * from '../charts/heatmap/heatmap';
