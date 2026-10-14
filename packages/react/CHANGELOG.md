@@ -1,4 +1,4 @@
-0.6.5
+# @britecharts/react
 
 ## 3.0.0-beta.2
 
