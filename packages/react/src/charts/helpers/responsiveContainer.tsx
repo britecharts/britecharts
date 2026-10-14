@@ -1,9 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 
 import optimizedResize from './optimizedResize.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { ResponsiveContainerProps as PublishedResponsiveContainerProps } from '../../typings/charts/ResponsiveContainer';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -18,12 +16,9 @@ export interface ResponsiveContainerProps {
     render?: (size: { width: number }) => ReactNode;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<ResponsiveContainerProps, PublishedResponsiveContainerProps>
->;
-
-const ResponsiveContainer = ({ render }: ResponsiveContainerProps) => {
+const ResponsiveContainer: FunctionComponent<ResponsiveContainerProps> = ({
+    render,
+}: ResponsiveContainerProps) => {
     const rootNode = useRef<HTMLDivElement>(null);
     const measuredWidth = useRef(500);
     // Until it has measured, which it does in the same commit

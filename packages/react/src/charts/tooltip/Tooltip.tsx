@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 
 import { TooltipWrapper } from '@britecharts/wrappers';
 import type {
@@ -15,8 +15,6 @@ import type {
 } from '@britecharts/core';
 
 import { axisTimeCombinations as combinations } from '../constants.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { TooltipProps as PublishedTooltipProps } from '../../typings/charts/Tooltip';
 
 const tooltipContainerWithMarkerSelector =
     '.metadata-group .vertical-marker-container';
@@ -206,11 +204,6 @@ export interface TooltipProps {
     customMouseOver?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<TooltipProps, PublishedTooltipProps>
->;
-
 /**
  * We want to remove the chart and data from the props in order to have a
  * configuration object
@@ -246,7 +239,7 @@ const getTooltipContainer = (rootNode: HTMLElement | null) => {
     );
 };
 
-const Tooltip = (props: TooltipProps) => {
+const Tooltip: FunctionComponent<TooltipProps> = (props: TooltipProps) => {
     const { chart = TooltipWrapper } = props;
     const rootNode = useRef<HTMLDivElement>(null);
     const tooltipChart = useRef<TooltipModule | null>(null);

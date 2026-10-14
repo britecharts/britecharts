@@ -1,6 +1,6 @@
 /**
  * Checks that every accessor a chart exposes at runtime is declared in the
- * published typings.
+ * chart's module type, which is what the published declarations carry.
  *
  * Converting the heatmap turned up three accessors it had always shipped and
  * never declared -- `on`, `isAnimated` and `animationDuration`. `on` is the
@@ -31,7 +31,7 @@ import ts from 'typescript';
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(scriptDir, '..');
 const srcRoot = path.join(packageRoot, 'src');
-const typingsEntry = path.join(srcRoot, 'typings', 'index.d.ts');
+const barrelEntry = path.join(srcRoot, 'index.ts');
 
 /** Accessor names assigned onto the chart's `exports` function. */
 const assignedAccessors = (source) => {
@@ -49,7 +49,7 @@ const assignedAccessors = (source) => {
     return names;
 };
 
-const program = ts.createProgram([typingsEntry], {
+const program = ts.createProgram([barrelEntry], {
     target: ts.ScriptTarget.ES2020,
     moduleResolution: ts.ModuleResolutionKind.Bundler,
     strict: true,
@@ -58,22 +58,38 @@ const program = ts.createProgram([typingsEntry], {
 });
 const checker = program.getTypeChecker();
 
-/** Every `export function name(): SomeModule` across the typings. */
+/**
+ * Every factory the barrel exports, mapped to the module type it returns.
+ *
+ * Read from `src/index.ts` itself, which is what the published declarations
+ * are generated from. This used to walk a hand-written barrel for
+ * `export function name(): SomeModule` lines, and filtering that walk to one
+ * directory is how bullet and mini-tooltip silently stopped being compared the
+ * moment their types moved -- the chart simply left the set, and a comparison
+ * over a smaller set reports success just as loudly. Asking the checker for
+ * the barrel's exports leaves nothing to filter. The `uncompared` check below is
+ * still the guard against a chart dropping out.
+ */
 const factories = new Map();
+const barrelSymbol = checker.getSymbolAtLocation(
+    program.getSourceFile(barrelEntry)
+);
 
-for (const file of program.getSourceFiles()) {
-    if (!file.fileName.includes('/src/typings/charts/')) {
+for (const exported of checker.getExportsOfModule(barrelSymbol)) {
+    const target =
+        exported.flags & ts.SymbolFlags.Alias
+            ? checker.getAliasedSymbol(exported)
+            : exported;
+
+    if (!(target.flags & ts.SymbolFlags.Function)) {
         continue;
     }
+    const [signature] = checker
+        .getTypeOfSymbol(target)
+        .getCallSignatures();
 
-    for (const statement of file.statements) {
-        if (
-            ts.isFunctionDeclaration(statement) &&
-            statement.name &&
-            statement.type
-        ) {
-            factories.set(statement.name.text, checker.getTypeAtLocation(statement.type));
-        }
+    if (signature) {
+        factories.set(exported.getName(), signature.getReturnType());
     }
 }
 
@@ -189,6 +205,27 @@ for (const [name, { file, source }] of [...sources].sort()) {
     console.log(
         `  ${name.padEnd(13)} ${counts}${notes.length ? '  ' + notes.join('; ') : ''}`
     );
+}
+
+// Every chart the barrel exports has to have been compared. Without this, a
+// chart whose declaration moves out of the set this script looks in simply
+// stops being checked, and the run still ends with a tick: that is how bullet
+// and mini-tooltip went uncompared for one commit.
+// `colors` is the one barrel export that is not a chart: it is the object of
+// colour schemas, with no factory to declare.
+const NOT_A_FACTORY = new Set(['colors']);
+const uncompared = [...sources.keys()].filter(
+    (name) => !factories.has(name) && !NOT_A_FACTORY.has(name)
+);
+
+if (uncompared.length) {
+    console.error(
+        `\n✖ ${uncompared.length} chart(s) the barrel exports have no factory ` +
+            `declaration this script could find: ${uncompared.join(', ')}.\n` +
+            'Nothing was compared for them. Declare the factory where the other\n' +
+            "charts' are, or teach this script where it moved."
+    );
+    process.exit(1);
 }
 
 if (gaps.length) {

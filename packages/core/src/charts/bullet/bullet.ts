@@ -13,9 +13,75 @@ import { bulletLoadingMarkup } from '../helpers/load';
 import colorHelper from '../helpers/color';
 import type { ChartMarginParams } from '../../typings/common/margin';
 import type {
-    BulletChartDataShape,
-    BulletChartModule,
-} from '../../typings/charts/bullet-chart';
+    ChartBaseAPI,
+    ExportableChartAPI,
+} from '../../typings/common/base';
+import type { ChartModuleSelection } from '../../typings/common/selection';
+import type { ColorsSchemasType } from '../../typings/helpers/colors';
+
+export enum BulletChartKeys {
+    Ranges = 'ranges',
+    Measures = 'measures',
+    Markers = 'markers',
+}
+
+export type BulletChartDataShape = {
+    [BulletChartKeys.Ranges]: [number?, number?, number?];
+    [BulletChartKeys.Measures]: [number?, number?, number?];
+    [BulletChartKeys.Markers]: [number?];
+    /**
+     * Identification for the measure. The chart reads `originalData.title` and
+     * renders it, and the chart's own `@typedef BulletChartData` documents both of
+     * these, but the declared shape omitted them -- so a consumer passing the
+     * data the documentation shows did not compile.
+     */
+    title?: string;
+    /** More detail on the measure identification. As above. */
+    subtitle?: string;
+};
+
+// The `Omit` this used to carry removed `'locale' | 'isAnimated' |
+// 'loadingState'`, and `ChartBaseAPI` declares none of those three -- the real
+// member is `isLoading`, which the chart has and keeps. So it removed nothing
+// and read as though it did. Spelled plainly instead.
+export type BulletChartBaseAPI = ChartBaseAPI<BulletChartModule>;
+
+export interface BulletChartAPI extends BulletChartBaseAPI, ExportableChartAPI {
+    /** Gets or Sets the colorSchema of the chart */
+    colorSchema(): ColorsSchemasType;
+    colorSchema(schema: ColorsSchemasType): BulletChartModule;
+    /**
+     * Gets or Sets the subtitle for measure identifier range.
+     *
+     * A string, not the `number` this declared: the chart assigns it to
+     * `subtitle` and renders it as text, its own example is
+     * `bulletChart.customSubtitle('GHz')`, and it has no default -- so reading it
+     * before setting it gives undefined.
+     */
+    customSubtitle(): string | undefined;
+    customSubtitle(subtitle: string): BulletChartModule;
+    /** Gets or Sets the title for measure identifier. A string, as above. */
+    customTitle(): string | undefined;
+    customTitle(title: string): BulletChartModule;
+    /**
+     * Gets or Sets the isReverse status of the chart. If true,
+     * the elements will be rendered in reverse order.
+     */
+    isReverse(): boolean;
+    isReverse(isReverse: boolean): BulletChartModule;
+    /** Space between axis and chart */
+    paddingBetweenAxisAndChart(): number;
+    paddingBetweenAxisAndChart(padding: number): BulletChartModule;
+    /** Gets or Sets the starting point of the capacity range. */
+    startMaxRangeOpacity(): number;
+    startMaxRangeOpacity(opacity: number): BulletChartModule;
+    /** Gets or Sets the number of ticks of the x axis on the chart */
+    ticks(): number;
+    ticks(ticks: number): BulletChartModule;
+}
+
+export type BulletChartModule = ChartModuleSelection<BulletChartDataShape> &
+    BulletChartAPI;
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent

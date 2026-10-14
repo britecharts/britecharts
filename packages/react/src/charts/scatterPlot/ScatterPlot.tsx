@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { ScatterPlotWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -10,8 +11,6 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { ScatterPlotProps as PublishedScatterPlotProps } from '../../typings/charts/ScatterPlot';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -68,10 +67,10 @@ export interface ScatterPlotProps {
     /**
      * Gets or Sets the grid mode
      */
-    // `GridTypes | null` as core declares it. Spelled out rather than
-    // imported because core's typings barrel does not export `common/grid`
-    // yet -- a Phase 5 item -- and `null` is the default, which this was
-    // missing: assigning the default back is how a grid is turned off.
+    // `GridTypes | null` as core declares it, spelled out rather than
+    // imported: Storybook's docgen reads this file alone, so an imported alias
+    // reaches it as a bare name and the grid Control loses its three options.
+    // `null` is the default: assigning it back is how a grid is turned off.
     grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
@@ -222,12 +221,7 @@ export interface ScatterPlotProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<ScatterPlotProps, PublishedScatterPlotProps>
->;
-
-const ScatterPlot = ({
+const ScatterPlot: FunctionComponent<ScatterPlotProps> = ({
     chart = ScatterPlotWrapper,
     createTooltip,
     data,

@@ -3,7 +3,6 @@ import { ColorsSchemasType } from '../helpers/colors';
 import { ChartMarginParams } from './margin';
 import { AxisTimeCombination } from '../helpers/constants';
 
-
 export interface ChartBaseAPI<T> {
     /** Gets or Sets the number format of the chart */
     numberFormat(): string;
@@ -138,7 +137,9 @@ export interface TimeSeriesChartAPI<T> {
      *     chart.xAxisFormat(chart.axisTimeCombinations.HOUR_DAY)
      */
     axisTimeCombinations: {
-        readonly [key in keyof typeof AxisTimeCombination]: (typeof AxisTimeCombination)[key];
+        readonly [
+            key in keyof typeof AxisTimeCombination
+        ]: (typeof AxisTimeCombination)[key];
     };
     /**
      * Pass language tag for the tooltip to localize the date.

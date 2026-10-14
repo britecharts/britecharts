@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { SparklineWrapper } from '@britecharts/wrappers';
 import type { Wrapper } from '@britecharts/wrappers';
@@ -10,8 +11,6 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { SparklineProps as PublishedSparklineProps } from '../../typings/charts/Sparkline';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -140,12 +139,7 @@ export interface SparklineProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<SparklineProps, PublishedSparklineProps>
->;
-
-const Sparkline = ({
+const Sparkline: FunctionComponent<SparklineProps> = ({
     chart = SparklineWrapper,
     createTooltip,
     data,

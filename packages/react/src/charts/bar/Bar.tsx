@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { BarWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -11,12 +12,10 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { BarChartProps as PublishedBarChartProps } from '../../typings/charts/Bar';
 
 /**
- * The props are declared here rather than imported from `src/typings`, for the
- * reason recorded on Bullet: Storybook's docgen reads the component file, and
+ * The props are declared here rather than imported, for the reason recorded
+ * on Bullet: Storybook's docgen reads the component file, and
  * an interface it has to follow an import to find is one it does not find --
  * the Controls collapse to the destructured `chart` default. The JSDoc goes
  * with them, since that is what fills each Control's description.
@@ -229,12 +228,7 @@ export interface BarChartProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<BarChartProps, PublishedBarChartProps>
->;
-
-const Bar = ({
+const Bar: FunctionComponent<BarChartProps> = ({
     chart = BarWrapper,
     createTooltip,
     data,

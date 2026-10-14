@@ -6,7 +6,8 @@
         "emitDeclarationOnly": true,
         "rootDir": "src",
         "declarationDir": "dist/esm",
-        "types": []
+        "types": [],
+        "paths": {}
     },
     "exclude": [
         "**/*.spec.ts",

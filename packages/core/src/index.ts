@@ -19,6 +19,39 @@ import { axisTimeCombinations } from './charts/helpers/constants.js';
 // the rest (curve maps, time intervals, gradient ids) is internal.
 const constants = { axisTimeCombinations };
 
+// The public types, re-exported so the generated declaration for this file is
+// the whole package surface -- values above, types here. `types` points at
+// that declaration. A hand-written `src/typings/index.d.ts` used to carry
+// both, with the factory signatures written out by hand beside the real ones.
+//
+// `export type *` rather than `export *`, which is a deliberate narrowing.
+// Each chart module also exports a `*Keys` enum, and an enum is a value as
+// well as a type: `export *` would put fourteen of them into the bundle and
+// into the package's runtime surface. They have never been there -- the old
+// declarations said `export enum`, promising a value the built output does
+// not contain, so a consumer importing one by that promise got `undefined` at
+// run time. Type-only keeps the bundle as it is and turns that into a
+// compile error (TS1362) instead. Enum members still work where the data
+// shapes use them, in type position.
+export type * from './charts/bar/bar.js';
+export type * from './charts/brush/brush.js';
+export type * from './charts/bullet/bullet.js';
+export type * from './charts/donut/donut.js';
+export type * from './charts/grouped-bar/grouped-bar.js';
+export type * from './charts/heatmap/heatmap.js';
+export type * from './charts/legend/legend.js';
+export type * from './charts/line/line.js';
+export type * from './charts/mini-tooltip/mini-tooltip.js';
+export type * from './charts/scatter-plot/scatter-plot.js';
+export type * from './charts/sparkline/sparkline.js';
+export type * from './charts/stacked-area/stacked-area.js';
+export type * from './charts/stacked-bar/stacked-bar.js';
+export type * from './charts/tooltip/tooltip.js';
+export type * from './typings/common/grid.js';
+export type * from './typings/common/local.js';
+export type * from './typings/helpers/colors.js';
+export type * from './typings/helpers/constants.js';
+
 export {
     bar,
     donut,

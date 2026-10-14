@@ -14,8 +14,6 @@
     "packages/react/lib",
     "packages/react/node_modules",
     "*.scss",
-    "packages/core/src/typings/",
-    "packages/react/src/typings/",
     "packages/integration/consumers/typescript/",
     "packages/react/TS-wip/"
   ]

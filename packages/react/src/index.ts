@@ -15,3 +15,19 @@ export { default as ResponsiveContainer } from './charts/helpers/responsiveConta
 export { default as withResponsiveness } from './charts/helpers/withResponsiveness.js';
 
 export * from './charts/constants.js';
+
+// The props of each component, so the generated declaration for this file is
+// the whole package surface. They used to be published from a hand-written
+// copy in src/typings, kept equal to these by an assertion in every component.
+export type { BarChartProps } from './charts/bar/Bar.js';
+export type { BulletChartProps } from './charts/bullet/Bullet.js';
+export type { DonutChartProps } from './charts/donut/Donut.js';
+export type { GroupedBarProps } from './charts/groupedBar/GroupedBar.js';
+export type { LegendProps } from './charts/legend/Legend.js';
+export type { LineProps } from './charts/line/Line.js';
+export type { ScatterPlotProps } from './charts/scatterPlot/ScatterPlot.js';
+export type { SparklineProps } from './charts/sparkline/Sparkline.js';
+export type { StackedAreaProps } from './charts/stackedArea/StackedArea.js';
+export type { StackedBarProps } from './charts/stackedBar/StackedBar.js';
+export type { TooltipProps } from './charts/tooltip/Tooltip.js';
+export type { ResponsiveContainerProps } from './charts/helpers/responsiveContainer.js';

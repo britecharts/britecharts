@@ -1,4 +1,22 @@
 {
     "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        // Resolve the sibling workspace to its source, as react's tsconfig
+        // does and as jest's moduleNameMapper already does for the specs.
+        //
+        // This became necessary when core's `types` moved to `dist/types/` --
+        // generated declarations rather than a hand-written barrel. Without it,
+        // type-checking this package would first require building that one, and
+        // would otherwise report on whatever output happened to be lying
+        // around: green locally off a stale build, red in CI, which builds
+        // nothing before the type-check step.
+        //
+        // The entry is the same source file those declarations are generated
+        // from. The published ones are checked in `packages/integration`,
+        // against the packed tarballs.
+        "paths": {
+            "@britecharts/core": ["../core/src/index.ts"]
+        }
+    },
     "include": ["src"]
 }

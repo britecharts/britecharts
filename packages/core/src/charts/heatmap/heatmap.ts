@@ -13,9 +13,46 @@ import colorHelper from '../helpers/color';
 import { hoursHuman, motion } from '../helpers/constants';
 import type { ChartMarginParams } from '../../typings/common/margin';
 import type {
-    HeatmapChartDataShape,
-    HeatmapChartModule,
-} from '../../typings/charts/heatmap-chart';
+    AnimatedChartAPI,
+    BaseAPI,
+    ExportableChartAPI,
+    InteractiveChartAPI,
+} from '../../typings/common/base';
+import type { ChartModuleSelection } from '../../typings/common/selection';
+
+export enum HeatmapChartKeys {
+    Day = 'day',
+    Hour = 'hour',
+    Value = 'value',
+}
+
+export type HeatmapChartDataShape = {
+    [HeatmapChartKeys.Day]: number;
+    [HeatmapChartKeys.Hour]: number;
+    [HeatmapChartKeys.Value]: number;
+};
+
+export interface HeatmapChartAPI
+    extends
+        BaseAPI<HeatmapChartModule>,
+        // `isAnimated` and `animationDuration` are documented `@public` on the
+        // chart and have always shipped; they were simply never declared.
+        AnimatedChartAPI<HeatmapChartModule>,
+        // Nor was `on`, which is how a consumer wires the mini tooltip to the
+        // chart -- the pattern this library's own examples show. Until now
+        // `heatmap().on('customMouseOver', tooltip.show)` did not compile.
+        InteractiveChartAPI<HeatmapChartModule>,
+        ExportableChartAPI {
+    /** Gets or Sets the y-axis labels of the chart */
+    yAxisLabels(): string[] | undefined;
+    yAxisLabels(labels: string[]): HeatmapChartModule;
+    /** Gets or Sets the boxSize of the chart */
+    boxSize(): number;
+    boxSize(size: number): HeatmapChartModule;
+}
+
+export type HeatmapChartModule = ChartModuleSelection<HeatmapChartDataShape[]> &
+    HeatmapChartAPI;
 
 /**
  * Reusable Heatmap API module that renders a

@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { LegendWrapper } from '@britecharts/wrappers';
 import type { Wrapper } from '@britecharts/wrappers';
@@ -9,8 +10,6 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { LegendProps as PublishedLegendProps } from '../../typings/charts/Legend';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -126,14 +125,9 @@ export interface LegendProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<LegendProps, PublishedLegendProps>
->;
-
 // createTooltip is handed to every chart by a Tooltip, but is not a
 // configuration key of the wrapper, and a legend has no tooltip to redraw.
-const Legend = ({
+const Legend: FunctionComponent<LegendProps> = ({
     chart = LegendWrapper,
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     createTooltip,

@@ -17,10 +17,87 @@ import { motion } from '../helpers/constants';
 import type { ChartMarginParams } from '../../typings/common/margin';
 import type { ColorGradientType } from '../../typings/helpers/colors';
 import type {
-    SparkelineTitleTextStyle,
+    AnimatedChartAPI,
+    ChartDimensionsAPI,
+    ExportableChartAPI,
+} from '../../typings/common/base';
+import type { ChartModuleSelection } from '../../typings/common/selection';
+
+export enum SparklineChartKeys {
+    Value = 'value',
+    Date = 'date',
+}
+
+export type SparklineChartDataShape = {
+    [SparklineChartKeys.Value]: number;
+    [SparklineChartKeys.Date]: string;
+};
+
+export type SparklineSelection = Selection<
+    BaseType,
     SparklineChartDataShape,
-    SparklineChartModule,
-} from '../../typings/charts/sparkline-chart';
+    HTMLElement,
+    // The parent datum, which a consumer of this type binds and this chart
+    // never reads -- the same bounded `any` as `ChartSelection` below, for the
+    // same reason: `Selection` is invariant in it, so naming one shape would
+    // reject every other caller's.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+// The name's misspelling ("Sparkeline") is published, so it stays: renaming it
+// is a breaking change for anyone importing the type, and that is its own
+// decision rather than something to slip into a file move.
+export interface SparkelineTitleTextStyle {
+    'font-family'?: string;
+    'font-size'?: string;
+    'font-weight'?: number;
+    'font-style'?: string;
+    fill?: string;
+}
+
+export interface SparklineChartAPI
+    extends
+        ChartDimensionsAPI<SparklineChartModule>,
+        AnimatedChartAPI<SparklineChartModule>,
+        ExportableChartAPI {
+    /** Gets or Sets the areaGradient of the chart */
+    areaGradient(): [string, string];
+    areaGradient(gradient: [string, string]): SparklineChartModule;
+    /** Gets or Sets the lineGradient of the chart */
+    lineGradient(): [string, string];
+    lineGradient(gradient: [string, string]): SparklineChartModule;
+    /**
+     * Gets or Sets the text of the title at the top of sparkline.
+     * To style the title, use the titleTextStyle method below.
+     *
+     * The getter can return undefined: the chart has no default title, and
+     * `drawSparklineTitle` only runs once one is set.
+     */
+    titleText(): string | undefined;
+    titleText(title: string): SparklineChartModule;
+    /**
+     * Gets or Sets the text style object of the title at the top of sparkline.
+     * Using this method, you can set font-family, font-size, font-weight, font-style,
+     * and color (fill).
+     */
+    titleTextStyle(): SparkelineTitleTextStyle;
+    titleTextStyle(titleStyle: SparkelineTitleTextStyle): SparklineChartModule;
+    /** Gets or Sets the `date` key of the data */
+    dateLabel(): string;
+    dateLabel(value: string): SparklineChartModule;
+    /** Gets or Sets the loading state of the chart */
+    isLoading(): boolean;
+    isLoading(value: boolean): SparklineChartModule;
+    /** Gets or Sets the `value` key of the data */
+    valueLabel(): string;
+    valueLabel(value: string): SparklineChartModule;
+}
+
+export type SparklineChartModule = ChartModuleSelection<
+    SparklineChartDataShape[]
+> &
+    SparklineChartAPI;
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent

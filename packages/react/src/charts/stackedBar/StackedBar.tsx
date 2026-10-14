@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { StackedBarWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -10,8 +11,6 @@ import type {
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { StackedBarProps as PublishedStackedBarProps } from '../../typings/charts/StackedBar';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -57,8 +56,9 @@ export interface StackedBarProps {
     /**
      * Gets or Sets the grid mode.
      */
-    // `GridTypes | null` as core declares it, spelled out because core's
-    // typings barrel does not export `common/grid` yet.
+    // `GridTypes | null` as core declares it, spelled out rather than
+    // imported: Storybook's docgen reads this file alone, so an imported alias
+    // reaches it as a bare name and the grid Control loses its three options.
     grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
@@ -182,12 +182,7 @@ export interface StackedBarProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<StackedBarProps, PublishedStackedBarProps>
->;
-
-const StackedBar = ({
+const StackedBar: FunctionComponent<StackedBarProps> = ({
     chart = StackedBarWrapper,
     createTooltip,
     data,

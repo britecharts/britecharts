@@ -17,9 +17,9 @@ import { Selection } from 'd3-selection';
  * would reject the selections callers actually hold.
  */
 export type ChartModuleSelection<DataShape> = <
-  TElement extends Element,
-  TParent extends Element | null,
-  TParentDatum
+    TElement extends Element,
+    TParent extends Element | null,
+    TParentDatum,
 >(
-  _selection: Selection<TElement, DataShape, TParent, TParentDatum>
+    _selection: Selection<TElement, DataShape, TParent, TParentDatum>
 ) => void;

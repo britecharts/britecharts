@@ -13,14 +13,19 @@
         // type-check step. A check that depends on a build artifact is a check
         // that reports whatever was lying around.
         //
-        // `@britecharts/core` needs no entry: its `types` already points at
-        // source. The published declarations are not going unchecked --
+        // `@britecharts/core` is here for the same reason, and only became
+        // necessary when its `types` moved to `dist/types/` -- generated
+        // declarations rather than the hand-written barrel. Its entry is the
+        // same source file those declarations are generated from.
+        //
+        // The published declarations are not going unchecked --
         // `packages/integration` compiles a consumer against the packed
         // tarballs, which is the view this one deliberately does not take.
         //
         // No `baseUrl`: TypeScript 6 deprecates it, and `paths` has resolved
         // relative to the tsconfig without it since 5.0.
         "paths": {
+            "@britecharts/core": ["../core/src/index.ts"],
             "@britecharts/wrappers": ["../wrappers/src/index.ts"]
         }
     },

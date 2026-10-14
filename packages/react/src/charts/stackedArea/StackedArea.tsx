@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { StackedAreaWrapper } from '@britecharts/wrappers';
 import type { ChartEventHandler, Wrapper } from '@britecharts/wrappers';
@@ -12,8 +13,6 @@ import type {
 
 import useChart from '../helpers/useChart.js';
 import { axisTimeCombinations as combinations } from '../constants.js';
-import type { Equal, Expect } from '../../typings/assert';
-import type { StackedAreaProps as PublishedStackedAreaProps } from '../../typings/charts/StackedArea';
 
 /**
  * The props are declared here rather than imported, for the reason recorded on
@@ -75,8 +74,9 @@ export interface StackedAreaProps {
     /**
      * Gets or Sets the grid mode.
      */
-    // `GridTypes | null` as core declares it, spelled out because core's
-    // typings barrel does not export `common/grid` yet.
+    // `GridTypes | null` as core declares it, spelled out rather than
+    // imported: Storybook's docgen reads this file alone, so an imported alias
+    // reaches it as a bare name and the grid Control loses its three options.
     grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
@@ -203,12 +203,7 @@ export interface StackedAreaProps {
     createTooltip?: () => void;
 }
 
-/** The interface above and the published declaration are the same type. */
-export type PropsMatchPublished = Expect<
-    Equal<StackedAreaProps, PublishedStackedAreaProps>
->;
-
-const StackedArea = ({
+const StackedArea: FunctionComponent<StackedAreaProps> = ({
     chart = StackedAreaWrapper,
     createTooltip,
     data,

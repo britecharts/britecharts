@@ -10,9 +10,73 @@ import colorHelper from '../helpers/color';
 import type { ChartMarginParams } from '../../typings/common/margin';
 import type { ColorsSchemasType } from '../../typings/helpers/colors';
 import type {
+    ComponentBaseAPI,
+    ThemableChartAPI,
+} from '../../typings/common/base';
+import type { ChartModuleSelection } from '../../typings/common/selection';
+
+export enum LegendKeys {
+    Name = 'name',
+    Id = 'id',
+    Quantity = 'quantity',
+}
+
+export type LegendDataShape = {
+    [LegendKeys.Name]: string;
+    [LegendKeys.Id]: number;
+    [LegendKeys.Quantity]?: number;
+};
+
+export type LegendSelection = Selection<
+    BaseType,
     LegendDataShape,
-    LegendModule,
-} from '../../typings/charts/legend-component';
+    HTMLElement,
+    // The parent datum, which a consumer of this type binds and this component
+    // never reads -- the same bounded `any` as `ChartSelection` below, and for
+    // the same reason: `Selection` is invariant in it, so naming one shape
+    // would reject every other caller's.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+>;
+
+export interface LegendAPI
+    extends ComponentBaseAPI<LegendModule>, ThemableChartAPI<LegendModule> {
+    /** Command that highlights a line entry by fading the rest of lines on a legend instance */
+    highlight(entryId: number): void;
+    /**
+     * Gets or Sets the id of the entry to highlight.
+     *
+     * The getter is nullable: the default is `null`, and `exports` only fades
+     * the other entries once an id is set.
+     */
+    highlightEntryById(): number | null;
+    highlightEntryById(highlightedEntryId: number): LegendModule;
+    /** Gets or Sets the horizontal mode on the legend */
+    isHorizontal(): boolean;
+    isHorizontal(isHorizontal: boolean): LegendModule;
+    /**
+     * Gets or Sets the margin ratio of the legend chart.
+     * Used to determine spacing between legend elements.
+     */
+    marginRatio(): number;
+    marginRatio(ratio: number): LegendModule;
+    /**
+     * Gets or Sets the markerSize of the legend chart.
+     * This markerSize will determine the horizontal and vertical size of the colored marks
+     * added as color identifiers for the chart's categories.
+     */
+    markerSize(): number;
+    markerSize(markerSize: number): LegendModule;
+    /**
+     * Command that clears all highlighted entries on a legend instance
+     */
+    clearHighlight(): void;
+    /** Gets or Sets the unit shown beside each value */
+    unit(): string;
+    unit(value: string): LegendModule;
+}
+
+export type LegendModule = ChartModuleSelection<LegendDataShape[]> & LegendAPI;
 
 /**
  * The component's own svg, and the selections derived from it. The datum and

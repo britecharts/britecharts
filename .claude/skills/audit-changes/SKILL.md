@@ -127,7 +127,7 @@ pnpm exec oxfmt --check <changed script files>
 
 Write the fixes deliberately with `pnpm exec oxfmt <files>` (or `--write`). Keep it scoped: the root `pnpm run format` globs `**/*.{js,ts,tsx}` across the repo and will bury your diff.
 
-The style comes from `.oxfmtrc.json`: 4-space, single-quote, semicolons, 80 columns, `es5` trailing commas. Its `ignorePatterns` deliberately exclude `packages/core/src/typings/`, `packages/react/src/typings/`, the TypeScript integration fixture and `TS-wip/`, so nothing slated for deletion gets churned.
+The style comes from `.oxfmtrc.json`: 4-space, single-quote, semicolons, 80 columns, `es5` trailing commas. Its `ignorePatterns` deliberately exclude the TypeScript integration fixture and `TS-wip/`, so nothing slated for deletion gets churned.
 
 ### Step 6: API Parity and Changeset (public API changes only)
 

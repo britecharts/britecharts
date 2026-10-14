@@ -13,7 +13,7 @@ There is no architecture document in this repo. The architecture is expressed in
 
 - `packages/*/package.json` — `dependencies`, `peerDependencies`, `main`, `module`
 - `packages/core/src/index.js`, `packages/wrappers/src/index.js`, `packages/react/src/index.js` — the public surface of each layer
-- `packages/core/src/typings/index.d.ts` — the declared type surface
+- `packages/core/src/index.ts`, `packages/react/src/index.ts` — also the declared type surface: both packages generate their declarations from these barrels
 - `packages/core/src/styles/britecharts.scss` and `common.scss` — the two SCSS entry points
 - `.changeset/*.md` — the running record of intentional architectural changes
 
@@ -62,10 +62,10 @@ Every d3 (or other external) module a package imports must appear in **that pack
 A chart's public surface is expressed in up to five places. When the diff touches one, check the rest:
 
 1. `core/src/charts/<chart>/<chart>.js` — the accessor
-2. `core/src/typings/charts/<chart>-chart.d.ts` + `typings/index.d.ts` — the declared type
+2. the chart's module type, in the chart file, re-exported by `core/src/index.ts` — the declared type
 3. `wrappers/src/charts/<chartName>/<chartName>Chart.js` + `wrappers/src/index.js`
 4. `react/src/charts/<chartName>/<Chart>.js` (propTypes) + `react/src/index.js`
-5. `react/src/typings/charts/<Chart>.d.ts` + `react/src/typings/index.d.ts`
+5. the component's props interface, in the component file, re-exported by `react/src/index.ts`
 
 **Known, accepted asymmetry:** `brush`, `heatmap`, `miniTooltip` and `scatterPlot` are exported from `core` only and have no wrapper or React component. Do not report that as a new finding; only flag it if the diff half-promotes one of them.
 
