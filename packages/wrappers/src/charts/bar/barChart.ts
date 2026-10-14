@@ -33,13 +33,9 @@ const barChart: Wrapper<BarChartDataShape[], BarChartModule> = {
 
         // Calls the chart with the container and dataset.
         //
-        // Note this is `if (data)`, not bullet's `if (data && data.length)`:
-        // an empty array is truthy, so `update(el, [], ...)` rebinds an empty
-        // datum here where bullet would keep what was already bound. That
-        // difference is preserved rather than reconciled -- it is a behaviour
-        // question, not a typing one, and no test currently pins it either
-        // way.
-        if (data) {
+        // `data && data.length`, so an update with no data -- empty, null or
+        // undefined -- keeps whatever is already bound, as every wrapper does.
+        if (data && data.length) {
             container.datum(data).call(chart);
         } else {
             container.call(chart);

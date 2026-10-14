@@ -42,13 +42,10 @@ export interface Wrapper<TData, TChart extends object> {
     ): TChart;
 
     /**
-     * @param data What happens when this is empty is **not** consistent across
-     * the wrappers, and this type deliberately does not claim otherwise:
-     * bullet, groupedBar, legend, sparkline, stackedArea and stackedBar guard
-     * on `data && data.length` and keep whatever is already bound, while bar,
-     * donut and scatterPlot guard on `data` alone, so an empty array is truthy
-     * and rebinds, dropping what was drawn. No test pins either behaviour.
-     * Missing or null keeps the existing datum in every one of them.
+     * @param data The new data. Empty, null or undefined keeps whatever is
+     * already bound, in every wrapper, so an update that brings no data
+     * redraws the chart with what it already shows. `emptyData.spec.ts` pins
+     * this for each one.
      * @param chart The instance `create` returned.
      */
     update(
