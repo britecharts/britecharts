@@ -21,11 +21,11 @@ Inside `packages/core/src`:
 
 | Path | Contents |
 | --- | --- |
-| `index.js` | The public entry: the 14 charts, `tooltip`, `miniTooltip`, `legend`, `brush`, `colors` and `constants`. This list is frozen for 3.x and held by the integration tests. |
-| `charts/<chart>/` | One folder per chart: `<chart>.js`, its `<chart>.spec.js`, its `<chart>.stories.js` for Storybook, a `<chart>DataBuilder.js` and the JSON fixtures the specs and stories share. The tooltip folder also holds the modules it is built from (`frame.js`, `place.js`, `motion.js`). |
+| `index.ts` | The public entry: the 14 charts, `tooltip`, `miniTooltip`, `legend`, `brush`, `colors` and `constants`. This list is frozen for 3.x and held by the integration tests. |
+| `charts/<chart>/` | One folder per chart: `<chart>.ts`, which also declares the chart's types, its `<chart>.spec.js`, its `<chart>.stories.js` for Storybook, a `<chart>DataBuilder.js` and the JSON fixtures the specs and stories share. The tooltip folder also holds the modules it is built from (`frame.ts`, `place.ts`, `motion.ts`). |
 | `charts/helpers/` | Code shared by the charts, listed below. |
 | `styles/` | The SCSS: `britecharts.scss` (everything), `common.scss` (what every chart needs), `charts/<chart>.scss`, and the palette and loading-state partials under `helpers/`. |
-| `typings/` | Hand-written `.d.ts` files: one per chart under `charts/`, shared types under `common/`, and the `colors` and `constants` helpers. The integration package compiles a TypeScript consumer against them. |
+| `typings/` | Types shared across charts under `common/`, and the types of the `colors` and `constants` helpers under `helpers/`. The published declarations are generated from the sources at build time, and the integration package compiles a TypeScript consumer against them. |
 
 ## Code Structure
 
