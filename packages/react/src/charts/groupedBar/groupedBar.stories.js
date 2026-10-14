@@ -38,12 +38,6 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithDefaultProperties = () => {
-    const data = groupedBarData.with3Groups();
-
-    return <GroupedBar data={data} />;
-};
-
 export const WithHorizontalDirectionFixedSize = () => {
     const data = groupedBarData.with3Groups();
 

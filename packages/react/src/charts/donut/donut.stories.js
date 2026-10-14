@@ -27,12 +27,6 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithDefaultProperties = () => {
-    const data = donutData.with4Slices();
-
-    return <Donut data={data} />;
-};
-
 export const WithHighlightedLegend = () => {
     const data = donutData.with4Slices();
     const legendMargin = {

@@ -39,12 +39,6 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithDefaultProperties = () => {
-    const data = scatterPlotData.withFourNames();
-
-    return <ScatterPlot data={data} />;
-};
-
 export const WithTrendlineAndGrid = () => {
     const data = scatterPlotData.withOneSource();
 

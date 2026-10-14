@@ -24,12 +24,6 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithDefaultProperties = () => {
-    const data = sparklineData.with1Source();
-
-    return <Sparkline data={data} width={400} height={100} />;
-};
-
 export const WithFixedWidthAndTitle = () => {
     const data = sparklineData.withLowValues();
 

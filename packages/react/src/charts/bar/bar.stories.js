@@ -30,12 +30,6 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithDefaultProperties = () => {
-    const data = barData.withLetters();
-
-    return <Bar data={data} />;
-};
-
 export const WithHorizontalDirectionAndColorSchema = () => {
     const data = barData.withColors();
 

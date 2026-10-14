@@ -36,12 +36,6 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithDefaultProperties = () => {
-    const data = stackedBarData.with3Sources();
-
-    return <StackedBar data={data} />;
-};
-
 export const WithHorizontalDirectionAndFixedSize = () => {
     const data = stackedBarData.with3Sources();
 

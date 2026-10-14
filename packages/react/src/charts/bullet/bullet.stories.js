@@ -23,12 +23,6 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithDefaultProperties = () => {
-    const data = bulletData.fullTestData();
-
-    return <Bullet data={data} />;
-};
-
 export const WithMeasureUnderRanges = () => {
     const data = bulletData.underRangeNoMarker();
 

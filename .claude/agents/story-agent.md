@@ -73,6 +73,7 @@ Rules specific to this style:
 import React from 'react';
 
 import Bar from './Bar';
+import Tooltip from '../tooltip/Tooltip';
 import barData from './barChart.fixtures';
 import { colors } from '@britecharts/core';
 
@@ -81,10 +82,18 @@ export default {
     component: Bar,
 };
 
-export const WithDefaultProperties = () => {
+export const Playground = (args) => {
     const data = barData.withLetters();
 
-    return <Bar data={data} />;
+    const renderBar = (props) => <Bar {...args} {...props} />;
+
+    return <Tooltip data={data} render={renderBar} title="Frequency" />;
+};
+
+Playground.args = { isAnimated: false };
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 ```
 
@@ -94,6 +103,7 @@ Rules specific to this style:
 - Data comes from the colocated `<chartName>Chart.fixtures.js`, not from a core data builder.
 - The story file is lowercase (`bar.stories.js`) even though the component is PascalCase (`Bar.js`).
 - Import `colors` from `@britecharts/core` for color schemas.
+- The Playground's Controls come from the component's props through docgen. Spread `args` before the props a `Tooltip` hands down, so the tooltip's own props win.
 
 ## Titles
 
@@ -101,13 +111,15 @@ Rules specific to this style:
 
 ## What Stories To Write
 
-This repo does **not** use the Playground/AllVariants pattern. Each story is one named, self-explanatory variant. Aim for:
+Every chart's stories follow one order, in both packages. Storybook shows them in export order (`storySort` has no `method`), so the order in the file is the order in the sidebar:
 
-1. **The default** — the chart with minimal configuration (`WithDefaultProperties`, or `<Name>Chart`)
-2. **One story per visually distinct accessor or mode** — orientation (`HorizontalBarChart`), labels (`WithBarLabels`), color schema, axis type, percentages
-3. **`WithTooltip`** where the chart is normally paired with one
-4. **`WithLoadingState`** — every chart supports `.isLoading(true)`; this is a documented feature and a frequent regression
-5. **Edge-case data** where the chart historically breaks — empty datasets, all-zero series, negative values, numeric vs. date x-axes. The JSON fixtures beside `line.js` enumerate these for a reason; reuse them.
+1. **`Playground`** — the chart at its default settings, with its tooltip if it has one, editable from the Controls panel. It starts static (`isAnimated` off). In core, take its args from `.storybook/playground.js`: `Playground.args = playgroundArgs(<factory>, [<accessors>])`, `Playground.argTypes = playgroundArgTypes(Playground.args)`, and render with `applyArgs(chart, args).width(containerWidth)`. List the accessors worth editing. Leave out `width`, callbacks, data-key accessors (`nameLabel`, `valueLabel`, `dateLabel` and the like) and commands (`exportChart`, `on`, `highlight`, `show`, `hide`, `update`).
+2. **The major variants** — orientation (`HorizontalBarChart`, `WithHorizontalDirection`), or the chart's main alternative mode (single vs. many lines, inline vs. vertical legend).
+3. **`WithAnimation`** — on every chart with `isAnimated`: the Playground's render with `isAnimated` on.
+4. **The other features** — one story per visually distinct accessor or mode (`WithBarLabels`, color schema, axis type, percentages), and edge-case data where the chart historically breaks: empty datasets, all-zero series, negative values, numeric vs. date x-axes. The JSON fixtures beside `line.js` enumerate these for a reason; reuse them.
+5. **`WithLoadingState`** last, on every chart with `isLoading`.
+
+There is no separate default story or plain `WithTooltip`: the Playground is both.
 
 Name stories in PascalCase, describing what is shown, not the API call: `WithHorizontalDirectionAndColorSchema`, not `IsHorizontalTrue`.
 

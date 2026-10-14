@@ -22,12 +22,6 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithDefaultProperties = () => {
-    const data = legendData.with6Points();
-
-    return <Legend data={data} height={250} width={400} />;
-};
-
 export const WithHorizontalDirection = () => {
     const data = legendData.with6Points();
 
