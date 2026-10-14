@@ -23,7 +23,7 @@ import type { ChartMarginParams } from '../../typings/common/margin';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 import type { AxisTimeCombination } from '../../typings/helpers/constants';
 
-export enum tooltipKeys {
+export declare enum tooltipKeys {
     Date = 'date',
     Topics = 'topics',
 }

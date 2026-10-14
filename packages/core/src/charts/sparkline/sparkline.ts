@@ -23,7 +23,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum SparklineChartKeys {
+export declare enum SparklineChartKeys {
     Value = 'value',
     Date = 'date',
 }

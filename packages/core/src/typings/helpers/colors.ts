@@ -1,14 +1,14 @@
-export enum ColorSchema {
-    britecharts,
-    grey,
-    orange,
-    blueGreen,
-    teal,
-    green,
-    yellow,
-    pink,
-    purple,
-    red,
+export declare enum ColorSchema {
+    britecharts = 0,
+    grey = 1,
+    orange = 2,
+    blueGreen = 3,
+    teal = 4,
+    green = 5,
+    yellow = 6,
+    pink = 7,
+    purple = 8,
+    red = 9,
 }
 
 export type ColorsSchemaHumanType = {
@@ -22,10 +22,10 @@ export type ColorSchemas = {
     [key in keyof typeof ColorSchema]: ColorsSchemasType;
 };
 
-export enum ColorGradient {
-    greenBlue,
-    orangePink,
-    bluePurple,
+export declare enum ColorGradient {
+    greenBlue = 0,
+    orangePink = 1,
+    bluePurple = 2,
 }
 
 export type ColorGradients = {
@@ -36,14 +36,14 @@ export type ColorGradientsHuman = {
     [key in keyof typeof ColorGradient]: string;
 };
 
-export enum SingleColor {
-    aloeGreen,
-    greenColor,
-    blueColor,
-    yellowColor,
-    orangeColor,
-    pinkColor,
-    purpleColor,
+export declare enum SingleColor {
+    aloeGreen = 0,
+    greenColor = 1,
+    blueColor = 2,
+    yellowColor = 3,
+    orangeColor = 4,
+    pinkColor = 5,
+    purpleColor = 6,
 }
 
 export type SingleColors = {

@@ -40,7 +40,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum StackedBarChartKeys {
+export declare enum StackedBarChartKeys {
     Stack = 'stack',
     Name = 'name',
     Value = 'value',

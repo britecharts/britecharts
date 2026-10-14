@@ -59,7 +59,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum LineChartKeys {
+export declare enum LineChartKeys {
     Date = 'date',
     Name = 'name',
     TopicName = 'topicName',

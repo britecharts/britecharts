@@ -28,7 +28,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum DonutChartKeys {
+export declare enum DonutChartKeys {
     ID = 'id',
     Name = 'name',
     Quantity = 'quantity',

@@ -15,7 +15,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum LegendKeys {
+export declare enum LegendKeys {
     Name = 'name',
     Id = 'id',
     Quantity = 'quantity',
