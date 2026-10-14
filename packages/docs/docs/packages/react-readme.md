@@ -174,6 +174,7 @@ The package is written in TypeScript, and its type declarations are generated fr
 [contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [codeOfConduct]: https://github.com/britecharts/britecharts/blob/main/CODE_OF_CONDUCT.md
 [homepage]: https://britecharts.github.io/britecharts/
+[britecharts]: https://britecharts.github.io/britecharts/
 [testProject]: https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers/react
 [howtoCreate]: https://github.com/britecharts/britecharts-react/blob/master/CONTRIBUTING.md#creating-a-new-chart
 [britecharts-react]: https://github.com/britecharts/britecharts-react/

@@ -251,3 +251,4 @@ If you are excited about Britecharts, want to add more configurable properties o
 [brushChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/simple-brush-chart.png
 [lineBrushTooltipLegendImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/line-chart-with-brush-tooltip-legend.png
 [topicsIndex]: ../topics/topics-index.md
+[contribute]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
