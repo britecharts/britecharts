@@ -49,7 +49,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum ScatterPlotKeys {
+export declare enum ScatterPlotKeys {
     Name = 'name',
     X = 'x',
     Y = 'y',

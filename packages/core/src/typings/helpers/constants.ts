@@ -1,4 +1,4 @@
-export enum AxisTimeCombination {
+export declare enum AxisTimeCombination {
     MINUTE_HOUR = 'minute-hour',
     HOUR_DAY = 'hour-daymonth',
     DAY_MONTH = 'day-month',

@@ -55,7 +55,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum StackedAreaChartKeys {
+export declare enum StackedAreaChartKeys {
     Date = 'date',
     Name = 'name',
     Value = 'value',

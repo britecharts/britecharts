@@ -8,7 +8,7 @@ import type {
     TooltipSingleDataShape,
 } from '../tooltip/tooltip';
 
-export enum MiniTooltipKeys {
+export declare enum MiniTooltipKeys {
     Value = 'value',
     Name = 'name',
 }

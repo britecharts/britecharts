@@ -19,7 +19,7 @@ import type {
 import type { ChartModuleSelection } from '../../typings/common/selection';
 import type { ColorsSchemasType } from '../../typings/helpers/colors';
 
-export enum BulletChartKeys {
+export declare enum BulletChartKeys {
     Ranges = 'ranges',
     Measures = 'measures',
     Markers = 'markers',

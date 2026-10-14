@@ -20,7 +20,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum HeatmapChartKeys {
+export declare enum HeatmapChartKeys {
     Day = 'day',
     Hour = 'hour',
     Value = 'value',

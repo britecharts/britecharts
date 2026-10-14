@@ -38,7 +38,7 @@ import type {
 } from '../../typings/common/base';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
-export enum GroupedBarChartKeys {
+export declare enum GroupedBarChartKeys {
     Group = 'group',
     Name = 'name',
     Value = 'value',
