@@ -734,6 +734,10 @@ describe('tooltip Component', () => {
     });
 
     describe('aPI', () => {
+        it('should have a null locale until one is set', () => {
+            expect(tooltipChart.locale()).toBeNull();
+        });
+
         it('should provide title getter and setter', () => {
             let current = tooltipChart.title(),
                 expected = 'test',

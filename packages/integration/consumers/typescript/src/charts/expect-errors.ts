@@ -68,9 +68,13 @@ donut().centeredTextFunction(() => undefined);
 // @ts-expect-error a comparator has to return a number
 donut().orderingFunction(() => undefined);
 
+// @ts-expect-error possibly null: no default format, where the shared
+// declaration promises a string
+donut().numberFormat().length;
+
 // Three of the grouped bar's getters are wider than their setter, because the
-// chart has no usable default for any of them: `grid` and `valueLocale` are
-// `null` in its own `let` block and `yAxisLabel` has no initialiser. Each line
+// chart has no usable default for any of them: `grid`, `valueLocale` and
+// `yAxisLabel` are all `null` in its own `let` block. Each line
 // below is an unguarded read that must not compile, which is the control for
 // the width -- narrowing any of these three getters back to its setter's type
 // leaves the directive unused and fails the build with TS2578.
@@ -78,7 +82,7 @@ donut().orderingFunction(() => undefined);
 groupedBar().grid().length;
 // @ts-expect-error possibly null
 groupedBar().valueLocale().decimal;
-// @ts-expect-error possibly undefined
+// @ts-expect-error possibly null
 groupedBar().yAxisLabel().length;
 
 // The stacked bar has the same three, for the same reasons.
@@ -86,7 +90,7 @@ groupedBar().yAxisLabel().length;
 stackedBar().grid().length;
 // @ts-expect-error possibly null
 stackedBar().valueLocale().decimal;
-// @ts-expect-error possibly undefined
+// @ts-expect-error possibly null
 stackedBar().yAxisLabel().length;
 
 // The bar chart's four nullable getters and its undefined one.
@@ -109,26 +113,26 @@ bar().orderingFunction()({ name: 'a', value: 1 }, { name: 'b', value: 2 });
 // @ts-expect-error a comparator has to return a number
 bar().orderingFunction(() => undefined);
 
-// The scatter plot's four nullable getters and its two undefined ones.
+// The scatter plot's six nullable getters.
 // @ts-expect-error possibly null
 scatterPlot().grid().length;
 // @ts-expect-error possibly null
 scatterPlot().valueLocale().decimal;
 // @ts-expect-error possibly null
 scatterPlot().yTicks().toFixed(0);
-// @ts-expect-error possibly undefined
+// @ts-expect-error possibly null
 scatterPlot().xAxisLabel().length;
-// @ts-expect-error possibly undefined
+// @ts-expect-error possibly null
 scatterPlot().yAxisLabel().length;
 
-// The tooltip's three nullable getters and its undefined-or-null locale.
+// The tooltip's four nullable getters.
 // @ts-expect-error possibly null
 tooltip().dateCustomFormat().length;
 // @ts-expect-error possibly null
 tooltip().numberFormat().length;
 // @ts-expect-error possibly null
 tooltip().valueFormatter()(1);
-// @ts-expect-error possibly null or undefined
+// @ts-expect-error possibly null
 tooltip().locale().length;
 
 // The stacked area's nullable getters, and the x-axis value the chart does not
@@ -139,8 +143,11 @@ stackedArea().grid().length;
 stackedArea().xTicks().toFixed(0);
 // @ts-expect-error possibly undefined
 stackedArea().topicsOrder().length;
-// @ts-expect-error possibly undefined
+// @ts-expect-error possibly null
 stackedArea().yAxisLabel().length;
+// @ts-expect-error possibly null: no default format, where the shared
+// declaration promises a string
+stackedArea().numberFormat().length;
 // @ts-expect-error the chart compares against 'number', not 'numeric'
 stackedArea().xAxisValueType('numeric');
 
@@ -154,5 +161,8 @@ line().xAxisLabel().length;
 line().yAxisLabel().length;
 // @ts-expect-error possibly null
 line().xTicks().toFixed(0);
+// @ts-expect-error possibly null: no default format, where the shared
+// declaration promises a string
+line().numberFormat().length;
 // @ts-expect-error the chart compares against 'number', not 'numeric'
 line().xAxisValueType('numeric');

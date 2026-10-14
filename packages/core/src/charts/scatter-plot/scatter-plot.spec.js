@@ -654,6 +654,14 @@ describe('scatter Plot', () => {
     });
 
     describe('aPI', () => {
+        it('should have a null xAxisLabel until one is set', () => {
+            expect(scatterPlot.xAxisLabel()).toBeNull();
+        });
+
+        it('should have a null yAxisLabel until one is set', () => {
+            expect(scatterPlot.yAxisLabel()).toBeNull();
+        });
+
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = scatterPlot.animationDuration(),
                 testAnimationDuration = 2000,

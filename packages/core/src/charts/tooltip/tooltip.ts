@@ -163,7 +163,7 @@ export interface TooltipAPI {
      * `base.d.ts` already types the same accessor as `LocaleString` for the
      * time-series charts; this brings the tooltip in line with it.
      */
-    locale(): LocaleString | null | undefined;
+    locale(): LocaleString | null;
     locale(locale: LocaleString | null): TooltipModule;
     /** Gets or Sets the nameLabel of the data */
     nameLabel(): string;
@@ -445,7 +445,7 @@ export default function module(): TooltipModule {
         // formats
         numberFormat: string | null = null,
         valueFormatter: ((value: number) => number) | null = null,
-        locale: LocaleString | null | undefined,
+        locale: LocaleString | null = null,
         chartWidth: number,
         chartHeight: number,
         svg: ChartSelection<SVGGElement>;

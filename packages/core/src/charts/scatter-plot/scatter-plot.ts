@@ -182,7 +182,7 @@ export interface ScatterPlotAPI
      * The getter is `undefined` until one is set: the chart appends no label
      * element until then.
      */
-    xAxisLabel(): string | undefined;
+    xAxisLabel(): string | null;
     xAxisLabel(label: string): ScatterPlotModule;
     /**
      * Gets or Sets the offset of the xAxisLabel of the chart.
@@ -201,7 +201,7 @@ export interface ScatterPlotAPI
      *
      * The getter is `undefined` until one is set, as `xAxisLabel`'s is.
      */
-    yAxisLabel(): string | undefined;
+    yAxisLabel(): string | null;
     yAxisLabel(label: string): ScatterPlotModule;
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
@@ -361,12 +361,12 @@ export default function module(): ScatterPlotModule {
         yOriginalScale: ScaleLinear<number, number>,
         areaScale: ScalePower<number, number>,
         colorScale: ScaleOrdinal<string, string>,
-        // No default: the chart appends no label element until one is set,
-        // which is what the declarations now say for both axes.
-        yAxisLabel: string | undefined,
+        // Null until one is set, and the chart appends no label element until
+        // then -- `null` like every other chart's unset accessor. Same for x.
+        yAxisLabel: string | null = null,
         yAxisLabelEl: ChartSelection<SVGTextElement>,
         yAxisLabelOffset = -50,
-        xAxisLabel: string | undefined,
+        xAxisLabel: string | null = null,
         xAxisLabelEl: ChartSelection<SVGTextElement>,
         xAxisLabelOffset = -50,
         trendLinePath: ChartSelection<SVGPathElement>,

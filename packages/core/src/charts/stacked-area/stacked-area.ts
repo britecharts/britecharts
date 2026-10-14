@@ -108,12 +108,19 @@ export type StackedAreaXAxisScale = 'linear' | 'logarithmic';
 // 0e959aee, one step further out.
 export interface StackedAreaChartAPI
     extends
-        ChartBaseAPI<StackedAreaChartModule>,
+        Omit<ChartBaseAPI<StackedAreaChartModule>, 'numberFormat'>,
         InteractiveChartAPI<StackedAreaChartModule>,
         ExportableChartAPI,
         AnimatedChartAPI<StackedAreaChartModule>,
         TimeSeriesChartAPI<StackedAreaChartModule>,
         ThemableChartAPI<StackedAreaChartModule> {
+    /**
+     * Gets or Sets the number format of the chart. Null until one is set,
+     * where the shared declaration promises a string: this chart has no
+     * default format.
+     */
+    numberFormat(): string | null;
+    numberFormat(format: string): StackedAreaChartModule;
     /** Gets or Sets the area curve of the stacked area. */
     areaCurve(): string;
     areaCurve(curveType: string): StackedAreaChartModule;
@@ -184,7 +191,7 @@ export interface StackedAreaChartAPI
      * The getter is `undefined` until one is set: the chart appends no label
      * element until then.
      */
-    yAxisLabel(): string | undefined;
+    yAxisLabel(): string | null;
     yAxisLabel(label: string): StackedAreaChartModule;
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
@@ -337,8 +344,9 @@ export default function module(): StackedAreaChartModule {
         xAxisScale: StackedAreaXAxisScale = 'linear',
         yTicks = 5,
         yAxisBaseline = 0,
-        // No default: the chart appends no label element until one is set.
-        yAxisLabel: string | undefined,
+        // Null until one is set, and the chart appends no label element until
+        // then -- `null` like every other chart's unset accessor.
+        yAxisLabel: string | null = null,
         yAxisLabelEl: ChartSelection<SVGTextElement>,
         yAxisLabelOffset = -60,
         colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
@@ -353,8 +361,8 @@ export default function module(): StackedAreaChartModule {
         // Null by default, which d3 reads as "use the scale's own count".
         xTicks: number | null = null,
         xAxisCustomFormat: string | null = null,
-        numberFormat: string | undefined,
-        locale: LocaleString | null | undefined,
+        numberFormat: string | null = null,
+        locale: LocaleString | null = null,
         areaCurve = 'monotoneX',
         layers: Series<StackedAreaColumn, string>[],
         series: ChartSelection<SVGGElement>,
@@ -622,7 +630,7 @@ export default function module(): StackedAreaChartModule {
                     dataSorted,
                     width,
                     xAxisFormat as AxisTimeCombinationValue | null,
-                    locale ?? null
+                    locale
                 ));
 
                 xSubAxis = asAxis(

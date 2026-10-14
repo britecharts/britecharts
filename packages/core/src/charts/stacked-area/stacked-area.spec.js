@@ -597,6 +597,18 @@ describe('stacked Area Chart', () => {
     });
 
     describe('aPI', () => {
+        it('should have a null yAxisLabel until one is set', () => {
+            expect(stackedAreaChart.yAxisLabel()).toBeNull();
+        });
+
+        it('should have a null numberFormat until one is set', () => {
+            expect(stackedAreaChart.numberFormat()).toBeNull();
+        });
+
+        it('should have a null locale until one is set', () => {
+            expect(stackedAreaChart.locale()).toBeNull();
+        });
+
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = stackedAreaChart.animationDuration(),
                 testAnimationDuration = 2000,

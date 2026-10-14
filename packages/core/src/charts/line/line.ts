@@ -120,12 +120,19 @@ export type LineChartXAxisScale = 'linear' | 'logarithmic';
 // undefined -- the same split the bar chart has.
 export interface LineChartAPI
     extends
-        ChartBaseAPI<LineChartModule>,
+        Omit<ChartBaseAPI<LineChartModule>, 'numberFormat'>,
         InteractiveChartAPI<LineChartModule>,
         ExportableChartAPI,
         AnimatedChartAPI<LineChartModule>,
         TimeSeriesChartAPI<LineChartModule>,
         ThemableChartAPI<LineChartModule> {
+    /**
+     * Gets or Sets the number format of the chart. Null until one is set,
+     * where the shared declaration promises a string: this chart has no
+     * default format.
+     */
+    numberFormat(): string | null;
+    numberFormat(format: string): LineChartModule;
     /**
      * Gets or Sets the grid mode.
      *
@@ -449,7 +456,7 @@ export default function module(): LineChartModule {
         // Null by default, which d3 reads as "use the scale's own count".
         xTicks: number | null = null,
         xAxisCustomFormat: string | null = null,
-        locale: LocaleString | null | undefined,
+        locale: LocaleString | null = null,
         shouldShowAllDataPoints = false,
         isAnimated = false,
         animationDuration = motion.duration,
@@ -472,7 +479,7 @@ export default function module(): LineChartModule {
         overlay: ChartSelection<SVGRectElement>,
         verticalMarkerContainer: ChartSelection<SVGGElement>,
         verticalMarkerLine: ChartSelection<SVGLineElement>,
-        numberFormat: string | undefined,
+        numberFormat: string | null = null,
         customLines: CustomLine[] = [],
         grid: GridTypes | null = null,
         pathYCache: Record<string, number> = {};
@@ -723,7 +730,7 @@ export default function module(): LineChartModule {
                     dataSorted,
                     width,
                     xAxisFormat as AxisTimeCombinationValue | null,
-                    locale ?? null
+                    locale
                 ));
 
                 xSubAxis = asAxis(
