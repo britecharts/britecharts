@@ -1,14 +1,16 @@
---- a/packages/react/src/charts/helpers/useChart.js
-+++ b/packages/react/src/charts/helpers/useChart.js
-@@ -48,6 +48,7 @@
-     const chartInstance = useRef(null);
+diff --git a/packages/react/src/charts/helpers/useChart.ts b/packages/react/src/charts/helpers/useChart.ts
+index d5760993..d71bd3e9 100644
+--- a/packages/react/src/charts/helpers/useChart.ts
++++ b/packages/react/src/charts/helpers/useChart.ts
+@@ -71,6 +71,7 @@ export default function useChart<TData, TChart extends object>(
+     const chartInstance = useRef<TChart | null>(null);
      const chartWrapper = useRef(wrapper);
-     const lastDrawn = useRef(null);
+     const lastDrawn = useRef<Drawing<TData, TChart> | null>(null);
 +    const hasRun = useRef(false);
  
      // No deps array on purpose: creating and updating live in one effect that
      // branches on whether a chart exists, so creation stays reachable on any
-@@ -55,6 +56,9 @@
+@@ -78,6 +79,9 @@ export default function useChart<TData, TChart extends object>(
      // recreates the chart.
      useLayoutEffect(() => {
          chartWrapper.current = wrapper;
@@ -18,7 +20,7 @@
  
          const drawing = { data, ...configuration };
  
-@@ -76,7 +80,7 @@
+@@ -98,7 +102,7 @@ export default function useChart<TData, TChart extends object>(
              return;
          }
  
