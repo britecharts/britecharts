@@ -14,7 +14,6 @@
     "packages/react/lib",
     "packages/react/node_modules",
     "*.scss",
-    "packages/integration/consumers/typescript/",
-    "packages/react/TS-wip/"
+    "packages/integration/consumers/typescript/"
   ]
 }

@@ -35,16 +35,14 @@ The docs lag the code in places. When they conflict, say so rather than picking
 a side silently — a stale document is itself a finding, and it is usually the
 cheaper fix.
 
-Two conflicts are live today, so do not report them as new:
+One conflict is live today, so do not report it as new, and one rule to hold:
 
 - **`code-standards.md` and `code-structure.md` describe a Yarn workspace.** The
   repo is on pnpm (`pnpm-workspace.yaml`, `pnpm-lock.yaml`), and the install and
   test commands in `code-standards.md` are stale.
-- **`code-structure.md` describes the charts as `.js` with hand-written
-  `typings/`.** A TypeScript migration is converting them; `packages/core/src`
-  has `.ts` helpers and several converted charts. A converted chart keeps every
-  JSDoc tag verbatim, because the API pages are generated from those tags and
-  TypeScript's own types read worse on the page. **A conversion that drops or
+- **The charts are TypeScript, and their JSDoc stays.** A converted chart keeps
+  every JSDoc tag verbatim, because the API pages are generated from those tags
+  and TypeScript's own types read worse on the page. **A conversion that drops or
   rewrites a JSDoc tag is a finding.**
 
 ## Step 1: Determine scope

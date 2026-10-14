@@ -148,8 +148,8 @@ If you need to use one of the missing charts, check out our [how-to guide for cr
 
 Note that the aim of this project is to allow the usage of Britecharts within your React applications. For that, we are ‘wrapping’ Britecharts with `@britecharts/wrappers`. This means that **any new features need to first be implemented on Britecharts**. Only then you could update the props and logic that passes in the configuration.
 
-### Roadmap
-The typings are hand-written `.d.ts` declarations, checked in CI by a TypeScript project that consumes the packed package. Our idea for the short term is to write the package in TypeScript natively. For that, we already have an initial version in [`TS-wip/`][tsWip] that we need to polish and reproduce. [Let us know][d3Slack] if you want to help with it.
+### TypeScript
+The package is written in TypeScript, and its type declarations are generated from the components at build time. Each component's props type is exported from the package root (`BarChartProps`, `LineProps` and so on), and CI compiles a TypeScript project against the packed package.
 
 [react]: https://react.dev/
 [integration-article]: http://nicolashery.com/integrating-d3js-visualizations-in-a-react-app/
@@ -169,10 +169,8 @@ The typings are hand-written `.d.ts` declarations, checked in CI by a TypeScript
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/dist/
 [npmModule]: https://www.npmjs.com/package/britecharts-react
 [contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
-[d3Slack]: https://d3js.slack.com/
 [codeOfConduct]: https://github.com/britecharts/britecharts/blob/main/CODE_OF_CONDUCT.md
 [homepage]: https://britecharts.github.io/britecharts/
 [testProject]: https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers/react
 [howtoCreate]: https://github.com/britecharts/britecharts-react/blob/master/CONTRIBUTING.md#creating-a-new-chart
 [britecharts-react]: https://github.com/britecharts/britecharts-react/
-[tsWip]: https://github.com/britecharts/britecharts/tree/main/packages/react/TS-wip
