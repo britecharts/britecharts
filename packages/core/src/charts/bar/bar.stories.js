@@ -4,10 +4,65 @@ import bar from './bar';
 import miniTooltip from '../mini-tooltip/mini-tooltip';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { BarDataBuilder } from './barChartDataBuilder';
 import colors from '../helpers/color';
 
 const aTestDataSet = () => new BarDataBuilder();
+
+export const Playground = (args) => {
+    const container = getCleanContainer();
+    const barChart = bar();
+    const barContainer = select(container);
+    const containerWidth = barContainer.node()
+        ? barContainer.node().getBoundingClientRect().width
+        : false;
+    const tooltip = miniTooltip();
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withLettersFrequency().build();
+
+        applyArgs(barChart, args)
+            .width(containerWidth)
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', tooltip.update)
+            .on('customMouseOut', tooltip.hide);
+
+        barContainer.datum(dataset).call(barChart);
+
+        select('.bar-chart .metadata-group').datum([]).call(tooltip);
+    }
+
+    return container;
+};
+
+Playground.args = playgroundArgs(bar, [
+    'height',
+    'margin',
+    'isHorizontal',
+    'isAnimated',
+    'colorSchema',
+    'shouldReverseColorList',
+    'betweenBarsPadding',
+    'hasPercentage',
+    'enableLabels',
+    'labelsNumberFormat',
+    'numberFormat',
+    'hasSingleBarHighlight',
+    'xTicks',
+    'yTicks',
+    'xAxisLabel',
+    'yAxisLabel',
+    'percentageAxisToMaxRatio',
+    'isLoading',
+]);
+// Static, so the Controls are what changes; `WithAnimation` shows the motion.
+Playground.args.isAnimated = false;
+Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const VerticalBarChart = () => {
     const container = getCleanContainer();
@@ -88,7 +143,7 @@ export const HorizontalBarChart = () => {
     return container;
 };
 
-export const WithTooltip = () => {
+export const WithAnimation = () => {
     const container = getCleanContainer();
     const barChart = bar();
     const barContainer = select(container);
@@ -96,28 +151,20 @@ export const WithTooltip = () => {
         ? barContainer.node().getBoundingClientRect().width
         : false;
     const tooltip = miniTooltip();
-    let tooltipContainer;
 
     if (containerWidth) {
-        // select('.js-download-button').on('click', function () {
-        //     barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
-        // });
         const dataset = aTestDataSet().withLettersFrequency().build();
 
         barChart
-            .width(containerWidth)
-            .height(300)
             .isAnimated(true)
+            .width(containerWidth)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
 
         barContainer.datum(dataset).call(barChart);
 
-        tooltip.numberFormat('.2%');
-
-        tooltipContainer = select('.bar-chart .metadata-group');
-        tooltipContainer.datum([]).call(tooltip);
+        select('.bar-chart .metadata-group').datum([]).call(tooltip);
     }
 
     return container;
@@ -140,28 +187,6 @@ export const WithBarLabels = () => {
             .enableLabels(true)
             .labelsNumberFormat('.0%')
             .height(300);
-
-        barContainer.datum(dataset).call(barChart);
-    }
-
-    return container;
-};
-
-export const WithLoadingState = () => {
-    const container = getCleanContainer();
-    const barChart = bar();
-    const barContainer = select(container);
-    const containerWidth = barContainer.node()
-        ? barContainer.node().getBoundingClientRect().width
-        : false;
-    const dataset = aTestDataSet().withLettersFrequency().build();
-
-    if (containerWidth) {
-        barChart
-            .width(containerWidth)
-            .height(300)
-            .isAnimated(true)
-            .isLoading(true);
 
         barContainer.datum(dataset).call(barChart);
     }
@@ -205,6 +230,28 @@ export const WithNegativeValuesHorizontal = () => {
             .margin({ left: 100, right: 40, top: 40, bottom: 40 })
             .width(containerWidth)
             .height(400);
+
+        barContainer.datum(dataset).call(barChart);
+    }
+
+    return container;
+};
+
+export const WithLoadingState = () => {
+    const container = getCleanContainer();
+    const barChart = bar();
+    const barContainer = select(container);
+    const containerWidth = barContainer.node()
+        ? barContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withLettersFrequency().build();
+
+    if (containerWidth) {
+        barChart
+            .width(containerWidth)
+            .height(300)
+            .isAnimated(true)
+            .isLoading(true);
 
         barContainer.datum(dataset).call(barChart);
     }

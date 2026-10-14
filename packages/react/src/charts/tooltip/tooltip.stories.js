@@ -10,17 +10,6 @@ export default {
 };
 
 /**
- * The tooltip on its own: with no chart to render there is nothing to attach
- * it to, so all it draws is its empty wrapper. Baselines the wrapper markup
- * before the component is converted to a function.
- */
-export const WithNoChart = () => (
-    <div style={{ minHeight: 40, outline: '1px dashed #d2d6df' }}>
-        <Tooltip />
-    </div>
-);
-
-/**
  * A chart wrapped by a tooltip is handed `createTooltip`, which the donut
  * used to pass on to its wrapper as a configuration key, throwing "Method not
  * supported by Britechart: createTooltip". It now drops it, so the donut

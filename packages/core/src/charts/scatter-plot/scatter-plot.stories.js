@@ -4,10 +4,71 @@ import scatterPlot from './scatter-plot';
 import miniTooltip from '../mini-tooltip/mini-tooltip';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { ScatterPlotDataBuilder } from './scatterPlotDataBuilder';
 import colors from '../helpers/color';
 
 const aTestDataSet = () => new ScatterPlotDataBuilder();
+
+export const Playground = (args) => {
+    const container = getCleanContainer();
+    const scatterChart = scatterPlot();
+    const scatterPlotContainer = select(container);
+    const containerWidth = scatterPlotContainer.node()
+        ? scatterPlotContainer.node().getBoundingClientRect().width
+        : false;
+    const tooltip = miniTooltip().title('Temperature (C)');
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withOneSource().build();
+
+        applyArgs(scatterChart, args)
+            .width(containerWidth)
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', tooltip.update)
+            .on('customMouseOut', tooltip.hide);
+
+        scatterPlotContainer.datum(dataset).call(scatterChart);
+
+        tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
+
+        select('.scatter-plot .metadata-group').datum([]).call(tooltip);
+    }
+
+    return container;
+};
+
+Playground.args = playgroundArgs(scatterPlot, [
+    'height',
+    'margin',
+    'isAnimated',
+    'colorSchema',
+    'circleOpacity',
+    'circleStrokeOpacity',
+    'circleStrokeWidth',
+    'maxCircleArea',
+    'hasHollowCircles',
+    'hasTrendline',
+    'hasCrossHairs',
+    'enableZoom',
+    'grid',
+    'xAxisFormat',
+    'xAxisFormatType',
+    'xAxisLabel',
+    'xAxisLabelOffset',
+    'xTicks',
+    'yAxisFormat',
+    'yAxisLabel',
+    'yAxisLabelOffset',
+    'yTicks',
+    'isLoading',
+]);
+Playground.args.isAnimated = false;
+Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithSingleSource = () => {
     const container = getCleanContainer();
@@ -93,18 +154,30 @@ export const WithIncreasedAreaAndHollowCircles = () => {
     return container;
 };
 
-export const WithLoadingState = () => {
+export const WithAnimation = () => {
     const container = getCleanContainer();
-    const scatterPlotContainer = select(container);
     const scatterChart = scatterPlot();
+    const scatterPlotContainer = select(container);
     const containerWidth = scatterPlotContainer.node()
         ? scatterPlotContainer.node().getBoundingClientRect().width
         : false;
+    const tooltip = miniTooltip().title('Temperature (C)');
 
     if (containerWidth) {
-        scatterChart.width(containerWidth).isLoading(true);
+        const dataset = aTestDataSet().withOneSource().build();
 
-        scatterPlotContainer.datum([]).call(scatterChart);
+        scatterChart
+            .isAnimated(true)
+            .width(containerWidth)
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', tooltip.update)
+            .on('customMouseOut', tooltip.hide);
+
+        scatterPlotContainer.datum(dataset).call(scatterChart);
+
+        tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
+
+        select('.scatter-plot .metadata-group').datum([]).call(tooltip);
     }
 
     return container;
@@ -123,6 +196,23 @@ export const WithNegativeValues = () => {
         scatterChart.isAnimated(true).width(containerWidth).height(400);
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
+    }
+
+    return container;
+};
+
+export const WithLoadingState = () => {
+    const container = getCleanContainer();
+    const scatterPlotContainer = select(container);
+    const scatterChart = scatterPlot();
+    const containerWidth = scatterPlotContainer.node()
+        ? scatterPlotContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        scatterChart.width(containerWidth).isLoading(true);
+
+        scatterPlotContainer.datum([]).call(scatterChart);
     }
 
     return container;

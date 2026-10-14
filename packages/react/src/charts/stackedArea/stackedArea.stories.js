@@ -10,10 +10,33 @@ export default {
     component: StackedArea,
 };
 
-export const WithTooltip = () => {
+/**
+ * Every prop the chart takes, editable from the Controls panel. Left unset, a
+ * prop keeps the chart's own default, so this starts as the default chart,
+ * with its tooltip.
+ */
+export const Playground = (args) => {
     const data = stackedAreaData.with3Sources();
+
+    const renderStackedArea = (props) => <StackedArea {...args} {...props} />;
+
+    // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
+    // it creates the tooltip, and passing it again re-runs the deprecated setter
+    // on every mouse move.
+    return <Tooltip data={data} render={renderStackedArea} title="Tooltip" />;
+};
+
+Playground.args = { isAnimated: false };
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
+};
+
+export const WithAnimation = () => {
+    const data = stackedAreaData.with3Sources();
+
     const renderStackedArea = (props) => (
-        <StackedArea data={data} width={800} {...props} />
+        <StackedArea isAnimated={true} {...props} />
     );
 
     // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
@@ -44,6 +67,7 @@ export const WithMouseEventsOnConsole = () => {
         />
     );
 };
+
 export const WithLoadingState = () => {
     const data = [];
 

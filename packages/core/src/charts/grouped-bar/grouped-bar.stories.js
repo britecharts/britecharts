@@ -5,6 +5,11 @@ import tooltip from '../tooltip/tooltip';
 import legend from '../legend/legend';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { GroupedBarDataBuilder } from './groupedBarChartDataBuilder';
 import colors from '../helpers/color';
 
@@ -41,23 +46,20 @@ const getInlineLegendChart = (container, dataset, colorMap) => {
     return legendChart;
 };
 
-export const WithTooltip = () => {
+export const Playground = (args) => {
     const container = getCleanContainer();
+    const groupedBar = groupedBarChart();
     const groupedBarContainer = select(container);
-    const chartTooltip = tooltip();
     const containerWidth = groupedBarContainer.node()
         ? groupedBarContainer.node().getBoundingClientRect().width
         : false;
-    const groupedBar = groupedBarChart();
-    const dataset = aTestDataSet().with3Sources().build();
+    const chartTooltip = tooltip();
 
     if (containerWidth) {
-        groupedBar
-            .tooltipThreshold(600)
+        const dataset = aTestDataSet().with3Sources().build();
+
+        applyArgs(groupedBar, args)
             .width(containerWidth)
-            .colorSchema(colors.colorSchemas.britecharts.reverse())
-            .grid('horizontal')
-            .isAnimated(true)
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
@@ -68,23 +70,38 @@ export const WithTooltip = () => {
 
         groupedBarContainer.datum(dataset).call(groupedBar);
 
-        getInlineLegendChart(container, dataset, groupedBar.colorMap());
-
-        // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
             .dateLabel('key')
             .nameLabel('group')
             .title('Testing tooltip');
 
-        // Note that if the viewport width is less than the tooltipThreshold value,
-        // this container won't exist, and the tooltip won't show up
-        const tooltipContainer = select('.metadata-group');
-        tooltipContainer.datum([]).call(chartTooltip);
+        select('.metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;
 };
+
+Playground.args = playgroundArgs(groupedBarChart, [
+    'height',
+    'margin',
+    'isAnimated',
+    'colorSchema',
+    'isHorizontal',
+    'betweenBarsPadding',
+    'betweenGroupsPadding',
+    'grid',
+    'xTicks',
+    'yTicks',
+    'yAxisLabel',
+    'yAxisLabelOffset',
+    'tooltipThreshold',
+    'numberFormat',
+    'isLoading',
+]);
+Playground.args.isAnimated = false;
+Playground.args.colorSchema = 'britecharts';
+Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithHorizontalDirection = () => {
     const container = getCleanContainer();
@@ -138,23 +155,38 @@ export const WithHorizontalDirection = () => {
     return container;
 };
 
-export const WithLoadingState = () => {
+export const WithAnimation = () => {
     const container = getCleanContainer();
+    const groupedBar = groupedBarChart();
     const groupedBarContainer = select(container);
     const containerWidth = groupedBarContainer.node()
         ? groupedBarContainer.node().getBoundingClientRect().width
         : false;
-    const groupedBar = groupedBarChart();
-    const dataset = aTestDataSet().with3Sources().build();
+    const chartTooltip = tooltip();
 
     if (containerWidth) {
+        const dataset = aTestDataSet().with3Sources().build();
+
         groupedBar
-            .width(containerWidth)
-            .height(300)
             .isAnimated(true)
-            .isLoading(true);
+            .width(containerWidth)
+            .on('customMouseOver', function () {
+                chartTooltip.show();
+            })
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', function () {
+                chartTooltip.hide();
+            });
 
         groupedBarContainer.datum(dataset).call(groupedBar);
+
+        chartTooltip
+            .topicLabel('values')
+            .dateLabel('key')
+            .nameLabel('group')
+            .title('Testing tooltip');
+
+        select('.metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;
@@ -171,6 +203,28 @@ export const WithNegativeValues = () => {
 
     if (containerWidth) {
         groupedBar.isAnimated(true).width(containerWidth).height(400);
+
+        groupedBarContainer.datum(dataset).call(groupedBar);
+    }
+
+    return container;
+};
+
+export const WithLoadingState = () => {
+    const container = getCleanContainer();
+    const groupedBarContainer = select(container);
+    const containerWidth = groupedBarContainer.node()
+        ? groupedBarContainer.node().getBoundingClientRect().width
+        : false;
+    const groupedBar = groupedBarChart();
+    const dataset = aTestDataSet().with3Sources().build();
+
+    if (containerWidth) {
+        groupedBar
+            .width(containerWidth)
+            .height(300)
+            .isAnimated(true)
+            .isLoading(true);
 
         groupedBarContainer.datum(dataset).call(groupedBar);
     }

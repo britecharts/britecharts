@@ -5,6 +5,11 @@ import line from './line';
 import tooltip from '../tooltip/tooltip';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { LineDataBuilder } from './lineChartDataBuilder';
 import colors from '../helpers/color';
 
@@ -49,72 +54,60 @@ function isInRange(d0, d1, d) {
     return new Date(d.date) >= d0 && new Date(d.date) <= d1;
 }
 
-export const WithTooltipAndBrush = () => {
+export const Playground = (args) => {
     const container = getCleanContainer();
     const lineChart = line();
-    const chartTooltip = tooltip();
-    const brushChart = brush();
     const lineContainer = select(container);
     const containerWidth = lineContainer.node()
         ? lineContainer.node().getBoundingClientRect().width
         : false;
-    let tooltipContainer;
-    const dataset = aTestDataSet().with5Topics().build();
+    const chartTooltip = tooltip();
 
     if (containerWidth) {
-        // LineChart Setup and start
-        lineChart
-            .isAnimated(true)
-            .grid('horizontal')
-            .tooltipThreshold(600)
+        const dataset = aTestDataSet().with5Topics().build();
+
+        applyArgs(lineChart, args)
             .width(containerWidth)
-            .margin(lineMargin)
-            .yAxisLabel('Value Axis Label')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', chartTooltip.hide)
-            .on('customDataEntryClick', (d, mousePosition) => {
-                // eslint-disable-next-line no-console
-                console.log('Data entry marker clicked', d, mousePosition);
-            });
+            .on('customMouseOut', chartTooltip.hide);
 
         lineContainer.datum(dataset).call(lineChart);
 
-        // Tooltip Setup and start
-        chartTooltip
-            // In order to change the date range on the tooltip title, uncomment this line
-            // .dateFormat(chartTooltip.axisTimeCombinations.HOUR .title('Quantity Sold')
-            .topicsOrder([...new Set(dataset.data.map(({ name }) => name))]);
+        chartTooltip.topicsOrder([
+            ...new Set(dataset.data.map(({ name }) => name)),
+        ]);
 
-        // Note that if the viewport width is less than the tooltipThreshold value,
-        // this container won't exist, and the tooltip won't show up
-        tooltipContainer = select('.metadata-group .hover-marker');
-        tooltipContainer.datum([]).call(chartTooltip);
-
-        const wrapper = document.createElement('div');
-        wrapper.classList = 'brush-chart-container';
-        container.appendChild(wrapper);
-        const brushContainer = select(wrapper);
-
-        brushChart
-            .width(containerWidth)
-            .height(100)
-            .isAnimated(true)
-            .margin(brushMargin)
-            .on('customBrushEnd', ([brushRangeStart, brushRangeEnd]) => {
-                const data =
-                    brushRangeStart && brushRangeEnd
-                        ? filterData(brushRangeStart, brushRangeEnd)
-                        : dataset;
-
-                lineContainer.datum(data).call(lineChart);
-            });
-
-        brushContainer.datum(brushDataAdapter(dataset)).call(brushChart);
+        select('.metadata-group .hover-marker').datum([]).call(chartTooltip);
     }
 
     return container;
 };
+
+Playground.args = playgroundArgs(line, [
+    'height',
+    'margin',
+    'isAnimated',
+    'colorSchema',
+    'grid',
+    'lineCurve',
+    'hasMinimumValueScale',
+    'shouldShowAllDataPoints',
+    'xAxisValueType',
+    'xAxisScale',
+    'xAxisFormat',
+    'xAxisCustomFormat',
+    'xAxisLabel',
+    'yAxisLabel',
+    'yAxisLabelPadding',
+    'xTicks',
+    'yTicks',
+    'tooltipThreshold',
+    'numberFormat',
+    'isLoading',
+]);
+Playground.args.isAnimated = false;
+Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithSingleLine = () => {
     const container = getCleanContainer();
@@ -187,6 +180,104 @@ export const WithManyLines = () => {
         // this container won't exist, and the tooltip won't show up
         tooltipContainer = select('.metadata-group .hover-marker');
         tooltipContainer.datum([]).call(chartTooltip);
+    }
+
+    return container;
+};
+
+export const WithAnimation = () => {
+    const container = getCleanContainer();
+    const lineChart = line();
+    const lineContainer = select(container);
+    const containerWidth = lineContainer.node()
+        ? lineContainer.node().getBoundingClientRect().width
+        : false;
+    const chartTooltip = tooltip();
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().with5Topics().build();
+
+        lineChart
+            .isAnimated(true)
+            .width(containerWidth)
+            .on('customMouseOver', chartTooltip.show)
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', chartTooltip.hide);
+
+        lineContainer.datum(dataset).call(lineChart);
+
+        chartTooltip.topicsOrder([
+            ...new Set(dataset.data.map(({ name }) => name)),
+        ]);
+
+        select('.metadata-group .hover-marker').datum([]).call(chartTooltip);
+    }
+
+    return container;
+};
+
+export const WithTooltipAndBrush = () => {
+    const container = getCleanContainer();
+    const lineChart = line();
+    const chartTooltip = tooltip();
+    const brushChart = brush();
+    const lineContainer = select(container);
+    const containerWidth = lineContainer.node()
+        ? lineContainer.node().getBoundingClientRect().width
+        : false;
+    let tooltipContainer;
+    const dataset = aTestDataSet().with5Topics().build();
+
+    if (containerWidth) {
+        // LineChart Setup and start
+        lineChart
+            .isAnimated(true)
+            .grid('horizontal')
+            .tooltipThreshold(600)
+            .width(containerWidth)
+            .margin(lineMargin)
+            .yAxisLabel('Value Axis Label')
+            .on('customMouseOver', chartTooltip.show)
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', chartTooltip.hide)
+            .on('customDataEntryClick', (d, mousePosition) => {
+                // eslint-disable-next-line no-console
+                console.log('Data entry marker clicked', d, mousePosition);
+            });
+
+        lineContainer.datum(dataset).call(lineChart);
+
+        // Tooltip Setup and start
+        chartTooltip
+            // In order to change the date range on the tooltip title, uncomment this line
+            // .dateFormat(chartTooltip.axisTimeCombinations.HOUR .title('Quantity Sold')
+            .topicsOrder([...new Set(dataset.data.map(({ name }) => name))]);
+
+        // Note that if the viewport width is less than the tooltipThreshold value,
+        // this container won't exist, and the tooltip won't show up
+        tooltipContainer = select('.metadata-group .hover-marker');
+        tooltipContainer.datum([]).call(chartTooltip);
+
+        const wrapper = document.createElement('div');
+        wrapper.classList = 'brush-chart-container';
+        container.appendChild(wrapper);
+        const brushContainer = select(wrapper);
+
+        brushChart
+            .width(containerWidth)
+            .height(100)
+            .isAnimated(true)
+            .margin(brushMargin)
+            .on('customBrushEnd', ([brushRangeStart, brushRangeEnd]) => {
+                const data =
+                    brushRangeStart && brushRangeEnd
+                        ? filterData(brushRangeStart, brushRangeEnd)
+                        : dataset;
+
+                lineContainer.datum(data).call(lineChart);
+            });
+
+        brushContainer.datum(brushDataAdapter(dataset)).call(brushChart);
     }
 
     return container;

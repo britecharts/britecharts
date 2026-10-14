@@ -8,10 +8,18 @@ export default {
     component: Legend,
 };
 
-export const WithDefaultProperties = () => {
+/**
+ * Every prop the chart takes, editable from the Controls panel. Left unset, a
+ * prop keeps the chart's own default, so this starts as the default chart.
+ */
+export const Playground = (args) => {
     const data = legendData.with6Points();
 
-    return <Legend data={data} height={250} width={400} />;
+    return <Legend data={data} height={250} width={400} {...args} />;
+};
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
 export const WithHorizontalDirection = () => {

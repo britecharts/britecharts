@@ -10,18 +10,24 @@ export default {
     component: Bar,
 };
 
-export const WithDefaultProperties = () => {
+/**
+ * Every prop the chart takes, editable from the Controls panel. Left unset, a
+ * prop keeps the chart's own default, so this starts as the default chart,
+ * with its tooltip.
+ */
+export const Playground = (args) => {
     const data = barData.withLetters();
 
-    return <Bar data={data} />;
-};
-
-export const WithTooltip = () => {
-    const data = barData.withLetters();
-
-    const renderBar = (props) => <Bar {...props} />;
+    const renderBar = (props) => <Bar {...args} {...props} />;
 
     return <Tooltip data={data} render={renderBar} title="Frequency" />;
+};
+
+// Static, so the Controls are what changes; `WithAnimation` shows the motion.
+Playground.args = { isAnimated: false };
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
 export const WithHorizontalDirectionAndColorSchema = () => {
@@ -42,6 +48,14 @@ export const WithHorizontalDirectionAndColorSchema = () => {
             }}
         />
     );
+};
+
+export const WithAnimation = () => {
+    const data = barData.withLetters();
+
+    const renderBar = (props) => <Bar {...props} isAnimated={true} />;
+
+    return <Tooltip data={data} render={renderBar} title="Frequency" />;
 };
 
 export const WithLoadingState = () => {
