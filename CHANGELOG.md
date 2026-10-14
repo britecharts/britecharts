@@ -1,5 +1,11 @@
 # Changelog
 
+This file covers Britecharts up to 3.0.0-alpha-6.1.5, before the split into packages. From 3.0.0-beta.1 on, each package keeps its own changelog:
+
+* [`@britecharts/core`](packages/core/CHANGELOG.md)
+* [`@britecharts/wrappers`](packages/wrappers/CHANGELOG.md)
+* [`@britecharts/react`](packages/react/CHANGELOG.md)
+
 ## 3.0.0-alpha-6.1.5
 * feat: brush extended lines and extended line color fix
 * docs: Readme review, added migration guide

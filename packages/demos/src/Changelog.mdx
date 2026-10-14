@@ -1,7 +1,17 @@
 import { Meta, Markdown } from '@storybook/blocks';
 
-import Changelog from '!!raw-loader!../../../CHANGELOG.md';
+import CoreChangelog from '!!raw-loader!../../core/CHANGELOG.md';
+import WrappersChangelog from '!!raw-loader!../../wrappers/CHANGELOG.md';
+import ReactChangelog from '!!raw-loader!../../react/CHANGELOG.md';
 
 <Meta title="Changelog" />
 
-<Markdown>{Changelog}</Markdown>
+# Changelog
+
+Each published package keeps its own changelog, written by Changesets at every release, so this page lists released versions only. Releases before the packages split, up to 3.0.0-alpha-6.1.5, are in the [repository's root changelog](https://github.com/britecharts/britecharts/blob/main/CHANGELOG.md).
+
+<Markdown>{CoreChangelog}</Markdown>
+
+<Markdown>{WrappersChangelog}</Markdown>
+
+<Markdown>{ReactChangelog}</Markdown>
