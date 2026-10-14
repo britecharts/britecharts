@@ -100,6 +100,7 @@ Playground.args = playgroundArgs(groupedBarChart, [
     'isLoading',
 ]);
 Playground.args.isAnimated = false;
+Playground.args.colorSchema = 'britecharts';
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithHorizontalDirection = () => {

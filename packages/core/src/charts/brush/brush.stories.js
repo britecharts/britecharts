@@ -24,9 +24,17 @@ export const Playground = (args) => {
     if (containerWidth) {
         const dataset = aTestDataSet().withSimpleData().build();
 
-        applyArgs(brushChart, args).width(containerWidth);
+        // The window goes on after the first render: `dateRange` moves the
+        // brush at once, and before the chart has drawn it has no scale yet.
+        const { dateRange, ...settings } = args;
+
+        applyArgs(brushChart, settings).width(containerWidth);
 
         brushContainer.datum(dataset).call(brushChart);
+
+        if (dateRange) {
+            brushChart.dateRange(dateRange);
+        }
     }
 
     return container;
@@ -41,12 +49,16 @@ Playground.args = playgroundArgs(brush, [
     'xTicks',
     'xAxisFormat',
     'xAxisCustomFormat',
+    'dateRange',
     'isLoading',
 ]);
 Playground.args.isAnimated = false;
+// As tall as the other charts' Playgrounds, with a window already selected.
+Playground.args.height = 500;
+Playground.args.dateRange = ['7/10/2015', '7/20/2015'];
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
-export const Animated = () => {
+export const WithAnimation = () => {
     const container = getCleanContainer();
     const brushContainer = select(container);
     const brushChart = brush();

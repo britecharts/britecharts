@@ -93,7 +93,7 @@ Playground.args = playgroundArgs(legend, [
 ]);
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
-export const Vertical = () => {
+export const WithStackDirection = () => {
     const container = getCleanContainer();
     const dataset = aTestDataSet().withFivePlusOther().build();
     const legendChart = getVerticalLegendChart(container, dataset);
@@ -101,7 +101,7 @@ export const Vertical = () => {
     return container;
 };
 
-export const Inline = () => {
+export const WithInlineDirection = () => {
     const container = getCleanContainer();
     const dataset = aTestDataSet().withThreeCategories().build();
     const legendChart = getInlineLegendChart(container, dataset);
