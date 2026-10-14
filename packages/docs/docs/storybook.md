@@ -22,7 +22,7 @@ All three are built and deployed with the documentation on every push to
 ## Running them locally
 
 ```sh
-yarn demos
+pnpm demos
 ```
 
 starts core on port 2001, React on 2002 and the composed shell on 2000. See

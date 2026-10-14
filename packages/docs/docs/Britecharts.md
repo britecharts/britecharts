@@ -104,7 +104,7 @@ Britecharts components are distributed in **UMD modules** and **ES modules**, ea
 ```bash
    npm install --save @britecharts/core d3-selection
    # or
-   yarn add @britecharts/core d3-selection
+   pnpm add @britecharts/core d3-selection
 ```
 
 Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [CodePen][codependemos] demo projects.

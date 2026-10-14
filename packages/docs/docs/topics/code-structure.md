@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Project Structure
 
-Britecharts is a Yarn workspace with six packages under `packages/`:
+Britecharts is a [pnpm](https://pnpm.io/) workspace with six packages under `packages/`:
 
 | Package | Description |
 | --- | --- |
