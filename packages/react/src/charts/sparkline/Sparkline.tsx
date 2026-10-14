@@ -5,9 +5,9 @@ import { SparklineWrapper } from '@britecharts/wrappers';
 import type { Wrapper } from '@britecharts/wrappers';
 import type {
     ColorGradientType,
-    SparkelineTitleTextStyle,
     SparklineChartDataShape,
     SparklineChartModule,
+    SparklineTitleTextStyle,
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
@@ -111,7 +111,7 @@ export interface SparklineProps {
      * within the object will set custom 'font-family` while the rest
      * of the attributes will have the default values provided above.
      */
-    titleTextStyle?: SparkelineTitleTextStyle;
+    titleTextStyle?: SparklineTitleTextStyle;
 
     /**
      * Gets or Sets the valueLabel of the chart

@@ -88,15 +88,6 @@ export type LineChartData = {
     data: LineChartDataShape[];
 };
 
-// Nothing reads this: the chart has no `emptyDataConfig` accessor, unlike the
-// stacked area. It is published, so it stays until retiring it is its own
-// decision rather than a side effect of a file move.
-export interface LineChartEmptyDataConfig {
-    minDate: Date;
-    maxDate: Date;
-    maxY: number;
-}
-
 export interface CustomLine {
     y: number;
     name: string;
