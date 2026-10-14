@@ -54,4 +54,30 @@ describe('donut Chart', () => {
             expect(createSpy.mock.calls[0][2].isAnimated).toBe(false);
         });
     });
+
+    describe('center legend', () => {
+        let createSpy;
+
+        beforeEach(() => {
+            createSpy = jest.spyOn(DonutWrapper, 'create');
+        });
+
+        afterEach(() => {
+            createSpy.mockRestore();
+        });
+
+        it('should let hasCenterLegend be turned off', () => {
+            mount(
+                <Donut
+                    chart={DonutWrapper}
+                    data={donutData.with4Slices()}
+                    hasCenterLegend={false}
+                />
+            );
+
+            expect(createSpy.mock.results[0].value.hasCenterLegend()).toBe(
+                false
+            );
+        });
+    });
 });

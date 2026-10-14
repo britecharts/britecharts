@@ -57,6 +57,12 @@ export interface DonutChartProps {
     externalRadius?: number;
 
     /**
+     * Gets or Sets the hasCenterLegend property of the chart, making it
+     * display the legend at the center of the donut. By default this is 'true'
+     */
+    hasCenterLegend?: boolean;
+
+    /**
      * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it
      * to highlight the selected slice id set with `highlightSliceById` all the time.
      */
