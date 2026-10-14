@@ -11,26 +11,26 @@ export default {
     component: Donut,
 };
 
+/**
+ * Every prop the chart takes, editable from the Controls panel. Left unset, a
+ * prop keeps the chart's own default, so this starts as the default chart.
+ */
+export const Playground = (args) => {
+    const data = donutData.with4Slices();
+
+    return <Donut data={data} {...args} />;
+};
+
+Playground.args = { isAnimated: false };
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
+};
+
 export const WithDefaultProperties = () => {
     const data = donutData.with4Slices();
 
     return <Donut data={data} />;
-};
-
-export const WithHoverEvent = () => {
-    const data = donutData.with4Slices();
-    const logMouseOver = () => console.log('Mouse Over');
-
-    return (
-        <Donut
-            data={data}
-            customMouseOver={logMouseOver}
-            externalRadius={100}
-            internalRadius={47}
-            highlightSliceById={1}
-            isAnimated={false}
-        />
-    );
 };
 
 export const WithHighlightedLegend = () => {
@@ -72,6 +72,28 @@ export const WithHighlightedLegend = () => {
                 highlightEntryById={highlightedSlice}
             />
         </>
+    );
+};
+
+export const WithAnimation = () => {
+    const data = donutData.with4Slices();
+
+    return <Donut data={data} isAnimated={true} />;
+};
+
+export const WithHoverEvent = () => {
+    const data = donutData.with4Slices();
+    const logMouseOver = () => console.log('Mouse Over');
+
+    return (
+        <Donut
+            data={data}
+            customMouseOver={logMouseOver}
+            externalRadius={100}
+            internalRadius={47}
+            highlightSliceById={1}
+            isAnimated={false}
+        />
     );
 };
 

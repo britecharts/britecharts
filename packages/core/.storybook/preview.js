@@ -8,7 +8,7 @@ export const parameters = {
     layout: 'fullscreen',
     options: {
         storySort: {
-            method: 'alphabetical',
+            method: '',
             order: ['Welcome', ['CHARTS'], 'Changelog'],
         },
     },

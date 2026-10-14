@@ -9,6 +9,35 @@ export default {
     component: GroupedBar,
 };
 
+/**
+ * Every prop the chart takes, editable from the Controls panel. Left unset, a
+ * prop keeps the chart's own default, so this starts as the default chart,
+ * with its tooltip.
+ */
+export const Playground = (args) => {
+    const data = groupedBarData.with3Groups();
+
+    const renderGroupedBar = (props) => <GroupedBar {...args} {...props} />;
+
+    // The chart dispatches each column as { key, values: [{ group, name,
+    // value }] }: the title shows the key and each row a group
+    return (
+        <Tooltip
+            data={data}
+            render={renderGroupedBar}
+            title="Tooltip Title"
+            dateLabel="key"
+            nameLabel="group"
+        />
+    );
+};
+
+Playground.args = { isAnimated: false };
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
+};
+
 export const WithDefaultProperties = () => {
     const data = groupedBarData.with3Groups();
 
@@ -23,19 +52,11 @@ export const WithHorizontalDirectionFixedSize = () => {
     );
 };
 
-export const WithDefaultPropertiesAndTooltip = () => {
+export const WithAnimation = () => {
     const data = groupedBarData.with3Groups();
 
     const renderGroupedBar = (props) => (
-        <GroupedBar
-            margin={{
-                top: 60,
-                right: 30,
-                bottom: 60,
-                left: 70,
-            }}
-            {...props}
-        />
+        <GroupedBar isAnimated={true} {...props} />
     );
 
     // The chart dispatches each column as { key, values: [{ group, name,

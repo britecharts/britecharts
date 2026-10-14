@@ -9,6 +9,36 @@ export default {
     component: ScatterPlot,
 };
 
+/**
+ * Every prop the chart takes, editable from the Controls panel. Left unset, a
+ * prop keeps the chart's own default, so this starts as the default chart,
+ * with its tooltip.
+ */
+export const Playground = (args) => {
+    const data = scatterPlotData.withOneSource();
+
+    const renderScatterPlot = (props) => <ScatterPlot {...args} {...props} />;
+
+    // The chart dispatches the hovered point as { name, x, y }: the tooltip
+    // shows a single value, the y, titled with the x
+    return (
+        <Tooltip
+            data={data}
+            render={renderScatterPlot}
+            title="Temperature (C)"
+            nameLabel="x"
+            valueLabel="y"
+            numberFormat="$"
+        />
+    );
+};
+
+Playground.args = { isAnimated: false };
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
+};
+
 export const WithDefaultProperties = () => {
     const data = scatterPlotData.withFourNames();
 
@@ -39,25 +69,11 @@ export const WithTrendlineAndGrid = () => {
     );
 };
 
-export const WithTooltip = () => {
+export const WithAnimation = () => {
     const data = scatterPlotData.withOneSource();
 
     const renderScatterPlot = (props) => (
-        <ScatterPlot
-            circleOpacity={0.6}
-            hasTrendline={true}
-            margin={{
-                top: 20,
-                right: 20,
-                bottom: 50,
-                left: 60,
-            }}
-            xAxisFormat=".1f"
-            xAxisLabel="Temperature (C)"
-            yAxisFormat="$"
-            yAxisLabel="Ice Cream Sales"
-            {...props}
-        />
+        <ScatterPlot isAnimated={true} {...props} />
     );
 
     // The chart dispatches the hovered point as { name, x, y }: the tooltip

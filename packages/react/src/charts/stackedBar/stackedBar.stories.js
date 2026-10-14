@@ -9,6 +9,33 @@ export default {
     component: StackedBar,
 };
 
+/**
+ * Every prop the chart takes, editable from the Controls panel. Left unset, a
+ * prop keeps the chart's own default, so this starts as the default chart,
+ * with its tooltip.
+ */
+export const Playground = (args) => {
+    const data = stackedBarData.with3SourcesAndDates();
+
+    const renderStackedBar = (props) => <StackedBar {...args} {...props} />;
+
+    return (
+        <Tooltip
+            data={data}
+            render={renderStackedBar}
+            title="Tooltip Title"
+            dateLabel="key"
+            nameLabel="stack"
+        />
+    );
+};
+
+Playground.args = { isAnimated: false };
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
+};
+
 export const WithDefaultProperties = () => {
     const data = stackedBarData.with3Sources();
 
@@ -23,19 +50,11 @@ export const WithHorizontalDirectionAndFixedSize = () => {
     );
 };
 
-export const WithDefaultPropertiesAndTooltip = () => {
+export const WithAnimation = () => {
     const data = stackedBarData.with3SourcesAndDates();
 
     const renderStackedBar = (props) => (
-        <StackedBar
-            margin={{
-                top: 60,
-                right: 30,
-                bottom: 60,
-                left: 70,
-            }}
-            {...props}
-        />
+        <StackedBar isAnimated={true} {...props} />
     );
 
     return (

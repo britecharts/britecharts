@@ -3,10 +3,48 @@ import { select } from 'd3-selection';
 import brush from './brush';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { BrushDataBuilder } from './brushChartDataBuilder';
 import colors from '../helpers/color';
 
 const aTestDataSet = () => new BrushDataBuilder();
+
+export const Playground = (args) => {
+    const container = getCleanContainer();
+    const brushChart = brush();
+    const brushContainer = select(container);
+    const containerWidth = brushContainer.node()
+        ? brushContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withSimpleData().build();
+
+        applyArgs(brushChart, args).width(containerWidth);
+
+        brushContainer.datum(dataset).call(brushChart);
+    }
+
+    return container;
+};
+
+Playground.args = playgroundArgs(brush, [
+    'height',
+    'margin',
+    'isAnimated',
+    'isLocked',
+    'areaCurve',
+    'xTicks',
+    'xAxisFormat',
+    'xAxisCustomFormat',
+    'isLoading',
+]);
+Playground.args.isAnimated = false;
+Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const Animated = () => {
     const container = getCleanContainer();
@@ -70,6 +108,24 @@ export const WithMissingData = () => {
     return container;
 };
 
+export const WithNegativeValues = () => {
+    const container = getCleanContainer();
+    const brushContainer = select(container);
+    const brushChart = brush();
+    const containerWidth = brushContainer.node()
+        ? brushContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withNegativeValues().build();
+
+    if (containerWidth) {
+        brushChart.width(containerWidth).height(200).isAnimated(true);
+
+        brushContainer.datum(dataset).call(brushChart);
+    }
+
+    return container;
+};
+
 export const WithLoadingState = () => {
     const container = getCleanContainer();
     const brushContainer = select(container);
@@ -85,24 +141,6 @@ export const WithLoadingState = () => {
             .height(125)
             .isAnimated(true)
             .isLoading(true);
-
-        brushContainer.datum(dataset).call(brushChart);
-    }
-
-    return container;
-};
-
-export const WithNegativeValues = () => {
-    const container = getCleanContainer();
-    const brushContainer = select(container);
-    const brushChart = brush();
-    const containerWidth = brushContainer.node()
-        ? brushContainer.node().getBoundingClientRect().width
-        : false;
-    const dataset = aTestDataSet().withNegativeValues().build();
-
-    if (containerWidth) {
-        brushChart.width(containerWidth).height(200).isAnimated(true);
 
         brushContainer.datum(dataset).call(brushChart);
     }

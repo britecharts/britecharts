@@ -4,6 +4,11 @@ import donut from './donut';
 import legend from '../legend/legend';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { DonutDataBuilder } from './donutChartDataBuilder';
 import colors from '../helpers/color';
 
@@ -84,6 +89,43 @@ const getVerticalLegendChart = (container, dataset) => {
     return legendChart;
 };
 
+export const Playground = (args) => {
+    const container = getCleanContainer();
+    const donutChart = donut();
+    const donutContainer = select(container);
+    const containerWidth = donutContainer.node()
+        ? donutContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        applyArgs(donutChart, args).width(containerWidth);
+
+        donutContainer.datum(dataset).call(donutChart);
+    }
+
+    return container;
+};
+
+Playground.args = playgroundArgs(donut, [
+    'height',
+    'margin',
+    'isAnimated',
+    'colorSchema',
+    'externalRadius',
+    'internalRadius',
+    'radiusHoverOffset',
+    'hasCenterLegend',
+    'hasFixedHighlightedSlice',
+    'hasHoverAnimation',
+    'hasLastHoverSliceHighlighted',
+    'highlightSliceById',
+    'percentageFormat',
+    'numberFormat',
+    'isLoading',
+]);
+Playground.args.isAnimated = false;
+Playground.argTypes = playgroundArgTypes(Playground.args);
+
 export const AnimatedWithLegend = () => {
     const container = getCleanContainer();
     const donutContainer = select(container);
@@ -139,6 +181,23 @@ export const WithInlineLegend = () => {
         donutContainer.datum(dataset).call(donutChart);
     }
     const legendChart = getInlineLegendChart(container, dataset);
+
+    return container;
+};
+
+export const WithAnimation = () => {
+    const container = getCleanContainer();
+    const donutChart = donut();
+    const donutContainer = select(container);
+    const containerWidth = donutContainer.node()
+        ? donutContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        donutChart.isAnimated(true).width(containerWidth);
+
+        donutContainer.datum(dataset).call(donutChart);
+    }
 
     return container;
 };

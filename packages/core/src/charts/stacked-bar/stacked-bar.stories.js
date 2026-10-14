@@ -5,6 +5,11 @@ import tooltip from '../tooltip/tooltip';
 import legend from '../legend/legend';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { StackedBarDataBuilder } from './stackedBarDataBuilder';
 import colors from '../helpers/color';
 
@@ -39,7 +44,7 @@ const getInlineLegendChart = (container, dataset) => {
     return legendChart;
 };
 
-export const WithTooltip = () => {
+export const Playground = (args) => {
     const container = getCleanContainer();
     const stackedBar = stackedBarChart();
     const stackedBarContainer = select(container);
@@ -47,17 +52,12 @@ export const WithTooltip = () => {
         ? stackedBarContainer.node().getBoundingClientRect().width
         : false;
     const chartTooltip = tooltip();
-    const dataset = aTestDataSet().with3Sources().build();
-    let tooltipContainer;
 
     if (containerWidth) {
-        stackedBar
-            .tooltipThreshold(600)
-            .height(400)
+        const dataset = aTestDataSet().with3Sources().build();
+
+        applyArgs(stackedBar, args)
             .width(containerWidth)
-            .grid('horizontal')
-            .isAnimated(true)
-            .betweenBarsPadding(0.3)
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
@@ -68,23 +68,39 @@ export const WithTooltip = () => {
 
         stackedBarContainer.datum(dataset).call(stackedBar);
 
-        getInlineLegendChart(container, dataset);
-
-        // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
             .dateLabel('key')
             .nameLabel('stack')
             .title('Tooltip title');
 
-        // Note that if the viewport width is less than the tooltipThreshold value,
-        // this container won't exist, and the tooltip won't show up
-        tooltipContainer = select('.metadata-group');
-        tooltipContainer.datum([]).call(chartTooltip);
+        select('.metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;
 };
+
+Playground.args = playgroundArgs(stackedBarChart, [
+    'height',
+    'margin',
+    'isAnimated',
+    'colorSchema',
+    'isHorizontal',
+    'betweenBarsPadding',
+    'hasPercentage',
+    'hasReversedStacks',
+    'percentageAxisToMaxRatio',
+    'grid',
+    'xTicks',
+    'yTicks',
+    'yAxisLabel',
+    'yAxisLabelOffset',
+    'tooltipThreshold',
+    'numberFormat',
+    'isLoading',
+]);
+Playground.args.isAnimated = false;
+Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithHorizontalDirection = () => {
     const container = getCleanContainer();
@@ -139,23 +155,38 @@ export const WithHorizontalDirection = () => {
     return container;
 };
 
-export const WithLoadingState = () => {
+export const WithAnimation = () => {
     const container = getCleanContainer();
     const stackedBar = stackedBarChart();
     const stackedBarContainer = select(container);
     const containerWidth = stackedBarContainer.node()
         ? stackedBarContainer.node().getBoundingClientRect().width
         : false;
-    const dataset = aTestDataSet().with3Sources().build();
+    const chartTooltip = tooltip();
 
     if (containerWidth) {
+        const dataset = aTestDataSet().with3Sources().build();
+
         stackedBar
-            .width(containerWidth)
-            .height(400)
             .isAnimated(true)
-            .isLoading(true);
+            .width(containerWidth)
+            .on('customMouseOver', function () {
+                chartTooltip.show();
+            })
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', function () {
+                chartTooltip.hide();
+            });
 
         stackedBarContainer.datum(dataset).call(stackedBar);
+
+        chartTooltip
+            .topicLabel('values')
+            .dateLabel('key')
+            .nameLabel('stack')
+            .title('Tooltip title');
+
+        select('.metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;
@@ -176,6 +207,28 @@ export const WithNegativeValues = () => {
             .grid('horizontal')
             .width(containerWidth)
             .height(400);
+
+        stackedBarContainer.datum(dataset).call(stackedBar);
+    }
+
+    return container;
+};
+
+export const WithLoadingState = () => {
+    const container = getCleanContainer();
+    const stackedBar = stackedBarChart();
+    const stackedBarContainer = select(container);
+    const containerWidth = stackedBarContainer.node()
+        ? stackedBarContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().with3Sources().build();
+
+    if (containerWidth) {
+        stackedBar
+            .width(containerWidth)
+            .height(400)
+            .isAnimated(true)
+            .isLoading(true);
 
         stackedBarContainer.datum(dataset).call(stackedBar);
     }

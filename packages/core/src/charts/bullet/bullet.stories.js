@@ -3,10 +3,51 @@ import { select } from 'd3-selection';
 import bullet from './bullet';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { BulletDataBuilder } from './bulletChartDataBuilder';
 import colors from '../helpers/color';
 
 const aTestDataSet = () => new BulletDataBuilder();
+
+export const Playground = (args) => {
+    const container = getCleanContainer();
+    const bulletContainer = select(container);
+    const containerWidth = bulletContainer.node()
+        ? bulletContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withAllElements().build();
+
+    if (containerWidth) {
+        dataset.forEach((data) => {
+            const bulletChart = bullet();
+
+            applyArgs(bulletChart, args).width(containerWidth);
+
+            bulletContainer.datum(data).call(bulletChart);
+        });
+    }
+
+    return container;
+};
+
+Playground.args = playgroundArgs(bullet, [
+    'height',
+    'margin',
+    'colorSchema',
+    'customTitle',
+    'customSubtitle',
+    'isReverse',
+    'paddingBetweenAxisAndChart',
+    'startMaxRangeOpacity',
+    'ticks',
+    'numberFormat',
+    'isLoading',
+]);
+Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithAllElements = () => {
     const container = getCleanContainer();

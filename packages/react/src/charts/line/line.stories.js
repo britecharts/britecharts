@@ -10,6 +10,32 @@ export default {
     component: Line,
 };
 
+/**
+ * Every prop the chart takes, editable from the Controls panel. Left unset, a
+ * prop keeps the chart's own default, so this starts as the default chart,
+ * with its tooltip.
+ */
+export const Playground = (args) => {
+    const data = lineData.oneSet();
+
+    const renderLine = (props) => <Line {...args} {...props} />;
+
+    return (
+        <Tooltip
+            data={data}
+            render={renderLine}
+            topicLabel="topics"
+            title="Tooltip Title"
+        />
+    );
+};
+
+Playground.args = { isAnimated: false };
+
+Playground.parameters = {
+    controls: { exclude: ['data', 'chart', 'createTooltip'] },
+};
+
 export const WithOneLineAndTooltipAndBasisCurve = () => {
     const data = lineData.oneSet();
 
@@ -54,6 +80,21 @@ export const WithMultipleLinesAndTooltip = () => {
 
     return (
         <Tooltip data={data} render={renderLine} topicLabel="topics" title="" />
+    );
+};
+
+export const WithAnimation = () => {
+    const data = lineData.oneSet();
+
+    const renderLine = (props) => <Line isAnimated={true} {...props} />;
+
+    return (
+        <Tooltip
+            data={data}
+            render={renderLine}
+            topicLabel="topics"
+            title="Tooltip Title"
+        />
     );
 };
 

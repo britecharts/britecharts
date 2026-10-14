@@ -4,6 +4,11 @@ import donut from '../donut/donut';
 import legend from './legend';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    applyArgs,
+    playgroundArgs,
+    playgroundArgTypes,
+} from '../../../.storybook/playground';
 import { DonutDataBuilder } from '../donut/donutChartDataBuilder';
 import colors from '../helpers/color';
 
@@ -55,6 +60,38 @@ const getVerticalLegendChart = (container, dataset) => {
 
     return legendChart;
 };
+
+export const Playground = (args) => {
+    const container = getCleanContainer();
+    const legendChart = legend();
+    const legendContainer = select(container);
+    const containerWidth = legendContainer.node()
+        ? legendContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withFivePlusOther().build();
+
+        applyArgs(legendChart, args).width(containerWidth);
+
+        legendContainer.datum(dataset).call(legendChart);
+    }
+
+    return container;
+};
+
+Playground.args = playgroundArgs(legend, [
+    'height',
+    'margin',
+    'colorSchema',
+    'isHorizontal',
+    'marginRatio',
+    'markerSize',
+    'unit',
+    'numberFormat',
+    'highlightEntryById',
+]);
+Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const Vertical = () => {
     const container = getCleanContainer();
