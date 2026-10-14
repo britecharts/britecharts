@@ -24,17 +24,9 @@ export const Playground = (args) => {
     if (containerWidth) {
         const dataset = aTestDataSet().withSimpleData().build();
 
-        // The window goes on after the first render: `dateRange` moves the
-        // brush at once, and before the chart has drawn it has no scale yet.
-        const { dateRange, ...settings } = args;
-
-        applyArgs(brushChart, settings).width(containerWidth);
+        applyArgs(brushChart, args).width(containerWidth);
 
         brushContainer.datum(dataset).call(brushChart);
-
-        if (dateRange) {
-            brushChart.dateRange(dateRange);
-        }
     }
 
     return container;

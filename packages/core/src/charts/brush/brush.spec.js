@@ -320,6 +320,44 @@ describe('brush Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        describe('when the date range is set before the first render', () => {
+            const dateRange = ['7/10/2015', '7/20/2015'];
+            let fixture;
+
+            beforeEach(() => {
+                fixture = document.createElement('div');
+                document.body.appendChild(fixture);
+            });
+
+            afterEach(() => {
+                document.body.removeChild(fixture);
+            });
+
+            const selectionOf = (container) =>
+                d3.brushSelection(container.select('.brush-group').node());
+
+            it('should not throw', () => {
+                const earlyChart = chart().dateRange(dateRange);
+
+                expect(() =>
+                    d3.select(fixture).datum(dataset).call(earlyChart)
+                ).not.toThrow();
+            });
+
+            it('should draw the window it was given', () => {
+                const early = d3.select(fixture).append('div');
+                const late = d3.select(fixture).append('div');
+                const lateChart = chart();
+
+                early.datum(dataset).call(chart().dateRange(dateRange));
+                late.datum(dataset).call(lateChart);
+                lateChart.dateRange(dateRange);
+
+                expect(selectionOf(early)).not.toBeNull();
+                expect(selectionOf(early)).toEqual(selectionOf(late));
+            });
+        });
+
         it('should provide a gradient getter and setter', () => {
             let previous = brushChart.gradient(),
                 expected = ['#ffffff', '#fafefc'],

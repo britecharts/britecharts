@@ -222,6 +222,9 @@ export default function module(): BrushChartModule {
         // `[null, null]` until both ends are set, which is what the
         // declaration now says.
         dateRange: [string | null, string | null] = [null, null],
+        // A range set before the chart has drawn cannot move a brush that does
+        // not exist yet, so the first render applies it.
+        hasPendingDateRange = false,
         isLocked = false,
         chartWidth: number,
         chartHeight: number,
@@ -307,6 +310,11 @@ export default function module(): BrushChartModule {
             drawAxis();
             drawBrush();
             drawHandles();
+
+            if (hasPendingDateRange) {
+                hasPendingDateRange = false;
+                setBrushByDates(...dateRange);
+            }
         });
     }
 
@@ -900,7 +908,9 @@ export default function module(): BrushChartModule {
         }
         dateRange = _x;
 
-        if (Array.isArray(dateRange)) {
+        if (!chartBrush) {
+            hasPendingDateRange = true;
+        } else if (Array.isArray(dateRange)) {
             setBrushByDates(...dateRange);
         }
 
