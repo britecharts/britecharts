@@ -45,10 +45,7 @@ export type SparklineSelection = Selection<
     any
 >;
 
-// The name's misspelling ("Sparkeline") is published, so it stays: renaming it
-// is a breaking change for anyone importing the type, and that is its own
-// decision rather than something to slip into a file move.
-export interface SparkelineTitleTextStyle {
+export interface SparklineTitleTextStyle {
     'font-family'?: string;
     'font-size'?: string;
     'font-weight'?: number;
@@ -81,8 +78,8 @@ export interface SparklineChartAPI
      * Using this method, you can set font-family, font-size, font-weight, font-style,
      * and color (fill).
      */
-    titleTextStyle(): SparkelineTitleTextStyle;
-    titleTextStyle(titleStyle: SparkelineTitleTextStyle): SparklineChartModule;
+    titleTextStyle(): SparklineTitleTextStyle;
+    titleTextStyle(titleStyle: SparklineTitleTextStyle): SparklineChartModule;
     /** Gets or Sets the `date` key of the data */
     dateLabel(): string;
     dateLabel(value: string): SparklineChartModule;
@@ -137,7 +134,7 @@ const DEFAULT_TITLE_TEXT_STYLE = {
     'font-family': 'sans-serif',
     'font-style': 'normal',
     'font-weight': 0,
-} satisfies SparkelineTitleTextStyle;
+} satisfies SparklineTitleTextStyle;
 
 /**
  * Sparkline Chart reusable API module that allows us
@@ -217,7 +214,7 @@ export default function module(): SparklineChartModule {
         // before it is set gives undefined -- which is what the declaration
         // now says.
         titleText: string | undefined,
-        titleTextStyle: SparkelineTitleTextStyle = DEFAULT_TITLE_TEXT_STYLE,
+        titleTextStyle: SparklineTitleTextStyle = DEFAULT_TITLE_TEXT_STYLE,
         valueLabel = 'value',
         dateLabel = 'date';
 
