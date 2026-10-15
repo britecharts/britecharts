@@ -598,8 +598,8 @@ donutDataSets.forEach((datasetName) => {
                 });
             });
 
-            it('should not have numberFormat by default', () => {
-                let expected = undefined,
+            it('should have a null numberFormat by default', () => {
+                let expected = null,
                     actual;
 
                 actual = donutChart.numberFormat();

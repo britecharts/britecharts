@@ -136,7 +136,7 @@ export interface StackedBarChartAPI
      * The getter is `undefined` until one is set: the chart has no default
      * label and only appends the text element once one arrives.
      */
-    yAxisLabel(): string | undefined;
+    yAxisLabel(): string | null;
     yAxisLabel(yAxisLabel: string): StackedBarChartModule;
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
@@ -311,9 +311,9 @@ export default function module(): StackedBarChartModule {
         layerElements: ChartSelection<SVGGElement>,
         hasReversedStacks = false,
         tooltipThreshold = 480,
-        // No default: the chart appends no label element until one is set,
-        // which is what the declaration now says.
-        yAxisLabel: string | undefined,
+        // Null until one is set, and the chart appends no label element until
+        // then -- `null` like every other chart's unset accessor.
+        yAxisLabel: string | null = null,
         yAxisLabelEl: ChartSelection<SVGTextElement>,
         yAxisLabelOffset = -60,
         animationDuration = motion.duration,

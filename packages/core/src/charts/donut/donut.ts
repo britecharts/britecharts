@@ -71,11 +71,18 @@ export interface DonutEmptyDataConfig {
 // comparator.
 export interface DonutChartAPI
     extends
-        ChartBaseAPI<DonutChartModule>,
+        Omit<ChartBaseAPI<DonutChartModule>, 'numberFormat'>,
         InteractiveChartAPI<DonutChartModule>,
         ExportableChartAPI,
         AnimatedChartAPI<DonutChartModule>,
         ThemableChartAPI<DonutChartModule> {
+    /**
+     * Gets or Sets the number format of the chart. Null until one is set,
+     * where the shared declaration promises a string: this chart has no
+     * default format.
+     */
+    numberFormat(): string | null;
+    numberFormat(format: string): DonutChartModule;
     /**
      * Gets or Sets the centeredTextFunction of the chart. If function is provided
      * the format will be changed by the custom function's value format.
@@ -318,7 +325,7 @@ export default function module(): DonutChartModule {
             showEmptySlice: false,
         },
         percentageFormat = '.1f',
-        numberFormat: string | undefined,
+        numberFormat: string | null = null,
         hasCenterLegend = true,
         // colors
         colorScale: ScaleOrdinal<string, string>,

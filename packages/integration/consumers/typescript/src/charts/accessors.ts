@@ -228,8 +228,8 @@ const scatterYLabelOffset: number = scatterChart.yAxisLabelOffset();
 const scatterGrid: 'vertical' | 'horizontal' | 'full' | null =
     scatterChart.grid();
 const scatterLocale: LocalObject | null = scatterChart.valueLocale();
-const scatterXLabel: string | undefined = scatterChart.xAxisLabel();
-const scatterYLabel: string | undefined = scatterChart.yAxisLabel();
+const scatterXLabel: string | null = scatterChart.xAxisLabel();
+const scatterYLabel: string | null = scatterChart.yAxisLabel();
 const scatterYTicks: number | null = scatterChart.yTicks();
 
 // The setters chain, and the nullable ticks still reads a number once set.
@@ -277,9 +277,8 @@ const tooltipCustomFormat: string | null = tooltipChart.dateCustomFormat();
 const tooltipNumberFormat: string | null = tooltipChart.numberFormat();
 const tooltipFormatter: ((value: number) => number) | null =
     tooltipChart.valueFormatter();
-// Undefined until set, and nullable because the setter takes null: the tooltip
-// has no initialiser where the time-series charts default theirs to null.
-const tooltipLocale: string | null | undefined = tooltipChart.locale();
+// Null until set, like the time-series charts' `locale`.
+const tooltipLocale: string | null = tooltipChart.locale();
 
 // The setters chain, and a formatter read back is usable for what the tooltip
 // uses it for.
@@ -335,7 +334,7 @@ const areaEmptyMinY: number = areaEmptyData.minY;
 const areaGrid: 'vertical' | 'horizontal' | 'full' | null = areaChart.grid();
 const areaXTicks: number | null = areaChart.xTicks();
 const areaTopicsOrder: string[] | undefined = areaChart.topicsOrder();
-const areaYLabel: string | undefined = areaChart.yAxisLabel();
+const areaYLabel: string | null = areaChart.yAxisLabel();
 
 // `'number'` is the value that switches the axis, and it type-checks now.
 const areaNumericAxis: StackedAreaChartModule = stackedArea()
@@ -540,7 +539,7 @@ const groupedGrid: 'vertical' | 'horizontal' | 'full' | null =
     groupedBarChart.grid();
 const groupedLocale: LocalObject | null = groupedBarChart.valueLocale();
 const groupedLocaleDecimal: string | undefined = groupedLocale?.decimal;
-const groupedAxisLabel: string | undefined = groupedBarChart.yAxisLabel();
+const groupedAxisLabel: string | null = groupedBarChart.yAxisLabel();
 
 // The setters still chain, and a chain crossing from an inherited surface back
 // to a grouped-bar-specific one still resolves.
@@ -625,7 +624,7 @@ const stackedLabelOffset: number = stackedBarChart.yAxisLabelOffset();
 const stackedGrid: 'vertical' | 'horizontal' | 'full' | null =
     stackedBarChart.grid();
 const stackedLocale: LocalObject | null = stackedBarChart.valueLocale();
-const stackedAxisLabel: string | undefined = stackedBarChart.yAxisLabel();
+const stackedAxisLabel: string | null = stackedBarChart.yAxisLabel();
 
 // Computed from `numberFormat`, so it reads back what was set rather than a
 // stored flag -- and `numberFormat` itself moves with it.

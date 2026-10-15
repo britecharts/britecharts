@@ -982,6 +982,10 @@ describe('line Chart', () => {
     });
 
     describe('aPI', () => {
+        it('should have a null locale until one is set', () => {
+            expect(lineChart.locale()).toBeNull();
+        });
+
         beforeEach(() => {
             const fixture =
                 '<div id="fixture"><div class="test-container"></div></div>';
@@ -1150,8 +1154,8 @@ describe('line Chart', () => {
             });
         });
 
-        it('should not have numberFormat by default', () => {
-            let expected = undefined,
+        it('should have a null numberFormat by default', () => {
+            let expected = null,
                 actual;
 
             actual = lineChart.numberFormat();

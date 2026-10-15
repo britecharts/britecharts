@@ -382,6 +382,10 @@ describe('stacked Bar Chart', () => {
     });
 
     describe('aPI', () => {
+        it('should have a null yAxisLabel until one is set', () => {
+            expect(stackedBarChart.yAxisLabel()).toBeNull();
+        });
+
         it('should provide animationDuration getter and setter', () => {
             let defaultAnimationDuration = stackedBarChart.animationDuration(),
                 testAnimationDuration = 2000,
