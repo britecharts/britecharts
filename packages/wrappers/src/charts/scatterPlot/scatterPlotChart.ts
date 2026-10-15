@@ -37,11 +37,9 @@ const scatterPlotChart: Wrapper<ScatterPlotDataShape[], ScatterPlotModule> = {
 
         // Calls the chart with the container and dataset.
         //
-        // `if (data)`, so an empty array is truthy and rebinds here, dropping
-        // what was drawn. Preserved as-is; see the empty-data guard note on
-        // the Wrapper interface -- bar and donut do the same, the other six
-        // guard on length instead.
-        if (data) {
+        // `data && data.length`, so an update with no data -- empty, null or
+        // undefined -- keeps whatever is already bound, as every wrapper does.
+        if (data && data.length) {
             container.datum(data).call(chart);
         } else {
             container.call(chart);

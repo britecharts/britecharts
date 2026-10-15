@@ -36,8 +36,8 @@ const lineChart: Wrapper<LineChartData, LineChartModule> = {
         //
         // The guard reaches a level deeper than the other wrappers' --
         // `data.data.length` rather than `data.length` -- because the data is
-        // that object. Preserved as-is; see the empty-data guard note on the
-        // Wrapper interface.
+        // that object. An update with no rows keeps what is bound, as every
+        // wrapper does.
         const shouldUpdateData = data && data.data && data.data.length;
 
         validateContainer(container);

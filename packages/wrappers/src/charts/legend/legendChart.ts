@@ -34,10 +34,8 @@ const legendChart: Wrapper<LegendDataShape[], LegendModule> = {
 
         // Calls the chart with the container and dataset.
         //
-        // `data && data.length`, so an empty array keeps whatever is already
-        // bound. Preserved as-is; see the empty-data guard note on the Wrapper
-        // interface -- bar, donut and scatterPlot guard on truthiness instead
-        // and rebind here.
+        // `data && data.length`, so an update with no data -- empty, null or
+        // undefined -- keeps whatever is already bound, as every wrapper does.
         if (data && data.length) {
             container.datum(data).call(chart);
         } else {
