@@ -6,21 +6,21 @@
   "types": "dist/esm/index.d.ts",
   "dependencies": {
     "@britecharts/core": "workspace:^",
-    "@types/d3-selection": "3.0.12",
-    "d3-selection": "3.0.0"
+    "@types/d3-selection": "catalog:",
+    "d3-selection": "catalog:"
   },
   "devDependencies": {
-    "@babel/cli": "7.29.7",
-    "@babel/core": "7.29.7",
-    "@babel/preset-typescript": "7.29.7",
-    "@types/jest": "29.5.9",
-    "babel-loader": "8.4.1",
-    "eslint": "8.57.1",
-    "jest": "29.7.0",
-    "rimraf": "2.7.1",
-    "webpack": "5.111.1",
-    "webpack-cli": "7.2.3",
-    "webpack-merge": "6.0.1"
+    "@babel/cli": "catalog:",
+    "@babel/core": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@types/jest": "catalog:",
+    "babel-loader": "catalog:",
+    "eslint": "catalog:",
+    "jest": "catalog:",
+    "rimraf": "catalog:",
+    "webpack": "catalog:",
+    "webpack-cli": "catalog:",
+    "webpack-merge": "catalog:"
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {

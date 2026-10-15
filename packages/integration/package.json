@@ -21,7 +21,7 @@
     "@playwright/test": "1.63.0",
     "@vitejs/plugin-react": "6.1.1",
     "publint": "0.3.24",
-    "rimraf": "2.7.1",
+    "rimraf": "catalog:",
     "vite": "8.3.0"
   }
 }
