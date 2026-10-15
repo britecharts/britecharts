@@ -94,7 +94,7 @@ Feel free to [send a PR][contributing] if you want them included.
 To install run:
 
 ```
-yarn add @britecharts/core @britecharts/wrappers
+pnpm add @britecharts/core @britecharts/wrappers
 ```
 Or, with npm:
 

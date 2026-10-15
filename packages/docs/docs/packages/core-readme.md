@@ -11,7 +11,7 @@ Read the [main readme][readme] or check the [Getting Started guide][gettingStart
 ## Installation
 To install run:
 ```sh
-yarn add @britecharts/core
+pnpm add @britecharts/core
 ```
 Or, with npm:
 

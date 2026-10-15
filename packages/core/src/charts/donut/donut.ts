@@ -227,18 +227,6 @@ type DonutArcDatum = PieArcDatum<DonutDatum> & {
 type SliceElement = SVGPathElement & { __data__?: DonutArcDatum };
 
 /**
- * The `g.arc` wrapper each slice sits in, which is what `storeAngle` writes
- * `_current` onto.
- *
- * Nothing reads it. d3's own examples stash the previous angles on the node so
- * the next transition can interpolate from them, and `tweenArc` below is the
- * function that would -- but it is never called, so `storeAngle` and `tweenArc`
- * are a vestigial pair. Preserved rather than removed, since a conversion is
- * the wrong place to delete behaviour, even behaviour that does nothing.
- */
-type ArcGroupElement = SVGGElement & { _current?: DonutArcDatum };
-
-/**
  * Reusable Donut Chart API class that renders a
  * simple and configurable donut chart.
  *
@@ -306,7 +294,7 @@ export default function module(): DonutChartModule {
         internalRadius = 45.5,
         layout: Pie<unknown, DonutDatum>,
         shape: Arc<unknown, DonutArcDatum>,
-        slices: ChartSelection<ArcGroupElement>,
+        slices: ChartSelection<SVGGElement>,
         svg: ChartSelection<SVGSVGElement>,
         isAnimated = false,
         isEmpty = false,
@@ -347,9 +335,6 @@ export default function module(): DonutChartModule {
     const percentageLabel = 'percentage';
 
     // utils
-    const storeAngle = function (this: ArcGroupElement, d: DonutArcDatum) {
-        this._current = d;
-    };
     const reduceOuterRadius = (d: DonutArcDatum) => {
         d.outerRadius = externalRadius - radiusHoverOffset;
     };
@@ -569,7 +554,7 @@ export default function module(): DonutChartModule {
         }
         slices = svg
             .select('.chart-group')
-            .selectAll<ArcGroupElement, DonutArcDatum>('g.arc')
+            .selectAll<SVGGElement, DonutArcDatum>('g.arc')
             // `emptyDonutData` is the placeholder slice pair from `constants`,
             // whose `percentage` is a number where a cleaned datum's is a
             // string. It never reaches `centeredTextFunction`, which is the
@@ -579,7 +564,6 @@ export default function module(): DonutChartModule {
         const newSlices = slices
             .enter()
             .append('g')
-            .each(storeAngle)
             .each(reduceOuterRadius)
             .classed('arc', true)
             .append('path');
@@ -639,13 +623,12 @@ export default function module(): DonutChartModule {
 
         slices = svg
             .select('.chart-group')
-            .selectAll<ArcGroupElement, DonutArcDatum>('g.arc')
+            .selectAll<SVGGElement, DonutArcDatum>('g.arc')
             .data(layout(data));
 
         const newSlices = slices
             .enter()
             .append('g')
-            .each(storeAngle)
             .each(reduceOuterRadius)
             .classed('arc', true)
             .append('path');
@@ -881,24 +864,6 @@ export default function module(): DonutChartModule {
      */
     function initTooltip(): void {
         svg.select('.legend-group').append('text').attr('class', 'donut-text');
-    }
-
-    /**
-     * Stores current angles and interpolates with new angles
-     * Check out {@link http://bl.ocks.org/mbostock/1346410| this example}
-     *
-     * @param  {Object}     a   New data for slice
-     * @return {Function}       Tweening function for the donut shape
-     * @private
-     */
-    function tweenArc(this: ArcGroupElement, a: DonutArcDatum) {
-        const i = interpolate(this._current, a);
-
-        this._current = i(0);
-
-        return function (t: number) {
-            return shape(i(t));
-        };
     }
 
     /**

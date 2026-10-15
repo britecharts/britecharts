@@ -6,18 +6,18 @@ sidebar_position: 3
 In the [Getting Started Guide][gettingStarted] you saw how to use Britecharts using a CDN link. This is not the only way. Britecharts allows developers to add the library following several strategies.
 
 In this tutorial, you will learn to install Britecharts in your project by using different approaches:
-* Using the Node Package Manager (NPM) or Yarn
+* Using a package manager (npm or pnpm)
 * Using the CDN links
 * Building the Source Code
 
 ## Install with NPM
-The recommended way of installing Britecharts is to use NPM or Yarn:
+The recommended way of installing Britecharts is to use npm or pnpm:
 ```
 npm install --save @britecharts/core d3-selection
 ```
-Or, using Yarn:
+Or, using pnpm:
 ```
-yarn add @britecharts/core d3-selection
+pnpm add @britecharts/core d3-selection
 ```
 Notice this requires you to have in place a bundling system (Webpack, Parcel, Rollup, or Similar). If you want to drop a script in an HTML file and start working, use the CDN way below.
 

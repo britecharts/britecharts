@@ -4,12 +4,10 @@ sidebar_position: 4
 
 # Migration Guide from version 2 to version 3
 :::note
-Version 3.0 has not been released yet — this guide describes the migration ahead
-of it, and is kept up to date as the release takes shape. Until 3.0 ships, the
-current release is `britecharts@2.18.2` on npm.
+Version 3.0 is in beta: `@britecharts/core`, `@britecharts/wrappers` and `@britecharts/react` publish `3.0.0-beta` releases under the `beta` tag (`npm install @britecharts/core@beta`). The last stable release is still `britecharts@2.18.2`. This guide describes the migration to 3.0 and is kept up to date as the release takes shape.
 :::
 
-Version 3.0 of Britecharts fixes many bugs, improves loading and animation performance, and adds minor features. It also introduces breaking changes that make the components' APIs and data shapes more consistent, and moves the library to the `@britecharts` scope on npm.
+Version 3.0 of Britecharts fixes many bugs, improves loading and animation performance, and adds minor features. It also introduces breaking changes that make the components' APIs and data shapes more consistent, and moves the library to the `@britecharts` scope on npm: `britecharts` becomes `@britecharts/core`, and `britecharts-react` becomes `@britecharts/react`. Both are now written in TypeScript.
 
 When it lands, we recommend migrating as soon as possible to get all these benefits. For that, we have prepared the following migration guide.
 
@@ -36,9 +34,14 @@ import bar from '@britecharts/core/dist/umd/charts/bar.min.js';
 
 // As CommonJS modules
 const { bar } = require('@britecharts/core');
-const bar = require('@britecharts/core/dist/umd/bar.min');
+const bar = require('@britecharts/core/dist/umd/charts/bar.min.js');
 
 ```
+
+Under `require`, the package is the object of charts itself, so `require('@britecharts/core').default` is `undefined`: take the named charts from it, as above.
+
+The stylesheets move too. `britecharts/dist/css/britecharts.min.css` is now `@britecharts/core/dist/styles/bundle/britecharts.min.css`, and each chart's own stylesheet is under `@britecharts/core/dist/styles/charts/`.
+
 You can also check more ways of loading (CommonJS, UMD and CDN) in the [vanilla consumer](https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers/vanilla) of our integration tests, which CI runs against every change
 
 2. Change how you show loading states
@@ -152,9 +155,9 @@ Nothing to change unless you assert on that text — snapshot tests and string c
 lineChart.valueLocale({ minus: '-' });
 ```
 
-8. Provide the d3 modules yourself if you use the UMD builds
+8. Use the d3 v7 modules alongside Britecharts
 
-The published bundles treat every `d3-*` module as an external, so they are not included. Britecharts v3 requires the d3 v7 generation of these packages; if you load Britecharts from a CDN alongside your own d3, upgrade d3 to v7 at the same time.
+Britecharts v3 runs on the d3 v7 generation of the `d3-*` modules. They are dependencies of `@britecharts/core`, so installing it from npm installs them, and the ES module and `dist/umd` builds load them from there rather than bundling them. If your own code uses d3 together with Britecharts, upgrade it to v7 at the same time. The CDN builds under `dist/cdn` bundle their own copy of d3 and need nothing else on the page.
 
 The two d3 modules Britecharts used that are now deprecated upstream, `d3-collection` and `d3-voronoi`, have been replaced internally by `d3-array` and `d3-delaunay`. They are no longer dependencies.
 
@@ -225,10 +228,38 @@ lineChart.on('customMouseMove', chartTooltip.update);
 
 With that, `tooltip` and `miniTooltip` are one component: `tooltip` shows a list or a single value by the shape of the data point (or as told by `layout`), and `miniTooltip` is `tooltip().layout('single').title('').numberFormat('.2f')`. The tooltip now keeps itself inside the chart, follows the pointer (the stacked and grouped bar charts show it over a bar only), and its `tooltipOffset` default is `{ x: 0, y: 0 }` (it was `{ x: 0, y: -55 }`, for a placement that no longer exists). `xAxisValueType` defaults to `'auto'`, which shows dates as dates, numbers as numbers and category names as they are; set `'date'` or `'number'` to force one, as before. In React, `Tooltip`'s `customMouseMove` callback receives the new order, and `Tooltip` now wraps the bar, scatter plot and heatmap charts too.
 
+11. Replace the Step chart
+
+The Step chart is removed from every package: the `step` export of `@britecharts/core`, its `StepWrapper` and the React `Step` component, with their stylesheets and builds. A bar chart draws the same data.
+
+12. Transpile for older browsers yourself
+
+The builds now target ES2020 instead of ES5. Every current browser runs them as they are. If you support a browser older than that, transpile Britecharts in your own build, as you would any package that ships modern syntax.
+
+13. Move from `britecharts-react` to `@britecharts/react`
+
+The React components are published as `@britecharts/react`, and they work differently in a few ways you may rely on:
+
+```js
+// Version 2
+import { Bar } from 'britecharts-react';
+
+// Version 3
+import { Bar } from '@britecharts/react';
+```
+
+* React 16.8 or later is required, since the components are now function components built on hooks. They have no instances any more, so a `ref` on a chart component is not accepted.
+* A chart redraws only when its props change. If you update your data by mutating it in place, pass a new array or object instead.
+* `data` is required. Pass `null` while it loads: the chart draws nothing until the data arrives.
+* `false`, `0` and `''` now reach the chart, so `isLoading={false}` ends a loading state. Leave a prop out, or pass `undefined`, to keep the chart's default.
+* PropTypes are gone. Each component's props type is exported from the package root (`BarChartProps`, `LineProps` and so on) for TypeScript projects.
+* `StackedBar`'s `nameLabelFormat` prop is removed. No chart had that setting, so passing it threw.
+* `axisTimeCombinations` is no longer a prop of `Line`, `StackedArea` or `Tooltip`. Import the `axisTimeCombinations` constant from the package and pass one of its values to `xAxisFormat`.
+
 ### New features
 1. Start using TypeScript with Britecharts.
 
-You can now use Britecharts in your TypeScript projects! The Britecharts package includes a "types" entry that points to our type declaration files. We plan to re-write Britecharts in TypeScript, but type definition files will do for now!
+You can now use Britecharts in your TypeScript projects! The packages are written in TypeScript, and their type declarations are generated from that source, so they always match what the charts do. Import the types from the package root: each chart's data shape and module type from `@britecharts/core`, and each component's props from `@britecharts/react`.
 
 2. Stop re-rendering charts when the viewport width changes.
 
@@ -246,24 +277,39 @@ Most Britecharts' components have animations that you can activate with the 'isA
 
 `tooltip` renders the line, stacked area, stacked bar and grouped bar charts' lists and the bar, scatter plot, heatmap and donut charts' single values; `maxEntries` caps the rows, `layout` forces a layout, `xAxisValueType('category')` shows a category key as it is. `customClick` on the stacked and grouped bar charts carries the clicked bar's own data as a third argument.
 
+6. Chart negative values
+
+The bar, grouped bar, stacked bar and brush charts draw negative values, below or to the left of a zero baseline. They used to throw on a negative datum.
+
+7. Show a loading state on every chart
+
+`isLoading` now covers every data chart, including the bullet, heatmap and scatter plot, each with a skeleton in its own shape.
+
 ## Summary of Changes
 We changed many things in the third version of Britecharts; here are some summaries:
 
 ### Breaking Changes
 * New monorepo organization of the code with `@britecharts/core` and `@britecharts/react` as the main packages.
-* Adds ES5 version to bundle.
+* The builds target ES2020 instead of ES5.
+* Runs on the d3 v7 modules; negative numbers render with the typographic minus sign.
+* Removes the Step chart from every package.
+* Removes the line chart's 'dataByTopic' data shape.
 * Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.
 * Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar.
-* Fixes the custom format feature in the line and stacked area chart, renaming 'xAxisFormat' into 'xAxisCustomFormat' and  'xAxisCustomFormat' into 'xAxisFormat'. Removes 'axisTimeCombinations'.
+* Fixes the custom format feature in the line and stacked area chart, renaming 'xAxisFormat' into 'xAxisCustomFormat' and 'xAxisCustomFormat' into 'xAxisFormat'. The time combinations are exported as `constants.axisTimeCombinations`.
 * Renames value formatting functions into 'numberFormat' in the grouped bar and stacked bar charts.
 * Removed the 'aspectRatio' configuration chart from the line, scatter plot, stacked area, bullet, grouped bar, stacked bar.
 * Changed 'exportChart' to return a promise.
 * The line, stacked area, stacked bar and grouped bar charts dispatch 'customMouseMove' as `(dataPoint, [x, y], [width, height], colorMap)`, the same payload as every other chart; `tooltip.update` still accepts the old `(dataPoint, colorMap, x, y)` order and warns once. React's `Tooltip` passes the new order to its 'customMouseMove' callback.
 * The tooltip's 'tooltipOffset' defaults to `{ x: 0, y: 0 }` and 'xAxisValueType' to 'auto'.
 * The stacked and grouped bar charts show the tooltip, and dispatch 'customClick', only over a bar.
+* React: the components are function components, need React 16.8 or later, redraw only when their props change, and pass `false`, `0` and `''` on to the chart. PropTypes, `StackedBar`'s `nameLabelFormat` prop and the `axisTimeCombinations` prop are removed.
 
 ### New Feature Changes
-* Added TypeScript types via declaration files
+* Written in TypeScript, with type declarations generated from the source
+* Negative values in the bar, grouped bar, stacked bar and brush charts
+* Loading states on every data chart, including the bullet, heatmap and scatter plot
+* A `ScatterPlot` component in `@britecharts/react`
 * Charts are responsive by default using the viewBox property.
 * Adds colorMap to all charts
 * Adds 'animationDuration' option to all animated charts
@@ -291,6 +337,9 @@ We changed many things in the third version of Britecharts; here are some summar
 * Ordering of the horizontal bar chart elements
 * Cleans up custom lines annotation text before rendering
 * Fixes bullet chart issues 
+* The scatter plot's trendline starts at the right height
+* The brush chart honours 'locale', and the stacked area chart honours 'numberFormat'
+* React: unmounting one responsive container no longer stops resizing for the others, and a chart is not drawn twice under StrictMode
 * Tooltip tweaks
 *Visual Fixes Summary*
 * Added extended line on brush chart
@@ -299,6 +348,9 @@ We changed many things in the third version of Britecharts; here are some summar
 
 ### Contributor's Developer Experience Changes
 * Deprecated Travis into Github Actions
-* Updated Karma test runner version
+* Moved the tests from Karma to Jest
+* Moved from Yarn to pnpm, and from webpack 4 to webpack 5
+* Rewrote the packages in TypeScript, type-checked in CI
+* Integration tests install the packed packages into vanilla, TypeScript and React projects
 * Added linting and formatting for CSS and JS 
 * Changed organization of tests and data builders to be colocated

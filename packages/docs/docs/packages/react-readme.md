@@ -118,7 +118,7 @@ These components were previously hosted in the [britecharts-react][britecharts-r
 To install run:
 
 ```
-yarn add @britecharts/core @britecharts/wrappers @britecharts/react
+pnpm add @britecharts/core @britecharts/wrappers @britecharts/react
 ```
 Or, with npm:
 

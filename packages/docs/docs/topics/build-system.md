@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # The Build System
 
-Britecharts is a [Yarn][yarn] 3 workspace. Node comes from `.nvmrc` (24), Yarn from the `packageManager` field through Corepack, and one `yarn install` at the root sets up every package:
+Britecharts is a [pnpm][pnpm] workspace. Node comes from `.nvmrc` (24), pnpm from the `packageManager` field through Corepack, and one `pnpm install` at the root sets up every package:
 
 | Package | What it is |
 | --- | --- |
@@ -17,7 +17,7 @@ Britecharts is a [Yarn][yarn] 3 workspace. Node comes from `.nvmrc` (24), Yarn f
 
 ### Building the packages
 
-Each published package is built with [webpack][webpack] 5 from `yarn build` in its folder, or all three at once with `yarn build:packages` at the root. `sass-loader` 10 still uses Dart Sass through the legacy JS API, silenced via `silenceDeprecations` in each package's `webpack.parts.js`. Babel's `preset-env` still emits ES5 output; that, and webpack itself, go with the Vite migration on the roadmap ([#1044][vite]).
+Each published package is built with [webpack][webpack] 5 from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. `sass-loader` 10 still uses Dart Sass through the legacy JS API, silenced via `silenceDeprecations` in each package's `webpack.parts.js`. The output targets ES2020, and Babel only strips the TypeScript types. webpack itself goes with the Vite migration on the roadmap ([#1044][vite]).
 
 What comes out of `packages/core/dist`:
 
@@ -25,15 +25,15 @@ What comes out of `packages/core/dist`:
 | --- | --- |
 | `umd/bundle/core.bundled.min.js` | Every chart in one UMD bundle: the package's `main`. |
 | `umd/charts/<chart>.min.js` | One UMD file per chart, plus `colors`. |
-| `cdn/bundle/core.cdn.min.js`, `cdn/charts/` | The same, built for a `<script>` tag with d3 loaded separately. |
+| `cdn/bundle/core.cdn.min.js`, `cdn/charts/` | The same, built for a `<script>` tag, with d3 bundled in. |
 | `styles/bundle/britecharts.min.css` | Every stylesheet. |
 | `styles/charts/common.min.css`, `styles/charts/<chart>.min.css` | The shared styles, and one file per chart to use alongside them. |
 
-The wrappers package emits a UMD and a CommonJS bundle plus one file per chart; the React package a UMD bundle plus one UMD and one CommonJS file per component. `yarn build` at the root builds the three packages, this site and the Storybooks.
+The wrappers package emits a UMD and a CommonJS bundle plus one file per chart; the React package a UMD bundle plus one UMD and one CommonJS file per component. `pnpm build` at the root builds the three packages, this site and the Storybooks.
 
 ### Styles
 
-The stylesheets are SCSS under `packages/core/src/styles`, written with the Sass module system (`@use`): `britecharts.scss` is the whole set, `common.scss` what every chart needs, and `charts/<chart>.scss` one chart. They compile through the same webpack build; `yarn lint:styles` runs stylelint over them.
+The stylesheets are SCSS under `packages/core/src/styles`, written with the Sass module system (`@use`): `britecharts.scss` is the whole set, `common.scss` what every chart needs, and `charts/<chart>.scss` one chart. They compile through the same webpack build; `pnpm lint:styles` runs stylelint over them.
 
 ### Tasks
 
@@ -41,27 +41,27 @@ From the root:
 
 | Task | Description |
 | --- | --- |
-| `yarn test` | Runs the Jest suites of every package; `yarn test:ci` is the same command as CI runs it, and `yarn test:watch` watches. |
-| `yarn test:integration` | Packs the three packages with Yarn's packer, installs them into the vanilla, TypeScript and React 19 consumers and checks tarball contents, `require()` paths, the typings and, in Chromium, that every way of loading a chart renders and every tooltip stays inside its chart. |
-| `yarn lint` | ESLint over every package (`yarn lint:js`) and stylelint over the styles (`yarn lint:styles`). `yarn format` runs Prettier. |
-| `yarn check` | Both linters and the test suite, what CI runs. |
-| `yarn build` / `yarn build:packages` | Everything, or only the three published packages. |
-| `yarn demos` | Serves the core, React and composed Storybooks together on ports 2001, 2002 and 2000. |
-| `yarn docs` / `yarn docs:build` | Serves or builds this site, after copying the READMEs in and generating the API pages from the charts' JSDoc. |
-| `yarn docs:links` | Serves the built site and follows every link on it, external ones included; the Link check workflow runs it on every pull request and weekly. |
-| `yarn changeset` | Records what a change does and which packages it bumps, for the release. |
-| `yarn version-packages` | Applies the pending changesets: bumps versions and writes the changelogs. |
-| `yarn release` | Builds the packages and publishes every non-private workspace, in dependency order. |
+| `pnpm test` | Runs the Jest suites of every package; `pnpm test:ci` is the same command as CI runs it, and `pnpm test:watch` watches. |
+| `pnpm test:integration` | Packs the three packages with pnpm's packer, installs them into the vanilla, TypeScript and React 19 consumers and checks tarball contents, `require()` paths, the typings and, in Chromium, that every way of loading a chart renders and every tooltip stays inside its chart. |
+| `pnpm lint` | ESLint over every package (`pnpm lint:js`) and stylelint over the styles (`pnpm lint:styles`). `pnpm format` runs oxfmt. |
+| `pnpm check` | Both linters, the type-check and the test suite, what CI runs. |
+| `pnpm build` / `pnpm build:packages` | Everything, or only the three published packages. |
+| `pnpm demos` | Serves the core, React and composed Storybooks together on ports 2001, 2002 and 2000. |
+| `pnpm docs` / `pnpm docs:build` | Serves or builds this site, after copying the READMEs in and generating the API pages from the charts' JSDoc. |
+| `pnpm docs:links` | Serves the built site and follows every link on it, external ones included; the Link check workflow runs it on every pull request and weekly. |
+| `pnpm changeset` | Records what a change does and which packages it bumps, for the release. |
+| `pnpm version-packages` | Applies the pending changesets: bumps versions and writes the changelogs. |
+| `pnpm release` | Builds the packages and publishes every non-private workspace, in dependency order. |
 
 ### Docs and Storybooks
 
-The API reference is generated: `packages/docs/scripts/generate-docs.js` runs [jsdoc-to-markdown][jsdoc2md] over `packages/core/src` and writes one page per chart into `docs/API`, and `copy-readme.js` brings the READMEs in. The three Storybooks build with `yarn build:demos` and are deployed next to the site, under `/storybook/`, by `scripts/compose-site.js`, so composition is same-origin.
+The API reference is generated: `packages/docs/scripts/generate-docs.js` runs [jsdoc-to-markdown][jsdoc2md] over `packages/core/src` and writes one page per chart into `docs/API`, and `copy-readme.js` brings the READMEs in. The three Storybooks build with `pnpm build:demos` and are deployed next to the site, under `/storybook/`, by `scripts/compose-site.js`, so composition is same-origin.
 
 ### Releases
 
 Versions are managed with [Changesets][changesets]. `@britecharts/core`, `@britecharts/wrappers` and `@britecharts/react` are a fixed group, so they always share a version; the docs, demos and integration packages are never published. The Release workflow publishes from `main` once the pending changesets are applied, the Integration check gates every merge, and the Smoke workflow re-checks the published packages from npm and jsDelivr afterwards. `MAINTAINING.md` has the steps.
 
-[yarn]: https://yarnpkg.com/
+[pnpm]: https://pnpm.io/
 [webpack]: https://webpack.js.org/
 [docusaurus]: https://docusaurus.io/
 [jsdoc2md]: https://github.com/jsdoc2md/jsdoc-to-markdown

@@ -35,11 +35,8 @@ The docs lag the code in places. When they conflict, say so rather than picking
 a side silently — a stale document is itself a finding, and it is usually the
 cheaper fix.
 
-One conflict is live today, so do not report it as new, and one rule to hold:
+One rule to hold:
 
-- **`code-standards.md` and `code-structure.md` describe a Yarn workspace.** The
-  repo is on pnpm (`pnpm-workspace.yaml`, `pnpm-lock.yaml`), and the install and
-  test commands in `code-standards.md` are stale.
 - **The charts are TypeScript, and their JSDoc stays.** A converted chart keeps
   every JSDoc tag verbatim, because the API pages are generated from those tags
   and TypeScript's own types read worse on the page. **A conversion that drops or

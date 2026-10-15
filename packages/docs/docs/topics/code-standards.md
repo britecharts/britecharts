@@ -18,9 +18,9 @@ To install Jest and start running our test you would need to follow these steps:
 2. Clone the repository with:
    `git clone https://github.com/<your handle>/britecharts.git`
 3. Get into the repository folder and install the dependencies with:
-   `yarn`
+   `pnpm install`
 4. Run the tests with:
-   `yarn run test`
+   `pnpm run test`
 
 This process watches the test and chart files, re-running the tests when those change.
 

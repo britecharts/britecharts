@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { mount } from '../../../testing/mount';
 
 import useChart from './useChart';
@@ -32,14 +31,6 @@ const Harness = ({ wrapper, data, configuration = {}, options, onRender }) => {
     const rootNode = useChart(wrapper, data, configuration, options);
 
     return <div className="harness" ref={rootNode} />;
-};
-
-Harness.propTypes = {
-    wrapper: PropTypes.object.isRequired,
-    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    configuration: PropTypes.object,
-    options: PropTypes.object,
-    onRender: PropTypes.func,
 };
 
 const mountHarness = (props) => mount(<Harness {...props} />);
