@@ -1,5 +1,28 @@
 # @britecharts/react
 
+## 3.0.0-beta.4
+
+### Minor Changes
+
+- b8fcb88: Seven settings the core charts have always had are now props:
+
+    | Component     | New props                                                  |
+    | ------------- | ---------------------------------------------------------- |
+    | `Line`        | `lines`, `shouldShowAllDataPoints`, `hasMinimumValueScale` |
+    | `StackedArea` | `hasOutline`, `xAxisScale`, `xAxisValueType`               |
+    | `Donut`       | `hasCenterLegend`                                          |
+
+    Each is passed straight to the chart's accessor of the same name, so it behaves as it does in `@britecharts/core`. `lines` takes core's `CustomLine[]`, and the stacked area's axis props take core's `StackedAreaXAxisScale` and `StackedAreaXAxisValueType`. Nothing existing changes.
+
+### Patch Changes
+
+- 3632ad4: `prop-types` is no longer a peer dependency. The components dropped their PropTypes when they moved to TypeScript, and nothing in the package imports it any more, so a consumer no longer has to install it. The UMD bundle's `prop-types` external goes with it.
+- Updated dependencies [a51fd98]
+- Updated dependencies [8759296]
+- Updated dependencies [054a4bd]
+    - @britecharts/core@3.0.0-beta.4
+    - @britecharts/wrappers@3.0.0-beta.4
+
 ## 3.0.0-beta.3
 
 ### Major Changes
