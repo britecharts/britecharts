@@ -10,6 +10,11 @@ name: Smoke test the published packages
 # version on main is usually already published and gets re-tested, or is not
 # published yet and the job says so and stops). Also runs on demand for any
 # version or dist-tag.
+#
+# The consumers' tests are checked out from the commit that published the
+# version under test, not from main: main's type tests track main's types, so
+# any type change merged before the next release would fail them against the
+# older published .d.ts files.
 on:
   workflow_dispatch:
     inputs:
@@ -36,6 +41,8 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # the release commit is looked up in the history
 
       - name: Enable Corepack
         run: corepack enable
@@ -45,9 +52,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
 
       - name: Resolve the version to test
         id: version
@@ -66,6 +70,29 @@ jobs:
             echo "Testing @britecharts/*@${resolved}"
             echo "version=${resolved}" >> "$GITHUB_OUTPUT"
           fi
+
+      # npm records the commit a version was packed from as gitHead, but not
+      # for every publish (3.0.0-beta.3 has none). The fallback is the
+      # Changesets commit that first wrote that version into core's manifest.
+      - name: Check out the release commit
+        if: steps.version.outputs.skip != 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          sha="$(npm view "@britecharts/core@${VERSION}" gitHead 2>/dev/null || true)"
+          if [ -z "$sha" ] || ! git cat-file -e "${sha}^{commit}" 2>/dev/null; then
+            sha="$(git log --reverse --format=%H -S"\"version\": \"${VERSION}\"" -- packages/core/package.json | head -n 1)"
+          fi
+          if [ -z "$sha" ]; then
+            echo "::error::No commit found for @britecharts/core@${VERSION}."
+            exit 1
+          fi
+          echo "Testing with the consumers from ${sha}"
+          git checkout --detach "$sha"
+
+      - name: Install dependencies
+        if: steps.version.outputs.skip != 'true'
+        run: pnpm install --frozen-lockfile
 
       - name: Read the Playwright version
         if: steps.version.outputs.skip != 'true'
