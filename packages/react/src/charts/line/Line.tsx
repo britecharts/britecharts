@@ -7,6 +7,7 @@ import type {
     AxisTimeCombination,
     ColorGradientType,
     ColorsSchemasType,
+    CustomLine,
     LineChartData,
     LineChartModule,
     LineChartXAxisScale,
@@ -65,6 +66,13 @@ export interface LineProps {
     grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
+     * Gets or Sets the hasMinimumValueScale property of the chart, making the
+     * y axis start at the lowest value in the dataset rather than at zero.
+     * By default this is 'false'
+     */
+    hasMinimumValueScale?: boolean;
+
+    /**
      * Gets or Sets the height of the chart
      */
     height?: number;
@@ -94,6 +102,12 @@ export interface LineProps {
     lineGradient?: ColorGradientType;
 
     /**
+     * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
+     * onto the chart with a specific color and a text annotation over the line.
+     */
+    lines?: CustomLine[];
+
+    /**
      * Pass language tag for the tooltip to localize the date. Feature
      * uses Intl.DateTimeFormat, for compatability and support, refer
      * to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
@@ -114,6 +128,12 @@ export interface LineProps {
      * Gets or Sets the number format of the line chart
      */
     numberFormat?: string;
+
+    /**
+     * Gets or Sets whether every data point is drawn as a marker on its line.
+     * By default this is 'false'
+     */
+    shouldShowAllDataPoints?: boolean;
 
     /**
      * Gets or Sets the minimum width of the graph in order

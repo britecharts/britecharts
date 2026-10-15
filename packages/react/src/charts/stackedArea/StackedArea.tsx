@@ -9,6 +9,8 @@ import type {
     StackedAreaChartDataShape,
     StackedAreaChartModule,
     StackedAreaEmptyDataConfig,
+    StackedAreaXAxisScale,
+    StackedAreaXAxisValueType,
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
@@ -78,6 +80,12 @@ export interface StackedAreaProps {
     // imported: Storybook's docgen reads this file alone, so an imported alias
     // reaches it as a bare name and the grid Control loses its three options.
     grid?: 'vertical' | 'horizontal' | 'full' | null;
+
+    /**
+     * Enables or disables the outline at the top of the areas.
+     * By default this is 'true'
+     */
+    hasOutline?: boolean;
 
     /**
      * Gets or Sets the height of the chart
@@ -153,6 +161,18 @@ export interface StackedAreaProps {
     // string values are both allowed, which is what core's
     // `AxisTimeCombination | `${AxisTimeCombination}`` says.
     xAxisFormat?: AxisTimeCombination | `${AxisTimeCombination}`;
+
+    /**
+     * Gets or Sets the `xAxisScale`. Choose between 'linear' and 'logarithmic'.
+     * The setting will only work if `xAxisValueType` is set to 'number' as well, otherwise it won't influence the visualization.
+     */
+    xAxisScale?: StackedAreaXAxisScale;
+
+    /**
+     * Gets or Sets the `xAxisValueType`. Choose between 'date' and 'number'.
+     * When set to `number` the values of the x-axis must not be dates anymore, but can be arbitrary numbers.
+     */
+    xAxisValueType?: StackedAreaXAxisValueType;
 
     /**
      * Exposes the ability to force the chart to show a certain x ticks. It
