@@ -8,11 +8,6 @@ import{a as e,n as t}from"./rolldown-runtime-sJBDdmOt.js";import{t as n}from"./r
      * reads this as \`topic\` (\`topic: values[0]['name']\` below) and uses it to
      * group the flat data and to key the colour map, which is why this chart's
      * own JSDoc documents it as \`@property {number} topic\`.
-     *
-     * Declared \`string\` until now, which contradicted this chart's runtime and
-     * JSDoc, react's \`Line.d.ts\` (already \`number\`) and wrappers' own
-     * fixtures. It blocked typing the line wrapper at all: its fixture data
-     * did not satisfy this type.
      */
     [LineChartKeys.Name]: number;
     [LineChartKeys.TopicName]: string;
@@ -47,11 +42,6 @@ as expected, as D3 decides at the end how many and where the ticks will appear.`
      * reads this as \`topic\` (\`topic: values[0]['name']\` below) and uses it to
      * group the flat data and to key the colour map, which is why this chart's
      * own JSDoc documents it as \`@property {number} topic\`.
-     *
-     * Declared \`string\` until now, which contradicted this chart's runtime and
-     * JSDoc, react's \`Line.d.ts\` (already \`number\`) and wrappers' own
-     * fixtures. It blocked typing the line wrapper at all: its fixture data
-     * did not satisfy this type.
      */
     [LineChartKeys.Name]: number;
     [LineChartKeys.TopicName]: string;
@@ -72,11 +62,6 @@ LineChartAPI`,elements:[{name:`signature`,type:`function`,raw:`<
      * reads this as \`topic\` (\`topic: values[0]['name']\` below) and uses it to
      * group the flat data and to key the colour map, which is why this chart's
      * own JSDoc documents it as \`@property {number} topic\`.
-     *
-     * Declared \`string\` until now, which contradicted this chart's runtime and
-     * JSDoc, react's \`Line.d.ts\` (already \`number\`) and wrappers' own
-     * fixtures. It blocked typing the line wrapper at all: its fixture data
-     * did not satisfy this type.
      */
     [LineChartKeys.Name]: number;
     [LineChartKeys.TopicName]: string;

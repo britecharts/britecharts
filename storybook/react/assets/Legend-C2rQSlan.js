@@ -67,7 +67,7 @@ identifiers for the chart's categories.`},numberFormat:{required:!1,tsType:{name
 }`,computed:!1}},createTooltip:{required:!1,tsType:{name:`signature`,type:`function`,raw:`() => void`,signature:{arguments:[],return:{name:`void`}}},description:`Internally used, do not overwrite.
 
 Accepted and deliberately dropped: a Tooltip hands this to every chart
-it decorates, and a legend has no tooltip to redraw. It was undeclared,
-so a TypeScript consumer could not pass it.
+it decorates, and a legend has no tooltip to redraw. Declared so a
+TypeScript consumer can pass it.
 
 @ignore`}}}})))()}export{l as n,c as t};

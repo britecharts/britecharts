@@ -7,8 +7,7 @@ import{a as e,n as t}from"./rolldown-runtime-sJBDdmOt.js";import{t as n}from"./r
 Required. \`null\` means the data has not arrived yet: nothing is drawn
 until it does. Leaving it out is an error.`},animationDuration:{required:!1,tsType:{name:`number`},description:`Gets or Sets the duration of the animation`},areaGradient:{required:!1,tsType:{name:`tuple`,raw:`[string, string]`,elements:[{name:`string`},{name:`string`}]},description:`Gets or Sets the areaGradient of the chart`},dateLabel:{required:!1,tsType:{name:`string`},description:`Gets or Sets the dateLabel of the chart`},exportChart:{required:!1,tsType:{name:`string`},description:`The filename to export the chart to. Setting it exports a png and fires
 a download, which is what the chart's \`exportChart\` command does; it is
-not a callback, and the four other components that declare this prop had
-it as one. The chart's exporter treats the title as optional, so a
+not a callback. The chart's exporter treats the title as optional, so a
 filename on its own is enough.`},height:{required:!1,tsType:{name:`number`},description:`Gets or Sets the height of the chart`},isAnimated:{required:!1,tsType:{name:`boolean`},description:`Gets or Sets the isAnimated property of the chart,
 making it to animate when render.
 By default this is 'false'`},isLoading:{required:!1,tsType:{name:`boolean`},description:`Gets or Sets whether a loading state will be shown`},lineGradient:{required:!1,tsType:{name:`tuple`,raw:`[string, string]`,elements:[{name:`string`},{name:`string`}]},description:`Gets or Sets the lineGradient of the chart`},margin:{required:!1,tsType:{name:`signature`,type:`object`,raw:`{

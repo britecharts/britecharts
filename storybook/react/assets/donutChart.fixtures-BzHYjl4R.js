@@ -102,7 +102,7 @@ DonutChartAPI`,elements:[{name:`signature`,type:`function`,raw:`<
 
 Accepted and deliberately dropped: a Tooltip hands this to every chart
 it decorates, and this component takes it out of the configuration
-rather than passing it on. It was undeclared, so a TypeScript consumer
-using Tooltip's render prop around a Donut could not pass it.
+rather than passing it on. Declared so a TypeScript consumer using
+Tooltip's render prop around a Donut can pass it.
 
 @ignore`}}}})))()}var u,d;function f(){return(f=t((()=>{u=()=>[{quantity:60,percentage:60,name:`React`,id:1},{quantity:20,percentage:20,name:`Ember`,id:2},{quantity:10,percentage:10,name:`Angular`,id:3},{quantity:10,percentage:10,name:`Backbone`,id:4}],d={with4Slices:u}})))()}export{l as i,f as n,c as r,d as t};

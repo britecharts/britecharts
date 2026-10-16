@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.02570f28.css">
-<script src="/britecharts/assets/js/runtime~main.9d91c97e.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.70e91035.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.a3c4a4fd.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.d4c2b76b.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -23,8 +23,7 @@
 <p>Charts whose marks grow from a baseline need that baseline inside the domain,
 otherwise a negative value scales to a coordinate outside the range and the
 mark is drawn with a negative width or height, which SVG rejects.</p>
-<p>For data that is entirely non-negative this returns the same <code>[0, max]</code> the
-charts used before, so nothing about existing charts changes.</p>
+<p>For data that is entirely non-negative this returns <code>[0, max]</code>.</p>
 <p><strong>Kind</strong>: global constant<br>
 <strong>Returns</strong>: <code>Array.&lt;number&gt;</code> - [lower, upper], always spanning zero</p>
 
