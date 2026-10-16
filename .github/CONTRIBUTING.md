@@ -123,7 +123,7 @@ The charts' API pages come from their JSDoc comments, so when you change an acce
 
 We follow [Conventional Commits][conventionalCommits], and a commit hook checks the message: it must start with one of `feat`, `fix`, `docs` or `chore`, as in `fix: keep the tooltip inside the chart`. The same hook runs ESLint, Prettier and stylelint on the staged files, so a commit that doesn't lint doesn't go in.
 
-Pull request titles follow the same convention, since they become the commit on `main`.
+Pull request titles follow the same convention, since they become the commit on `main`. The **Commitlint** check holds both to it: it lints every commit on the pull request and the title, with the ` (#123)` GitHub adds on merge counted toward the 100-character header limit.
 
 ### Changesets
 
@@ -140,6 +140,7 @@ Pick the affected packages, pick major, minor or patch, and write the line that 
 Every pull request runs:
 
 - **Lint** and **Unit Tests**, the same as `pnpm check`.
+- **Commitlint**, which checks the commit messages and the pull request title.
 - **Integration Tests**, which pack the packages and test them from the consumer projects.
 - **Visual tests on Chromatic**, which snapshot every story and flag visual changes for review.
 - **Test Docs Deployment** and **Link check**, which build the documentation site and check its links.
