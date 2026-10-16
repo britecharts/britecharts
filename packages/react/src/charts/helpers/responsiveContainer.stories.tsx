@@ -1,4 +1,5 @@
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import Line from '../line/Line';
 import ResponsiveContainer from './responsiveContainer';
@@ -7,7 +8,7 @@ import lineData from '../line/lineChart.fixtures';
 export default {
     title: 'Helpers/ResponsiveContainer',
     component: ResponsiveContainer,
-};
+} satisfies Meta<typeof ResponsiveContainer>;
 
 /**
  * The container measures itself after mount and again whenever the window is

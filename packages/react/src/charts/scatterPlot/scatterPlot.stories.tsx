@@ -1,23 +1,27 @@
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import ScatterPlot from './ScatterPlot';
 import Tooltip from '../tooltip/Tooltip';
+import type { TooltipRenderArgs } from '../tooltip/Tooltip';
 import scatterPlotData from './scatterPlotChart.fixtures';
 
 export default {
     title: 'Charts/ScatterPlot',
     component: ScatterPlot,
-};
+} satisfies Meta<typeof ScatterPlot>;
 
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart,
  * with its tooltip.
  */
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof ScatterPlot> = (args) => {
     const data = scatterPlotData.withOneSource();
 
-    const renderScatterPlot = (props) => <ScatterPlot {...args} {...props} />;
+    const renderScatterPlot = (props: TooltipRenderArgs) => (
+        <ScatterPlot {...args} {...props} data={data} />
+    );
 
     // The chart dispatches the hovered point as { name, x, y }: the tooltip
     // shows a single value, the y, titled with the x
@@ -66,8 +70,8 @@ export const WithTrendlineAndGrid = () => {
 export const WithAnimation = () => {
     const data = scatterPlotData.withOneSource();
 
-    const renderScatterPlot = (props) => (
-        <ScatterPlot isAnimated={true} {...props} />
+    const renderScatterPlot = (props: TooltipRenderArgs) => (
+        <ScatterPlot isAnimated={true} {...props} data={data} />
     );
 
     // The chart dispatches the hovered point as { name, x, y }: the tooltip
@@ -111,7 +115,7 @@ export const WithNegativeValues = () => {
 };
 
 export const WithLoadingState = () => {
-    const data = [];
+    const data: [] = [];
 
     return <ScatterPlot data={data} isLoading={true} />;
 };

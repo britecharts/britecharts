@@ -1,24 +1,28 @@
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import Bar from './Bar';
 import Tooltip from '../tooltip/Tooltip';
+import type { TooltipRenderArgs } from '../tooltip/Tooltip';
 import barData from './barChart.fixtures';
 import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/Bar',
     component: Bar,
-};
+} satisfies Meta<typeof Bar>;
 
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart,
  * with its tooltip.
  */
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof Bar> = (args) => {
     const data = barData.withLetters();
 
-    const renderBar = (props) => <Bar {...args} {...props} />;
+    const renderBar = (props: TooltipRenderArgs) => (
+        <Bar {...args} {...props} data={data} />
+    );
 
     return <Tooltip data={data} render={renderBar} title="Frequency" />;
 };
@@ -53,13 +57,15 @@ export const WithHorizontalDirectionAndColorSchema = () => {
 export const WithAnimation = () => {
     const data = barData.withLetters();
 
-    const renderBar = (props) => <Bar {...props} isAnimated={true} />;
+    const renderBar = (props: TooltipRenderArgs) => (
+        <Bar {...props} data={data} isAnimated={true} />
+    );
 
     return <Tooltip data={data} render={renderBar} title="Frequency" />;
 };
 
 export const WithLoadingState = () => {
-    const data = [];
+    const data: [] = [];
 
     return <Bar data={data} isLoading={true} />;
 };

@@ -1,24 +1,28 @@
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import Line from './Line';
 import Tooltip from '../tooltip/Tooltip';
+import type { TooltipRenderArgs } from '../tooltip/Tooltip';
 import lineData from './lineChart.fixtures';
 import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/Line',
     component: Line,
-};
+} satisfies Meta<typeof Line>;
 
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart,
  * with its tooltip.
  */
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof Line> = (args) => {
     const data = lineData.oneSet();
 
-    const renderLine = (props) => <Line {...args} {...props} />;
+    const renderLine = (props: TooltipRenderArgs) => (
+        <Line {...args} {...props} data={data} />
+    );
 
     return (
         <Tooltip
@@ -39,7 +43,7 @@ Playground.parameters = {
 export const WithOneLineAndTooltipAndBasisCurve = () => {
     const data = lineData.oneSet();
 
-    const renderLine = (props) => (
+    const renderLine = (props: TooltipRenderArgs) => (
         <Line
             margin={{
                 top: 60,
@@ -49,6 +53,7 @@ export const WithOneLineAndTooltipAndBasisCurve = () => {
             }}
             lineCurve="basis"
             {...props}
+            data={data}
         />
     );
 
@@ -65,7 +70,7 @@ export const WithOneLineAndTooltipAndBasisCurve = () => {
 export const WithMultipleLinesAndTooltip = () => {
     const data = lineData.fiveTopics();
 
-    const renderLine = (props) => (
+    const renderLine = (props: TooltipRenderArgs) => (
         <Line
             margin={{
                 top: 60,
@@ -75,6 +80,7 @@ export const WithMultipleLinesAndTooltip = () => {
             }}
             tooltipThreshold={0}
             {...props}
+            data={data}
         />
     );
 
@@ -86,7 +92,9 @@ export const WithMultipleLinesAndTooltip = () => {
 export const WithAnimation = () => {
     const data = lineData.oneSet();
 
-    const renderLine = (props) => <Line isAnimated={true} {...props} />;
+    const renderLine = (props: TooltipRenderArgs) => (
+        <Line isAnimated={true} {...props} data={data} />
+    );
 
     return (
         <Tooltip

@@ -6,7 +6,7 @@
  * sidebar. The greys are Britecharts' own ramp, from
  * packages/core/src/charts/helpers/color.js, rather than Storybook's defaults.
  */
-const { create } = require('@storybook/theming');
+const { create } = require('storybook/theming');
 
 // Docs site primary, from packages/docs/src/css/custom.css
 const brandOrange = '#f6682f';

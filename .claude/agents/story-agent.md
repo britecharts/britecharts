@@ -67,25 +67,29 @@ Rules specific to this style:
   tooltipContainer.datum([]).call(tooltip);
   ```
 
-### `@britecharts/react` — JSX, `@storybook/react`
+### `@britecharts/react` — TSX, `@storybook/react-vite`
 
-```jsx
+```tsx
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import Bar from './Bar';
 import Tooltip from '../tooltip/Tooltip';
+import type { TooltipRenderArgs } from '../tooltip/Tooltip';
 import barData from './barChart.fixtures';
 import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/Bar',
     component: Bar,
-};
+} satisfies Meta<typeof Bar>;
 
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof Bar> = (args) => {
     const data = barData.withLetters();
 
-    const renderBar = (props) => <Bar {...args} {...props} />;
+    const renderBar = (props: TooltipRenderArgs) => (
+        <Bar {...args} {...props} data={data} />
+    );
 
     return <Tooltip data={data} render={renderBar} title="Frequency" />;
 };
@@ -101,7 +105,8 @@ Rules specific to this style:
 
 - **The default export goes at the top** here, and carries `component:` as well as `title:`.
 - Data comes from the colocated `<chartName>Chart.fixtures.js`, not from a core data builder.
-- The story file is lowercase (`bar.stories.js`) even though the component is PascalCase (`Bar.js`).
+- The story file is lowercase TypeScript (`bar.stories.tsx`) even though the component is PascalCase (`Bar.tsx`). `pnpm --filter @britecharts/react run type-check` covers it.
+- Type the default export with `satisfies Meta<typeof Component>` and the Playground with `StoryFn<typeof Component>`. A `Tooltip` render callback takes `TooltipRenderArgs`; pass the story's own `data` after spreading them, since the tooltip's `data` is typed for every chart at once.
 - Import `colors` from `@britecharts/core` for color schemas.
 - The Playground's Controls come from the component's props through docgen. Spread `args` before the props a `Tooltip` hands down, so the tooltip's own props win.
 
@@ -132,7 +137,7 @@ Name stories in PascalCase, describing what is shown, not the API call: `WithHor
 5. **Write the stories**, one variant per export.
 6. **Verify.** Lint the file with `pnpm exec eslint <path>` and format with `pnpm exec oxfmt --write <path>`. If you changed anything the Storybook build touches, confirm it still builds: `pnpm --filter @britecharts/core run demo:build` (or `@britecharts/react`). To view them, `pnpm run demos:core` serves on port 2001 and `pnpm run demos:react` on 2002.
 
-   Storybook brings its own webpack, separate from each package's `webpack.parts.js`, so it needs its own `resolve.extensionAlias` and a loader reaching `.ts` sources. A story that imports a converted chart and fails to build is usually that, not the story.
+   Storybook builds with Vite through `.storybook/vite.config.mjs`, not the package's own `vite.config.js`, which builds the library bundles.
 7. **Report** which accessors still have no story and why.
 
 ## Constraints

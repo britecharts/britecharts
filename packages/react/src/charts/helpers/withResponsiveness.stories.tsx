@@ -1,4 +1,5 @@
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import Line from '../line/Line';
 import lineData from '../line/lineChart.fixtures';

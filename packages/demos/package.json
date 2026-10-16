@@ -5,17 +5,14 @@
   "devDependencies": {
     "@babel/core": "catalog:",
     "@storybook/addon-a11y": "catalog:",
-    "@storybook/addon-essentials": "catalog:",
+    "@storybook/addon-docs": "catalog:",
     "@storybook/addon-links": "catalog:",
-    "@storybook/html-webpack5": "catalog:",
-    "@storybook/manager-api": "catalog:",
-    "@storybook/theming": "catalog:",
-    "raw-loader": "catalog:",
+    "@storybook/html-vite": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "rimraf": "catalog:",
     "storybook": "catalog:",
-    "webpack": "catalog:"
+    "vite": "catalog:"
   },
   "scripts": {
     "build": "storybook build -c .storybook -o dist",

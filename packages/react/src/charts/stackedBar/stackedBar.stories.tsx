@@ -1,23 +1,27 @@
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import StackedBar from './StackedBar';
 import Tooltip from '../tooltip/Tooltip';
+import type { TooltipRenderArgs } from '../tooltip/Tooltip';
 import stackedBarData from './stackedBarChart.fixtures';
 
 export default {
     title: 'Charts/StackedBar',
     component: StackedBar,
-};
+} satisfies Meta<typeof StackedBar>;
 
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart,
  * with its tooltip.
  */
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof StackedBar> = (args) => {
     const data = stackedBarData.with3SourcesAndDates();
 
-    const renderStackedBar = (props) => <StackedBar {...args} {...props} />;
+    const renderStackedBar = (props: TooltipRenderArgs) => (
+        <StackedBar {...args} {...props} data={data} />
+    );
 
     return (
         <Tooltip
@@ -47,8 +51,8 @@ export const WithHorizontalDirectionAndFixedSize = () => {
 export const WithAnimation = () => {
     const data = stackedBarData.with3SourcesAndDates();
 
-    const renderStackedBar = (props) => (
-        <StackedBar isAnimated={true} {...props} />
+    const renderStackedBar = (props: TooltipRenderArgs) => (
+        <StackedBar isAnimated={true} {...props} data={data} />
     );
 
     return (
@@ -63,7 +67,7 @@ export const WithAnimation = () => {
 };
 
 export const WithLoadingState = () => {
-    const data = [];
+    const data: [] = [];
 
     return <StackedBar data={data} isLoading={true} />;
 };

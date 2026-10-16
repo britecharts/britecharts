@@ -1,24 +1,28 @@
 /* eslint-disable no-console */
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import StackedArea from './StackedArea';
 import Tooltip from '../tooltip/Tooltip';
+import type { TooltipRenderArgs } from '../tooltip/Tooltip';
 import stackedAreaData from './stackedAreaChart.fixtures';
 
 export default {
     title: 'Charts/StackedArea',
     component: StackedArea,
-};
+} satisfies Meta<typeof StackedArea>;
 
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart,
  * with its tooltip.
  */
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof StackedArea> = (args) => {
     const data = stackedAreaData.with3Sources();
 
-    const renderStackedArea = (props) => <StackedArea {...args} {...props} />;
+    const renderStackedArea = (props: TooltipRenderArgs) => (
+        <StackedArea {...args} {...props} data={data} />
+    );
 
     // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
     // it creates the tooltip, and passing it again re-runs the deprecated setter
@@ -35,8 +39,8 @@ Playground.parameters = {
 export const WithAnimation = () => {
     const data = stackedAreaData.with3Sources();
 
-    const renderStackedArea = (props) => (
-        <StackedArea isAnimated={true} {...props} />
+    const renderStackedArea = (props: TooltipRenderArgs) => (
+        <StackedArea isAnimated={true} {...props} data={data} />
     );
 
     // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
@@ -51,7 +55,12 @@ export const WithMouseEventsOnConsole = () => {
     const logMouseOut = () => console.log('Mouse Out');
     // What every chart dispatches on customMouseMove: the data point, its
     // anchor [x, y], the chart's size and the topic colours
-    const logMouseMove = (dataPoint, position, size, topicColorMap) => {
+    const logMouseMove: TooltipRenderArgs['customMouseMove'] = (
+        dataPoint,
+        position,
+        size,
+        topicColorMap
+    ) => {
         console.log('Mouse Move: dataPoint', dataPoint);
         console.log('Mouse Move: position', position);
         console.log('Mouse Move: size', size);
@@ -69,7 +78,7 @@ export const WithMouseEventsOnConsole = () => {
 };
 
 export const WithLoadingState = () => {
-    const data = [];
+    const data: [] = [];
 
     return <StackedArea data={data} isLoading={true} />;
 };

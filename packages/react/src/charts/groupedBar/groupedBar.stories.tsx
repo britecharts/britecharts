@@ -1,23 +1,27 @@
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import GroupedBar from './GroupedBar';
 import Tooltip from '../tooltip/Tooltip';
+import type { TooltipRenderArgs } from '../tooltip/Tooltip';
 import groupedBarData from './groupedBarChart.fixtures';
 
 export default {
     title: 'Charts/GroupedBar',
     component: GroupedBar,
-};
+} satisfies Meta<typeof GroupedBar>;
 
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart,
  * with its tooltip.
  */
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof GroupedBar> = (args) => {
     const data = groupedBarData.with3Groups();
 
-    const renderGroupedBar = (props) => <GroupedBar {...args} {...props} />;
+    const renderGroupedBar = (props: TooltipRenderArgs) => (
+        <GroupedBar {...args} {...props} data={data} />
+    );
 
     // The chart dispatches each column as { key, values: [{ group, name,
     // value }] }: the title shows the key and each row a group
@@ -49,8 +53,8 @@ export const WithHorizontalDirectionFixedSize = () => {
 export const WithAnimation = () => {
     const data = groupedBarData.with3Groups();
 
-    const renderGroupedBar = (props) => (
-        <GroupedBar isAnimated={true} {...props} />
+    const renderGroupedBar = (props: TooltipRenderArgs) => (
+        <GroupedBar isAnimated={true} {...props} data={data} />
     );
 
     // The chart dispatches each column as { key, values: [{ group, name,
@@ -67,7 +71,7 @@ export const WithAnimation = () => {
 };
 
 export const WithLoadingState = () => {
-    const data = [];
+    const data: [] = [];
 
     return <GroupedBar data={data} isLoading={true} />;
 };

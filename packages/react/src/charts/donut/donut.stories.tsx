@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import Donut from './Donut';
 import Legend from '../legend/Legend';
@@ -9,16 +10,16 @@ import { colors } from '@britecharts/core';
 export default {
     title: 'Charts/Donut',
     component: Donut,
-};
+} satisfies Meta<typeof Donut>;
 
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart.
  */
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof Donut> = (args) => {
     const data = donutData.with4Slices();
 
-    return <Donut data={data} {...args} />;
+    return <Donut {...args} data={data} />;
 };
 
 Playground.args = { isAnimated: false };
@@ -36,9 +37,9 @@ export const WithHighlightedLegend = () => {
         right: 30,
     };
     const width = 500;
-    const [highlightedSlice, setHighlightedSlice] = React.useState(null);
+    const [highlightedSlice, setHighlightedSlice] = React.useState<number>();
 
-    const handleMouseOver = (data) => {
+    const handleMouseOver = (data: { data: { id: number } }) => {
         setHighlightedSlice(data.data.id);
     };
     const handleMouseOut = () => {
@@ -92,7 +93,7 @@ export const WithHoverEvent = () => {
 };
 
 export const WithLoadingState = () => {
-    const data = [];
+    const data: [] = [];
 
     return <Donut data={data} isLoading={true} />;
 };

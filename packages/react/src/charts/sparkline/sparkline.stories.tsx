@@ -1,4 +1,5 @@
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import Sparkline from './Sparkline';
 import sparklineData from './sparklineChart.fixtures';
@@ -6,16 +7,16 @@ import sparklineData from './sparklineChart.fixtures';
 export default {
     title: 'Charts/Sparkline',
     component: Sparkline,
-};
+} satisfies Meta<typeof Sparkline>;
 
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart.
  */
-export const Playground = (args) => {
+export const Playground: StoryFn<typeof Sparkline> = (args) => {
     const data = sparklineData.with1Source();
 
-    return <Sparkline data={data} {...args} />;
+    return <Sparkline {...args} data={data} />;
 };
 
 Playground.args = { isAnimated: false };
@@ -45,7 +46,7 @@ export const WithAnimation = () => {
 };
 
 export const WithLoadingState = () => {
-    const data = [];
+    const data: [] = [];
 
     return <Sparkline data={data} height={100} width={200} isLoading={true} />;
 };
