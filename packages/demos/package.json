@@ -11,8 +11,8 @@
     "@storybook/manager-api": "catalog:",
     "@storybook/theming": "catalog:",
     "raw-loader": "catalog:",
-    "react": "16.14.0",
-    "react-dom": "16.14.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "rimraf": "catalog:",
     "storybook": "catalog:",
     "webpack": "catalog:"

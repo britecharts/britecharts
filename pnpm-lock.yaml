@@ -221,6 +221,12 @@ catalogs:
     raw-loader:
       specifier: 4.0.2
       version: 4.0.2
+    react:
+      specifier: 19.3.0
+      version: 19.3.0
+    react-dom:
+      specifier: 19.3.0
+      version: 19.3.0
     rimraf:
       specifier: 2.7.1
       version: 2.7.1
@@ -586,7 +592,7 @@ importers:
         version: 8.6.14(@types/react@19.3.0)(storybook@8.6.14(prettier@2.5.1)(supports-color@8.1.1))
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 8.6.14(react@16.14.0)(storybook@8.6.14(prettier@2.5.1)(supports-color@8.1.1))
+        version: 8.6.14(react@19.3.0)(storybook@8.6.14(prettier@2.5.1)(supports-color@8.1.1))
       '@storybook/html-webpack5':
         specifier: 'catalog:'
         version: 8.6.14(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(esbuild@0.25.12)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(storybook@8.6.14(prettier@2.5.1)(supports-color@8.1.1))(svgo@3.3.5)(typescript@6.0.3)(uglify-js@3.19.3)(webpack-cli@3.3.12)
@@ -600,11 +606,11 @@ importers:
         specifier: 'catalog:'
         version: 4.0.2(webpack@5.111.1)
       react:
-        specifier: 16.14.0
-        version: 16.14.0
+        specifier: 'catalog:'
+        version: 19.3.0
       react-dom:
-        specifier: 16.14.0
-        version: 16.14.0(react@16.14.0)
+        specifier: 'catalog:'
+        version: 19.3.0(react@19.3.0)
       rimraf:
         specifier: 'catalog:'
         version: 2.7.1
@@ -782,13 +788,13 @@ importers:
         specifier: 'catalog:'
         version: 4.0.2(webpack@5.111.1)
       react:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       react-docgen:
         specifier: 7.1.1
         version: 7.1.1(supports-color@6.1.0)
       react-dom:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
       require-from-string:
         specifier: 2.0.2
@@ -10103,11 +10109,6 @@ packages:
     resolution: {integrity: sha512-hlSJDQ2synMPKFZOsKo9Hi8WWZTC7POR8EmWvTSjow+VDgKzkmjQvFm2fk0tmRw+f0vTOIYKlarR0iL4996pdg==}
     engines: {node: '>=16.14.0'}
 
-  react-dom@16.14.0:
-    resolution: {integrity: sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==}
-    peerDependencies:
-      react: ^16.14.0
-
   react-dom@18.3.1:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
@@ -10158,10 +10159,6 @@ packages:
     resolution: {integrity: sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==}
     peerDependencies:
       react: '>=15'
-
-  react@16.14.0:
-    resolution: {integrity: sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==}
-    engines: {node: '>=0.10.0'}
 
   react@18.3.1:
     resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
@@ -10546,9 +10543,6 @@ packages:
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
-
-  scheduler@0.19.1:
-    resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
 
   scheduler@0.23.2:
     resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
@@ -16235,18 +16229,18 @@ snapshots:
       '@storybook/global': 5.0.0
       storybook: 8.6.14(prettier@2.5.1)(supports-color@8.1.1)
 
-  '@storybook/addon-links@8.6.14(react@16.14.0)(storybook@8.6.14(prettier@2.5.1)(supports-color@8.1.1))':
-    dependencies:
-      '@storybook/global': 5.0.0
-      storybook: 8.6.14(prettier@2.5.1)(supports-color@8.1.1)
-      ts-dedent: 2.3.0
-    optionalDependencies:
-      react: 16.14.0
-
   '@storybook/addon-links@8.6.14(react@19.3.0)(storybook@8.6.14(prettier@2.5.1)(supports-color@6.1.0))':
     dependencies:
       '@storybook/global': 5.0.0
       storybook: 8.6.14(prettier@2.5.1)(supports-color@6.1.0)
+      ts-dedent: 2.3.0
+    optionalDependencies:
+      react: 19.3.0
+
+  '@storybook/addon-links@8.6.14(react@19.3.0)(storybook@8.6.14(prettier@2.5.1)(supports-color@8.1.1))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      storybook: 8.6.14(prettier@2.5.1)(supports-color@8.1.1)
       ts-dedent: 2.3.0
     optionalDependencies:
       react: 19.3.0
@@ -25849,14 +25843,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-dom@16.14.0(react@16.14.0):
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
-      react: 16.14.0
-      scheduler: 0.19.1
-
   react-dom@18.3.1(react@18.3.1):
     dependencies:
       loose-envify: 1.4.0
@@ -25915,12 +25901,6 @@ snapshots:
       react-is: 16.13.1
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
-
-  react@16.14.0:
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
 
   react@18.3.1:
     dependencies:
@@ -26429,11 +26409,6 @@ snapshots:
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
-
-  scheduler@0.19.1:
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
 
   scheduler@0.23.2:
     dependencies:
