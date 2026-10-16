@@ -14,9 +14,7 @@
     "@babel/cli": "catalog:",
     "@babel/core": "catalog:",
     "@babel/preset-typescript": "catalog:",
-    "@types/jest": "catalog:",
     "eslint": "catalog:",
-    "jest": "catalog:",
     "rimraf": "catalog:",
     "vite": "catalog:"
   },
@@ -31,8 +29,8 @@
     "clean": "rimraf dist",
     "lint": "pnpm run lint:js",
     "lint:js": "eslint src/charts/ src/helpers vite.config.js --ext .js,.ts,.tsx --cache",
-    "test": "jest --colors --coverage",
-    "test:watch": "jest --watch --colors",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
     "type-check": "tsc --noEmit"
   },
   "files": [

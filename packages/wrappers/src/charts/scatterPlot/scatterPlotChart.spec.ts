@@ -48,7 +48,7 @@ describe('scatterPlot Chart', () => {
 
             describe('when wrong event handlers are passed', () => {
                 it('should throw an error', () => {
-                    const callback = jest.fn();
+                    const callback = vi.fn();
 
                     expect(() => {
                         scatterPlot.create(
@@ -131,7 +131,7 @@ describe('scatterPlot Chart', () => {
             });
 
             it('should register the event handlers', () => {
-                const callback = jest.fn();
+                const callback = vi.fn();
 
                 const chart = scatterPlot.create(
                     anchor,

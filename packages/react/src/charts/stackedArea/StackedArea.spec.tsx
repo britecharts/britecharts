@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import StackedArea from './StackedArea';
 import React from 'react';
 import { mount } from '../../../testing/mount';
@@ -21,7 +22,7 @@ describe('stacked Area Chart', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(StackedAreaWrapper, 'create');
+            createSpy = vi.spyOn(StackedAreaWrapper, 'create');
         });
 
         afterEach(() => {

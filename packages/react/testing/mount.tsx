@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import { cloneElement } from 'react';
 import { render } from '@testing-library/react';
 

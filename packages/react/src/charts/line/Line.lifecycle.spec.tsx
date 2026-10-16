@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { mount } from '../../../testing/mount';
 
@@ -15,9 +16,9 @@ describe('Line lifecycle', () => {
 
     beforeEach(() => {
         chartData = lineData.flatData.a;
-        createSpy = jest.spyOn(LineWrapper, 'create');
-        updateSpy = jest.spyOn(LineWrapper, 'update');
-        destroySpy = jest.spyOn(LineWrapper, 'destroy');
+        createSpy = vi.spyOn(LineWrapper, 'create');
+        updateSpy = vi.spyOn(LineWrapper, 'update');
+        destroySpy = vi.spyOn(LineWrapper, 'destroy');
     });
 
     afterEach(() => {
@@ -39,7 +40,7 @@ describe('Line lifecycle', () => {
                 <Line
                     chart={LineWrapper}
                     data={chartData}
-                    createTooltip={jest.fn()}
+                    createTooltip={vi.fn()}
                     width={300}
                 />
             );
@@ -156,7 +157,7 @@ describe('Line lifecycle', () => {
 
     describe('createTooltip', () => {
         it('should be called after the chart updated', () => {
-            const createTooltip = jest.fn();
+            const createTooltip = vi.fn();
             const wrapper = mount(
                 <Line data={chartData} createTooltip={createTooltip} />
             );
@@ -170,7 +171,7 @@ describe('Line lifecycle', () => {
         });
 
         it('should not be called after the chart was created', () => {
-            const createTooltip = jest.fn();
+            const createTooltip = vi.fn();
 
             mount(<Line data={chartData} createTooltip={createTooltip} />);
 
@@ -178,7 +179,7 @@ describe('Line lifecycle', () => {
         });
 
         it('should not be called when the chart is created once the data arrives', () => {
-            const createTooltip = jest.fn();
+            const createTooltip = vi.fn();
             const wrapper = mount(
                 <Line data={null} createTooltip={createTooltip} />
             );
@@ -211,9 +212,9 @@ describe('Line lifecycle', () => {
 
         it('should destroy with the latest chart wrapper, not the first', () => {
             const latest = {
-                create: jest.fn(),
-                update: jest.fn(),
-                destroy: jest.fn(),
+                create: vi.fn(),
+                update: vi.fn(),
+                destroy: vi.fn(),
             };
             const wrapper = mount(
                 <Line chart={LineWrapper} data={chartData} />

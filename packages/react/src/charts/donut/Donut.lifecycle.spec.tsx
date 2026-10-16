@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { mount } from '../../../testing/mount';
 
@@ -15,9 +16,9 @@ describe('Donut lifecycle', () => {
 
     beforeEach(() => {
         data = donutData.with4Slices();
-        createSpy = jest.spyOn(DonutWrapper, 'create');
-        updateSpy = jest.spyOn(DonutWrapper, 'update');
-        destroySpy = jest.spyOn(DonutWrapper, 'destroy');
+        createSpy = vi.spyOn(DonutWrapper, 'create');
+        updateSpy = vi.spyOn(DonutWrapper, 'update');
+        destroySpy = vi.spyOn(DonutWrapper, 'destroy');
     });
 
     afterEach(() => {
@@ -53,7 +54,7 @@ describe('Donut lifecycle', () => {
                 <Donut
                     chart={DonutWrapper}
                     data={data}
-                    createTooltip={jest.fn()}
+                    createTooltip={vi.fn()}
                     width={300}
                 />
             );

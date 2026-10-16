@@ -39,7 +39,7 @@ The diff can be large. Get the shape first with `--stat`, then pull the content 
 - Stories (`*.stories.js`, `*.stories.mdx`)
 - Shared types (`packages/core/src/typings/**/*.ts`)
 - Styles (`*.scss`)
-- Build and config (`webpack.*.js`, `jest.config*.js`, `babel.config*.js`, `package.json`, `.github/workflows/`)
+- Build and config (`vite.config.js`, `vitest.config.js`, `babel.config*.cjs`, `package.json`, `.github/workflows/`)
 - Changesets (`.changeset/*.md`)
 - Markdown and docs
 

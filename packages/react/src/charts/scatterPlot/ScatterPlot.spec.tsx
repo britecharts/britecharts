@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { mount } from '../../../testing/mount';
 
@@ -35,7 +36,7 @@ describe('scatterPlot Chart', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(ScatterPlotWrapper, 'create');
+                createSpy = vi.spyOn(ScatterPlotWrapper, 'create');
             });
 
             afterEach(() => {

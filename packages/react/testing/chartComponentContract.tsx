@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { mount } from './mount';
 
@@ -35,7 +36,7 @@ const describeChartComponent = ({
         let spy;
 
         beforeEach(() => {
-            spy = jest.spyOn(chart, method);
+            spy = vi.spyOn(chart, method);
         });
 
         afterEach(() => {
@@ -98,7 +99,7 @@ const describeChartComponent = ({
             // component's business, never a configuration key of the wrapper,
             // which rejects keys the chart does not have.
             it('should not pass the component-only props to the wrapper', () => {
-                mountChart({ createTooltip: jest.fn() });
+                mountChart({ createTooltip: vi.fn() });
 
                 const configuration = createSpy().mock.calls[0][2];
 
@@ -224,7 +225,7 @@ const describeChartComponent = ({
 
             if (redrawsTooltip) {
                 it('should ask for the tooltip again after the chart updated', () => {
-                    const createTooltip = jest.fn();
+                    const createTooltip = vi.fn();
                     const wrapper = mountChart({ createTooltip });
 
                     // Never after the creation
@@ -239,7 +240,7 @@ const describeChartComponent = ({
                 });
             } else {
                 it('should not ask for the tooltip after the chart updated', () => {
-                    const createTooltip = jest.fn();
+                    const createTooltip = vi.fn();
                     const wrapper = mountChart({ createTooltip });
 
                     wrapper.setProps({ data: nextData() });

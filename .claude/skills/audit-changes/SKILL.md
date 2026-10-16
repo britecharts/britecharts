@@ -1,13 +1,13 @@
 ---
 name: audit-changes
-description: Use when validating changes during development in the Britecharts monorepo — runs lint, styles lint, related Jest tests, type-check and format checks over the changed files, and fixes all errors until validation passes
+description: Use when validating changes during development in the Britecharts monorepo — runs lint, styles lint, related Vitest tests, type-check and format checks over the changed files, and fixes all errors until validation passes
 ---
 
 # Audit Changes
 
 ## Overview
 
-Validation pipeline for Britecharts code changes: lint the changed JS/TS, lint the changed SCSS, run the Jest suites related to the changed files, type-check, check formatting, and fix any failure until everything is green. This is the routine check to run *during* development.
+Validation pipeline for Britecharts code changes: lint the changed JS/TS, lint the changed SCSS, run the Vitest suites related to the changed files, type-check, check formatting, and fix any failure until everything is green. This is the routine check to run *during* development.
 
 The root `pnpm check` script (`lint:styles && lint:js && type-check && test:ci`) is the full, unscoped gate. Prefer the scoped steps below while iterating — they are far faster — and save `pnpm check` for a final pass on a broad change. When the work is **done**, run `/quality` instead: it dispatches the three review agents rather than the toolchain.
 
@@ -21,7 +21,7 @@ digraph audit {
     collect [label="Collect changed files\n(staged + unstaged + untracked)"];
     lint    [label="STEP 1: eslint changed JS/TS"];
     styles  [label="STEP 2: stylelint changed SCSS"];
-    test    [label="STEP 3: jest --findRelatedTests"];
+    test    [label="STEP 3: vitest related"];
     types   [label="STEP 4: tsc --noEmit"];
     format  [label="STEP 5: oxfmt --check"];
     api     [label="STEP 6: api-parity + changeset\n(only if public API changed)"];
@@ -88,10 +88,10 @@ Use `pnpm exec stylelint`, not `pnpm stylelint` — the latter runs the root *sc
 ### Step 3: Run the Related Tests
 
 ```bash
-pnpm exec jest --findRelatedTests <changed script files> --coverage=false
+pnpm exec vitest related --run <changed script files>
 ```
 
-Run this from the repo root. The root `jest.config.js` registers every package as a Jest project (`packages/*/jest.config.cjs`), so one invocation covers `core`, `wrappers` and `react` and picks up the sibling suites that a change ripples into. `--coverage=false` overrides the root config's `collectCoverage` and keeps the run fast.
+Run this from the repo root. The root `vitest.config.mjs` lists every package's `vitest.config.js` as a project, so one invocation covers `core`, `wrappers` and `react` and picks up the sibling suites that a change ripples into. Coverage stays off unless you pass `--coverage`, which keeps the run fast.
 
 **Run the whole workspace's tests, not just the converted package's,** whenever you change a file another package imports. This has bitten: converting one wrappers file broke all 16 react suites while wrappers' own suite stayed green, because every react spec reaches wrappers through its source barrel.
 
@@ -170,7 +170,7 @@ If any step fails:
 |---|---|---|
 | Lint JS/TS | `pnpm exec eslint <files>` | `pnpm run lint:js` |
 | Lint SCSS | `pnpm exec stylelint <files>` | `pnpm run lint:styles` |
-| Test | `pnpm exec jest --findRelatedTests <files> --coverage=false` | `pnpm run test:ci` |
+| Test | `pnpm exec vitest related --run <files>` | `pnpm run test:ci` |
 | Type-check | `pnpm --filter @britecharts/<pkg> run type-check` | `pnpm run type-check` |
 | Format | `pnpm exec oxfmt --check <files>` | `pnpm run format` |
 | API parity | — | `pnpm run check:api-parity` |

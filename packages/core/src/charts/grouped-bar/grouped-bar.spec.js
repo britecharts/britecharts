@@ -274,7 +274,7 @@ describe('grouped Bar Chart', () => {
     describe('lifecycle', () => {
         describe('when clicking on the chart', () => {
             it('should trigger a callback with the column, the pointer and the clicked bar', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 3;
 
@@ -291,7 +291,7 @@ describe('grouped Bar Chart', () => {
             });
 
             it('should not trigger a callback when the empty space of the chart is clicked', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 0;
 
                 groupedBarChart.on('customClick', callbackSpy);
@@ -313,7 +313,7 @@ describe('grouped Bar Chart', () => {
                 containerFixture.select('.grouped-bar').dispatch('mousemove');
 
             it('mouseover should trigger a callback when the pointer reaches a bar', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
@@ -328,7 +328,7 @@ describe('grouped Bar Chart', () => {
             });
 
             it('mouseover should not trigger a callback over the empty space of the chart', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 0;
 
                 groupedBarChart.on('customMouseOver', callbackSpy);
@@ -339,7 +339,7 @@ describe('grouped Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback when the pointer leaves the bars for the empty space', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
@@ -355,7 +355,7 @@ describe('grouped Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback when the pointer leaves the chart from a bar', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
 
                 groupedBarChart.on('customMouseOut', callbackSpy);
@@ -366,7 +366,7 @@ describe('grouped Bar Chart', () => {
             });
 
             it('mouseout should not trigger a callback when the bars were never hovered', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 0;
 
                 groupedBarChart.on('customMouseOut', callbackSpy);

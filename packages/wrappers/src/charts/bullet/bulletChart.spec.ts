@@ -44,7 +44,7 @@ describe('bullet Chart', () => {
 
             describe('when wrong event handlers are passed', () => {
                 it('should throw ane error', () => {
-                    const callback = jest.fn();
+                    const callback = vi.fn();
 
                     expect(() => {
                         bullet.create(anchor, bulletData.fullTestData(), {

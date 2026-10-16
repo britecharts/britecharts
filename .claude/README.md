@@ -18,7 +18,7 @@ Invoke with `/<name>`.
 | `/code-review` | Prioritized (P0–P4) review of the branch or unstaged diff | `cr-agent` |
 | `/architecture-review` | Package layering, boundaries, API parity, declared deps, SCSS structure | `ar-agent` |
 | `/create-story` | Storybook stories, in the core (vanilla) or react (JSX) style | `story-agent` |
-| `/create-unit-test` | Jest specs for core charts, wrappers, or React components | `ut-agent` |
+| `/create-unit-test` | Vitest specs for core charts, wrappers, or React components | `ut-agent` |
 | `/style-review` | Accessor naming, JSDoc completeness, chart file structure, the reusable-chart closure | `style-agent` |
 | `/quality` | The post-completion gate: runs the three reviews below in parallel | `cr-agent`, `ar-agent`, `style-agent` |
 
@@ -37,7 +37,7 @@ Each is dispatched by the skill beside it; none needs to be launched by name.
 | `cr-agent` | Logic errors, chart-API correctness, unclear intent |
 | `ar-agent` | Package layering, boundaries, API parity, declared deps, SCSS structure |
 | `story-agent` | Storybook stories, core (vanilla) and react (JSX) styles |
-| `ut-agent` | Jest specs across the three spec styles |
+| `ut-agent` | Vitest specs across the three spec styles |
 | `style-agent` | The conventions in `packages/docs/docs/topics/` — accessor naming, JSDoc completeness, chart file structure, the reusable-chart closure |
 
 `ar-agent` and `style-agent` divide a line worth knowing: `ar-agent` decides

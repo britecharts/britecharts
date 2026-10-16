@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { act } from '@testing-library/react';
 
@@ -55,7 +56,7 @@ describe('tooltip', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(TooltipWrapper, 'create');
+            createSpy = vi.spyOn(TooltipWrapper, 'create');
         });
 
         afterEach(() => {
@@ -148,7 +149,7 @@ describe('tooltip', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(TooltipWrapper, 'update');
+                createSpy = vi.spyOn(TooltipWrapper, 'update');
             });
 
             afterEach(() => {
@@ -223,7 +224,7 @@ describe('tooltip', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(TooltipWrapper, 'destroy');
+            createSpy = vi.spyOn(TooltipWrapper, 'destroy');
         });
 
         afterEach(() => {
@@ -298,7 +299,7 @@ describe('tooltip', () => {
         // redraw the whole chart underneath on each move.
         it('should not redraw the chart underneath while the pointer moves', () => {
             const child = {};
-            const updateSpy = jest.spyOn(LineWrapper, 'update');
+            const updateSpy = vi.spyOn(LineWrapper, 'update');
 
             mount(
                 <Tooltip
@@ -354,7 +355,7 @@ describe('tooltip', () => {
             let createSpy;
 
             beforeEach(() => {
-                createSpy = jest.spyOn(TooltipWrapper, 'create');
+                createSpy = vi.spyOn(TooltipWrapper, 'create');
             });
 
             afterEach(() => {
@@ -366,9 +367,9 @@ describe('tooltip', () => {
                 expect(() =>
                     mount(
                         <Tooltip
-                            customMouseMove={jest.fn()}
-                            customMouseOut={jest.fn()}
-                            customMouseOver={jest.fn()}
+                            customMouseMove={vi.fn()}
+                            customMouseOut={vi.fn()}
+                            customMouseOver={vi.fn()}
                             render={renderFakeChart}
                             data={[]}
                         />
@@ -381,7 +382,7 @@ describe('tooltip', () => {
                     it(`should not pass ${handler} to the tooltip wrapper`, () => {
                         mount(
                             <Tooltip
-                                {...{ [handler]: jest.fn() }}
+                                {...{ [handler]: vi.fn() }}
                                 render={renderFakeChart}
                                 data={[]}
                             />
@@ -421,12 +422,12 @@ describe('tooltip', () => {
 
         beforeEach(() => {
             spies = {
-                'LineWrapper.create': jest.spyOn(LineWrapper, 'create'),
-                'TooltipWrapper.create': jest.spyOn(TooltipWrapper, 'create'),
-                'LineWrapper.update': jest.spyOn(LineWrapper, 'update'),
-                'TooltipWrapper.update': jest.spyOn(TooltipWrapper, 'update'),
-                'LineWrapper.destroy': jest.spyOn(LineWrapper, 'destroy'),
-                'TooltipWrapper.destroy': jest.spyOn(TooltipWrapper, 'destroy'),
+                'LineWrapper.create': vi.spyOn(LineWrapper, 'create'),
+                'TooltipWrapper.create': vi.spyOn(TooltipWrapper, 'create'),
+                'LineWrapper.update': vi.spyOn(LineWrapper, 'update'),
+                'TooltipWrapper.update': vi.spyOn(TooltipWrapper, 'update'),
+                'LineWrapper.destroy': vi.spyOn(LineWrapper, 'destroy'),
+                'TooltipWrapper.destroy': vi.spyOn(TooltipWrapper, 'destroy'),
             };
         });
 
@@ -477,7 +478,7 @@ describe('tooltip', () => {
 
         it('should hand the chart handlers that update the tooltip and call the callbacks', () => {
             const child = {};
-            const customMouseMove = jest.fn();
+            const customMouseMove = vi.fn();
             const dataPoint = {
                 date: '2017-01-16T16:00:00-08:00',
                 topics: [{ name: 'a', value: 1, topicName: 'A' }],

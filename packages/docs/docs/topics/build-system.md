@@ -41,7 +41,7 @@ From the root:
 
 | Task | Description |
 | --- | --- |
-| `pnpm test` | Runs the Jest suites of every package; `pnpm test:ci` is the same command as CI runs it, and `pnpm test:watch` watches. |
+| `pnpm test` | Runs the Vitest suites of every package; `pnpm test:ci` is the same command as CI runs it, and `pnpm test:watch` watches. |
 | `pnpm test:integration` | Packs the three packages with pnpm's packer, installs them into the vanilla, TypeScript and React 19 consumers and checks tarball contents, `require()` paths, the typings and, in Chromium, that every way of loading a chart renders and every tooltip stays inside its chart. |
 | `pnpm lint` | ESLint over every package (`pnpm lint:js`) and stylelint over the styles (`pnpm lint:styles`). `pnpm format` runs oxfmt. |
 | `pnpm check` | Both linters, the type-check and the test suite, what CI runs. |

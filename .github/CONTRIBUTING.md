@@ -93,7 +93,7 @@ pnpm lint           # ESLint on the JavaScript, stylelint on the SCSS
 pnpm check          # lint plus the tests, what CI runs
 ```
 
-To iterate on a single package, run its scripts directly: `pnpm --filter @britecharts/core run test:watch`. The tests use Jest with jsdom; the core charts' specs sit next to the charts, as `<chart>.spec.js`.
+To iterate on a single package, run its scripts directly: `pnpm --filter @britecharts/core run test:watch`. The tests use Vitest with jsdom; the core charts' specs sit next to the charts, as `<chart>.spec.js`.
 
 ### Running the Integration Tests
 

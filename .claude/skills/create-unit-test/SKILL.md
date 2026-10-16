@@ -1,19 +1,19 @@
 ---
 name: create-unit-test
-description: Use when you need to create, run, update, or debug Jest unit tests in the Britecharts monorepo — dispatches the ut-agent, which knows the core/wrappers/react spec styles
+description: Use when you need to create, run, update, or debug Vitest unit tests in the Britecharts monorepo — dispatches the ut-agent, which knows the core/wrappers/react spec styles
 ---
 
 # Create Unit Test
 
 ## Overview
 
-Dispatches the `ut-agent` to handle unit test work in Britecharts: writing new specs, running existing ones, debugging failures, or closing coverage gaps. Testing is Jest + jsdom, and the conventions differ by package, so the agent picks its style from the target path.
+Dispatches the `ut-agent` to handle unit test work in Britecharts: writing new specs, running existing ones, debugging failures, or closing coverage gaps. Testing is Vitest + jsdom, and the conventions differ by package, so the agent picks its style from the target path.
 
 | Package | What a spec tests | How |
 |---|---|---|
 | `@britecharts/core` | the rendered SVG and the accessor API | render into a jsdom fixture with `d3-selection`, assert on `.select(...).size()` |
 | `@britecharts/wrappers` | the `create`/`update`/`destroy` contract | mount into a detached `div`, assert on thrown validation errors and DOM data |
-| `@britecharts/react` | the component's delegation to its wrapper | `mount` (a Testing Library shim, `testing/mount.js`), `jest.spyOn` the wrapper's methods |
+| `@britecharts/react` | the component's delegation to its wrapper | `mount` (a Testing Library shim, `testing/mount.tsx`), `vi.spyOn` the wrapper's methods |
 
 Specs are `<name>.spec.js`, colocated with their source. Sibling workspaces resolve to source via `moduleNameMapper`, so **no build step is needed before testing**.
 

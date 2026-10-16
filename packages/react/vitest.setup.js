@@ -29,7 +29,7 @@ beforeEach(() => {
     consoleCalls = [];
 
     ['error', 'warn'].forEach((method) => {
-        jest.spyOn(console, method).mockImplementation((...args) => {
+        vi.spyOn(console, method).mockImplementation((...args) => {
             consoleCalls.push({ method, message: format(...args) });
         });
     });

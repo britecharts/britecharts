@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { act } from '@testing-library/react';
 
@@ -44,10 +45,10 @@ describe('responsive helpers', () => {
         containerWidth = 640;
         window.innerWidth = 1000;
         spies = [
-            jest
+            vi
                 .spyOn(Element.prototype, 'clientWidth', 'get')
                 .mockImplementation(() => containerWidth),
-            jest
+            vi
                 .spyOn(window, 'requestAnimationFrame')
                 .mockImplementation((callback) => {
                     callback(0);
@@ -57,7 +58,7 @@ describe('responsive helpers', () => {
         ];
     });
 
-    // Only what this spec spied on: jest.restoreAllMocks() would also undo the
+    // Only what this spec spied on: vi.restoreAllMocks() would also undo the
     // console spies the setup file installs for its fail-on-console check
     afterEach(() => {
         mounted.splice(0).forEach((wrapper) => wrapper.unmount());
@@ -76,7 +77,7 @@ describe('responsive helpers', () => {
         });
 
         it('should hand the render prop the measured width', () => {
-            const render = jest.fn(() => <span />);
+            const render = vi.fn(() => <span />);
 
             mountTracked(<ResponsiveContainer render={render} />);
 
@@ -85,7 +86,7 @@ describe('responsive helpers', () => {
 
         // defaults to 500 until it has measured, which it does in the same commit
         it('should not draw its content at the default width once measured', () => {
-            const render = jest.fn(() => <span />);
+            const render = vi.fn(() => <span />);
 
             mountTracked(<ResponsiveContainer render={render} />);
 
@@ -93,7 +94,7 @@ describe('responsive helpers', () => {
         });
 
         it('should hand the render prop the new width when the window is resized', () => {
-            const render = jest.fn(() => <span />);
+            const render = vi.fn(() => <span />);
 
             mountTracked(<ResponsiveContainer render={render} />);
             resizeWindowTo(600, 420);
@@ -102,7 +103,7 @@ describe('responsive helpers', () => {
         });
 
         it('should not render again when the window is resized but the element is not', () => {
-            const render = jest.fn(() => <span />);
+            const render = vi.fn(() => <span />);
 
             mountTracked(<ResponsiveContainer render={render} />);
             const rendersBefore = render.mock.calls.length;
@@ -115,8 +116,8 @@ describe('responsive helpers', () => {
         // The end-to-end case: a chart inside a container has to end up with
         // the real width, whichever order the two commit in
         it('should give a chart inside it a non-zero, measured width', () => {
-            const createSpy = jest.spyOn(LineWrapper, 'create');
-            const updateSpy = jest.spyOn(LineWrapper, 'update');
+            const createSpy = vi.spyOn(LineWrapper, 'create');
+            const updateSpy = vi.spyOn(LineWrapper, 'update');
 
             spies.push(createSpy, updateSpy);
 
@@ -141,7 +142,7 @@ describe('responsive helpers', () => {
         });
 
         it('should keep resizing a chart inside it', () => {
-            const updateSpy = jest.spyOn(LineWrapper, 'update');
+            const updateSpy = vi.spyOn(LineWrapper, 'update');
 
             spies.push(updateSpy);
             mountTracked(
@@ -163,7 +164,7 @@ describe('responsive helpers', () => {
         // Guards against a leak: the first unmount ending resizing for every
         // container still on the page
         it('should keep resizing after another container unmounted', () => {
-            const remaining = jest.fn(() => <span />);
+            const remaining = vi.fn(() => <span />);
             const leaving = mountTracked(
                 <ResponsiveContainer render={() => <span />} />
             );
@@ -180,7 +181,7 @@ describe('responsive helpers', () => {
                 <ResponsiveContainer render={() => <span />} />
             ).unmount();
 
-            const later = jest.fn(() => <span />);
+            const later = vi.fn(() => <span />);
 
             mountTracked(<ResponsiveContainer render={later} />);
             resizeWindowTo(600, 420);
@@ -189,7 +190,7 @@ describe('responsive helpers', () => {
         });
 
         it('should not render after it unmounted', () => {
-            const render = jest.fn(() => <span />);
+            const render = vi.fn(() => <span />);
             const wrapper = mountTracked(
                 <ResponsiveContainer render={render} />
             );
@@ -208,7 +209,7 @@ describe('responsive helpers', () => {
     });
 
     describe('withResponsiveness', () => {
-        const Chart = jest.fn(({ width }) => (
+        const Chart = vi.fn(({ width }) => (
             <span className="chart">{width}</span>
         ));
         let Responsive;

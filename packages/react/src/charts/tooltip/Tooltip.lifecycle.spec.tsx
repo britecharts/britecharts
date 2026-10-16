@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { mount } from '../../../testing/mount';
 
@@ -10,9 +11,9 @@ const makeWrapper = () => {
 
     return {
         instance,
-        create: jest.fn(() => instance),
-        update: jest.fn(() => instance),
-        destroy: jest.fn(),
+        create: vi.fn(() => instance),
+        update: vi.fn(() => instance),
+        destroy: vi.fn(),
     };
 };
 

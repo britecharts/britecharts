@@ -40,7 +40,7 @@ describe('donut Chart', () => {
 
             describe('when wrong event handlers are passed', () => {
                 it('should throw ane error', () => {
-                    const callback = jest.fn();
+                    const callback = vi.fn();
 
                     expect(() => {
                         donut.create(anchor, donutData.with4Slices(), {
@@ -108,7 +108,7 @@ describe('donut Chart', () => {
 
             describe('when event handlers are passed', () => {
                 it('should set customMouseOver callback', () => {
-                    const expected = jest.fn();
+                    const expected = vi.fn();
 
                     const chart = donut.create(
                         anchor,
@@ -122,7 +122,7 @@ describe('donut Chart', () => {
                 });
 
                 it('should set customMouseOut callback', () => {
-                    const expected = jest.fn();
+                    const expected = vi.fn();
 
                     const chart = donut.create(
                         anchor,

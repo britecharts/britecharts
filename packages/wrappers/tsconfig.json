@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         // Resolve the sibling workspace to its source, as react's tsconfig
-        // does and as jest's moduleNameMapper already does for the specs.
+        // does and as the alias in vitest.config.js already does for the specs.
         //
         // Core's `types` point at generated declarations in its `dist/`.
         // Without this, type-checking this package would first require building

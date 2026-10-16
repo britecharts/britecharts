@@ -143,7 +143,7 @@ describe('heatmap Chart', () => {
         describe('when hovering a box', () => {
             it('should trigger a callback on mouse over', () => {
                 const box = containerFixture.selectAll('.box:nth-child(1)');
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsNumber = 3;
                 let actualCallCount;
@@ -166,7 +166,7 @@ describe('heatmap Chart', () => {
                 let actualArgumentsNumber;
 
                 const box = containerFixture.selectAll('.box:nth-child(1)');
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
 
                 heatmapChart.on('customMouseMove', callbackSpy);
                 box.dispatch('mousemove');
@@ -185,7 +185,7 @@ describe('heatmap Chart', () => {
                 let actualArgumentsNumber;
 
                 const box = containerFixture.selectAll('.box:nth-child(1)');
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
 
                 heatmapChart.on('customMouseOut', callbackSpy);
                 box.dispatch('mouseout');
@@ -204,7 +204,7 @@ describe('heatmap Chart', () => {
                 let actualArgumentsNumber;
 
                 const box = containerFixture.selectAll('.box:nth-child(1)');
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
 
                 heatmapChart.on('customClick', callbackSpy);
                 box.dispatch('click');

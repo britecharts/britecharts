@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React, { useEffect, useLayoutEffect } from 'react';
 import { mount } from '../testing/mount';
 
@@ -47,7 +48,7 @@ describe('test harness', () => {
         });
     });
 
-    describe('jest toEqual', () => {
+    describe('toEqual', () => {
         it('should compare detached DOM nodes structurally, not by identity', () => {
             const a = document.createElement('div');
             const same = document.createElement('div');

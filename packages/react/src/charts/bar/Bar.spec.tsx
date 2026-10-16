@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { mount } from '../../../testing/mount';
 
@@ -54,7 +55,7 @@ describe('bar Chart', () => {
         let updateSpy;
 
         beforeEach(() => {
-            updateSpy = jest.spyOn(BarWrapper, 'update');
+            updateSpy = vi.spyOn(BarWrapper, 'update');
         });
 
         afterEach(() => {
