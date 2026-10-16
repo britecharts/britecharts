@@ -73,7 +73,7 @@
     "stylelint-config-sass-guidelines": "catalog:",
     "stylelint-config-standard": "catalog:",
     "stylelint-scss": "4.7.0",
-    "underscore": "1.9.1",
+    "underscore": "1.13.8",
     "webpack": "catalog:",
     "webpack-cli": "catalog:",
     "webpack-merge": "catalog:",
