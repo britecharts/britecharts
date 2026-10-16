@@ -1,0 +1,71 @@
+name: Commitlint
+
+# The commit-msg hook runs commitlint locally, but only on a machine where the
+# hooks are installed, and never on a pull request's title. Pull requests are
+# squash-merged, so the title is the commit message that lands on main. Eight
+# of the forty commits before this workflow would have failed the rules the
+# hook enforces. Set up as https://commitlint.js.org/guides/ci-setup.html
+# describes, with the repo's own pnpm install and commitlint config.
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  commitlint:
+    name: Lint commit messages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Print versions
+        run: |
+          git --version
+          node --version
+          pnpm --version
+          pnpm exec commitlint --version
+
+      - name: Validate current commit (last commit) with commitlint
+        if: github.event_name == 'push'
+        run: pnpm exec commitlint --last --verbose
+
+      # Dependabot writes its own messages, whose bodies carry URLs longer than
+      # the body line limit. Its pull request titles are still checked below.
+      - name: Validate PR commits with commitlint
+        if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
+        run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+
+      # The title is linted as the squash commit will read: GitHub appends
+      # " (#<number>)", which counts toward the header length limit. It comes in
+      # through the environment, never interpolated into the script, because a
+      # title is text anyone opening a pull request controls.
+      - name: Validate PR title with commitlint
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: printf '%s (#%s)\n' "$PR_TITLE" "$PR_NUMBER" | pnpm exec commitlint --verbose
