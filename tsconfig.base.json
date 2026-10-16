@@ -11,7 +11,7 @@
         "skipLibCheck": true,
         "allowJs": true,
         "checkJs": false,
-        "types": ["jest"],
+        "types": ["vitest/globals"],
         "noEmit": true
     }
 }

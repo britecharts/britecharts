@@ -42,7 +42,7 @@ describe('bar Chart', () => {
 
             describe('when wrong event handlers are passed', () => {
                 it('should throw ane error', () => {
-                    const callback = jest.fn();
+                    const callback = vi.fn();
 
                     expect(() => {
                         bar.create(anchor, barData.withLetters(), {

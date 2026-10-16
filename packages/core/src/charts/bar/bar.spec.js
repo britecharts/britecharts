@@ -474,7 +474,7 @@ describe('bar Chart', () => {
 
         describe('when clicking on a bar', () => {
             it('should trigger a callback on mouse click', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
                 const expectedCalls = 1;
                 const expectedArgumentsNumber = 3;
@@ -494,7 +494,7 @@ describe('bar Chart', () => {
         describe('when hovering a bar', () => {
             it('should trigger a callback on mouse over', () => {
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsNumber = 3;
                 let actualCallCount;
@@ -517,7 +517,7 @@ describe('bar Chart', () => {
                 let actualArgumentsNumber;
 
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
 
                 barChart.on('customMouseMove', callbackSpy);
                 bar.dispatch('mousemove');
@@ -536,7 +536,7 @@ describe('bar Chart', () => {
                 let actualArgumentsNumber;
 
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
 
                 barChart.on('customMouseOut', callbackSpy);
                 bar.dispatch('mouseout');

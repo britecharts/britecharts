@@ -3,7 +3,7 @@
 // `dist/esm/charts/bar/barChart.js` from `barChart.ts`, so these specifiers
 // point at real files there, and strict ESM cannot resolve one without an
 // extension. In this repo they reach the TypeScript through TypeScript's and
-// Vite's own resolution and jest's `moduleNameMapper`.
+// Vite's own resolution, which Vitest uses too.
 export { default as BarWrapper } from './charts/bar/barChart.js';
 export { default as BulletWrapper } from './charts/bullet/bulletChart.js';
 export { default as DonutWrapper } from './charts/donut/donutChart.js';

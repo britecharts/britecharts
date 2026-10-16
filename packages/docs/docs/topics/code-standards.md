@@ -10,9 +10,9 @@ We have followed a couple of standards in this project: [JSDoc](http://usejsdoc.
 
 D3.js charts are complex systems. As other Software Development projects, they start simple and become bloated at the end of the process. To overcome this, we have followed a component approach that allows us to create easily testable units.
 
-We have chosen [Jest](https://jestjs.io/) as our test runner, and [Jasmine](http://jasmine.github.io/) as our unit-testing library in core.
+We use [Vitest](https://vitest.dev/) as our test runner, with jsdom standing in for the browser.
 
-To install Jest and start running our test you would need to follow these steps:
+To start running our tests you would need to follow these steps:
 
 1. Fork the repository by clicking the fork button on Github
 2. Clone the repository with:

@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { mount } from '../../../testing/mount';
 
@@ -14,9 +15,9 @@ const makeWrapper = () => {
 
     return {
         instance,
-        create: jest.fn(() => instance),
-        update: jest.fn(),
-        destroy: jest.fn(),
+        create: vi.fn(() => instance),
+        update: vi.fn(),
+        destroy: vi.fn(),
     };
 };
 
@@ -62,7 +63,7 @@ describe('useChart', () => {
 
         // defect 3: an instance kept in state costs a render nothing uses
         it('should not render again after creating the chart', () => {
-            const onRender = jest.fn();
+            const onRender = vi.fn();
 
             mountHarness({ wrapper, data, onRender });
 
@@ -70,7 +71,7 @@ describe('useChart', () => {
         });
 
         it('should not call update or the tooltip callback', () => {
-            const createTooltip = jest.fn();
+            const createTooltip = vi.fn();
 
             mountHarness({ wrapper, data, options: { createTooltip } });
 
@@ -111,7 +112,7 @@ describe('useChart', () => {
             });
 
             it('should not call update or the tooltip callback for the creation', () => {
-                const createTooltip = jest.fn();
+                const createTooltip = vi.fn();
                 const mounted = mountHarness({
                     wrapper,
                     data: null,
@@ -242,7 +243,7 @@ describe('useChart', () => {
         // first update
         describe('the tooltip callback', () => {
             it('should be called after update, and after nothing else', () => {
-                const createTooltip = jest.fn();
+                const createTooltip = vi.fn();
                 const mounted = mountHarness({
                     wrapper,
                     data,
@@ -258,7 +259,7 @@ describe('useChart', () => {
             });
 
             it('should not be called when the update was skipped', () => {
-                const createTooltip = jest.fn();
+                const createTooltip = vi.fn();
                 const mounted = mountHarness({
                     wrapper,
                     data,
@@ -332,7 +333,7 @@ describe('useChart', () => {
         });
 
         it('should not call update or the tooltip callback', () => {
-            const createTooltip = jest.fn();
+            const createTooltip = vi.fn();
             const mounted = mountHarness({
                 wrapper,
                 data,

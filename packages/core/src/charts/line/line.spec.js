@@ -906,7 +906,7 @@ describe('line Chart', () => {
         });
 
         it('should trigger an event on hover', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCalls = 1;
             const expectedArguments = 2;
@@ -919,7 +919,7 @@ describe('line Chart', () => {
         });
 
         it('should trigger an event on mouse out', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCalls = 1;
             const expectedArguments = 2;
@@ -932,7 +932,7 @@ describe('line Chart', () => {
         });
 
         it('should trigger an event on touchmove', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCalls = 1;
             const expectedArguments = 2;

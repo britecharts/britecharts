@@ -107,7 +107,7 @@ describe('export Helper', () => {
     describe('createImage', () => {
         describe('when callback is passed', () => {
             it('should be called at least once with one arg', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCalls = 1;
                 const expectedArgumentsCount = 1;
 

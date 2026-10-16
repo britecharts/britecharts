@@ -659,7 +659,7 @@ donutDataSets.forEach((datasetName) => {
         describe('lifecycle', () => {
             describe('when mouse events are triggered', () => {
                 it('should trigger an event on click', () => {
-                    let callback = jest.fn(),
+                    let callback = vi.fn(),
                         firstSlice = containerFixture.select(
                             '.chart-group .arc path'
                         );
@@ -671,7 +671,7 @@ donutDataSets.forEach((datasetName) => {
                 });
 
                 it('should trigger an event on hover', () => {
-                    let callback = jest.fn(),
+                    let callback = vi.fn(),
                         firstSlice = containerFixture.select(
                             '.chart-group .arc path'
                         );
@@ -683,7 +683,7 @@ donutDataSets.forEach((datasetName) => {
                 });
 
                 it('should trigger an event on mouse out', () => {
-                    let callback = jest.fn(),
+                    let callback = vi.fn(),
                         firstSlice = containerFixture.select(
                             '.chart-group .arc path'
                         );
@@ -695,7 +695,7 @@ donutDataSets.forEach((datasetName) => {
                 });
 
                 it('should trigger a callback on mouse move', () => {
-                    let callback = jest.fn(),
+                    let callback = vi.fn(),
                         firstSlice = containerFixture.select(
                             '.chart-group .arc path'
                         );

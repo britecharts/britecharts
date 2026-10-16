@@ -2,8 +2,8 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "jsx": "react",
-        // Resolve the sibling workspace to its source, the way jest's
-        // moduleNameMapper already does for the specs.
+        // Resolve the sibling workspace to its source, the way the aliases in
+        // vitest.config.js already do for the specs.
         //
         // Without this, `@britecharts/wrappers` resolves through its
         // package.json `types`, which points at `dist/esm/index.d.ts` -- so

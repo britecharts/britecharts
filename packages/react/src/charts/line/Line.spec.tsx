@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import Line from './Line';
 import React from 'react';
 import { mount } from '../../../testing/mount';
@@ -21,7 +22,7 @@ describe('Line', () => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(LineWrapper, 'create');
+            createSpy = vi.spyOn(LineWrapper, 'create');
         });
 
         afterEach(() => {

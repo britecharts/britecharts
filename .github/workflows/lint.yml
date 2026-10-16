@@ -48,8 +48,8 @@ jobs:
       - name: Linting Code 🗃
         run: pnpm run lint:js
 
-      # The gate that actually enforces type correctness. Babel strips types
-      # for the bundles and for Jest without ever checking them, so without
-      # this step nothing in CI would.
+      # The gate that actually enforces type correctness. The builds and
+      # Vitest strip types without ever checking them, so without this step
+      # nothing in CI would.
       - name: Type-checking 🧷
         run: pnpm run type-check

@@ -46,6 +46,8 @@ const COMMON_DENY = [
     'jest.config.js',
     'jest.config.cjs',
     'jest.setup.js',
+    'vitest.config.js',
+    'vitest.setup.js',
     'babel.config.js',
     'babel.config.cjs',
     '.eslintcache',

@@ -1094,7 +1094,7 @@ describe('scatter Plot', () => {
     describe('lifecycle', () => {
         describe('when clicking on a point', function () {
             it('should trigger a callback on mouse click', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const scatterDataPoint = containerFixture.select('svg');
                 const expectedCallCount = 1;
                 const expectedArguments = 3;
@@ -1111,7 +1111,7 @@ describe('scatter Plot', () => {
 
         describe('mouse events', () => {
             it('should dispatch customMouseOver event', () => {
-                const callback = jest.fn();
+                const callback = vi.fn();
                 const container = containerFixture.selectAll('svg');
                 const expectedCallCount = 1;
                 const expectedArguments = 2;
@@ -1124,7 +1124,7 @@ describe('scatter Plot', () => {
             });
 
             it('should dispatch customMouseOut event', () => {
-                const callback = jest.fn();
+                const callback = vi.fn();
                 const container = containerFixture.selectAll('svg');
                 const expectedCallCount = 1;
                 const expectedArguments = 2;
@@ -1137,7 +1137,7 @@ describe('scatter Plot', () => {
             });
 
             it('should dispatch customMouseMove event', () => {
-                const callback = jest.fn();
+                const callback = vi.fn();
                 const container = containerFixture.selectAll('svg');
                 const expectedCallCount = 1;
                 const expectedArguments = 3;

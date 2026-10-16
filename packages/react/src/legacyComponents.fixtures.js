@@ -6,7 +6,7 @@
  * Empty: every component is a function.
  *
  * Note what the specs cannot catch: React 16.14 still honours `defaultProps`
- * on function components, so under jest a function component that keeps them
+ * on function components, so in the specs a function component that keeps them
  * behaves exactly like one using destructured defaults. These checks are what
  * stand between such a component and React 19, which ignores them silently.
  *

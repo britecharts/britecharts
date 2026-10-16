@@ -40,8 +40,8 @@ const MUTANTS = [
         title: 'delete the recovery branch: a chart is only ever created on the first render',
         patch: 'm2-no-recovery.patch',
         specs: [
-            'src/charts/helpers/useChart.spec.js',
-            'src/charts/line/Line.lifecycle.spec.js',
+            'src/charts/helpers/useChart.spec.tsx',
+            'src/charts/line/Line.lifecycle.spec.tsx',
         ],
     },
     {
@@ -49,15 +49,15 @@ const MUTANTS = [
         title: 'call createTooltip after the creation too, not only after an update',
         patch: 'm3-tooltip-after-create.patch',
         specs: [
-            'src/charts/helpers/useChart.spec.js',
-            'src/charts/line/Line.lifecycle.spec.js',
+            'src/charts/helpers/useChart.spec.tsx',
+            'src/charts/line/Line.lifecycle.spec.tsx',
         ],
     },
     {
         id: 'm6',
         title: 'rebuild the chart Tooltip wraps on every render instead of when its props change',
         patch: 'm6-tooltip-child-not-memoised.patch',
-        specs: ['src/charts/tooltip/Tooltip.spec.js'],
+        specs: ['src/charts/tooltip/Tooltip.spec.tsx'],
     },
 ];
 
@@ -76,24 +76,20 @@ const run = (command, args, cwd) =>
         maxBuffer: 64 * 1024 * 1024,
     });
 
-const jest = (specs) =>
-    run('npx', ['jest', ...specs, '--coverage=false', '--ci'], packageRoot);
+const vitest = (specs) =>
+    run('npx', ['vitest', 'run', ...specs, '--coverage=false'], packageRoot);
 
 const strip = (text) => text.replace(/\u001b\[[0-9;]*m/g, '');
 
-// Jest's `Tests:` summary counts assertions that failed. A suite that could not
-// even load (a syntax error in the mutant) prints `● Test suite failed to run`
-// and a summary with no failed tests: that is a broken build, not a kill.
+// Vitest's `Tests` summary counts the tests that failed. A file that could not
+// even load (a syntax error in the mutant) is reported as `FAIL <file> [ <file> ]`
+// with no failed test: that is a broken build, not a kill.
 const failedCount = (output) =>
-    Number(
-        (strip(output).match(/^Tests:\s+(?:.*?,\s*)?(\d+) failed/m) || [])[1] ||
-            0
-    );
+    Number((strip(output).match(/^\s*Tests\s+(\d+) failed/m) || [])[1] || 0);
 
 const failedTests = (output) =>
-    [...strip(output).matchAll(/^\s+● (.+)$/gm)]
+    [...strip(output).matchAll(/^\s*FAIL\s+(?:\|[^|]+\|\s+)?\S+ > (.+)$/gm)]
         .map((match) => match[1])
-        .filter((name) => !/^Test suite failed to run/.test(name))
         .filter((name, index, all) => all.indexOf(name) === index);
 
 const filesOf = (patchPath) =>
@@ -115,7 +111,7 @@ const allSpecs = [...new Set(MUTANTS.flatMap(({ specs }) => specs))];
 console.log(
     `verify:suite  baseline: ${allSpecs.length} spec files, unmodified`
 );
-const baseline = jest(allSpecs);
+const baseline = vitest(allSpecs);
 
 if (baseline.status !== 0) {
     console.error(
@@ -171,7 +167,7 @@ for (const mutant of MUTANTS) {
         finish(EXIT.notApplied);
     }
 
-    const result = jest(mutant.specs);
+    const result = vitest(mutant.specs);
     const output = strip(result.stdout + result.stderr);
 
     restore();

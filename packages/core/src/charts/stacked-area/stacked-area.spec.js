@@ -557,7 +557,7 @@ describe('stacked Area Chart', () => {
         });
 
         it('should trigger an event on hover', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCallCount = 1;
             const expectedArgumentCount = 2;
@@ -570,7 +570,7 @@ describe('stacked Area Chart', () => {
         });
 
         it('should trigger an event on mouse out', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCallCount = 1;
             const expectedArgumentCount = 2;
@@ -583,7 +583,7 @@ describe('stacked Area Chart', () => {
         });
 
         it('should trigger an event on touchmove', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const container = containerFixture.selectAll('svg');
             const expectedCallCount = 1;
             const expectedArgumentCount = 2;

@@ -277,7 +277,7 @@ describe('stacked Bar Chart', () => {
     describe('lifecycle', () => {
         describe('when clicking on the chart', () => {
             it('should trigger a callback with the column, the pointer and the clicked bar', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 3;
 
@@ -294,7 +294,7 @@ describe('stacked Bar Chart', () => {
             });
 
             it('should not trigger a callback when the empty space of the chart is clicked', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 0;
 
                 stackedBarChart.on('customClick', callbackSpy);
@@ -316,7 +316,7 @@ describe('stacked Bar Chart', () => {
                 containerFixture.select('.stacked-bar').dispatch('mousemove');
 
             it('mouseover should trigger a callback when the pointer reaches a bar', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
@@ -331,7 +331,7 @@ describe('stacked Bar Chart', () => {
             });
 
             it('mouseover should not trigger a callback over the empty space of the chart', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 0;
 
                 stackedBarChart.on('customMouseOver', callbackSpy);
@@ -342,7 +342,7 @@ describe('stacked Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback when the pointer leaves the bars for the empty space', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
 
@@ -358,7 +358,7 @@ describe('stacked Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback when the pointer leaves the chart from a bar', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
 
                 stackedBarChart.on('customMouseOut', callbackSpy);
@@ -369,7 +369,7 @@ describe('stacked Bar Chart', () => {
             });
 
             it('mouseout should not trigger a callback when the bars were never hovered', () => {
-                const callbackSpy = jest.fn();
+                const callbackSpy = vi.fn();
                 const expectedCallCount = 0;
 
                 stackedBarChart.on('customMouseOut', callbackSpy);

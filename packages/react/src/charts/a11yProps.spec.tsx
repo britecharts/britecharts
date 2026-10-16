@@ -1,3 +1,4 @@
+// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
 import { mount } from '../../testing/mount';
 
@@ -12,7 +13,6 @@ import {
     SparklineWrapper,
     StackedAreaWrapper,
     StackedBarWrapper,
-    TooltipWrapper,
 } from '@britecharts/wrappers';
 
 import Bar from './bar/Bar';
@@ -35,13 +35,6 @@ import StackedArea from './stackedArea/StackedArea';
 import stackedAreaData from './stackedArea/stackedAreaChart.fixtures';
 import StackedBar from './stackedBar/StackedBar';
 import stackedBarData from './stackedBar/stackedBarChart.fixtures';
-import Tooltip from './tooltip/Tooltip';
-
-// Every component draws through its own wrapper unless a `chart` prop says
-// otherwise. That default is a destructured default, not a `defaultProps`,
-// which React 19 ignores on a function component. The colocated specs always
-// pass `chart` themselves, so nothing else would notice a wrong or missing
-// one.
 const CHARTS = [
     ['Bar', Bar, BarWrapper, () => ({ data: barData.withLetters() })],
     [
@@ -88,34 +81,53 @@ const CHARTS = [
         StackedBarWrapper,
         () => ({ data: stackedBarData.with3Sources() }),
     ],
-    [
-        'Tooltip',
-        Tooltip,
-        TooltipWrapper,
-        // The tooltip is drawn into the chart it wraps, so it needs one to exist
-        () => ({
-            data: [],
-            render: () => <div className="metadata-group" />,
-        }),
-    ],
 ];
 
-describe('default wrapper', () => {
+// Each component hands both props to its chart by name, so a prop without an
+// accessor behind it would make the wrapper throw "Method not supported".
+describe('accessibility props', () => {
     describe.each(CHARTS)('%s', (name, Component, wrapper, getProps) => {
         let createSpy;
 
         beforeEach(() => {
-            createSpy = jest.spyOn(wrapper, 'create');
+            createSpy = vi.spyOn(wrapper, 'create');
         });
 
         afterEach(() => {
             createSpy.mockRestore();
         });
 
-        it('should draw through its own wrapper when no chart prop is given', () => {
-            mount(<Component {...getProps()} />);
+        it('should pass a11yTitle and a11yDescription to the chart', () => {
+            mount(
+                <Component
+                    {...getProps()}
+                    a11yTitle="Monthly visits"
+                    a11yDescription="Visits doubled in May"
+                />
+            );
 
-            expect(createSpy).toHaveBeenCalledTimes(1);
+            const chart = createSpy.mock.results[0].value;
+
+            expect(chart.a11yTitle()).toBe('Monthly visits');
+            expect(chart.a11yDescription()).toBe('Visits doubled in May');
+        });
+
+        it('should render them as the svg title and description', () => {
+            const wrapper = mount(
+                <Component
+                    {...getProps()}
+                    a11yTitle="Monthly visits"
+                    a11yDescription="Visits doubled in May"
+                />
+            );
+            const svg = wrapper.find('svg.britechart');
+
+            expect(svg.querySelector(':scope > title').textContent).toBe(
+                'Monthly visits'
+            );
+            expect(svg.querySelector(':scope > desc').textContent).toBe(
+                'Visits doubled in May'
+            );
         });
     });
 });

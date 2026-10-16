@@ -15,18 +15,18 @@ describe('optimizedResize', () => {
         [...resizeListeners].forEach((listener) => listener());
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
         window.innerWidth = 1000;
         resizeListeners = new Set();
 
-        addListener = jest
+        addListener = vi
             .spyOn(window, 'addEventListener')
             .mockImplementation((type, listener) => {
                 if (type === 'resize') {
                     resizeListeners.add(listener);
                 }
             });
-        removeListener = jest
+        removeListener = vi
             .spyOn(window, 'removeEventListener')
             .mockImplementation((type, listener) => {
                 if (type === 'resize') {
@@ -34,7 +34,7 @@ describe('optimizedResize', () => {
                 }
             });
         // One animation frame, run at once
-        animationFrame = jest
+        animationFrame = vi
             .spyOn(window, 'requestAnimationFrame')
             .mockImplementation((callback) => {
                 callback(0);
@@ -42,12 +42,11 @@ describe('optimizedResize', () => {
                 return 0;
             });
 
-        jest.isolateModules(() => {
-            optimizedResize = require('./optimizedResize.js').default;
-        });
+        vi.resetModules();
+        optimizedResize = (await import('./optimizedResize.js')).default;
     });
 
-    // Only what this spec spied on: jest.restoreAllMocks() would also undo the
+    // Only what this spec spied on: vi.restoreAllMocks() would also undo the
     // console spies the setup file installs for its fail-on-console check
     afterEach(() => {
         [addListener, removeListener, animationFrame].forEach((spy) =>
@@ -64,16 +63,16 @@ describe('optimizedResize', () => {
         });
 
         it('should attach a single listener for many callbacks', () => {
-            optimizedResize.addHorizontal(jest.fn());
-            optimizedResize.addHorizontal(jest.fn());
-            optimizedResize.addHorizontal(jest.fn());
+            optimizedResize.addHorizontal(vi.fn());
+            optimizedResize.addHorizontal(vi.fn());
+            optimizedResize.addHorizontal(vi.fn());
 
             expect(resizeCalls()).toHaveLength(1);
         });
 
         it('should keep listening while a callback is left', () => {
-            const first = jest.fn();
-            const second = jest.fn();
+            const first = vi.fn();
+            const second = vi.fn();
 
             optimizedResize.addHorizontal(first);
             optimizedResize.addHorizontal(second);
@@ -83,7 +82,7 @@ describe('optimizedResize', () => {
         });
 
         it('should stop listening when the last callback is removed', () => {
-            const only = jest.fn();
+            const only = vi.fn();
 
             optimizedResize.addHorizontal(only);
             optimizedResize.remove(only);
@@ -92,11 +91,11 @@ describe('optimizedResize', () => {
         });
 
         it('should listen again when a callback is added after all were removed', () => {
-            const first = jest.fn();
+            const first = vi.fn();
 
             optimizedResize.addHorizontal(first);
             optimizedResize.remove(first);
-            optimizedResize.addHorizontal(jest.fn());
+            optimizedResize.addHorizontal(vi.fn());
 
             expect(resizeListeners.size).toBe(1);
             expect(removeListener).toHaveBeenCalled();
@@ -105,8 +104,8 @@ describe('optimizedResize', () => {
 
     describe('notifying the callbacks', () => {
         it('should call every callback when the width changes', () => {
-            const first = jest.fn();
-            const second = jest.fn();
+            const first = vi.fn();
+            const second = vi.fn();
 
             optimizedResize.addHorizontal(first);
             optimizedResize.addHorizontal(second);
@@ -117,7 +116,7 @@ describe('optimizedResize', () => {
         });
 
         it('should not call them when only the height changed', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
 
             optimizedResize.addHorizontal(callback);
             resizeTo(1000);
@@ -128,8 +127,8 @@ describe('optimizedResize', () => {
         // Guards against a leak: the first removal ending resizing for everyone
         // else
         it('should keep notifying the remaining callbacks after one is removed', () => {
-            const gone = jest.fn();
-            const remaining = jest.fn();
+            const gone = vi.fn();
+            const remaining = vi.fn();
 
             optimizedResize.addHorizontal(gone);
             optimizedResize.addHorizontal(remaining);
@@ -140,10 +139,10 @@ describe('optimizedResize', () => {
         });
 
         it('should not call a callback that was removed', () => {
-            const gone = jest.fn();
+            const gone = vi.fn();
 
             optimizedResize.addHorizontal(gone);
-            optimizedResize.addHorizontal(jest.fn());
+            optimizedResize.addHorizontal(vi.fn());
             optimizedResize.remove(gone);
             resizeTo(800);
 
@@ -151,8 +150,8 @@ describe('optimizedResize', () => {
         });
 
         it('should notify a callback added after all the others were removed', () => {
-            const first = jest.fn();
-            const later = jest.fn();
+            const first = vi.fn();
+            const later = vi.fn();
 
             optimizedResize.addHorizontal(first);
             optimizedResize.remove(first);
@@ -164,8 +163,8 @@ describe('optimizedResize', () => {
         });
 
         it('should let a callback remove itself while being notified', () => {
-            const other = jest.fn();
-            const selfRemoving = jest.fn(() =>
+            const other = vi.fn();
+            const selfRemoving = vi.fn(() =>
                 optimizedResize.remove(selfRemoving)
             );
 
@@ -179,8 +178,8 @@ describe('optimizedResize', () => {
         // A callback that throws must not leave the registry believing a run
         // is still under way, which would ignore every resize after it
         it('should keep notifying after a callback threw', () => {
-            const later = jest.fn();
-            const throwing = jest.fn(() => {
+            const later = vi.fn();
+            const throwing = vi.fn(() => {
                 throw new Error('a callback failed');
             });
 
@@ -196,7 +195,7 @@ describe('optimizedResize', () => {
         });
 
         it('should compare with the width at the time the first callback was added', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
 
             window.innerWidth = 700;
             optimizedResize.addHorizontal(callback);
@@ -207,7 +206,7 @@ describe('optimizedResize', () => {
     });
 
     it('should ignore removing a callback it does not know', () => {
-        expect(() => optimizedResize.remove(jest.fn())).not.toThrow();
+        expect(() => optimizedResize.remove(vi.fn())).not.toThrow();
     });
 
     it('should ignore adding something that is not a callback', () => {

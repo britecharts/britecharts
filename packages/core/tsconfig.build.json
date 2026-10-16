@@ -15,7 +15,7 @@
         // the day. The `types` field has to name one of them.
         "rootDir": "src",
         "outDir": "dist/types",
-        // The specs are the only files that need jest's globals, and they are
+        // The specs are the only files that need Vitest's globals, and they are
         // excluded below, so the declarations are built without them.
         "types": []
     },

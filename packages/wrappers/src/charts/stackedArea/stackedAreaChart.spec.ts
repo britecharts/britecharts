@@ -46,7 +46,7 @@ describe('stacked Area Chart', () => {
 
             describe('when wrong event handlers are passed', () => {
                 it('should throw ane error', () => {
-                    const callback = jest.fn();
+                    const callback = vi.fn();
 
                     expect(() => {
                         stackedArea.create(
@@ -136,7 +136,7 @@ describe('stacked Area Chart', () => {
 
             describe('when event handlers are passed', () => {
                 it('should set customMouseOver callback', () => {
-                    const expected = jest.fn();
+                    const expected = vi.fn();
 
                     const chart = stackedArea.create(
                         anchor,
@@ -150,7 +150,7 @@ describe('stacked Area Chart', () => {
                 });
 
                 it('should set customMouseMove callback', () => {
-                    const expected = jest.fn();
+                    const expected = vi.fn();
 
                     const chart = stackedArea.create(
                         anchor,
@@ -164,7 +164,7 @@ describe('stacked Area Chart', () => {
                 });
 
                 it('should set customMouseOut callback', () => {
-                    const expected = jest.fn();
+                    const expected = vi.fn();
 
                     const chart = stackedArea.create(
                         anchor,
