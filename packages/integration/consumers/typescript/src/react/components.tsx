@@ -27,6 +27,7 @@ import type {
     StackedAreaProps,
     StackedBarProps,
     TooltipProps,
+    TooltipRenderArgs,
 } from '@britecharts/react';
 
 export const barProps: BarChartProps = {
@@ -90,6 +91,25 @@ export const tooltipProps: TooltipProps = {
     xAxisValueType: 'date',
 };
 export const tooltip = <Tooltip {...tooltipProps} />;
+
+// The render props carry the wrapped chart's own data type, inferred from the
+// tooltip's `data`, so they spread straight into the chart.
+export const tooltipWrappingLine = (
+    <Tooltip data={lineProps.data} render={(props) => <Line {...props} />} />
+);
+const renderDonut = (props: TooltipRenderArgs<DonutChartProps['data']>) => (
+    <Donut {...props} />
+);
+export const tooltipWrappingDonut = (
+    <Tooltip data={donutProps.data} render={renderDonut} />
+);
+export const tooltipWrappingWrongChart = (
+    <Tooltip
+        data={lineProps.data}
+        // @ts-expect-error line data is not what a donut takes
+        render={(props) => <Donut {...props} />}
+    />
+);
 
 // The props are typed, not `any`.
 // @ts-expect-error width takes a number

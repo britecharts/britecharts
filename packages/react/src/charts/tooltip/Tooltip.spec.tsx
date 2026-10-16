@@ -2,7 +2,7 @@ import React from 'react';
 import type { ReactNode } from 'react';
 import { act } from '@testing-library/react';
 import type { MockInstance } from 'vitest';
-import type { DonutChartDataShape, LineChartData } from '@britecharts/core';
+import type { LineChartData } from '@britecharts/core';
 
 import { mount } from '../../../testing/mount';
 
@@ -28,14 +28,8 @@ const renderFakeChartNoMarker = () => <FakeChartNoMarker />;
 
 type CallOrderSpy = { mock: { invocationCallOrder: number[] } };
 
-type ChildHolder = { props?: TooltipRenderArgs };
+type ChildHolder = { props?: TooltipRenderArgs<unknown> };
 
-/**
- * Wraps a render prop so a test can reach what the tooltip hands its child
- * chart (the data and the handlers). The latest props always land on
- * `holder.props`: read it when you need it, never keep a copy, because the
- * tooltip builds a new set of handlers whenever it builds its child again.
- */
 /**
  * The names of the spies, in the order their first call happened. A spy that
  * was never called is left out, so a missing call and a call in the wrong
@@ -52,9 +46,18 @@ const namesInCallOrder = (spies: Record<string, CallOrderSpy>) =>
         )
         .map(([name]) => name);
 
+/**
+ * Wraps a render prop so a test can reach what the tooltip hands its child
+ * chart (the data and the handlers). The latest props always land on
+ * `holder.props`: read it when you need it, never keep a copy, because the
+ * tooltip builds a new set of handlers whenever it builds its child again.
+ */
 const captureChildProps =
-    (holder: ChildHolder, render: (props: TooltipRenderArgs) => ReactNode) =>
-    (props: TooltipRenderArgs) => {
+    <TData,>(
+        holder: ChildHolder,
+        render: (props: TooltipRenderArgs<TData>) => ReactNode
+    ) =>
+    (props: TooltipRenderArgs<TData>) => {
         holder.props = props;
 
         return render(props);
@@ -262,8 +265,8 @@ describe('tooltip', () => {
     describe('driven by a chart', () => {
         // The chart re-renders on every tooltip state change and asks the
         // wrapper to create the tooltip again; there must still be one.
-        const renderLine = (props: TooltipRenderArgs) => (
-            <Line {...props} data={props.data as LineChartData} />
+        const renderLine = (props: TooltipRenderArgs<LineChartData>) => (
+            <Line {...props} />
         );
         const dataPoint = {
             date: '2017-01-16T16:00:00-08:00',
@@ -410,12 +413,7 @@ describe('tooltip', () => {
                 mount(
                     <Tooltip
                         data={donutData.with4Slices()}
-                        render={(props) => (
-                            <Donut
-                                {...props}
-                                data={props.data as DonutChartDataShape[]}
-                            />
-                        )}
+                        render={(props) => <Donut {...props} />}
                     />
                 )
             ).not.toThrow();
@@ -429,8 +427,8 @@ describe('tooltip', () => {
     // components to another effect kind (or scheduling one of them later)
     // breaks these orders.
     describe('lifecycle order between the tooltip and the chart it wraps', () => {
-        const renderLine = (props: TooltipRenderArgs) => (
-            <Line {...props} data={props.data as LineChartData} />
+        const renderLine = (props: TooltipRenderArgs<LineChartData>) => (
+            <Line {...props} />
         );
         let spies: {
             'LineWrapper.create': MockInstance<typeof LineWrapper.create>;
