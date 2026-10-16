@@ -61,7 +61,7 @@ jobs:
         # run asks once: its version was either published long ago or not yet.
         env:
           REQUESTED: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
-          AFTER_PUBLISH: ${{ github.event_name == 'workflow_run' && startsWith(github.event.workflow_run.head_commit.message, 'chore: version packages') }}
+          AFTER_PUBLISH: "${{ github.event_name == 'workflow_run' && startsWith(github.event.workflow_run.head_commit.message, 'chore: version packages') }}"
         run: |
           requested="${REQUESTED:-$(node -p "require('./packages/core/package.json').version")}"
           attempts=1
