@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.02570f28.css">
-<script src="/britecharts/assets/js/runtime~main.641e5596.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.1aa7c257.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.5c9b623b.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.f0705a9a.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -69,7 +69,7 @@
 <p>Or, with npm:</p>
 <div class="language-text codeBlockContainer_sfVD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_Dzgi"><pre tabindex="0" class="prism-code language-text codeBlock_I0A4 thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_KEVW"><div class="token-line" style="color:#393A34"><span class="token plain">npm i --save @britecharts/core @britecharts/wrappers @britecharts/react</span><br></div></code></pre></div></div>
 <p>Britecharts-React is available as an <a href="https://www.npmjs.com/package/britecharts-react" target="_blank" rel="noopener noreferrer" class="">NPM module</a> or through CDN links (in <a href="https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/" target="_blank" rel="noopener noreferrer" class="">different formats</a> or a <a href="https://cdn.jsdelivr.net/npm/britecharts-react@latest/dist/" target="_blank" rel="noopener noreferrer" class="">bundle</a>).</p>
-<p>Each component is also published on its own, in UMD format (<code>dist/umd/charts/&lt;Component&gt;.js</code>) and CommonJS format (<code>dist/cjs/charts/&lt;Component&gt;.js</code>); in both the module <em>is</em> the component, so <code>require(&#x27;@britecharts/react/dist/cjs/charts/Donut.js&#x27;)</code> returns <code>Donut</code>. The <a href="https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers/react" target="_blank" rel="noopener noreferrer" class="">React consumer</a> in the integration package shows every way of loading it, and is what CI runs.</p>
+<p>Import the components from the package: bundlers get ES modules, and <code>require(&#x27;@britecharts/react&#x27;)</code> gets the UMD bundle. The <a href="https://github.com/britecharts/britecharts/tree/main/packages/integration/consumers/react" target="_blank" rel="noopener noreferrer" class="">React consumer</a> in the integration package shows every way of loading it, and is what CI runs.</p>
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="supported-react-versions">Supported React versions<a href="#supported-react-versions" class="hash-link" aria-label="Direct link to Supported React versions" title="Direct link to Supported React versions" translate="no">​</a></h3>
 <p><code>peerDependencies</code> requires <code>react</code> and <code>react-dom</code> <code>&gt;=16.8</code>: the components use hooks, which arrived in that release. What is actually verified on every commit:</p>
 <ul>
