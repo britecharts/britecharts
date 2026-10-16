@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.02570f28.css">
-<script src="/britecharts/assets/js/runtime~main.64dff405.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.e4162109.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.9d91c97e.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.70e91035.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -146,7 +146,7 @@
 <ol start="6">
 <li class="">Chart negative values</li>
 </ol>
-<p>The bar, grouped bar, stacked bar and brush charts draw negative values, below or to the left of a zero baseline. They used to throw on a negative datum.</p>
+<p>The bar, grouped bar, stacked bar and brush charts draw negative values, below or to the left of a zero baseline. They used to throw on a negative datum. The scatter plot&#x27;s value axis now runs below zero when the data does, and each circle&#x27;s size shows the magnitude of its value. Before, points with a negative value were not drawn.</p>
 <ol start="7">
 <li class="">Show a loading state on every chart</li>
 </ol>
@@ -177,7 +177,7 @@
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="new-feature-changes">New Feature Changes<a href="#new-feature-changes" class="hash-link" aria-label="Direct link to New Feature Changes" title="Direct link to New Feature Changes" translate="no">​</a></h3>
 <ul>
 <li class="">Written in TypeScript, with type declarations generated from the source</li>
-<li class="">Negative values in the bar, grouped bar, stacked bar and brush charts</li>
+<li class="">Negative values in the bar, grouped bar, stacked bar, brush and scatter plot charts</li>
 <li class="">Loading states on every data chart, including the bullet, heatmap and scatter plot</li>
 <li class="">A <code>ScatterPlot</code> component in <code>@britecharts/react</code></li>
 <li class="">Charts are responsive by default using the viewBox property.</li>
