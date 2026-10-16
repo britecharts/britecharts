@@ -314,7 +314,7 @@ Most Britecharts' components have animations that you can activate with the 'isA
 
 6. Chart negative values
 
-The bar, grouped bar, stacked bar and brush charts draw negative values, below or to the left of a zero baseline. They used to throw on a negative datum.
+The bar, grouped bar, stacked bar and brush charts draw negative values, below or to the left of a zero baseline. They used to throw on a negative datum. The scatter plot's value axis now runs below zero when the data does, and each circle's size shows the magnitude of its value. Before, points with a negative value were not drawn.
 
 7. Show a loading state on every chart
 
@@ -345,7 +345,7 @@ We changed many things in the third version of Britecharts; here are some summar
 
 ### New Feature Changes
 * Written in TypeScript, with type declarations generated from the source
-* Negative values in the bar, grouped bar, stacked bar and brush charts
+* Negative values in the bar, grouped bar, stacked bar, brush and scatter plot charts
 * Loading states on every data chart, including the bullet, heatmap and scatter plot
 * A `ScatterPlot` component in `@britecharts/react`
 * Charts are responsive by default using the viewBox property.

@@ -616,13 +616,12 @@ export default function module(): ScatterPlotModule {
             max(dataPoints, ({ x }) => x),
             max(dataPoints, ({ y }) => y),
         ];
-        // `Math.abs` is never negative, so this condition is always false and
-        // the bottom of the value scale is always 0. Preserved as it stands --
-        // a conversion is the wrong place to change where a chart's axis
-        // starts. `?? 0` keeps the same answer for empty data, where `minY` is
-        // undefined and `Math.abs(undefined) < 0` was already false.
-        const yScaleBottomValue =
-            Math.abs(minY ?? 0) < 0 ? Math.abs(minY ?? 0) : 0;
+        // The value axis always includes 0, so negative values sit below it
+        // and an all-negative set still reads from zero down.
+        const yScaleBottomValue = Math.min(minY ?? 0, 0);
+        const yScaleTopValue = Math.max(maxY ?? 0, 0);
+        // A circle's area shows its value's magnitude: -50 is as big as 50.
+        const maxMagnitude = Math.max(Math.abs(minY ?? 0), Math.abs(maxY ?? 0));
 
         xOriginalScale = xScale = scaleLinear()
             .domain([minX as number, maxX as number])
@@ -630,7 +629,7 @@ export default function module(): ScatterPlotModule {
             .nice();
 
         yOriginalScale = yScale = scaleLinear()
-            .domain([yScaleBottomValue, maxY as number])
+            .domain([yScaleBottomValue, yScaleTopValue])
             .rangeRound([chartHeight, 0])
             .nice();
 
@@ -638,10 +637,10 @@ export default function module(): ScatterPlotModule {
             .domain(dataPoints.map(getName))
             .range(colorSchema);
 
-        // Clamped: a value at or under the domain's bottom can otherwise map
-        // to a radius a hair below zero, which SVG rejects.
+        // Read through `radiusFor`, which passes the magnitude. Clamped so no
+        // input can give the negative radius SVG rejects.
         areaScale = scaleSqrt<number, number>()
-            .domain([yScaleBottomValue, maxY as number])
+            .domain([0, maxMagnitude])
             .range([0, maxCircleArea])
             .clamp(true);
 
@@ -952,6 +951,17 @@ export default function module(): ScatterPlotModule {
     }
 
     /**
+     * The radius of the circle for a value: its magnitude on the area scale,
+     * so a negative value draws as large as the positive one.
+     * @param {Number} value  The data point's y value
+     * @return {Number}       Radius in pixels
+     * @private
+     */
+    function radiusFor(value: number): number {
+        return areaScale(Math.abs(value));
+    }
+
+    /**
      * Draws the points for each data element on the chart group
      * @return {void}
      * @private
@@ -979,7 +989,7 @@ export default function module(): ScatterPlotModule {
                     hasHollowCircles ? hollowColor : colorForName(d.name)
                 )
                 .attr('fill-opacity', circleOpacity)
-                .attr('r', (d) => areaScale(d.y))
+                .attr('r', (d) => radiusFor(d.y))
                 .attr('cx', (d) => xScale(d.x))
                 .attr('cy', (d) => yScale(d.y))
                 .style('cursor', 'pointer');
@@ -994,7 +1004,7 @@ export default function module(): ScatterPlotModule {
                     hasHollowCircles ? hollowColor : colorForName(d.name)
                 )
                 .attr('fill-opacity', circleOpacity)
-                .attr('r', (d) => areaScale(d.y))
+                .attr('r', (d) => radiusFor(d.y))
                 .attr('cx', (d) => xScale(d.x))
                 .attr('cy', (d) => yScale(d.y))
                 .style('cursor', 'pointer');
@@ -1019,7 +1029,7 @@ export default function module(): ScatterPlotModule {
             .selectAll('line.highlight-y-line')
             .attr('stroke', colorForName(data.name))
             .attr('class', 'highlight-y-line')
-            .attr('x1', xScale(data.x) - areaScale(data.y))
+            .attr('x1', xScale(data.x) - radiusFor(data.y))
             .attr('x2', 0)
             .attr('y1', yScale(data.y))
             .attr('y2', yScale(data.y));
@@ -1031,7 +1041,7 @@ export default function module(): ScatterPlotModule {
             .attr('class', 'highlight-x-line')
             .attr('x1', xScale(data.x))
             .attr('x2', xScale(data.x))
-            .attr('y1', yScale(data.y) + areaScale(data.y))
+            .attr('y1', yScale(data.y) + radiusFor(data.y))
             .attr('y2', chartHeight);
 
         // Draw data label for y value
@@ -1040,7 +1050,7 @@ export default function module(): ScatterPlotModule {
             .attr('text-anchor', 'middle')
             .attr('fill', colorForName(data.name))
             .attr('class', 'highlight-y-legend')
-            .attr('y', yScale(data.y) + areaScale(data.y) / 2)
+            .attr('y', yScale(data.y) + radiusFor(data.y) / 2)
             .attr('x', highlightTextLegendOffset)
             .text(`${localeFormatter.format(yAxisFormat)(data.y)}`);
 
@@ -1054,7 +1064,7 @@ export default function module(): ScatterPlotModule {
                 'transform',
                 `translate(0, ${chartHeight - highlightTextLegendOffset})`
             )
-            .attr('x', xScale(data.x) - areaScale(data.y) / 2)
+            .attr('x', xScale(data.x) - radiusFor(data.y) / 2)
             .text(`${getXAxisFormat()(data.x)}`);
     }
 
@@ -1242,8 +1252,10 @@ export default function module(): ScatterPlotModule {
             // nothing tests it.
             highlightCircle!,
             ease,
-            areaScale(dataPoint.y),
-            areaScale(dataPoint.y * 2)
+            radiusFor(dataPoint.y),
+            // What `areaScale(y * 2)` gave before the scale was clamped: on a
+            // square-root scale from 0, twice the value is √2 times the radius.
+            radiusFor(dataPoint.y) * Math.SQRT2
         );
     }
 
@@ -1271,7 +1283,7 @@ export default function module(): ScatterPlotModule {
             .attr('fill-opacity', circleOpacity)
             .attr('cx', () => xScale(data.x))
             .attr('cy', () => yScale(data.y))
-            .attr('r', () => areaScale(data.y))
+            .attr('r', () => radiusFor(data.y))
             .style('stroke-width', highlightStrokeWidth)
             .style('stroke-opacity', highlightCircleOpacity);
 

@@ -244,6 +244,53 @@ describe('scatter Plot', () => {
                     expect(radius).toBeGreaterThanOrEqual(0);
                 });
             });
+
+            it('draws a circle for every value, below zero too', () => {
+                const circles = containerFixture
+                    .selectAll('.chart-group circle')
+                    .nodes();
+
+                circles.forEach((circle) => {
+                    if (circle.__data__.y !== 0) {
+                        expect(
+                            Number(circle.getAttribute('r'))
+                        ).toBeGreaterThan(0);
+                    }
+                });
+            });
+
+            it('sizes each circle by the magnitude of its value', () => {
+                const circles = containerFixture
+                    .selectAll('.chart-group circle')
+                    .nodes();
+                const largest = Math.max(
+                    ...dataset.map(({ y }) => Math.abs(y))
+                );
+                const maxRadius = scatterPlot.maxCircleArea();
+
+                circles.forEach((circle) => {
+                    const expected =
+                        maxRadius *
+                        Math.sqrt(Math.abs(circle.__data__.y) / largest);
+
+                    expect(Number(circle.getAttribute('r'))).toBeCloseTo(
+                        expected,
+                        5
+                    );
+                });
+            });
+
+            it('extends the value axis below zero', () => {
+                const ticks = containerFixture
+                    .selectAll('.y-axis-group .tick text')
+                    .nodes()
+                    .map((tick) => tick.textContent);
+
+                // d3-format writes the typographic minus sign
+                expect(ticks.some((tick) => tick.startsWith('\u2212'))).toBe(
+                    true
+                );
+            });
         });
 
         describe('when hasHollowCircles is set to true', () => {
