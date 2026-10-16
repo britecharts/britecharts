@@ -25,6 +25,8 @@ d3Selection.select('.css-selector')
     * [exports(_selection, _data)](#exp_module_Brush--exports) ⏏
         * _static_
             * [.axisTimeCombinations](#module_Brush--exports.axisTimeCombinations)
+            * [.a11yTitle(_x)](#module_Brush--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+            * [.a11yDescription(_x)](#module_Brush--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.animationDuration(_x)](#module_Brush--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
             * [.areaCurve([_x])](#module_Brush--exports.areaCurve) ⇒ <code>String</code> \| <code>module</code>
             * [.dateRange([_x])](#module_Brush--exports.dateRange) ⇒ <code>dateRange</code> \| <code>module</code>
@@ -71,6 +73,36 @@ current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 ```js
 brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
 ```
+<a name="module_Brush--exports.a11yTitle" id="module_Brush--exports.a11yTitle"></a>
+
+## exports.a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+Gets or Sets the name screen readers announce for the chart. It is
+rendered as the svg's `<title>`. Unset, the chart is announced as
+"Brush chart".
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
+**Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>String</code> \| <code>null</code> | Desired accessible title for the chart |
+
+<a name="module_Brush--exports.a11yDescription" id="module_Brush--exports.a11yDescription"></a>
+
+## exports.a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+Gets or Sets a longer description screen readers announce after the
+chart's name, such as what the data shows. It is rendered as the svg's
+`<desc>`. Unset, the chart has no description.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
+**Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>String</code> \| <code>null</code> | Desired accessible description for the chart |
+
 <a name="module_Brush--exports.animationDuration" id="module_Brush--exports.animationDuration"></a>
 
 ## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>

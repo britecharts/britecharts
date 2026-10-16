@@ -41,12 +41,14 @@ import type { ChartMarginParams } from '../../typings/common/margin';
 import type { GridTypes } from '../../typings/common/grid';
 import type { ColorsSchemasType } from '../../typings/helpers/colors';
 import type {
+    AccessibleChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
 } from '../../typings/common/base';
+import { labelChart } from '../helpers/a11y';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
 export declare enum ScatterPlotKeys {
@@ -90,6 +92,7 @@ export type ScatterPlotBaseAPI = Omit<
 // whose declaration settled that shape.
 export interface ScatterPlotAPI
     extends
+        AccessibleChartAPI<ScatterPlotModule>,
         ScatterPlotBaseAPI,
         InteractiveChartAPI<ScatterPlotModule>,
         ExportableChartAPI,
@@ -662,6 +665,9 @@ export default function module(): ScatterPlotModule {
                 }, {});
     }
 
+    let a11yTitle: string | null = null;
+    let a11yDescription: string | null = null;
+
     /**
      * Builds the SVG element that will contain the chart
      * @param {HTMLElement} container A DOM element that will work as
@@ -682,6 +688,12 @@ export default function module(): ScatterPlotModule {
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
             .attr('height', height);
+
+        labelChart(svg.node(), {
+            a11yTitle,
+            a11yDescription,
+            fallbackTitle: 'Scatter plot',
+        });
     }
 
     /**
@@ -1358,6 +1370,46 @@ export default function module(): ScatterPlotModule {
     }
 
     // API
+    /**
+     * Gets or Sets the name screen readers announce for the chart. It is
+     * rendered as the svg's `<title>`. Unset, the chart is announced as
+     * "Scatter plot".
+     * @param  {String | null} _x     Desired accessible title for the chart
+     * @return {String | null | module} Current a11yTitle or Chart module to chain calls
+     * @public
+     */
+    (exports as ScatterPlotModule).a11yTitle = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yTitle;
+        }
+        a11yTitle = _x;
+
+        return this;
+    } as ScatterPlotModule['a11yTitle'];
+
+    /**
+     * Gets or Sets a longer description screen readers announce after the
+     * chart's name, such as what the data shows. It is rendered as the svg's
+     * `<desc>`. Unset, the chart has no description.
+     * @param  {String | null} _x     Desired accessible description for the chart
+     * @return {String | null | module} Current a11yDescription or Chart module to chain calls
+     * @public
+     */
+    (exports as ScatterPlotModule).a11yDescription = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDescription;
+        }
+        a11yDescription = _x;
+
+        return this;
+    } as ScatterPlotModule['a11yDescription'];
+
     /**
      * Gets or Sets the duration of the circle animation
      * @param  {Number} _x=1200         Desired animation duration for the graph

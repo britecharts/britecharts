@@ -168,3 +168,21 @@ export interface TimeSeriesChartAPI<T> {
         format: AxisTimeCombination | `${AxisTimeCombination}`
     ): T & TimeSeriesChartAPI<T>;
 }
+
+export interface AccessibleChartAPI<T> {
+    /**
+     * Gets or Sets the name screen readers announce for the chart. It is
+     * rendered as the svg's `<title>` and linked with `aria-labelledby`. Unset,
+     * the getter reads `null` and the chart is announced by its type, such as
+     * "Bar chart".
+     */
+    a11yTitle(): string | null;
+    a11yTitle(a11yTitle: string | null): T & AccessibleChartAPI<T>;
+    /**
+     * Gets or Sets a longer description screen readers announce after the
+     * name, such as what the data shows. It is rendered as the svg's `<desc>`
+     * and linked with `aria-describedby`. Unset, there is no description.
+     */
+    a11yDescription(): string | null;
+    a11yDescription(a11yDescription: string | null): T & AccessibleChartAPI<T>;
+}

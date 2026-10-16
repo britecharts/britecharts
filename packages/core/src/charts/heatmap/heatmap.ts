@@ -13,11 +13,13 @@ import colorHelper from '../helpers/color';
 import { hoursHuman, motion } from '../helpers/constants';
 import type { ChartMarginParams } from '../../typings/common/margin';
 import type {
+    AccessibleChartAPI,
     AnimatedChartAPI,
     BaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
 } from '../../typings/common/base';
+import { labelChart } from '../helpers/a11y';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
 export declare enum HeatmapChartKeys {
@@ -34,6 +36,7 @@ export type HeatmapChartDataShape = {
 
 export interface HeatmapChartAPI
     extends
+        AccessibleChartAPI<HeatmapChartModule>,
         BaseAPI<HeatmapChartModule>,
         // `isAnimated` and `animationDuration` are documented `@public` on the
         // chart and have always shipped; they were simply never declared.
@@ -227,6 +230,9 @@ export default function module(): HeatmapChartModule {
         // checked against the declaration individually on assignment.
     } as unknown as HeatmapChartModule;
 
+    let a11yTitle: string | null = null;
+    let a11yDescription: string | null = null;
+
     /**
      * Builds the SVG element that will contain the chart
      * @param  container DOM element that will work as the container of the graph
@@ -251,6 +257,12 @@ export default function module(): HeatmapChartModule {
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
             .attr('height', height);
+
+        labelChart(svg.node(), {
+            a11yTitle,
+            a11yDescription,
+            fallbackTitle: 'Heatmap',
+        });
     }
 
     /**
@@ -535,6 +547,46 @@ export default function module(): HeatmapChartModule {
     }
 
     // API
+    /**
+     * Gets or Sets the name screen readers announce for the chart. It is
+     * rendered as the svg's `<title>`. Unset, the chart is announced as
+     * "Heatmap".
+     * @param  {String | null} _x     Desired accessible title for the chart
+     * @return {String | null | module} Current a11yTitle or Chart module to chain calls
+     * @public
+     */
+    exports.a11yTitle = function (
+        this: HeatmapChartModule,
+        _x?: string | null
+    ) {
+        if (!arguments.length) {
+            return a11yTitle;
+        }
+        a11yTitle = _x as string | null;
+
+        return this;
+    } as HeatmapChartModule['a11yTitle'];
+
+    /**
+     * Gets or Sets a longer description screen readers announce after the
+     * chart's name, such as what the data shows. It is rendered as the svg's
+     * `<desc>`. Unset, the chart has no description.
+     * @param  {String | null} _x     Desired accessible description for the chart
+     * @return {String | null | module} Current a11yDescription or Chart module to chain calls
+     * @public
+     */
+    exports.a11yDescription = function (
+        this: HeatmapChartModule,
+        _x?: string | null
+    ) {
+        if (!arguments.length) {
+            return a11yDescription;
+        }
+        a11yDescription = _x as string | null;
+
+        return this;
+    } as HeatmapChartModule['a11yDescription'];
+
     /**
      * Gets or Sets the duration of the animation
      * @param  {Number} _x=1200         Desired animation duration for the graph
