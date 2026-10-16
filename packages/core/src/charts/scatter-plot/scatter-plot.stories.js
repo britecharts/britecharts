@@ -201,6 +201,42 @@ export const WithNegativeValues = () => {
     return container;
 };
 
+/**
+ * Values on both sides of zero: the value axis runs below zero, and each
+ * circle's size shows the magnitude of its value, so -55 draws as large as 55.
+ * Static, with grid lines, so the zero line and the sizes are easy to compare.
+ */
+export const WithValuesAboveAndBelowZero = () => {
+    const container = getCleanContainer();
+    const scatterChart = scatterPlot();
+    const scatterPlotContainer = select(container);
+    const containerWidth = scatterPlotContainer.node()
+        ? scatterPlotContainer.node().getBoundingClientRect().width
+        : false;
+    const tooltip = miniTooltip().title('Temperature delta (C)');
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withNegativeValues().build();
+
+        scatterChart
+            .isAnimated(false)
+            .grid('full')
+            .width(containerWidth)
+            .height(400)
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', tooltip.update)
+            .on('customMouseOut', tooltip.hide);
+
+        scatterPlotContainer.datum(dataset).call(scatterChart);
+
+        tooltip.valueLabel('y').nameLabel('x');
+
+        select('.scatter-plot .metadata-group').datum([]).call(tooltip);
+    }
+
+    return container;
+};
+
 export const WithLoadingState = () => {
     const container = getCleanContainer();
     const scatterPlotContainer = select(container);
