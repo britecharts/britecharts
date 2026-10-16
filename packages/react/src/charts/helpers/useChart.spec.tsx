@@ -1,8 +1,33 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { Wrapper, WrapperConfiguration } from '@britecharts/wrappers';
+
 import { mount } from '../../../testing/mount';
 
 import useChart from './useChart';
+
+interface Datum {
+    value: number;
+}
+
+// The accessors the specs configure. The hook only hands the instance back to
+// update, so the fake instance never has them.
+interface FakeChart {
+    name: string;
+    width(value?: number): FakeChart;
+    height(value?: number): FakeChart;
+    margin(value?: number): FakeChart;
+    ratio(value?: number): FakeChart;
+}
+
+type FakeWrapper = Wrapper<Datum[], FakeChart>;
+
+interface HarnessProps {
+    wrapper: FakeWrapper;
+    data: Datum[] | null;
+    configuration?: WrapperConfiguration<FakeChart>;
+    options?: Parameters<typeof useChart>[3];
+    onRender?: () => void;
+}
 
 /**
  * The hook is the one place eleven components get their lifecycle from, so it
@@ -11,18 +36,24 @@ import useChart from './useChart';
  * mistakes fails here by name.
  */
 const makeWrapper = () => {
-    const instance = { name: 'the chart instance' };
+    const instance = { name: 'the chart instance' } as FakeChart;
 
     return {
         instance,
-        create: vi.fn(() => instance),
-        update: vi.fn(),
-        destroy: vi.fn(),
+        create: vi.fn<FakeWrapper['create']>(() => instance),
+        update: vi.fn<FakeWrapper['update']>(),
+        destroy: vi.fn<FakeWrapper['destroy']>(),
     };
 };
 
 // Renders the hook into a container, and counts how often it renders
-const Harness = ({ wrapper, data, configuration = {}, options, onRender }) => {
+const Harness = ({
+    wrapper,
+    data,
+    configuration = {},
+    options,
+    onRender,
+}: HarnessProps) => {
     if (onRender) {
         onRender();
     }
@@ -32,11 +63,12 @@ const Harness = ({ wrapper, data, configuration = {}, options, onRender }) => {
     return <div className="harness" ref={rootNode} />;
 };
 
-const mountHarness = (props) => mount(<Harness {...props} />);
+const mountHarness = (props: HarnessProps) =>
+    mount<HarnessProps>(<Harness {...props} />);
 
 describe('useChart', () => {
-    let wrapper;
-    let data;
+    let wrapper: ReturnType<typeof makeWrapper>;
+    let data: Datum[];
 
     beforeEach(() => {
         wrapper = makeWrapper();

@@ -1,6 +1,6 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import StackedArea from './StackedArea';
 import React from 'react';
+import type { MockInstance } from 'vitest';
 import { mount } from '../../../testing/mount';
 import stackedAreaData from './stackedAreaChart.fixtures';
 import { StackedAreaWrapper } from '@britecharts/wrappers';
@@ -19,7 +19,7 @@ describe('stacked Area Chart', () => {
     // makes the wrapper throw "Method not supported", so this also proves the
     // names match.
     describe('chart settings', () => {
-        let createSpy;
+        let createSpy: MockInstance<typeof StackedAreaWrapper.create>;
 
         beforeEach(() => {
             createSpy = vi.spyOn(StackedAreaWrapper, 'create');

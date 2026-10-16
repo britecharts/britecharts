@@ -1,5 +1,5 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { MockInstance } from 'vitest';
 import { mount } from '../../../testing/mount';
 
 import ScatterPlot from './ScatterPlot';
@@ -33,7 +33,7 @@ describe('scatterPlot Chart', () => {
         });
 
         describe('when data passed in', () => {
-            let createSpy;
+            let createSpy: MockInstance<typeof ScatterPlotWrapper.create>;
 
             beforeEach(() => {
                 createSpy = vi.spyOn(ScatterPlotWrapper, 'create');
@@ -57,7 +57,7 @@ describe('scatterPlot Chart', () => {
                     />
                 );
 
-                const configuration = createSpy.mock.calls[0][2];
+                const configuration = createSpy.mock.calls[0][2]!;
 
                 expect(configuration.hasTrendline).toEqual(true);
                 expect(configuration.hasCrossHairs).toEqual(true);

@@ -1,5 +1,6 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { ComponentType } from 'react';
+import type { MockInstance } from 'vitest';
 import { mount } from '../../testing/mount';
 
 import {
@@ -38,58 +39,59 @@ import StackedBar from './stackedBar/StackedBar';
 import stackedBarData from './stackedBar/stackedBarChart.fixtures';
 import Tooltip from './tooltip/Tooltip';
 
+type SpiedCreate = (...args: never[]) => unknown;
+
+interface SpiedWrapper {
+    create: SpiedCreate;
+}
+
+type ChartCase = [
+    name: string,
+    Component: ComponentType<object>,
+    wrapper: SpiedWrapper,
+    getProps: () => object,
+];
+
+const chartCase = <TProps extends { chart?: SpiedWrapper }>(
+    name: string,
+    Component: ComponentType<TProps>,
+    wrapper: NonNullable<NoInfer<TProps>['chart']>,
+    getProps: () => NoInfer<TProps>
+): ChartCase => [name, Component as ComponentType<object>, wrapper, getProps];
+
 // Every component draws through its own wrapper unless a `chart` prop says
 // otherwise. That default is a destructured default, not a `defaultProps`,
 // which React 19 ignores on a function component. The colocated specs always
 // pass `chart` themselves, so nothing else would notice a wrong or missing
 // one.
-const CHARTS = [
-    ['Bar', Bar, BarWrapper, () => ({ data: barData.withLetters() })],
-    [
-        'Bullet',
-        Bullet,
-        BulletWrapper,
-        () => ({ data: bulletData.fullTestData() }),
-    ],
-    ['Donut', Donut, DonutWrapper, () => ({ data: donutData.with4Slices() })],
-    [
-        'GroupedBar',
-        GroupedBar,
-        GroupedBarWrapper,
-        () => ({ data: groupedBarData.with3Groups() }),
-    ],
-    [
-        'Legend',
-        Legend,
-        LegendWrapper,
-        () => ({ data: legendData.with6Points() }),
-    ],
-    ['Line', Line, LineWrapper, () => ({ data: lineData.flatData.a })],
-    [
-        'ScatterPlot',
-        ScatterPlot,
-        ScatterPlotWrapper,
-        () => ({ data: scatterPlotData.withFourNames() }),
-    ],
-    [
-        'Sparkline',
-        Sparkline,
-        SparklineWrapper,
-        () => ({ data: sparklineData.with1Source() }),
-    ],
-    [
-        'StackedArea',
-        StackedArea,
-        StackedAreaWrapper,
-        () => ({ data: stackedAreaData.with3Sources() }),
-    ],
-    [
-        'StackedBar',
-        StackedBar,
-        StackedBarWrapper,
-        () => ({ data: stackedBarData.with3Sources() }),
-    ],
-    [
+const CHARTS: ChartCase[] = [
+    chartCase('Bar', Bar, BarWrapper, () => ({ data: barData.withLetters() })),
+    chartCase('Bullet', Bullet, BulletWrapper, () => ({
+        data: bulletData.fullTestData(),
+    })),
+    chartCase('Donut', Donut, DonutWrapper, () => ({
+        data: donutData.with4Slices(),
+    })),
+    chartCase('GroupedBar', GroupedBar, GroupedBarWrapper, () => ({
+        data: groupedBarData.with3Groups(),
+    })),
+    chartCase('Legend', Legend, LegendWrapper, () => ({
+        data: legendData.with6Points(),
+    })),
+    chartCase('Line', Line, LineWrapper, () => ({ data: lineData.flatData.a })),
+    chartCase('ScatterPlot', ScatterPlot, ScatterPlotWrapper, () => ({
+        data: scatterPlotData.withFourNames(),
+    })),
+    chartCase('Sparkline', Sparkline, SparklineWrapper, () => ({
+        data: sparklineData.with1Source(),
+    })),
+    chartCase('StackedArea', StackedArea, StackedAreaWrapper, () => ({
+        data: stackedAreaData.with3Sources(),
+    })),
+    chartCase('StackedBar', StackedBar, StackedBarWrapper, () => ({
+        data: stackedBarData.with3Sources(),
+    })),
+    chartCase(
         'Tooltip',
         Tooltip,
         TooltipWrapper,
@@ -97,13 +99,13 @@ const CHARTS = [
         () => ({
             data: [],
             render: () => <div className="metadata-group" />,
-        }),
-    ],
+        })
+    ),
 ];
 
 describe('default wrapper', () => {
     describe.each(CHARTS)('%s', (name, Component, wrapper, getProps) => {
-        let createSpy;
+        let createSpy: MockInstance<SpiedCreate>;
 
         beforeEach(() => {
             createSpy = vi.spyOn(wrapper, 'create');

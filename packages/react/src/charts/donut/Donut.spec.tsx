@@ -1,5 +1,5 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { MockInstance } from 'vitest';
 import { mount } from '../../../testing/mount';
 
 import Donut from './Donut';
@@ -24,7 +24,7 @@ describe('donut Chart', () => {
     // that destructures the rest of the props would silently stop animating
     // the donut. Pinned here so that shows up as one named failure.
     describe('animation', () => {
-        let createSpy;
+        let createSpy: MockInstance<typeof DonutWrapper.create>;
 
         beforeEach(() => {
             createSpy = vi.spyOn(DonutWrapper, 'create');
@@ -40,7 +40,7 @@ describe('donut Chart', () => {
                 <Donut chart={DonutWrapper} data={donutData.with4Slices()} />
             );
 
-            expect(createSpy.mock.calls[0][2].isAnimated).toBe(true);
+            expect(createSpy.mock.calls[0][2]!.isAnimated).toBe(true);
         });
 
         it('should let isAnimated be turned off', () => {
@@ -52,12 +52,12 @@ describe('donut Chart', () => {
                 />
             );
 
-            expect(createSpy.mock.calls[0][2].isAnimated).toBe(false);
+            expect(createSpy.mock.calls[0][2]!.isAnimated).toBe(false);
         });
     });
 
     describe('center legend', () => {
-        let createSpy;
+        let createSpy: MockInstance<typeof DonutWrapper.create>;
 
         beforeEach(() => {
             createSpy = vi.spyOn(DonutWrapper, 'create');

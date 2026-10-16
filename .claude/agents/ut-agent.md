@@ -152,7 +152,7 @@ The components are function components on hooks (there are no classes left), whi
 - There is no `.update()` to call after a change: the container is live DOM, so query it again and it already reflects the latest render.
 - A re-render whose props did not change does **not** redraw the chart: props are compared with the last drawing. To test an update, change a prop to a new value (a new array or object for `data`), never mutate in place.
 - React's `vitest.setup.js` fails any test that logs `console.error` or `console.warn`, prop-type warnings included, unless it is on its short commented allowlist. Restore only your own spies with `mockRestore()`; never `vi.restoreAllMocks()`, which also undoes the setup file's console spies and breaks every test's teardown.
-- React specs with JSX are `.tsx` (Vite does not parse JSX in `.js`). The existing ones start with `// @ts-nocheck` until they are typed.
+- React specs with JSX are `.tsx` (Vite does not parse JSX in `.js`), and `type-check` covers them: type spies as `MockInstance<typeof XWrapper.create>`, and write `mount<XProps>(...)` when a test calls `setProps`.
 - A component's default wrapper (`chart = BarWrapper`) is a destructured default, and React 19 ignores `defaultProps` on function components: `src/charts/defaultWrapper.spec.js` covers it for every chart, and `sourceContract.spec.js` forbids `defaultProps`, classes, `useEffect(` and class fields.
 - `pnpm --filter @britecharts/react run test` enforces coverage thresholds (`coverage.thresholds` in its `vitest.config.js`): a global floor plus a per-file one on `src/charts/helpers/useChart.ts`. Do not lower them; add tests.
 

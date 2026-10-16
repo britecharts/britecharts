@@ -1,18 +1,19 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { MockInstance } from 'vitest';
 import { mount } from '../../../testing/mount';
 
 import Line from './Line';
+import type { LineProps } from './Line';
 import lineData from './lineChart.fixtures';
 import { LineWrapper } from '@britecharts/wrappers';
 
 // What Line does with its wrapper over its life, beyond what the colocated
 // Line.spec.js pins.
 describe('Line lifecycle', () => {
-    let chartData;
-    let createSpy;
-    let updateSpy;
-    let destroySpy;
+    let chartData: typeof lineData.flatData.a;
+    let createSpy: MockInstance<typeof LineWrapper.create>;
+    let updateSpy: MockInstance<typeof LineWrapper.update>;
+    let destroySpy: MockInstance<typeof LineWrapper.destroy>;
 
     beforeEach(() => {
         chartData = lineData.flatData.a;
@@ -67,7 +68,7 @@ describe('Line lifecycle', () => {
 
     describe('when the data arrives after mount', () => {
         it('should create the chart', () => {
-            const wrapper = mount(<Line data={null} />);
+            const wrapper = mount<LineProps>(<Line data={null} />);
 
             wrapper.setProps({ data: chartData });
 
@@ -75,7 +76,7 @@ describe('Line lifecycle', () => {
         });
 
         it('should not call the update method of the chart', () => {
-            const wrapper = mount(<Line data={null} />);
+            const wrapper = mount<LineProps>(<Line data={null} />);
 
             wrapper.setProps({ data: chartData });
 
@@ -83,7 +84,7 @@ describe('Line lifecycle', () => {
         });
 
         it('should not create the chart on renders that still have no data', () => {
-            const wrapper = mount(<Line data={null} />);
+            const wrapper = mount<LineProps>(<Line data={null} />);
 
             wrapper.setProps({ width: 300 });
             wrapper.setProps({ width: 400 });
@@ -94,7 +95,7 @@ describe('Line lifecycle', () => {
 
     describe('update', () => {
         it('should pass the chart instance as the fourth argument', () => {
-            const wrapper = mount(<Line data={chartData} />);
+            const wrapper = mount<LineProps>(<Line data={chartData} />);
             const instance = createSpy.mock.results[0].value;
 
             wrapper.setProps({ width: 300 });
@@ -103,7 +104,7 @@ describe('Line lifecycle', () => {
         });
 
         it('should pass update the same node create received', () => {
-            const wrapper = mount(<Line data={chartData} />);
+            const wrapper = mount<LineProps>(<Line data={chartData} />);
 
             wrapper.setProps({ width: 300 });
 
@@ -111,7 +112,9 @@ describe('Line lifecycle', () => {
         });
 
         it('should update when a configuration value changes', () => {
-            const wrapper = mount(<Line data={chartData} width={200} />);
+            const wrapper = mount<LineProps>(
+                <Line data={chartData} width={200} />
+            );
 
             wrapper.setProps({ width: 300 });
 
@@ -119,7 +122,7 @@ describe('Line lifecycle', () => {
         });
 
         it('should update when the data is a new array or object', () => {
-            const wrapper = mount(<Line data={chartData} />);
+            const wrapper = mount<LineProps>(<Line data={chartData} />);
 
             wrapper.setProps({ data: { ...chartData } });
 
@@ -131,7 +134,7 @@ describe('Line lifecycle', () => {
         // when nothing changed.
         describe('when a re-render brings props that did not change', () => {
             it('should not call the update method of the chart', () => {
-                const wrapper = mount(
+                const wrapper = mount<LineProps>(
                     <Line data={chartData} width={300} margin={{ top: 1 }} />
                 );
 
@@ -145,7 +148,7 @@ describe('Line lifecycle', () => {
             // same reference gets no redraw. They have to pass a new one.
             it('should not redraw the data mutated in place', () => {
                 const data = lineData.flatData.a;
-                const wrapper = mount(<Line data={data} />);
+                const wrapper = mount<LineProps>(<Line data={data} />);
 
                 data.data[0].value = 999;
                 wrapper.setProps({ data });
@@ -158,7 +161,7 @@ describe('Line lifecycle', () => {
     describe('createTooltip', () => {
         it('should be called after the chart updated', () => {
             const createTooltip = vi.fn();
-            const wrapper = mount(
+            const wrapper = mount<LineProps>(
                 <Line data={chartData} createTooltip={createTooltip} />
             );
 
@@ -180,7 +183,7 @@ describe('Line lifecycle', () => {
 
         it('should not be called when the chart is created once the data arrives', () => {
             const createTooltip = vi.fn();
-            const wrapper = mount(
+            const wrapper = mount<LineProps>(
                 <Line data={null} createTooltip={createTooltip} />
             );
 
@@ -216,7 +219,7 @@ describe('Line lifecycle', () => {
                 update: vi.fn(),
                 destroy: vi.fn(),
             };
-            const wrapper = mount(
+            const wrapper = mount<LineProps>(
                 <Line chart={LineWrapper} data={chartData} />
             );
 
