@@ -24,17 +24,10 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithFixedWidthAndTitle = () => {
+export const WithFixedWidth = () => {
     const data = sparklineData.withLowValues();
 
-    return (
-        <Sparkline
-            data={data}
-            height={100}
-            width={400}
-            titleText="Yearly prediction"
-        />
-    );
+    return <Sparkline data={data} height={100} width={400} />;
 };
 
 export const WithAnimation = () => {

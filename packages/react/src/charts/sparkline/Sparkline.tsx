@@ -7,7 +7,6 @@ import type {
     ColorGradientType,
     SparklineChartDataShape,
     SparklineChartModule,
-    SparklineTitleTextStyle,
 } from '@britecharts/core';
 
 import useChart from '../helpers/useChart.js';
@@ -93,35 +92,6 @@ export interface SparklineProps {
         left?: number;
         right?: number;
     };
-
-    /**
-     * Gets or Sets the text of the title at the top of the chart.
-     * To style the title text, use the titleTextStyle method below.
-     */
-    titleText?: string;
-
-    /**
-     * Gets or Sets the text style object of the title at the top of sparkline.
-     * Using this method, you can set font-family, font-size, font-weight, font-style,
-     * and color (fill). The default text font settings:
-     *
-     * <pre>
-     * <code>
-     * {
-     *    'font-family': 'sans-serif',
-     *    'font-size': '22px',
-     *    'font-weight': 0,
-     *    'font-style': 'normal',
-     *    'fill': linearGradient[0]
-     * }
-     * </code>
-     * </pre>
-     *
-     * You can set attributes individually. Setting just 'font-family'
-     * within the object will set custom 'font-family` while the rest
-     * of the attributes will have the default values provided above.
-     */
-    titleTextStyle?: SparklineTitleTextStyle;
 
     /**
      * Gets or Sets the valueLabel of the chart

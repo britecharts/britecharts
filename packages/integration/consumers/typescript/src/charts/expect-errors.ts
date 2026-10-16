@@ -166,3 +166,13 @@ line().xTicks().toFixed(0);
 line().numberFormat().length;
 // @ts-expect-error the chart compares against 'number', not 'numeric'
 line().xAxisValueType('numeric');
+// Bullet and the sparkline no longer draw a title or subtitle: the accessors
+// are gone, and these fail to compile if one comes back.
+// @ts-expect-error removed in 3.0.0
+bullet().customTitle('CPU');
+// @ts-expect-error removed in 3.0.0
+bullet().customSubtitle('GHz');
+// @ts-expect-error removed in 3.0.0
+sparkline().titleText('Signups');
+// @ts-expect-error removed in 3.0.0
+sparkline().titleTextStyle({ 'font-size': '1.5em' });

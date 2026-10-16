@@ -691,16 +691,10 @@ export const labelAccessors = {
 };
 
 // The bullet chart's own accessors. Its declaration had every member, so the
-// parity check was already green on it -- what was wrong was the shape and two
-// of the types.
-//
-// `customTitle` and `customSubtitle` were declared `number`. The chart assigns
-// them to `title`/`subtitle` and renders them as text, and its own documented
-// examples are `customTitle('CPU Usage')` and `customSubtitle('GHz')`. They are
-// `string`, and `string | undefined` on the way out, since neither has a
-// default. The seven chart-specific accessors were also setter-only, so reading
-// one reported the chart rather than its value -- the same gap the shared
-// interfaces had before, which never reached the per-chart declarations.
+// parity check was already green on it -- what was wrong was the shape. Its
+// chart-specific accessors were setter-only, so reading one reported the chart
+// rather than its value -- the same gap the shared interfaces had before, which
+// never reached the per-chart declarations.
 import { bullet } from '@britecharts/core';
 
 const bulletChart = bullet();
@@ -710,15 +704,9 @@ const bulletPadding: number = bulletChart.paddingBetweenAxisAndChart();
 const bulletOpacity: number = bulletChart.startMaxRangeOpacity();
 const bulletReverse: boolean = bulletChart.isReverse();
 const bulletSchema: string[] = bulletChart.colorSchema();
-const bulletTitle: string | undefined = bulletChart.customTitle();
-const bulletSubtitle: string | undefined = bulletChart.customSubtitle();
 
-// A string goes in, and the setter still chains.
-const bulletChained: string | undefined = bullet()
-    .customTitle('CPU Usage')
-    .customSubtitle('GHz')
-    .ticks(8)
-    .customTitle();
+// The setters still chain.
+const bulletChained: number = bullet().isReverse(true).ticks(8).ticks();
 
 // The legend's own four, corrected with its conversion, and the shared
 // `colorMap` the conversion forced.
@@ -863,42 +851,30 @@ export const bulletAccessors = {
     bulletOpacity,
     bulletReverse,
     bulletSchema,
-    bulletTitle,
-    bulletSubtitle,
     bulletChained,
 };
 
-// The sparkline's own four, corrected with its conversion for the same reason
+// The sparkline's own two, corrected with its conversion for the same reason
 // bullet's seven were: they were setter-only, so reading one reported the chart
 // instead of its value. Its three shared ones -- `dateLabel`, `valueLabel`,
 // `isLoading` -- already read correctly and are asserted further up.
 //
 // The two gradients are a two-element tuple, not `string[]`: the chart reads
 // `[0]` and `[1]` and nothing else, and `ColorGradientType` has said so since
-// before this migration. `titleText` is `string | undefined` on the way out
-// because the chart has no default title -- `drawSparklineTitle` only runs once
-// one is set.
+// before this migration.
 const sparklineOwn = sparkline();
 
 const sparklineAreaGradient: [string, string] = sparklineOwn.areaGradient();
 const sparklineLineGradient: [string, string] = sparklineOwn.lineGradient();
-const sparklineTitleText: string | undefined = sparklineOwn.titleText();
-const sparklineTitleFont: string | undefined =
-    sparklineOwn.titleTextStyle()['font-family'];
 
-// The setters still chain, and a partial style object is still accepted: the
-// chart falls back to its own default for every member left out.
-const sparklineChained: string | undefined = sparkline()
+// The setters still chain.
+const sparklineChained: [string, string] = sparkline()
     .areaGradient(['#F5FDFF', '#F6FEFC'])
     .lineGradient(['#39C7EA', '#4CDCBA'])
-    .titleTextStyle({ 'font-size': '1.5em' })
-    .titleText('Signups')
-    .titleText();
+    .lineGradient();
 
 export const sparklineAccessors = {
     sparklineAreaGradient,
     sparklineLineGradient,
-    sparklineTitleText,
-    sparklineTitleFont,
     sparklineChained,
 };

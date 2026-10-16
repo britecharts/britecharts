@@ -38,8 +38,6 @@ Playground.args = playgroundArgs(bullet, [
     'height',
     'margin',
     'colorSchema',
-    'customTitle',
-    'customSubtitle',
     'isReverse',
     'paddingBetweenAxisAndChart',
     'startMaxRangeOpacity',

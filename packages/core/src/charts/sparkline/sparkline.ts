@@ -47,14 +47,6 @@ export type SparklineSelection = Selection<
     any
 >;
 
-export interface SparklineTitleTextStyle {
-    'font-family'?: string;
-    'font-size'?: string;
-    'font-weight'?: number;
-    'font-style'?: string;
-    fill?: string;
-}
-
 export interface SparklineChartAPI
     extends
         AccessibleChartAPI<SparklineChartModule>,
@@ -67,22 +59,6 @@ export interface SparklineChartAPI
     /** Gets or Sets the lineGradient of the chart */
     lineGradient(): [string, string];
     lineGradient(gradient: [string, string]): SparklineChartModule;
-    /**
-     * Gets or Sets the text of the title at the top of sparkline.
-     * To style the title, use the titleTextStyle method below.
-     *
-     * The getter can return undefined: the chart has no default title, and
-     * `drawSparklineTitle` only runs once one is set.
-     */
-    titleText(): string | undefined;
-    titleText(title: string): SparklineChartModule;
-    /**
-     * Gets or Sets the text style object of the title at the top of sparkline.
-     * Using this method, you can set font-family, font-size, font-weight, font-style,
-     * and color (fill).
-     */
-    titleTextStyle(): SparklineTitleTextStyle;
-    titleTextStyle(titleStyle: SparklineTitleTextStyle): SparklineChartModule;
     /** Gets or Sets the `date` key of the data */
     dateLabel(): string;
     dateLabel(value: string): SparklineChartModule;
@@ -128,16 +104,6 @@ type SparklineDatum = {
     value: number;
     [key: string]: string | number | Date;
 };
-
-// `satisfies` rather than an annotation, so each member stays a required
-// string: the fallbacks below read them directly, and an optional member would
-// hand `undefined` to `style()`.
-const DEFAULT_TITLE_TEXT_STYLE = {
-    'font-size': '22px',
-    'font-family': 'sans-serif',
-    'font-style': 'normal',
-    'font-weight': 0,
-} satisfies SparklineTitleTextStyle;
 
 /**
  * Sparkline Chart reusable API module that allows us
@@ -212,12 +178,6 @@ export default function module(): SparklineChartModule {
         topLine: Line<SparklineDatum> | undefined,
         areaBelow: Area<SparklineDatum> | undefined,
         circle: ChartSelection<SVGCircleElement>,
-        titleEl: ChartSelection<SVGTextElement>,
-        // No default: a title arrives through the accessor, and reading it
-        // before it is set gives undefined -- which is what the declaration
-        // now says.
-        titleText: string | undefined,
-        titleTextStyle: SparklineTitleTextStyle = DEFAULT_TITLE_TEXT_STYLE,
         valueLabel = 'value',
         dateLabel = 'date';
 
@@ -272,10 +232,6 @@ export default function module(): SparklineChartModule {
             drawArea();
             drawLine();
             drawEndMarker();
-
-            if (titleText) {
-                drawSparklineTitle();
-            }
         });
     }
 
@@ -293,7 +249,6 @@ export default function module(): SparklineChartModule {
 
         svg.append('g').classed('loading-state-group', true);
 
-        container.append('g').classed('text-group', true);
         container.append('g').classed('chart-group', true);
         container.append('g').classed('metadata-group', true);
     }
@@ -511,49 +466,6 @@ export default function module(): SparklineChartModule {
      */
     function drawLoadingState(): void {
         svg.select('.loading-state-group').html(sparkLineLoadingMarkup);
-    }
-
-    /**
-     * Draws the text element within the text group
-     * Is displayed at the top of sparked area
-     * @private
-     */
-    function drawSparklineTitle(): void {
-        if (titleEl) {
-            svg.selectAll('.sparkline-text').remove();
-        }
-
-        titleEl = svg
-            .selectAll('.text-group')
-            .append('text')
-            .attr('x', chartWidth / 2)
-            .attr('y', chartHeight / 6)
-            .attr('text-anchor', 'middle')
-            .attr('class', 'sparkline-text')
-            .style(
-                'font-size',
-                titleTextStyle['font-size'] ||
-                    DEFAULT_TITLE_TEXT_STYLE['font-size']
-            )
-            .style('fill', titleTextStyle['fill'] || lineGradient[0])
-            .style(
-                'font-family',
-                titleTextStyle['font-family'] ||
-                    DEFAULT_TITLE_TEXT_STYLE['font-family']
-            )
-            .style(
-                'font-weight',
-                titleTextStyle['font-weight'] ||
-                    DEFAULT_TITLE_TEXT_STYLE['font-weight']
-            )
-            .style(
-                'font-style',
-                titleTextStyle['font-style'] ||
-                    DEFAULT_TITLE_TEXT_STYLE['font-style']
-            )
-            // `exports` only calls this when `titleText` is set, which is a
-            // guard TypeScript cannot see from here.
-            .text(titleText as string);
     }
 
     /**
@@ -782,69 +694,6 @@ export default function module(): SparklineChartModule {
 
         return this;
     } as SparklineChartModule['margin'];
-
-    /**
-     * Gets or Sets the text of the title at the top of sparkline.
-     * To style the title, use the titleTextStyle method below.
-     * @param  {string} _x = null   String to set
-     * @return {string | module}    Current titleText or Chart module to chain calls
-     * @public
-     */
-    (exports as SparklineChartModule).titleText = function (
-        this: SparklineChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return titleText;
-        }
-        titleText = _x;
-
-        return this;
-    } as SparklineChartModule['titleText'];
-
-    /**
-     * Gets or Sets the text style object of the title at the top of sparkline.
-     * Using this method, you can set font-family, font-size, font-weight, font-style,
-     * and color (fill). The default text font settings:
-     * @example
-     * <pre>
-     * <code>
-     * {
-     *    'font-family': 'sans-serif',
-     *    'font-size': '22px',
-     *    'font-weight': 0,
-     *    'font-style': 'normal',
-     *    'fill': linearGradient[0]
-     * }
-     * </code>
-     * </pre>
-     *
-     * You can set attributes individually. Setting just 'font-family'
-     * within the object will set custom 'font-family` while the rest
-     * of the attributes will have the default values provided above.
-     * @param  {object} _x          Object with text font configurations
-     * @return {Object | module}    Current titleTextStyle or Chart module to chain calls
-     * @public
-     * @example
-     * sparkline.titleTextStyle({
-     *    'font-family': 'Roboto',
-     *    'font-size': '1.5em',
-     *    'font-weight': 600,
-     *    'font-style': 'italic',
-     *    'fill': 'lightblue'
-     * })
-     */
-    (exports as SparklineChartModule).titleTextStyle = function (
-        this: SparklineChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return titleTextStyle;
-        }
-        titleTextStyle = _x;
-
-        return this;
-    } as SparklineChartModule['titleTextStyle'];
 
     /**
      * Gets or Sets the valueLabel of the chart

@@ -31,15 +31,6 @@ export type BulletChartDataShape = {
     [BulletChartKeys.Ranges]: [number?, number?, number?];
     [BulletChartKeys.Measures]: [number?, number?, number?];
     [BulletChartKeys.Markers]: [number?];
-    /**
-     * Identification for the measure. The chart reads `originalData.title` and
-     * renders it, and the chart's own `@typedef BulletChartData` documents both of
-     * these, but the declared shape omitted them -- so a consumer passing the
-     * data the documentation shows did not compile.
-     */
-    title?: string;
-    /** More detail on the measure identification. As above. */
-    subtitle?: string;
 };
 
 // The `Omit` this used to carry removed `'locale' | 'isAnimated' |
@@ -56,19 +47,6 @@ export interface BulletChartAPI
     /** Gets or Sets the colorSchema of the chart */
     colorSchema(): ColorsSchemasType;
     colorSchema(schema: ColorsSchemasType): BulletChartModule;
-    /**
-     * Gets or Sets the subtitle for measure identifier range.
-     *
-     * A string, not the `number` this declared: the chart assigns it to
-     * `subtitle` and renders it as text, its own example is
-     * `bulletChart.customSubtitle('GHz')`, and it has no default -- so reading it
-     * before setting it gives undefined.
-     */
-    customSubtitle(): string | undefined;
-    customSubtitle(subtitle: string): BulletChartModule;
-    /** Gets or Sets the title for measure identifier. A string, as above. */
-    customTitle(): string | undefined;
-    customTitle(title: string): BulletChartModule;
     /**
      * Gets or Sets the isReverse status of the chart. If true,
      * the elements will be rendered in reverse order.
@@ -110,8 +88,6 @@ type BulletData = {
     ranges: number[];
     measures: number[];
     markers: number[];
-    title?: string;
-    subtitle?: string;
 };
 
 /**
@@ -139,16 +115,12 @@ type BulletData = {
  * @property {Number[]} ranges      Range that encodes the qualitative measure
  * @property {Number[]} measures    Range that encodes the performance measure
  * @property {Number[]} markers     Marker lines that encode the comparative measure
- * @property {String}   [title]     String that sets identification for the measure
- * @property {String}   [subtitle]  String that provides more details on measure identification
  *
  * @example
  * {
  *      ranges: [130, 160, 250],
  *      measures: [150, 180],
- *      markers: [175],
- *      title: 'Title for Bullet',
- *      subtitle: 'Subtitle'
+ *      markers: [175]
  * }
  *
  */
@@ -187,19 +159,9 @@ export default function module(): BulletChartModule {
         // Derived from the x scale: the width of one bullet for a given datum.
         barWidth: (d: number) => number,
         isReverse = false,
-        legendGroup: ChartSelection<SVGGElement>,
-        titleEl: ChartSelection<SVGTextElement>,
-        subtitleEl: ChartSelection<SVGTextElement>,
         rangesEl: ChartSelection<SVGRectElement>,
         measuresEl: ChartSelection<SVGRectElement>,
         markersEl: ChartSelection<SVGLineElement>,
-        // No defaults: a title arrives with the data, a customTitle through the
-        // accessor, and reading either before it is set gives undefined -- which
-        // is what the declaration says.
-        title: string | undefined,
-        customTitle: string | undefined,
-        subtitle: string | undefined,
-        customSubtitle: string | undefined,
         ranges: number[] = [],
         markers: number[] = [],
         measures: number[] = [],
@@ -209,9 +171,6 @@ export default function module(): BulletChartModule {
     const measureOpacifyDiff = 0.3;
     const tickPadding = 5;
     const markerStrokeWidth = 5;
-    const legendSpacing = 100;
-    const subtitleSpacing = 15;
-    const hasTitle = () => title || customTitle;
     const getMeasureBarHeight = () => chartHeight / 3;
 
     /**
@@ -246,16 +205,11 @@ export default function module(): BulletChartModule {
                 return;
             }
             cleanLoadingState();
-            ({ title, subtitle, ranges, measures, markers } = cleanData(_data));
-
-            if (hasTitle()) {
-                chartWidth -= legendSpacing;
-            }
+            ({ ranges, measures, markers } = cleanData(_data));
 
             buildScales();
             buildAxis();
             drawBullet();
-            drawTitles();
             drawAxis();
         });
     }
@@ -306,12 +260,6 @@ export default function module(): BulletChartModule {
         container.append('g').classed('chart-group', true);
         container.append('g').classed('axis-group', true);
         container.append('g').classed('metadata-group', true);
-
-        if (hasTitle()) {
-            container
-                .selectAll('.chart-group')
-                .attr('transform', `translate(${legendSpacing}, 0)`);
-        }
     }
 
     /**
@@ -408,8 +356,6 @@ export default function module(): BulletChartModule {
             markers: originalData.markers.length
                 ? ([...originalData.markers] as number[]).sort().reverse()
                 : [],
-            subtitle: originalData.subtitle,
-            title: originalData.title,
         };
 
         return newData;
@@ -422,14 +368,10 @@ export default function module(): BulletChartModule {
      * @private
      */
     function drawAxis(): void {
-        const translateX = hasTitle() ? legendSpacing : 0;
-
         svg.select('.axis-group')
             .attr(
                 'transform',
-                `translate(${translateX}, ${
-                    chartHeight + paddingBetweenAxisAndChart
-                })`
+                `translate(0, ${chartHeight + paddingBetweenAxisAndChart})`
             )
             // Cast because `svg.select` hands back a `Selection<BaseType, ...>`
             // while an axis renders into an SVG container; `BaseType` admits
@@ -524,66 +466,6 @@ export default function module(): BulletChartModule {
             .attr('x2', chartWidth);
     }
 
-    /**
-     * Draws the title and subtitle components of chart
-     * @return {void}
-     * @private
-     */
-    function drawTitles(): void {
-        if (hasTitle()) {
-            // either use title provided from the data
-            // or customTitle provided via API method call
-            if (legendGroup) {
-                legendGroup.remove();
-            }
-
-            legendGroup = svg
-                .select('.metadata-group')
-                .append('g')
-                .classed('legend-group', true)
-                .attr('transform', `translate(0, ${chartHeight / 2})`);
-
-            // override title with customTitle if given
-            if (customTitle) {
-                title = customTitle;
-            }
-
-            if (titleEl) {
-                titleEl.remove();
-            }
-
-            titleEl = legendGroup
-                .selectAll('text.bullet-title')
-                .data([1])
-                .enter()
-                .append('text')
-                .attr('class', 'bullet-title x-axis-label')
-                .text(title ?? null);
-
-            // either use subtitle provided from the data
-            // or customSubtitle provided via API method call
-            if (subtitle || customSubtitle) {
-                // override subtitle with customSubtitle if given
-                if (customSubtitle) {
-                    subtitle = customSubtitle;
-                }
-
-                if (subtitleEl) {
-                    subtitleEl.remove();
-                }
-
-                subtitleEl = legendGroup
-                    .selectAll('text.bullet-subtitle')
-                    .data([1])
-                    .enter()
-                    .append('text')
-                    .attr('class', 'bullet-subtitle x-axis-label')
-                    .attr('y', subtitleSpacing)
-                    .text(subtitle ?? null);
-            }
-        }
-    }
-
     // API
     /**
      * Gets or Sets the name screen readers announce for the chart. It is
@@ -645,45 +527,6 @@ export default function module(): BulletChartModule {
 
         return this;
     } as BulletChartModule['colorSchema'];
-
-    /**
-     * Gets or Sets the title for measure identifier
-     * range.
-     * @param  {String} _x              Desired customTitle for chart
-     * @return {String | module}        Current customTitle or Chart module to chain calls
-     * @public
-     * @example bulletChart.customTitle('CPU Usage')
-     */
-    (exports as BulletChartModule).customTitle = function (
-        this: BulletChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return customTitle;
-        }
-        customTitle = _x;
-
-        return this;
-    } as BulletChartModule['customTitle'];
-
-    /**
-     * Gets or Sets the subtitle for measure identifier range.
-     * @param  {String} _x              Desired customSubtitle for chart
-     * @return {String | module}        current customSubtitle or Chart module to chain calls
-     * @public
-     * @example bulletChart.customSubtitle('GHz')
-     */
-    (exports as BulletChartModule).customSubtitle = function (
-        this: BulletChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return customSubtitle;
-        }
-        customSubtitle = _x;
-
-        return this;
-    } as BulletChartModule['customSubtitle'];
 
     /**
      * Chart exported to png and a download action is fired

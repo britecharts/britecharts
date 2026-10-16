@@ -256,6 +256,25 @@ import { Bar } from '@britecharts/react';
 * `StackedBar`'s `nameLabelFormat` prop is removed. No chart had that setting, so passing it threw.
 * `axisTimeCombinations` is no longer a prop of `Line`, `StackedArea` or `Tooltip`. Import the `axisTimeCombinations` constant from the package and pass one of its values to `xAxisFormat`.
 
+14. Label bullet charts and sparklines outside the chart
+
+The bullet chart no longer draws a title and subtitle, and the sparkline no longer draws a title. Text drawn inside the svg cannot wrap, clips at the chart's edge and does not follow the page's typography, so these charts now draw only the data. The `customTitle` and `customSubtitle` accessors and the `title` and `subtitle` data fields of the bullet chart are removed, as are the sparkline's `titleText` and `titleTextStyle`. The React `Bullet` and `Sparkline` components drop the matching props.
+
+Put the label in your own markup next to the chart, and give screen readers the chart's name with `a11yTitle`:
+
+```js
+// Version 2
+bulletChart.customTitle('CPU 1').customSubtitle('GHz');
+sparklineChart.titleText('Signups');
+
+// Version 3
+// <h3>CPU 1 <small>GHz</small></h3> above the chart's container
+bulletChart.a11yTitle('CPU 1, GHz');
+sparklineChart.a11yTitle('Signups');
+```
+
+The legend still draws its own labels.
+
 ### New features
 1. Start using TypeScript with Britecharts.
 
@@ -294,6 +313,7 @@ We changed many things in the third version of Britecharts; here are some summar
 * Runs on the d3 v7 modules; negative numbers render with the typographic minus sign.
 * Removes the Step chart from every package.
 * Removes the line chart's 'dataByTopic' data shape.
+* Removes the bullet chart's title and subtitle ('customTitle', 'customSubtitle' and the 'title' and 'subtitle' data fields) and the sparkline's title ('titleText', 'titleTextStyle'), with the matching React props.
 * Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.
 * Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar.
 * Fixes the custom format feature in the line and stacked area chart, renaming 'xAxisFormat' into 'xAxisCustomFormat' and 'xAxisCustomFormat' into 'xAxisFormat'. The time combinations are exported as `constants.axisTimeCombinations`.
