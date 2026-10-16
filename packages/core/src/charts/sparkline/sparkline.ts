@@ -8,22 +8,22 @@ import type { ScaleLinear } from 'd3-scale';
 import type { Area, Line } from 'd3-shape';
 import 'd3-transition';
 
-import { exportChart } from '../helpers/export';
-import { dataKeyDeprecationMessage } from '../helpers/project';
-import colorHelper from '../helpers/color';
-import { sparkLineLoadingMarkup } from '../helpers/load';
-import { uniqueId } from '../helpers/number';
-import { motion } from '../helpers/constants';
-import type { ChartMarginParams } from '../../typings/common/margin';
-import type { ColorGradientType } from '../../typings/helpers/colors';
+import { exportChart } from '../helpers/export.js';
+import { dataKeyDeprecationMessage } from '../helpers/project.js';
+import colorHelper from '../helpers/color.js';
+import { sparkLineLoadingMarkup } from '../helpers/load.js';
+import { uniqueId } from '../helpers/number.js';
+import { motion } from '../helpers/constants.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
+import type { ColorGradientType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     AnimatedChartAPI,
     ChartDimensionsAPI,
     ExportableChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum SparklineChartKeys {
     Value = 'value',

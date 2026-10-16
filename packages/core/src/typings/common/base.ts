@@ -1,7 +1,7 @@
-import { LocaleString } from './local';
-import { ColorsSchemasType } from '../helpers/colors';
-import { ChartMarginParams } from './margin';
-import { AxisTimeCombination } from '../helpers/constants';
+import { LocaleString } from './local.js';
+import { ColorsSchemasType } from '../helpers/colors.js';
+import { ChartMarginParams } from './margin.js';
+import { AxisTimeCombination } from '../helpers/constants.js';
 
 export interface ChartBaseAPI<T> {
     /** Gets or Sets the number format of the chart */

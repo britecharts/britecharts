@@ -289,6 +289,8 @@ Version 2 published a UMD file for each chart, like `britecharts/dist/umd/bar.mi
 
 The colors come with the bundle as `core.colors`. The per-chart stylesheets under `dist/styles/charts/` are still published. `@britecharts/wrappers` and `@britecharts/react` also publish only their bundles: import the wrappers and components from the package, or use the `wrappers` and `react` globals.
 
+The packages are ES modules (`"type": "module"`), so they load with `import` in Node as well as in bundlers. `require` still works and gets the CommonJS bundle, which is now a `.cjs` file. If you required a bundle by its path, update the extension: `@britecharts/core/dist/umd/bundle/core.bundled.min.js` is now `core.bundled.min.cjs`, and likewise for `wrappers` and `react`. The CDN bundle keeps its `.js` name.
+
 ### New features
 1. Start using TypeScript with Britecharts.
 
@@ -328,6 +330,7 @@ We changed many things in the third version of Britecharts; here are some summar
 * Removes the Step chart from every package.
 * Removes the line chart's 'dataByTopic' data shape.
 * Publishes one UMD bundle and one CDN bundle instead of a UMD file per chart. The per-chart stylesheets stay.
+* The packages are ES modules: `import` works in Node, and the CommonJS bundles `require` loads end in `.cjs`.
 * Removes the bullet chart's title and subtitle ('customTitle', 'customSubtitle' and the 'title' and 'subtitle' data fields) and the sparkline's title ('titleText', 'titleTextStyle'), with the matching React props.
 * Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.
 * Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar.

@@ -1,7 +1,8 @@
 {
   "name": "@britecharts/core",
   "version": "3.0.0-beta.5",
-  "main": "dist/umd/bundle/core.bundled.min.js",
+  "type": "module",
+  "main": "dist/umd/bundle/core.bundled.min.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
   "dependencies": {
@@ -84,11 +85,12 @@
     }
   },
   "scripts": {
-    "build": "pnpm run clean && pnpm run build:types && pnpm run build:esm && pnpm run build:bundles && pnpm run build:check",
+    "build": "pnpm run clean && pnpm run build:types && pnpm run build:esm && pnpm run build:types:cjs && pnpm run build:bundles && pnpm run build:check",
     "build:types": "tsc -p tsconfig.build.json",
     "build:esm": "babel src --out-dir dist/esm --extensions .ts,.js --no-babelrc --presets @babel/preset-typescript --ignore \"src/**/*.d.ts,src/**/*.spec.ts,src/**/*.spec.js,src/**/*.stories.js,src/**/*.stories.ts,src/**/*DataBuilder.js,src/**/*Data.js,src/**/*.fixtures.js,src/**/*.fixtures.ts\"",
+    "build:types:cjs": "node -e \"const fs=require('node:fs');fs.cpSync('dist/types','dist/types-cjs',{recursive:true,filter:(p)=>fs.statSync(p).isDirectory()||p.endsWith('.d.ts')});fs.writeFileSync('dist/types-cjs/package.json','{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:bundles": "vite build && vite build --mode cdn && vite build --mode styles && vite build --mode styles-min",
-    "build:check": "es-check es2020 \"./dist/umd/bundle/core.bundled.min.js\" \"./dist/cdn/bundle/core.cdn.min.js\"",
+    "build:check": "es-check es2020 \"./dist/umd/bundle/core.bundled.min.cjs\" \"./dist/cdn/bundle/core.cdn.min.js\"",
     "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_CORE",
     "clean": "rimraf dist",
     "demo": "pnpm run storybook",
@@ -110,6 +112,7 @@
     "dist/cdn/**",
     "dist/styles/**",
     "dist/types/**",
+    "dist/types-cjs/**",
     "src/**",
     "!**/*.map",
     "!**/*.spec.js",
@@ -124,10 +127,15 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/umd/bundle/core.bundled.min.js",
-      "default": "./dist/umd/bundle/core.bundled.min.js"
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types-cjs/index.d.ts",
+        "default": "./dist/umd/bundle/core.bundled.min.cjs"
+      },
+      "default": "./dist/umd/bundle/core.bundled.min.cjs"
     },
     "./dist/*": "./dist/*",
     "./src/*": "./src/*",

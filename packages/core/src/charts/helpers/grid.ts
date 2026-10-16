@@ -8,7 +8,7 @@ import { scaleLinear } from 'd3-scale';
 import type { BaseType, Selection } from 'd3-selection';
 import type { Transition } from 'd3-transition';
 
-import { classArray } from './classes';
+import { classArray } from './classes.js';
 
 /**
  * A d3 scale with a numeric range: continuous (`scaleLinear`, `scaleTime`, ...)

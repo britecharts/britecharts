@@ -20,35 +20,39 @@ import type { BaseType, Selection } from 'd3-selection';
 import type { Line } from 'd3-shape';
 import 'd3-transition';
 
-import { exportChart } from '../helpers/export';
-import colorHelper from '../helpers/color';
-import { lineLoadingMarkup } from '../helpers/load';
-import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis';
-import { dataKeyDeprecationMessage } from '../helpers/project';
-import { axisTimeCombinations, curveMap, motion } from '../helpers/constants';
+import { exportChart } from '../helpers/export.js';
+import colorHelper from '../helpers/color.js';
+import { lineLoadingMarkup } from '../helpers/load.js';
+import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis.js';
+import { dataKeyDeprecationMessage } from '../helpers/project.js';
+import {
+    axisTimeCombinations,
+    curveMap,
+    motion,
+} from '../helpers/constants.js';
 import {
     createFilterContainer,
     createGlowWithMatrix,
     bounceCircleHighlight,
-} from '../helpers/filter';
+} from '../helpers/filter.js';
 import {
     formatIntegerValue,
     formatDecimalValue,
     isInteger,
     uniqueId,
-} from '../helpers/number';
-import { castValueToType } from '../helpers/type';
-import { gridHorizontal, gridVertical } from '../helpers/grid';
-import type { AxisDatumSorted, AxisTickSettings } from '../helpers/axis';
-import type { AxisTimeCombinationValue } from '../helpers/constants';
+} from '../helpers/number.js';
+import { castValueToType } from '../helpers/type.js';
+import { gridHorizontal, gridVertical } from '../helpers/grid.js';
+import type { AxisDatumSorted, AxisTickSettings } from '../helpers/axis.js';
+import type { AxisTimeCombinationValue } from '../helpers/constants.js';
 
-import type { GridTypes } from '../../typings/common/grid';
-import type { LocaleString } from '../../typings/common/local';
-import type { ChartMarginParams } from '../../typings/common/margin';
+import type { GridTypes } from '../../typings/common/grid.js';
+import type { LocaleString } from '../../typings/common/local.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type {
     ColorGradientType,
     ColorsSchemasType,
-} from '../../typings/helpers/colors';
+} from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     AnimatedChartAPI,
@@ -57,9 +61,9 @@ import type {
     InteractiveChartAPI,
     ThemableChartAPI,
     TimeSeriesChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum LineChartKeys {
     Date = 'date',

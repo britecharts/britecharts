@@ -6,10 +6,10 @@ import type { LineChartData, LineChartModule } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
-} from '../../helpers/validation';
-import { applyConfiguration } from '../../helpers/configuration';
-import { removeChartSvg } from '../../helpers/destroy';
-import type { Wrapper } from '../../helpers/wrapper';
+} from '../../helpers/validation.js';
+import { applyConfiguration } from '../../helpers/configuration.js';
+import { removeChartSvg } from '../../helpers/destroy.js';
+import type { Wrapper } from '../../helpers/wrapper.js';
 
 // `LineChartData`, not `LineChartDataShape[]`: line is the one data-taking
 // wrapper whose argument is an object rather than an array. Core declares it

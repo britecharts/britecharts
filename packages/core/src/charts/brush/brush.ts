@@ -14,30 +14,30 @@ import type { BaseType, Selection } from 'd3-selection';
 import type { Area } from 'd3-shape';
 import 'd3-transition';
 
-import colorHelper from '../helpers/color';
-import timeAxisHelper from '../helpers/axis';
+import colorHelper from '../helpers/color.js';
+import timeAxisHelper from '../helpers/axis.js';
 import {
     axisTimeCombinations,
     timeIntervals,
     motion,
     curveMap,
-} from '../helpers/constants';
-import { getValueDomain } from '../helpers/domain';
-import { uniqueId } from '../helpers/number';
-import { brushLoadingMarkup } from '../helpers/load';
-import type { ChartMarginParams } from '../../typings/common/margin';
-import type { ColorGradientType } from '../../typings/helpers/colors';
-import type { AxisTimeCombinationValue } from '../helpers/constants';
-import type { AxisTickSettings } from '../helpers/axis';
+} from '../helpers/constants.js';
+import { getValueDomain } from '../helpers/domain.js';
+import { uniqueId } from '../helpers/number.js';
+import { brushLoadingMarkup } from '../helpers/load.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
+import type { ColorGradientType } from '../../typings/helpers/colors.js';
+import type { AxisTimeCombinationValue } from '../helpers/constants.js';
+import type { AxisTickSettings } from '../helpers/axis.js';
 import type {
     AccessibleChartAPI,
     AnimatedChartAPI,
     ChartBaseAPIMinimal,
     InteractiveChartAPI,
     TimeSeriesChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum BrushChartKeys {
     Value = 'value',

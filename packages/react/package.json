@@ -1,7 +1,8 @@
 {
   "name": "@britecharts/react",
   "version": "3.0.0-beta.5",
-  "main": "dist/umd/bundle/react.bundled.min.js",
+  "type": "module",
+  "main": "dist/umd/bundle/react.bundled.min.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "dependencies": {
@@ -41,10 +42,11 @@
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
-    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:bundles",
+    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:types:cjs && pnpm run build:bundles",
+    "build:types:cjs": "node -e \"const fs=require('node:fs');fs.cpSync('dist/esm','dist/types-cjs',{recursive:true,filter:(p)=>fs.statSync(p).isDirectory()||p.endsWith('.d.ts')});fs.writeFileSync('dist/types-cjs/package.json','{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:bundles": "vite build",
     "build:esm": "pnpm run build:esm:js && pnpm run build:esm:types",
-    "build:esm:js": "babel src --out-dir dist/esm --extensions .tsx,.ts,.js --config-file ./babel.config.esm.js --ignore \"src/**/*.d.ts,src/**/*.spec.js,src/**/*.spec.ts,src/**/*.spec.tsx,src/**/*.stories.js,src/**/*.stories.ts,src/**/*.stories.tsx,src/**/*.fixtures.js,src/**/*.fixtures.ts,src/docs\"",
+    "build:esm:js": "babel src --out-dir dist/esm --extensions .tsx,.ts,.js --config-file ./babel.config.esm.cjs --ignore \"src/**/*.d.ts,src/**/*.spec.js,src/**/*.spec.ts,src/**/*.spec.tsx,src/**/*.stories.js,src/**/*.stories.ts,src/**/*.stories.tsx,src/**/*.fixtures.js,src/**/*.fixtures.ts,src/docs\"",
     "build:esm:types": "tsc -p tsconfig.build.json",
     "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_REACT",
     "clean": "rimraf dist",
@@ -62,6 +64,7 @@
     "CHANGELOG.md",
     "dist/umd/**",
     "dist/esm/**",
+    "dist/types-cjs/**",
     "src/**",
     "!src/docs/**",
     "!**/*.map",
@@ -79,10 +82,15 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/esm/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/umd/bundle/react.bundled.min.js",
-      "default": "./dist/umd/bundle/react.bundled.min.js"
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types-cjs/index.d.ts",
+        "default": "./dist/umd/bundle/react.bundled.min.cjs"
+      },
+      "default": "./dist/umd/bundle/react.bundled.min.cjs"
     },
     "./dist/*": "./dist/*",
     "./src/*": "./src/*",

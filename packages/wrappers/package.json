@@ -1,7 +1,8 @@
 {
   "name": "@britecharts/wrappers",
   "version": "3.0.0-beta.5",
-  "main": "dist/umd/bundle/wrappers.bundled.min.js",
+  "type": "module",
+  "main": "dist/umd/bundle/wrappers.bundled.min.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "dependencies": {
@@ -21,7 +22,8 @@
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
-    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:bundles",
+    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:types:cjs && pnpm run build:bundles",
+    "build:types:cjs": "node -e \"const fs=require('node:fs');fs.cpSync('dist/esm','dist/types-cjs',{recursive:true,filter:(p)=>fs.statSync(p).isDirectory()||p.endsWith('.d.ts')});fs.writeFileSync('dist/types-cjs/package.json','{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:bundles": "vite build",
     "build:esm": "pnpm run build:esm:js && pnpm run build:esm:types",
     "build:esm:js": "babel src --out-dir dist/esm --extensions .ts,.js --no-babelrc --presets @babel/preset-typescript --ignore \"src/**/*.spec.ts,src/**/*.spec.js,src/**/*.fixtures.ts,src/**/*.fixtures.js\"",
@@ -51,10 +53,15 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/esm/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/umd/bundle/wrappers.bundled.min.js",
-      "default": "./dist/umd/bundle/wrappers.bundled.min.js"
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types-cjs/index.d.ts",
+        "default": "./dist/umd/bundle/wrappers.bundled.min.cjs"
+      },
+      "default": "./dist/umd/bundle/wrappers.bundled.min.cjs"
     },
     "./dist/*": "./dist/*",
     "./src/*": "./src/*",

@@ -64,7 +64,7 @@ test('C3 · require("@britecharts/core") resolves main to the UMD bundle', () =>
 test('W · require("@britecharts/wrappers") and its CommonJS bundle', () => {
     const umd = requireFromConsumer('@britecharts/wrappers');
     const cjs = requireFromConsumer(
-        '@britecharts/wrappers/dist/cjs/bundle/wrappers.bundled.min.js'
+        '@britecharts/wrappers/dist/cjs/bundle/wrappers.bundled.min.cjs'
     );
 
     // A wrapper is a { create, update, destroy } object, not a chart factory.

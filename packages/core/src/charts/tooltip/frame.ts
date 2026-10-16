@@ -14,7 +14,7 @@
  *
  * @private
  */
-import type { PlacementFrame } from './place';
+import type { PlacementFrame } from './place.js';
 
 /**
  * What this module reads off a node, declared structurally rather than as

@@ -23,7 +23,8 @@ What comes out of `packages/core/dist`:
 
 | Path | Contents |
 | --- | --- |
-| `umd/bundle/core.bundled.min.js` | Every chart in one UMD bundle: the package's `main`. |
+| `umd/bundle/core.bundled.min.cjs` | Every chart in one UMD bundle: the package's `main`, and what `require` loads. |
+| `types-cjs/` | The type declarations again, marked CommonJS, for the `require` condition. |
 | `cdn/bundle/core.cdn.min.js` | The same, built for a `<script>` tag, with d3 bundled in. |
 | `styles/bundle/britecharts.min.css` | Every stylesheet. |
 | `styles/charts/common.min.css`, `styles/charts/<chart>.min.css` | The shared styles, and one file per chart to use alongside them. |

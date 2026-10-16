@@ -17,7 +17,7 @@ export default defineConfig({
             entry: 'src/index.ts',
             formats: ['umd'],
             name: 'react',
-            fileName: () => 'react.bundled.min.js',
+            fileName: () => 'react.bundled.min.cjs',
         },
         rolldownOptions: {
             external: ['react', 'react-dom'],

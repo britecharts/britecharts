@@ -7,7 +7,7 @@ from npm. One HTML page per consumption path:
 | Page | Path exercised |
 |---|---|
 | `cdn-bundle.html` | `dist/cdn/bundle/core.cdn.min.js` as a script tag, global `core` |
-| `umd-bundle.html` | `dist/umd/bundle/core.bundled.min.js` (the package `main`) through Vite |
+| `umd-bundle.html` | `dist/umd/bundle/core.bundled.min.cjs` (the package `main`) through Vite |
 | `esm-bundle.html` | `import { bar } from '@britecharts/core'` (the package `module` entry) |
 | `esm-chart.html` | `import bar from '@britecharts/core/src/charts/bar/bar.js'` |
 | `cdn-jsdelivr.html` | the published bundle from jsDelivr; only run by `smoke-published.yml` against a released version |

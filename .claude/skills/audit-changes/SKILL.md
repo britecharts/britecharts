@@ -91,7 +91,7 @@ Use `pnpm exec stylelint`, not `pnpm stylelint` — the latter runs the root *sc
 pnpm exec jest --findRelatedTests <changed script files> --coverage=false
 ```
 
-Run this from the repo root. The root `jest.config.js` registers every package as a Jest project (`packages/*/jest.config.js`), so one invocation covers `core`, `wrappers` and `react` and picks up the sibling suites that a change ripples into. `--coverage=false` overrides the root config's `collectCoverage` and keeps the run fast.
+Run this from the repo root. The root `jest.config.js` registers every package as a Jest project (`packages/*/jest.config.cjs`), so one invocation covers `core`, `wrappers` and `react` and picks up the sibling suites that a change ripples into. `--coverage=false` overrides the root config's `collectCoverage` and keeps the run fast.
 
 **Run the whole workspace's tests, not just the converted package's,** whenever you change a file another package imports. This has bitten: converting one wrappers file broke all 16 react suites while wrappers' own suite stayed green, because every react spec reaches wrappers through its source barrel.
 

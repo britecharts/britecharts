@@ -7,20 +7,20 @@ import { interpolateHcl } from 'd3-interpolate';
 import { dispatch } from 'd3-dispatch';
 import 'd3-transition';
 
-import { exportChart } from '../helpers/export';
-import { heatmapLoadingMarkup } from '../helpers/load';
-import colorHelper from '../helpers/color';
-import { hoursHuman, motion } from '../helpers/constants';
-import type { ChartMarginParams } from '../../typings/common/margin';
+import { exportChart } from '../helpers/export.js';
+import { heatmapLoadingMarkup } from '../helpers/load.js';
+import colorHelper from '../helpers/color.js';
+import { hoursHuman, motion } from '../helpers/constants.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type {
     AccessibleChartAPI,
     AnimatedChartAPI,
     BaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum HeatmapChartKeys {
     Day = 'day',

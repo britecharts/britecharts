@@ -5,17 +5,17 @@ import type { BaseType, Selection } from 'd3-selection';
 import type { ScaleOrdinal } from 'd3-scale';
 import 'd3-transition';
 
-import * as textHelper from '../helpers/text';
-import colorHelper from '../helpers/color';
-import type { ChartMarginParams } from '../../typings/common/margin';
-import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import * as textHelper from '../helpers/text.js';
+import colorHelper from '../helpers/color.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
+import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     ComponentBaseAPI,
     ThemableChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum LegendKeys {
     Name = 'name',

@@ -19,32 +19,36 @@ import type { BaseType, Selection } from 'd3-selection';
 import type { Area, Line, Series, SeriesPoint } from 'd3-shape';
 import 'd3-transition';
 
-import { exportChart } from '../helpers/export';
-import { dataKeyDeprecationMessage } from '../helpers/project';
-import colorHelper from '../helpers/color';
-import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis';
-import type { AxisDatumSorted, AxisTickSettings } from '../helpers/axis';
-import { castValueToType } from '../helpers/type';
-import { axisTimeCombinations, curveMap, motion } from '../helpers/constants';
-import type { AxisTimeCombinationValue } from '../helpers/constants';
+import { exportChart } from '../helpers/export.js';
+import { dataKeyDeprecationMessage } from '../helpers/project.js';
+import colorHelper from '../helpers/color.js';
+import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis.js';
+import type { AxisDatumSorted, AxisTickSettings } from '../helpers/axis.js';
+import { castValueToType } from '../helpers/type.js';
+import {
+    axisTimeCombinations,
+    curveMap,
+    motion,
+} from '../helpers/constants.js';
+import type { AxisTimeCombinationValue } from '../helpers/constants.js';
 import {
     formatIntegerValue,
     formatDecimalValue,
     isInteger,
-} from '../helpers/number';
+} from '../helpers/number.js';
 import {
     createFilterContainer,
     createGlowWithMatrix,
     bounceCircleHighlight,
-} from '../helpers/filter';
-import { addDays, diffDays } from '../helpers/date';
-import { stackedAreaLoadingMarkup } from '../helpers/load';
-import { gridHorizontal, gridVertical } from '../helpers/grid';
+} from '../helpers/filter.js';
+import { addDays, diffDays } from '../helpers/date.js';
+import { stackedAreaLoadingMarkup } from '../helpers/load.js';
+import { gridHorizontal, gridVertical } from '../helpers/grid.js';
 
-import type { GridTypes } from '../../typings/common/grid';
-import type { LocaleString } from '../../typings/common/local';
-import type { ChartMarginParams } from '../../typings/common/margin';
-import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import type { GridTypes } from '../../typings/common/grid.js';
+import type { LocaleString } from '../../typings/common/local.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
+import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     AnimatedChartAPI,
@@ -53,9 +57,9 @@ import type {
     InteractiveChartAPI,
     ThemableChartAPI,
     TimeSeriesChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum StackedAreaChartKeys {
     Date = 'date',

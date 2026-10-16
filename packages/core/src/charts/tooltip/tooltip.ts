@@ -5,23 +5,29 @@ import { timeFormat } from 'd3-time-format';
 import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
-import { axisTimeCombinations } from '../helpers/constants';
-import { dataKeyDeprecationMessage } from '../helpers/project';
+import { axisTimeCombinations } from '../helpers/constants.js';
+import { dataKeyDeprecationMessage } from '../helpers/project.js';
 import {
     formatIntegerValue,
     formatDecimalValue,
     isInteger,
-} from '../helpers/number';
-import { getTextWidth, getApproximateNumberOfLines } from '../helpers/text';
-import { isDefined } from '../helpers/type';
-import { measureFrame, originOf, translateOf } from './frame';
-import { chaseDuration, ease, prepareToShow, fadeIn, fadeOut } from './motion';
-import { place } from './place';
+} from '../helpers/number.js';
+import { getTextWidth, getApproximateNumberOfLines } from '../helpers/text.js';
+import { isDefined } from '../helpers/type.js';
+import { measureFrame, originOf, translateOf } from './frame.js';
+import {
+    chaseDuration,
+    ease,
+    prepareToShow,
+    fadeIn,
+    fadeOut,
+} from './motion.js';
+import { place } from './place.js';
 
-import type { LocaleString } from '../../typings/common/local';
-import type { ChartMarginParams } from '../../typings/common/margin';
-import type { ChartModuleSelection } from '../../typings/common/selection';
-import type { AxisTimeCombination } from '../../typings/helpers/constants';
+import type { LocaleString } from '../../typings/common/local.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
+import type { AxisTimeCombination } from '../../typings/helpers/constants.js';
 
 export declare enum tooltipKeys {
     Date = 'date',
