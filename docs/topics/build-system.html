@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.02570f28.css">
-<script src="/britecharts/assets/js/runtime~main.aaf332d9.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.5897afb6.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.64dff405.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.e4162109.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -81,7 +81,11 @@
 
 
 
-<table><thead><tr><th>Path</th><th>Contents</th></tr></thead><tbody><tr><td><code>umd/bundle/core.bundled.min.js</code></td><td>Every chart in one UMD bundle: the package&#x27;s <code>main</code>.</td></tr><tr><td><code>cdn/bundle/core.cdn.min.js</code></td><td>The same, built for a <code>&lt;script&gt;</code> tag, with d3 bundled in.</td></tr><tr><td><code>styles/bundle/britecharts.min.css</code></td><td>Every stylesheet.</td></tr><tr><td><code>styles/charts/common.min.css</code>, <code>styles/charts/&lt;chart&gt;.min.css</code></td><td>The shared styles, and one file per chart to use alongside them.</td></tr></tbody></table>
+
+
+
+
+<table><thead><tr><th>Path</th><th>Contents</th></tr></thead><tbody><tr><td><code>umd/bundle/core.bundled.min.cjs</code></td><td>Every chart in one UMD bundle: the package&#x27;s <code>main</code>, and what <code>require</code> loads.</td></tr><tr><td><code>types-cjs/</code></td><td>The type declarations again, marked CommonJS, for the <code>require</code> condition.</td></tr><tr><td><code>cdn/bundle/core.cdn.min.js</code></td><td>The same, built for a <code>&lt;script&gt;</code> tag, with d3 bundled in.</td></tr><tr><td><code>styles/bundle/britecharts.min.css</code></td><td>Every stylesheet.</td></tr><tr><td><code>styles/charts/common.min.css</code>, <code>styles/charts/&lt;chart&gt;.min.css</code></td><td>The shared styles, and one file per chart to use alongside them.</td></tr></tbody></table>
 <p>The wrappers package emits a UMD and a CommonJS bundle; the React package a UMD bundle. <code>pnpm build</code> at the root builds the three packages, this site and the Storybooks.</p>
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="styles">Styles<a href="#styles" class="hash-link" aria-label="Direct link to Styles" title="Direct link to Styles" translate="no">​</a></h3>
 <p>The stylesheets are SCSS under <code>packages/core/src/styles</code>, written with the Sass module system (<code>@use</code>): <code>britecharts.scss</code> is the whole set, <code>common.scss</code> what every chart needs, and <code>charts/&lt;chart&gt;.scss</code> one chart. They compile through core&#x27;s Vite build; <code>pnpm lint:styles</code> runs stylelint over them.</p>
