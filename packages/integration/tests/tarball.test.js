@@ -119,7 +119,6 @@ const PACKAGES = {
             ['package.json', 1],
             ['dist/umd/bundle/wrappers.bundled.min.js', 1],
             ['dist/cjs/bundle/wrappers.bundled.min.js', 1],
-            ['dist/umd/charts/*.min.js', 10],
             // The ESM entry point and its declarations. These are what
             // `module`, `exports.import` and `types` resolve to, so a
             // consumer's bundler and tsc both land here rather than in src/ --

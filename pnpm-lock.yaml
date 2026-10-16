@@ -839,9 +839,6 @@ importers:
       '@types/jest':
         specifier: 'catalog:'
         version: 29.5.9
-      babel-loader:
-        specifier: 'catalog:'
-        version: 8.4.1(@babel/core@7.29.7(supports-color@8.1.1))(webpack@5.111.1)
       eslint:
         specifier: 'catalog:'
         version: 8.57.1(supports-color@8.1.1)
@@ -851,15 +848,9 @@ importers:
       rimraf:
         specifier: 'catalog:'
         version: 2.7.1
-      webpack:
+      vite:
         specifier: 'catalog:'
-        version: 5.111.1(clean-css@5.3.3)(cssnano@7.1.9(postcss@8.5.28))(csso@5.0.5)(esbuild@0.25.12)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(svgo@4.1.0)(uglify-js@3.19.3)(webpack-cli@7.2.3)
-      webpack-cli:
-        specifier: 'catalog:'
-        version: 7.2.3(js-yaml@4.3.2)(json5@2.2.3)(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@6.0.0)(webpack@5.111.1)
-      webpack-merge:
-        specifier: 'catalog:'
-        version: 6.0.1
+        version: 8.3.0(@types/node@26.6.5)(esbuild@0.25.12)(jiti@1.21.7)(sass@1.105.0)(terser@5.51.2)(yaml@2.9.1)
 
 packages:
 
