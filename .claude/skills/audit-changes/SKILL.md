@@ -177,7 +177,7 @@ If any step fails:
 | Build | — | `pnpm run build:packages` |
 | Everything | — | `pnpm check` |
 
-Node comes from `.nvmrc` (24). pnpm 12.6.0 via Corepack (`packageManager` in the root manifest) — never `npm` or `yarn` in this repo.
+Node comes from `.nvmrc` (24). pnpm 12.6.0, pinned by `packageManager` in the root manifest (CI installs it with `pnpm/action-setup`) — never `npm` or `yarn` in this repo.
 
 `pnpm pack` is npm's builtin and packs the wrong thing — it packs `packages/integration` itself and leaves `.tarballs/` stale. The real command is `pnpm --filter @britecharts/integration run pack`.
 

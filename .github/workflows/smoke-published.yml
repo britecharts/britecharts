@@ -44,8 +44,8 @@ jobs:
         with:
           fetch-depth: 0 # the release commit is looked up in the history
 
-      - name: Enable Corepack
-        run: corepack enable
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
 
       - name: Set up Node
         uses: actions/setup-node@v7

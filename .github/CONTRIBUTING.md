@@ -42,7 +42,7 @@ To start contributing to Britecharts, you need to set up your machine to develop
 1. Fork the Britecharts repository by clicking the fork button on GitHub.
 2. Clone your fork with `git clone https://github.com/<your handle>/britecharts.git`.
 3. Install Node. We develop on the version in [`.nvmrc`](../.nvmrc) (Node 24; anything from Node 20 works), so `nvm use` or `fnm use` in the repository folder picks the right one.
-4. Enable pnpm. The repository pins pnpm in `package.json`, so with [Corepack][corepack] you don't need to install it yourself: run `corepack enable` once.
+4. Install pnpm, at any version from 9.7 on ([pnpm's install guide][pnpm-install]). The repository pins its pnpm version in `package.json`, and pnpm switches itself to that version inside the repository folder. On Node 24 you can use [Corepack][corepack] instead: run `corepack enable` once.
 5. Navigate to the repository folder and install the dependencies with `pnpm install`.
 
 That is all the charts need: the unit tests run under jsdom, so no browser is required. The integration tests use Playwright, which downloads its own Chromium (see [Running the Integration Tests](#running-the-integration-tests)).
@@ -167,6 +167,7 @@ Britecharts is an open project looking to get your contributions, in whatever fo
 [help-wanted]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22help+wanted%22
 [good-first-issues]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22
 [corepack]: https://nodejs.org/api/corepack.html
+[pnpm-install]: https://pnpm.io/installation
 [conventionalCommits]: https://www.conventionalcommits.org/
 [prtemplate]: https://github.com/britecharts/britecharts/blob/main/.github/PULL_REQUEST_TEMPLATE.md
 [contributorHowTo]: https://britecharts.github.io/britecharts/docs/how-tos/contributor-how-to-guides

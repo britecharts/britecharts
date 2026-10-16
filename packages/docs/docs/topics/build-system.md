@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # The Build System
 
-Britecharts is a [pnpm][pnpm] workspace. Node comes from `.nvmrc` (24), pnpm from the `packageManager` field through Corepack, and one `pnpm install` at the root sets up every package:
+Britecharts is a [pnpm][pnpm] workspace. Node comes from `.nvmrc` (24), pnpm from the `packageManager` field (pnpm switches itself to that version; CI installs it with `pnpm/action-setup`), and one `pnpm install` at the root sets up every package:
 
 | Package | What it is |
 | --- | --- |
