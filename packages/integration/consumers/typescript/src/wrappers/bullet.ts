@@ -20,18 +20,16 @@ export const draw = (node: HTMLElement) => {
   // Accessors are chainable, and each setter's value type is checked.
   chart.width(600).height(400);
 
+  // The chart the wrapper hands back reads its accessors with their own value
+  // types, the same as one made directly (see ../charts/accessors.ts).
+  const width: number = chart.width();
+  const height: number = chart.height();
+
   BulletWrapper.update(node, [SAMPLE_BULLET_DATA], { width: 600 }, chart);
   BulletWrapper.destroy(node);
 
-  return chart;
+  return { chart, width, height };
 };
-
-// Note: `chart.width()` as a *getter* does not type as `number` -- core models
-// every accessor as a single `width(width?: number): T & ChartBaseAPI<T>`
-// signature, so the no-argument call is typed as returning the chart. That is
-// a known consequence of the mixin style core's typings deliberately use (an
-// overload pair would type the getter but defeats the mapped type the wrapper
-// configuration depends on), and it is core's to resolve when it converts.
 
 export const rejectsWrongConfiguration = () =>
   BulletWrapper.create(document.createElement('div'), [SAMPLE_BULLET_DATA], {
