@@ -1,5 +1,35 @@
 # @britecharts/core
 
+## 3.0.0-beta.6
+
+### Major Changes
+
+- d62400b: Core publishes one UMD bundle and one CDN bundle instead of a file per chart. `dist/umd/charts/` and `dist/cdn/charts/` are removed: import the charts from the package, or load `dist/cdn/bundle/core.cdn.min.js` and use the `core` global (`core.bar()`, `core.colors`). The stylesheets, per-chart ones included, are unchanged.
+
+    The bundles and stylesheets are now built with Vite instead of webpack. `require('@britecharts/core')` keeps every named export and now also has `default`, the same object, as the type declarations describe.
+
+- 8fb30f9: The bullet chart and the sparkline no longer draw a title. Text inside the
+  svg cannot wrap, clips at the chart's edge and ignores the page's
+  typography, so these charts now draw only the data.
+
+    Removed: the bullet chart's `customTitle` and `customSubtitle` accessors and
+    its `title` and `subtitle` data fields, and the sparkline's `titleText` and
+    `titleTextStyle` accessors, along with the `SparklineTitleTextStyle` type
+    and the matching React props. The bullet chart no longer reserves 100px on
+    the left for its title, so the bars now span the full width. Label these
+    charts in your own markup next to them, and set `a11yTitle` for screen
+    readers. The migration guide's step 14 shows how.
+
+- 7c0fb2a: The package is now an ES module package (`"type": "module"`), so `import` works in Node as well as in bundlers, with matching types under each condition. `require` still works and resolves to the CommonJS bundle, renamed from `.js` to `.cjs` (`dist/umd/bundle/core.bundled.min.cjs`). Update any deep path that named the old file.
+
+### Minor Changes
+
+- daca322: The scatter plot draws negative values. Its value axis now runs from below zero when the data does, and each circle's size shows the magnitude of its value, so -50 draws as large as 50. Before, the axis always started at 0 and points with a negative value were not drawn. Clicking a point bounces it to the size it reached before the radius scale was clamped.
+
+### Patch Changes
+
+- 983526c: The scatter plot no longer sets a negative circle radius. A value below the bottom of the y scale got one, which SVG rejects with a console error for every such point; the radius is now clamped to 0.
+
 ## 3.0.0-beta.5
 
 ### Minor Changes
