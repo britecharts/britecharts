@@ -10,9 +10,7 @@ const coreSrc = path.resolve(repoRoot, 'packages/core/src');
 const pages = [
     'index',
     'cdn-bundle',
-    'cdn-chart',
     'umd-bundle',
-    'umd-chart',
     'esm-bundle',
     'esm-chart',
     'cdn-jsdelivr', // published version only; see the page

@@ -51,7 +51,7 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 1. Create a new data builder file. Name it something like `chartNameChartDataBuilder.js`.
 1. In the chart folder, create a new chart file called `chart-name.js`.
 1. Create a `<chartName>.stories.js` file to hold a new demo for the new chart. Re-run the demos script to get it showing in the storybook.
-1. Go to `packages/core/webpack.constants.js` and add the new chart to the `CHARTS` object, give it a camel case name.
+1. Export the new chart from `packages/core/src/index.ts`, with a camel case name, so it ships in the bundles.
 1. Go to your test file `/packages/core/src/charts/chart-name.spec.js` and, taking another test as an example, copy over pieces until you have the first test case.
 1. Add one test and make it fail by calling `pnpm run test` or keep the tests running with `pnpm run test:watch`.
 1. Keep on coding according to our [API Guidelines][styleguide]

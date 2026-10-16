@@ -28,10 +28,10 @@ const WAIVED_PUBLINT = new Set([
 ]);
 const WAIVED_ATTW = new Set([
     'UnexpectedModuleSyntax', // same: ESM syntax in a file Node treats as CJS
-    'NamedExports', // Node ESM cannot see named exports on the webpack UMD bundle
+    'NamedExports', // Node ESM cannot see named exports on the UMD bundle
     // core's generated declarations say `export default britecharts`, which
-    // dist/esm has. The UMD bundle that `require` resolves to is built with
-    // `libraryExport: 'default'`, so it *is* that object rather than carrying
+    // dist/esm has. The UMD bundle that `require` resolves to is built
+    // to export the default alone, so it *is* that object rather than carrying
     // it as `.default`: `require('@britecharts/core').default` is undefined.
     // Bundlers take the `import` condition and default-import fine. Also
     // retired by H22, whose CJS output keeps `.default`.
@@ -78,9 +78,7 @@ const PACKAGES = {
             ['README.md', 1],
             ['package.json', 1],
             ['dist/umd/bundle/core.bundled.min.js', 1],
-            ['dist/umd/charts/*.min.js', 16],
             ['dist/cdn/bundle/core.cdn.min.js', 1],
-            ['dist/cdn/charts/*.cdn.min.js', 16],
             ['dist/styles/bundle/britecharts.css', 1],
             ['dist/styles/bundle/britecharts.min.css', 1],
             ['dist/styles/charts/common.css', 1],

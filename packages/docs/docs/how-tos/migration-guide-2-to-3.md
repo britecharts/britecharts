@@ -30,11 +30,9 @@ const LineChart = require('britecharts/umd/line.min');
 // Version 3
 // As ES modules
 import { bar } from '@britecharts/core';
-import bar from '@britecharts/core/dist/umd/charts/bar.min.js';
 
 // As CommonJS modules
 const { bar } = require('@britecharts/core');
-const bar = require('@britecharts/core/dist/umd/charts/bar.min.js');
 
 ```
 
@@ -275,6 +273,22 @@ sparklineChart.a11yTitle('Signups');
 
 The legend still draws its own labels.
 
+15. Load one bundle instead of a file per chart
+
+Version 2 published a UMD file for each chart, like `britecharts/dist/umd/bar.min.js`. Version 3 publishes one UMD bundle and one CDN bundle with every chart, and ES modules for bundlers. Bundlers keep only the charts you import, so a per-chart file saves nothing there. On a page with a script tag, load the CDN bundle, which includes d3, and use the `core` global:
+
+```html
+<!-- Version 2 -->
+<script src="https://cdn.jsdelivr.net/npm/britecharts/dist/umd/bar.min.js"></script>
+<script>const barChart = britecharts.bar();</script>
+
+<!-- Version 3 -->
+<script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"></script>
+<script>const barChart = core.bar();</script>
+```
+
+The colors come with the bundle as `core.colors`. The per-chart stylesheets under `dist/styles/charts/` are still published.
+
 ### New features
 1. Start using TypeScript with Britecharts.
 
@@ -313,6 +327,7 @@ We changed many things in the third version of Britecharts; here are some summar
 * Runs on the d3 v7 modules; negative numbers render with the typographic minus sign.
 * Removes the Step chart from every package.
 * Removes the line chart's 'dataByTopic' data shape.
+* Publishes one UMD bundle and one CDN bundle instead of a UMD file per chart. The per-chart stylesheets stay.
 * Removes the bullet chart's title and subtitle ('customTitle', 'customSubtitle' and the 'title' and 'subtitle' data fields) and the sparkline's title ('titleText', 'titleTextStyle'), with the matching React props.
 * Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.
 * Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar.

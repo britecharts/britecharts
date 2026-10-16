@@ -22,21 +22,9 @@ const PAGES = [
         { bars: true },
     ],
     [
-        'C2',
-        `${VANILLA}/cdn-chart.html`,
-        'CDN per-chart file via script tag, global `core.bar`',
-        { bars: true },
-    ],
-    [
         'C3',
         `${VANILLA}/umd-bundle.html`,
         'UMD bundle (package main) through a bundler',
-        { bars: true },
-    ],
-    [
-        'C4',
-        `${VANILLA}/umd-chart.html`,
-        'per-chart UMD build through a bundler',
         { bars: true },
     ],
     [

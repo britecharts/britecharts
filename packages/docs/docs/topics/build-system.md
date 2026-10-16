@@ -17,15 +17,14 @@ Britecharts is a [pnpm][pnpm] workspace. Node comes from `.nvmrc` (24), pnpm fro
 
 ### Building the packages
 
-Each published package is built with [webpack][webpack] 5 from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. `sass-loader` 10 still uses Dart Sass through the legacy JS API, silenced via `silenceDeprecations` in each package's `webpack.parts.js`. The output targets ES2020, and Babel only strips the TypeScript types. webpack itself goes with the Vite migration on the roadmap ([#1044][vite]).
+Each published package is built from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. Babel writes the ES modules file by file and only strips the TypeScript types, and `tsc` writes the declarations. Core's UMD bundle, CDN bundle and stylesheets come from `vite build` with [`packages/core/vite.config.js`][vite-build], one run per mode. Wrappers and React still bundle with [webpack][webpack] 5, where `sass-loader` 10 uses Dart Sass through the legacy JS API, silenced via `silenceDeprecations` in each package's `webpack.parts.js`; they move to Vite next ([#1044][vite]). The output targets ES2020.
 
 What comes out of `packages/core/dist`:
 
 | Path | Contents |
 | --- | --- |
 | `umd/bundle/core.bundled.min.js` | Every chart in one UMD bundle: the package's `main`. |
-| `umd/charts/<chart>.min.js` | One UMD file per chart, plus `colors`. |
-| `cdn/bundle/core.cdn.min.js`, `cdn/charts/` | The same, built for a `<script>` tag, with d3 bundled in. |
+| `cdn/bundle/core.cdn.min.js` | The same, built for a `<script>` tag, with d3 bundled in. |
 | `styles/bundle/britecharts.min.css` | Every stylesheet. |
 | `styles/charts/common.min.css`, `styles/charts/<chart>.min.css` | The shared styles, and one file per chart to use alongside them. |
 
@@ -33,7 +32,7 @@ The wrappers package emits a UMD and a CommonJS bundle plus one file per chart; 
 
 ### Styles
 
-The stylesheets are SCSS under `packages/core/src/styles`, written with the Sass module system (`@use`): `britecharts.scss` is the whole set, `common.scss` what every chart needs, and `charts/<chart>.scss` one chart. They compile through the same webpack build; `pnpm lint:styles` runs stylelint over them.
+The stylesheets are SCSS under `packages/core/src/styles`, written with the Sass module system (`@use`): `britecharts.scss` is the whole set, `common.scss` what every chart needs, and `charts/<chart>.scss` one chart. They compile through core's Vite build; `pnpm lint:styles` runs stylelint over them.
 
 ### Tasks
 
@@ -62,6 +61,7 @@ The API reference is generated: `packages/docs/scripts/generate-docs.js` runs [j
 Versions are managed with [Changesets][changesets]. `@britecharts/core`, `@britecharts/wrappers` and `@britecharts/react` are a fixed group, so they always share a version; the docs, demos and integration packages are never published. The Release workflow publishes from `main` once the pending changesets are applied, the Integration check gates every merge, and the Smoke workflow re-checks the published packages from npm and jsDelivr afterwards. `MAINTAINING.md` has the steps.
 
 [pnpm]: https://pnpm.io/
+[vite-build]: https://vite.dev/guide/build
 [webpack]: https://webpack.js.org/
 [docusaurus]: https://docusaurus.io/
 [jsdoc2md]: https://github.com/jsdoc2md/jsdoc-to-markdown

@@ -33,6 +33,7 @@ catalog:
   sass: 1.105.0
   sass-loader: 10.5.2
   storybook: 8.6.14
+  vite: 8.3.0
   stylelint: 14.16.1
   stylelint-config-sass-guidelines: 9.0.1
   stylelint-config-standard: 29.0.0
