@@ -167,7 +167,7 @@ describe('donut Chart', () => {
                     const dataSet = donutData.with4Slices();
                     const chart = donut.create(anchor, dataSet, {});
 
-                    donut.update(anchor, dataSet, {}, chart);
+                    donut.update(anchor, [], {}, chart);
 
                     const expected = dataSet.length;
                     const actual = datumOf(anchor)?.length;

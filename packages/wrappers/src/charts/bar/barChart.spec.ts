@@ -125,7 +125,7 @@ describe('bar Chart', () => {
                     const dataSet = barData.withColors();
                     const chart = bar.create(anchor, dataSet, {});
 
-                    bar.update(anchor, dataSet, {}, chart);
+                    bar.update(anchor, [], {}, chart);
 
                     const expected = dataSet.length;
                     const actual = datumOf(anchor)?.length;
