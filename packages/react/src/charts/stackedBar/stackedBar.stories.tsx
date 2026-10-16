@@ -19,8 +19,8 @@ export default {
 export const Playground: StoryFn<typeof StackedBar> = (args) => {
     const data = stackedBarData.with3SourcesAndDates();
 
-    const renderStackedBar = (props: TooltipRenderArgs) => (
-        <StackedBar {...args} {...props} data={data} />
+    const renderStackedBar = (props: TooltipRenderArgs<typeof data>) => (
+        <StackedBar {...args} {...props} />
     );
 
     return (
@@ -51,8 +51,8 @@ export const WithHorizontalDirectionAndFixedSize = () => {
 export const WithAnimation = () => {
     const data = stackedBarData.with3SourcesAndDates();
 
-    const renderStackedBar = (props: TooltipRenderArgs) => (
-        <StackedBar isAnimated={true} {...props} data={data} />
+    const renderStackedBar = (props: TooltipRenderArgs<typeof data>) => (
+        <StackedBar isAnimated={true} {...props} />
     );
 
     return (

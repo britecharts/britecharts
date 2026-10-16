@@ -20,8 +20,8 @@ export default {
 export const Playground: StoryFn<typeof Bar> = (args) => {
     const data = barData.withLetters();
 
-    const renderBar = (props: TooltipRenderArgs) => (
-        <Bar {...args} {...props} data={data} />
+    const renderBar = (props: TooltipRenderArgs<typeof data>) => (
+        <Bar {...args} {...props} />
     );
 
     return <Tooltip data={data} render={renderBar} title="Frequency" />;
@@ -57,8 +57,8 @@ export const WithHorizontalDirectionAndColorSchema = () => {
 export const WithAnimation = () => {
     const data = barData.withLetters();
 
-    const renderBar = (props: TooltipRenderArgs) => (
-        <Bar {...props} data={data} isAnimated={true} />
+    const renderBar = (props: TooltipRenderArgs<typeof data>) => (
+        <Bar {...props} isAnimated={true} />
     );
 
     return <Tooltip data={data} render={renderBar} title="Frequency" />;

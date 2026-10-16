@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import type { FunctionComponent, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 import { TooltipWrapper } from '@britecharts/wrappers';
 import type {
@@ -34,11 +34,19 @@ const initialState: TooltipState = {
  * to follow an import to find is one it does not find.
  */
 /**
- * What the tooltip hands its `render` callback: the data and the handlers the
- * wrapped chart needs to drive the tooltip.
+ * The data a tooltip can wrap: any chart's. Each use narrows it to the wrapped
+ * chart's own data, inferred from the `data` prop.
  */
-export type TooltipRenderArgs = {
-    data: TooltipProps['data'];
+export type TooltipData = { [s: string]: any } | any[];
+
+/**
+ * What the tooltip hands its `render` callback: the data and the handlers the
+ * wrapped chart needs to drive the tooltip. `data` is the same value the
+ * tooltip was given, typed as the wrapped chart's, so it spreads straight
+ * into the chart: `render={(props) => <Line {...props} />}`.
+ */
+export type TooltipRenderArgs<TData = TooltipData> = {
+    data: TData;
     createTooltip: () => void;
     customMouseMove: (
         dataPoint: object,
@@ -50,7 +58,7 @@ export type TooltipRenderArgs = {
     customMouseOver: () => void;
 };
 
-export interface TooltipProps {
+export interface TooltipProps<TData = TooltipData> {
     /**
      * Exposes the ability to use a custom date format
      */
@@ -181,14 +189,14 @@ export interface TooltipProps {
      *
      * @ignore
      */
-    render?: (args: TooltipRenderArgs) => ReactNode;
+    render?: (args: TooltipRenderArgs<TData>) => ReactNode;
 
     /**
      * Internally used, do not overwrite.
      *
      * @ignore
      */
-    data: { [s: string]: any } | any[];
+    data: TData;
 
     /**
      * Called after the tooltip updates, with what the chart dispatches on
@@ -213,7 +221,7 @@ export interface TooltipProps {
  * We want to remove the chart and data from the props in order to have a
  * configuration object
  */
-const getChartConfiguration = (props: TooltipProps) => {
+const getChartConfiguration = <TData,>(props: TooltipProps<TData>) => {
     const configuration: Record<string, unknown> = { ...props };
 
     delete configuration.data;
@@ -244,7 +252,9 @@ const getTooltipContainer = (rootNode: HTMLElement | null) => {
     );
 };
 
-const Tooltip: FunctionComponent<TooltipProps> = (props: TooltipProps) => {
+const Tooltip = <TData = TooltipData,>(
+    props: TooltipProps<TData>
+): ReactElement => {
     const { chart = TooltipWrapper } = props;
     const rootNode = useRef<HTMLDivElement>(null);
     const tooltipChart = useRef<TooltipModule | null>(null);
@@ -254,7 +264,7 @@ const Tooltip: FunctionComponent<TooltipProps> = (props: TooltipProps) => {
     // in useMemo: a memo is a hint React may discard, and a discard would
     // rebuild the wrapped chart on a pointer move.
     const childChart = useRef<{
-        props: TooltipProps | null;
+        props: TooltipProps<TData> | null;
         element: ReactNode;
     }>({ props: null, element: null });
     const [state, setState] = useState(initialState);

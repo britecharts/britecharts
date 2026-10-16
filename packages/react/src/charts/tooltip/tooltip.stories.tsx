@@ -3,7 +3,6 @@ import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import Donut from '../donut/Donut';
 import Tooltip from './Tooltip';
-import type { TooltipRenderArgs } from './Tooltip';
 import donutData from '../donut/donutChart.fixtures';
 
 export default {
@@ -20,12 +19,5 @@ export default {
 export const WrappingADonut = () => {
     const data = donutData.with4Slices();
 
-    return (
-        <Tooltip
-            data={data}
-            render={(props: TooltipRenderArgs) => (
-                <Donut {...props} data={data} />
-            )}
-        />
-    );
+    return <Tooltip data={data} render={(props) => <Donut {...props} />} />;
 };
