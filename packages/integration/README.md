@@ -28,10 +28,8 @@ pnpm test:integration     # from the repo root; needs Chromium once:
 3. **Tier 1 · `tests/tarball.test.js`** — for each tarball, an allow-list of
    globs that must be present, a deny-list that must be absent, a check that
    `main`, `module` and `types` point at files that exist and that no
-   `workspace:` range survived packing, then [publint] and [attw] with a
-   short, commented waiver list (all three waivers share one cause: the
-   packages have no `"type"` field, so Node reads the ES module sources as
-   CommonJS; real ESM output arrives with the Vite build).
+   `workspace:` range survived packing, then [publint] and [attw], with no
+   waivers: any finding fails.
 4. **Tier 2 · `tests/require.test.js`** — `require()` of the package `main`,
    the wrappers CommonJS bundle, resolved from
    the installed consumer. No browser, no bundler: this is what Node, Jest

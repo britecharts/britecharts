@@ -4,7 +4,7 @@ import type {
     TopicColorMap,
 } from '@britecharts/core';
 
-import type { WrapperConfiguration } from './configuration';
+import type { WrapperConfiguration } from './configuration.js';
 
 /**
  * The shape nine of the eleven wrappers share: draw a chart into an element,

@@ -1,5 +1,5 @@
-import { britechartsCustomEvents } from '../constants';
-import type { BritechartsCustomEvent } from '../constants';
+import { britechartsCustomEvents } from '../constants.js';
+import type { BritechartsCustomEvent } from '../constants.js';
 
 export type ChartEventHandler = (...args: never[]) => void;
 

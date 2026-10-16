@@ -1,7 +1,7 @@
 import type { BaseType, Selection } from 'd3-selection';
 
-import { britechartsCustomEvents } from '../constants';
-import type { WrapperConfiguration } from './configuration';
+import { britechartsCustomEvents } from '../constants.js';
+import type { WrapperConfiguration } from './configuration.js';
 
 // The container a wrapper is handed is always the d3 selection, not the raw
 // element -- every wrapper does `const container = select(el)` first.

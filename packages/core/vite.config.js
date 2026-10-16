@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
                 formats: ['umd'],
                 name: 'core',
                 fileName: () =>
-                    cdn ? 'core.cdn.min.js' : 'core.bundled.min.js',
+                    cdn ? 'core.cdn.min.js' : 'core.bundled.min.cjs',
             },
             rolldownOptions: {
                 // npm consumers install d3 themselves; the CDN file carries

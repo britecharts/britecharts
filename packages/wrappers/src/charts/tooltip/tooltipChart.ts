@@ -6,10 +6,10 @@ import type { TooltipDataShape, TooltipPosition } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
-} from '../../helpers/validation';
-import { applyConfiguration } from '../../helpers/configuration';
-import { removeTooltip } from '../../helpers/destroy';
-import type { TooltipWrapper } from '../../helpers/wrapper';
+} from '../../helpers/validation.js';
+import { applyConfiguration } from '../../helpers/configuration.js';
+import { removeTooltip } from '../../helpers/destroy.js';
+import type { TooltipWrapper } from '../../helpers/wrapper.js';
 
 // TooltipWrapper, not Wrapper: create takes no data and update takes a state
 // object in third position. See the note on TooltipWrapper for why it is not

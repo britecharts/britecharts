@@ -2,10 +2,10 @@ import { timeHour, timeDay, timeMonth, timeYear } from 'd3-time';
 import type { CountableTimeInterval, TimeInterval } from 'd3-time';
 import { timeFormat } from 'd3-time-format';
 
-import { axisTimeCombinations, timeBenchmarks } from './constants';
-import type { AxisTimeCombinationValue } from './constants';
-import { convertMillisecondsToDays, getLocaleDateFormatter } from './date';
-import type { TimeUnit } from './date';
+import { axisTimeCombinations, timeBenchmarks } from './constants.js';
+import type { AxisTimeCombinationValue } from './constants.js';
+import { convertMillisecondsToDays, getLocaleDateFormatter } from './date.js';
+import type { TimeUnit } from './date.js';
 
 const singleTickWidth = 20;
 const horizontalTickSpacing = 50;

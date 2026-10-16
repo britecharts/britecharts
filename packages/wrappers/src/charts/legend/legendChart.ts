@@ -6,10 +6,10 @@ import type { LegendDataShape, LegendModule } from '@britecharts/core';
 import {
     validateConfiguration,
     validateContainer,
-} from '../../helpers/validation';
-import { applyConfiguration } from '../../helpers/configuration';
-import { removeChartSvg } from '../../helpers/destroy';
-import type { Wrapper } from '../../helpers/wrapper';
+} from '../../helpers/validation.js';
+import { applyConfiguration } from '../../helpers/configuration.js';
+import { removeChartSvg } from '../../helpers/destroy.js';
+import type { Wrapper } from '../../helpers/wrapper.js';
 
 const legendChart: Wrapper<LegendDataShape[], LegendModule> = {
     create(el, data, configuration = {}) {

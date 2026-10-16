@@ -12,31 +12,12 @@ const path = require('node:path');
 
 const TARBALLS = path.resolve(__dirname, '..', '.tarballs');
 
-// publint and attw findings we accept, each with the reason. Everything else
-// they report fails the test.
-//
-// The three below share one root cause: the packages have no "type" field,
-// so Node reads src/*.js as CommonJS even though the files are ES modules.
-// Bundlers (the `import` condition's real audience), CommonJS consumers and
-// TypeScript's node10/bundler resolutions are all unaffected, and Node 20.19+
-// detects the syntax at runtime. Node ESM (`import` from a Node script) is
-// not a supported consumer of a browser charting library; proper ESM output
-// arrives with the Vite build (H22), which retires all three waivers.
-const WAIVED_PUBLINT = new Set([
-    'FILE_INVALID_FORMAT', // src/*.js is ESM in a CommonJS package
-    'EXPORTS_TYPES_INVALID_FORMAT', // the .d.ts serving the import condition is read as CJS
-]);
-const WAIVED_ATTW = new Set([
-    'UnexpectedModuleSyntax', // same: ESM syntax in a file Node treats as CJS
-    'NamedExports', // Node ESM cannot see named exports on the UMD bundle
-    // core's generated declarations say `export default britecharts`, which
-    // dist/esm has. The UMD bundle that `require` resolves to is built
-    // to export the default alone, so it *is* that object rather than carrying
-    // it as `.default`: `require('@britecharts/core').default` is undefined.
-    // Bundlers take the `import` condition and default-import fine. Also
-    // retired by H22, whose CJS output keeps `.default`.
-    'FalseExportDefault',
-]);
+// Every publint and attw finding fails the test. There used to be waivers
+// here for the ES modules in dist/esm, which Node read as CommonJS in packages
+// without "type": "module"; each package now declares it, with CommonJS
+// bundles and types under the `require` condition.
+const WAIVED_PUBLINT = new Set();
+const WAIVED_ATTW = new Set();
 
 // Things that must never ship from any package.
 // globToRegExp below escapes braces, so `*.spec.{js,ts}` would match nothing.
@@ -65,8 +46,10 @@ const COMMON_DENY = [
     'node_modules/**',
     'webpack.*.js',
     'jest.config.js',
+    'jest.config.cjs',
     'jest.setup.js',
     'babel.config.js',
+    'babel.config.cjs',
     '.eslintcache',
     '.sass-lint.yml',
 ];
@@ -77,7 +60,9 @@ const PACKAGES = {
         allow: [
             ['README.md', 1],
             ['package.json', 1],
-            ['dist/umd/bundle/core.bundled.min.js', 1],
+            ['dist/umd/bundle/core.bundled.min.cjs', 1],
+            ['dist/types-cjs/package.json', 1],
+            ['dist/types-cjs/index.d.ts', 1],
             ['dist/cdn/bundle/core.cdn.min.js', 1],
             ['dist/styles/bundle/britecharts.css', 1],
             ['dist/styles/bundle/britecharts.min.css', 1],
@@ -117,8 +102,10 @@ const PACKAGES = {
         allow: [
             ['README.md', 1],
             ['package.json', 1],
-            ['dist/umd/bundle/wrappers.bundled.min.js', 1],
-            ['dist/cjs/bundle/wrappers.bundled.min.js', 1],
+            ['dist/umd/bundle/wrappers.bundled.min.cjs', 1],
+            ['dist/types-cjs/package.json', 1],
+            ['dist/types-cjs/index.d.ts', 1],
+            ['dist/cjs/bundle/wrappers.bundled.min.cjs', 1],
             // The ESM entry point and its declarations. These are what
             // `module`, `exports.import` and `types` resolve to, so a
             // consumer's bundler and tsc both land here rather than in src/ --
@@ -147,7 +134,9 @@ const PACKAGES = {
             ['README.md', 1],
             ['CHANGELOG.md', 1],
             ['package.json', 1],
-            ['dist/umd/bundle/react.bundled.min.js', 1],
+            ['dist/umd/bundle/react.bundled.min.cjs', 1],
+            ['dist/types-cjs/package.json', 1],
+            ['dist/types-cjs/index.d.ts', 1],
             // The ESM entry, which `module` and `exports.import` resolve to.
             // Built for the same reason wrappers' and core's are: src/ holds
             // authored TypeScript now, and no consumer can be expected to

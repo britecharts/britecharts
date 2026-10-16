@@ -12,7 +12,7 @@ export default defineConfig({
             entry: 'src/index.ts',
             formats: ['umd', 'cjs'],
             name: 'wrappers',
-            fileName: (format) => `${format}/bundle/wrappers.bundled.min.js`,
+            fileName: (format) => `${format}/bundle/wrappers.bundled.min.cjs`,
         },
         rolldownOptions: {
             external: (id) => id.startsWith('d3-'),

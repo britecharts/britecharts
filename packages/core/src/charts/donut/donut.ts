@@ -10,15 +10,15 @@ import type { BaseType, Selection } from 'd3-selection';
 import type { Arc, Pie, PieArcDatum } from 'd3-shape';
 import 'd3-transition';
 
-import { exportChart } from '../helpers/export';
-import * as textHelper from '../helpers/text';
-import colorHelper from '../helpers/color';
-import { calculatePercent } from '../helpers/number';
-import { emptyDonutData } from '../helpers/constants';
-import { donutLoadingMarkup } from '../helpers/load';
-import { motion } from '../helpers/constants';
-import type { ChartMarginParams } from '../../typings/common/margin';
-import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import { exportChart } from '../helpers/export.js';
+import * as textHelper from '../helpers/text.js';
+import colorHelper from '../helpers/color.js';
+import { calculatePercent } from '../helpers/number.js';
+import { emptyDonutData } from '../helpers/constants.js';
+import { donutLoadingMarkup } from '../helpers/load.js';
+import { motion } from '../helpers/constants.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
+import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     AnimatedChartAPI,
@@ -26,9 +26,9 @@ import type {
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum DonutChartKeys {
     ID = 'id',

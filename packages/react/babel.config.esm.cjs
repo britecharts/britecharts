@@ -1,6 +1,6 @@
 // The ESM build only, used by `build:esm` through --config-file.
 //
-// babel.config.js cannot serve this: it carries preset-env, which rewrites the
+// babel.config.cjs cannot serve this: it carries preset-env, which rewrites the
 // modules to CommonJS, and a project-wide config is not disabled by
 // --no-babelrc. Passing the presets as CLI flags does not help either, since
 // the project config is still loaded and merged into them.

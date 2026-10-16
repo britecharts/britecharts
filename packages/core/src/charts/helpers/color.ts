@@ -15,7 +15,7 @@ import type {
     ColorsSchemasType,
     SingleColors,
     SingleColorsHuman,
-} from '../../typings/helpers/colors';
+} from '../../typings/helpers/colors.js';
 
 // Color Gradients
 export const colorGradients = {

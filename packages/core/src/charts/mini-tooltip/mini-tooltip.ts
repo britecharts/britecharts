@@ -1,4 +1,4 @@
-import tooltip from '../tooltip/tooltip';
+import tooltip from '../tooltip/tooltip.js';
 
 import type {
     TooltipAPI,
@@ -6,7 +6,7 @@ import type {
     TooltipModule,
     TooltipPosition,
     TooltipSingleDataShape,
-} from '../tooltip/tooltip';
+} from '../tooltip/tooltip.js';
 
 export declare enum MiniTooltipKeys {
     Value = 'value',

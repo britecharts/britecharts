@@ -1,5 +1,5 @@
 // to run `node <path to>createLargeStackedAreaData.js`
-const fs = require('fs');
+import fs from 'fs';
 const config = {
     path: './../json/areaDataLarge.json',
     sources: [

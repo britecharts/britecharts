@@ -23,23 +23,23 @@ import type { CurveFactory, Line } from 'd3-shape';
 import type { D3ZoomEvent } from 'd3-zoom';
 import 'd3-transition';
 
-import { exportChart } from '../helpers/export';
-import { scatterPlotLoadingMarkup } from '../helpers/load';
-import colorHelper from '../helpers/color';
+import { exportChart } from '../helpers/export.js';
+import { scatterPlotLoadingMarkup } from '../helpers/load.js';
+import colorHelper from '../helpers/color.js';
 import {
     createFilterContainer,
     createGlowWithMatrix,
     bounceCircleHighlight,
-} from '../helpers/filter';
-import { calcLinearRegression } from '../helpers/number';
-import { setDefaultLocale } from '../helpers/locale';
-import { motion } from '../helpers/constants';
-import { gridHorizontal, gridVertical } from '../helpers/grid';
+} from '../helpers/filter.js';
+import { calcLinearRegression } from '../helpers/number.js';
+import { setDefaultLocale } from '../helpers/locale.js';
+import { motion } from '../helpers/constants.js';
+import { gridHorizontal, gridVertical } from '../helpers/grid.js';
 
-import type { LocalObject } from '../../typings/common/local';
-import type { ChartMarginParams } from '../../typings/common/margin';
-import type { GridTypes } from '../../typings/common/grid';
-import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import type { LocalObject } from '../../typings/common/local.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
+import type { GridTypes } from '../../typings/common/grid.js';
+import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     AnimatedChartAPI,
@@ -47,9 +47,9 @@ import type {
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum ScatterPlotKeys {
     Name = 'name',

@@ -12,7 +12,7 @@ module.exports = {
         '<rootDir>/build/',
         '<rootDir>/lib/',
     ],
-    // Resolve sibling workspaces to their source. babel.config.js aliases
+    // Resolve sibling workspaces to their source. babel.config.cjs aliases
     // @britecharts/wrappers to a built bundle for the webpack build; under
     // test that alias is switched off so these mappings apply instead.
     //

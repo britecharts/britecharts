@@ -12,21 +12,21 @@ import type { FormatLocaleObject } from 'd3-format';
 import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
-import { wrapTextWithEllipses } from '../helpers/text';
-import { exportChart } from '../helpers/export';
-import { getBaselineExtent, getValueDomain } from '../helpers/domain';
-import colorHelper from '../helpers/color';
-import { barLoadingMarkup } from '../helpers/load';
-import { uniqueId } from '../helpers/number';
-import { setDefaultLocale } from '../helpers/locale';
-import { dataKeyDeprecationMessage } from '../helpers/project';
-import { motion } from '../helpers/constants';
-import { gridHorizontal, gridVertical } from '../helpers/grid';
-import { asCategoryScale, asValueScale } from '../helpers/scale';
-import type { AxisScale } from '../helpers/scale';
-import type { LocalObject } from '../../typings/common/local';
-import type { ChartMarginParams } from '../../typings/common/margin';
-import type { ColorsSchemasType } from '../../typings/helpers/colors';
+import { wrapTextWithEllipses } from '../helpers/text.js';
+import { exportChart } from '../helpers/export.js';
+import { getBaselineExtent, getValueDomain } from '../helpers/domain.js';
+import colorHelper from '../helpers/color.js';
+import { barLoadingMarkup } from '../helpers/load.js';
+import { uniqueId } from '../helpers/number.js';
+import { setDefaultLocale } from '../helpers/locale.js';
+import { dataKeyDeprecationMessage } from '../helpers/project.js';
+import { motion } from '../helpers/constants.js';
+import { gridHorizontal, gridVertical } from '../helpers/grid.js';
+import { asCategoryScale, asValueScale } from '../helpers/scale.js';
+import type { AxisScale } from '../helpers/scale.js';
+import type { LocalObject } from '../../typings/common/local.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
+import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     AnimatedChartAPI,
@@ -34,9 +34,9 @@ import type {
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
-} from '../../typings/common/base';
-import { labelChart } from '../helpers/a11y';
-import type { ChartModuleSelection } from '../../typings/common/selection';
+} from '../../typings/common/base.js';
+import { labelChart } from '../helpers/a11y.js';
+import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum BarChartKeys {
     Value = 'value',

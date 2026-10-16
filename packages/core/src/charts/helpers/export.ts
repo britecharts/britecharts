@@ -1,9 +1,9 @@
 import base64 from 'base-64';
 import type { BaseType, Selection } from 'd3-selection';
 
-import { colorSchemas } from './color';
-import serializeWithStyles from './style';
-import type { ChartMarginParams } from '../../typings/common/margin';
+import { colorSchemas } from './color.js';
+import serializeWithStyles from './style.js';
+import type { ChartMarginParams } from '../../typings/common/margin.js';
 
 /**
  * What these functions need `this` to be: a chart instance, called as
