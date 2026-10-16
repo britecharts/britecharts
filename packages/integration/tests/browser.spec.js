@@ -98,18 +98,6 @@ const PAGES = [
             // shows up here as a second svg per chart.
         },
     ],
-    [
-        'R3',
-        `${REACT}/cjs-chart.html`,
-        'React 19: per-component CommonJS build',
-        { donut: true, react: true, oneSvg: ['.donut-container'] },
-    ],
-    [
-        'R4',
-        `${REACT}/umd-chart.html`,
-        'React 19: per-component UMD build',
-        { donut: true, react: true, oneSvg: ['.donut-container'] },
-    ],
 ];
 
 // Console output known to be noise rather than a problem, and why.

@@ -33,7 +33,7 @@ pnpm test:integration     # from the repo root; needs Chromium once:
    packages have no `"type"` field, so Node reads the ES module sources as
    CommonJS; real ESM output arrives with the Vite build).
 4. **Tier 2 · `tests/require.test.js`** — `require()` of the package `main`,
-   React's per-component builds and the wrappers CommonJS bundle, resolved from
+   the wrappers CommonJS bundle, resolved from
    the installed consumer. No browser, no bundler: this is what Node, Jest
    and CommonJS bundlers do.
 5. **Tier 2 · `tests/types.test.js`** — `tsc --noEmit` over
@@ -44,7 +44,7 @@ pnpm test:integration     # from the repo root; needs Chromium once:
 6. **Tier 3 · `tests/browser.spec.js`** — Playwright builds
    `consumers/vanilla` and `consumers/react` with Vite, serves each, and
    visits one page per consumption path (CDN script tags, UMD through a
-   bundler, ES modules; the React package and its per-component builds on
+   bundler, ES modules; the React package on
    React 19 under StrictMode). Each page must draw the chart, have the
    stylesheet applied, and produce no console errors, page errors or failed
    requests — on the React pages, no console warnings either. The

@@ -148,8 +148,6 @@ const PACKAGES = {
             ['CHANGELOG.md', 1],
             ['package.json', 1],
             ['dist/umd/bundle/react.bundled.min.js', 1],
-            ['dist/umd/charts/*.js', 10],
-            ['dist/cjs/charts/*.js', 10],
             // The ESM entry, which `module` and `exports.import` resolve to.
             // Built for the same reason wrappers' and core's are: src/ holds
             // authored TypeScript now, and no consumer can be expected to
