@@ -57,8 +57,10 @@ jobs:
 
       # Dependabot writes its own messages, whose bodies carry URLs longer than
       # the body line limit. Its pull request titles are still checked below.
+      # Keyed on the pull request's author, not the actor: the lockfile commit
+      # the Dependabot lockfile workflow adds is pushed by someone else.
       - name: Validate PR commits with commitlint
-        if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
+        if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
         run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
       # The title is linted as the squash commit will read: GitHub appends

@@ -67,11 +67,12 @@ Everything a release depends on, and where it lives. Check this list whenever a 
 | npm `@britecharts` organisation | Publishing, `npm dist-tag`, `npm deprecate` | npmjs.com | Every maintainer who releases needs to be a member with publish rights. Check with `npm org ls britecharts`. |
 | GitHub `britecharts` organisation | Merging, workflows, secrets, settings | github.com | Admins can change secrets, branch protection and Dependabot settings. |
 | Google Analytics property `G-W3BQXCKSD9` | The docs site (`docusaurus.config.js`) | analytics.google.com | Add each maintainer as a user of the property. |
+| `DEPENDABOT_LOCKFILE_TOKEN` | Dependabot lockfile workflow (`dependabot-lockfile.yml`), to push relocked lockfiles | A Dependabot secret (Settings → Secrets and variables → Dependabot) | A fine-grained token with Contents read and write on this repository only. Without it the lockfile still lands, but the checks do not re-run. |
 | Unused: `ACCESS_TOKEN` (2020), `CHROMATIC_PROJECT_TOKEN` | Nothing | Repository secrets | Delete both, and the Chromatic project behind the second. |
 
 ## Dependency updates
 
-Dependabot alerts are on. Dependabot's pull requests change a `package.json` but leave `pnpm-lock.yaml` stale, so their checks fail at `pnpm install --frozen-lockfile`. Before merging one, check out its branch, run `pnpm install`, and commit the lockfile to that branch.
+Dependabot alerts are on. For a direct dependency, Dependabot's pull requests change a `package.json` but leave `pnpm-lock.yaml` stale. The **Dependabot lockfile** workflow relocks each of them and pushes the lockfile to the pull request's branch, using the `DEPENDABOT_LOCKFILE_TOKEN` Dependabot secret (a fine-grained token with Contents read and write on this repository) so the checks run again on the new commit. If the secret is missing or expired, the workflow still pushes, with `GITHUB_TOKEN`, but no checks run: close and reopen the pull request to start them, or relock by hand with `pnpm install` on its branch.
 
 ## Issue triage
 
