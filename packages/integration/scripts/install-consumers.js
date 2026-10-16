@@ -92,12 +92,10 @@ for (const name of consumers) {
                 // 60s backoff) mean one stalled fetch against a flaky
                 // registry edge can silently eat ~16 minutes before it even
                 // fails -- and a real install resolves hundreds of
-                // transitive packages. That's what turned three CI hangs
-                // (H24's PR, H24's main push, this PR's first run) into
-                // multi-hour zombies with no failure at all, just a run
-                // sitting on this step until GitHub's own 6h job cap killed
-                // it. Failing fast here means a flaky fetch fails the step
-                // in well under a minute instead, so a rerun is cheap.
+                // transitive packages, so a CI run can sit on this step for
+                // hours with no failure at all, until GitHub's own 6h job cap
+                // kills it. Failing fast here means a flaky fetch fails the
+                // step in well under a minute instead, so a rerun is cheap.
                 '--fetch-timeout=30000',
                 '--fetch-retries=1',
                 '--fetch-retry-maxtimeout=10000',

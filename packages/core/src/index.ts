@@ -21,18 +21,15 @@ const constants = { axisTimeCombinations };
 
 // The public types, re-exported so the generated declaration for this file is
 // the whole package surface -- values above, types here. `types` points at
-// that declaration. A hand-written `src/typings/index.d.ts` used to carry
-// both, with the factory signatures written out by hand beside the real ones.
+// that declaration.
 //
 // `export type *` rather than `export *`, which is a deliberate narrowing.
 // Each chart module also exports a `*Keys` enum, and an enum is a value as
 // well as a type: `export *` would put fourteen of them into the bundle and
-// into the package's runtime surface. They have never been there -- the old
-// declarations said `export enum`, promising a value the built output does
-// not contain, so a consumer importing one by that promise got `undefined` at
-// run time. Type-only keeps the bundle as it is and turns that into a
-// compile error (TS1362) instead. Enum members still work where the data
-// shapes use them, in type position.
+// into the package's runtime surface, which does not include them. Type-only
+// keeps them out, so a consumer importing one as a value gets a compile error
+// (TS1362) rather than `undefined` at run time. Enum members still work where
+// the data shapes use them, in type position.
 export type * from './charts/bar/bar.js';
 export type * from './charts/brush/brush.js';
 export type * from './charts/bullet/bullet.js';

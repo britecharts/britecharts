@@ -85,8 +85,8 @@ export type LegendModule = ChartModuleSelection<LegendDataShape[]> & LegendAPI;
 
 /**
  * The component's own svg, and the selections derived from it. The datum and
- * parent generics are the migration plan's bounded `any`, as in `bullet.ts`:
- * these are module-level variables reassigned from several differently-shaped
+ * parent generics are a bounded `any`, as in `bullet.ts`: these are
+ * module-level variables reassigned from several differently-shaped
  * selections, so naming one concrete datum would reject the others.
  */
 type ChartSelection<TElement extends BaseType> = Selection<
@@ -169,9 +169,9 @@ type LegendDatum = {
  */
 
 export default function module(): LegendModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 5,
             right: 5,
@@ -276,9 +276,8 @@ export default function module(): LegendModule {
      * @private
      */
     function adjustLines(): void {
-        // `node()` is typed nullable. Asserted rather than guarded so the
-        // behaviour is unchanged: where a null node would now throw on the
-        // same line, it threw there before too.
+        // `node()` is typed nullable. Asserted rather than guarded: a null
+        // node throws on this line either way.
         const lineWidth =
             svg
                 .select<SVGGElement>('.legend-line')
@@ -397,8 +396,8 @@ export default function module(): LegendModule {
         hasQuantities = data.filter(hasQuantity).length === data.length;
 
         return data.reduce<LegendDatum[]>((acc, d) => {
-            // The same object, mutated in place, which is what this component
-            // has always done -- every other key the datum carries survives.
+            // The same object, mutated in place -- every other key the datum
+            // carries survives.
             const datum = d as unknown as LegendDatum;
 
             if (datum.quantity !== undefined && datum.quantity !== null) {

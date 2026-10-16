@@ -26,14 +26,11 @@ export const validateConfiguration = <TChart extends object>(
     const configurationProperties = Object.keys(configuration);
     const configurationPropertiesWithoutEvents =
         configurationProperties.filter(isNotCustomEvent);
-    // The accessors are properties on the chart function itself. This used to
-    // read them off `chart.prototype.constructor`, which is the same object by
-    // a longer route -- core declares each chart as a named function
-    // declaration, so `chart.prototype.constructor === chart` -- but only for
-    // as long as a chart is a `function`. An arrow function has no `.prototype`
-    // at all, so that route throws a TypeError before it can report anything.
-    // Reading the keys directly is identical for every chart core ships and
-    // survives one that is not a function declaration.
+    // The accessors are properties on the chart function itself. Read them
+    // directly rather than off `chart.prototype.constructor`: that is the same
+    // object for a function declaration, but an arrow function has no
+    // `.prototype` at all, so that route throws a TypeError before it can
+    // report anything.
     const supportedMethods = Object.keys(chart);
 
     const notSupportedMethods = configurationPropertiesWithoutEvents.filter(

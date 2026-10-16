@@ -38,10 +38,10 @@ import stackedBarData from './stackedBar/stackedBarChart.fixtures';
 import Tooltip from './tooltip/Tooltip';
 
 // Every component draws through its own wrapper unless a `chart` prop says
-// otherwise. That default used to be a `defaultProps`, which React 19 ignores on
-// a function component, and it is now a destructured default. The colocated
-// specs always pass `chart` themselves, so nothing else would notice a wrong or
-// missing one.
+// otherwise. That default is a destructured default, not a `defaultProps`,
+// which React 19 ignores on a function component. The colocated specs always
+// pass `chart` themselves, so nothing else would notice a wrong or missing
+// one.
 const CHARTS = [
     ['Bar', Bar, BarWrapper, () => ({ data: barData.withLetters() })],
     [

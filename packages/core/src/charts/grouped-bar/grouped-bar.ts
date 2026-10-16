@@ -64,10 +64,8 @@ export type GroupedBarSelection = Selection<
     any
 >;
 
-// The eleven accessors below were setter-only -- a single
-// optional-parameter signature returning the chart -- so reading one reported
-// the chart rather than its value. Each is a getter/setter overload pair now,
-// with the getter typed from the implementation's own default.
+// Each accessor below is a getter/setter overload pair, with the getter typed
+// from the implementation's own default.
 //
 // Three of those getters are wider than their setter, and for the same reason
 // in each case: the chart has no usable default, so reading before setting
@@ -158,7 +156,7 @@ const uniq = <T>(arrArg: T[]) =>
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in `bullet.ts` and
+ * generics are a bounded `any`, as in `bullet.ts` and
  * `donut.ts`: these are module-level variables reassigned from several
  * differently-shaped selections, so naming one concrete datum would reject the
  * others.
@@ -253,9 +251,9 @@ type NearestDatum = GroupedBarDatum & {
  */
 
 export default function module(): GroupedBarChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 40,
             right: 30,
@@ -622,11 +620,11 @@ export default function module(): GroupedBarChartModule {
      */
     function cleanData(originalData: GroupedBarChartDataShape[]) {
         return originalData.reduce<GroupedBarDatum[]>((acc, datum) => {
-            // Written onto the caller's own objects rather than copies, which
-            // is the runtime this preserves. The cast covers the reads the
-            // label accessors make dynamic -- the data may carry its value,
-            // group and name under any key -- and `topicName`, which is this
-            // function's own addition for the tooltip.
+            // Written onto the caller's own objects rather than copies. The
+            // cast covers the reads the label accessors make dynamic -- the
+            // data may carry its value, group and name under any key -- and
+            // `topicName`, which is this function's own addition for the
+            // tooltip.
             const d = datum as GroupedBarDatum;
 
             d.value = +(d[valueLabel] as number);
@@ -816,9 +814,9 @@ export default function module(): GroupedBarChartModule {
                     getBaselineExtent(asValueScale(yScale), value).start
             )
             // The function itself, not a call: d3 invokes a value accessor per
-            // element, which is how this has always read the band width. Its
-            // sibling in `drawHorizontalBars` calls it instead, and the two
-            // produce the same number.
+            // element, which reads the band width. Its sibling in
+            // `drawHorizontalBars` calls it instead, and the two produce the
+            // same number.
             .attr('width', asCategoryScale(xScale2).bandwidth)
             .attr('fill', ({ group }) => colorForGroup(group));
 
@@ -889,9 +887,9 @@ export default function module(): GroupedBarChartModule {
      * The listeners live on `.chart-group`, which is already translated by the
      * margins, but getNearestDataPoint subtracts the margin itself -- so the
      * coordinates have to come from the svg root, not from the node the event
-     * fired on. Passing the event as its own container (the previous
-     * `pointer(event, event)`) made d3 read `clientX` off a non-event and throw
-     * "Failed to set the 'x' property on 'SVGPoint'".
+     * fired on. Passing the event as its own container, `pointer(event,
+     * event)`, makes d3 read `clientX` off a non-event and throw "Failed to
+     * set the 'x' property on 'SVGPoint'".
      *
      * @param {Event} event  The d3 v6 event handed to the handler
      * @return {Number[]}    [x, y] in the svg's coordinate space
@@ -916,10 +914,8 @@ export default function module(): GroupedBarChartModule {
                 (d2) =>
                     // `Math.abs` of a comparison, which is a boolean: it comes
                     // back 1 for true and 0 for false, so each half of this
-                    // reads as the plain test it looks like. Preserved as it
-                    // stands, `Number` where the booleans are, because a
-                    // conversion is the wrong place to change what a chart
-                    // finds under the pointer. `Number(x)` is the coercion
+                    // reads as the plain test it looks like. `Number` goes
+                    // where the booleans are: `Number(x)` is the coercion
                     // `Math.abs` already performs.
                     Math.abs(
                         Number(
@@ -1191,9 +1187,8 @@ export default function module(): GroupedBarChartModule {
     function prepareData(data: GroupedBarDatum[]) {
         groups = uniq(data.map(getGroup));
 
-        // d3-collection's nest() is gone; rollups() is the d3-array
-        // equivalent, returning [key, value] pairs rather than objects.
-        // The key accessor is String()-wrapped to keep nest's coercion.
+        // rollups() returns [key, value] pairs rather than objects. The key
+        // accessor is String()-wrapped so every key is a string.
         transformedData = rollups(
             data,
             function (values) {
@@ -1253,8 +1248,8 @@ export default function module(): GroupedBarChartModule {
     function verticalBarsTween(this: SVGRectElement, d: GroupedBarDatum) {
         const valueScale = asValueScale(yScale);
         const { start, size } = getBaselineExtent(valueScale, getValue(d));
-        // One statement each, matching its horizontal twin: the `let` chain
-        // this replaced is a `one-var` warning once it becomes `const`.
+        // One statement each, matching its horizontal twin: a single `const`
+        // chain is a `one-var` warning.
         const node = select(this);
         const i = interpolateRound(0, size);
         const y = interpolateRound(valueScale(0), start);
@@ -1597,11 +1592,10 @@ export default function module(): GroupedBarChartModule {
     (exports as GroupedBarChartModule).on = function (
         ...args: [string] | [string, () => void]
     ) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`, following donut.ts and heatmap.ts: the TypeScript lint
-        // override makes `prefer-spread` an error, and the two shapes `on` is
-        // called with -- a lookup and a registration -- are what the tuple
-        // says.
+        // Rest parameters and a spread rather than `arguments` and `.apply`:
+        // the TypeScript lint override makes `prefer-spread` an error, and the
+        // two shapes `on` is called with -- a lookup and a registration -- are
+        // what the tuple says.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );

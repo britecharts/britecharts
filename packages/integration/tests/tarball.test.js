@@ -12,20 +12,18 @@ const path = require('node:path');
 
 const TARBALLS = path.resolve(__dirname, '..', '.tarballs');
 
-// Every publint and attw finding fails the test. There used to be waivers
-// here for the ES modules in dist/esm, which Node read as CommonJS in packages
-// without "type": "module"; each package now declares it, with CommonJS
-// bundles and types under the `require` condition.
+// Every publint and attw finding fails the test. Each package declares
+// "type": "module", with its CommonJS bundles and types under the `require`
+// condition, so the ES modules in dist/esm need no waiver.
 const WAIVED_PUBLINT = new Set();
 const WAIVED_ATTW = new Set();
 
 // Things that must never ship from any package.
 // globToRegExp below escapes braces, so `*.spec.{js,ts}` would match nothing.
 // Every extension is spelled out instead -- and it has to include the
-// TypeScript ones: these globs mirror each package's `files` field, and when
-// both only said `.js`, a converted `bulletChart.spec.ts` leaked into the
-// wrappers tarball with this test still passing. The same blind spot in the
-// manifest and in the guard meant to catch it is why that went unnoticed.
+// TypeScript ones: these globs mirror each package's `files` field, and a
+// blind spot shared by the manifest and this guard lets a `*.spec.ts` ship
+// with this test still passing.
 const COMMON_DENY = [
     '**/*.map',
     '**/*.spec.js',
@@ -72,23 +70,20 @@ const PACKAGES = {
             // `exports.import` resolve to, so a consumer's bundler lands here
             // rather than in src/ -- which is the whole point of building it:
             // src/ holds authored TypeScript that no consumer can be expected
-            // to compile. core shipped src/ as its ESM entry until the first
-            // helper converted, at which point `index.js`'s
-            // `'./charts/helpers/color.js'` pointed at a file that was not
-            // there. Nothing caught it: Vite resolves `.js` to `.ts` and
-            // transpiles, so the browser tiers passed, and the require tier
-            // only exercises the CJS bundle.
+            // to compile, and its `.js` specifiers name `.ts` files. Only this
+            // line notices an ESM entry pointed back at src/: Vite resolves
+            // `.js` to `.ts` and transpiles, so the browser tiers pass, and the
+            // require tier only exercises the CJS bundle.
             ['dist/esm/index.js', 1],
             ['dist/esm/charts/*/*.js', 34],
             // Source still ships, so deep `./src/*` imports keep resolving.
-            // The extension is deliberately loose, as in wrappers: each
-            // conversion turns one of these from .js into .ts and the count has
-            // to hold either way. Spelled `*.js` this silently counted down as
-            // charts converted -- it is what failed when heatmap did.
+            // The extension is deliberately loose, as in wrappers: a file can
+            // be .js or .ts and the count has to hold either way. Spelled
+            // `*.js`, this would silently count only the JavaScript files.
             ['src/index.?s', 1],
             ['src/charts/*/*.?s', 34],
             // The generated declarations, which `types` and `exports.types`
-            // resolve to. Each chart's types live in the chart now, so they
+            // resolve to. Each chart's types live in the chart, so they
             // arrive beside it rather than in a typings directory of their
             // own: one declaration per file in dist/esm/charts, helpers
             // included.
@@ -117,13 +112,11 @@ const PACKAGES = {
             ['dist/esm/charts/*/*.d.ts', 11],
             ['dist/esm/helpers/*.js', 4],
             ['dist/esm/helpers/*.d.ts', 4],
-            // Source still ships, so deep `./src/*` imports of the wrappers
-            // that are still JavaScript keep resolving. The extension is
-            // deliberately loose: each conversion turns one of these from .js
-            // into .ts, and the count has to hold either way. Spelling it
-            // `*.js` made this assertion pass by coincidence after bullet
-            // converted -- 10 charts, 10 matches, one of them no longer the
-            // file this was meant to be checking.
+            // Source still ships, so deep `./src/*` imports keep resolving.
+            // The extension is deliberately loose: a file can be .js or .ts,
+            // and the count has to hold either way. Spelled `*.js`, the
+            // assertion can pass by coincidence, matching files other than
+            // the ones it means to check.
             ['src/index.?s', 1],
             ['src/charts/*/*.?s', 11],
         ],
@@ -139,8 +132,8 @@ const PACKAGES = {
             ['dist/types-cjs/index.d.ts', 1],
             // The ESM entry, which `module` and `exports.import` resolve to.
             // Built for the same reason wrappers' and core's are: src/ holds
-            // authored TypeScript now, and no consumer can be expected to
-            // compile it.
+            // authored TypeScript, and no consumer can be expected to compile
+            // it.
             ['dist/esm/index.js', 1],
             ['dist/esm/charts/*/*.js', 15],
             // And its generated declarations, which `types` resolves to. The
@@ -148,11 +141,9 @@ const PACKAGES = {
             ['dist/esm/index.d.ts', 1],
             ['dist/esm/charts/*/*.d.ts', 15],
             // Source still ships, so deep `./src/*` imports keep resolving.
-            // The extensions are deliberately loose: each conversion turns one
-            // of these from .js into .tsx, and the count has to hold either
-            // way. Spelled `*.js`, this would quietly count down as the
-            // components convert -- the bug wrappers' list had, and the one
-            // core's `src/index.?s` was widened to avoid.
+            // The extensions are deliberately loose: a file can be .js or
+            // .tsx, and the count has to hold either way. Spelled `*.js`, this
+            // would quietly count only the JavaScript files.
             ['src/index.?s*', 1],
             ['src/charts/*/*.?s*', 15],
         ],

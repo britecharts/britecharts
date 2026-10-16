@@ -10,10 +10,9 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
  * `exportChart.call(chart, ...)` from each chart's own `exportChart` accessor.
  *
  * Declared structurally here rather than reusing core's chart types, because
- * those cannot express it yet: every accessor is typed
+ * those cannot express it: every accessor is typed
  * `width(width?: number): T & ChartBaseAPI<T>`, so under them `this.width()`
- * is the chart, not a number. That getter gap is recorded in the migration
- * plan as core's to resolve; this contract describes what the code actually
+ * is the chart, not a number. This contract describes what the code actually
  * receives at runtime.
  */
 type ExportableChartContext = {
@@ -26,12 +25,9 @@ type ExportableChartContext = {
  * The d3 selection wrapping the chart's svg.
  *
  * The element is `any` here, which is the one place in core where that is the
- * right answer rather than a shortcut. This type named `BaseType` until the
- * heatmap became the first converted chart to call `exportChart`, holding a
- * `Selection<SVGSVGElement, ...>`: `Selection` is invariant in its element, so
- * that is not assignable to a `Selection<BaseType, ...>` parameter -- the same
- * trap as `ChartContainer` in Phase 1, found this time by a caller rather than
- * by a probe.
+ * right answer rather than a shortcut. The charts hold a
+ * `Selection<SVGSVGElement, ...>`, and `Selection` is invariant in its element,
+ * so that is not assignable to a `Selection<BaseType, ...>` parameter.
  *
  * `filter.ts`'s answer, a generic parameter per function, does not work here.
  * Both of these are reached through `exportChart.call(chart, svg, ...)`,
@@ -76,9 +72,8 @@ const b64EncodeUnicode = (str: string): string => {
         encodeURIComponent(str).replace(
             /%([0-9A-F]{2})/g,
             function (match, p1) {
-                // `Number` where this passed the string '0x41' straight to
-                // fromCharCode and let it coerce. Same result -- ToNumber reads
-                // the hex prefix either way -- spelled so it types.
+                // `Number` so the string '0x41' types as a fromCharCode
+                // argument. ToNumber reads the hex prefix.
                 return String.fromCharCode(Number('0x' + p1));
             }
         )

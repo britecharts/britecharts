@@ -38,10 +38,8 @@ export declare enum DonutChartKeys {
 }
 
 /**
- * Two of these four are optional, and this declared all four as required --
- * so the data the chart documents, and draws, did not compile.
- *
- * The chart's own `@typedef DonutChartData` says so: "Percentage of the total
+ * Two of these four are optional. The chart's own `@typedef DonutChartData`
+ * says so: "Percentage of the total
  * (optional)" and "Identifier for the group required for legend feature
  * (optional)". `cleanData` backs it up, computing the percentage whenever one
  * is absent (`datum.percentage = d[percentageLabel] || null`, then
@@ -63,14 +61,10 @@ export interface DonutEmptyDataConfig {
     showEmptySlice: boolean;
 }
 
-// Two of the callbacks below were declared `=> void`, and both are read by the
-// chart for what they return: `centeredTextFunction`'s result is handed to
-// `.text()`, and `orderingFunction`'s to `.sort()`. TypeScript lets a
-// value-returning function satisfy a `=> void` parameter, so a consumer's
-// correct callback compiled -- but reading either accessor back gave a function
-// whose result was unusable, and the declaration documented the wrong contract.
-// The chart's own defaults say what they really are: a template string, and a
-// comparator.
+// Two of the callbacks below are read by the chart for what they return, so
+// neither is typed `=> void`: `centeredTextFunction`'s result is handed to
+// `.text()`, and `orderingFunction`'s to `.sort()`. The chart's own defaults
+// say what they are: a template string, and a comparator.
 export interface DonutChartAPI
     extends
         AccessibleChartAPI<DonutChartModule>,
@@ -137,8 +131,8 @@ export interface DonutChartAPI
      * only highlights a slice once an id arrives.
      */
     highlightSliceById(): DonutChartDataShape['id'];
-    // `NonNullable`, so the setter keeps rejecting an explicit undefined now
-    // that the field it points at is optional.
+    // `NonNullable`, so the setter rejects an explicit undefined even though
+    // the field it points at is optional.
     highlightSliceById(
         id: NonNullable<DonutChartDataShape['id']>
     ): DonutChartModule;
@@ -169,7 +163,7 @@ export type DonutChartModule = ChartModuleSelection<DonutChartDataShape[]> &
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in `bullet.ts`: these are
+ * generics are a bounded `any`, as in `bullet.ts`: these are
  * module-level variables reassigned from several differently-shaped selections,
  * so naming one concrete datum would reject the others.
  */
@@ -200,8 +194,8 @@ type DonutCleanDatum = Omit<DonutChartDataShape, 'percentage'> & {
  * `d.percentage = String(...)`, and the default `centeredTextFunction`
  * interpolates it into `${d.percentage}%`. So the datum handed to a consumer's
  * own `centeredTextFunction` has a string in that field while the declaration
- * promises a number -- a real mismatch, left alone here because it changes a
- * published callback's parameter rather than this conversion.
+ * promises a number -- a real mismatch, left alone here because fixing it
+ * changes a published callback's parameter.
  */
 type DonutDatum = Omit<DonutChartDataShape, 'percentage'> & {
     percentage: string;
@@ -275,9 +269,9 @@ type SliceElement = SVGPathElement & { __data__?: DonutArcDatum };
  * ]
  */
 export default function module(): DonutChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 0,
             right: 0,
@@ -302,7 +296,7 @@ export default function module(): DonutChartModule {
         isAnimated = false,
         isEmpty = false,
         // No default: the chart highlights nothing until an id arrives, which
-        // is what the declaration now says.
+        // is what the declaration says.
         highlightedSliceId: number | undefined,
         // A DOM element, not a datum: `initHighlightSlice` assigns it from
         // `.node()` and the hover handlers compare it against `el`.
@@ -584,8 +578,7 @@ export default function module(): DonutChartModule {
             .merge(
                 // The enter selection holds the appended paths while `slices`
                 // holds their `g` wrappers. Merging across the two element
-                // types is what this chart has always done; d3 only cares that
-                // the groups line up.
+                // types works because d3 only cares that the groups line up.
                 slices as unknown as ChartSelection<SVGPathElement>
             )
             .attr('fill', emptyDataConfig.emptySliceColor)
@@ -650,8 +643,7 @@ export default function module(): DonutChartModule {
                 .merge(
                     // The enter selection holds the appended paths while `slices`
                     // holds their `g` wrappers. Merging across the two element
-                    // types is what this chart has always done; d3 only cares that
-                    // the groups line up.
+                    // types works because d3 only cares that the groups line up.
                     slices as unknown as ChartSelection<SVGPathElement>
                 )
                 .attr('fill', getSliceFill)
@@ -676,8 +668,7 @@ export default function module(): DonutChartModule {
                 .merge(
                     // The enter selection holds the appended paths while `slices`
                     // holds their `g` wrappers. Merging across the two element
-                    // types is what this chart has always done; d3 only cares that
-                    // the groups line up.
+                    // types works because d3 only cares that the groups line up.
                     slices as unknown as ChartSelection<SVGPathElement>
                 )
                 .attr('fill', getSliceFill)
@@ -710,8 +701,8 @@ export default function module(): DonutChartModule {
         { data }: DonutArcDatum
     ): SliceElement | undefined {
         // Returns the element rather than a boolean, which is what `.select()`
-        // takes: a function giving the descendant to select, or nothing. The
-        // JSDoc above has always said so.
+        // takes: a function giving the descendant to select, or nothing, as
+        // the JSDoc above says.
         if (data.id === highlightedSliceId) {
             return this;
         }
@@ -899,7 +890,7 @@ export default function module(): DonutChartModule {
             .attrTween('d', function (d: DonutArcDatum) {
                 // `outerRadius` is optional on the datum because the chart
                 // writes it rather than the layout, and `reduceOuterRadius`
-                // has always run before this tween.
+                // runs before this tween.
                 const i = interpolate(d.outerRadius as number, outerRadius);
 
                 return (t: number) => {
@@ -1024,8 +1015,8 @@ export default function module(): DonutChartModule {
         }
         // The declaration types the callback against `DonutChartDataShape`,
         // whose `percentage` is a number, while the datum this chart hands it
-        // has the string `cleanData` produced. That mismatch is the deferred
-        // finding noted on `DonutDatum`; the cast is where it surfaces.
+        // has the string `cleanData` produced. That mismatch is the one noted
+        // on `DonutDatum`; the cast is where it surfaces.
         centeredTextFunction = _x as unknown as (d: DonutDatum) => string;
 
         return this;
@@ -1350,10 +1341,10 @@ export default function module(): DonutChartModule {
     (exports as DonutChartModule).on = function (
         ...args: [string] | [string, () => void]
     ) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`, following `heatmap.ts`: the TypeScript lint override makes
-        // `prefer-spread` an error, and the two shapes `on` is called with --
-        // a lookup and a registration -- are exactly what the tuple says.
+        // Rest parameters and a spread rather than `arguments` and `.apply`:
+        // the TypeScript lint override makes `prefer-spread` an error, and the
+        // two shapes `on` is called with -- a lookup and a registration -- are
+        // exactly what the tuple says.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );

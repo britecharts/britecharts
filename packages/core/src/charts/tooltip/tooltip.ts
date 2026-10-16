@@ -41,14 +41,13 @@ export declare enum tooltipKeys {
  * rows as they were bound), so `name` here is the same numeric topic
  * identifier it is there -- not a label. `topicName` is the label.
  *
- * It was declared `string`, then `number` once `LineChartDataShape.name` was
- * corrected -- and both were half the story. Two charts feed this type and
- * their names are different kinds: line hands over its raw flat rows, where
- * `name` is a numeric topic id, while stacked area's topics are named by
- * string (`"Direct"`, as its own data-shape example shows, and as its story
- * passes to `topicsOrder`). The tooltip only ever compares this field or sorts
- * by it, so both work at runtime; only the declaration had to pick one, and
- * picking either made the other chart's correct usage a type error.
+ * Two charts feed this type and their names are different kinds, so `name`
+ * takes both: line hands over its raw flat rows, where `name` is a numeric
+ * topic id, while stacked area's topics are named by string (`"Direct"`, as
+ * its own data-shape example shows, and as its story passes to
+ * `topicsOrder`). The tooltip only ever compares this field or sorts
+ * by it, so both work at runtime, and picking either one here would make the
+ * other chart's correct usage a type error.
  *
  * `TooltipSingleDataShape.name` below is a string for a different reason --
  * that is the category name from bar, donut and scatter plot -- so the two are
@@ -107,14 +106,11 @@ export type TopicColorMap = Record<string, string>;
 
 type TooltipFormattingFunction = (value: number) => number;
 
-// The sixteen accessors below were setter-only -- a single
-// optional-parameter signature returning the module -- so reading one reported
-// the module rather than its value. Each is a getter/setter overload pair now,
-// getter first and setter last, with the getter typed from the
-// implementation's own default.
+// Each accessor below is a getter/setter overload pair, getter first and
+// setter last, with the getter typed from the implementation's own default.
 //
 // `hide`, `show` and `update` are commands rather than accessors: they return
-// void and have never chained.
+// void and do not chain.
 export interface TooltipAPI {
     /** Hides the tooltip */
     hide(): void;
@@ -165,9 +161,8 @@ export interface TooltipAPI {
      * the rest pass theirs to `setDefaultLocale`, and those are rightly typed
      * `LocalObject`.
      *
-     * Declared `LocalObject` until now, which is that other kind. Core's own
-     * `base.d.ts` already types the same accessor as `LocaleString` for the
-     * time-series charts; this brings the tooltip in line with it.
+     * Core's own `base.d.ts` types the same accessor as `LocaleString` for
+     * the time-series charts, and the tooltip matches it.
      */
     locale(): LocaleString | null;
     locale(locale: LocaleString | null): TooltipModule;
@@ -224,7 +219,7 @@ export interface TooltipAPI {
     ): void;
     /**
      * @deprecated The order the multi-value charts used before 3.0; still
-     * accepted, warns once. The charts now dispatch the order above.
+     * accepted, warns once. The charts dispatch the order above.
      */
     update(
         dataPoint: TooltipListDataShape,
@@ -256,20 +251,19 @@ export type TooltipModule = ChartModuleSelection<TooltipDataShape[]> &
 const MORE_ROW_KEY = '__more__';
 
 // Fallback for the getBBox() guard: roughly one line of the 12px tooltip
-// text. Module-level now because the `let` chain reads it.
+// text. Module-level because the `let` chain reads it.
 const defaultTextHeight = 14;
 
 /**
  * The tooltip's own svg, and the selections derived from it. The datum and
- * parent generics are the migration plan's bounded `any`, as in the charts:
- * these are module-level variables reassigned from several differently-shaped
+ * parent generics are a bounded `any`, as in the charts: these are
+ * module-level variables reassigned from several differently-shaped
  * selections, so naming one concrete datum would reject the others.
  *
- * Named `ChartSelection` as every other chart names this, rather than the
- * `TooltipSelection` it was: that name belongs to the published, non-generic
+ * Named `ChartSelection` as every other chart names this, not
+ * `TooltipSelection`: that name belongs to the published, non-generic
  * selection type above, which is a different thing -- the datum there is the
- * tooltip's own data. The two could share a name only while they sat in
- * separate files.
+ * tooltip's own data.
  */
 type ChartSelection<TElement extends BaseType> = Selection<
     TElement,
@@ -1214,8 +1208,7 @@ export default function module(): TooltipModule {
         ) {
             updateTooltip(dataPoint, position[0], position[1]);
         } else if (isEntering) {
-            // Nothing to render yet: the title alone, as the mini tooltip
-            // always did, until the first update
+            // Nothing to render yet: the title alone, until the first update
             updateContent({} as TooltipDatum);
         }
     }
@@ -1240,9 +1233,9 @@ export default function module(): TooltipModule {
             let line: string[] = [];
             let lineNumber = 0;
 
-            // Rebinding the parameter to the element being iterated is how
-            // this has always worked: `each` visits one node at a time and the
-            // rest of the body reads and writes that one.
+            // The parameter is rebound to the element being iterated: `each`
+            // visits one node at a time and the rest of the body reads and
+            // writes that one.
             text = select(this);
 
             const words = text.text().split(/\s+/).reverse();

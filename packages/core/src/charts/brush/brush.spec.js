@@ -463,17 +463,15 @@ describe('brush Chart', () => {
         });
 
         it('should pass the locale to the x axis tick formatter', () => {
-            // A getter/setter pair for `locale` passes trivially and would have
-            // passed against the bug this covers: the accessor stored the value
-            // and `getTimeSeriesAxis` never received it, so the axis always
-            // formatted in d3's default English. Asserting the rendered tick
-            // text is the point.
+            // A getter/setter pair for `locale` passes trivially, even when the
+            // accessor stores the value and `getTimeSeriesAxis` never receives
+            // it, so the axis formats in d3's default English. Asserting the
+            // rendered tick text is the point.
             //
             // Own container and own data rather than the shared
             // `containerFixture` and the file-scope `dataset` that the nested
-            // beforeEach blocks reassign -- leaning on those is what made the
-            // equivalent stacked-area test pass alone and fail in the full
-            // suite.
+            // beforeEach blocks reassign -- leaning on those makes a test pass
+            // alone and fail in the full suite.
             const localeFixture =
                 '<div id="locale-fixture"><div class="default-locale"></div><div class="german-locale"></div></div>';
 

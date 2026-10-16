@@ -10,8 +10,7 @@ import exportChart from './export';
 // satisfy it, because core types every accessor as
 // `width(width?: number): T & ...` -- so `width()` reads as the chart rather
 // than a number. The chart really does return numbers at runtime; the
-// declaration cannot say so yet. Recorded in the migration plan as core's
-// getter-typing gap, and this is the first place it forces a cast.
+// declaration cannot say so, which forces a cast here.
 type ExportContext = {
     width(): number;
     height(): number;
@@ -21,9 +20,9 @@ type ExportContext = {
 const aDonutTestDataSet = () => new DonutDataBuilder();
 
 describe('export Helper', () => {
-    // Inferred from legend.js rather than annotated: importing the module
-    // directly (not the typings barrel) gives whatever TS reads off the
-    // JavaScript, and naming a type here would only disagree with it.
+    // Inferred from the legend module rather than annotated: importing it
+    // directly (not the typings barrel) gives its own type, and naming a type
+    // here would only disagree with it.
     let legendChart: ReturnType<typeof legend>;
     let dataset: ReturnType<DonutDataBuilder['build']>;
     let containerFixture: Selection<HTMLElement, unknown, HTMLElement, unknown>;
@@ -99,7 +98,7 @@ describe('export Helper', () => {
         it('should return a promise', () => {
             // Called with no argument, which the signature does not allow.
             // At runtime the html becomes the string 'undefined' and a promise
-            // still comes back, which is all this asserts. Kept as it was.
+            // still comes back, which is all this asserts.
             // @ts-expect-error loadImage takes the svg html
             expect(exportChart.loadImage()).toBeInstanceOf(Promise);
         });

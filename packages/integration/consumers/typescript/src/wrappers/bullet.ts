@@ -1,8 +1,7 @@
-// @britecharts/wrappers gained a published type surface when its ESM entry
-// moved from authored TypeScript in src/ to a built dist/esm with generated
-// declarations. Nothing here imported it before, so nothing proved the
-// `types` field resolves or that the generated declarations are usable --
-// `attw` checks the package's shape, not whether a consumer can type a call.
+// @britecharts/wrappers publishes generated declarations beside a built
+// dist/esm. This file proves its `types` field resolves and that those
+// declarations are usable -- `attw` checks the package's shape, not whether a
+// consumer can type a call.
 import { BulletWrapper } from '@britecharts/wrappers';
 import type { BulletChartModule } from '@britecharts/core';
 

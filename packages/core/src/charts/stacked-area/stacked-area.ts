@@ -76,9 +76,9 @@ export type StackedAreaChartDataShape = {
 /**
  * The window the chart draws over when it has no data of its own.
  *
- * `minY` was missing. The chart's own default carries it and `getMinValue`
- * reads it, so a config without one compiled and then gave the value scale an
- * undefined lower bound -- a NaN domain, and nothing drawn.
+ * `minY` is required. The chart's own default carries it and `getMinValue`
+ * reads it, so a config without one would give the value scale an undefined
+ * lower bound -- a NaN domain, and nothing drawn.
  */
 export interface StackedAreaEmptyDataConfig {
     minDate: Date;
@@ -91,27 +91,16 @@ export interface StackedAreaEmptyDataConfig {
  * Whether the x axis carries dates or plain numbers.
  *
  * `'number'`, not `'numeric'`: the chart compares this against `'number'` in
- * three places, so `'numeric'` -- which the declaration used to accept -- type
- * checked and did nothing, while the value that actually switches the axis was
- * rejected. The JSDoc below has said `'number'` all along.
+ * three places, and that is the value that switches the axis. The JSDoc below
+ * says `'number'` too.
  */
 export type StackedAreaXAxisValueType = 'date' | 'number';
 
 /** Whether a numeric x axis is scaled linearly or logarithmically. */
 export type StackedAreaXAxisScale = 'linear' | 'logarithmic';
 
-// The seventeen accessors below were setter-only -- a single signature
-// returning the chart -- so reading one reported the chart rather than its
-// value. Each is a getter/setter overload pair now, getter first and setter
-// last, with the getter typed from the implementation's own default.
-//
-// `InteractiveChartAPI` was also parameterised with `StackedBarChartModule`:
-// the wrong chart, not merely the wrong one of this chart's two types. So
-// `stackedArea().on(...)` reported the stacked *bar*'s API, and a chain
-// crossing back to anything of this chart's own -- `.on(...).areaCurve(...)`
-// -- did not compile, nor could the result be handed to `selection.call()` as
-// a stacked area. Same class as the three brush generics corrected in
-// 0e959aee, one step further out.
+// Each accessor below is a getter/setter overload pair, getter first and
+// setter last, with the getter typed from the implementation's own default.
 export interface StackedAreaChartAPI
     extends
         AccessibleChartAPI<StackedAreaChartModule>,
@@ -227,7 +216,7 @@ const uniq = <T>(arrArg: T[]) =>
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in the other charts:
+ * generics are a bounded `any`, as in the other charts:
  * these are module-level variables reassigned from several differently-shaped
  * selections, so naming one concrete datum would reject the others.
  */
@@ -330,9 +319,9 @@ type StackedAreaXScale =
  * ]
  */
 export default function module(): StackedAreaChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 70,
             right: 30,
@@ -568,8 +557,7 @@ export default function module(): StackedAreaChartModule {
 
         // Same precedence as the line chart, whose equivalent function this is
         // otherwise a copy of: an explicit numberFormat overrides the
-        // integer/decimal choice. This chart inherits `numberFormat` from
-        // `ChartBaseAPI` and had nothing behind it, so setting it did nothing.
+        // integer/decimal choice.
         //
         // It reaches both axes, as the line chart's does: the y axis always,
         // and the x axis when `xAxisValueType` is 'number'.
@@ -644,8 +632,7 @@ export default function module(): StackedAreaChartModule {
                     axisBottom(xScale as ScaleTime<number, number>)
                         .ticks(major.tick as number)
                         // One argument: d3's `tickSize` sets both the inner
-                        // and the outer size from it, and the second argument
-                        // this used to pass has always been ignored.
+                        // and the outer size from it.
                         .tickSize(0)
                         .tickFormat(
                             major.format as (
@@ -661,7 +648,6 @@ export default function module(): StackedAreaChartModule {
             xAxis = asAxis(
                 axisBottom(xScale as ScaleTime<number, number>)
                     .ticks(minor.tick as number)
-                    // One argument, as above: the second was ignored.
                     .tickSize(10)
                     .tickPadding(tickPadding)
                     .tickFormat(
@@ -677,13 +663,13 @@ export default function module(): StackedAreaChartModule {
             .ticks(yTicks)
             // An array where d3 wants a number, as in bar.ts: `tickSize`
             // assigns `+_`, and `+[0]` is 0 for a one-element array, so this
-            // has always set the size it looks like it does.
+            // sets the size it looks like it does.
             .tickSize(+[0])
             .tickPadding(tickPadding)
             .tickFormat(getFormattedValue);
 
-        // `drawGridLines` takes no parameters: the two it was handed here
-        // were ignored, and it reads `xTicks` and `yTicks` off the module.
+        // `drawGridLines` takes no parameters: it reads `xTicks` and `yTicks`
+        // off the module.
         drawGridLines();
     }
 
@@ -919,8 +905,8 @@ export default function module(): StackedAreaChartModule {
             emptyDataConfig.minDate,
             emptyDataConfig.maxDate
         );
-        // `[...Array(n)]` where this read `Array.apply(null, Array(n))`: both
-        // give an n-length array of undefined, and the lint override makes
+        // `[...Array(n)]` rather than `Array.apply(null, Array(n))`: both give
+        // an n-length array of undefined, and the lint override makes
         // `prefer-spread` an error.
         const emptyArray = [...Array(numDays)];
 
@@ -959,10 +945,10 @@ export default function module(): StackedAreaChartModule {
                 : originalData;
 
         return originalData.reduce<StackedAreaDatum[]>((acc, datum) => {
-            // Written onto the caller's own objects rather than copies, which
-            // is the runtime this preserves. The cast covers the two reads the
-            // label accessors make dynamic, and `date` becoming a Date or a
-            // number where the published shape has the string that went in.
+            // Written onto the caller's own objects rather than copies. The
+            // cast covers the two reads the label accessors make dynamic, and
+            // `date` becoming a Date or a number where the published shape
+            // has the string that went in.
             const d = datum as unknown as StackedAreaDatum;
 
             d.date = castValueToType(d[dateLabel] as string, xAxisValueType);
@@ -1086,14 +1072,6 @@ export default function module(): StackedAreaChartModule {
         grid(svg.select('.grid-lines-group'));
     }
 
-    // A second `drawLoadingState` stood here, rendering `barLoadingMarkup`.
-    // Function declarations hoist and the later one wins, so the one below --
-    // which draws this chart's own markup -- is the one that has always run,
-    // and this one was unreachable. It referenced an identifier the file never
-    // imported, which is why nothing caught it: the line could not run, so it
-    // could not throw. Removed rather than typed, since TypeScript rejects
-    // both the duplicate implementation and the unresolved name.
-
     /**
      * Draws an overlay element over the graph
      * @private
@@ -1195,11 +1173,10 @@ export default function module(): StackedAreaChartModule {
                 .selectAll('.layer')
                 // Keyed by `name`, which a d3 `Series` does not have: its
                 // topic is under `key`. So every layer keys to "undefined"
-                // and the join collapses them, which is the behaviour this
-                // preserves -- keying by `key` instead would change what the
-                // animated path draws, and the animated path has no spec
-                // beyond its getter and setter. Left as it is, typed as the
-                // read it really performs.
+                // and the join collapses them. Keying by `key` instead would
+                // change what the animated path draws, and the animated path
+                // has no spec beyond its getter and setter. Typed as the read
+                // it really performs.
                 .data(
                     layersInitial,
                     (layer) =>
@@ -1345,12 +1322,12 @@ export default function module(): StackedAreaChartModule {
      * @private
      */
     function getSortedData(data: StackedAreaDatum[]): StackedAreaDateGroup[] {
-        // nest().key().entries() -> groups(), which yields [key, values]
-        // pairs. String() keeps nest's key coercion.
+        // groups() yields [key, values] pairs. String() makes every key a
+        // string.
         return groups(
-            // `a.date - b.date` relied on Date coercing to a number, which is
-            // not something the types allow; `Number` is that coercion
-            // written out, as the axis helper's own sort already spells it.
+            // Dates coerce to numbers in a subtraction, which the types do not
+            // allow implicitly; `Number` is that coercion written out, as the
+            // axis helper's own sort spells it.
             data.sort((a, b) => Number(a.date) - Number(b.date)),
             (d) => String(getDate(d))
         )
@@ -1466,8 +1443,8 @@ export default function module(): StackedAreaChartModule {
      * @private
      */
     function handleMouseMove(e: Element, d: unknown, event: Event) {
-        // `epsilon || setEpsilon()` as a statement, which the lint override
-        // reads as an unused expression. Same short-circuit, spelled out.
+        // An `if` rather than `epsilon || setEpsilon()` as a statement, which
+        // the lint override reads as an unused expression.
         if (!epsilon) {
             setEpsilon();
         }
@@ -2045,8 +2022,8 @@ export default function module(): StackedAreaChartModule {
     (exports as StackedAreaChartModule).on = function (
         ...args: [string] | [string, () => void]
     ) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`, following the other converted charts.
+        // Rest parameters and a spread rather than `arguments` and `.apply`,
+        // as in the other charts.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );

@@ -30,7 +30,7 @@ import type { PlacementFrame } from './place.js';
  * `SVGElement` and `SVGSVGElement` all assignable to it.
  *
  * Declared this way rather than tested with `instanceof`, which would be a
- * different runtime check than the one this code has always made.
+ * different runtime check than the duck typing this code relies on.
  */
 type SvgNodeLike = {
     ownerSVGElement?: SVGSVGElement | null;
@@ -120,10 +120,9 @@ function sizeOf(
     root: SvgNodeLike | null | undefined,
     name: 'width' | 'height'
 ): number {
-    // `?? ''` where this passed `getAttribute`'s null straight to parseFloat
-    // and let it coerce. Same result -- parseFloat(null) and parseFloat('') are
-    // both NaN, which the check below turns into Infinity -- spelled so it
-    // types.
+    // `?? ''` so that `getAttribute`'s null types as a parseFloat argument.
+    // parseFloat(null) and parseFloat('') are both NaN, which the check below
+    // turns into Infinity.
     const value = root ? parseFloat(root.getAttribute?.(name) ?? '') : NaN;
 
     return Number.isFinite(value) && value > 0 ? value : Infinity;

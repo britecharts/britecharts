@@ -1,13 +1,3 @@
-// Was `module.exports = (function () { ... })()` -- the only CommonJS module in
-// core/src. Both importers already did `import serializeWithStyles from
-// './style'` and reached through it (`serializeWithStyles.initializeSerializer()`),
-// which only worked through Babel's interop. An ESM default export of the same
-// object is what they were really getting, so nothing at either call site
-// changes, and the file stops being the one exception to how core is written.
-//
-// The IIFE is gone with it: a module already has its own scope, and 'use strict'
-// is implicit in one.
-
 /**
  * A `CSSStyleDeclaration` indexed by property name.
  *
@@ -15,8 +5,8 @@
  * and writes them with bracket access. That is not in the DOM's typed surface
  * -- the standard route is `getPropertyValue`/`setProperty`, which also handle
  * the dashed names iteration produces -- but switching to those would change
- * which values round-trip, and a conversion is the wrong place to find out.
- * The cast keeps the behaviour exactly and marks where the cleanup belongs.
+ * which values round-trip. The cast keeps the current behaviour and marks
+ * where the cleanup belongs.
  */
 type StyleByName = CSSStyleDeclaration & Record<string, string>;
 
@@ -162,9 +152,8 @@ const computeDefaultStyleByTagName = (
     const element = document.body.appendChild(document.createElement(tagName));
     const computedStyle = window.getComputedStyle(element) as StyleByName;
 
-    // `Array.from` where this read `[].forEach.call(...)`. Same iteration over
-    // the same array-like, but `[]` types as `never[]`, so the borrowed
-    // `forEach` had nothing useful to infer from.
+    // `Array.from` rather than `[].forEach.call(...)`: `[]` types as
+    // `never[]`, so the borrowed `forEach` has nothing useful to infer from.
     Array.from(computedStyle).forEach((style) => {
         defaultStyle[style] = computedStyle[style];
     });

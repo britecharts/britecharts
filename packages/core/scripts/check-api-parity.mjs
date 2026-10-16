@@ -2,26 +2,22 @@
  * Checks that every accessor a chart exposes at runtime is declared in the
  * chart's module type, which is what the published declarations carry.
  *
- * Converting the heatmap turned up three accessors it had always shipped and
- * never declared -- `on`, `isAnimated` and `animationDuration`. `on` is the
- * event bridge a consumer uses to attach a tooltip, so
- * `heatmap().on('customMouseOver', tooltip.show)` had never compiled for anyone
- * writing TypeScript. Nothing was comparing the two sides, so nothing said so.
+ * An accessor a chart ships but does not declare cannot be called from
+ * TypeScript at all. When it is `on`, the event bridge a consumer uses to
+ * attach a tooltip, `heatmap().on('customMouseOver', tooltip.show)` does not
+ * compile, and nothing else compares the two sides to say so.
  *
  * The declaration side is read through the TypeScript compiler rather than by
- * matching text, which is the whole point. A first attempt at this with regexes
- * produced three classes of false positive before being thrown away: it assumed
- * four-space indentation, so `bullet-chart.d.ts` at two spaces reported all
- * thirteen of its members missing; it skipped interfaces whose body is empty;
- * and it could not follow a base declared as `type X = Omit<Y, 'z'>`, which is
- * how both bullet and the scatter plot declare theirs. The checker resolves
- * intersections, inherited members and `Omit` alike, and `Omit` matters here --
- * a member removed on purpose must not be reported as missing.
+ * matching text, which is the whole point. Text matching depends on
+ * indentation, misses interfaces whose body is empty, and cannot follow a base
+ * declared as `type X = Omit<Y, 'z'>`, which is how both bullet and the
+ * scatter plot declare theirs. The checker resolves intersections, inherited
+ * members and `Omit` alike, and `Omit` matters here -- a member removed on
+ * purpose must not be reported as missing.
  *
  * The runtime side is read from the source, since the accessors are properties
  * assigned onto a function inside a closure and no tool infers them: that is the
- * same blind spot that made typedoc useless for the docs and that makes every
- * chart assert its own module type.
+ * same blind spot that makes every chart assert its own module type.
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -38,7 +34,7 @@ const assignedAccessors = (source) => {
     const names = new Set();
 
     // `exports.width = ...` in a JavaScript chart, and
-    // `(exports as BarChartModule).width = ...` in a converted one, where the
+    // `(exports as BarChartModule).width = ...` in a TypeScript one, where the
     // assertion is what lets TypeScript see the module's members.
     for (const [, name] of source.matchAll(
         /(?:^|\()\s*exports(?:\s+as\s+[\w[\]'"]+\s*\))?\.(\w+)\s*=/gm
@@ -62,13 +58,11 @@ const checker = program.getTypeChecker();
  * Every factory the barrel exports, mapped to the module type it returns.
  *
  * Read from `src/index.ts` itself, which is what the published declarations
- * are generated from. This used to walk a hand-written barrel for
- * `export function name(): SomeModule` lines, and filtering that walk to one
- * directory is how bullet and mini-tooltip silently stopped being compared the
- * moment their types moved -- the chart simply left the set, and a comparison
- * over a smaller set reports success just as loudly. Asking the checker for
- * the barrel's exports leaves nothing to filter. The `uncompared` check below is
- * still the guard against a chart dropping out.
+ * are generated from. Asking the checker for the barrel's exports leaves
+ * nothing to filter: any filter on the set lets a chart drop out of it
+ * silently, and a comparison over a smaller set reports success just as
+ * loudly. The `uncompared` check below is the guard against a chart dropping
+ * out.
  */
 const factories = new Map();
 const barrelSymbol = checker.getSymbolAtLocation(
@@ -108,10 +102,9 @@ const readSource = (candidates) => {
 
 // Chart factory name -> its source file, taken from the barrel so the mapping
 // is the library's own rather than guessed from directory names.
-// Read across both extensions, as the chart files below are: the barrel is
-// TypeScript now, and the import specifiers inside it stay '.js' either way,
-// which is what webpack's `extensionAlias` and TypeScript's bundler resolution
-// both expect.
+// Read across both extensions, as the chart files below are: the import
+// specifiers inside the barrel are '.js' whatever the file behind them is,
+// which is what TypeScript's resolution and the published ESM entry expect.
 const barrel = readSource(
     ['index.ts', 'index.js'].map((name) => path.join(srcRoot, name))
 );
@@ -178,9 +171,9 @@ for (const [name, { file, source }] of [...sources].sort()) {
         continue;
     }
     const undeclared = [...exposed].filter((n) => !declared.has(n)).sort();
-    // The other direction, which this script used to ignore: a member the
-    // typings promise and the chart does not have. Calling one compiles and then
-    // throws, which is worse than an accessor being merely unreachable.
+    // The other direction: a member the typings promise and the chart does not
+    // have. Calling one compiles and then throws, which is worse than an
+    // accessor being merely unreachable.
     // `exportChart` and the callable itself are not accessors and never appear
     // as assignments.
     const phantom = [...declared]
@@ -209,8 +202,7 @@ for (const [name, { file, source }] of [...sources].sort()) {
 
 // Every chart the barrel exports has to have been compared. Without this, a
 // chart whose declaration moves out of the set this script looks in simply
-// stops being checked, and the run still ends with a tick: that is how bullet
-// and mini-tooltip went uncompared for one commit.
+// stops being checked, and the run still ends with a tick.
 // `colors` is the one barrel export that is not a chart: it is the object of
 // colour schemas, with no factory to declare.
 const NOT_A_FACTORY = new Set(['colors']);

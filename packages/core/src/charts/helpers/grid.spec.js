@@ -122,9 +122,7 @@ describe('grid helper', () => {
     describe('accessors', () => {
         // The runtime half of what `GridBaseGenerator`'s overloads declare.
         // Every chart that draws a grid chains its setters, and reading one
-        // back has to give the value rather than the generator -- which is the
-        // contract the single-signature typing described wrongly, and which
-        // nothing here pinned before.
+        // back has to give the value rather than the generator.
         it('returns the generator from every setter, so the calls chain', () => {
             const generator = gridHorizontal(yScale());
 

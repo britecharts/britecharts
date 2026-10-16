@@ -12,23 +12,20 @@ module.exports = {
         '<rootDir>/build/',
         '<rootDir>/lib/',
     ],
-    // Resolve sibling workspaces to their source. babel.config.cjs aliases
-    // @britecharts/wrappers to a built bundle for the webpack build; under
-    // test that alias is switched off so these mappings apply instead.
+    // Resolve sibling workspaces to their source rather than their built dist.
     //
     // Extensionless on purpose: moduleFileExtensions then decides whether that
-    // is .ts or .js, so a package converting its barrel does not break the
-    // mapping. Spelling it `index.js` broke every suite here the moment
-    // wrappers' index.js became index.ts.
+    // is .ts or .js. Spelling it `index.js` breaks every suite here, since
+    // wrappers' barrel is index.ts.
     moduleNameMapper: {
         // Spread, not replace: the base config's mapper carries the `.js` ->
-        // extensionless rule that lets these source barrels reach converted
-        // .ts files. Defining this key without it silently drops that rule.
+        // extensionless rule that lets these source barrels reach .ts files.
+        // Defining this key without it silently drops that rule.
         ...configBase.moduleNameMapper,
         '^@britecharts/core$': '<rootDir>/../core/src/index',
         '^@britecharts/wrappers$': '<rootDir>/../wrappers/src/index',
     },
-    // Every extension, not just .js. A converted file would otherwise drop out
+    // Every extension, not just .js. A .ts file would otherwise drop out
     // of coverage silently: the per-file threshold fails loudly ("Coverage
     // data for ... was not found"), but the global ones would simply be
     // computed over a smaller set and keep passing.

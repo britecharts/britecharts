@@ -11,7 +11,7 @@ const path = require('node:path');
 const CONSUMER = path.resolve(__dirname, '..', 'consumers', 'vanilla');
 const requireFromConsumer = createRequire(path.join(CONSUMER, 'package.json'));
 
-// The public API of @britecharts/core, frozen for 3.0.0 (audit decision 11):
+// The public API of @britecharts/core, frozen for 3.0.0:
 // the 14 charts, `colors` and `constants`. The bundle must expose exactly
 // these names, no more and no fewer.
 const CORE_EXPORTS = [

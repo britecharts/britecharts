@@ -60,9 +60,8 @@ const tooltipChart: TooltipWrapper = {
                 // Narrowing `x` alone leaves `y` as `number | undefined`, but
                 // the two always arrive together -- the consumer destructures
                 // the chart's `[x, y]` anchor, so neither is a number without
-                // the other. The guard is left checking `x` only, as it was,
-                // and the pair is asserted here rather than the condition
-                // being changed during a conversion.
+                // the other. The guard checks `x` only and the pair is
+                // asserted here.
                 [state.x, state.y] as TooltipPosition,
                 undefined,
                 state.topicColorMap || undefined

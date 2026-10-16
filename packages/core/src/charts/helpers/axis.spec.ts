@@ -10,7 +10,7 @@ import type {
     AxisTickSettings,
 } from './axis';
 
-// lineChartDataBuilder is still JavaScript, so `build()` is `any`. Naming the
+// lineChartDataBuilder is JavaScript, so `build()` is `any`. Naming the
 // two shapes this spec actually reads keeps that `any` from spreading into
 // every assertion below.
 type LineTestData = {

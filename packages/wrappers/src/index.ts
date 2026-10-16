@@ -1,11 +1,9 @@
-// The `.js` extensions are deliberate and stay, even though every file behind
-// them is now `.ts`. They are what the published ESM entry resolves against:
-// babel emits `dist/esm/charts/bar/barChart.js` from `barChart.ts`, so these
-// specifiers point at real files there. In this repo they reach the TypeScript
-// through webpack's `resolve.extensionAlias` and jest's `moduleNameMapper`.
-//
-// `sparklineChart` and `constants` were the two that had no extension at all,
-// which left them unresolvable by strict ESM; they have one now.
+// The `.js` extensions are deliberate, even though every file behind them is
+// `.ts`. They are what the published ESM entry resolves against: babel emits
+// `dist/esm/charts/bar/barChart.js` from `barChart.ts`, so these specifiers
+// point at real files there, and strict ESM cannot resolve one without an
+// extension. In this repo they reach the TypeScript through TypeScript's and
+// Vite's own resolution and jest's `moduleNameMapper`.
 export { default as BarWrapper } from './charts/bar/barChart.js';
 export { default as BulletWrapper } from './charts/bullet/bulletChart.js';
 export { default as DonutWrapper } from './charts/donut/donutChart.js';
@@ -22,8 +20,7 @@ export { default as TooltipWrapper } from './charts/tooltip/tooltipChart.js';
 export * from './constants.js';
 
 // The types a consumer needs to hold a wrapper or build a configuration for
-// one. These were unreachable before: the package published no `types` field
-// and this barrel exported values only.
+// one.
 export type {
     Wrapper,
     TooltipWrapper as TooltipWrapperShape,

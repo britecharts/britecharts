@@ -98,7 +98,7 @@ export const wrongWidth = <Bar data={[]} width="wide" />;
 export const missingData = <Donut />;
 
 // A function component has no instance for a ref to point at, so a ref is not
-// part of its props. The typings said otherwise while Line was a class.
+// part of its props.
 const someRef = { current: null };
 // @ts-expect-error Line is a function component: it takes no ref
 export const lineWithRef = <Line {...lineProps} ref={someRef} />;

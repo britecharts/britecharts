@@ -2,10 +2,9 @@ import React, { useEffect, useLayoutEffect } from 'react';
 import { mount } from '../testing/mount';
 
 /**
- * The hooks migration rests on two properties of this test rig. If either
- * stops being true (a testing-library or React upgrade), the conversion PRs'
- * promise of an unchanged spec file no longer holds, so fail here first and
- * loudly.
+ * Every component spec rests on two properties of this test rig. If either
+ * stops being true (a testing-library or React upgrade), those specs stop
+ * testing what they say they test, so fail here first and loudly.
  */
 describe('test harness', () => {
     describe('testing-library render', () => {

@@ -807,17 +807,16 @@ describe('stacked Area Chart', () => {
         });
 
         it('should apply numberFormat to the axis it formats', () => {
-            // The accessor existing is not what matters: `numberFormat` was
-            // declared for this chart all along with nothing behind it, so a
-            // getter/setter pair alone would reproduce that bug exactly. This
+            // The accessor existing is not what matters: a getter/setter pair
+            // with nothing behind it would pass a getter/setter test. This
             // asserts the format reaches what it drives -- `getFormattedValue`
             // is the y axis's `tickFormat`, and the x axis's too when
             // `xAxisValueType` is 'number'.
             //
             // Its own container and its own data, not the shared fixture and
             // the file-scope `dataset` that a dozen nested beforeEach blocks
-            // reassign. An earlier version of this leaned on both and passed
-            // alone while failing in the full suite.
+            // reassign: leaning on both passes alone and fails in the full
+            // suite.
             const own = aTestDataSet().withReportData().build();
             const draw = (chart) => {
                 const svg = d3

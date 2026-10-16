@@ -41,8 +41,7 @@ const stackedAreaChart: Wrapper<
 
         // Calls the chart with the container and dataset.
         //
-        // `data && data.length`, kept in its own variable the way the
-        // JavaScript had it: an update with no data -- empty, null or
+        // `data && data.length`: an update with no data -- empty, null or
         // undefined -- keeps whatever is already bound, as every wrapper does.
         if (shouldUpdateData) {
             container.datum(data).call(chart);

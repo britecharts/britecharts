@@ -251,8 +251,7 @@ const Line: FunctionComponent<LineProps> = ({
 
 /**
  * The x-axis granularity constants, re-exported for a consumer writing
- * `xAxisFormat`. This is the feature; the prop of the same name that stood
- * beside it was not one -- see the stacked area's changeset.
+ * `xAxisFormat`. They are an export, not a prop.
  */
 export const axisTimeCombinations = combinations;
 

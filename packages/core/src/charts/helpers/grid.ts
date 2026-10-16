@@ -17,7 +17,7 @@ import { classArray } from './classes.js';
  * @typedef {function} GridScale
  */
 // Everything above goes on the generated API page, so it is kept to what a
-// caller needs. The `@typedef` is what puts it there: this is a real type now,
+// caller needs. The `@typedef` is what puts it there: this is a real type,
 // which jsdoc has no way to know is documented, and without the tag the
 // `@param {GridScale}` tags below would render as plain text rather than links
 // to an explanation.
@@ -77,15 +77,15 @@ export type HideEdges = boolean | 'both' | 'first' | 'last';
  * Each accessor is a getter/setter overload pair, getter first and setter last.
  * The implementation below assigns a single `function (_?: X)` per accessor,
  * which infers the return as `X | typeof gridBaseGenerator` -- a union with no
- * accessor on it, so the chain every chart writes stopped compiling at the
- * second call:
+ * accessor on it, so without the overloads the chain every chart writes would
+ * not compile at the second call:
  *
  *     gridHorizontal(yScale).range([0, chartWidth]).hideEdges('first')
  *
  * All six charts that draw a grid chain like that -- bar, grouped-bar, line,
- * scatter-plot, stacked-area and stacked-bar -- so this blocked every one of
- * them. The overloads say what the runtime has always done:
- * `if (!arguments.length) { return value; }`, else return the generator.
+ * scatter-plot, stacked-area and stacked-bar. The overloads say what the
+ * runtime does: `if (!arguments.length) { return value; }`, else return the
+ * generator.
  *
  * Setter last is load-bearing beyond readability: conditional inference against
  * an overloaded method reads the last overload, which is how
@@ -205,9 +205,9 @@ function gridBase(orient: string, scale: GridScale) {
         offsetStart = 0,
         offsetEnd = 0,
         // Not just `boolean`: the initialiser is `false`, but getValues()
-        // compares this against 'both', 'first' and 'last'. TypeScript called
-        // those comparisons impossible, which they were under the inferred
-        // boolean -- the union is what the accessor has always accepted.
+        // compares this against 'both', 'first' and 'last'. TypeScript calls
+        // those comparisons impossible under the inferred boolean -- the
+        // union is what the accessor accepts.
         // 'first' rather than false: every one of the twelve grid
         // constructions in the charts passes 'first' explicitly, so this is
         // the value the helper is actually always used with.
@@ -627,8 +627,8 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
         // Statements rather than discarded ternary expressions. Chaining
         // `.tickValues(...).range(...)` reads the accessor's return type, which
         // is the value-or-generator union every getter/setter has; calling them
-        // in sequence needs no cast and does exactly the same thing, since the
-        // chain's result was thrown away.
+        // in sequence needs no cast, and the chain's result would be thrown
+        // away anyway.
         if (
             direction === DIRECTION_FULL ||
             direction === DIRECTION_HORIZONTAL
@@ -659,9 +659,9 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
      * @public
      */
     // The 2D accessors from here down forward to the two one-dimensional grids,
-    // whose setters now declare a required parameter. Each forwarding call
+    // whose setters declare a required parameter. Each forwarding call
     // therefore passes `_!`, the same assertion the stored assignment beside it
-    // already used: the `arguments.length` guard above is what establishes the
+    // uses: the `arguments.length` guard above is what establishes the
     // value is there, and it is not something TypeScript can follow.
     gridGenerator.scaleX = function (_?: GridScale) {
         if (!arguments.length) {

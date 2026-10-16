@@ -53,16 +53,15 @@ colors.colorSchemas.nope;
 // default `nameToColorMap` to null and fall back to the colour scale. Indexing
 // the result without a guard is "possibly null".
 //
-// This is the control for that declaration, and it runs both ways: against the
-// old non-null getter the index below compiles, which leaves the directive
-// unused and fails the build.
+// This is the control for that declaration: against a non-null getter the
+// index below compiles, which leaves the directive unused and fails the build.
 // @ts-expect-error possibly null
 legend().colorMap()['one'];
 
 // The donut's two callbacks are read for what they return, so a callback that
-// returns nothing is the error. Against the old `=> void` declaration both
-// lines below compiled, which left these directives unused and failed the
-// build -- the control for a declaration that was too loose rather than wrong.
+// returns nothing is the error. Against a `=> void` declaration both lines
+// below compile, which leaves these directives unused and fails the build --
+// the control for a declaration that is too loose rather than wrong.
 // @ts-expect-error a centered-text callback has to return the string to render
 donut().centeredTextFunction(() => undefined);
 // @ts-expect-error a comparator has to return a number
@@ -107,8 +106,8 @@ bar().orderingFunction()({ name: 'a', value: 1 }, { name: 'b', value: 2 });
 
 // `orderingFunction` goes to `Array.prototype.sort`, which reads the sign of
 // what the comparator returns, so a callback returning nothing is the error.
-// Against the old `=> void` declaration this compiled, which left the directive
-// unused and failed the build -- the control for a declaration that was too
+// Against a `=> void` declaration this compiles, which leaves the directive
+// unused and fails the build -- the control for a declaration that is too
 // loose rather than merely incomplete.
 // @ts-expect-error a comparator has to return a number
 bar().orderingFunction(() => undefined);
@@ -136,7 +135,7 @@ tooltip().valueFormatter()(1);
 tooltip().locale().length;
 
 // The stacked area's nullable getters, and the x-axis value the chart does not
-// recognise -- `'numeric'` used to type-check and do nothing.
+// recognise -- `'numeric'` must not type-check, since it would do nothing.
 // @ts-expect-error possibly null
 stackedArea().grid().length;
 // @ts-expect-error possibly null
@@ -166,8 +165,8 @@ line().xTicks().toFixed(0);
 line().numberFormat().length;
 // @ts-expect-error the chart compares against 'number', not 'numeric'
 line().xAxisValueType('numeric');
-// Bullet and the sparkline no longer draw a title or subtitle: the accessors
-// are gone, and these fail to compile if one comes back.
+// Bullet and the sparkline draw no title or subtitle: the accessors do not
+// exist, and these fail to compile if one comes back.
 // @ts-expect-error removed in 3.0.0
 bullet().customTitle('CPU');
 // @ts-expect-error removed in 3.0.0

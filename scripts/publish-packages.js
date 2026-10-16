@@ -11,12 +11,11 @@
  *
  * Unlike `yarn npm publish`, `pnpm publish` has no --tolerate-republish: by
  * default it refuses to republish a version already on the registry, the
- * same as plain npm. That is exactly the retry case this release has already
- * hit once for real -- the first 3.0.0-beta.1 attempt failed on
- * authentication after packing but before every package had published, and
- * the fix was to run this script again. So each package's version is checked
- * against the registry first and skipped, not retried, if it is already
- * there; a real publish failure still fails the whole run.
+ * same as plain npm. A run that fails partway -- on authentication after
+ * packing, say, before every package has published -- is recovered by running
+ * this script again. So each package's version is checked against the
+ * registry first and skipped, not retried, if it is already there; a real
+ * publish failure still fails the whole run.
  */
 const { appendFileSync, existsSync, readFileSync } = require('fs');
 const { join } = require('path');
@@ -38,7 +37,7 @@ const isAlreadyPublished = (name, version, attempts = 1) =>
     version;
 
 // npm's answer when the version exists but its read API has not caught up:
-// the check above missed it, and the publish is refused. Seen on 15 Oct as
+// the check above missed it, and the publish is refused with
 // `409 Conflict ... Cannot publish over previously staged`.
 const isConflict = (output) =>
     /\b409\b|cannot publish over|previously published/i.test(output);
@@ -46,9 +45,9 @@ const isConflict = (output) =>
 // changesets/action creates a git tag and a GitHub release for each tag the
 // publish step reports to the file named by CHANGESETS_OUTPUT, one JSON object
 // per line -- the report `changeset publish` writes. This script publishes
-// with pnpm instead, so it writes the report itself. Until it did, every
-// publish logged "GitHub releases and git tags cannot be created", and no
-// version had a tag.
+// with pnpm instead, so it writes the report itself. Without the report, every
+// publish logs "GitHub releases and git tags cannot be created", and no
+// version gets a tag.
 const changesetsOutput = process.env.CHANGESETS_OUTPUT;
 
 const hasGitTag = (gitTag) =>
@@ -59,7 +58,7 @@ const hasGitTag = (gitTag) =>
 // Tags a published version, `<name>@<version>` as `changeset publish` would,
 // and reports it. A tag that already exists is left alone and not reported, so
 // a later run never asks for the same release twice; a version that went out
-// without one, such as 3.0.0-beta.5, gets it on the next run.
+// without one gets it on the next run.
 const tagRelease = (name, version) => {
     const gitTag = `${name}@${version}`;
 

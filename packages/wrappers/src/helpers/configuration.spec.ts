@@ -20,10 +20,9 @@ export type AccessorKeepsItsValueType = Expect<
     >
 >;
 
-// A command contributes the argument it is called with. Both of these used to
-// be `never`, so passing them was an error even though `applyConfiguration`
-// calls them perfectly well: legend's `highlight` has always worked at run
-// time and never type-checked.
+// A command contributes the argument it is called with. Were either of these
+// `never`, passing it would be an error even though `applyConfiguration` calls
+// it perfectly well.
 export type CommandCarriesItsArgument = Expect<
     Equal<ChartConfiguration<LegendModule>['highlight'], number | undefined>
 >;
@@ -84,10 +83,9 @@ const makeChart = <TName extends string>(
 describe('configuration', () => {
     describe('applyConfiguration', () => {
         describe('a command', () => {
-            // `applyConfiguration` has always called these the same way it
-            // calls an accessor -- the chart's member, with the value -- which
-            // is why `highlight` worked while being a type error. The test is
-            // here so the runtime half stays pinned now that the types allow it.
+            // `applyConfiguration` calls these the same way it calls an
+            // accessor -- the chart's member, with the value. The type-level
+            // assertions above cover what compiles; this pins the runtime half.
             it('should be called with its argument', () => {
                 const chart = makeChart('highlight');
 

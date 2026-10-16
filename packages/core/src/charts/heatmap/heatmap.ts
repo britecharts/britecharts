@@ -39,11 +39,11 @@ export interface HeatmapChartAPI
         AccessibleChartAPI<HeatmapChartModule>,
         BaseAPI<HeatmapChartModule>,
         // `isAnimated` and `animationDuration` are documented `@public` on the
-        // chart and have always shipped; they were simply never declared.
+        // chart.
         AnimatedChartAPI<HeatmapChartModule>,
-        // Nor was `on`, which is how a consumer wires the mini tooltip to the
-        // chart -- the pattern this library's own examples show. Until now
-        // `heatmap().on('customMouseOver', tooltip.show)` did not compile.
+        // `on` is how a consumer wires the mini tooltip to the chart, as in
+        // `heatmap().on('customMouseOver', tooltip.show)` -- the pattern this
+        // library's own examples show.
         InteractiveChartAPI<HeatmapChartModule>,
         ExportableChartAPI {
     /** Gets or Sets the y-axis labels of the chart */
@@ -101,8 +101,8 @@ export type HeatmapChartModule = ChartModuleSelection<HeatmapChartDataShape[]> &
 /**
  * The chart's own svg, and the selections derived from it.
  *
- * The datum and parent generics are the migration plan's bounded `any`, for the
- * reason `filter.ts` set out: `Selection` is invariant in them, and these are
+ * The datum and parent generics are a bounded `any`, for the reason
+ * `filter.ts` sets out: `Selection` is invariant in them, and these are
  * module-level variables reassigned from several different selections, so
  * naming one concrete shape would reject the others.
  */
@@ -117,10 +117,9 @@ type ChartSelection<TElement extends BaseType> = Selection<
 >;
 
 export default function module(): HeatmapChartModule {
-    // Split into `let` and `const` rather than left as the one `let` chain the
-    // JavaScript had. The TypeScript ESLint override runs `prefer-const` as an
-    // error, and ten of these are never reassigned -- only the accessors'
-    // targets and the drawing state are. Same treatment as `grid.ts`.
+    // Split into `let` and `const`. The TypeScript ESLint override runs
+    // `prefer-const` as an error, and ten of these are never reassigned --
+    // only the accessors' targets and the drawing state are.
     let margin: ChartMarginParams = {
             top: 40,
             right: 20,
@@ -155,8 +154,7 @@ export default function module(): HeatmapChartModule {
         hourLabels: Selection<BaseType, string, BaseType, unknown>;
 
     // One statement each rather than a second comma chain: `one-var` asks for
-    // that, and the JavaScript never tripped it because everything here was a
-    // single `let`.
+    // that.
     const boxBorderSize = 2;
     const boxInitialOpacity = 0.2;
     const boxFinalOpacity = 1;
@@ -183,10 +181,8 @@ export default function module(): HeatmapChartModule {
     // The `@param` below keeps its `{D3Selection}` rather than letting the
     // generator inject the real signature. The injected form names `TElement`
     // and `TParent`, type parameters a reader of the page cannot resolve, and
-    // the page is for readers. The original's second tag, `@param {HeatmapData}
-    // _data`, is gone: `d3.call` passes no second argument and this function has
-    // never taken one, which is the same phantom parameter Phase 1 removed from
-    // `ChartModuleSelection`.
+    // the page is for readers. There is no `_data` parameter: `d3.call` passes
+    // no second argument.
     /**
      * This function creates the graph using the selection as container
      * @param  {D3Selection} _selection A d3 selection that represents
@@ -247,12 +243,10 @@ export default function module(): HeatmapChartModule {
             buildContainerGroups();
         }
 
-        // `.join(',')` where this passed the array itself and let
-        // `setAttribute` coerce it. d3's `attr` types its value as a string,
-        // number or boolean, so the array needs spelling out -- and `','` is
-        // what `Array.prototype.toString` produced, so the attribute is
-        // byte-identical to before. A space-separated viewBox renders the same
-        // but is not the same string, which is not this commit's call to make.
+        // `.join(',')` because d3's `attr` types its value as a string, number
+        // or boolean, so the array needs spelling out. `','` is what
+        // `Array.prototype.toString` gives, so the attribute is the string
+        // `setAttribute` would make of the array itself.
         svg.attr('viewBox', [0, 0, width, height].join(','))
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
@@ -332,26 +326,24 @@ export default function module(): HeatmapChartModule {
         colorScale = scaleLinear<string>()
             .range([colorSchema[0], colorSchema[colorSchema.length - 1]])
             // Asserted, not guarded: `extent` of an empty array is
-            // `[undefined, undefined]`, which this has always handed straight
-            // to `domain()` and which yields a NaN domain. No caller draws an
-            // empty heatmap, and preserving that is the conversion's job
-            // rather than inventing a meaning for it.
+            // `[undefined, undefined]`, which goes straight to `domain()` and
+            // yields a NaN domain. No caller draws an empty heatmap.
             .domain(extent(data, getValue) as [number, number])
             .interpolate(interpolateHcl);
     }
 
     /**
-     * Returns the sibling box nodes of the given element. d3 v6 dropped
-     * the third `nodes` argument that used to be passed to event handlers,
-     * so the list is derived from the DOM instead.
+     * Returns the sibling box nodes of the given element. d3 passes no
+     * `nodes` argument to event handlers, so the list is derived from the
+     * DOM instead.
      * @param  node  The element the event fired on
      * @return       Its siblings, including itself
      * @private
      */
     function siblingNodes(node: SVGRectElement): SVGRectElement[] {
-        // `parentNode` is a `ParentNode`, which d3's `select` does not accept
-        // and which the JavaScript passed anyway. The assertion says "this is
-        // an element", which for a rect inside the chart group it is.
+        // `parentNode` is a `ParentNode`, which d3's `select` does not accept.
+        // The assertion says "this is an element", which for a rect inside the
+        // chart group it is.
         return select(node.parentNode as Element)
             .selectAll<SVGRectElement, unknown>('.box')
             .nodes();
@@ -419,9 +411,9 @@ export default function module(): HeatmapChartModule {
         }
 
         // On the enter selection, not on `boxes`, so this removes nothing: an
-        // enter selection has no exit groups. Preserved as it stands -- making
-        // it `boxes.exit()` would start removing elements that are not being
-        // removed today, which is a behaviour change and not this commit's.
+        // enter selection has no exit groups. Left that way on purpose: making
+        // it `boxes.exit()` would start removing elements the chart currently
+        // keeps.
         boxElements.exit().remove();
     }
 
@@ -483,10 +475,9 @@ export default function module(): HeatmapChartModule {
     }
 
     /**
-     * `boxList` is unused by every one of these, as it was before: the
-     * dispatcher only forwards the datum, the pointer and the chart size. It
-     * stays in the signature because `drawBoxes` passes it and removing a
-     * parameter is a change of its own.
+     * `boxList` is unused by every one of these: the dispatcher only forwards
+     * the datum, the pointer and the chart size. It stays in the signature
+     * because `drawBoxes` passes it.
      * @private
      */
     function handleMouseOver(
@@ -721,11 +712,10 @@ export default function module(): HeatmapChartModule {
      * @public
      */
     exports.on = function (...args: [string] | [string, () => void]) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`. The TypeScript lint override makes `prefer-spread` an
-        // error, and the two shapes `on` is called with -- a lookup and a
-        // registration -- are exactly what the tuple says, so this forwards
-        // the same arguments it always did.
+        // Rest parameters and a spread rather than `arguments` and `.apply`.
+        // The TypeScript lint override makes `prefer-spread` an error, and the
+        // two shapes `on` is called with -- a lookup and a registration -- are
+        // exactly what the tuple says.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );

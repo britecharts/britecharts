@@ -55,8 +55,7 @@ export interface SparklineProps {
     /**
      * The filename to export the chart to. Setting it exports a png and fires
      * a download, which is what the chart's `exportChart` command does; it is
-     * not a callback, and the four other components that declare this prop had
-     * it as one. The chart's exporter treats the title as optional, so a
+     * not a callback. The chart's exporter treats the title as optional, so a
      * filename on its own is enough.
      */
     exportChart?: string;

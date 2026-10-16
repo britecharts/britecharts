@@ -72,8 +72,7 @@ export const WithLoadingState = () => {
 
 /**
  * A chart that starts loading and then has its data: `isLoading` turns `false`
- * and the chart replaces its loading state. A value of `false` used to be
- * ignored, so a chart could never leave the loading state once it was in it.
+ * and the chart replaces its loading state.
  */
 export const WithLoadingStateThatEnds = () => {
     const [data] = React.useState(barData.withLetters);

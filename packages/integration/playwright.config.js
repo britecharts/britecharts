@@ -36,18 +36,15 @@ module.exports = defineConfig({
         // The preview command execs the vite bin shim directly rather than
         // going through `pnpm exec vite preview`. `pnpm exec` doesn't
         // reliably stay alive for the life of a long-running server it
-        // spawns -- observed directly: with three of these servers running,
-        // one `pnpm exec vite preview` process exited on its own well before
-        // teardown, orphaning its vite child (still listening on its port,
-        // reparented to pid 1) while Playwright kept trying to manage a pid
-        // that no longer existed. All 21 tests would pass and the run would
-        // then hang indefinitely at teardown -- every command in the chain
-        // had already succeeded, so nothing failed, nothing retried, no
-        // error ever surfaced; only GitHub's own 6h job cap (later this
-        // repo's own timeout-minutes) ever ended it. `exec` alone doesn't
-        // fix this -- `exec pnpm exec vite preview` still leaves `pnpm exec`
-        // free to spawn its own child rather than being replaced by it, so
-        // the orphaning risk is one layer below where `exec` operates.
+        // spawns: it can exit on its own before teardown, orphaning its vite
+        // child (still listening on its port, reparented to pid 1) while
+        // Playwright manages a pid that no longer exists. Every test passes
+        // and the run then hangs at teardown -- nothing fails, nothing
+        // retries, no error surfaces; only the job's timeout ends it. `exec`
+        // alone doesn't fix this -- `exec pnpm exec vite preview` still
+        // leaves `pnpm exec` free to spawn its own child rather than being
+        // replaced by it, so the orphaning risk is one layer below where
+        // `exec` operates.
         // Going straight at the bin shim removes that layer: the shim's own
         // `exec node .../vite.js "$@"` (see node_modules/.bin/vite) means
         // this line's `exec` replaces the shell with a process that *is*

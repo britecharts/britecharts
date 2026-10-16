@@ -1,9 +1,8 @@
 // line is the wrapper most likely to regress at the package boundary: it is
 // the only one whose `data` argument is an object rather than an array, so it
-// is the one the shared `Wrapper` type cannot describe by accident. It is also
-// where `LineChartDataShape.name` being declared `string` rather than `number`
-// surfaced -- a consumer check here would have caught that before the
-// conversion ran into it.
+// is the one the shared `Wrapper` type cannot describe by accident. Its
+// `LineChartDataShape.name` is also a number rather than a string, which only
+// a consumer check like this one sees from the package boundary.
 import { LineWrapper } from '@britecharts/wrappers';
 import type { LineChartData, LineChartModule } from '@britecharts/core';
 

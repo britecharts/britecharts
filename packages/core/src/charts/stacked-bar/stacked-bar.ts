@@ -66,12 +66,9 @@ export type StackedBarSelection = Selection<
     any
 >;
 
-// The twelve accessors below were setter-only -- a single
-// optional-parameter signature returning the chart -- so reading one reported
-// the chart rather than its value. Each is a getter/setter overload pair now,
-// getter first and setter last, with the getter typed from the
-// implementation's own default. This is the same correction grouped-bar's
-// declarations needed, on a chart whose API is its near-twin.
+// Each accessor below is a getter/setter overload pair, getter first and
+// setter last, with the getter typed from the implementation's own default,
+// as on grouped-bar, whose API is this chart's near-twin.
 //
 // `hasPercentage` is the one that is not a stored value at all: its getter
 // computes `numberFormat === PERCENTAGE_FORMAT`, which is a boolean either way.
@@ -173,7 +170,7 @@ const uniq = <T>(arrArg: T[]) =>
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in grouped-bar.ts: these
+ * generics are a bounded `any`, as in grouped-bar.ts: these
  * are module-level variables reassigned from several differently-shaped
  * selections, so naming one concrete datum would reject the others.
  */
@@ -268,9 +265,9 @@ type StackedBarPoint = SeriesPoint<StackedBarColumn>;
  * ]
  */
 export default function module(): StackedBarChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 40,
             right: 30,
@@ -293,9 +290,8 @@ export default function module(): StackedBarChartModule {
         yTicks = 5,
         xTicks = 5,
         // Set and read by its own accessor and by nothing else in the chart.
-        // Vestigial, like the donut's `tweenArc` pair: preserved because
-        // removing a published accessor is a breaking change and not a thing a
-        // conversion decides.
+        // Vestigial, like the donut's `tweenArc` pair: kept because removing a
+        // published accessor is a breaking change.
         percentageAxisToMaxRatio = 1,
         colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
         nameToColorMap: Record<string, string> | null = null,
@@ -596,11 +592,11 @@ export default function module(): StackedBarChartModule {
      */
     function cleanData(originalData: StackedBarChartDataShape[]) {
         return originalData.reduce<StackedBarDatum[]>((acc, datum) => {
-            // Written onto the caller's own objects rather than copies, which
-            // is the runtime this preserves. The cast covers the reads the
-            // label accessors make dynamic -- the data may carry its value,
-            // stack and name under any key -- and `topicName`, which is this
-            // function's own addition for the tooltip.
+            // Written onto the caller's own objects rather than copies. The
+            // cast covers the reads the label accessors make dynamic -- the
+            // data may carry its value, stack and name under any key -- and
+            // `topicName`, which is this function's own addition for the
+            // tooltip.
             const d = datum as StackedBarDatum;
 
             d.value = +(d[valueLabel] as number);
@@ -781,9 +777,9 @@ export default function module(): StackedBarChartModule {
             .attr('x', (d) => categoryScale(d.data.key))
             .attr('y', (d) => valueScale(d[1]))
             // The function itself, not a call: d3 invokes a value accessor per
-            // element, which is how this has always read the band width. Its
-            // sibling in `drawHorizontalBars` calls it instead, and the two
-            // produce the same number.
+            // element, which reads the band width. Its sibling in
+            // `drawHorizontalBars` calls it instead, and the two produce the
+            // same number.
             .attr('width', categoryScale.bandwidth);
 
         if (isAnimated) {
@@ -867,9 +863,9 @@ export default function module(): StackedBarChartModule {
      * The listeners live on `.chart-group`, which is already translated by the
      * margins, but getNearestDataPoint subtracts the margin itself -- so the
      * coordinates have to come from the svg root, not from the node the event
-     * fired on. Passing the event as its own container (the previous
-     * `pointer(event, event)`) made d3 read `clientX` off a non-event and throw
-     * "Failed to set the 'x' property on 'SVGPoint'".
+     * fired on. Passing the event as its own container, `pointer(event,
+     * event)`, makes d3 read `clientX` off a non-event and throw "Failed to
+     * set the 'x' property on 'SVGPoint'".
      *
      * @param {Event} event  The d3 v6 event handed to the handler
      * @return {Number[]}    [x, y] in the svg's coordinate space
@@ -1167,7 +1163,7 @@ export default function module(): StackedBarChartModule {
             stacks = stacks.reverse();
         }
 
-        // See the grouped-bar chart: nest() replaced by rollups().
+        // Grouped with rollups(), as in the grouped-bar chart.
         transformedData = rollups(
             data,
             function (values) {
@@ -1572,11 +1568,10 @@ export default function module(): StackedBarChartModule {
     (exports as StackedBarChartModule).on = function (
         ...args: [string] | [string, () => void]
     ) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`, following grouped-bar.ts and donut.ts: the TypeScript lint
-        // override makes `prefer-spread` an error, and the two shapes `on` is
-        // called with -- a lookup and a registration -- are what the tuple
-        // says.
+        // Rest parameters and a spread rather than `arguments` and `.apply`:
+        // the TypeScript lint override makes `prefer-spread` an error, and the
+        // two shapes `on` is called with -- a lookup and a registration -- are
+        // what the tuple says.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );

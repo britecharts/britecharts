@@ -15,15 +15,14 @@ import 'd3-transition';
  * element stays a parameter so a caller keeps its own element type on the way
  * back out.
  *
- * This is the bounded `any` the migration plan allows for a selection's
- * trailing generics, not a shortcut.
+ * This is a bounded `any` for a selection's trailing generics, not a
+ * shortcut.
  *
  * The element has to be a *generic parameter at each function*, not just a
  * default here. `Selection` is invariant in it as well, so a parameter typed
  * `FilterSelection<BaseType>` rejects the `Selection<SVGGElement, ...>` that
- * line and stacked-area actually hold. Fixing the element would have meant a
- * cast at every call site once those charts convert -- the same thing that bit
- * `ChartContainer` in Phase 1.
+ * line and stacked-area actually hold. Fixing the element would mean a cast at
+ * every call site.
  */
 type FilterSelection<TElement extends BaseType = BaseType> = Selection<
     TElement,

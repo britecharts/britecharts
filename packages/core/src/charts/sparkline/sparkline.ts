@@ -77,7 +77,7 @@ export type SparklineChartModule = ChartModuleSelection<
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in `bullet.ts`: these are
+ * generics are a bounded `any`, as in `bullet.ts`: these are
  * module-level variables reassigned from several differently-shaped selections,
  * so naming one concrete datum would reject the others.
  */
@@ -146,9 +146,9 @@ type SparklineDatum = {
  */
 
 export default function module(): SparklineChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             left: 5,
             right: 5,
@@ -181,10 +181,6 @@ export default function module(): SparklineChartModule {
         valueLabel = 'value',
         dateLabel = 'date';
 
-    // `hasArea = true` sat in the `let` chain and is gone: nothing in this
-    // chart, or anywhere else in the three packages, ever read it. A conversion
-    // has to give every binding a type, and there is none for a value no code
-    // consults.
     const areaGradientId = uniqueId('sparkline-area-gradient');
     const lineGradientId = uniqueId('sparkline-line-gradient');
     const maskingClipId = uniqueId('maskingClip');
@@ -259,9 +255,10 @@ export default function module(): SparklineChartModule {
      */
     function buildScales(): void {
         // `extent` is typed `[T, T] | [undefined, undefined]` for the
-        // empty-input case, which this chart has never guarded against -- it
+        // empty-input case, which this chart does not guard against -- it
         // reads `data[data.length - 1]` unconditionally too. Asserted rather
-        // than guarded, so the conversion changes no behaviour.
+        // than guarded, as the rest of the chart assumes the data is not
+        // empty.
         xScale = scaleLinear()
             .domain(extent(data, getDate) as [Date, Date])
             .range([0, chartWidth]);
@@ -311,10 +308,10 @@ export default function module(): SparklineChartModule {
         originalData: SparklineChartDataShape[]
     ): SparklineDatum[] {
         return originalData.reduce<SparklineDatum[]>((acc, d) => {
-            // The same object, mutated in place, which is what this chart has
-            // always done -- `date` goes from the input's string to a Date and
-            // every other key the datum carries survives. The cast says that
-            // rather than rebuilding the object, which would drop those keys.
+            // The same object, mutated in place -- `date` goes from the
+            // input's string to a Date and every other key the datum carries
+            // survives. The cast says that rather than rebuilding the object,
+            // which would drop those keys.
             const datum = d as unknown as SparklineDatum;
 
             datum.date = new Date(datum[dateLabel]);

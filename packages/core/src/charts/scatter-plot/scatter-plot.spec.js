@@ -1105,9 +1105,8 @@ describe('scatter Plot', () => {
     });
 
     describe('zoom', () => {
-        // Nothing covered this path before, and it had not run since the d3 v6
-        // upgrade: the handler kept v5's `(d, i, nodes)` signature and read the
-        // transform off a third argument v6 does not pass.
+        // The zoom handler reads the transform off the event: d3 passes no
+        // third `nodes` argument to read it from.
         const aZoomedChart = () => {
             const zoomable = chart().enableZoom(true);
             const container = d3.select('.test-container').append('svg');
@@ -1155,8 +1154,8 @@ describe('scatter Plot', () => {
             const after = pointXs(container);
 
             expect(after).not.toEqual(before);
-            // Every point keeps a real position: the regression this covers
-            // left them unset, because the handler threw part way through.
+            // Every point keeps a real position: a handler that throws part
+            // way through leaves them unset.
             after.forEach((cx) => {
                 expect(cx).not.toBeNull();
                 expect(Number.isNaN(Number(cx))).toEqual(false);
@@ -1168,7 +1167,8 @@ describe('scatter Plot', () => {
 
             // The highlight circle is bound to a placeholder datum, so its
             // accessors always run, while the hovered point is only set on
-            // hover. Reading the point's `x` before the first hover threw.
+            // hover. Reading the point's `x` before the first hover would
+            // throw.
             expect(() => wheelOver(container)).not.toThrow();
         });
     });

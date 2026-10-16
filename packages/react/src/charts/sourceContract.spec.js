@@ -14,9 +14,9 @@ const srcRoot = path.join(__dirname, '..');
 const chartsRoot = __dirname;
 
 // Every extension, not just .js. Spelled `.js` these guards would quietly
-// stop covering each component as it converts -- the structural checks below
-// would keep passing over a shrinking set of files, which is the failure mode
-// that does not announce itself.
+// skip every .ts and .tsx component -- the structural checks below would keep
+// passing over a smaller set of files, which is the failure mode that does
+// not announce itself.
 const isSource = (file) =>
     /\.[jt]sx?$/.test(file) &&
     !/\.(spec|stories|fixtures)\.[jt]sx?$/.test(file) &&
@@ -38,7 +38,7 @@ const relative = (file) => path.relative(srcRoot, file);
 
 // Every `export { default as Name } from '...'` line of the entry file
 // The entry file names every export `.js`, which is what the built ESM output
-// resolves against, so a converted component is on disk as `.tsx` under the
+// resolves against, so a TypeScript component is on disk as `.tsx` under the
 // same name.
 const resolveSource = (from) => {
     const base = path.join(srcRoot, from).replace(/\.js$/, '');
@@ -106,10 +106,10 @@ describe('source contract', () => {
         });
     });
 
-    // The end state of the migration, and what lets the class-properties Babel
-    // plugin go: no class field is left in anything the package publishes. The
-    // packages ship their `src/` (the `module` entry, and deep imports), and a
-    // toolchain that does not know class fields cannot read one.
+    // No class field is left in anything the package publishes, so reading it
+    // needs no class-properties Babel plugin. The package ships its `src/` and
+    // an ESM build that keeps the source's syntax, and a toolchain that does
+    // not know class fields cannot read one.
     describe('published source', () => {
         const packageRoot = path.join(srcRoot, '..');
         const excludedFolders = JSON.parse(
@@ -163,7 +163,7 @@ describe('source contract', () => {
         it('should find the files the package publishes', () => {
             expect(publishedFiles.length).toBeGreaterThan(10);
             expect(publishedFiles.map(relative)).toContain('index.ts');
-            // The converted files are in the set these guards run over
+            // The TypeScript files are in the set these guards run over
             expect(
                 publishedFiles.map(relative).filter((f) => /\.tsx?$/.test(f))
             ).not.toEqual([]);

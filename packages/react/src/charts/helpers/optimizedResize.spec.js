@@ -125,7 +125,8 @@ describe('optimizedResize', () => {
             expect(callback).not.toHaveBeenCalled();
         });
 
-        // The leak: the first unmount used to end resizing for everyone else
+        // Guards against a leak: the first removal ending resizing for everyone
+        // else
         it('should keep notifying the remaining callbacks after one is removed', () => {
             const gone = jest.fn();
             const remaining = jest.fn();

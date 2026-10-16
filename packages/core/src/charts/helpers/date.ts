@@ -62,8 +62,7 @@ export const convertMillisecondsToDays = (milliseconds: number): number =>
  *
  * `locale` is a BCP 47 tag ('en-US', 'fr-FR'), the same kind the tooltip
  * takes -- not a d3-format locale definition object. Those two are different
- * things that share the word, and core's typings had them crossed until
- * recently.
+ * things that share the word.
  * @private
  */
 export const getLocaleDateFormatter = (

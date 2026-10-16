@@ -65,7 +65,7 @@ export default function withResponsiveness<P extends { width?: number }>(
         Component.displayName || Component.name || 'Component'
     })`;
 
-    // A pure component, as the class was: a parent re-rendering with the same
+    // A pure component: a parent re-rendering with the same
     // props costs nothing
     return React.memo(WithResponsiveness);
 }

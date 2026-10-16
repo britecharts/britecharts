@@ -7,8 +7,7 @@ import { max, min } from 'd3-array';
  * otherwise a negative value scales to a coordinate outside the range and the
  * mark is drawn with a negative width or height, which SVG rejects.
  *
- * For data that is entirely non-negative this returns the same `[0, max]` the
- * charts used before, so nothing about existing charts changes.
+ * For data that is entirely non-negative this returns `[0, max]`.
  *
  * @param  values            Values the axis has to cover
  * @param  ratio             Headroom multiplier applied to the extent

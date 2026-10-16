@@ -160,8 +160,8 @@ describe('responsive helpers', () => {
             expect(updateSpy.mock.calls.pop()[2].width).toBe(320);
         });
 
-        // The leak: the first unmount used to end resizing for every container
-        // still on the page
+        // Guards against a leak: the first unmount ending resizing for every
+        // container still on the page
         it('should keep resizing after another container unmounted', () => {
             const remaining = jest.fn(() => <span />);
             const leaving = mountTracked(

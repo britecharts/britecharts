@@ -9,7 +9,8 @@
  *
  * Passing this file to babel-jest as an explicit `configFile` sidesteps that:
  * one config, applied to every file in every package, independent of where the
- * test run started. The per-package Babel configs still drive the builds.
+ * test run started. The builds pass their own Babel options and never read
+ * this file.
  */
 module.exports = {
     presets: [
@@ -25,7 +26,7 @@ module.exports = {
         // and .tsx are each parsed correctly with no further configuration.
         //
         // Babel only strips types, it never checks them -- that is the
-        // `type-check` script's job, the same split the webpack build uses.
+        // `type-check` script's job.
         '@babel/preset-typescript',
     ],
 };
