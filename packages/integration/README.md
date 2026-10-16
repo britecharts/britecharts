@@ -33,7 +33,7 @@ pnpm test:integration     # from the repo root; needs Chromium once:
    packages have no `"type"` field, so Node reads the ES module sources as
    CommonJS; real ESM output arrives with the Vite build).
 4. **Tier 2 · `tests/require.test.js`** — `require()` of the package `main`,
-   every per-chart UMD build and the wrappers CommonJS bundle, resolved from
+   React's per-component builds and the wrappers CommonJS bundle, resolved from
    the installed consumer. No browser, no bundler: this is what Node, Jest
    and CommonJS bundlers do.
 5. **Tier 2 · `tests/types.test.js`** — `tsc --noEmit` over

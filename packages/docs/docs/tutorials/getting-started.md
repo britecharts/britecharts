@@ -12,10 +12,10 @@ To use a Britechart, we need to install the library. In this tutorial, we are go
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/umd/charts/bar.min.js"
+<script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"
         type="text/javascript"></script>
 ```
-We are going to create a bar chart, so we download the bundle for that individual chart. Note that we also require `d3-selection`. We use this module to create a selection and load the data in the container where we render the chart.
+The bundle has every chart, and the d3 modules they use. Note that we also load `d3-selection` on its own. We use this module to create a selection and load the data in the container where we render the chart.
 
 We also need to load the styling of our chart, and we do it similarly by accesing the CDN link:
 ```html
@@ -32,9 +32,9 @@ Next, we can create our D3.js container using the `d3-selection` module:
 const container = d3.select('.bar-container');
 ```
 
-We instantiate a new chart by calling the function bar() inside the britecharts object in the global namespace:
+We instantiate a new chart by calling the function bar() inside the `core` object in the global namespace:
 ```js
-const barChart = britecharts.bar();
+const barChart = core.bar();
 ```
 We need a simple dataset to render the bar chart. We can find the right format of the data by visiting the [API documentation][barChartAPI] for the bar chart component. Developers need to find the data definition at the top of the page; in this case, it is a link labeled [BarChartData][barChartDataSchema]. It looks like this:
 ```json
@@ -84,7 +84,7 @@ Here is all the code inside the `<body>` tag of our HTML file:
 
 <script>
     // Instantiate bar chart and container
-    const barChart = britecharts.bar();
+    const barChart = core.bar();
     const container = d3.select('.bar-container');
 
     // Create Dataset with proper shape

@@ -17,15 +17,14 @@ Britecharts is a [pnpm][pnpm] workspace. Node comes from `.nvmrc` (24), pnpm fro
 
 ### Building the packages
 
-Each published package is built from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. Babel writes the ES modules file by file and only strips the TypeScript types, and `tsc` writes the declarations. Core's UMD bundles, CDN bundles and stylesheets are built with [Vite][vite-build] by `packages/core/scripts/build-bundles.mjs`. Wrappers and React still bundle with [webpack][webpack] 5, where `sass-loader` 10 uses Dart Sass through the legacy JS API, silenced via `silenceDeprecations` in each package's `webpack.parts.js`; they move to Vite next ([#1044][vite]). The output targets ES2020.
+Each published package is built from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. Babel writes the ES modules file by file and only strips the TypeScript types, and `tsc` writes the declarations. Core's UMD bundle, CDN bundle and stylesheets come from `vite build` with [`packages/core/vite.config.js`][vite-build], one run per mode. Wrappers and React still bundle with [webpack][webpack] 5, where `sass-loader` 10 uses Dart Sass through the legacy JS API, silenced via `silenceDeprecations` in each package's `webpack.parts.js`; they move to Vite next ([#1044][vite]). The output targets ES2020.
 
 What comes out of `packages/core/dist`:
 
 | Path | Contents |
 | --- | --- |
 | `umd/bundle/core.bundled.min.js` | Every chart in one UMD bundle: the package's `main`. |
-| `umd/charts/<chart>.min.js` | One UMD file per chart, plus `colors`. |
-| `cdn/bundle/core.cdn.min.js`, `cdn/charts/` | The same, built for a `<script>` tag, with d3 bundled in. |
+| `cdn/bundle/core.cdn.min.js` | The same, built for a `<script>` tag, with d3 bundled in. |
 | `styles/bundle/britecharts.min.css` | Every stylesheet. |
 | `styles/charts/common.min.css`, `styles/charts/<chart>.min.css` | The shared styles, and one file per chart to use alongside them. |
 

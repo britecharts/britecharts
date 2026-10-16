@@ -15,7 +15,7 @@ To get us started with a tutorial, we are going to take our [Getting Started tut
 We will start from the code we got at the end of that tutorial, removing the responsive part:
 ```js
 // Instantiate Bar Chart
-const barChart = britecharts.bar();
+const barChart = core.bar();
 const container = d3.select('.bar-container');
 
 // Create Dataset with proper shape
@@ -36,16 +36,11 @@ barChart
 container.datum(barData).call(barChart);
 ```
 
-Starting with this bar chart, we want to customize the color palette. For that, we first need to load our color schemas by using this script tag:
-```html
-<script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/umd/charts/colors.min.js"></script>
-```
-
-Then, we can set the color schema of the bar chart by doing:
+Starting with this bar chart, we want to customize the color palette. The color schemas come with the bundle, as `core.colors`, so we can set the color schema of the bar chart by doing:
 ```js
 // Configure chart
 barChart
-    .colorSchema(britecharts.colors.colorSchemas.orange)
+    .colorSchema(core.colors.colorSchemas.orange)
     .margin({ left: 100 })
     .isHorizontal(true)
     .height(400)
@@ -66,7 +61,7 @@ Which means that if you want to customize your charts color palette, you only ne
 ## Using a color gradient
 Some Britecharts use a color gradient for their lines (line, sparkline and stacked area charts) or for the body of the chart (brush).
 
-You can find these color gradients in `britecharts.colors.colorGradients` and similarly, they are an array of colors. However, in this case they are only two colors, one for the beginning and another for the end of the gradient.
+You can find these color gradients in `core.colors.colorGradients` and similarly, they are an array of colors. However, in this case they are only two colors, one for the beginning and another for the end of the gradient.
 
 ## Overriding default styles
 Whenever we want to change the font family, font sizes or any other styling detail of our charts, we can do so by creating CSS overrides. As an example, let's change the font of our bar chart.
