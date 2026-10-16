@@ -22,11 +22,11 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v7
 
-      # Corepack has to be on before setup-node, which shells out to pnpm to
+      # pnpm has to be installed before setup-node, which shells out to pnpm to
       # locate the cache folder. The version comes from `packageManager` in
       # package.json, so CI and local always agree.
-      - name: Enable Corepack
-        run: corepack enable
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
 
       - name: Set up Node
         uses: actions/setup-node@v7
@@ -49,8 +49,8 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v7
 
-      - name: Enable Corepack
-        run: corepack enable
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
 
       - name: Set up Node
         uses: actions/setup-node@v7
