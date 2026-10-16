@@ -49,9 +49,11 @@ jobs:
           pnpm --version
           pnpm exec commitlint --version
 
+      # The guide's `--last` is newer than the commitlint 16 this repo pins,
+      # which rejects it as an unknown argument. This range is the same commit.
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'
-        run: pnpm exec commitlint --last --verbose
+        run: pnpm exec commitlint --from HEAD~1 --to HEAD --verbose
 
       # Dependabot writes its own messages, whose bodies carry URLs longer than
       # the body line limit. Its pull request titles are still checked below.
