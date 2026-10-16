@@ -1,6 +1,9 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React, { useEffect, useLayoutEffect } from 'react';
 import { mount } from '../testing/mount';
+
+interface ProbeProps {
+    n: number;
+}
 
 /**
  * Every component spec rests on two properties of this test rig. If either
@@ -10,23 +13,27 @@ import { mount } from '../testing/mount';
 describe('test harness', () => {
     describe('testing-library render', () => {
         it('should flush layout and passive effects on mount, update and unmount without act()', () => {
-            const calls = [];
-            const Probe = ({ n }) => {
+            const calls: string[] = [];
+            const Probe = ({ n }: ProbeProps) => {
                 useLayoutEffect(() => {
                     calls.push(`layout:${n}`);
 
-                    return () => calls.push(`layout-cleanup:${n}`);
+                    return () => {
+                        calls.push(`layout-cleanup:${n}`);
+                    };
                 });
                 useEffect(() => {
                     calls.push(`passive:${n}`);
 
-                    return () => calls.push(`passive-cleanup:${n}`);
+                    return () => {
+                        calls.push(`passive-cleanup:${n}`);
+                    };
                 });
 
                 return <div />;
             };
 
-            const wrapper = mount(<Probe n={1} />);
+            const wrapper = mount<ProbeProps>(<Probe n={1} />);
 
             expect(calls).toEqual(['layout:1', 'passive:1']);
 

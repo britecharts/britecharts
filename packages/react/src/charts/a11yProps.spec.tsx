@@ -1,5 +1,6 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { ComponentType } from 'react';
+import type { MockInstance } from 'vitest';
 import { mount } from '../../testing/mount';
 
 import {
@@ -35,59 +36,71 @@ import StackedArea from './stackedArea/StackedArea';
 import stackedAreaData from './stackedArea/stackedAreaChart.fixtures';
 import StackedBar from './stackedBar/StackedBar';
 import stackedBarData from './stackedBar/stackedBarChart.fixtures';
-const CHARTS = [
-    ['Bar', Bar, BarWrapper, () => ({ data: barData.withLetters() })],
-    [
-        'Bullet',
-        Bullet,
-        BulletWrapper,
-        () => ({ data: bulletData.fullTestData() }),
-    ],
-    ['Donut', Donut, DonutWrapper, () => ({ data: donutData.with4Slices() })],
-    [
-        'GroupedBar',
-        GroupedBar,
-        GroupedBarWrapper,
-        () => ({ data: groupedBarData.with3Groups() }),
-    ],
-    [
-        'Legend',
-        Legend,
-        LegendWrapper,
-        () => ({ data: legendData.with6Points() }),
-    ],
-    ['Line', Line, LineWrapper, () => ({ data: lineData.flatData.a })],
-    [
-        'ScatterPlot',
-        ScatterPlot,
-        ScatterPlotWrapper,
-        () => ({ data: scatterPlotData.withFourNames() }),
-    ],
-    [
-        'Sparkline',
-        Sparkline,
-        SparklineWrapper,
-        () => ({ data: sparklineData.with1Source() }),
-    ],
-    [
-        'StackedArea',
-        StackedArea,
-        StackedAreaWrapper,
-        () => ({ data: stackedAreaData.with3Sources() }),
-    ],
-    [
-        'StackedBar',
-        StackedBar,
-        StackedBarWrapper,
-        () => ({ data: stackedBarData.with3Sources() }),
-    ],
+
+interface A11yProps {
+    a11yTitle?: string | null;
+    a11yDescription?: string | null;
+}
+
+type SpiedCreate = (...args: never[]) => unknown;
+
+interface SpiedWrapper {
+    create: SpiedCreate;
+}
+
+type ChartCase = [
+    name: string,
+    Component: ComponentType<A11yProps>,
+    wrapper: SpiedWrapper,
+    getProps: () => A11yProps,
+];
+
+const chartCase = <TProps extends A11yProps & { chart?: SpiedWrapper }>(
+    name: string,
+    Component: ComponentType<TProps>,
+    wrapper: NonNullable<NoInfer<TProps>['chart']>,
+    getProps: () => NoInfer<TProps>
+): ChartCase => [
+    name,
+    Component as ComponentType<A11yProps>,
+    wrapper,
+    getProps,
+];
+
+const CHARTS: ChartCase[] = [
+    chartCase('Bar', Bar, BarWrapper, () => ({ data: barData.withLetters() })),
+    chartCase('Bullet', Bullet, BulletWrapper, () => ({
+        data: bulletData.fullTestData(),
+    })),
+    chartCase('Donut', Donut, DonutWrapper, () => ({
+        data: donutData.with4Slices(),
+    })),
+    chartCase('GroupedBar', GroupedBar, GroupedBarWrapper, () => ({
+        data: groupedBarData.with3Groups(),
+    })),
+    chartCase('Legend', Legend, LegendWrapper, () => ({
+        data: legendData.with6Points(),
+    })),
+    chartCase('Line', Line, LineWrapper, () => ({ data: lineData.flatData.a })),
+    chartCase('ScatterPlot', ScatterPlot, ScatterPlotWrapper, () => ({
+        data: scatterPlotData.withFourNames(),
+    })),
+    chartCase('Sparkline', Sparkline, SparklineWrapper, () => ({
+        data: sparklineData.with1Source(),
+    })),
+    chartCase('StackedArea', StackedArea, StackedAreaWrapper, () => ({
+        data: stackedAreaData.with3Sources(),
+    })),
+    chartCase('StackedBar', StackedBar, StackedBarWrapper, () => ({
+        data: stackedBarData.with3Sources(),
+    })),
 ];
 
 // Each component hands both props to its chart by name, so a prop without an
 // accessor behind it would make the wrapper throw "Method not supported".
 describe('accessibility props', () => {
     describe.each(CHARTS)('%s', (name, Component, wrapper, getProps) => {
-        let createSpy;
+        let createSpy: MockInstance<SpiedCreate>;
 
         beforeEach(() => {
             createSpy = vi.spyOn(wrapper, 'create');
@@ -122,10 +135,10 @@ describe('accessibility props', () => {
             );
             const svg = wrapper.find('svg.britechart');
 
-            expect(svg.querySelector(':scope > title').textContent).toBe(
+            expect(svg?.querySelector(':scope > title')?.textContent).toBe(
                 'Monthly visits'
             );
-            expect(svg.querySelector(':scope > desc').textContent).toBe(
+            expect(svg?.querySelector(':scope > desc')?.textContent).toBe(
                 'Visits doubled in May'
             );
         });

@@ -1,30 +1,42 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { ReactElement } from 'react';
+import type { MockInstance } from 'vitest';
 import { act } from '@testing-library/react';
 
 import { mount } from '../../../testing/mount';
+import type { Mounted } from '../../../testing/mount';
 
 import Line from '../line/Line';
 import lineData from '../line/lineChart.fixtures';
 import ResponsiveContainer from './responsiveContainer';
+import type { ResponsiveContainerProps } from './responsiveContainer';
 import withResponsiveness from './withResponsiveness';
 import { LineWrapper } from '@britecharts/wrappers';
 
 // The two components that hand a chart the width of the element around it, and
 // keep doing so when the window is resized. Neither had a spec before.
+type RenderProp = NonNullable<ResponsiveContainerProps['render']>;
+type LineCreateSpy = MockInstance<typeof LineWrapper.create>;
+type LineUpdateSpy = MockInstance<typeof LineWrapper.update>;
+
+interface ChartProps {
+    width?: number;
+    title?: string;
+}
+
 describe('responsive helpers', () => {
-    let containerWidth;
-    let spies;
+    let containerWidth: number;
+    let spies: MockInstance[];
 
     // jsdom lays nothing out: every element measures 0. The width the tests
     // set is the one the components read.
-    const setContainerWidth = (width) => {
+    const setContainerWidth = (width: number) => {
         containerWidth = width;
     };
 
     // What the browser does: the window changes size, then the registry
     // notices on the next animation frame
-    const resizeWindowTo = (width, elementWidth = width) => {
+    const resizeWindowTo = (width: number, elementWidth = width) => {
         containerWidth = elementWidth;
         window.innerWidth = width;
         act(() => {
@@ -32,8 +44,8 @@ describe('responsive helpers', () => {
         });
     };
 
-    const mounted = [];
-    const mountTracked = (element) => {
+    const mounted: Array<Pick<Mounted<unknown>, 'unmount'>> = [];
+    const mountTracked = <TProps,>(element: ReactElement<TProps>) => {
         const wrapper = mount(element);
 
         mounted.push(wrapper);
@@ -77,7 +89,7 @@ describe('responsive helpers', () => {
         });
 
         it('should hand the render prop the measured width', () => {
-            const render = vi.fn(() => <span />);
+            const render = vi.fn<RenderProp>(() => <span />);
 
             mountTracked(<ResponsiveContainer render={render} />);
 
@@ -86,15 +98,15 @@ describe('responsive helpers', () => {
 
         // defaults to 500 until it has measured, which it does in the same commit
         it('should not draw its content at the default width once measured', () => {
-            const render = vi.fn(() => <span />);
+            const render = vi.fn<RenderProp>(() => <span />);
 
             mountTracked(<ResponsiveContainer render={render} />);
 
-            expect(render.mock.calls.pop()[0].width).not.toBe(500);
+            expect(render.mock.calls.pop()![0].width).not.toBe(500);
         });
 
         it('should hand the render prop the new width when the window is resized', () => {
-            const render = vi.fn(() => <span />);
+            const render = vi.fn<RenderProp>(() => <span />);
 
             mountTracked(<ResponsiveContainer render={render} />);
             resizeWindowTo(600, 420);
@@ -103,7 +115,7 @@ describe('responsive helpers', () => {
         });
 
         it('should not render again when the window is resized but the element is not', () => {
-            const render = vi.fn(() => <span />);
+            const render = vi.fn<RenderProp>(() => <span />);
 
             mountTracked(<ResponsiveContainer render={render} />);
             const rendersBefore = render.mock.calls.length;
@@ -133,8 +145,8 @@ describe('responsive helpers', () => {
                 />
             );
 
-            const widthOf = (spy) =>
-                spy.mock.calls.map((call) => call[2].width);
+            const widthOf = (spy: LineCreateSpy | LineUpdateSpy) =>
+                spy.mock.calls.map((call) => call[2]!.width);
             const widths = [...widthOf(createSpy), ...widthOf(updateSpy)];
 
             expect(widths.length).toBeGreaterThan(0);
@@ -158,13 +170,13 @@ describe('responsive helpers', () => {
             );
             resizeWindowTo(500, 320);
 
-            expect(updateSpy.mock.calls.pop()[2].width).toBe(320);
+            expect(updateSpy.mock.calls.pop()![2]!.width).toBe(320);
         });
 
         // Guards against a leak: the first unmount ending resizing for every
         // container still on the page
         it('should keep resizing after another container unmounted', () => {
-            const remaining = vi.fn(() => <span />);
+            const remaining = vi.fn<RenderProp>(() => <span />);
             const leaving = mountTracked(
                 <ResponsiveContainer render={() => <span />} />
             );
@@ -181,7 +193,7 @@ describe('responsive helpers', () => {
                 <ResponsiveContainer render={() => <span />} />
             ).unmount();
 
-            const later = vi.fn(() => <span />);
+            const later = vi.fn<RenderProp>(() => <span />);
 
             mountTracked(<ResponsiveContainer render={later} />);
             resizeWindowTo(600, 420);
@@ -190,7 +202,7 @@ describe('responsive helpers', () => {
         });
 
         it('should not render after it unmounted', () => {
-            const render = vi.fn(() => <span />);
+            const render = vi.fn<RenderProp>(() => <span />);
             const wrapper = mountTracked(
                 <ResponsiveContainer render={render} />
             );
@@ -209,10 +221,10 @@ describe('responsive helpers', () => {
     });
 
     describe('withResponsiveness', () => {
-        const Chart = vi.fn(({ width }) => (
+        const Chart = vi.fn(({ width }: ChartProps) => (
             <span className="chart">{width}</span>
         ));
-        let Responsive;
+        let Responsive: ReturnType<typeof withResponsiveness<ChartProps>>;
 
         beforeEach(() => {
             Chart.mockClear();
@@ -229,7 +241,7 @@ describe('responsive helpers', () => {
         it('should hand the component the measured width', () => {
             const wrapper = mountTracked(<Responsive />);
 
-            expect(wrapper.find('.chart').textContent).toEqual('640');
+            expect(wrapper.find('.chart')?.textContent).toEqual('640');
         });
 
         it('should hand the component the new width when the window is resized', () => {
@@ -237,20 +249,20 @@ describe('responsive helpers', () => {
 
             resizeWindowTo(600, 420);
 
-            expect(wrapper.find('.chart').textContent).toEqual('420');
+            expect(wrapper.find('.chart')?.textContent).toEqual('420');
         });
 
         it('should pass the other props on', () => {
             mountTracked(<Responsive title="a title" />);
 
-            expect(Chart.mock.calls.pop()[0].title).toEqual('a title');
+            expect(Chart.mock.calls.pop()![0].title).toEqual('a title');
         });
 
         // The props are spread after the width, so an explicit width wins
         it('should let an explicit width win over the measured one', () => {
             const wrapper = mountTracked(<Responsive width={300} />);
 
-            expect(wrapper.find('.chart').textContent).toEqual('300');
+            expect(wrapper.find('.chart')?.textContent).toEqual('300');
         });
 
         // A pure component: a parent re-rendering with the same props costs
@@ -289,7 +301,7 @@ describe('responsive helpers', () => {
             leaving.unmount();
             resizeWindowTo(600, 420);
 
-            expect(remaining.find('.chart').textContent).toEqual('420');
+            expect(remaining.find('.chart')?.textContent).toEqual('420');
         });
 
         it('should not throw when the window is resized after it unmounted', () => {

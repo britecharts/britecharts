@@ -1,19 +1,24 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { TooltipModule } from '@britecharts/core';
+import type { TooltipWrapperShape } from '@britecharts/wrappers';
 import { mount } from '../../../testing/mount';
 
 import Tooltip from './Tooltip';
+import type { TooltipProps } from './Tooltip';
 
 // What Tooltip does with the wrapper it draws the tooltip through, over its
 // life, beyond what the colocated Tooltip.spec.js pins.
 const makeWrapper = () => {
-    const instance = { name: 'the tooltip instance' };
+    // A stand-in the tests only compare by identity, never call into
+    const instance = {
+        name: 'the tooltip instance',
+    } as unknown as TooltipModule;
 
     return {
         instance,
-        create: vi.fn(() => instance),
-        update: vi.fn(() => instance),
-        destroy: vi.fn(),
+        create: vi.fn<TooltipWrapperShape['create']>(() => instance),
+        update: vi.fn<TooltipWrapperShape['update']>(() => instance),
+        destroy: vi.fn<TooltipWrapperShape['destroy']>(),
     };
 };
 
@@ -24,7 +29,7 @@ const renderChart = () => (
 );
 
 describe('Tooltip lifecycle', () => {
-    let wrapper;
+    let wrapper: ReturnType<typeof makeWrapper>;
 
     beforeEach(() => {
         wrapper = makeWrapper();
@@ -38,7 +43,7 @@ describe('Tooltip lifecycle', () => {
         });
 
         it('should not update it either', () => {
-            const mounted = mount(
+            const mounted = mount<TooltipProps>(
                 <Tooltip chart={wrapper} render={() => <div />} data={[]} />
             );
 
@@ -50,7 +55,7 @@ describe('Tooltip lifecycle', () => {
 
     describe('on update', () => {
         it('should pass the tooltip instance as the fourth argument', () => {
-            const mounted = mount(
+            const mounted = mount<TooltipProps>(
                 <Tooltip chart={wrapper} render={renderChart} data={[]} />
             );
 
@@ -61,7 +66,7 @@ describe('Tooltip lifecycle', () => {
 
         it('should update with the latest wrapper, not the first', () => {
             const latest = makeWrapper();
-            const mounted = mount(
+            const mounted = mount<TooltipProps>(
                 <Tooltip chart={wrapper} render={renderChart} data={[]} />
             );
 
@@ -74,7 +79,7 @@ describe('Tooltip lifecycle', () => {
 
     describe('on unmount', () => {
         it('should destroy with the element that wraps the chart', () => {
-            const mounted = mount(
+            const mounted = mount<TooltipProps>(
                 <Tooltip chart={wrapper} render={renderChart} data={[]} />
             );
             const node = mounted.getDOMNode();
@@ -88,7 +93,7 @@ describe('Tooltip lifecycle', () => {
 
         it('should destroy with the latest wrapper, not the first', () => {
             const latest = makeWrapper();
-            const mounted = mount(
+            const mounted = mount<TooltipProps>(
                 <Tooltip chart={wrapper} render={renderChart} data={[]} />
             );
 

@@ -1,6 +1,6 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import Line from './Line';
 import React from 'react';
+import type { MockInstance } from 'vitest';
 import { mount } from '../../../testing/mount';
 import lineData from './lineChart.fixtures';
 import { LineWrapper } from '@britecharts/wrappers';
@@ -19,7 +19,7 @@ describe('Line', () => {
     // makes the wrapper throw "Method not supported", so this also proves the
     // names match.
     describe('chart settings', () => {
-        let createSpy;
+        let createSpy: MockInstance<typeof LineWrapper.create>;
 
         beforeEach(() => {
             createSpy = vi.spyOn(LineWrapper, 'create');

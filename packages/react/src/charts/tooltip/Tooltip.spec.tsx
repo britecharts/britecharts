@@ -1,10 +1,13 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { ReactNode } from 'react';
 import { act } from '@testing-library/react';
+import type { MockInstance } from 'vitest';
+import type { DonutChartDataShape, LineChartData } from '@britecharts/core';
 
 import { mount } from '../../../testing/mount';
 
 import Tooltip from './Tooltip';
+import type { TooltipProps, TooltipRenderArgs } from './Tooltip';
 import Line from '../line/Line';
 import lineData from '../line/lineChart.fixtures';
 import Donut from '../donut/Donut';
@@ -23,6 +26,10 @@ const renderFakeChart = () => <FakeChart />;
 
 const renderFakeChartNoMarker = () => <FakeChartNoMarker />;
 
+type CallOrderSpy = { mock: { invocationCallOrder: number[] } };
+
+type ChildHolder = { props?: TooltipRenderArgs };
+
 /**
  * Wraps a render prop so a test can reach what the tooltip hands its child
  * chart (the data and the handlers). The latest props always land on
@@ -36,7 +43,7 @@ const renderFakeChartNoMarker = () => <FakeChartNoMarker />;
  * @param  {Object} spies   Spies by the name to report them under
  * @return {string[]}
  */
-const namesInCallOrder = (spies) =>
+const namesInCallOrder = (spies: Record<string, CallOrderSpy>) =>
     Object.entries(spies)
         .filter(([, spy]) => spy.mock.invocationCallOrder.length)
         .sort(
@@ -45,15 +52,17 @@ const namesInCallOrder = (spies) =>
         )
         .map(([name]) => name);
 
-const captureChildProps = (holder, render) => (props) => {
-    holder.props = props;
+const captureChildProps =
+    (holder: ChildHolder, render: (props: TooltipRenderArgs) => ReactNode) =>
+    (props: TooltipRenderArgs) => {
+        holder.props = props;
 
-    return render(props);
-};
+        return render(props);
+    };
 
 describe('tooltip', () => {
     describe('render', () => {
-        let createSpy;
+        let createSpy: MockInstance<typeof TooltipWrapper.create>;
 
         beforeEach(() => {
             createSpy = vi.spyOn(TooltipWrapper, 'create');
@@ -121,7 +130,7 @@ describe('tooltip', () => {
                 />
             );
 
-            const actual = createSpy.mock.calls[0][1].locale;
+            const actual = createSpy.mock.calls[0][1]?.locale;
 
             expect(actual).toEqual(expected);
         });
@@ -138,7 +147,7 @@ describe('tooltip', () => {
                 />
             );
 
-            const actual = createSpy.mock.calls[0][1].title;
+            const actual = createSpy.mock.calls[0][1]?.title;
 
             expect(actual).toEqual(expected);
         });
@@ -146,7 +155,7 @@ describe('tooltip', () => {
 
     describe('update', () => {
         describe('when data changes', () => {
-            let createSpy;
+            let createSpy: MockInstance<typeof TooltipWrapper.update>;
 
             beforeEach(() => {
                 createSpy = vi.spyOn(TooltipWrapper, 'update');
@@ -158,7 +167,7 @@ describe('tooltip', () => {
             });
 
             it('should call the update method on the chart', () => {
-                const wrapper = mount(
+                const wrapper = mount<TooltipProps>(
                     <Tooltip
                         chart={TooltipWrapper}
                         render={renderFakeChart}
@@ -178,7 +187,7 @@ describe('tooltip', () => {
             });
 
             it('should pass in the new configuration to the update method', () => {
-                const wrapper = mount(
+                const wrapper = mount<TooltipProps>(
                     <Tooltip
                         chart={TooltipWrapper}
                         render={renderFakeChart}
@@ -192,13 +201,13 @@ describe('tooltip', () => {
                     title: expected,
                 });
 
-                const actual = createSpy.mock.calls[0][1].title;
+                const actual = createSpy.mock.calls[0][1]?.title;
 
                 expect(actual).toEqual(expected);
             });
 
             it('should pass in the new state to the update method', () => {
-                const child = {};
+                const child: ChildHolder = {};
 
                 mount(
                     <Tooltip
@@ -211,9 +220,9 @@ describe('tooltip', () => {
 
                 // The pointer entering the chart is how state changes, through
                 // the handler the tooltip hands its child chart
-                act(() => child.props.customMouseOver());
+                act(() => child.props!.customMouseOver());
 
-                const actual = createSpy.mock.calls[0][2].isActive;
+                const actual = createSpy.mock.calls[0][2]?.isActive;
 
                 expect(actual).toEqual(expected);
             });
@@ -221,7 +230,7 @@ describe('tooltip', () => {
     });
 
     describe('unmount', () => {
-        let createSpy;
+        let createSpy: MockInstance<typeof TooltipWrapper.destroy>;
 
         beforeEach(() => {
             createSpy = vi.spyOn(TooltipWrapper, 'destroy');
@@ -253,7 +262,9 @@ describe('tooltip', () => {
     describe('driven by a chart', () => {
         // The chart re-renders on every tooltip state change and asks the
         // wrapper to create the tooltip again; there must still be one.
-        const renderLine = (props) => <Line {...props} />;
+        const renderLine = (props: TooltipRenderArgs) => (
+            <Line {...props} data={props.data as LineChartData} />
+        );
         const dataPoint = {
             date: '2017-01-16T16:00:00-08:00',
             topics: [{ name: 'a', value: 1, topicName: 'A' }],
@@ -261,7 +272,7 @@ describe('tooltip', () => {
         const colorMap = { A: '#000' };
 
         it('should keep a single tooltip in the chart while the pointer moves', () => {
-            const child = {};
+            const child: ChildHolder = {};
             const wrapper = mount(
                 <Tooltip
                     data={lineData.oneSet()}
@@ -273,10 +284,10 @@ describe('tooltip', () => {
             // One render per event, as real pointer events arrive. The
             // handlers are read from `child.props` at the moment of each call:
             // they can be replaced whenever the tooltip builds its child again
-            act(() => child.props.customMouseOver());
+            act(() => child.props!.customMouseOver());
             [10, 30, 50].forEach((x) => {
                 act(() =>
-                    child.props.customMouseMove(
+                    child.props!.customMouseMove(
                         dataPoint,
                         [x, 20],
                         [600, 300],
@@ -286,9 +297,7 @@ describe('tooltip', () => {
             });
 
             const expected = 1;
-            const actual = wrapper
-                .getDOMNode()
-                .querySelectorAll('.britechart-tooltip').length;
+            const actual = wrapper.findAll('.britechart-tooltip').length;
 
             expect(actual).toEqual(expected);
         });
@@ -298,7 +307,7 @@ describe('tooltip', () => {
         // be handed the same element and left alone: rebuilding it there would
         // redraw the whole chart underneath on each move.
         it('should not redraw the chart underneath while the pointer moves', () => {
-            const child = {};
+            const child: ChildHolder = {};
             const updateSpy = vi.spyOn(LineWrapper, 'update');
 
             mount(
@@ -309,10 +318,10 @@ describe('tooltip', () => {
                 />
             );
 
-            act(() => child.props.customMouseOver());
+            act(() => child.props!.customMouseOver());
             [10, 30, 50].forEach((x) => {
                 act(() =>
-                    child.props.customMouseMove(
+                    child.props!.customMouseMove(
                         dataPoint,
                         [x, 20],
                         [600, 300],
@@ -327,7 +336,7 @@ describe('tooltip', () => {
         });
 
         it('should keep a single tooltip when the chart receives new props', () => {
-            const wrapper = mount(
+            const wrapper = mount<TooltipProps>(
                 <Tooltip
                     data={lineData.oneSet()}
                     render={renderLine}
@@ -339,9 +348,7 @@ describe('tooltip', () => {
             wrapper.setProps({ title: 'Two' });
 
             const expected = 1;
-            const actual = wrapper
-                .getDOMNode()
-                .querySelectorAll('.britechart-tooltip').length;
+            const actual = wrapper.findAll('.britechart-tooltip').length;
 
             expect(actual).toEqual(expected);
         });
@@ -352,7 +359,7 @@ describe('tooltip', () => {
         // creates the tooltip with has no `on` accessor to hand them to, so
         // they must never reach it.
         describe('when the mouse handlers are passed in', () => {
-            let createSpy;
+            let createSpy: MockInstance<typeof TooltipWrapper.create>;
 
             beforeEach(() => {
                 createSpy = vi.spyOn(TooltipWrapper, 'create');
@@ -403,7 +410,12 @@ describe('tooltip', () => {
                 mount(
                     <Tooltip
                         data={donutData.with4Slices()}
-                        render={(props) => <Donut {...props} />}
+                        render={(props) => (
+                            <Donut
+                                {...props}
+                                data={props.data as DonutChartDataShape[]}
+                            />
+                        )}
                     />
                 )
             ).not.toThrow();
@@ -417,8 +429,19 @@ describe('tooltip', () => {
     // components to another effect kind (or scheduling one of them later)
     // breaks these orders.
     describe('lifecycle order between the tooltip and the chart it wraps', () => {
-        const renderLine = (props) => <Line {...props} />;
-        let spies;
+        const renderLine = (props: TooltipRenderArgs) => (
+            <Line {...props} data={props.data as LineChartData} />
+        );
+        let spies: {
+            'LineWrapper.create': MockInstance<typeof LineWrapper.create>;
+            'TooltipWrapper.create': MockInstance<typeof TooltipWrapper.create>;
+            'LineWrapper.update': MockInstance<typeof LineWrapper.update>;
+            'TooltipWrapper.update': MockInstance<typeof TooltipWrapper.update>;
+            'LineWrapper.destroy': MockInstance<typeof LineWrapper.destroy>;
+            'TooltipWrapper.destroy': MockInstance<
+                typeof TooltipWrapper.destroy
+            >;
+        };
 
         beforeEach(() => {
             spies = {
@@ -435,7 +458,7 @@ describe('tooltip', () => {
             Object.values(spies).forEach((spy) => spy.mockRestore());
         });
 
-        const only = (...names) =>
+        const only = (...names: Array<keyof typeof spies>) =>
             Object.fromEntries(names.map((name) => [name, spies[name]]));
 
         it('should create the chart before the tooltip', () => {
@@ -449,7 +472,7 @@ describe('tooltip', () => {
         });
 
         it('should update the chart before the tooltip', () => {
-            const wrapper = mount(
+            const wrapper = mount<TooltipProps>(
                 <Tooltip data={lineData.oneSet()} render={renderLine} />
             );
 
@@ -477,7 +500,7 @@ describe('tooltip', () => {
         });
 
         it('should hand the chart handlers that update the tooltip and call the callbacks', () => {
-            const child = {};
+            const child: ChildHolder = {};
             const customMouseMove = vi.fn();
             const dataPoint = {
                 date: '2017-01-16T16:00:00-08:00',
@@ -494,9 +517,9 @@ describe('tooltip', () => {
                 />
             );
 
-            act(() => child.props.customMouseOver());
+            act(() => child.props!.customMouseOver());
             act(() =>
-                child.props.customMouseMove(
+                child.props!.customMouseMove(
                     dataPoint,
                     [10, 20],
                     [600, 300],
@@ -505,7 +528,7 @@ describe('tooltip', () => {
             );
 
             const tooltipState =
-                spies['TooltipWrapper.update'].mock.calls.pop()[2];
+                spies['TooltipWrapper.update'].mock.calls.pop()![2];
 
             expect(customMouseMove).toHaveBeenCalledWith(
                 dataPoint,

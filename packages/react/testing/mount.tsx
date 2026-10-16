@@ -1,5 +1,5 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import { cloneElement } from 'react';
+import type { ReactElement } from 'react';
 import { render } from '@testing-library/react';
 
 /**
@@ -25,7 +25,22 @@ import { render } from '@testing-library/react';
  * method below accounts for that; nothing outside this file should read
  * `container` directly.
  */
-export const mount = (element) => {
+export interface Mounted<TProps> {
+    /** The component's own root node: `container.firstChild`. */
+    getDOMNode: () => HTMLElement;
+    find: <TElement extends Element = HTMLElement>(
+        selector: string
+    ) => TElement | null;
+    findAll: <TElement extends Element = HTMLElement>(
+        selector: string
+    ) => NodeListOf<TElement>;
+    setProps: (partialProps: Partial<TProps>) => void;
+    unmount: () => void;
+}
+
+export const mount = <TProps,>(
+    element: ReactElement<TProps>
+): Mounted<TProps> => {
     let current = element;
     const { container, rerender, unmount } = render(current);
     // RTL does not document whether its unmount() is safe to call more than
@@ -35,9 +50,11 @@ export const mount = (element) => {
     let isUnmounted = false;
 
     return {
-        getDOMNode: () => container.firstChild,
-        find: (selector) => container.querySelector(selector),
-        findAll: (selector) => container.querySelectorAll(selector),
+        getDOMNode: () => container.firstChild as HTMLElement,
+        find: <TElement extends Element = HTMLElement>(selector: string) =>
+            container.querySelector<TElement>(selector),
+        findAll: <TElement extends Element = HTMLElement>(selector: string) =>
+            container.querySelectorAll<TElement>(selector),
         setProps: (partialProps) => {
             current = cloneElement(current, partialProps);
             rerender(current);

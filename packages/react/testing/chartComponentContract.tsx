@@ -1,6 +1,38 @@
-// @ts-nocheck -- typed in a follow-up; the rename is for the JSX transform
 import React from 'react';
+import type { ComponentType } from 'react';
+import type { MockInstance } from 'vitest';
+
+import type { Wrapper } from '@britecharts/wrappers';
+
 import { mount } from './mount';
+
+/**
+ * The props the contract renders every chart component with.
+ */
+export interface ChartComponentContractProps<TData, TChart extends object> {
+    chart?: Wrapper<TData, TChart>;
+    data: TData | null;
+    width?: number;
+    height?: number;
+    createTooltip?: () => void;
+}
+
+export interface ChartComponentContractOptions<TData, TChart extends object> {
+    Component: ComponentType<ChartComponentContractProps<TData, TChart>>;
+    wrapper: Wrapper<TData, TChart>;
+    containerSelector: string;
+    data: () => NoInfer<TData>;
+    nextData: () => NoInfer<TData>;
+    redrawsTooltip?: boolean;
+}
+
+// How the contract reads what a wrapper method was called with: the container,
+// the data, and the configuration as a plain record of whatever was set.
+type RecordedWrapperCall = (
+    el: HTMLElement,
+    data: unknown,
+    configuration: Record<string, unknown>
+) => unknown;
 
 /**
  * The contract every chart component shares, because every chart component is
@@ -22,21 +54,25 @@ import { mount } from './mount';
  *                                          update. Donut and Legend accept the prop only so a
  *                                          Tooltip can hand it to any chart, and never call it.
  */
-const describeChartComponent = ({
+const describeChartComponent = <TData, TChart extends object>({
     Component,
     wrapper: chart,
     containerSelector,
     data,
     nextData,
     redrawsTooltip = true,
-}) => {
-    const mountChart = (props) =>
-        mount(<Component chart={chart} data={data()} {...props} />);
-    const spyOn = (method) => {
-        let spy;
+}: ChartComponentContractOptions<TData, TChart>) => {
+    const mountChart = (
+        props?: Partial<ChartComponentContractProps<TData, TChart>>
+    ) =>
+        mount<ChartComponentContractProps<TData, TChart>>(
+            <Component chart={chart} data={data()} {...props} />
+        );
+    const spyOn = (method: keyof Wrapper<TData, TChart>) => {
+        let spy: MockInstance<RecordedWrapperCall>;
 
         beforeEach(() => {
-            spy = vi.spyOn(chart, method);
+            spy = vi.spyOn(chart, method) as MockInstance<RecordedWrapperCall>;
         });
 
         afterEach(() => {
