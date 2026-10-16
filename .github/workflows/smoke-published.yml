@@ -55,14 +55,18 @@ jobs:
 
       - name: Resolve the version to test
         id: version
+        # Right after a publish the registry can take minutes to serve the new
+        # version, so a run that follows the "version packages" merge -- the
+        # one Release publishes on -- waits up to ten minutes for it. Any other
+        # run asks once: its version was either published long ago or not yet.
         env:
           REQUESTED: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
+          AFTER_PUBLISH: ${{ github.event_name == 'workflow_run' && startsWith(github.event.workflow_run.head_commit.message, 'chore: version packages') }}
         run: |
           requested="${REQUESTED:-$(node -p "require('./packages/core/package.json').version")}"
-          resolved="$(npm view "@britecharts/core@${requested}" version --json 2>/dev/null | node -e '
-            let s = ""; process.stdin.on("data", (d) => (s += d)).on("end", () => {
-              try { const v = JSON.parse(s); console.log(Array.isArray(v) ? v.at(-1) : v); } catch { console.log(""); }
-            });')"
+          attempts=1
+          if [ "$AFTER_PUBLISH" = "true" ]; then attempts=20; fi
+          resolved="$(node scripts/registry-version.js "@britecharts/core@${requested}" "$attempts" 30000)"
           if [ -z "$resolved" ]; then
             echo "::notice::@britecharts/core@${requested} is not on the registry; nothing to smoke test."
             echo "skip=true" >> "$GITHUB_OUTPUT"
