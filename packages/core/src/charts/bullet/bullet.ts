@@ -13,9 +13,11 @@ import { bulletLoadingMarkup } from '../helpers/load';
 import colorHelper from '../helpers/color';
 import type { ChartMarginParams } from '../../typings/common/margin';
 import type {
+    AccessibleChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
 } from '../../typings/common/base';
+import { labelChart } from '../helpers/a11y';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 import type { ColorsSchemasType } from '../../typings/helpers/colors';
 
@@ -46,7 +48,11 @@ export type BulletChartDataShape = {
 // and read as though it did. Spelled plainly instead.
 export type BulletChartBaseAPI = ChartBaseAPI<BulletChartModule>;
 
-export interface BulletChartAPI extends BulletChartBaseAPI, ExportableChartAPI {
+export interface BulletChartAPI
+    extends
+        AccessibleChartAPI<BulletChartModule>,
+        BulletChartBaseAPI,
+        ExportableChartAPI {
     /** Gets or Sets the colorSchema of the chart */
     colorSchema(): ColorsSchemasType;
     colorSchema(schema: ColorsSchemasType): BulletChartModule;
@@ -336,6 +342,9 @@ export default function module(): BulletChartModule {
         markerColor = colorSchema[2];
     }
 
+    let a11yTitle: string | null = null;
+    let a11yDescription: string | null = null;
+
     /**
      * Builds the SVG element that will contain the chart
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
@@ -355,6 +364,12 @@ export default function module(): BulletChartModule {
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
             .attr('height', height);
+
+        labelChart(svg.node(), {
+            a11yTitle,
+            a11yDescription,
+            fallbackTitle: 'Bullet chart',
+        });
     }
 
     /**
@@ -570,6 +585,46 @@ export default function module(): BulletChartModule {
     }
 
     // API
+    /**
+     * Gets or Sets the name screen readers announce for the chart. It is
+     * rendered as the svg's `<title>`. Unset, the chart is announced as
+     * "Bullet chart".
+     * @param  {String | null} _x     Desired accessible title for the chart
+     * @return {String | null | module} Current a11yTitle or Chart module to chain calls
+     * @public
+     */
+    (exports as BulletChartModule).a11yTitle = function (
+        this: BulletChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yTitle;
+        }
+        a11yTitle = _x;
+
+        return this;
+    } as BulletChartModule['a11yTitle'];
+
+    /**
+     * Gets or Sets a longer description screen readers announce after the
+     * chart's name, such as what the data shows. It is rendered as the svg's
+     * `<desc>`. Unset, the chart has no description.
+     * @param  {String | null} _x     Desired accessible description for the chart
+     * @return {String | null | module} Current a11yDescription or Chart module to chain calls
+     * @public
+     */
+    (exports as BulletChartModule).a11yDescription = function (
+        this: BulletChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDescription;
+        }
+        a11yDescription = _x;
+
+        return this;
+    } as BulletChartModule['a11yDescription'];
+
     /**
      * Gets or Sets the colorSchema of the chart.
      * The first color from the array will be applied to range bars (the wider bars).

@@ -20,12 +20,14 @@ import { motion } from '../helpers/constants';
 import type { ChartMarginParams } from '../../typings/common/margin';
 import type { ColorsSchemasType } from '../../typings/helpers/colors';
 import type {
+    AccessibleChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
 } from '../../typings/common/base';
+import { labelChart } from '../helpers/a11y';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
 export declare enum DonutChartKeys {
@@ -71,6 +73,7 @@ export interface DonutEmptyDataConfig {
 // comparator.
 export interface DonutChartAPI
     extends
+        AccessibleChartAPI<DonutChartModule>,
         Omit<ChartBaseAPI<DonutChartModule>, 'numberFormat'>,
         InteractiveChartAPI<DonutChartModule>,
         ExportableChartAPI,
@@ -460,6 +463,9 @@ export default function module(): DonutChartModule {
             .padRadius(externalRadius);
     }
 
+    let a11yTitle: string | null = null;
+    let a11yDescription: string | null = null;
+
     /**
      * Builds the SVG element that will contain the chart
      *
@@ -479,6 +485,12 @@ export default function module(): DonutChartModule {
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
             .attr('height', height);
+
+        labelChart(svg.node(), {
+            a11yTitle,
+            a11yDescription,
+            fallbackTitle: 'Donut chart',
+        });
     }
 
     /**
@@ -934,6 +946,46 @@ export default function module(): DonutChartModule {
     }
 
     // API
+    /**
+     * Gets or Sets the name screen readers announce for the chart. It is
+     * rendered as the svg's `<title>`. Unset, the chart is announced as
+     * "Donut chart".
+     * @param  {String | null} _x     Desired accessible title for the chart
+     * @return {String | null | module} Current a11yTitle or Chart module to chain calls
+     * @public
+     */
+    (exports as DonutChartModule).a11yTitle = function (
+        this: DonutChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yTitle;
+        }
+        a11yTitle = _x;
+
+        return this;
+    } as DonutChartModule['a11yTitle'];
+
+    /**
+     * Gets or Sets a longer description screen readers announce after the
+     * chart's name, such as what the data shows. It is rendered as the svg's
+     * `<desc>`. Unset, the chart has no description.
+     * @param  {String | null} _x     Desired accessible description for the chart
+     * @return {String | null | module} Current a11yDescription or Chart module to chain calls
+     * @public
+     */
+    (exports as DonutChartModule).a11yDescription = function (
+        this: DonutChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDescription;
+        }
+        a11yDescription = _x;
+
+        return this;
+    } as DonutChartModule['a11yDescription'];
+
     /**
      * Gets or Sets the duration of the animation
      * @param  {Number} _x=1200         Desired animation duration for the graph

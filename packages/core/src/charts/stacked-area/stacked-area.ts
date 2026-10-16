@@ -46,6 +46,7 @@ import type { LocaleString } from '../../typings/common/local';
 import type { ChartMarginParams } from '../../typings/common/margin';
 import type { ColorsSchemasType } from '../../typings/helpers/colors';
 import type {
+    AccessibleChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
@@ -53,6 +54,7 @@ import type {
     ThemableChartAPI,
     TimeSeriesChartAPI,
 } from '../../typings/common/base';
+import { labelChart } from '../helpers/a11y';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
 export declare enum StackedAreaChartKeys {
@@ -108,6 +110,7 @@ export type StackedAreaXAxisScale = 'linear' | 'logarithmic';
 // 0e959aee, one step further out.
 export interface StackedAreaChartAPI
     extends
+        AccessibleChartAPI<StackedAreaChartModule>,
         Omit<ChartBaseAPI<StackedAreaChartModule>, 'numberFormat'>,
         InteractiveChartAPI<StackedAreaChartModule>,
         ExportableChartAPI,
@@ -875,6 +878,9 @@ export default function module(): StackedAreaChartModule {
             .nice();
     }
 
+    let a11yTitle: string | null = null;
+    let a11yDescription: string | null = null;
+
     /**
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
@@ -892,6 +898,12 @@ export default function module(): StackedAreaChartModule {
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
             .attr('height', height);
+
+        labelChart(svg.node(), {
+            a11yTitle,
+            a11yDescription,
+            fallbackTitle: 'Stacked area chart',
+        });
     }
 
     /**
@@ -1612,6 +1624,46 @@ export default function module(): StackedAreaChartModule {
     }
 
     // API
+    /**
+     * Gets or Sets the name screen readers announce for the chart. It is
+     * rendered as the svg's `<title>`. Unset, the chart is announced as
+     * "Stacked area chart".
+     * @param  {String | null} _x     Desired accessible title for the chart
+     * @return {String | null | module} Current a11yTitle or Chart module to chain calls
+     * @public
+     */
+    (exports as StackedAreaChartModule).a11yTitle = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yTitle;
+        }
+        a11yTitle = _x;
+
+        return this;
+    } as StackedAreaChartModule['a11yTitle'];
+
+    /**
+     * Gets or Sets a longer description screen readers announce after the
+     * chart's name, such as what the data shows. It is rendered as the svg's
+     * `<desc>`. Unset, the chart has no description.
+     * @param  {String | null} _x     Desired accessible description for the chart
+     * @return {String | null | module} Current a11yDescription or Chart module to chain calls
+     * @public
+     */
+    (exports as StackedAreaChartModule).a11yDescription = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDescription;
+        }
+        a11yDescription = _x;
+
+        return this;
+    } as StackedAreaChartModule['a11yDescription'];
+
     /**
      * Gets or Sets the duration of the area animation
      * @param  {Number} _x=1200         Desired animation duration for the graph

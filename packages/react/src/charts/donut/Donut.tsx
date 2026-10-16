@@ -19,6 +19,16 @@ import useChart from '../helpers/useChart.js';
  */
 export interface DonutChartProps {
     /**
+     * The name screen readers announce for the chart, rendered as its svg's
+     * `<title>`. Unset, the chart is announced by its type, such as "Bar chart".
+     */
+    a11yTitle?: string | null;
+    /**
+     * A longer description screen readers announce after the name, such as
+     * what the data shows, rendered as the svg's `<desc>`.
+     */
+    a11yDescription?: string | null;
+    /**
      * Internally used, do not overwrite.
      *
      * Required. `null` means the data has not arrived yet: nothing is drawn

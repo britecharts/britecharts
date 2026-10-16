@@ -30,11 +30,13 @@ import type { ColorGradientType } from '../../typings/helpers/colors';
 import type { AxisTimeCombinationValue } from '../helpers/constants';
 import type { AxisTickSettings } from '../helpers/axis';
 import type {
+    AccessibleChartAPI,
     AnimatedChartAPI,
     ChartBaseAPIMinimal,
     InteractiveChartAPI,
     TimeSeriesChartAPI,
 } from '../../typings/common/base';
+import { labelChart } from '../helpers/a11y';
 import type { ChartModuleSelection } from '../../typings/common/selection';
 
 export declare enum BrushChartKeys {
@@ -77,6 +79,7 @@ export type BrushSelection = Selection<
 // right all along.
 export interface BrushChartAPI
     extends
+        AccessibleChartAPI<BrushChartModule>,
         ChartBaseAPIMinimal<BrushChartModule>,
         AnimatedChartAPI<BrushChartModule>,
         TimeSeriesChartAPI<BrushChartModule>,
@@ -461,6 +464,9 @@ export default function module(): BrushChartModule {
             .range([chartHeight, 0]);
     }
 
+    let a11yTitle: string | null = null;
+    let a11yDescription: string | null = null;
+
     /**
      * Builds the SVG element that will contain the chart
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
@@ -479,6 +485,12 @@ export default function module(): BrushChartModule {
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
             .attr('height', height);
+
+        labelChart(svg.node(), {
+            a11yTitle,
+            a11yDescription,
+            fallbackTitle: 'Brush chart',
+        });
     }
 
     /**
@@ -839,6 +851,46 @@ export default function module(): BrushChartModule {
     }
 
     // API
+    /**
+     * Gets or Sets the name screen readers announce for the chart. It is
+     * rendered as the svg's `<title>`. Unset, the chart is announced as
+     * "Brush chart".
+     * @param  {String | null} _x     Desired accessible title for the chart
+     * @return {String | null | module} Current a11yTitle or Chart module to chain calls
+     * @public
+     */
+    (exports as BrushChartModule).a11yTitle = function (
+        this: BrushChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yTitle;
+        }
+        a11yTitle = _x;
+
+        return this;
+    } as BrushChartModule['a11yTitle'];
+
+    /**
+     * Gets or Sets a longer description screen readers announce after the
+     * chart's name, such as what the data shows. It is rendered as the svg's
+     * `<desc>`. Unset, the chart has no description.
+     * @param  {String | null} _x     Desired accessible description for the chart
+     * @return {String | null | module} Current a11yDescription or Chart module to chain calls
+     * @public
+     */
+    (exports as BrushChartModule).a11yDescription = function (
+        this: BrushChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDescription;
+        }
+        a11yDescription = _x;
+
+        return this;
+    } as BrushChartModule['a11yDescription'];
+
     /**
      * Gets or Sets the duration of the area animation
      * @param  {Number} _x=1200         Desired animation duration for the graph
