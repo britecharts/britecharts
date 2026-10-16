@@ -287,7 +287,7 @@ Version 2 published a UMD file for each chart, like `britecharts/dist/umd/bar.mi
 <script>const barChart = core.bar();</script>
 ```
 
-The colors come with the bundle as `core.colors`. The per-chart stylesheets under `dist/styles/charts/` are still published.
+The colors come with the bundle as `core.colors`. The per-chart stylesheets under `dist/styles/charts/` are still published. `@britecharts/wrappers` and `@britecharts/react` also publish only their bundles: import the wrappers and components from the package, or use the `wrappers` and `react` globals.
 
 ### New features
 1. Start using TypeScript with Britecharts.

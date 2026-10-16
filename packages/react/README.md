@@ -125,7 +125,7 @@ npm i --save @britecharts/core @britecharts/wrappers @britecharts/react
 
 Britecharts-React is available as an [NPM module][npmModule] or through CDN links (in [different formats][jsDelivrLib] or a [bundle][jsDelivrDist]).
 
-Each component is also published on its own, in UMD format (`dist/umd/charts/<Component>.js`) and CommonJS format (`dist/cjs/charts/<Component>.js`); in both the module *is* the component, so `require('@britecharts/react/dist/cjs/charts/Donut.js')` returns `Donut`. The [React consumer][testProject] in the integration package shows every way of loading it, and is what CI runs.
+Import the components from the package: bundlers get ES modules, and `require('@britecharts/react')` gets the UMD bundle. The [React consumer][testProject] in the integration package shows every way of loading it, and is what CI runs.
 
 ### Supported React versions
 

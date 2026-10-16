@@ -11,10 +11,7 @@ exercising the wrappers' create/destroy lifecycle.
 | Page | Path exercised |
 |---|---|
 | `package.html` | `import { Donut, Line, axisTimeCombinations } from '@britecharts/react'` (the `exports` map sends every bundler condition to the UMD bundle) |
-| `cjs-chart.html` | `import Donut from '@britecharts/react/dist/cjs/charts/Donut.js'` |
-| `umd-chart.html` | `import Donut from '@britecharts/react/dist/umd/charts/Donut.js'` |
 | `strict.html` | The blocks of `package.html`, on a React **development** build under StrictMode |
 | `lifecycle.html` | The same blocks, mounted, unmounted and mounted again by hand, so it works on a production build |
 
-`tests/require.test.js` covers the same package and per-component files with
-Node `require()`. `node_modules/`, `dist/` and `dist-dev/` are gitignored.
+`tests/require.test.js` covers the same package with Node `require()`. `node_modules/`, `dist/` and `dist-dev/` are gitignored.

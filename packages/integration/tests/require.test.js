@@ -112,20 +112,3 @@ test('R1 · require("@britecharts/react") resolves main to the UMD bundle', () =
     assert.equal(typeof react.axisTimeCombinations, 'object');
     assert.equal(typeof react.ResponsiveContainer, 'function');
 });
-
-test('R3/R4 · every per-component CJS and UMD build can be required', () => {
-    for (const name of REACT_COMPONENTS) {
-        for (const flavour of ['cjs', 'umd']) {
-            const component = requireFromReact(
-                `@britecharts/react/dist/${flavour}/charts/${name}.js`
-            );
-
-            // The module is the component itself.
-            assert.equal(
-                typeof component,
-                'function',
-                `${flavour}/charts/${name}.js is not the component`
-            );
-        }
-    }
-});

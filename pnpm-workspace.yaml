@@ -38,8 +38,6 @@ catalog:
   stylelint-config-sass-guidelines: 9.0.1
   stylelint-config-standard: 29.0.0
   webpack: 5.111.1
-  webpack-cli: 7.2.3
-  webpack-merge: 6.0.1
 
 # pnpm blocks a dependency's install/build scripts by default; each of these
 # is a known, legitimate reason to run one -- a native binary (fsevents,

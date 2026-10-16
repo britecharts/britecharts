@@ -17,7 +17,7 @@ Britecharts is a [pnpm][pnpm] workspace. Node comes from `.nvmrc` (24), pnpm fro
 
 ### Building the packages
 
-Each published package is built from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. Babel writes the ES modules file by file and only strips the TypeScript types, and `tsc` writes the declarations. Core's UMD bundle, CDN bundle and stylesheets come from `vite build` with [`packages/core/vite.config.js`][vite-build], one run per mode. Wrappers and React still bundle with [webpack][webpack] 5, where `sass-loader` 10 uses Dart Sass through the legacy JS API, silenced via `silenceDeprecations` in each package's `webpack.parts.js`; they move to Vite next ([#1044][vite]). The output targets ES2020.
+Each published package is built from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. Babel writes the ES modules file by file and only strips the TypeScript types, and `tsc` writes the declarations. Core's UMD bundle, CDN bundle and stylesheets come from `vite build` with [`packages/core/vite.config.js`][vite-build], one run per mode. Wrappers' UMD and CommonJS bundles come from one `vite build` with `packages/wrappers/vite.config.js`. React's UMD bundle comes from `vite build` with `packages/react/vite.config.js`. Storybook still runs on [webpack][webpack] 5 until it moves to its Vite builder. The output targets ES2020.
 
 What comes out of `packages/core/dist`:
 
@@ -28,7 +28,7 @@ What comes out of `packages/core/dist`:
 | `styles/bundle/britecharts.min.css` | Every stylesheet. |
 | `styles/charts/common.min.css`, `styles/charts/<chart>.min.css` | The shared styles, and one file per chart to use alongside them. |
 
-The wrappers package emits a UMD and a CommonJS bundle plus one file per chart; the React package a UMD bundle plus one UMD and one CommonJS file per component. `pnpm build` at the root builds the three packages, this site and the Storybooks.
+The wrappers package emits a UMD and a CommonJS bundle; the React package a UMD bundle. `pnpm build` at the root builds the three packages, this site and the Storybooks.
 
 ### Styles
 

@@ -7,14 +7,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '../../../..');
 
 // One HTML page per consumption path; see the README in this folder.
-const pages = [
-    'index',
-    'package',
-    'cjs-chart',
-    'umd-chart',
-    'strict',
-    'lifecycle',
-];
+const pages = ['index', 'package', 'strict', 'lifecycle'];
 
 // The same pages are built twice: for production (port 4174), and for
 // development (port 4175), where React runs its development build and
