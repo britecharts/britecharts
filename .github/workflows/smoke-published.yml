@@ -66,6 +66,7 @@ jobs:
           requested="${REQUESTED:-$(node -p "require('./packages/core/package.json').version")}"
           attempts=1
           if [ "$AFTER_PUBLISH" = "true" ]; then attempts=20; fi
+          echo "after_publish=${AFTER_PUBLISH}" >> "$GITHUB_OUTPUT"
           resolved="$(node scripts/registry-version.js "@britecharts/core@${requested}" "$attempts" 30000)"
           if [ -z "$resolved" ]; then
             echo "::notice::@britecharts/core@${requested} is not on the registry; nothing to smoke test."
@@ -113,6 +114,36 @@ jobs:
       - name: Install Chromium
         if: steps.version.outputs.skip != 'true'
         run: pnpm --filter @britecharts/integration exec playwright install --with-deps chromium
+
+      # jsDelivr serves a new version some minutes after npm does: the beta.5
+      # run on 16 Oct passed every tier except the jsDelivr page, whose
+      # stylesheet was not on the CDN yet, and passed on a re-run. So after a
+      # publish, wait up to ten minutes for each URL that page loads, read from
+      # the release commit's page. A URL that never arrives is left for the
+      # browser test to report.
+      - name: Wait for jsDelivr to serve the version
+        if: steps.version.outputs.skip != 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          AFTER_PUBLISH: ${{ steps.version.outputs.after_publish }}
+        run: |
+          attempts=1
+          if [ "$AFTER_PUBLISH" = "true" ]; then attempts=20; fi
+          urls="$(grep -oE 'https://cdn\.jsdelivr\.net/npm/[^"]+' packages/integration/consumers/vanilla/cdn-jsdelivr.html | sed "s/%VITE_BRITECHARTS_VERSION%/${VERSION}/g" | sort -u)"
+          for url in $urls; do
+            for attempt in $(seq 1 "$attempts"); do
+              if curl -sfI "$url" > /dev/null; then
+                echo "jsDelivr serves ${url}"
+                break
+              fi
+              if [ "$attempt" -lt "$attempts" ]; then
+                echo "${url} is not on jsDelivr yet (attempt ${attempt} of ${attempts}); retrying in 30s"
+                sleep 30
+              else
+                echo "::warning::${url} is not on jsDelivr after ${attempts} attempt(s)."
+              fi
+            done
+          done
 
       # No pack step: the consumers install @britecharts/*@<version> from npm.
       # The tarball tier is skipped for the same reason; the require, types
