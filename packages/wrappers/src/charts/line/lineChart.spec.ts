@@ -121,7 +121,7 @@ describe('line Chart', () => {
                     const dataSet = lineData.flatData.a;
                     const chart = line.create(anchor, dataSet, {});
 
-                    line.update(anchor, dataSet, {}, chart);
+                    line.update(anchor, { data: [] }, {}, chart);
 
                     const expected = dataSet;
                     const actual = datumOf(anchor);
