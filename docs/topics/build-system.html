@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.02570f28.css">
-<script src="/britecharts/assets/js/runtime~main.53e5a442.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.d1920539.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.641e5596.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.1aa7c257.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -54,7 +54,7 @@
 
 <table><thead><tr><th>Package</th><th>What it is</th></tr></thead><tbody><tr><td><code>@britecharts/core</code></td><td>The charts, the tooltip and legend, the styles and the TypeScript typings.</td></tr><tr><td><code>@britecharts/wrappers</code></td><td><code>create</code>/<code>update</code>/<code>destroy</code> wrappers around each chart, for frameworks.</td></tr><tr><td><code>@britecharts/react</code></td><td>React components built on the wrappers.</td></tr><tr><td><code>@britecharts/docs</code></td><td>This site, built with <a href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer" class="">Docusaurus</a>. Private.</td></tr><tr><td><code>@britecharts/demos</code></td><td>The Storybook shell that composes the core and React Storybooks. Private.</td></tr><tr><td><code>@britecharts/integration</code></td><td>Installs the packed packages into real consumer projects and tests what ships. Private.</td></tr></tbody></table>
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="building-the-packages">Building the packages<a href="#building-the-packages" class="hash-link" aria-label="Direct link to Building the packages" title="Direct link to Building the packages" translate="no">​</a></h3>
-<p>Each published package is built with <a href="https://webpack.js.org/" target="_blank" rel="noopener noreferrer" class="">webpack</a> 5 from <code>pnpm build</code> in its folder, or all three at once with <code>pnpm build:packages</code> at the root. <code>sass-loader</code> 10 still uses Dart Sass through the legacy JS API, silenced via <code>silenceDeprecations</code> in each package&#x27;s <code>webpack.parts.js</code>. The output targets ES2020, and Babel only strips the TypeScript types. webpack itself goes with the Vite migration on the roadmap (<a href="https://github.com/britecharts/britecharts/issues/1044" target="_blank" rel="noopener noreferrer" class="">#1044</a>).</p>
+<p>Each published package is built from <code>pnpm build</code> in its folder, or all three at once with <code>pnpm build:packages</code> at the root. Babel writes the ES modules file by file and only strips the TypeScript types, and <code>tsc</code> writes the declarations. Core&#x27;s UMD bundle, CDN bundle and stylesheets come from <code>vite build</code> with <a href="https://vite.dev/guide/build" target="_blank" rel="noopener noreferrer" class=""><code>packages/core/vite.config.js</code></a>, one run per mode. Wrappers and React still bundle with <a href="https://webpack.js.org/" target="_blank" rel="noopener noreferrer" class="">webpack</a> 5, where <code>sass-loader</code> 10 uses Dart Sass through the legacy JS API, silenced via <code>silenceDeprecations</code> in each package&#x27;s <code>webpack.parts.js</code>; they move to Vite next (<a href="https://github.com/britecharts/britecharts/issues/1044" target="_blank" rel="noopener noreferrer" class="">#1044</a>). The output targets ES2020.</p>
 <p>What comes out of <code>packages/core/dist</code>:</p>
 
 
@@ -81,14 +81,10 @@
 
 
 
-
-
-
-
-<table><thead><tr><th>Path</th><th>Contents</th></tr></thead><tbody><tr><td><code>umd/bundle/core.bundled.min.js</code></td><td>Every chart in one UMD bundle: the package&#x27;s <code>main</code>.</td></tr><tr><td><code>umd/charts/&lt;chart&gt;.min.js</code></td><td>One UMD file per chart, plus <code>colors</code>.</td></tr><tr><td><code>cdn/bundle/core.cdn.min.js</code>, <code>cdn/charts/</code></td><td>The same, built for a <code>&lt;script&gt;</code> tag, with d3 bundled in.</td></tr><tr><td><code>styles/bundle/britecharts.min.css</code></td><td>Every stylesheet.</td></tr><tr><td><code>styles/charts/common.min.css</code>, <code>styles/charts/&lt;chart&gt;.min.css</code></td><td>The shared styles, and one file per chart to use alongside them.</td></tr></tbody></table>
+<table><thead><tr><th>Path</th><th>Contents</th></tr></thead><tbody><tr><td><code>umd/bundle/core.bundled.min.js</code></td><td>Every chart in one UMD bundle: the package&#x27;s <code>main</code>.</td></tr><tr><td><code>cdn/bundle/core.cdn.min.js</code></td><td>The same, built for a <code>&lt;script&gt;</code> tag, with d3 bundled in.</td></tr><tr><td><code>styles/bundle/britecharts.min.css</code></td><td>Every stylesheet.</td></tr><tr><td><code>styles/charts/common.min.css</code>, <code>styles/charts/&lt;chart&gt;.min.css</code></td><td>The shared styles, and one file per chart to use alongside them.</td></tr></tbody></table>
 <p>The wrappers package emits a UMD and a CommonJS bundle plus one file per chart; the React package a UMD bundle plus one UMD and one CommonJS file per component. <code>pnpm build</code> at the root builds the three packages, this site and the Storybooks.</p>
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="styles">Styles<a href="#styles" class="hash-link" aria-label="Direct link to Styles" title="Direct link to Styles" translate="no">​</a></h3>
-<p>The stylesheets are SCSS under <code>packages/core/src/styles</code>, written with the Sass module system (<code>@use</code>): <code>britecharts.scss</code> is the whole set, <code>common.scss</code> what every chart needs, and <code>charts/&lt;chart&gt;.scss</code> one chart. They compile through the same webpack build; <code>pnpm lint:styles</code> runs stylelint over them.</p>
+<p>The stylesheets are SCSS under <code>packages/core/src/styles</code>, written with the Sass module system (<code>@use</code>): <code>britecharts.scss</code> is the whole set, <code>common.scss</code> what every chart needs, and <code>charts/&lt;chart&gt;.scss</code> one chart. They compile through core&#x27;s Vite build; <code>pnpm lint:styles</code> runs stylelint over them.</p>
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="tasks">Tasks<a href="#tasks" class="hash-link" aria-label="Direct link to Tasks" title="Direct link to Tasks" translate="no">​</a></h3>
 <p>From the root:</p>
 

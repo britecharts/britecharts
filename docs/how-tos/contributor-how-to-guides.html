@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.02570f28.css">
-<script src="/britecharts/assets/js/runtime~main.53e5a442.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.d1920539.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.641e5596.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.1aa7c257.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -59,7 +59,7 @@
 <li class="">Create a new data builder file. Name it something like <code>chartNameChartDataBuilder.js</code>.</li>
 <li class="">In the chart folder, create a new chart file called <code>chart-name.js</code>.</li>
 <li class="">Create a <code>&lt;chartName&gt;.stories.js</code> file to hold a new demo for the new chart. Re-run the demos script to get it showing in the storybook.</li>
-<li class="">Go to <code>packages/core/webpack.constants.js</code> and add the new chart to the <code>CHARTS</code> object, give it a camel case name.</li>
+<li class="">Export the new chart from <code>packages/core/src/index.ts</code>, with a camel case name, so it ships in the bundles.</li>
 <li class="">Go to your test file <code>/packages/core/src/charts/chart-name.spec.js</code> and, taking another test as an example, copy over pieces until you have the first test case.</li>
 <li class="">Add one test and make it fail by calling <code>pnpm run test</code> or keep the tests running with <code>pnpm run test:watch</code>.</li>
 <li class="">Keep on coding according to our <a class="" href="/britecharts/docs/topics/api-guidelines">API Guidelines</a></li>
