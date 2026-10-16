@@ -50,6 +50,11 @@ export interface BulletChartProps {
     height?: number;
 
     /**
+     * Gets or Sets whether a loading state will be shown
+     */
+    isLoading?: boolean;
+
+    /**
      * Gets or Sets the isReverse status of the chart. If true, the elements will be rendered in reverse order.
      */
     isReverse?: boolean;

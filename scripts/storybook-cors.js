@@ -18,9 +18,11 @@
  * echoed -- a dev server that reflected any origin *and* allowed credentials
  * would let any page you visit read your local Storybook.
  *
- * This is the safety net, not the fix. The fix is starting the shell after its
- * refs (see scripts/wait-for-storybook-refs.js), which makes them
- * `server-checked` and drops credentials from the request entirely.
+ * This is the safety net, not the fix, and since Storybook 10 a partial one:
+ * index.json is served before user middleware runs, so it keeps the wildcard.
+ * The fix is starting the shell after its refs (see
+ * scripts/wait-for-storybook-refs.js), which makes them `server-checked` and
+ * drops credentials from the request entirely.
  */
 const LOOPBACK_ORIGIN =
     /^https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/;

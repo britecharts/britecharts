@@ -33,9 +33,5 @@ export const WithMeasureUnderRanges = () => {
 export const WithLoadingState = () => {
     const data = bulletData.fullTestData();
 
-    return (
-        // @ts-expect-error -- BulletChartProps does not declare isLoading yet,
-        // though the chart takes it; the prop type is fixed separately.
-        <Bullet data={data} isLoading={true} />
-    );
+    return <Bullet data={data} isLoading={true} />;
 };

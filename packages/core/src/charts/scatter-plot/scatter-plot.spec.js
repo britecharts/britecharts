@@ -215,6 +215,37 @@ describe('scatter Plot', () => {
             });
         });
 
+        describe('when the data has negative values', () => {
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                dataset = buildDataSet('withNegativeValues');
+                scatterPlot = chart().isAnimated(false);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(scatterPlot);
+            });
+
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('never gives a circle a negative radius', () => {
+                const radii = containerFixture
+                    .selectAll('.chart-group circle')
+                    .nodes()
+                    .map((circle) => Number(circle.getAttribute('r')));
+
+                expect(radii.length).toBe(dataset.length);
+                radii.forEach((radius) => {
+                    expect(radius).toBeGreaterThanOrEqual(0);
+                });
+            });
+        });
+
         describe('when hasHollowCircles is set to true', () => {
             beforeEach(() => {
                 const fixture =

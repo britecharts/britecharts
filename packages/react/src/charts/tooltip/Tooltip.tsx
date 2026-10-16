@@ -11,7 +11,6 @@ import type {
     TooltipDataShape,
     TooltipListDataShape,
     TooltipModule,
-    TooltipTopic,
 } from '@britecharts/core';
 
 import { axisTimeCombinations as combinations } from '../constants.js';
@@ -126,8 +125,10 @@ export interface TooltipProps {
     // `TooltipTopic['name'][]`, which is `(string | number)[]`: line hands
     // the tooltip numeric topic ids and stacked area hands it string names,
     // and this migration corrected core to say so. `string[]` rejected the
-    // numeric order the tooltip's own spec uses.
-    topicsOrder?: TooltipTopic['name'][];
+    // numeric order the tooltip's own spec uses. Spelled out rather than
+    // indexed: react-docgen reads `TooltipTopic['name']` as an empty union,
+    // and Storybook's arg-type conversion throws on it.
+    topicsOrder?: Array<string | number>;
 
     /**
      * Updates the position and content of the tooltip

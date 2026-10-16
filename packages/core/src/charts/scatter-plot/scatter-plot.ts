@@ -638,9 +638,12 @@ export default function module(): ScatterPlotModule {
             .domain(dataPoints.map(getName))
             .range(colorSchema);
 
+        // Clamped: a value at or under the domain's bottom can otherwise map
+        // to a radius a hair below zero, which SVG rejects.
         areaScale = scaleSqrt<number, number>()
             .domain([yScaleBottomValue, maxY as number])
-            .range([0, maxCircleArea]);
+            .range([0, maxCircleArea])
+            .clamp(true);
 
         const colorRange = colorScale.range();
 
