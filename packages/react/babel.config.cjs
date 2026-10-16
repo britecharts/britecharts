@@ -1,7 +1,6 @@
-// preset-env reads its target from the browserslist field in package.json.
-// forceAllTransforms used to override that with an always-ES5 target; at the
-// current browserslist (H26) that downlevelled everything for nothing, since
-// JSX is the only thing this build still needs Babel for.
+// preset-env reads its target from the browserslist field in package.json,
+// so it only downlevels what those browsers lack. Forcing an ES5 target would
+// downlevel everything for nothing.
 module.exports = {
     // Presets apply last-to-first, so preset-typescript strips the types
     // before preset-react sees the JSX. It keys off the file extension, so

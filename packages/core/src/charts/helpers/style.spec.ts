@@ -1,7 +1,6 @@
-// `select` from d3-selection rather than the monolithic `d3`, which this spec
-// was the only thing in core still importing. Same function -- d3's bundle
-// re-exports it -- but core's source has used the granular packages throughout,
-// and the bundle is a d3 5.x pin with no types.
+// `select` from d3-selection rather than the monolithic `d3`: core's source
+// uses the granular packages throughout, and the bundle is a d3 5.x pin with no
+// types.
 import { select } from 'd3-selection';
 import type { Selection } from 'd3-selection';
 
@@ -64,7 +63,7 @@ describe('style Helper', () => {
 
             // A global regex, not `replace(' ', '')`. With a string pattern
             // `replace` swaps only the FIRST match, so the computed
-            // 'rgb(222, 163, 12)' normalised to 'rgb(222,163, 12)' -- one
+            // 'rgb(222, 163, 12)' would normalise to 'rgb(222,163, 12)' -- one
             // space short of `randomColor` -- and the colour could never be
             // found no matter what the serializer did.
             //
@@ -73,13 +72,7 @@ describe('style Helper', () => {
             styledHTML = serializer!(node)!.replace(/ /g, '');
 
             expect(styledHTML).not.toBe(node.outerHTML.replace(/ /g, ''));
-            // This is what the spec was reaching for and never asserted: the
-            // colour that only existed in a stylesheet is now inline.
-            //
-            // It used to read `styledHTML.indexOf(randomColor).length` and
-            // compare that to 0 -- `indexOf` returns a number, so `.length`
-            // was `undefined`, and `expect(undefined).not.toBe(0)` passed
-            // however the serializer behaved. TypeScript is what surfaced it.
+            // The colour that only exists in a stylesheet ends up inline.
             expect(styledHTML).toContain(randomColor);
         });
     });

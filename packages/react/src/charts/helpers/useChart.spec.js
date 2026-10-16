@@ -6,10 +6,8 @@ import useChart from './useChart';
 /**
  * The hook is the one place eleven components get their lifecycle from, so it
  * is tested directly against a fake wrapper of spies. The cases named "defect
- * N" are the twelve ways the abandoned hooks port of Bullet
- * (it was packages/react/TS-wip/ComponentDemo.tsx, since removed: see
- * `git show f6c738d8:packages/react/TS-wip/ComponentDemo.tsx`) went wrong, so
- * the same mistakes fail here by name.
+ * N" are known ways a hooks lifecycle for a chart goes wrong, so each of those
+ * mistakes fails here by name.
  */
 const makeWrapper = () => {
     const instance = { name: 'the chart instance' };
@@ -62,7 +60,7 @@ describe('useChart', () => {
             expect(wrapper.create).toHaveBeenCalledTimes(1);
         });
 
-        // defect 3: the instance lived in state, costing a render nothing used
+        // defect 3: an instance kept in state costs a render nothing uses
         it('should not render again after creating the chart', () => {
             const onRender = jest.fn();
 
@@ -101,7 +99,7 @@ describe('useChart', () => {
     });
 
     describe('on a later render', () => {
-        // defect 6: no create-if-missing path left a chart blank forever
+        // defect 6: without a create-if-missing path a chart stays blank forever
         describe('once the data arrives', () => {
             it('should create the chart', () => {
                 const mounted = mountHarness({ wrapper, data: null });
@@ -240,8 +238,8 @@ describe('useChart', () => {
             });
         });
 
-        // defect 5: the demo never called createTooltip, so the tooltip was
-        // gone after the first update
+        // defect 5: without a createTooltip call the tooltip is gone after the
+        // first update
         describe('the tooltip callback', () => {
             it('should be called after update, and after nothing else', () => {
                 const createTooltip = jest.fn();
@@ -293,8 +291,8 @@ describe('useChart', () => {
     });
 
     describe('on unmount', () => {
-        // defect 1: the cleanup closed over the initial null instance, so
-        // destroy never ran
+        // defect 1: a cleanup that closes over the initial null instance never
+        // runs destroy
         it('should destroy the chart exactly once', () => {
             const mounted = mountHarness({ wrapper, data });
 
@@ -348,7 +346,7 @@ describe('useChart', () => {
         });
     });
 
-    // defect 9: under StrictMode the demo created a second chart. React 16's
+    // defect 9: StrictMode's remount must not leave a second chart. React 16's
     // StrictMode does not double-invoke effects, so the cycle is driven by hand
     // here; the React 19 development-build page covers the real thing
     describe('mounting again after an unmount', () => {

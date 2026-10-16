@@ -8,8 +8,8 @@ export type ChartEventHandler = (...args: never[]) => void;
  *
  * Core declares an accessor as a getter/setter overload pair, and conditional
  * inference in this position reads the **last** overload -- the setter -- which
- * is why core keeps the getter first. A single optional-parameter signature,
- * the older mixin form, infers the same way.
+ * is why core keeps the getter first. A single optional-parameter signature
+ * infers the same way.
  */
 type AccessorValue<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
     value?: infer TValue
@@ -23,9 +23,8 @@ type AccessorValue<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
  * A command acts when called rather than getting or setting -- legend's
  * `highlight(id)`, a chart's `exportChart(filename, title)` -- so it has a
  * required parameter and does not match {@link AccessorValue} at all. Left out
- * of the configuration it maps to `never`, and passing it is an error even
- * though `applyConfiguration` calls it perfectly well: `highlight` has always
- * worked at run time and never type-checked.
+ * of the configuration it would map to `never`, and passing it would be an
+ * error even though `applyConfiguration` calls it perfectly well.
  *
  * Only the first argument, because that is all a single configuration value
  * can carry. `exportChart`'s `title` is therefore not reachable this way, and

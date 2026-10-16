@@ -144,9 +144,7 @@ describe('line Chart', () => {
                     // from the other wrappers' specs where the data really is
                     // an array. It happens not to matter: `[].data` is
                     // undefined, so the guard takes the same branch it would
-                    // for `undefined` and the datum is left alone. Kept
-                    // exactly as it was rather than quietly corrected, since a
-                    // conversion should not change what a test feeds in.
+                    // for `undefined` and the datum is left alone.
                     // @ts-expect-error line takes a LineChartData object
                     line.update(anchor, [], { width: expected }, chart);
 

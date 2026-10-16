@@ -67,29 +67,20 @@ export type ScatterPlotDataShape = {
 // its own idiom is a format per axis, `xAxisFormat` and `yAxisFormat`, both of
 // which it exposes. A chart-wide `numberFormat` would be a second way to say the
 // same thing.
-//
-// The two keys this omitted before, `'locale' | 'loadingState'`, are not members
-// of `ChartBaseAPI` at all -- the loading accessor is `isLoading`, and `locale`
-// lives on `TimeSeriesChartAPI`. So the `Omit` removed nothing while reading as
-// though it removed two things.
 export type ScatterPlotBaseAPI = Omit<
     ChartBaseAPI<ScatterPlotModule>,
     'numberFormat'
 >;
 
-// The twenty-one accessors below were setter-only -- a single
-// optional-parameter signature returning the chart -- so reading one reported
-// the chart rather than its value. Each is a getter/setter overload pair now,
-// getter first and setter last, with the getter typed from the
-// implementation's own default.
+// Each accessor below is a getter/setter overload pair, getter first and
+// setter last, with the getter typed from the implementation's own default.
 //
 // Four getters are wider than their setter. `grid` and `valueLocale` are `null`
 // in the module's own `let` block; `xAxisLabel` and `yAxisLabel` have no
 // initialiser, so they read `undefined`. And `yTicks` is `null` by default,
 // which is this chart's own idiom rather than an oversight -- it hands the
 // value straight to d3's `axis.ticks`, where `null` means "use the scale's own
-// tick count". Its setter takes a number only, following brush's `xTicks`,
-// whose declaration settled that shape.
+// tick count". Its setter takes a number only, as brush's `xTicks` does.
 export interface ScatterPlotAPI
     extends
         AccessibleChartAPI<ScatterPlotModule>,
@@ -128,8 +119,7 @@ export interface ScatterPlotAPI
      *
      * The getter is `null` until one is set: the chart draws no configurable
      * grid by default, and assigning the default back is how one is turned off
-     * again. The parameter was named `opacity`, which this accessor has never
-     * had anything to do with.
+     * again.
      */
     grid(): GridTypes | null;
     grid(gridMode: GridTypes | null): ScatterPlotModule;
@@ -216,8 +206,7 @@ export interface ScatterPlotAPI
      * Gets or Sets the yTicks of the chart
      *
      * The getter is `null` by default, which the chart hands straight to d3's
-     * `axis.ticks` to mean "use the scale's own tick count". The JSDoc called
-     * this one xTicks.
+     * `axis.ticks` to mean "use the scale's own tick count".
      */
     yTicks(): number | null;
     yTicks(ticks: number): ScatterPlotModule;
@@ -231,7 +220,7 @@ const DEFAULT_TREND_LINE_ANIMATION_DELAY = 1500;
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in the bar charts: these
+ * generics are a bounded `any`, as in the bar charts: these
  * are module-level variables reassigned from several differently-shaped
  * selections, so naming one concrete datum would reject the others.
  */
@@ -271,8 +260,7 @@ type TrendLineData = {
  * `x` is optional because `calcLinearRegression` leaves `x1` and `x2` so: it
  * returns them only when the slope is finite. The generator is given
  * `defined`-free data, so an undefined x reaches `xScale` and produces a path
- * with NaN in it -- the chart's existing behaviour for a degenerate
- * regression, and not something a conversion decides.
+ * with NaN in it -- the chart's behaviour for a degenerate regression.
  */
 type TrendLinePoint = {
     x?: number;
@@ -331,9 +319,9 @@ type TrendLinePoint = {
  * ]
  */
 export default function module(): ScatterPlotModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 20,
             right: 10,
@@ -374,7 +362,7 @@ export default function module(): ScatterPlotModule {
         xAxisLabelOffset = -50,
         trendLinePath: ChartSelection<SVGPathElement>,
         // Only set once a point has been hovered, which is why the zoom
-        // handler guards on it -- see 3c45ee50.
+        // handler guards on it.
         highlightPointData: ScatterPlotDatum | undefined,
         highlightFilter: ChartSelection<SVGFilterElement>,
         highlightFilterId: string,
@@ -589,8 +577,8 @@ export default function module(): ScatterPlotModule {
 
     /**
      * Builds the Delaunay triangulation used to find the point nearest the
-     * cursor. Replaces d3-voronoi, which is deprecated; the extent that
-     * diagram took only clipped its cells and did not affect find().
+     * cursor. It takes no extent: an extent only clips a Voronoi diagram's
+     * cells and does not affect find().
      * @return {void}
      * @private
      */
@@ -709,9 +697,8 @@ export default function module(): ScatterPlotModule {
         originalData: ScatterPlotDataShape[]
     ): ScatterPlotDatum[] {
         return originalData.reduce<ScatterPlotDatum[]>((acc, datum) => {
-            // Written onto the caller's own objects rather than copies, which
-            // is the runtime this preserves. The cast covers the three reads
-            // by key name.
+            // Written onto the caller's own objects rather than copies. The
+            // cast covers the three reads by key name.
             const d = datum as ScatterPlotDatum;
 
             d.name = String(d[nameKey]);
@@ -841,10 +828,7 @@ export default function module(): ScatterPlotModule {
      */
     function updateChartAfterZoom(event: D3ZoomEvent<SVGRectElement, unknown>) {
         // d3-zoom calls this with (event, datum) and the event carries the
-        // transform. It used to read `zoomTransform(elements[0])` from a third
-        // parameter, which is d3 v5's `(d, i, nodes)` signature -- v6 and
-        // later pass no such argument, so the line threw on the first zoom
-        // event and the whole feature was dead.
+        // transform. There is no third `nodes` argument to read it from.
         const transform = event.transform;
 
         //update scale
@@ -868,7 +852,7 @@ export default function module(): ScatterPlotModule {
         // datum by initHighlightComponents, so its accessors always run, while
         // `highlightPointData` is only set once a point has been hovered.
         // Before the first hover there is no highlight to move, and reading
-        // `.x` off it threw.
+        // `.x` off it would throw.
         if (highlightCircle && highlightPointData) {
             const hovered = highlightPointData;
 
@@ -1112,16 +1096,15 @@ export default function module(): ScatterPlotModule {
         const [pointerX, pointerY] = pointer(event, svg);
 
         // A synthetic event carries no clientX/clientY, so the position comes
-        // back non-finite. d3-voronoi's find() returned the first site in that
-        // case; Delaunay's returns nothing usable, so match the old result
-        // rather than crash. Only reachable from dispatched events -- a real
-        // pointer always has coordinates.
+        // back non-finite and Delaunay's find() returns nothing usable. Fall
+        // back to the first site rather than crash. Only reachable from
+        // dispatched events -- a real pointer always has coordinates.
         if (!Number.isFinite(pointerX) || !Number.isFinite(pointerY)) {
             return { data: dataPoints[0] };
         }
 
-        // d3-delaunay's find() returns an index, where d3-voronoi returned a
-        // site object; wrap it back into the { data } shape getPointData reads.
+        // d3-delaunay's find() returns an index; wrap it into the { data }
+        // shape getPointData reads.
         const index = delaunayMesh.find(
             pointerX - (margin.left ?? 0),
             pointerY - (margin.top ?? 0)
@@ -1146,9 +1129,9 @@ export default function module(): ScatterPlotModule {
             // and the cross-hair label are numbers. Setting
             // `xAxisFormatType` to anything but 'number' therefore hands a
             // number to a formatter that reads Date methods off it.
-            // Preserved as it stands and typed at the boundary -- the default
-            // is 'number', so the branch is dormant, and changing what it
-            // accepts is a published-behaviour decision.
+            // Left as it is and typed at the boundary -- the default is
+            // 'number', so the branch is dormant, and changing what it accepts
+            // is a published-behaviour decision.
             return timeFormat(xAxisFormat) as unknown as (
                 value: NumberValue
             ) => string;
@@ -1786,8 +1769,8 @@ export default function module(): ScatterPlotModule {
     (exports as ScatterPlotModule).on = function (
         ...args: [string] | [string, () => void]
     ) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`, following the other converted charts.
+        // Rest parameters and a spread rather than `arguments` and `.apply`,
+        // as in the other charts.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );

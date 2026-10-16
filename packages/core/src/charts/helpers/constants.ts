@@ -102,7 +102,7 @@ export const motion = {
 
 // Deliberately not `as const`: the charts look these up with a dynamic
 // string (`curveMap[areaCurve]` in stacked-area and brush), which a readonly
-// literal-keyed object would reject once those files convert.
+// literal-keyed object would reject.
 export const curveMap: Record<string, CurveFactory> = {
     linear: curveLinear,
     basis: curveBasis,

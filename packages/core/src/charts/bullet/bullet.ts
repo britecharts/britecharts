@@ -33,10 +33,6 @@ export type BulletChartDataShape = {
     [BulletChartKeys.Markers]: [number?];
 };
 
-// The `Omit` this used to carry removed `'locale' | 'isAnimated' |
-// 'loadingState'`, and `ChartBaseAPI` declares none of those three -- the real
-// member is `isLoading`, which the chart has and keeps. So it removed nothing
-// and read as though it did. Spelled plainly instead.
 export type BulletChartBaseAPI = ChartBaseAPI<BulletChartModule>;
 
 export interface BulletChartAPI
@@ -69,7 +65,7 @@ export type BulletChartModule = ChartModuleSelection<BulletChartDataShape> &
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in `filter.ts`: these are
+ * generics are a bounded `any`, as in `filter.ts`: these are
  * module-level variables reassigned from several differently-shaped selections,
  * so naming one concrete datum would reject the others.
  */
@@ -126,9 +122,9 @@ type BulletData = {
  */
 
 export default function module(): BulletChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the constants below are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the constants below are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 20,
             right: 20,
@@ -344,12 +340,10 @@ export default function module(): BulletChartModule {
     function cleanData(originalData: BulletChartDataShape): BulletData {
         // The declared shape spells these as tuples of optional numbers,
         // `[number?, number?, number?]`, so spreading one yields
-        // `(number | undefined)[]`. The assertions keep the behaviour exactly as
-        // it is rather than filtering: a hole in the data already reaches
-        // `Math.max(...)` and already produces a NaN domain, and inventing a
-        // meaning for it is not this conversion's to decide. Recorded in the
-        // migration plan -- the documented `@typedef` above says `Number[]`,
-        // which is what the implementation actually requires.
+        // `(number | undefined)[]`. The assertions do not filter: a hole in
+        // the data reaches `Math.max(...)` and produces a NaN domain. The
+        // documented `@typedef` above says `Number[]`, which is what the
+        // implementation actually requires.
         const newData = {
             ranges: ([...originalData.ranges] as number[]).sort().reverse(),
             measures: ([...originalData.measures] as number[]).sort().reverse(),
@@ -375,8 +369,7 @@ export default function module(): BulletChartModule {
             )
             // Cast because `svg.select` hands back a `Selection<BaseType, ...>`
             // while an axis renders into an SVG container; `BaseType` admits
-            // `Document` and `Window`, which have no geometry. Same invariance
-            // as everywhere else in this migration.
+            // `Document` and `Window`, which have no geometry.
             .call(
                 axis as unknown as (selection: ChartSelection<BaseType>) => void
             );

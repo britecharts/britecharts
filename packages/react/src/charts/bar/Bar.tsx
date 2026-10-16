@@ -209,10 +209,9 @@ export interface BarChartProps {
      * Called when the pointer enters a bar, with what the chart dispatches.
      *
      * `ChartEventHandler` is the type the wrappers package publishes for these
-     * four, and it is what `applyConfiguration` registers them through. They
-     * were declared as the bare `Function` type, which no handler satisfies
-     * structurally -- so these were unusable from TypeScript in practice,
-     * which the conversion found rather than a reader.
+     * four, and it is what `applyConfiguration` registers them through. The
+     * bare `Function` type will not do: no handler satisfies it structurally,
+     * so these would be unusable from TypeScript in practice.
      */
     customMouseOver?: ChartEventHandler;
 

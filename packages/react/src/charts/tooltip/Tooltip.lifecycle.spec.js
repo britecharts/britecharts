@@ -4,8 +4,7 @@ import { mount } from '../../../testing/mount';
 import Tooltip from './Tooltip';
 
 // What Tooltip does with the wrapper it draws the tooltip through, over its
-// life. The colocated Tooltip.spec.js is frozen for the hooks migration, so what
-// the conversion adds lives here.
+// life, beyond what the colocated Tooltip.spec.js pins.
 const makeWrapper = () => {
     const instance = { name: 'the tooltip instance' };
 

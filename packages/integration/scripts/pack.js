@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 // Packs the three publishable workspaces into .tarballs/ with pnpm's own
 // packer -- the one `pnpm release` publishes with. `npm pack` reads the
-// `files` field differently and has already produced a misleading "all good"
-// once (I1), so nothing here goes through npm. Verified against pnpm's
-// packer the same way: dist/umd/**, dist/cdn/** and dist/styles/** all land,
-// with no *.spec.js, *.stories.js or *.fixtures.js leaking in.
+// `files` field differently and can report a misleading "all good", so
+// nothing here goes through npm. With pnpm's packer, dist/umd/**, dist/cdn/**
+// and dist/styles/** all land, with no *.spec.js, *.stories.js or
+// *.fixtures.js leaking in.
 const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');

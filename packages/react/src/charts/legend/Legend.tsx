@@ -33,11 +33,10 @@ export interface LegendProps {
      * Required. `null` means the data has not arrived yet: nothing is drawn
      * until it does. Leaving it out is an error.
      */
-    // `LegendDataShape[]`, which had both fields' optionality the other way
-    // round here: `name` was optional though the component renders it for
-    // every entry, and `quantity` was required though the component supports
-    // data without it -- `hasQuantity` exists to ask. The chart's own
-    // `@typedef` says id and name are required and quantity is optional.
+    // `LegendDataShape[]`, as the chart's own `@typedef` says: id and name are
+    // required and quantity is optional. The component renders `name` for
+    // every entry, and supports data without `quantity` -- `hasQuantity`
+    // exists to ask.
     data: LegendDataShape[] | null;
 
     /**
@@ -45,8 +44,8 @@ export interface LegendProps {
      */
     // A trigger, not a callback: the chart's `clearHighlight()` takes no
     // arguments, so `applyConfiguration` calls it for any value that is set
-    // and discards what arrives. It was declared as a function, which is what
-    // a reader would pass and the chart would ignore.
+    // and discards what arrives. Typed as a function, it would invite a reader
+    // to pass one that the chart ignores.
     clearHighlight?: boolean;
 
     /**
@@ -127,8 +126,8 @@ export interface LegendProps {
      * Internally used, do not overwrite.
      *
      * Accepted and deliberately dropped: a Tooltip hands this to every chart
-     * it decorates, and a legend has no tooltip to redraw. It was undeclared,
-     * so a TypeScript consumer could not pass it.
+     * it decorates, and a legend has no tooltip to redraw. Declared so a
+     * TypeScript consumer can pass it.
      *
      * @ignore
      */

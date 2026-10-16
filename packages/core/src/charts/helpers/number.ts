@@ -72,15 +72,14 @@ export type RegressionPoint = { x: number; y: number };
  * linear regression formula.
  *
  * Both ends are the fitted line evaluated at the x they sit on: `y1` at
- * `minX`, `y2` at `maxX`. `y1` used to read `slope * n + intercept`, with `n`
- * the number of points, so the line's left end was drawn at the wrong height
- * whenever `minX` differed from the point count -- the scatter plot draws from
- * `(x1, y1)` to `(x2, y2)` with `x1` being `minX`.
+ * `minX`, `y2` at `maxX`. The scatter plot draws from `(x1, y1)` to
+ * `(x2, y2)` with `x1` being `minX`, so `y1` must not be evaluated at any other
+ * x, such as the point count.
  *
  * `x1`/`x2` are `number | undefined` because d3's `min`/`max` return undefined
- * for an empty input. No caller passes an empty array today -- the scatter plot
- * only calls this when it has points -- so that case still yields NaN heights
- * rather than being given an invented meaning.
+ * for an empty input. No caller passes an empty array -- the scatter plot only
+ * calls this when it has points -- so that case yields NaN heights rather than
+ * being given an invented meaning.
  * @private
  */
 export const calcLinearRegression = (

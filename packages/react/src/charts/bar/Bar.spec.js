@@ -27,8 +27,8 @@ describe('bar Chart', () => {
             });
         });
 
-        // A flag that is turned back off has to reach the chart: false used to
-        // be skipped, so isLoading={false} could never end a loading state
+        // A flag that is turned back off has to reach the chart: skipping false
+        // would mean isLoading={false} could never end a loading state
         describe('when isLoading turns false', () => {
             it('should end the loading state', () => {
                 const wrapper = mount(<Bar data={[]} isLoading={true} />);
@@ -46,11 +46,10 @@ describe('bar Chart', () => {
         });
     });
 
-    // Flipped by Bar's conversion to a function component (decision 04): it
-    // used to redraw on every re-render, even with referentially identical
-    // props, which is how a consumer who mutated their data array in place got a
-    // redraw. The props are now compared with the last drawing, so no update is
-    // made; a new array or object is needed. Named in the changeset.
+    // The props are compared with the last drawing, so a re-render with
+    // referentially identical props makes no update: a consumer who mutates
+    // their data array in place gets no redraw, and needs a new array or
+    // object.
     describe('re-rendering with props that did not change', () => {
         let updateSpy;
 

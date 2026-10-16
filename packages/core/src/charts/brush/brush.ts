@@ -50,8 +50,7 @@ export type BrushChartDataShape = {
      * `acceptNullValue` preserves a null rather than coercing it to zero,
      * `brushArea.defined()` skips those points so the area breaks rather than
      * dropping to the baseline, and the chart's own `brushMissingData.json`
-     * fixture carries eleven of them. Declared as `number` until now, so a
-     * TypeScript consumer could not pass the data the library itself ships.
+     * fixture carries eleven of them.
      */
     [BrushChartKeys.Value]: number | null;
     [BrushChartKeys.Date]: string;
@@ -69,14 +68,11 @@ export type BrushSelection = Selection<
     any
 >;
 
-// The three generics below named `BrushChartAPI`, where every other chart
-// names its Module. That is not cosmetic: these interfaces all return
-// `T & XAPI<T>`, so `brush().isAnimated(true)` reported
-// `BrushChartAPI & AnimatedChartAPI<BrushChartAPI>` -- a type with no
-// `ChartModuleSelection` in it, so the result could not be passed to
-// `selection.call()` and chaining off it lost the rest of the chart. The
-// sibling `ChartBaseAPIMinimal<BrushChartModule>` on the same line had it
-// right all along.
+// The generics below name `BrushChartModule`, as every other chart names its
+// Module, and not `BrushChartAPI`. That is not cosmetic: these interfaces all
+// return `T & XAPI<T>`, so naming the API would make `brush().isAnimated(true)`
+// a type with no `ChartModuleSelection` in it, which cannot be passed to
+// `selection.call()` and loses the rest of the chart when chained.
 export interface BrushChartAPI
     extends
         AccessibleChartAPI<BrushChartModule>,
@@ -104,10 +100,8 @@ export interface BrushChartAPI
     /**
      * Gets or Sets the rounding time interval of the selection boundary.
      *
-     * The setter returns the module, as every other accessor does. It was
-     * declared as returning `BrushChartKeys` -- the `'value' | 'date'` data-key
-     * enum, which this accessor has nothing to do with: it holds a d3 time
-     * interval name such as `'timeDay'`, and setting it returns `this`.
+     * The setter returns the module, as every other accessor does. The value
+     * is a d3 time interval name such as `'timeDay'`.
      */
     roundingTimeInterval(): string;
     roundingTimeInterval(roundingTimeInterval: string): BrushChartModule;
@@ -128,7 +122,7 @@ export type BrushChartModule = ChartModuleSelection<BrushChartDataShape[]> &
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in `bullet.ts`: these are
+ * generics are a bounded `any`, as in `bullet.ts`: these are
  * module-level variables reassigned from several differently-shaped selections,
  * so naming one concrete datum would reject the others.
  */
@@ -148,7 +142,7 @@ type ChartSelection<TElement extends BaseType> = Selection<
  * It differs from the published `BrushChartDataShape` in one place: `date` is a
  * Date here where the input is a string, because `cleanData` replaces it.
  * `value` is nullable in both -- a gap in the series is a case this chart
- * draws, and the published shape says so now.
+ * draws, and the published shape says so.
  */
 type BrushDatum = {
     date: Date;
@@ -205,9 +199,9 @@ type BrushDatum = {
  */
 
 export default function module(): BrushChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 20,
             right: 20,
@@ -223,7 +217,7 @@ export default function module(): BrushChartModule {
         isAnimated = false,
         animationDuration = motion.duration,
         // `[null, null]` until both ends are set, which is what the
-        // declaration now says.
+        // declaration says.
         dateRange: [string | null, string | null] = [null, null],
         // A range set before the chart has drawn cannot move a brush that does
         // not exist yet, so the first render applies it.
@@ -327,7 +321,7 @@ export default function module(): BrushChartModule {
      */
     function buildAxis(): void {
         // `AxisTickSettings` comes from the helper rather than being restated,
-        // the way `axis.ts` took `AxisTimeCombinationValue` from `constants`.
+        // the way `axis.ts` takes `AxisTimeCombinationValue` from `constants`.
         let minor: AxisTickSettings;
 
         if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
@@ -349,10 +343,6 @@ export default function module(): BrushChartModule {
 
             minor = axes.minor;
 
-            // `tickSize(0, 0)` and `tickSize(10, 0)` below each passed a second
-            // argument that d3-axis does not take -- its signature is
-            // `tickSize(size)`. The extra was discarded, so dropping it is
-            // bit-identical.
             xSubAxis = axisBottom(xScale)
                 .ticks(axes.major.tick)
                 .tickSize(0)
@@ -364,9 +354,6 @@ export default function module(): BrushChartModule {
         xAxis = axisBottom(xScale)
             .ticks(minor.tick)
             .tickSize(10)
-            // `tickPadding([tickPadding])` wrapped the number in an array, and
-            // d3 does `+padding` on it -- `+[5]` is 5, so it worked by
-            // coercion. Passing the number is the same value.
             .tickPadding(tickPadding)
             .tickFormat(minor.format as (d: Date | NumberValue) => string);
 
@@ -446,10 +433,10 @@ export default function module(): BrushChartModule {
      * @private
      */
     function buildScales(): void {
-        // `extent` is typed for the empty-input case, which this chart has
-        // never guarded against -- it reads `data[data.length - 1]`
-        // unconditionally too. Asserted rather than guarded, so the conversion
-        // changes no behaviour.
+        // `extent` is typed for the empty-input case, which this chart does
+        // not guard against -- it reads `data[data.length - 1]`
+        // unconditionally too. Asserted rather than guarded, as the rest of
+        // the chart assumes the data is not empty.
         xScale = scaleTime()
             .domain(extent(data, getDate) as [Date, Date])
             .range([0, chartWidth]);
@@ -457,8 +444,8 @@ export default function module(): BrushChartModule {
         // `getValueDomain` takes `Iterable<number>` and this chart really does
         // hand it nulls, from the missing-data case `acceptNullValue`
         // preserves. Filtering them would change the domain the chart draws,
-        // so the cast keeps the arithmetic bit-identical: a null compares as 0
-        // inside min/max, exactly as before.
+        // because a null compares as 0 inside min/max, so the cast lets them
+        // through.
         yScale = scaleLinear()
             .domain(getValueDomain(data.map(getValue) as number[]))
             .range([chartHeight, 0]);
@@ -502,9 +489,9 @@ export default function module(): BrushChartModule {
      */
     function cleanData(originalData: BrushChartDataShape[]): BrushDatum[] {
         const cleanData = originalData.reduce<BrushDatum[]>((acc, d) => {
-            // The same object, mutated in place, which is what this chart has
-            // always done. `cloneData` ran first, so these are already copies
-            // of the caller's data rather than the caller's own objects.
+            // The same object, mutated in place. `cloneData` ran first, so
+            // these are already copies of the caller's data rather than the
+            // caller's own objects.
             // Read through `d`, which is still typed as the input, and write
             // through `datum`, which is the post-clean view of the same
             // object. Reading through the cast would ask TypeScript for a Date
@@ -579,8 +566,8 @@ export default function module(): BrushChartModule {
             // `parseInt` is declared to take a string and this chart hands it
             // `number | null` -- the missing-data case. Both coercions are the
             // point of the guard: `parseInt(null, 10)` is NaN, so a null point
-            // is skipped, and a number is stringified first. The cast keeps
-            // both bit-identical.
+            // is skipped, and a number is stringified first. The cast lets
+            // both happen.
             .defined(
                 ({ value }) => !isNaN(parseInt(value as unknown as string, 10))
             )
@@ -728,8 +715,7 @@ export default function module(): BrushChartModule {
         if (isLocked) {
             // Reached only when `isLocked`, which the chart documents as
             // requiring a dateRange -- so both ends are set here. `new
-            // Date(null)` would be the epoch rather than a throw, which is the
-            // behaviour this preserves either way.
+            // Date(null)` would be the epoch rather than a throw.
             const lockedSelectionSize = Math.floor(
                 xScale(new Date(dateRange[1] as string)) -
                     xScale(new Date(dateRange[0] as string))
@@ -783,8 +769,7 @@ export default function module(): BrushChartModule {
             const dateExtent = selection.map(xScale.invert);
 
             // `map` gives `Date[]`, and this pair is always two entries
-            // because `selection` is. Asserted rather than restructured so the
-            // rounding below reads as it did.
+            // because `selection` is.
             const rounded = dateExtent.map(
                 timeIntervals[roundingTimeInterval].round
             ) as [Date, Date];
@@ -940,8 +925,8 @@ export default function module(): BrushChartModule {
     // enum, while `constants.ts` exports them as an `as const` object of string
     // literals -- and a string enum member is not assignable from its own
     // literal. The values are identical; only the nominality differs. Cast
-    // here rather than changing the shared declaration, which line,
-    // stacked-area and tooltip also depend on: that is its own change.
+    // here rather than in the shared declaration, which line, stacked-area
+    // and tooltip also depend on.
     (exports as BrushChartModule).axisTimeCombinations =
         axisTimeCombinations as BrushChartModule['axisTimeCombinations'];
 
@@ -1140,10 +1125,10 @@ export default function module(): BrushChartModule {
     (exports as BrushChartModule).on = function (
         ...args: [string] | [string, () => void]
     ) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`, following `heatmap.ts`: the TypeScript lint override makes
-        // `prefer-spread` an error, and the two shapes `on` is called with --
-        // a lookup and a registration -- are exactly what the tuple says.
+        // Rest parameters and a spread rather than `arguments` and `.apply`:
+        // the TypeScript lint override makes `prefer-spread` an error, and the
+        // two shapes `on` is called with -- a lookup and a registration -- are
+        // exactly what the tuple says.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );

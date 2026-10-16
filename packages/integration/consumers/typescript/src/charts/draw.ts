@@ -1,11 +1,10 @@
 // Drawing a chart -- `selection.call(chart)` -- is the one thing every
-// consumer of this library does, and until this file nothing here did it.
+// consumer of this library does, and nothing else here does it.
 //
-// That gap hid a real defect in the published typings: `ChartModuleSelection`
-// declared a second `_data` parameter that no chart has and `d3.call` never
-// passes, so every correct `.call(chart)` failed to compile with "Expected 2
-// arguments, but got 1". The rest of this consumer only ever constructs charts
-// and sets accessors, which is why it stayed green.
+// The rest of this consumer only constructs charts and sets accessors, so it
+// stays green over a `ChartModuleSelection` that declares a second `_data`
+// parameter no chart has and `d3.call` never passes -- one that fails every
+// correct `.call(chart)` with "Expected 2 arguments, but got 1".
 //
 // One call per chart factory, through a real d3 selection, so the signature is
 // exercised the way a consumer meets it.

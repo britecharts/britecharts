@@ -3,10 +3,10 @@ import type { BaseType, Selection } from 'd3-selection';
 
 /**
  * Any d3 selection these helpers are handed. Same reasoning as filter.ts: the
- * datum and parent generics are the plan's bounded `any` because `Selection` is
+ * datum and parent generics are a bounded `any` because `Selection` is
  * invariant in them and nothing here reads the datum, and the element is a
- * generic parameter on each function so a caller's own element type is inferred
- * rather than fixed.
+ * generic parameter on each function so a caller's own element type is
+ * inferred rather than fixed.
  */
 type TextSelection<TElement extends BaseType = BaseType> = Selection<
     TElement,
@@ -53,14 +53,13 @@ export const wrapText = function (
         wrapConfig.lineHeight * wrapConfig.smallTextLineHeightRatio;
 
     // `attr` returns a string, so this has to be converted rather than used
-    // raw. Untouched, `y - 5` subtracted numerically while
-    // `y + smallTextOffset` CONCATENATED -- '100' + 10 is '10010', not 110 --
-    // so the two offsets computed from the same value disagreed about what it
-    // was.
+    // raw. Untouched, `y - 5` subtracts numerically while
+    // `y + smallTextOffset` CONCATENATES -- '100' + 10 is '10010', not 110 --
+    // so the two offsets computed from the same value disagree about what it
+    // is.
     //
-    // `Number(null)` is 0, which is what the arithmetic already produced for
-    // the one existing caller (donut's `.donut-text` sets no `y`, and
-    // `null + 10` was already 10), so nothing that renders today moves.
+    // `Number(null)` is 0, which is right for the one existing caller
+    // (donut's `.donut-text` sets no `y`).
     const y = Number(text.attr('y'));
     // `dy` is a length, so it usually arrives with a unit -- donut sets
     // `.donut-text`'s to '.2em' immediately before calling this. `parseFloat`
@@ -138,11 +137,8 @@ export const wrapTextWithEllipses = function <TElement extends BaseType>(
     limit: number = 2
 ): void {
     text.each(function () {
-        // The JavaScript reassigned the `text` parameter here. Every iteration
-        // overwrote it before reading it, and nothing after `.each` touched it,
-        // so a local is the same thing said without mutating a parameter -- and
-        // it keeps each element's own selection type instead of fighting the
-        // outer one.
+        // A local rather than reassigning the `text` parameter: it keeps each
+        // element's own selection type instead of fighting the outer one.
         const element = select(this);
         const words = element.text().split(/\s+/).reverse();
         const lineHeight = 1.2;
@@ -202,8 +198,7 @@ export const wrapTextWithEllipses = function <TElement extends BaseType>(
  * @param  text      Text to measure
  * @param  fontSize  Font size (or default)
  * @param  fontFace  Font family to use in the calculation (or default)
- * @return Approximated width of the text. The JSDoc used to say String; it is
- *         and always was a number.
+ * @return Approximated width of the text, as a number.
  * @private
  */
 export const getTextWidth = function (
@@ -212,9 +207,8 @@ export const getTextWidth = function (
     fontFace: string = defaultFontFace
 ): number {
     const a = document.createElement('canvas');
-    // `getContext` is typed as nullable. Asserted rather than guarded so the
-    // behaviour is unchanged: where a null context would now throw on the next
-    // line, it threw there before too.
+    // `getContext` is typed as nullable. Asserted rather than guarded: a null
+    // context throws on the next line either way.
     const b = a.getContext('2d')!;
 
     b.font = fontSize + 'px ' + fontFace;

@@ -53,8 +53,8 @@ const PAGES = [
             donut: true,
             line: true,
             react: true,
-            // Every block must hold exactly one svg. The wrappers' destroy() is a
-            // no-op today, so this is where a leak under React 19 would show.
+            // Every block must hold exactly one svg: this is where a chart
+            // drawn twice under React 19 shows.
             oneSvg: [
                 '.donut-container',
                 '.plain-line',
@@ -103,15 +103,13 @@ const PAGES = [
 // Console output known to be noise rather than a problem, and why.
 //
 // `tooltipChart.create` calls core's `topicLabel('values')`, which core itself
-// deprecates -- so every tooltip logs the deprecation. That is not new: it has
-// always been emitted, and no consumer saw it because react's UMD bundle is
-// built with `drop_console: true`, and the `import` condition used to resolve
-// to that bundle. Pointing the ESM entry at `dist/esm`, where the code is not
-// minified, is what surfaced it.
+// deprecates -- so every tooltip logs the deprecation. Only react's UMD bundle
+// drops console calls (`dropConsole`); the ESM entry, `dist/esm`, keeps them,
+// so every consumer importing it sees the warning.
 //
 // Waived rather than fixed here: not calling the deprecated accessor changes
 // which key the tooltip reads its topics under, which is a behaviour change
-// and belongs in its own PR rather than inside a migration.
+// of its own.
 const WAIVED_CONSOLE = [/This method is being deprecated.*"topic" as the key/];
 
 for (const [id, url, how, expects] of PAGES) {

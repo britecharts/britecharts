@@ -18,10 +18,9 @@ const WRONG_LOCALE_OBJECT_MESSAGE =
  * safe to hand to d3. The parameter is `unknown`: the whole point is that this
  * runs on a value a consumer passed and nothing has vouched for yet.
  *
- * It checks four of d3's required keys, not all of them -- that is the
- * behaviour as it was, and the `satisfies` above at least makes the four
- * spelling-checked against d3's own type, so a typo cannot silently stop
- * checking a key.
+ * It checks four of d3's required keys, not all of them. The `satisfies`
+ * above makes the four spelling-checked against d3's own type, so a typo
+ * cannot silently stop checking a key.
  * @private
  */
 const isValidLocaleDefinition = (

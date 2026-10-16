@@ -14,8 +14,8 @@ import type { WrapperConfiguration } from './configuration.js';
  * says what it actually takes: `Wrapper<BarChartDataShape[], BarChartModule>`
  * for the eight that take an array, `Wrapper<LineChartData, LineChartModule>`
  * for line, whose data is an object (`{ data: LineChartDataShape[] }`) bound
- * directly. Spelling this as `data: TData[]` instead looked right for eight of
- * them and could not express line at all.
+ * directly. Spelling this as `data: TData[]` would fit the eight and could not
+ * express line at all.
  *
  * `TChart` is the chart module core exports (`BarChartModule` and so on),
  * which is what gives `configuration` its per-accessor value types.
@@ -57,13 +57,8 @@ export interface Wrapper<TData, TChart extends object> {
 
     /**
      * @param el The element the chart was created in. Missing does nothing: a
-     * wrapper can be destroyed before it ever drew.
-     *
-     * Note this is wider than the `destroy()` the nine unconverted `.js`
-     * wrappers still declare, where it is a zero-argument no-op. Passing `el`
-     * makes it actually remove the chart's svg, so the changeset for this
-     * migration has to call that out as a behaviour change, not just a typing
-     * one.
+     * wrapper can be destroyed before it ever drew. Passing `el` removes the
+     * chart's svg.
      */
     destroy(el?: HTMLElement | null): void;
 }

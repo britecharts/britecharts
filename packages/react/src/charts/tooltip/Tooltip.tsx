@@ -97,8 +97,7 @@ export interface TooltipProps {
      * Shows the tooltip
      */
     // The data point to show, which is what the tooltip's `show` command
-    // takes. It was declared as a function, which the tooltip would have
-    // rendered as a data point.
+    // takes. A function here would be rendered as a data point.
     show?: TooltipDataShape;
 
     /**
@@ -123,11 +122,11 @@ export interface TooltipProps {
      * Pass an override for the ordering of your tooltip
      */
     // `TooltipTopic['name'][]`, which is `(string | number)[]`: line hands
-    // the tooltip numeric topic ids and stacked area hands it string names,
-    // and this migration corrected core to say so. `string[]` rejected the
-    // numeric order the tooltip's own spec uses. Spelled out rather than
-    // indexed: react-docgen reads `TooltipTopic['name']` as an empty union,
-    // and Storybook's arg-type conversion throws on it.
+    // the tooltip numeric topic ids and stacked area hands it string names.
+    // `string[]` would reject the numeric order the tooltip's own spec uses.
+    // Spelled out rather than indexed: react-docgen reads
+    // `TooltipTopic['name']` as an empty union, and Storybook's arg-type
+    // conversion throws on it.
     topicsOrder?: Array<string | number>;
 
     /**
@@ -144,8 +143,7 @@ export interface TooltipProps {
      */
     // `(value: number) => number`, as core declares it. Spelled out because
     // core's `TooltipFormattingFunction` is not exported; the bare `Function`
-    // type that stood here accepts any function-like value and tells a
-    // consumer nothing.
+    // type would accept any function-like value and tell a consumer nothing.
     valueFormatter?: (value: number) => number;
 
     /**

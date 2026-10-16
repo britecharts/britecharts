@@ -79,11 +79,6 @@ export type LineChartDataShape = {
      * reads this as `topic` (`topic: values[0]['name']` below) and uses it to
      * group the flat data and to key the colour map, which is why this chart's
      * own JSDoc documents it as `@property {number} topic`.
-     *
-     * Declared `string` until now, which contradicted this chart's runtime and
-     * JSDoc, react's `Line.d.ts` (already `number`) and wrappers' own
-     * fixtures. It blocked typing the line wrapper at all: its fixture data
-     * did not satisfy this type.
      */
     [LineChartKeys.Name]: number;
     [LineChartKeys.TopicName]: string;
@@ -104,20 +99,17 @@ export interface CustomLine {
  * Whether the x axis carries dates or plain numbers.
  *
  * `'number'`, not `'numeric'`: the chart compares this against `'number'` in
- * four places, so `'numeric'` -- which the declaration used to accept -- type
- * checked and did nothing, while the value that actually switches the axis was
- * rejected. The accessor's own `@example` is `line.xAxisValueType('number')`.
- * Shares its shape with the stacked area chart, which had the same defect.
+ * four places, and that is the value that switches the axis. The accessor's
+ * own `@example` is `line.xAxisValueType('number')`. Shares its shape with the
+ * stacked area chart.
  */
 export type LineChartXAxisValueType = 'date' | 'number';
 
 /** Whether a numeric x axis is scaled linearly or logarithmically. */
 export type LineChartXAxisScale = 'linear' | 'logarithmic';
 
-// The thirteen accessors below were setter-only -- a single signature
-// returning the chart -- so reading one reported the chart rather than its
-// value. Each is a getter/setter overload pair now, getter first and setter
-// last, with the getter typed from the implementation's own default.
+// Each accessor below is a getter/setter overload pair, getter first and
+// setter last, with the getter typed from the implementation's own default.
 //
 // Five getters are wider than their setter: `grid`, `xAxisLabel`, `yAxisLabel`
 // and `xTicks` are `null` by default, and `xTicks` hands that straight to d3
@@ -230,7 +222,7 @@ export type LineChartModule = ChartModuleSelection<LineChartData> &
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in the other charts:
+ * generics are a bounded `any`, as in the other charts:
  * these are module-level variables reassigned from several differently-shaped
  * selections, so naming one concrete datum would reject the others.
  */
@@ -427,9 +419,9 @@ type LineXScale =
  * }
  */
 export default function module(): LineChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 60,
             right: 30,
@@ -475,7 +467,7 @@ export default function module(): LineChartModule {
         topicLabel = 'topic',
         // Null, not undefined: this chart initialises its axis labels where
         // the grouped and stacked bars leave theirs unset, which is what their
-        // declarations each now say.
+        // declarations each say.
         xAxisLabel: string | null = null,
         xAxisLabelEl: ChartSelection<SVGTextElement> | null = null,
         yAxisLabel: string | null = null,
@@ -744,8 +736,7 @@ export default function module(): LineChartModule {
                     axisBottom(xScale as ScaleTime<number, number>)
                         .ticks(major.tick as number)
                         // One argument: d3's `tickSize` sets both the inner
-                        // and the outer size from it, and the second argument
-                        // this used to pass has always been ignored.
+                        // and the outer size from it.
                         .tickSize(0)
                         .tickFormat(
                             major.format as unknown as (
@@ -759,7 +750,6 @@ export default function module(): LineChartModule {
             xAxis = asAxis(
                 axisBottom(xScale as ScaleTime<number, number>)
                     .ticks(minor.tick as number)
-                    // One argument, as above: the second was ignored.
                     .tickSize(10)
                     .tickPadding(tickPadding)
                     .tickFormat(
@@ -875,8 +865,8 @@ export default function module(): LineChartModule {
      * @private
      */
     function buildXAxisScale() {
-        // Dates compare and coerce as numbers here, which is what made the
-        // original work; `Number` is that coercion written out.
+        // Dates compare and coerce as numbers here; `Number` is that coercion
+        // written out.
         const minX = Number(
             min(dataByTopic, ({ dates }) =>
                 min(dates, (d) => Number(getDate(d)))
@@ -974,7 +964,7 @@ export default function module(): LineChartModule {
         }
 
         // Group the flat data by topic for the internal accessors.
-        // String() keeps the key coercion d3-collection's nest() used to do.
+        // String() makes every key a string.
         const dataByTopic = groups(data, (d) =>
             String(getVariableTopicName(d))
         ).map(([key, values]) => ({
@@ -1237,7 +1227,7 @@ export default function module(): LineChartModule {
 
         const getColor = (yValue: number) => {
             // `yValues` is these very lines' own `y` values, so the lookup
-            // always finds one -- and a miss threw here before, too.
+            // always finds one.
             const definedColor = customLines.find(
                 (line) => line.y === yValue
             )!.color;
@@ -1423,8 +1413,8 @@ export default function module(): LineChartModule {
         d1: LineDateGroup
     ) {
         if (xAxisValueType === 'number') {
-            // Both are numbers down this branch; Number() is what the
-            // subtraction did implicitly.
+            // Both are numbers down this branch; Number() is the coercion the
+            // subtraction performs anyway.
             return Number(x0) - Number(d0.date) > Number(d1.date) - Number(x0)
                 ? d0
                 : d1;
@@ -2270,8 +2260,8 @@ export default function module(): LineChartModule {
     (exports as LineChartModule).on = function (
         ...args: [string] | [string, () => void]
     ) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`, following the other converted charts.
+        // Rest parameters and a spread rather than `arguments` and `.apply`,
+        // as in the other charts.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );

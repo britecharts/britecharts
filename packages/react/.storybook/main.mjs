@@ -3,11 +3,10 @@ import { fileURLToPath } from 'node:url';
 
 /**
  * No package manager reliably hoists a workspace's Storybook packages to the
- * root -- pnpm's isolated node_modules never does, and Yarn didn't always either
- * -- and
- * Storybook resolves presets relative to its own install rather than to this
- * config -- so a nested copy fails with "Cannot find module .../preset". Naming
- * them by absolute path makes resolution start here instead, which is what
+ * root -- pnpm's isolated node_modules never does -- and Storybook resolves
+ * presets relative to its own install rather than to this config -- so a
+ * nested copy fails with "Cannot find module .../preset". Naming them by
+ * absolute path makes resolution start here instead, which is what
  * Storybook's own monorepo setup generates.
  */
 const getAbsolutePath = (value) =>

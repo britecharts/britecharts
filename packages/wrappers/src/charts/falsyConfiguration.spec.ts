@@ -8,9 +8,9 @@ import line from './line/lineChart';
 import lineData from './line/lineChart.fixtures';
 
 // The configuration a consumer passes is applied to the real core chart. A
-// value of false, 0 or '' is a setting like any other: it used to be skipped,
-// so a chart could never have a flag turned back off (isLoading={false} could
-// not end a loading state).
+// value of false, 0 or '' is a setting like any other: skipping it would mean
+// a chart could never have a flag turned back off (isLoading={false} could not
+// end a loading state).
 describe('falsy configuration values', () => {
     let anchor: HTMLElement;
 

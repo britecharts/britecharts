@@ -1,5 +1,5 @@
-// Ported from britecharts-react-test-project; tests/browser.spec.js counts
-// the donut slices and the line topics.
+// The data the React pages draw; tests/browser.spec.js counts the donut
+// slices and the line topics.
 export const donutData = [
     { quantity: 60, percentage: 60, name: 'React', id: 1 },
     { quantity: 20, percentage: 20, name: 'Ember', id: 2 },

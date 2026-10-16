@@ -148,12 +148,12 @@ export const getTimeSeriesAxis = (
     // `CUSTOM` is 'custom', which has no '-' in it: `minor` comes out as
     // 'custom' and `major` as undefined, so both lookups below miss and both
     // formats are undefined. Callers are expected to intercept that before
-    // getting here -- line.js does, but only when `xAxisCustomFormat` is also
-    // a string, so `xAxisFormat('custom')` on its own still lands here and
-    // falls back to d3's default tick formatting.
+    // getting here -- the line chart does, but only when `xAxisCustomFormat`
+    // is also a string, so `xAxisFormat('custom')` on its own still lands here
+    // and falls back to d3's default tick formatting.
     //
-    // Preserved as it was, including the misses. The casts say "this may not be
-    // a TimeUnit" rather than pretending the split is exhaustive.
+    // Left as it is, misses included. The casts say "this may not be a
+    // TimeUnit" rather than pretending the split is exhaustive.
     const [minor, major] = settings.split('-') as [
         TimeUnit | undefined,
         TimeUnit | undefined,

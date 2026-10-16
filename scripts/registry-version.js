@@ -2,10 +2,10 @@
  * Asks the npm registry for a version, and waits out its read lag.
  *
  * For a few minutes after a publish, `npm view` can still answer E404 for the
- * version that just shipped. On 15 Oct that broke two runs at once: the smoke
- * workflow read npm's error object as the version, and the next Release run's
- * "already published?" check missed `@britecharts/react@3.0.0-beta.4`, tried
- * to publish it again and got a 409.
+ * version that just shipped. Taken at its word, that answer makes the smoke
+ * workflow read npm's error object as the version, and makes the Release
+ * run's "already published?" check miss a version that shipped, publish it
+ * again and get a 409.
  *
  * Only a value shaped like a version counts as an answer. Anything else --
  * an error, an empty reply, a JSON object -- is retried until the attempts run

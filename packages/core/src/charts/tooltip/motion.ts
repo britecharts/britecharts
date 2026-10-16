@@ -18,9 +18,9 @@ import 'd3-transition';
  * The tooltip's root group, as a selection of it.
  *
  * Same convention as the helpers in `charts/helpers`: the datum and parent
- * generics are the migration plan's bounded `any` because `Selection` is
- * invariant in them and nothing here reads the datum, while the element is a
- * generic parameter on each function so a caller keeps its own element type.
+ * generics are a bounded `any` because `Selection` is invariant in them and
+ * nothing here reads the datum, while the element is a generic parameter on
+ * each function so a caller keeps its own element type.
  *
  * The element is narrower than the helpers' `BaseType`, though, and has to be:
  * `prepareToShow` reads `node.style`, which `BaseType` does not have -- it

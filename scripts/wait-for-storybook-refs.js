@@ -10,12 +10,11 @@
  * A ref left at `'unknown'` is what the browser then has to check itself, and it
  * does so with `credentials: 'include'` -- which Storybook's own
  * `Access-Control-Allow-Origin: *` cannot satisfy, so the ref fails to load and
- * the sidebar shows "Oh no! Something went wrong loading this Storybook". Since
- * the shell boots at the same moment as the two Storybooks it points at, it
- * always lost that race, and which of the two blocks broke was down to whichever
- * webpack build happened to finish first.
+ * the sidebar shows "Oh no! Something went wrong loading this Storybook". Booted
+ * at the same moment as the two Storybooks it points at, the shell loses that
+ * race, and which of the two refs breaks depends on which build finishes first.
  *
- * Waiting here makes local behave the way production already does, where the
+ * Waiting here makes local behave the way production does, where the
  * refs are the GitHub Pages copies deployed with the docs, always up.
  *
  * Usage: node scripts/wait-for-storybook-refs.js <url>... -- <command> [args]

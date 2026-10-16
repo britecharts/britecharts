@@ -3,11 +3,11 @@ const path = require('path');
 process.env.TZ = 'UTC';
 
 module.exports = {
-    // One transform for every extension: babel-jest strips TypeScript the same
-    // way the webpack build does (@babel/preset-typescript in
-    // babel.config.test.js), rather than type-checking on the way through.
-    // ts-jest used to own .ts/.tsx here, but it duplicated the `type-check`
-    // script's work on every test run and pinned the repo to TypeScript < 7.
+    // One transform for every extension: babel-jest strips TypeScript
+    // (@babel/preset-typescript in babel.config.test.js) rather than
+    // type-checking on the way through. Type-checking is the `type-check`
+    // script's job; ts-jest would repeat that work on every test run and pin
+    // the repo to TypeScript < 7.
     transform: {
         '\\.[jt]sx?$': [
             'babel-jest',
@@ -19,17 +19,17 @@ module.exports = {
         url: 'http://localhost',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-    // Jest's counterpart to webpack's `resolve.extensionAlias`, which it has no
-    // native equivalent for: drop the `.js` off a relative specifier so
-    // `moduleFileExtensions` above decides what it resolves to, trying .ts and
+    // Jest has no native equivalent of a bundler's `resolve.extensionAlias`,
+    // so this drops the `.js` off a relative specifier and lets
+    // `moduleFileExtensions` above decide what it resolves to, trying .ts and
     // .tsx before .js.
     //
-    // The barrels keep their `.js` specifiers as files convert one at a time
+    // The barrels use `.js` specifiers for .ts files
     // (`export { default as BulletWrapper } from './charts/bullet/bulletChart.js'`
-    // still points at bulletChart.ts), and jest otherwise resolves that string
+    // points at bulletChart.ts), and jest otherwise resolves that string
     // literally and fails. It bites hardest across packages: wrappers' own
-    // specs import each wrapper directly and never noticed, while every react
-    // spec goes through the wrappers barrel and all 16 suites broke at once.
+    // specs import each wrapper directly, while every react spec goes through
+    // the wrappers barrel, so without this rule every react suite fails.
     //
     // Dropping the extension is safe for files that really are .js -- the same
     // lookup finds them -- so this needs no per-package exceptions.

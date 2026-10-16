@@ -5,8 +5,8 @@ import Donut from './Donut';
 import donutData from './donutChart.fixtures';
 import { DonutWrapper } from '@britecharts/wrappers';
 
-// What Donut does that the colocated Donut.spec.js does not pin. That spec is
-// frozen for the hooks migration, so what the conversion adds lives here.
+// What Donut does with its wrapper over its life, beyond what the colocated
+// Donut.spec.js pins.
 describe('Donut lifecycle', () => {
     let data;
     let createSpy;
@@ -90,8 +90,8 @@ describe('Donut lifecycle', () => {
             expect(updateSpy.mock.calls[0][3]).toBe(instance);
         });
 
-        // Decision 04, as for Line: a re-render with props that did not
-        // change is compared with the last drawing and skipped
+        // As for Line: a re-render with props that did not change is compared
+        // with the last drawing and skipped
         it('should not redraw when a re-render brings props that did not change', () => {
             const wrapper = mount(<Donut data={data} width={300} />);
 

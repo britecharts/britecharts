@@ -172,8 +172,8 @@ export interface DonutChartProps {
      *
      * Accepted and deliberately dropped: a Tooltip hands this to every chart
      * it decorates, and this component takes it out of the configuration
-     * rather than passing it on. It was undeclared, so a TypeScript consumer
-     * using Tooltip's render prop around a Donut could not pass it.
+     * rather than passing it on. Declared so a TypeScript consumer using
+     * Tooltip's render prop around a Donut can pass it.
      *
      * @ignore
      */

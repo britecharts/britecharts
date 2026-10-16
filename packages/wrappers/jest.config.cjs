@@ -8,8 +8,8 @@ module.exports = {
     // points at a built bundle, so without this every spec here needs
     // `pnpm build:core` to have run first.
     //
-    // Extensionless on purpose, so this keeps working when core's barrel
-    // converts to TypeScript in its own phase.
+    // Extensionless on purpose, so it resolves whichever extension core's
+    // barrel has.
     moduleNameMapper: {
         // Spread, not replace: see the note in jest.config.base.js.
         ...configBase.moduleNameMapper,

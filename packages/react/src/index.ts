@@ -17,8 +17,7 @@ export { default as withResponsiveness } from './charts/helpers/withResponsivene
 export * from './charts/constants.js';
 
 // The props of each component, so the generated declaration for this file is
-// the whole package surface. They used to be published from a hand-written
-// copy in src/typings, kept equal to these by an assertion in every component.
+// the whole package surface.
 export type { BarChartProps } from './charts/bar/Bar.js';
 export type { BulletChartProps } from './charts/bullet/Bullet.js';
 export type { DonutChartProps } from './charts/donut/Donut.js';

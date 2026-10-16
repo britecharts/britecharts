@@ -1,22 +1,19 @@
 // Reading an accessor -- `chart.width()` with no argument -- is the other
-// thing every consumer does, and until this file nothing here did it.
+// thing every consumer does, and nothing else here does it.
 //
-// That gap hid a defect in the published typings as real as the `.call(chart)`
-// one next door. Every accessor was declared with a single optional-parameter
-// signature returning the chart:
+// Every accessor in this library is `if (!arguments.length) { return value; }`,
+// so `chart.width()` gives back a number, not the chart. A declaration with a
+// single optional-parameter signature returning the chart:
 //
 //     width(width?: number): T & ChartBaseAPI<T>;
 //
-// which says `chart.width()` gives back the chart. At runtime it gives back a
-// number -- every accessor in this library is
-// `if (!arguments.length) { return value; }`. So the type was wrong for the
-// getter on all ~30 accessors of all 14 charts, and no consumer could assign
-// one to a typed variable. The rest of this consumer only ever *sets*
-// accessors, which is why it stayed green.
+// gets the getter wrong on every accessor, and no consumer can assign one to a
+// typed variable. The rest of this consumer only *sets* accessors, so it would
+// stay green over that.
 //
 // Each assignment below is the assertion: it compiles only if the getter
 // overload reports the value's own type. The chained calls alongside them are
-// the other half -- fixing the getter must not cost the setter its chaining.
+// the other half -- the getter must not cost the setter its chaining.
 import { bar, donut, heatmap, line } from '@britecharts/core';
 
 // Getters report the value, not the chart.
@@ -41,8 +38,8 @@ const chained: number = bar()
     .width();
 
 // The same on a chart using BaseAPI rather than ChartBaseAPI. `boxSize` and the
-// other chart-specific accessors are declared per chart and are corrected with
-// each chart's own conversion; this file covers the shared interfaces.
+// other chart-specific accessors are declared per chart and asserted in each
+// chart's own section below; this one covers the shared interfaces.
 const schema: string[] = heatmap().colorSchema();
 
 // And on the animated and time-series surfaces.
@@ -63,14 +60,13 @@ export const readAccessors = {
     locale,
 };
 
-// Heatmap's own accessors, and the three its declaration never had at all.
+// Heatmap's own accessors, `on`, `isAnimated` and `animationDuration` among
+// them.
 //
-// The implementation exposes eleven accessors; the declaration covered eight.
-// `on`, `isAnimated` and `animationDuration` are all documented `@public` and
-// have always shipped. `on` is the consequential one: it is how a consumer
-// wires the mini tooltip to a chart, which is the pattern this library's own
-// examples show, so `heatmap().on('customMouseOver', tooltip.show)` was a
-// compile error for every TypeScript consumer.
+// All three are documented `@public`. `on` is the consequential one: it is
+// how a consumer wires the mini tooltip to a chart, which is the pattern this
+// library's own examples show, so `heatmap().on('customMouseOver',
+// tooltip.show)` has to compile for a TypeScript consumer.
 import { miniTooltip } from '@britecharts/core';
 
 const heatmapChart = heatmap();
@@ -96,17 +92,15 @@ export const heatmapAccessors = {
     heatmapDuration,
 };
 
-// The label accessors, and the three others that were exposed but never
-// declared. Eighteen in total across eight charts, found by comparing each
-// chart's runtime surface against its typings rather than one at a time --
-// `check:api-parity` in core does that comparison through the TypeScript
-// compiler, so it resolves `Omit`, inherited members and intersections properly.
+// The label accessors, and three others: eighteen in total across eight
+// charts. `check:api-parity` in core compares each chart's runtime surface
+// against its typings through the TypeScript compiler, so it resolves `Omit`,
+// inherited members and intersections properly.
 //
 // Fifteen of the eighteen are one family: the keys a chart reads its data by.
-// Their JSDoc called most of them `{number}`, which is why the types here come
-// from the implementation's own defaults instead -- `nameLabel` defaults to
-// `'name'`, `valueLabel` to `'value'`, `dateLabel` to `'date'`. They are
-// strings, and they always have been.
+// Their types come from the implementation's own defaults rather than the
+// JSDoc -- `nameLabel` defaults to `'name'`, `valueLabel` to `'value'`,
+// `dateLabel` to `'date'`. They are strings.
 import {
     groupedBar,
     legend,
@@ -135,21 +129,17 @@ import type {
 
 const barNameLabel: string = bar().nameLabel();
 
-// The bar chart's other twenty-two accessors, corrected with its conversion for
-// the same reason the grouped and stacked bars' were: setter-only, so reading
-// one reported the chart instead of its value. `nameLabel` just above was never
-// part of that.
+// The bar chart's other twenty-two accessors, each read back as its value
+// rather than the chart.
 //
-// `orderingFunction` is the one that was declared wrong rather than merely
-// incomplete. It was `=> void`, and the chart hands it to
-// `Array.prototype.sort`, which reads the sign of the result -- so the
-// assertion below is that the comparator comes back usable for what the chart
-// uses it for, and `expect-errors.ts` holds the control for the callback that
-// returns nothing.
+// `orderingFunction` is handed to `Array.prototype.sort`, which reads the sign
+// of the result -- so the assertion below is that the comparator comes back
+// usable for what the chart uses it for, and `expect-errors.ts` holds the
+// control for the callback that returns nothing.
 //
 // Four getters are wider than their setter: `chartGradient`, `xAxisLabel`,
 // `yAxisLabel` and `valueLocale` are `null` until set, where the grouped and
-// stacked bars left their axis labels `undefined` instead. `orderingFunction`
+// stacked bars leave their axis labels `undefined` instead. `orderingFunction`
 // reads `undefined`, having no initialiser. Worth asserting separately, since
 // the shape a consumer has to write differs between the two.
 const barOwn = bar();
@@ -171,7 +161,7 @@ const barYLabelOffset: number = barOwn.yAxisLabelOffset();
 const barYAxisPadding: number = barOwn.yAxisPaddingBetweenChart();
 const barYTicks: number = barOwn.yTicks();
 
-// Null until set, each needing the guard a consumer now has to write.
+// Null until set, each needing the guard a consumer has to write.
 const barGradient: [string, string] | null = barOwn.chartGradient();
 const barXAxisLabel: string | null = barOwn.xAxisLabel();
 const barYAxisLabel: string | null = barOwn.yAxisLabel();
@@ -197,14 +187,14 @@ const barChained: number = bar()
     .labelsSize(14)
     .labelsSize();
 
-// The scatter plot's twenty-one accessors, corrected with its conversion for
-// the same reason the three bar charts' were.
+// The scatter plot's twenty-one accessors, each read back as its value, as on
+// the three bar charts.
 //
 // Four getters are wider than their setter, and `yTicks` is the one worth
 // noticing: it is `null` by default and the chart hands that straight to d3's
 // `axis.ticks`, where null means "use the scale's own count". So a consumer
 // reading it back before setting one gets null, not a number -- the same shape
-// brush's `xTicks` already has. `grid` and `valueLocale` are null too, and the
+// brush's `xTicks` has. `grid` and `valueLocale` are null too, and the
 // two axis labels read `undefined`.
 const scatterChart = scatterPlot();
 
@@ -239,9 +229,9 @@ const scatterChained: number | null = scatterPlot()
     .yTicks(8)
     .yTicks();
 
-// The tooltip's sixteen accessors, corrected with its conversion. Its
-// declaration was already careful about the data shapes -- `TooltipTopic.name`
-// is a number, not a label -- but every accessor was still setter-only.
+// The tooltip's sixteen accessors, each read back as its value. Its
+// declaration is careful about the data shapes -- `TooltipTopic.name` is a
+// number, not a label.
 //
 // `dateFormat` is the one worth an assertion of its own: its getter never
 // reports null, because it falls back to the default axis setting when none is
@@ -291,19 +281,17 @@ const tooltipFormatted: number | undefined = tooltipFactory()
     .valueFormatter((value) => value * 2)
     .valueFormatter()?.(21);
 
-// The stacked area's seventeen accessors, and the generic that made its `on`
-// unusable.
+// The stacked area's seventeen accessors, and the generic on its `on`.
 //
-// `InteractiveChartAPI` was parameterised with `StackedBarChartModule` -- the
-// wrong chart. So `stackedArea().on(...)` reported the stacked bar's API, and
-// the two assertions below are what that broke: a chain crossing from `on`
-// back to one of this chart's own accessors, and the result still being
-// drawable. Both are errors against the old declaration.
+// `InteractiveChartAPI` has to be parameterised with this chart's own module:
+// given another, `StackedBarChartModule` say, `stackedArea().on(...)` reports
+// that chart's API. The two assertions below are what that breaks: a chain
+// crossing from `on` back to one of this chart's own accessors, and the result
+// still being drawable.
 //
-// `emptyDataConfig` was missing `minY`, which the chart reads, and
-// `xAxisValueType` accepted `'numeric'` while the chart compares against
-// `'number'` -- so the value that works was rejected and the one accepted did
-// nothing. Both are asserted here with the values the chart actually uses.
+// `emptyDataConfig` carries `minY`, which the chart reads, and
+// `xAxisValueType` takes `'number'`, which is what the chart compares against.
+// Both are asserted here with the values the chart actually uses.
 const areaChart = stackedArea();
 
 const areaDrawable: StackedAreaChartModule = stackedArea().on(
@@ -336,22 +324,20 @@ const areaXTicks: number | null = areaChart.xTicks();
 const areaTopicsOrder: string[] | undefined = areaChart.topicsOrder();
 const areaYLabel: string | null = areaChart.yAxisLabel();
 
-// `'number'` is the value that switches the axis, and it type-checks now.
+// `'number'` is the value that switches the axis, and it type-checks.
 const areaNumericAxis: StackedAreaChartModule = stackedArea()
     .xAxisValueType('number')
     .xAxisScale('logarithmic');
 
-// The line chart's thirteen accessors. Its data shape and `name` were
-// corrected earlier; this is the getters.
+// The line chart's thirteen accessors.
 //
-// `xAxisValueType` had the same defect as the stacked area's: `'numeric'` type
-// checked and did nothing while the chart compares against `'number'`.
+// `xAxisValueType` is typed as on the stacked area: the chart compares against
+// `'number'`, so `'numeric'` would type-check and do nothing.
 //
 // The `on` chain below is the assertion that catches a wrong generic on an
-// inherited surface -- the class of defect brush had three of and the stacked
-// area one of. Neither `check:api-parity` nor any setter-only assertion sees
-// it; it takes chaining off `on` back to one of the chart's own accessors and
-// assigning the result to the chart's module type.
+// inherited surface. Neither `check:api-parity` nor any setter-only assertion
+// sees it; it takes chaining off `on` back to one of the chart's own accessors
+// and assigning the result to the chart's module type.
 const lineOwn = line();
 
 const lineDrawable: LineChartModule = line().on(
@@ -380,7 +366,7 @@ const lineXLabel: string | null = lineOwn.xAxisLabel();
 const lineYLabel: string | null = lineOwn.yAxisLabel();
 const lineXTicks: number | null = lineOwn.xTicks();
 
-// `'number'` is the value that switches the axis, and it type-checks now.
+// `'number'` is the value that switches the axis, and it type-checks.
 const lineNumericAxis: LineChartModule = line()
     .xAxisValueType('number')
     .xAxisScale('logarithmic');
@@ -507,10 +493,9 @@ const groupLabel: string = groupedBarChart.groupLabel();
 const groupedNameLabel: string = groupedBarChart.nameLabel();
 const groupedValueLabel: string = groupedBarChart.valueLabel();
 
-// The grouped bar's other eleven accessors, corrected with its conversion for
-// the same reason bullet's seven and the sparkline's four were: setter-only, so
-// reading one reported the chart instead of its value. The three label getters
-// just above already read correctly and were never part of that.
+// The grouped bar's other eleven accessors, each read back as its value
+// rather than the chart. The three label getters just above are covered with
+// the shared ones.
 //
 // Three of the eleven have a getter wider than their setter, which is the whole
 // of what reading one before setting it gives you: `grid` and `valueLocale` are
@@ -533,8 +518,8 @@ const groupedLabelOffset: number = groupedBarChart.yAxisLabelOffset();
 const groupedTickOffset: { x: number; y: number } =
     groupedBarChart.yTickTextOffset();
 
-// Null or undefined until set, so each read needs the guard a consumer now has
-// to write.
+// Null or undefined until set, so each read needs the guard a consumer has to
+// write.
 const groupedGrid: 'vertical' | 'horizontal' | 'full' | null =
     groupedBarChart.grid();
 const groupedLocale: LocalObject | null = groupedBarChart.valueLocale();
@@ -599,10 +584,9 @@ const barStackLabel: string = stackedBarChart.stackLabel();
 const stackedNameLabel: string = stackedBarChart.nameLabel();
 const stackedValueLabel: string = stackedBarChart.valueLabel();
 
-// The stacked bar's other twelve accessors, corrected with its conversion for
-// the same reason the grouped bar's eleven were: setter-only, so reading one
-// reported the chart instead of its value. Its three label getters just above
-// were never part of that.
+// The stacked bar's other twelve accessors, each read back as its value
+// rather than the chart. Its three label getters just above are covered with
+// the shared ones.
 //
 // `hasPercentage` is the odd one: its getter is computed rather than stored,
 // reporting whether `numberFormat` is currently the percentage one. Setting it
@@ -661,7 +645,7 @@ export const stackedBarAccessors = {
     stackedChained,
 };
 
-// Setting one still chains, so the overloads did not cost the setter anything.
+// Setting one still chains, so the overloads do not cost the setter anything.
 const chainedLabels: string = stackedBar()
     .nameLabel('name')
     .valueLabel('value')
@@ -690,11 +674,9 @@ export const labelAccessors = {
     chainedLabels,
 };
 
-// The bullet chart's own accessors. Its declaration had every member, so the
-// parity check was already green on it -- what was wrong was the shape. Its
-// chart-specific accessors were setter-only, so reading one reported the chart
-// rather than its value -- the same gap the shared interfaces had before, which
-// never reached the per-chart declarations.
+// The bullet chart's own accessors, each read back as its value rather than
+// the chart. The parity check only sees that every member is declared, not
+// the getter's shape, so these reads are what cover it.
 import { bullet } from '@britecharts/core';
 
 const bulletChart = bullet();
@@ -708,13 +690,12 @@ const bulletSchema: string[] = bulletChart.colorSchema();
 // The setters still chain.
 const bulletChained: number = bullet().isReverse(true).ticks(8).ticks();
 
-// The legend's own four, corrected with its conversion, and the shared
-// `colorMap` the conversion forced.
+// The legend's own four, and the shared `colorMap`.
 //
-// `colorMap` is declared on `ThemableChartAPI`, so its getter was wrong for all
-// eight charts that expose it: each defaults `nameToColorMap` to null and falls
-// back to the colour scale until one is set. The guarded read below is the
-// shape a consumer now has to write; `expect-errors.ts` holds the other half.
+// `colorMap` is declared on `ThemableChartAPI`, so its getter covers all eight
+// charts that expose it: each defaults `nameToColorMap` to null and falls back
+// to the colour scale until one is set. The guarded read below is the shape a
+// consumer has to write; `expect-errors.ts` holds the other half.
 //
 // `highlightEntryById` is nullable for the same reason -- no default, and the
 // component only fades the other entries once an id is set.
@@ -729,7 +710,7 @@ const legendMarginRatio: number = legendChart.marginRatio();
 const legendMarkerSize: number = legendChart.markerSize();
 
 // `highlight` and `clearHighlight` are commands, not accessors: they return
-// void, so they do not chain and never have.
+// void, so they do not chain.
 const legendHighlightReturn: void = legend().highlight(1);
 
 export const legendAccessors = {
@@ -742,16 +723,15 @@ export const legendAccessors = {
     legendHighlightReturn,
 };
 
-// The brush chart's own accessors, and the generic argument that made three of
-// its inherited surfaces unusable.
+// The brush chart's own accessors, and the generic argument of its inherited
+// surfaces.
 //
-// `AnimatedChartAPI`, `TimeSeriesChartAPI` and `InteractiveChartAPI` were each
-// parameterised with `BrushChartAPI` instead of `BrushChartModule`. Those
-// interfaces return `T & XAPI<T>`, so setting an inherited accessor reported a
-// type with no `ChartModuleSelection` in it: the result could not be handed to
-// `selection.call()`, and chaining off it lost the rest of the chart. The two
-// assertions below are what that broke -- both are errors against the old
-// declaration, and neither needs a cast now.
+// `AnimatedChartAPI`, `TimeSeriesChartAPI` and `InteractiveChartAPI` take
+// `BrushChartModule`, not `BrushChartAPI`. Those interfaces return
+// `T & XAPI<T>`, so given the API type, setting an inherited accessor reports
+// a type with no `ChartModuleSelection` in it: the result cannot be handed to
+// `selection.call()`, and chaining off it loses the rest of the chart. The two
+// assertions below are what that breaks, and neither needs a cast.
 import { brush } from '@britecharts/core';
 import type { BrushChartModule } from '@britecharts/core';
 import type {
@@ -770,8 +750,8 @@ const brushChained: string = brush().isAnimated(true).areaCurve('monotoneX').are
 const brushAreaCurve: string = brushChart.areaCurve();
 const brushLocked: boolean = brushChart.isLocked();
 const brushGradient: [string, string] = brushChart.gradient();
-// `roundingTimeInterval` is a d3 time interval name. It was declared as
-// returning the `'value' | 'date'` data-key enum.
+// `roundingTimeInterval` is a d3 time interval name, not the
+// `'value' | 'date'` data-key enum.
 const brushRounding: string = brushChart.roundingTimeInterval();
 const brushRoundingChains: BrushChartModule =
     brush().roundingTimeInterval('timeWeek');
@@ -791,15 +771,15 @@ export const brushAccessors = {
     brushTicks,
 };
 
-// The donut chart's eleven own accessors, and the two callbacks whose declared
-// return type was wrong.
+// The donut chart's eleven own accessors, and the return types of its two
+// callbacks.
 //
 // `centeredTextFunction`'s result goes to `.text()` and `orderingFunction`'s to
-// `.sort()`, but both were declared `=> void`. TypeScript lets a
-// value-returning function satisfy a `=> void` parameter, so a consumer's
-// correct callback always compiled -- which is why nothing caught this. What
-// broke was reading either one back: the result was `void` and unusable. The
-// two assertions below are that read, and `expect-errors.ts` holds the control.
+// `.sort()`. TypeScript lets a value-returning function satisfy a `=> void`
+// parameter, so a consumer's correct callback compiles either way; only
+// reading one back shows a `=> void` declaration, as an unusable `void`. The
+// two assertions below are that read, and `expect-errors.ts` holds the
+// control.
 const donutChart = donut();
 
 const donutCentered: (d: DonutChartDataShape) => string =
@@ -854,14 +834,12 @@ export const bulletAccessors = {
     bulletChained,
 };
 
-// The sparkline's own two, corrected with its conversion for the same reason
-// bullet's seven were: they were setter-only, so reading one reported the chart
-// instead of its value. Its three shared ones -- `dateLabel`, `valueLabel`,
-// `isLoading` -- already read correctly and are asserted further up.
+// The sparkline's own two, each read back as its value rather than the chart.
+// Its three shared ones -- `dateLabel`, `valueLabel`, `isLoading` -- are
+// asserted further up.
 //
 // The two gradients are a two-element tuple, not `string[]`: the chart reads
-// `[0]` and `[1]` and nothing else, and `ColorGradientType` has said so since
-// before this migration.
+// `[0]` and `[1]` and nothing else, and `ColorGradientType` says so.
 const sparklineOwn = sparkline();
 
 const sparklineAreaGradient: [string, string] = sparklineOwn.areaGradient();

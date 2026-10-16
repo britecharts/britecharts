@@ -5,9 +5,9 @@ import { execFileSync } from 'child_process';
 import * as exported from './index';
 import { LEGACY_DEFAULT_PROPS } from './legacyComponents.fixtures';
 
-// The barrel's own extension, read across both: it is TypeScript now, and
-// this file is what tells the rest of the spec which components exist, so
-// naming it `.js` made every assertion below disappear at once.
+// The barrel's own extension, read across both: this file is what tells the
+// rest of the spec which components exist, so a wrong extension makes every
+// assertion below disappear at once.
 const barrelFile = ['index.ts', 'index.js']
     .map((name) => path.join(__dirname, name))
     .find((candidate) => fs.existsSync(candidate));
@@ -15,7 +15,7 @@ const source = fs.readFileSync(barrelFile, 'utf8');
 
 // Where each component's source really is. The entry file names them `.js`
 // -- deliberately, since that is what the built ESM output resolves against
-// -- so a converted component is on disk as `.tsx` under the same name.
+// -- so a TypeScript component is on disk as `.tsx` under the same name.
 const sourceFileFor = (from) => {
     const base = path.join(__dirname, from).replace(/\.js$/, '');
 
@@ -32,9 +32,9 @@ const entryPropFor = (name) => ENTRY_PROPS[name] ?? 'data';
 // react-docgen itself rather than of a stand-in. It is ESM-only, so it answers
 // in a child process instead of being imported here.
 //
-// react-docgen-typescript was tried first and is the wrong tool for this
-// assertion: it resolves types through the TypeScript compiler, so it follows
-// an imported props interface and reports every prop either way -- which is
+// react-docgen-typescript is the wrong tool for this assertion: it resolves
+// types through the TypeScript compiler, so it follows an imported props
+// interface and reports every prop either way -- which is
 // precisely the regression this is meant to catch.
 const docgenPropsFor = (file) =>
     JSON.parse(
@@ -92,9 +92,8 @@ describe('package surface', () => {
         //           declared in the component file. Imported from
         //           another file instead, extraction collapses to the single
         //           destructured `chart` default and every Control for the
-        //           chart's own accessors disappears silently. Verified by
-        //           probe: the imported form reports ["chart"] and nothing
-        //           else.
+        //           chart's own accessors disappears silently: the
+        //           imported form reports ["chart"] and nothing else.
         const file = sourceFileFor(
             reExports.find((re) => re.name === name).from
         );
@@ -119,7 +118,7 @@ describe('package surface', () => {
 
         if (LEGACY_DEFAULT_PROPS.includes(name)) {
             it('should still declare defaultProps, and so be on the legacy list', () => {
-                // Fails once converted: delete the name from the list
+                // Fails once it drops defaultProps: delete the name from the list
                 expect(exported[name].defaultProps).toBeDefined();
             });
         } else {

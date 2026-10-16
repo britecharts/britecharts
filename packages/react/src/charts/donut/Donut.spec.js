@@ -19,9 +19,9 @@ describe('donut Chart', () => {
     });
 
     // The only behavioural default among the props: `isAnimated` reaches the
-    // chart because Donut puts it back into the configuration, so a
-    // conversion that destructures the rest of the props would silently stop
-    // animating the donut. Pinned here so that shows up as one named failure.
+    // chart because Donut puts it back into the configuration, so a change
+    // that destructures the rest of the props would silently stop animating
+    // the donut. Pinned here so that shows up as one named failure.
     describe('animation', () => {
         let createSpy;
 

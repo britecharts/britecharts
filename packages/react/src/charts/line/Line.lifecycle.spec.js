@@ -5,9 +5,8 @@ import Line from './Line';
 import lineData from './lineChart.fixtures';
 import { LineWrapper } from '@britecharts/wrappers';
 
-// What Line does with its wrapper over its life. The colocated Line.spec.js is
-// frozen for the hooks migration, so what the conversion adds or changes is
-// pinned here instead.
+// What Line does with its wrapper over its life, beyond what the colocated
+// Line.spec.js pins.
 describe('Line lifecycle', () => {
     let chartData;
     let createSpy;
@@ -126,9 +125,9 @@ describe('Line lifecycle', () => {
             expect(updateSpy).toHaveBeenCalledTimes(1);
         });
 
-        // Decision 04: the configuration is rebuilt from props on every render,
-        // so a re-render is compared to the last drawing field by field and
-        // skipped when nothing changed. The class redrew on every render.
+        // The configuration is rebuilt from props on every render, so a
+        // re-render is compared to the last drawing field by field and skipped
+        // when nothing changed.
         describe('when a re-render brings props that did not change', () => {
             it('should not call the update method of the chart', () => {
                 const wrapper = mount(

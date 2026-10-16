@@ -17,11 +17,11 @@ describe('number Helper', () => {
             expect(actual).toEqual({ x1: 10, y1: 20, x2: 30, y2: 40 });
         });
 
-        // The regression used to evaluate the left end at the *number of
-        // points* instead of at minX -- `slope * n + intercept`. With three
-        // points on y = x + 10 that is 1 * 3 + 10 = 13, where the point at
-        // x = 10 is at y = 20. The scatter plot drew the trendline from there,
-        // so its left end hung 7 units low.
+        // Evaluating the left end at the *number of points* instead of at
+        // minX -- `slope * n + intercept` -- gives 1 * 3 + 10 = 13 for three
+        // points on y = x + 10, where the point at x = 10 is at y = 20. The
+        // scatter plot draws the trendline from there, so its left end would
+        // hang 7 units low.
         it('should not evaluate the left end at the number of points', () => {
             const pointCount = onALine.length;
             const { y1 } = calcLinearRegression(onALine);

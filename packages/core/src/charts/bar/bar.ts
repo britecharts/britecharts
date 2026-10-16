@@ -60,14 +60,8 @@ export type BarSelection = Selection<
     any
 >;
 
-// The twenty-two accessors below were setter-only -- a single
-// optional-parameter signature returning the chart -- so reading one reported
-// the chart rather than its value. Each is a getter/setter overload pair now,
-// getter first and setter last, with the getter typed from the
-// implementation's own default.
-//
-// `orderingFunction` was also declared wrong, not just incomplete: see its own
-// note below.
+// Each accessor below is a getter/setter overload pair, getter first and
+// setter last, with the getter typed from the implementation's own default.
 //
 // Four getters are wider than their setter, and each for its own reason rather
 // than one rule: `chartGradient`, `xAxisLabel`, `yAxisLabel` and `valueLocale`
@@ -146,11 +140,9 @@ export interface BarChartAPI
     /**
      * Changes the order of items given the custom function
      *
-     * The comparator returns a **number**, where this was declared `=> void`.
-     * The chart hands it straight to `Array.prototype.sort`, which reads the
-     * sign of the result, so a callback returning nothing leaves the bars in
-     * their original order. Same defect, and same fix, as the donut's
-     * `orderingFunction`.
+     * The comparator returns a **number**. The chart hands it straight to
+     * `Array.prototype.sort`, which reads the sign of the result, so a
+     * callback returning nothing leaves the bars in their original order.
      *
      * The getter is `undefined` until one is set: the chart has no default
      * ordering and only sorts once a comparator arrives.
@@ -222,7 +214,7 @@ const NUMBER_FORMAT = ',f';
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
- * generics are the migration plan's bounded `any`, as in grouped-bar.ts and
+ * generics are a bounded `any`, as in grouped-bar.ts and
  * stacked-bar.ts: these are module-level variables reassigned from several
  * differently-shaped selections, so naming one concrete datum would reject the
  * others.
@@ -338,9 +330,9 @@ type BarColorEntry = {
  * }
  */
 export default function module(): BarChartModule {
-    // Split into `let` and `const` rather than the one `let` chain the
-    // JavaScript had: the TypeScript ESLint override runs `prefer-const` as an
-    // error, and the bindings below it are never reassigned.
+    // Split into `let` and `const`: the TypeScript ESLint override runs
+    // `prefer-const` as an error, and the bindings below it are never
+    // reassigned.
     let margin: ChartMarginParams = {
             top: 20,
             right: 20,
@@ -362,7 +354,7 @@ export default function module(): BarChartModule {
         chartGradientColors: [string, string] | null = null,
         // The selection this ends on is the gradient's `stop` elements, not
         // the `linearGradient` the chain starts from -- the name is the
-        // chart's, kept as it stands.
+        // chart's own.
         chartGradientEl: ChartSelection<SVGStopElement>,
         yTicks = 5,
         xTicks = 5,
@@ -399,7 +391,7 @@ export default function module(): BarChartModule {
                 )
             ),
         // No default: the chart sorts nothing until a comparator arrives, which
-        // is what the declaration now says.
+        // is what the declaration says.
         orderingFunction:
             | ((a: BarChartDataShape, b: BarChartDataShape) => number)
             | undefined,
@@ -516,8 +508,8 @@ export default function module(): BarChartModule {
                 .ticks(xTicks, locale.format(numberFormat))
                 // An array where d3 wants a number. `tickSizeInner` assigns
                 // `+_`, and `+[-n]` is `-n` for a one-element array, so this
-                // has always produced the inner size it looks like it does.
-                // Preserved, with the coercion written where it happens.
+                // produces the inner size it looks like it does. The coercion
+                // is written where it happens.
                 .tickSizeInner(+[-chartHeight]);
 
             yAxis = axisLeft(yScale).ticks(yTicks, locale.format(numberFormat));
@@ -684,10 +676,9 @@ export default function module(): BarChartModule {
      * @private
      */
     function cleanData(originalData: BarChartDataShape[]): BarData {
-        // Written onto the caller's own objects rather than copies, which is
-        // the runtime this preserves. The cast covers the two reads the label
-        // accessors make dynamic: the data may carry its value and name under
-        // any key.
+        // Written onto the caller's own objects rather than copies. The cast
+        // covers the two reads the label accessors make dynamic: the data may
+        // carry its value and name under any key.
         const data = originalData.reduce<BarDatum[]>((acc, datum) => {
             const d = datum as BarDatum;
 
@@ -759,9 +750,9 @@ export default function module(): BarChartModule {
     }
 
     /**
-     * Returns the sibling bar nodes of the given element. d3 v6 dropped
-     * the third `nodes` argument that used to be passed to event handlers,
-     * so the list is derived from the DOM instead.
+     * Returns the sibling bar nodes of the given element. d3 passes no
+     * `nodes` argument to event handlers, so the list is derived from the
+     * DOM instead.
      * @param  {SVGElement} node  The element the event fired on
      * @return {SVGElement[]}     Its siblings, including itself
      * @private
@@ -1769,11 +1760,10 @@ export default function module(): BarChartModule {
     (exports as BarChartModule).on = function (
         ...args: [string] | [string, () => void]
     ) {
-        // Rest parameters and a spread where this read `arguments` and used
-        // `.apply`, following the other converted charts: the TypeScript lint
-        // override makes `prefer-spread` an error, and the two shapes `on` is
-        // called with -- a lookup and a registration -- are what the tuple
-        // says.
+        // Rest parameters and a spread rather than `arguments` and `.apply`:
+        // the TypeScript lint override makes `prefer-spread` an error, and
+        // the two shapes `on` is called with -- a lookup and a registration --
+        // are what the tuple says.
         const value = dispatcher.on(
             ...(args as Parameters<typeof dispatcher.on>)
         );
