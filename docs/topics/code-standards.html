@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.02570f28.css">
-<script src="/britecharts/assets/js/runtime~main.a3c4a4fd.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.d4c2b76b.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.9ce38ece.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.16d3f8d0.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -21,8 +21,8 @@
 <p>We have followed a couple of standards in this project: <a href="http://usejsdoc.org" target="_blank" rel="noopener noreferrer" class="">JSDoc</a> comments and Test Driven Development. You can also check other info in our <a class="" href="/britecharts/docs/topics/api-guidelines">API guidelines</a>.</p>
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="test-driven-development">Test Driven Development<a href="#test-driven-development" class="hash-link" aria-label="Direct link to Test Driven Development" title="Direct link to Test Driven Development" translate="no">​</a></h3>
 <p>D3.js charts are complex systems. As other Software Development projects, they start simple and become bloated at the end of the process. To overcome this, we have followed a component approach that allows us to create easily testable units.</p>
-<p>We have chosen <a href="https://jestjs.io/" target="_blank" rel="noopener noreferrer" class="">Jest</a> as our test runner, and <a href="http://jasmine.github.io/" target="_blank" rel="noopener noreferrer" class="">Jasmine</a> as our unit-testing library in core.</p>
-<p>To install Jest and start running our test you would need to follow these steps:</p>
+<p>We use <a href="https://vitest.dev/" target="_blank" rel="noopener noreferrer" class="">Vitest</a> as our test runner, with jsdom standing in for the browser.</p>
+<p>To start running our tests you would need to follow these steps:</p>
 <ol>
 <li class="">Fork the repository by clicking the fork button on Github</li>
 <li class="">Clone the repository with:
