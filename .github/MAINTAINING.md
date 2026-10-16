@@ -20,7 +20,7 @@ Three things to know:
 1. Check that `main` is green, and that every change since the last release that a user would notice has a changeset in `.changeset/`.
 2. Open the "Version Packages" pull request the Release workflow keeps up to date. Read its changelog entries: they are what users see. The three packages share one version number, so all three move together.
 3. Merge it. The Release workflow on that merge builds the packages and runs `scripts/publish-packages.js`, which publishes `@britecharts/core`, then `wrappers`, then `react`, skipping any version already on the registry.
-4. Confirm the publish: `npm view @britecharts/core dist-tags` should show the new version under the tag you expect (see below), and the same for `wrappers` and `react`.
+4. Confirm the publish: `npm view @britecharts/core dist-tags` should show the new version under the tag you expect (see below), and the same for `wrappers` and `react`. The run also creates a `<package>@<version>` git tag and a GitHub release for each package it published.
 5. Watch the smoke workflow that runs after Release. Green means the published packages install and render from npm and jsDelivr.
 
 ### Pre-release mode and dist-tags
