@@ -82,7 +82,7 @@ pnpm demos
 
 That starts the core Storybook on [localhost:2001](http://localhost:2001), the React one on [localhost:2002](http://localhost:2002) and the composed demos site on [localhost:2000](http://localhost:2000). `pnpm demos:core` or `pnpm demos:react` runs just one of them.
 
-Each chart's stories live next to its code, in `packages/core/src/charts/<chart>/<chart>.stories.js` and `packages/react/src/charts/<chart>/<chart>.stories.js`. Add a story when you add a feature.
+Each chart's stories live next to its code, in `packages/core/src/charts/<chart>/<chart>.stories.js` and `packages/react/src/charts/<chart>/<chart>.stories.tsx`. Add a story when you add a feature.
 
 ### Running the Tests
 

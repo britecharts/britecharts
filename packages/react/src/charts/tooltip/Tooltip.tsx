@@ -34,6 +34,23 @@ const initialState: TooltipState = {
  * Bullet: Storybook's docgen reads the component file, and an interface it has
  * to follow an import to find is one it does not find.
  */
+/**
+ * What the tooltip hands its `render` callback: the data and the handlers the
+ * wrapped chart needs to drive the tooltip.
+ */
+export type TooltipRenderArgs = {
+    data: TooltipProps['data'];
+    createTooltip: () => void;
+    customMouseMove: (
+        dataPoint: object,
+        position: [number, number],
+        size?: [number, number],
+        topicColorMap?: Record<string, string>
+    ) => void;
+    customMouseOut: () => void;
+    customMouseOver: () => void;
+};
+
 export interface TooltipProps {
     /**
      * Exposes the ability to use a custom date format
@@ -165,18 +182,7 @@ export interface TooltipProps {
      *
      * @ignore
      */
-    render?: (args: {
-        data: TooltipProps['data'];
-        createTooltip: () => void;
-        customMouseMove: (
-            dataPoint: object,
-            position: [number, number],
-            size?: [number, number],
-            topicColorMap?: Record<string, string>
-        ) => void;
-        customMouseOut: () => void;
-        customMouseOver: () => void;
-    }) => ReactNode;
+    render?: (args: TooltipRenderArgs) => ReactNode;
 
     /**
      * Internally used, do not overwrite.

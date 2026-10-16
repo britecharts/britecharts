@@ -17,7 +17,7 @@ Britecharts is a [pnpm][pnpm] workspace. Node comes from `.nvmrc` (24), pnpm fro
 
 ### Building the packages
 
-Each published package is built from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. Babel writes the ES modules file by file and only strips the TypeScript types, and `tsc` writes the declarations. Core's UMD bundle, CDN bundle and stylesheets come from `vite build` with [`packages/core/vite.config.js`][vite-build], one run per mode. Wrappers' UMD and CommonJS bundles come from one `vite build` with `packages/wrappers/vite.config.js`. React's UMD bundle comes from `vite build` with `packages/react/vite.config.js`. Storybook still runs on [webpack][webpack] 5 until it moves to its Vite builder. The output targets ES2020.
+Each published package is built from `pnpm build` in its folder, or all three at once with `pnpm build:packages` at the root. Babel writes the ES modules file by file and only strips the TypeScript types, and `tsc` writes the declarations. Core's UMD bundle, CDN bundle and stylesheets come from `vite build` with [`packages/core/vite.config.js`][vite-build], one run per mode. Wrappers' UMD and CommonJS bundles come from one `vite build` with `packages/wrappers/vite.config.js`. React's UMD bundle comes from `vite build` with `packages/react/vite.config.js`. The Storybooks run on Storybook 10's Vite builders, each with its own `.storybook/vite.config.mjs`. The output targets ES2020.
 
 What comes out of `packages/core/dist`:
 
@@ -62,7 +62,6 @@ Versions are managed with [Changesets][changesets]. `@britecharts/core`, `@brite
 
 [pnpm]: https://pnpm.io/
 [vite-build]: https://vite.dev/guide/build
-[webpack]: https://webpack.js.org/
 [docusaurus]: https://docusaurus.io/
 [jsdoc2md]: https://github.com/jsdoc2md/jsdoc-to-markdown
 [changesets]: https://github.com/changesets/changesets

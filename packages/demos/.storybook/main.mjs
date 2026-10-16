@@ -1,4 +1,5 @@
-const path = require('path');
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /**
  * No package manager reliably hoists a workspace's Storybook packages to the
@@ -10,22 +11,21 @@ const path = require('path');
  * Storybook's own monorepo setup generates.
  */
 const getAbsolutePath = (value) =>
-    path.dirname(require.resolve(path.join(value, 'package.json')));
+    dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
 
-module.exports = {
+export default {
     stories: ['../src/**/*.mdx', '../src/*.stories.[tj]s'],
     framework: {
-        name: getAbsolutePath('@storybook/html-webpack5'),
-        options: {},
+        name: getAbsolutePath('@storybook/html-vite'),
+        options: {
+            builder: { viteConfigPath: '.storybook/vite.config.mjs' },
+        },
     },
     addons: [
-        getAbsolutePath('@storybook/addon-essentials'),
+        getAbsolutePath('@storybook/addon-docs'),
         getAbsolutePath('@storybook/addon-a11y'),
         getAbsolutePath('@storybook/addon-links'),
     ],
-    docs: {
-        autodocs: 'tag',
-    },
     // The docs site's brand assets, so the sidebar logo and the favicon are
     // literally the same files the documentation uses.
     staticDirs: [{ from: '../../docs/static/img', to: '/img' }],

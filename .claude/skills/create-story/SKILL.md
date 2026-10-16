@@ -13,8 +13,8 @@ The repo has **two different story styles** and the agent picks by package:
 
 | Package | Storybook renderer | A story is… | File |
 |---|---|---|---|
-| `@britecharts/core` | `@storybook/html` | a function returning a DOM node the chart was rendered into | `src/charts/<chart>/<chart>.stories.js` |
-| `@britecharts/react` | `@storybook/react` | a function returning JSX | `src/charts/<chartName>/<chartName>.stories.js` |
+| `@britecharts/core` | `@storybook/html-vite` | a function returning a DOM node the chart was rendered into | `src/charts/<chart>/<chart>.stories.js` |
+| `@britecharts/react` | `@storybook/react-vite` | a typed function returning JSX | `src/charts/<chartName>/<chartName>.stories.tsx` |
 
 `@britecharts/wrappers` has no Storybook. `@britecharts/demos` composes the core and react Storybooks as refs — it is not where individual stories go.
 
