@@ -45,16 +45,6 @@ export interface BulletChartProps {
     colorSchema?: ColorsSchemasType;
 
     /**
-     * Gets or Sets the subtitle for measure identifier range.
-     */
-    customSubtitle?: string;
-
-    /**
-     * Gets or Sets the title for measure identifier range.
-     */
-    customTitle?: string;
-
-    /**
      * Gets or Sets the height of the chart
      */
     height?: number;

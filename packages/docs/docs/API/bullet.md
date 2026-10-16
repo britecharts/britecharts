@@ -26,8 +26,6 @@ d3Selection.select('.css-selector')
             * [.a11yTitle(_x)](#module_Bullet--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Bullet--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.colorSchema(_x)](#module_Bullet--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-            * [.customTitle(_x)](#module_Bullet--exports.customTitle) ⇒ <code>String</code> \| <code>module</code>
-            * [.customSubtitle(_x)](#module_Bullet--exports.customSubtitle) ⇒ <code>String</code> \| <code>module</code>
             * [.exportChart(filename, title)](#module_Bullet--exports.exportChart) ⇒ <code>Promise</code>
             * [.isLoading(_flag)](#module_Bullet--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.height(_x)](#module_Bullet--exports.height) ⇒ <code>Number</code> \| <code>module</code>
@@ -99,41 +97,6 @@ the third color will be applied to the marker lines.
 | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | Desired colorSchema for the graph |
 
-<a name="module_Bullet--exports.customTitle" id="module_Bullet--exports.customTitle"></a>
-
-## exports.customTitle(_x) ⇒ <code>String</code> \| <code>module</code>
-Gets or Sets the title for measure identifier
-range.
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
-**Returns**: <code>String</code> \| <code>module</code> - Current customTitle or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>String</code> | Desired customTitle for chart |
-
-**Example**  
-```js
-bulletChart.customTitle('CPU Usage')
-```
-<a name="module_Bullet--exports.customSubtitle" id="module_Bullet--exports.customSubtitle"></a>
-
-## exports.customSubtitle(_x) ⇒ <code>String</code> \| <code>module</code>
-Gets or Sets the subtitle for measure identifier range.
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
-**Returns**: <code>String</code> \| <code>module</code> - current customSubtitle or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>String</code> | Desired customSubtitle for chart |
-
-**Example**  
-```js
-bulletChart.customSubtitle('GHz')
-```
 <a name="module_Bullet--exports.exportChart" id="module_Bullet--exports.exportChart"></a>
 
 ## exports.exportChart(filename, title) ⇒ <code>Promise</code>
@@ -285,16 +248,12 @@ Gets or Sets the width of the chart
 | ranges | <code>Array.&lt;Number&gt;</code> | Range that encodes the qualitative measure |
 | measures | <code>Array.&lt;Number&gt;</code> | Range that encodes the performance measure |
 | markers | <code>Array.&lt;Number&gt;</code> | Marker lines that encode the comparative measure |
-| [title] | <code>String</code> | String that sets identification for the measure |
-| [subtitle] | <code>String</code> | String that provides more details on measure identification |
 
 **Example**  
 ```js
 {
      ranges: [130, 160, 250],
      measures: [150, 180],
-     markers: [175],
-     title: 'Title for Bullet',
-     subtitle: 'Subtitle'
+     markers: [175]
 }
 ```

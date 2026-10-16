@@ -36,7 +36,6 @@ Playground.args = playgroundArgs(sparkline, [
     'height',
     'margin',
     'isAnimated',
-    'titleText',
     'isLoading',
 ]);
 Playground.args.isAnimated = false;

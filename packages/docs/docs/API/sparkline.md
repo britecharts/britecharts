@@ -35,8 +35,6 @@ d3Selection.select('.css-selector')
             * [.lineGradient(_x)](#module_Sparkline--exports.lineGradient) ⇒ <code>lineGradient</code> \| <code>module</code>
             * [.isLoading(flag)](#module_Sparkline--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Sparkline--exports.margin) ⇒ <code>object</code> \| <code>module</code>
-            * [.titleText(_x)](#module_Sparkline--exports.titleText) ⇒ <code>string</code> \| <code>module</code>
-            * [.titleTextStyle(_x)](#module_Sparkline--exports.titleTextStyle) ⇒ <code>Object</code> \| <code>module</code>
             * ~~[.valueLabel(_x)](#module_Sparkline--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
             * [.width(_x)](#module_Sparkline--exports.width) ⇒ <code>width</code> \| <code>module</code>
         * _inner_
@@ -205,63 +203,6 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>object</code> | Margin object to get/set |
 
-<a name="module_Sparkline--exports.titleText" id="module_Sparkline--exports.titleText"></a>
-
-## exports.titleText(_x) ⇒ <code>string</code> \| <code>module</code>
-Gets or Sets the text of the title at the top of sparkline.
-To style the title, use the titleTextStyle method below.
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
-**Returns**: <code>string</code> \| <code>module</code> - Current titleText or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>string</code> | = null   String to set |
-
-<a name="module_Sparkline--exports.titleTextStyle" id="module_Sparkline--exports.titleTextStyle"></a>
-
-## exports.titleTextStyle(_x) ⇒ <code>Object</code> \| <code>module</code>
-Gets or Sets the text style object of the title at the top of sparkline.
-Using this method, you can set font-family, font-size, font-weight, font-style,
-and color (fill). The default text font settings:
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
-**Returns**: <code>Object</code> \| <code>module</code> - Current titleTextStyle or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>object</code> | Object with text font configurations |
-
-**Example**  
-```js
-<pre>
-<code>
-{
-   'font-family': 'sans-serif',
-   'font-size': '22px',
-   'font-weight': 0,
-   'font-style': 'normal',
-   'fill': linearGradient[0]
-}
-</code>
-</pre>
-
-You can set attributes individually. Setting just 'font-family'
-within the object will set custom 'font-family` while the rest
-of the attributes will have the default values provided above.
-```
-**Example**  
-```js
-sparkline.titleTextStyle({
-   'font-family': 'Roboto',
-   'font-size': '1.5em',
-   'font-weight': 600,
-   'font-style': 'italic',
-   'fill': 'lightblue'
-})
-```
 <a name="module_Sparkline--exports.valueLabel" id="module_Sparkline--exports.valueLabel"></a>
 
 ## ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~

@@ -60,13 +60,6 @@ describe('sparkline Chart', () => {
                 expect(actual).toEqual(expected);
             });
 
-            it('should create a text-group', () => {
-                const expected = 1;
-                const actual = containerFixture.select('g.text-group').size();
-
-                expect(actual).toEqual(expected);
-            });
-
             it('should create a metadata-group', () => {
                 const expected = 1;
                 const actual = containerFixture
@@ -118,35 +111,6 @@ describe('sparkline Chart', () => {
             ).length;
 
             expect(actual).toEqual(expected);
-        });
-
-        describe('when the title text is set', () => {
-            it('should create a text node with proper attributes', () => {
-                sparklineChart.titleText('text');
-                containerFixture.datum(dataset).call(sparklineChart);
-                const titleTextNode = containerFixture
-                    .selectAll('.sparkline-text')
-                    .node();
-
-                expect(titleTextNode.getAttribute('x')).toBeDefined();
-                expect(titleTextNode.getAttribute('y')).toBeDefined();
-                expect(titleTextNode.getAttribute('text-anchor')).toBeDefined();
-                expect(titleTextNode.getAttribute('class')).toBeDefined();
-                expect(titleTextNode.getAttribute('style')).toBeDefined();
-            });
-
-            it('should properly set the text inside of text node', () => {
-                const expected = 'Tickets Sale';
-                let actual;
-
-                sparklineChart.titleText(expected);
-                containerFixture.datum(dataset).call(sparklineChart);
-                actual = containerFixture
-                    .selectAll('.sparkline-text')
-                    .node().textContent;
-
-                expect(actual).toEqual(expected);
-            });
         });
 
         describe('when reloading with a different dataset', () => {
@@ -352,36 +316,6 @@ describe('sparkline Chart', () => {
                     expect(actual).toEqual(expected);
                 });
             });
-        });
-
-        it('should provide a titleText getter and setter', () => {
-            let defaultTitleText = sparklineChart.titleText(),
-                testTitleText = 'Budget Growth',
-                newTitleText;
-
-            sparklineChart.titleText(testTitleText);
-            newTitleText = sparklineChart.titleText();
-
-            expect(defaultTitleText).not.toBe(testTitleText);
-            expect(newTitleText).toBe(testTitleText);
-        });
-
-        it('should provide a titleTextStyle getter and setter', () => {
-            let defaultTitleTextStyle = sparklineChart.titleTextStyle(),
-                testTitleTextStyle = {
-                    'font-family': 'Verdana',
-                    'font-size': '32px',
-                    'font-weight': 200,
-                    'font-style': 'italic',
-                    fill: 'green',
-                },
-                newTitleTextStyle;
-
-            sparklineChart.titleTextStyle(testTitleTextStyle);
-            newTitleTextStyle = sparklineChart.titleTextStyle();
-
-            expect(defaultTitleTextStyle).not.toEqual(testTitleTextStyle);
-            expect(newTitleTextStyle).toEqual(testTitleTextStyle);
         });
 
         it('should provide valueLabel getter and setter', () => {
