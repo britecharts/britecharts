@@ -24,7 +24,7 @@
     "build:types:cjs": "node -e \"const fs=require('node:fs');fs.cpSync('dist/esm','dist/types-cjs',{recursive:true,filter:(p)=>fs.statSync(p).isDirectory()||p.endsWith('.d.ts')});fs.writeFileSync('dist/types-cjs/package.json','{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:bundles": "vite build",
     "build:esm": "pnpm run build:esm:js && pnpm run build:esm:types",
-    "build:esm:js": "babel src --out-dir dist/esm --extensions .ts,.js --no-babelrc --presets @babel/preset-typescript --ignore \"src/**/*.spec.ts,src/**/*.spec.js,src/**/*.fixtures.ts,src/**/*.fixtures.js\"",
+    "build:esm:js": "babel src --out-dir dist/esm --extensions .ts,.js --config-file ./babel.config.esm.cjs --ignore \"src/**/*.spec.ts,src/**/*.spec.js,src/**/*.fixtures.ts,src/**/*.fixtures.js\"",
     "build:esm:types": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist",
     "lint": "pnpm run lint:js",

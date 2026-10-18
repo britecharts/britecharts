@@ -8,10 +8,10 @@ packages:
 # package.json names it as `catalog:`; pnpm writes the real version into a
 # published package.json when it packs it.
 catalog:
-  "@babel/cli": 7.29.7
-  "@babel/core": 7.29.7
-  "@babel/preset-react": 7.29.7
-  "@babel/preset-typescript": 7.29.7
+  "@babel/cli": 8.0.6
+  "@babel/core": 8.0.7
+  "@babel/preset-react": 8.0.1
+  "@babel/preset-typescript": 8.0.7
   "@storybook/addon-a11y": 10.6.2
   "@storybook/addon-docs": 10.6.2
   "@storybook/addon-links": 10.6.2

@@ -431,7 +431,13 @@ function stripTypesForJsdoc(sourceRoot) {
             // Order matters: the types have to be copied into the comments
             // while the annotations are still there to read.
             plugins: [annotateTypes, dropTypeOnlyComments],
-            presets: [require.resolve('@babel/preset-typescript')],
+            // Babel 7's import elision, which Babel 8 turned off by default
+            presets: [
+                [
+                    require.resolve('@babel/preset-typescript'),
+                    { onlyRemoveTypeImports: false },
+                ],
+            ],
             filename: file,
         });
 
