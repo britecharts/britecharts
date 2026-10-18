@@ -20,7 +20,6 @@ import type { Area, Line, Series, SeriesPoint } from 'd3-shape';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
-import { dataKeyDeprecationMessage } from '../helpers/project.js';
 import colorHelper from '../helpers/color.js';
 import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis.js';
 import type { AxisDatumSorted, AxisTickSettings } from '../helpers/axis.js';
@@ -137,9 +136,6 @@ export interface StackedAreaChartAPI
     /** Enables or disables the outline at the top of the areas */
     hasOutline(): boolean;
     hasOutline(hasOutline: boolean): StackedAreaChartModule;
-    /** Gets or Sets the keyLabel of the chart */
-    keyLabel(): string;
-    keyLabel(label: string): StackedAreaChartModule;
     /** Gets or Sets the minimum width of the graph in order to show the tooltip */
     tooltipThreshold(): number;
     tooltipThreshold(threshold: number): StackedAreaChartModule;
@@ -198,12 +194,6 @@ export interface StackedAreaChartAPI
     /** Gets or Sets the number of ticks of the y axis on the chart */
     yTicks(): number;
     yTicks(ticks: number): StackedAreaChartModule;
-    /** Gets or Sets the `date` key of the data */
-    dateLabel(): string;
-    dateLabel(value: string): StackedAreaChartModule;
-    /** Gets or Sets the `value` key of the data */
-    valueLabel(): string;
-    valueLabel(value: string): StackedAreaChartModule;
 }
 
 export type StackedAreaChartModule = ChartModuleSelection<
@@ -322,6 +312,10 @@ export default function module(): StackedAreaChartModule {
     // Split into `let` and `const`: the TypeScript ESLint override runs
     // `prefer-const` as an error, and the bindings below it are never
     // reassigned.
+    // The data's keys, fixed: the accessors that renamed them are gone
+    const dateLabel = 'date';
+    const keyLabel = 'name';
+    const valueLabel = 'value';
     let margin: ChartMarginParams = {
             top: 70,
             right: 30,
@@ -381,9 +375,6 @@ export default function module(): StackedAreaChartModule {
         dataSortedZeroed: StackedAreaColumn[],
         grid: GridTypes | null = null,
         tooltipThreshold = 480,
-        dateLabel = 'date',
-        valueLabel = 'value',
-        keyLabel = 'name',
         emptyDataConfig: StackedAreaEmptyDataConfig = {
             minDate: new Date(new Date().setDate(new Date().getDate() - 30)),
             maxDate: new Date(),
@@ -946,13 +937,15 @@ export default function module(): StackedAreaChartModule {
 
         return originalData.reduce<StackedAreaDatum[]>((acc, datum) => {
             // Written onto the caller's own objects rather than copies. The
-            // cast covers the two reads the label accessors make dynamic, and
-            // `date` becoming a Date or a number where the published shape
-            // has the string that went in.
+            // cast covers `date` becoming a Date or a number where the
+            // published shape has the string that went in, so the reads come
+            // from `datum` first.
+            const date = castValueToType(datum[dateLabel], xAxisValueType);
+            const value = +datum[valueLabel];
             const d = datum as unknown as StackedAreaDatum;
 
-            d.date = castValueToType(d[dateLabel] as string, xAxisValueType);
-            d.value = +(d[valueLabel] as number);
+            d.date = date;
+            d.value = value;
 
             return [...acc, d];
         }, []);
@@ -1751,26 +1744,6 @@ export default function module(): StackedAreaChartModule {
     } as StackedAreaChartModule['colorSchema'];
 
     /**
-     * Gets or Sets the dateLabel of the chart
-     * @param  {String} _x          Desired dateLabel for the graph
-     * @return {String | module}    Current dateLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as StackedAreaChartModule).dateLabel = function (
-        this: StackedAreaChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return dateLabel;
-        }
-        dateLabel = _x;
-        dataKeyDeprecationMessage('date');
-
-        return this;
-    } as StackedAreaChartModule['dateLabel'];
-
-    /**
      * Gets or Sets the emptyDataConfig of the chart
      * @param  {Object} _x          emptyDataConfig object to get/set
      * @return {Object | module}    Current config for when chart data is an empty array
@@ -1859,26 +1832,6 @@ export default function module(): StackedAreaChartModule {
 
         return this;
     } as StackedAreaChartModule['isAnimated'];
-
-    /**
-     * Gets or Sets the keyLabel of the chart
-     * @param  {Number} _x Desired keyLabel for the graph
-     * @return {Number | module} Current keyLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as StackedAreaChartModule).keyLabel = function (
-        this: StackedAreaChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return keyLabel;
-        }
-        keyLabel = _x;
-        dataKeyDeprecationMessage('name');
-
-        return this;
-    } as StackedAreaChartModule['keyLabel'];
 
     /**
      * Gets or Sets the number format of the stacked area chart
@@ -2032,26 +1985,6 @@ export default function module(): StackedAreaChartModule {
 
         return value === dispatcher ? exports : value;
     } as unknown as StackedAreaChartModule['on'];
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     * @param  {Number} _x          Desired valueLabel for the graph
-     * @return {Number | module}    Current valueLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as StackedAreaChartModule).valueLabel = function (
-        this: StackedAreaChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return valueLabel;
-        }
-        valueLabel = _x;
-        dataKeyDeprecationMessage('value');
-
-        return this;
-    } as StackedAreaChartModule['valueLabel'];
 
     /**
      * Gets or Sets the width of the chart

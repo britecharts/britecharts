@@ -67,11 +67,6 @@ export interface StackedAreaProps {
     colorSchema?: ColorsSchemasType;
 
     /**
-     * Gets or Sets the dateLabel of the chart
-     */
-    dateLabel?: string;
-
-    /**
      * Gets or Sets the emptyDataConfig of the chart
      */
     emptyDataConfig?: StackedAreaEmptyDataConfig;
@@ -114,11 +109,6 @@ export interface StackedAreaProps {
     isLoading?: boolean;
 
     /**
-     * Gets or Sets the keyLabel of the chart
-     */
-    keyLabel?: string;
-
-    /**
      * Pass language tag for the tooltip to localize the date. Feature
      * uses Intl.DateTimeFormat, for compatability and support, refer
      * to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
@@ -145,11 +135,6 @@ export interface StackedAreaProps {
      * Pass an override for the ordering of the topics
      */
     topicsOrder?: string[];
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     */
-    valueLabel?: string;
 
     /**
      * Gets or Sets the width of the chart

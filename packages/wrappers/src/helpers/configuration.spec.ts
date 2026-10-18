@@ -14,10 +14,7 @@ type Equal<A, B> =
 // as overload pairs, and inference in this position reads the last overload,
 // which is the setter -- the reason the getter comes first.
 export type AccessorKeepsItsValueType = Expect<
-    Equal<
-        ChartConfiguration<SparklineChartModule>['dateLabel'],
-        string | undefined
-    >
+    Equal<ChartConfiguration<SparklineChartModule>['width'], number | undefined>
 >;
 
 // A command contributes the argument it is called with. Were either of these

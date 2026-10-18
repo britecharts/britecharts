@@ -18,7 +18,6 @@ import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
 import { getValueDomain } from '../helpers/domain.js';
-import { dataKeyDeprecationMessage } from '../helpers/project.js';
 import { isDefined } from '../helpers/type.js';
 import colorHelper from '../helpers/color.js';
 import { barLoadingMarkup } from '../helpers/load.js';
@@ -147,15 +146,6 @@ export interface StackedBarChartAPI
     /** Gets or Sets the number of vertical ticks of the axis on the chart */
     yTicks(): number;
     yTicks(ticks: number): StackedBarChartModule;
-    /** Gets or Sets the `name` key of the data */
-    nameLabel(): string;
-    nameLabel(value: string): StackedBarChartModule;
-    /** Gets or Sets the `stack` key of the data */
-    stackLabel(): string;
-    stackLabel(value: string): StackedBarChartModule;
-    /** Gets or Sets the `value` key of the data */
-    valueLabel(): string;
-    valueLabel(value: string): StackedBarChartModule;
 }
 
 export type StackedBarChartModule = ChartModuleSelection<
@@ -185,17 +175,11 @@ type ChartSelection<TElement extends BaseType> = Selection<
 >;
 
 /**
- * What `cleanData` hands the drawing functions. The index signature is the
- * deprecated `nameLabel`/`valueLabel`/`stackLabel` accessors: they let the data
- * carry those three values under any key, so the reads in `cleanData` and
- * `prepareData` really are dynamic.
- *
- * `topicName` is `cleanData`'s own addition, a copy of the stack under the name
+ * What `cleanData` hands the drawing functions. `topicName` is `cleanData`'s own addition, a copy of the stack under the name
  * the tooltip reads, and it is not part of the published data shape.
  */
 type StackedBarDatum = StackedBarChartDataShape & {
     topicName: string;
-    [key: string]: unknown;
 };
 
 /**
@@ -268,6 +252,10 @@ export default function module(): StackedBarChartModule {
     // Split into `let` and `const`: the TypeScript ESLint override runs
     // `prefer-const` as an error, and the bindings below it are never
     // reassigned.
+    // The data's keys, fixed: the accessors that renamed them are gone
+    const nameLabel = 'name';
+    const stackLabel = 'stack';
+    const valueLabel = 'value';
     let margin: ChartMarginParams = {
             top: 40,
             right: 30,
@@ -319,9 +307,6 @@ export default function module(): StackedBarChartModule {
         animationDuration = motion.duration,
         animationDelays: number[],
         grid: GridTypes | null = null,
-        nameLabel = 'name',
-        valueLabel = 'value',
-        stackLabel = 'stack',
         numberFormat = NUMBER_FORMAT,
         isAnimated = false;
 
@@ -1539,26 +1524,6 @@ export default function module(): StackedBarChartModule {
     } as StackedBarChartModule['margin'];
 
     /**
-     * Gets or Sets the nameLabel of the chart
-     * @param  {Number} _x          Desired dateLabel for the graph
-     * @return {Number | module}    Current nameLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as StackedBarChartModule).nameLabel = function (
-        this: StackedBarChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return nameLabel;
-        }
-        nameLabel = _x;
-        dataKeyDeprecationMessage('name');
-
-        return this;
-    } as StackedBarChartModule['nameLabel'];
-
-    /**
      * Gets or Sets the numberFormat of the chart
      * @param  {String} _x = ',f'     Desired numberFormat for the graph. See examples [here]{@link https://d3js.org/d3-format}
      * @return {String | module}      Current numberFormat or Chart module to chain calls
@@ -1618,26 +1583,6 @@ export default function module(): StackedBarChartModule {
     } as StackedBarChartModule['percentageAxisToMaxRatio'];
 
     /**
-     * Gets or Sets the stackLabel of the chart
-     * @param  {String} _x          Desired stackLabel for the graph
-     * @return {String | module}    Current stackLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as StackedBarChartModule).stackLabel = function (
-        this: StackedBarChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return stackLabel;
-        }
-        stackLabel = _x;
-        dataKeyDeprecationMessage('stack');
-
-        return this;
-    } as StackedBarChartModule['stackLabel'];
-
-    /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
      * NOTE: This could also depend on the aspect ratio
      * @param  {Number} [_x=480]    Minimum width of the graph
@@ -1655,26 +1600,6 @@ export default function module(): StackedBarChartModule {
 
         return this;
     } as StackedBarChartModule['tooltipThreshold'];
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     * @param  {Number} _x          Desired valueLabel for the graph
-     * @return {Number | module}    Current valueLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as StackedBarChartModule).valueLabel = function (
-        this: StackedBarChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return valueLabel;
-        }
-        valueLabel = _x;
-        dataKeyDeprecationMessage('value');
-
-        return this;
-    } as StackedBarChartModule['valueLabel'];
 
     /**
      * Gets or Sets the locale which our formatting functions use.

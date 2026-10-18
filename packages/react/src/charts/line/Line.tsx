@@ -58,11 +58,6 @@ export interface LineProps {
     colorSchema?: ColorsSchemasType;
 
     /**
-     * Gets or Sets the dateLabel of the chart
-     */
-    dateLabel?: string;
-
-    /**
      * Chart exported to png and a download action is fired
      */
     exportChart?: string;
@@ -150,16 +145,6 @@ export interface LineProps {
      * to show the tooltip NOTE: This could also depend on the aspect ratio
      */
     tooltipThreshold?: number;
-
-    /**
-     * Gets or Sets the topicLabel of the chart
-     */
-    topicLabel?: string;
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     */
-    valueLabel?: string;
 
     /**
      * Gets or Sets the width of the chart

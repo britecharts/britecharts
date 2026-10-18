@@ -28,14 +28,12 @@ d3Selection.select('.css-selector')
             * [.a11yDescription(_x)](#module_Sparkline--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.animationDuration(_x)](#module_Sparkline--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
             * [.areaGradient(_x)](#module_Sparkline--exports.areaGradient) ⇒ <code>areaGradient</code> \| <code>module</code>
-            * ~~[.dateLabel(_x)](#module_Sparkline--exports.dateLabel) ⇒ <code>dateLabel</code> \| <code>module</code>~~
             * [.exportChart(filename, title)](#module_Sparkline--exports.exportChart) ⇒ <code>Promise</code>
             * [.height(_x)](#module_Sparkline--exports.height) ⇒ <code>height</code> \| <code>module</code>
             * [.isAnimated(_x)](#module_Sparkline--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
             * [.lineGradient(_x)](#module_Sparkline--exports.lineGradient) ⇒ <code>lineGradient</code> \| <code>module</code>
             * [.isLoading(flag)](#module_Sparkline--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Sparkline--exports.margin) ⇒ <code>object</code> \| <code>module</code>
-            * ~~[.valueLabel(_x)](#module_Sparkline--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
             * [.width(_x)](#module_Sparkline--exports.width) ⇒ <code>width</code> \| <code>module</code>
         * _inner_
             * [~SparklineChartData](#module_Sparkline--exports..SparklineChartData) : <code>Array.&lt;Object&gt;</code>
@@ -107,21 +105,6 @@ Gets or Sets the areaGradient of the chart
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>Array.&lt;string&gt;</code> | = ['#F5FDFF', '#F6FEFC']   Desired areaGradient for the graph |
-
-<a name="module_Sparkline--exports.dateLabel" id="module_Sparkline--exports.dateLabel"></a>
-
-## ~~exports.dateLabel(_x) ⇒ <code>dateLabel</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the dateLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
-**Returns**: <code>dateLabel</code> \| <code>module</code> - Current dateLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>number</code> | Desired dateLabel for the graph |
 
 <a name="module_Sparkline--exports.exportChart" id="module_Sparkline--exports.exportChart"></a>
 
@@ -202,21 +185,6 @@ Gets or Sets the margin of the chart
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>object</code> | Margin object to get/set |
-
-<a name="module_Sparkline--exports.valueLabel" id="module_Sparkline--exports.valueLabel"></a>
-
-## ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the valueLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
-**Returns**: <code>valueLabel</code> \| <code>module</code> - Current valueLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>number</code> | Desired valueLabel for the graph |
 
 <a name="module_Sparkline--exports.width" id="module_Sparkline--exports.width"></a>
 

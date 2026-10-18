@@ -1062,18 +1062,6 @@ describe('line Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide dateLabel getter and setter', () => {
-            let previous = lineChart.dateLabel(),
-                expected = 'dateUTC',
-                actual;
-
-            lineChart.dateLabel(expected);
-            actual = lineChart.dateLabel();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide grid mode getter and setter', () => {
             let previous = lineChart.grid(),
                 expected = 'vertical',
@@ -1230,30 +1218,6 @@ describe('line Chart', () => {
 
             lineChart.tooltipThreshold(expected);
             actual = lineChart.tooltipThreshold();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide topicLabel getter and setter', () => {
-            let previous = lineChart.topicLabel(),
-                expected = 'valueSet',
-                actual;
-
-            lineChart.topicLabel(expected);
-            actual = lineChart.topicLabel();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide valueLabel getter and setter', () => {
-            let previous = lineChart.valueLabel(),
-                expected = 'quantity',
-                actual;
-
-            lineChart.valueLabel(expected);
-            actual = lineChart.valueLabel();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);

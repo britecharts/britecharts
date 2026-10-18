@@ -220,18 +220,6 @@ describe('sparkline Chart', () => {
             expect(newGradient).toBe(testGradient);
         });
 
-        it('should provide dateLabel getter and setter', () => {
-            let defaultDateLabel = sparklineChart.dateLabel(),
-                testDateLabel = 'testDateLabel',
-                newDateLabel;
-
-            sparklineChart.valueLabel(testDateLabel);
-            newDateLabel = sparklineChart.valueLabel();
-
-            expect(defaultDateLabel).not.toBe(testDateLabel);
-            expect(newDateLabel).toBe(testDateLabel);
-        });
-
         describe('export chart', () => {
             it('should have exportChart defined', () => {
                 expect(sparklineChart.exportChart).toBeDefined();
@@ -316,18 +304,6 @@ describe('sparkline Chart', () => {
                     expect(actual).toEqual(expected);
                 });
             });
-        });
-
-        it('should provide valueLabel getter and setter', () => {
-            let defaultValueLabel = sparklineChart.valueLabel(),
-                testValueLabel = 'quantity',
-                newValueLabel;
-
-            sparklineChart.valueLabel(testValueLabel);
-            newValueLabel = sparklineChart.valueLabel();
-
-            expect(defaultValueLabel).not.toBe(testValueLabel);
-            expect(newValueLabel).toBe(testValueLabel);
         });
 
         it('should provide width getter and setter', () => {

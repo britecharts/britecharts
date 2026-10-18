@@ -31,13 +31,11 @@ d3Selection.select('.css-selector')
             * [.areaOpacity(_x)](#module_Stacked-area--exports.areaOpacity) ⇒ <code>Number</code> \| <code>module</code>
             * [.colorMap([_x])](#module_Stacked-area--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
             * [.colorSchema(_x)](#module_Stacked-area--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-            * ~~[.dateLabel(_x)](#module_Stacked-area--exports.dateLabel) ⇒ <code>String</code> \| <code>module</code>~~
             * [.emptyDataConfig(_x)](#module_Stacked-area--exports.emptyDataConfig) ⇒ <code>Object</code> \| <code>module</code>
             * [.grid(_x)](#module_Stacked-area--exports.grid) ⇒ <code>String</code> \| <code>module</code>
             * [.hasOutline(_x)](#module_Stacked-area--exports.hasOutline) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.height(_x)](#module_Stacked-area--exports.height) ⇒ <code>Number</code> \| <code>module</code>
             * [.isAnimated(_x)](#module_Stacked-area--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
-            * ~~[.keyLabel(_x)](#module_Stacked-area--exports.keyLabel) ⇒ <code>Number</code> \| <code>module</code>~~
             * [.numberFormat(_x)](#module_Stacked-area--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
             * [.margin(_x)](#module_Stacked-area--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
             * [.tooltipThreshold(_x)](#module_Stacked-area--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
@@ -46,7 +44,6 @@ d3Selection.select('.css-selector')
             * [.locale(_x)](#module_Stacked-area--exports.locale) ⇒ <code>String</code> \| <code>Module</code>
             * [.exportChart(filename, title)](#module_Stacked-area--exports.exportChart) ⇒ <code>Promise</code>
             * [.on()](#module_Stacked-area--exports.on) ⇒ <code>module</code>
-            * ~~[.valueLabel(_x)](#module_Stacked-area--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
             * [.width(_x)](#module_Stacked-area--exports.width) ⇒ <code>Number</code> \| <code>module</code>
             * [.xAxisCustomFormat(_x)](#module_Stacked-area--exports.xAxisCustomFormat) ⇒ <code>String</code> \| <code>Module</code>
             * [.xAxisFormat(_x)](#module_Stacked-area--exports.xAxisFormat) ⇒ <code>String</code> \| <code>Module</code>
@@ -186,21 +183,6 @@ Gets or Sets the colorSchema of the chart
 | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | Desired colorSchema for the graph |
 
-<a name="module_Stacked-area--exports.dateLabel" id="module_Stacked-area--exports.dateLabel"></a>
-
-## ~~exports.dateLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the dateLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
-**Returns**: <code>String</code> \| <code>module</code> - Current dateLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>String</code> | Desired dateLabel for the graph |
-
 <a name="module_Stacked-area--exports.emptyDataConfig" id="module_Stacked-area--exports.emptyDataConfig"></a>
 
 ## exports.emptyDataConfig(_x) ⇒ <code>Object</code> \| <code>module</code>
@@ -265,21 +247,6 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>Boolean</code> | = false     Desired animation flag |
-
-<a name="module_Stacked-area--exports.keyLabel" id="module_Stacked-area--exports.keyLabel"></a>
-
-## ~~exports.keyLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the keyLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
-**Returns**: <code>Number</code> \| <code>module</code> - Current keyLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>Number</code> | Desired keyLabel for the graph |
 
 <a name="module_Stacked-area--exports.numberFormat" id="module_Stacked-area--exports.numberFormat"></a>
 
@@ -387,21 +354,6 @@ customDataEntryClick and customTouchMove
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>module</code> - Stacked Area  
 **Access**: public  
-<a name="module_Stacked-area--exports.valueLabel" id="module_Stacked-area--exports.valueLabel"></a>
-
-## ~~exports.valueLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the valueLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
-**Returns**: <code>Number</code> \| <code>module</code> - Current valueLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>Number</code> | Desired valueLabel for the graph |
-
 <a name="module_Stacked-area--exports.width" id="module_Stacked-area--exports.width"></a>
 
 ## exports.width(_x) ⇒ <code>Number</code> \| <code>module</code>

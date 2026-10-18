@@ -303,6 +303,24 @@ if (lineChart.numberFormat() === undefined) { /* ... */ }
 if (lineChart.numberFormat() === null) { /* ... */ }
 ```
 
+16. Name your data's keys as the charts expect
+
+The accessors that let a chart read its data under other keys are removed: `nameLabel` and `valueLabel` on the bar chart, `groupLabel`, `nameLabel` and `valueLabel` on the grouped bar, `stackLabel`, `nameLabel` and `valueLabel` on the stacked bar, `dateLabel`, `topicLabel` and `valueLabel` on the line chart, `dateLabel`, `keyLabel` and `valueLabel` on the stacked area, and `dateLabel` and `valueLabel` on the sparkline. They warned that they were deprecated since version 2. The React components drop the matching props.
+
+If you used them, rename the keys in your data to the ones each chart's data shape names, such as `name` and `value` for the bar chart:
+
+```js
+// Version 2
+barChart.nameLabel('letter').valueLabel('frequency');
+barContainer.datum([{ letter: 'A', frequency: 0.08 }]).call(barChart);
+
+// Version 3
+const data = rows.map(({ letter, frequency }) => ({ name: letter, value: frequency }));
+barContainer.datum(data).call(barChart);
+```
+
+The tooltip keeps its `dateLabel`, `nameLabel`, `topicLabel` and `valueLabel`: it reads the data points of several charts, and they use different keys.
+
 ### New features
 1. Start using TypeScript with Britecharts.
 
@@ -353,6 +371,7 @@ We changed many things in the third version of Britecharts; here are some summar
 * Removes the line chart's 'dataByTopic' data shape.
 * Publishes one UMD bundle and one CDN bundle instead of a UMD file per chart. The per-chart stylesheets stay.
 * The packages are ES modules: `import` works in Node, and the CommonJS bundles `require` loads end in `.cjs`.
+* Removes the data-key accessors ('nameLabel', 'valueLabel', 'dateLabel', 'topicLabel', 'keyLabel', 'groupLabel', 'stackLabel') from the bar, grouped bar, stacked bar, line, stacked area and sparkline charts, and the matching React props. The tooltip keeps its own.
 * An accessor that has not been set reads `null` on every chart, never `undefined`.
 * Removes the bullet chart's title and subtitle ('customTitle', 'customSubtitle' and the 'title' and 'subtitle' data fields) and the sparkline's title ('titleText', 'titleTextStyle'), with the matching React props.
 * Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.

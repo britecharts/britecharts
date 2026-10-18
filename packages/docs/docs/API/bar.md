@@ -44,13 +44,11 @@ d3.select('.css-selector')
             * [.labelsSize([_x])](#module_Bar--exports.labelsSize) ⇒ <code>number</code> \| <code>module</code>
             * [.isLoading(flag)](#module_Bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Bar--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
-            * ~~[.nameLabel(_x)](#module_Bar--exports.nameLabel) ⇒ <code>number</code> \| <code>module</code>~~
             * [.numberFormat(_x)](#module_Bar--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
             * [.on()](#module_Bar--exports.on) ⇒ <code>module</code>
             * [.percentageAxisToMaxRatio(_x)](#module_Bar--exports.percentageAxisToMaxRatio) ⇒ <code>ratio</code> \| <code>module</code>
             * [.shouldReverseColorList(_x)](#module_Bar--exports.shouldReverseColorList) ⇒ <code>boolean</code> \| <code>module</code>
             * [.orderingFunction(_x)](#module_Bar--exports.orderingFunction) ⇒ <code>function</code> \| <code>Module</code>
-            * ~~[.valueLabel(_x)](#module_Bar--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
             * [.valueLocale([_x])](#module_Bar--exports.valueLocale) ⇒ <code>LocaleObject</code> \| <code>module</code>
             * [.width(_x)](#module_Bar--exports.width) ⇒ <code>width</code> \| <code>module</code>
             * [.xAxisLabel(_x)](#module_Bar--exports.xAxisLabel) ⇒ <code>String</code> \| <code>module</code>
@@ -362,21 +360,6 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>object</code> | Margin object to get/set |
 
-<a name="module_Bar--exports.nameLabel" id="module_Bar--exports.nameLabel"></a>
-
-## ~~exports.nameLabel(_x) ⇒ <code>number</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the nameLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
-**Returns**: <code>number</code> \| <code>module</code> - Current nameLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>number</code> | Desired nameLabel for the graph |
-
 <a name="module_Bar--exports.numberFormat" id="module_Bar--exports.numberFormat"></a>
 
 ## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
@@ -438,21 +421,6 @@ Changes the order of items given the custom function
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>function</code> | A custom function that sets logic for ordering |
-
-<a name="module_Bar--exports.valueLabel" id="module_Bar--exports.valueLabel"></a>
-
-## ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the valueLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
-**Returns**: <code>valueLabel</code> \| <code>module</code> - Current valueLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>Number</code> | Desired valueLabel for the graph |
 
 <a name="module_Bar--exports.valueLocale" id="module_Bar--exports.valueLocale"></a>
 

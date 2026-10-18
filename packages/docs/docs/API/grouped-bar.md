@@ -31,18 +31,15 @@ d3Selection.select('.css-selector')
             * [.colorMap([_x])](#module_Grouped-bar--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
             * [.colorSchema(_x)](#module_Grouped-bar--exports.colorSchema) ⇒ <code>colorSchema</code> \| <code>module</code>
             * [.exportChart(filename, title)](#module_Grouped-bar--exports.exportChart) ⇒ <code>Promise</code>
-            * ~~[.groupLabel(_x)](#module_Grouped-bar--exports.groupLabel) ⇒ <code>groupLabel</code> \| <code>module</code>~~
             * [.grid([_x])](#module_Grouped-bar--exports.grid) ⇒ <code>String</code> \| <code>module</code>
             * [.height([_x])](#module_Grouped-bar--exports.height) ⇒ <code>height</code> \| <code>module</code>
             * [.isHorizontal([_x])](#module_Grouped-bar--exports.isHorizontal) ⇒ <code>isHorizontal</code> \| <code>module</code>
             * [.isAnimated([_x])](#module_Grouped-bar--exports.isAnimated) ⇒ <code>isAnimated</code> \| <code>module</code>
             * [.isLoading(flag)](#module_Grouped-bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Grouped-bar--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
-            * ~~[.nameLabel(_x)](#module_Grouped-bar--exports.nameLabel) ⇒ <code>nameLabel</code> \| <code>module</code>~~
             * [.numberFormat(_x)](#module_Grouped-bar--exports.numberFormat) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
             * [.on()](#module_Grouped-bar--exports.on) ⇒ <code>module</code>
             * [.tooltipThreshold([_x])](#module_Grouped-bar--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
-            * ~~[.valueLabel(_x)](#module_Grouped-bar--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
             * [.valueLocale([_x])](#module_Grouped-bar--exports.valueLocale) ⇒ <code>LocaleObject</code> \| <code>module</code>
             * [.width([_x])](#module_Grouped-bar--exports.width) ⇒ <code>Number</code> \| <code>module</code>
             * [.xTicks([_x])](#module_Grouped-bar--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
@@ -178,21 +175,6 @@ Chart exported to png and a download action is fired
 | filename | <code>String</code> | File title for the resulting picture |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
-<a name="module_Grouped-bar--exports.groupLabel" id="module_Grouped-bar--exports.groupLabel"></a>
-
-## ~~exports.groupLabel(_x) ⇒ <code>groupLabel</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the groupLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
-**Returns**: <code>groupLabel</code> \| <code>module</code> - Current groupLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>String</code> | Desired groupLabel for the graph |
-
 <a name="module_Grouped-bar--exports.grid" id="module_Grouped-bar--exports.grid"></a>
 
 ## exports.grid([_x]) ⇒ <code>String</code> \| <code>module</code>
@@ -271,21 +253,6 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>Object</code> | Margin object to get/set |
 
-<a name="module_Grouped-bar--exports.nameLabel" id="module_Grouped-bar--exports.nameLabel"></a>
-
-## ~~exports.nameLabel(_x) ⇒ <code>nameLabel</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the nameLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
-**Returns**: <code>nameLabel</code> \| <code>module</code> - Current nameLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>Number</code> | Desired dateLabel for the graph |
-
 <a name="module_Grouped-bar--exports.numberFormat" id="module_Grouped-bar--exports.numberFormat"></a>
 
 ## exports.numberFormat(_x) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
@@ -322,21 +289,6 @@ NOTE: This could also depend on the aspect ratio
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [_x] | <code>Number</code> | <code>480</code> | Minimum width of chart to show the tooltip |
-
-<a name="module_Grouped-bar--exports.valueLabel" id="module_Grouped-bar--exports.valueLabel"></a>
-
-## ~~exports.valueLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the valueLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
-**Returns**: <code>Number</code> \| <code>module</code> - Current valueLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>Number</code> | Desired valueLabel for the graph |
 
 <a name="module_Grouped-bar--exports.valueLocale" id="module_Grouped-bar--exports.valueLocale"></a>
 
