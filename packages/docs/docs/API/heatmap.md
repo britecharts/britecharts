@@ -7,7 +7,6 @@ title: Heatmap
 Reusable Heatmap API module that renders a
 simple and configurable heatmap chart.
 
-**Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
 let heatmap = heatmap();
@@ -52,7 +51,7 @@ This function creates the graph using the selection as container
 
 <a name="module_Heatmap--exports.a11yTitle" id="module_Heatmap--exports.a11yTitle"></a>
 
-## exports.a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Heatmap".
@@ -67,7 +66,7 @@ set as the svg's `aria-label`. Unset, the chart is announced as
 
 <a name="module_Heatmap--exports.a11yDescription" id="module_Heatmap--exports.a11yDescription"></a>
 
-## exports.a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
@@ -82,7 +81,7 @@ chart's name, such as what the data shows. It is rendered as the svg's
 
 <a name="module_Heatmap--exports.animationDuration" id="module_Heatmap--exports.animationDuration"></a>
 
-## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -95,7 +94,7 @@ Gets or Sets the duration of the animation
 
 <a name="module_Heatmap--exports.boxSize" id="module_Heatmap--exports.boxSize"></a>
 
-## exports.boxSize(_x) ⇒ <code>Number</code> \| <code>module</code>
+## boxSize(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the boxSize of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -108,7 +107,7 @@ Gets or Sets the boxSize of the chart
 
 <a name="module_Heatmap--exports.colorSchema" id="module_Heatmap--exports.colorSchema"></a>
 
-## exports.colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -121,7 +120,7 @@ Gets or Sets the colorSchema of the chart
 
 <a name="module_Heatmap--exports.exportChart" id="module_Heatmap--exports.exportChart"></a>
 
-## exports.exportChart(filename, title)
+## exportChart(filename, title)
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -134,7 +133,7 @@ Chart exported to png and a download action is fired
 
 <a name="module_Heatmap--exports.isLoading" id="module_Heatmap--exports.isLoading"></a>
 
-## exports.isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
+## isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -151,7 +150,7 @@ chart.isLoading(true)
 ```
 <a name="module_Heatmap--exports.height" id="module_Heatmap--exports.height"></a>
 
-## exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
+## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -164,7 +163,7 @@ Gets or Sets the height of the chart
 
 <a name="module_Heatmap--exports.isAnimated" id="module_Heatmap--exports.isAnimated"></a>
 
-## exports.isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isAnimated value of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -177,7 +176,7 @@ Gets or Sets the isAnimated value of the chart
 
 <a name="module_Heatmap--exports.margin" id="module_Heatmap--exports.margin"></a>
 
-## exports.margin(_x) ⇒ <code>margin</code> \| <code>module</code>
+## margin(_x) ⇒ <code>margin</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -190,7 +189,7 @@ Gets or Sets the margin of the chart
 
 <a name="module_Heatmap--exports.on" id="module_Heatmap--exports.on"></a>
 
-## exports.on() ⇒ <code>module</code>
+## on() ⇒ <code>module</code>
 Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
@@ -200,7 +199,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick
 **Access**: public  
 <a name="module_Heatmap--exports.yAxisLabels" id="module_Heatmap--exports.yAxisLabels"></a>
 
-## exports.yAxisLabels(_x) ⇒ <code>yAxisLabels</code> \| <code>module</code>
+## yAxisLabels(_x) ⇒ <code>yAxisLabels</code> \| <code>module</code>
 Gets or Sets the y-axis labels of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
@@ -213,7 +212,7 @@ Gets or Sets the y-axis labels of the chart
 
 <a name="module_Heatmap--exports.width" id="module_Heatmap--exports.width"></a>
 
-## exports.width(_x) ⇒ <code>Number</code> \| <code>module</code>
+## width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  

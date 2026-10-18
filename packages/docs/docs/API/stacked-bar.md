@@ -7,7 +7,6 @@ title: Stacked Bar
 Stacked Area Chart reusable API module that allows us
 rendering a multi area and configurable chart.
 
-**Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
 let stackedBar = stackedBar();
@@ -65,7 +64,7 @@ This function creates the graph using the selection and data provided
 
 <a name="module_Stacked-bar--exports.a11yTitle" id="module_Stacked-bar--exports.a11yTitle"></a>
 
-## exports.a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Stacked bar chart".
@@ -80,7 +79,7 @@ set as the svg's `aria-label`. Unset, the chart is announced as
 
 <a name="module_Stacked-bar--exports.a11yDescription" id="module_Stacked-bar--exports.a11yDescription"></a>
 
-## exports.a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
@@ -95,7 +94,7 @@ chart's name, such as what the data shows. It is rendered as the svg's
 
 <a name="module_Stacked-bar--exports.animationDuration" id="module_Stacked-bar--exports.animationDuration"></a>
 
-## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -108,7 +107,7 @@ Gets or Sets the duration of the animation
 
 <a name="module_Stacked-bar--exports.betweenBarsPadding" id="module_Stacked-bar--exports.betweenBarsPadding"></a>
 
-## exports.betweenBarsPadding(_x) ⇒ <code>Number</code> \| <code>module</code>
+## betweenBarsPadding(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the padding of the stacked bar chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -121,7 +120,7 @@ Gets or Sets the padding of the stacked bar chart
 
 <a name="module_Stacked-bar--exports.colorMap" id="module_Stacked-bar--exports.colorMap"></a>
 
-## exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
+## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -138,7 +137,7 @@ stackedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
 ```
 <a name="module_Stacked-bar--exports.colorSchema" id="module_Stacked-bar--exports.colorSchema"></a>
 
-## exports.colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -151,7 +150,7 @@ Gets or Sets the colorSchema of the chart
 
 <a name="module_Stacked-bar--exports.exportChart" id="module_Stacked-bar--exports.exportChart"></a>
 
-## exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -165,7 +164,7 @@ Chart exported to png and a download action is fired
 
 <a name="module_Stacked-bar--exports.grid" id="module_Stacked-bar--exports.grid"></a>
 
-## exports.grid(_x) ⇒ <code>String</code> \| <code>module</code>
+## grid(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the grid mode
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -178,7 +177,7 @@ Gets or Sets the grid mode
 
 <a name="module_Stacked-bar--exports.hasPercentage" id="module_Stacked-bar--exports.hasPercentage"></a>
 
-## exports.hasPercentage(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## hasPercentage(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the hasPercentage status
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -191,7 +190,7 @@ Gets or Sets the hasPercentage status
 
 <a name="module_Stacked-bar--exports.height" id="module_Stacked-bar--exports.height"></a>
 
-## exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
+## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -204,7 +203,7 @@ Gets or Sets the height of the chart
 
 <a name="module_Stacked-bar--exports.hasReversedStacks" id="module_Stacked-bar--exports.hasReversedStacks"></a>
 
-## exports.hasReversedStacks(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## hasReversedStacks(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the hasReversedStacks property of the chart, reversing the order of stacks
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -217,7 +216,7 @@ Gets or Sets the hasReversedStacks property of the chart, reversing the order of
 
 <a name="module_Stacked-bar--exports.isAnimated" id="module_Stacked-bar--exports.isAnimated"></a>
 
-## exports.isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
 By default this is 'false'
 
@@ -231,7 +230,7 @@ By default this is 'false'
 
 <a name="module_Stacked-bar--exports.isHorizontal" id="module_Stacked-bar--exports.isHorizontal"></a>
 
-## exports.isHorizontal(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## isHorizontal(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the horizontal direction of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -244,7 +243,7 @@ Gets or Sets the horizontal direction of the chart
 
 <a name="module_Stacked-bar--exports.isLoading" id="module_Stacked-bar--exports.isLoading"></a>
 
-## exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
+## isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -257,7 +256,7 @@ Gets or Sets the loading state of the chart
 
 <a name="module_Stacked-bar--exports.margin" id="module_Stacked-bar--exports.margin"></a>
 
-## exports.margin(_x) ⇒ <code>Object</code> \| <code>module</code>
+## margin(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -270,7 +269,7 @@ Gets or Sets the margin of the chart
 
 <a name="module_Stacked-bar--exports.numberFormat" id="module_Stacked-bar--exports.numberFormat"></a>
 
-## exports.numberFormat(_x) ⇒ <code>String</code> \| <code>module</code>
+## numberFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the numberFormat of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -283,7 +282,7 @@ Gets or Sets the numberFormat of the chart
 
 <a name="module_Stacked-bar--exports.on" id="module_Stacked-bar--exports.on"></a>
 
-## exports.on() ⇒ <code>module</code>
+## on() ⇒ <code>module</code>
 Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
@@ -293,7 +292,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick
 **Access**: public  
 <a name="module_Stacked-bar--exports.percentageAxisToMaxRatio" id="module_Stacked-bar--exports.percentageAxisToMaxRatio"></a>
 
-## exports.percentageAxisToMaxRatio(_x) ⇒ <code>Number</code> \| <code>module</code>
+## percentageAxisToMaxRatio(_x) ⇒ <code>Number</code> \| <code>module</code>
 Configurable extension of the x axis
 If your max point was 50% you might want to show x axis to 60%, pass 1.2
 
@@ -307,7 +306,7 @@ If your max point was 50% you might want to show x axis to 60%, pass 1.2
 
 <a name="module_Stacked-bar--exports.tooltipThreshold" id="module_Stacked-bar--exports.tooltipThreshold"></a>
 
-## exports.tooltipThreshold([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## tooltipThreshold([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
@@ -321,7 +320,7 @@ NOTE: This could also depend on the aspect ratio
 
 <a name="module_Stacked-bar--exports.valueLocale" id="module_Stacked-bar--exports.valueLocale"></a>
 
-## exports.valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
+## valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
@@ -340,7 +339,7 @@ stackedBarChart
 ```
 <a name="module_Stacked-bar--exports.width" id="module_Stacked-bar--exports.width"></a>
 
-## exports.width(_x) ⇒ <code>Number</code> \| <code>module</code>
+## width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -353,7 +352,7 @@ Gets or Sets the width of the chart
 
 <a name="module_Stacked-bar--exports.xTicks" id="module_Stacked-bar--exports.xTicks"></a>
 
-## exports.xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
+## xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the x axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -366,7 +365,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 
 <a name="module_Stacked-bar--exports.yAxisLabel" id="module_Stacked-bar--exports.yAxisLabel"></a>
 
-## exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+## yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the y-axis label of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
@@ -383,7 +382,7 @@ stackedBar.yAxisLabel('Ticket Sales')
 ```
 <a name="module_Stacked-bar--exports.yAxisLabelOffset" id="module_Stacked-bar--exports.yAxisLabelOffset"></a>
 
-## exports.yAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
+## yAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
@@ -401,7 +400,7 @@ stackedBar.yAxisLabelOffset(-55)
 ```
 <a name="module_Stacked-bar--exports.yTicks" id="module_Stacked-bar--exports.yTicks"></a>
 
-## exports.yTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
+## yTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of vertical ticks of the axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  

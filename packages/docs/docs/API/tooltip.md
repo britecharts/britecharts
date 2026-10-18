@@ -61,7 +61,6 @@ d3Selection.select('.metadata-group')
     .call(chartTooltip);
 ```
 
-**Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
 const lineChart = line(),
@@ -122,7 +121,7 @@ This function creates the graph using the selection as container
 
 <a name="module_Tooltip--exports.axisTimeCombinations" id="module_Tooltip--exports.axisTimeCombinations"></a>
 
-## exports.axisTimeCombinations
+## axisTimeCombinations
 constants to be used to force the x axis to respect a certain granularity
 current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
@@ -133,7 +132,7 @@ tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
 ```
 <a name="module_Tooltip--exports.dateFormat" id="module_Tooltip--exports.dateFormat"></a>
 
-## exports.dateFormat(_x) ⇒ <code>String</code> \| <code>module</code>
+## dateFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes the ability to force the tooltip to use a certain date format
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -146,7 +145,7 @@ Exposes the ability to force the tooltip to use a certain date format
 
 <a name="module_Tooltip--exports.dateCustomFormat" id="module_Tooltip--exports.dateCustomFormat"></a>
 
-## exports.dateCustomFormat(_x) ⇒ <code>String</code> \| <code>module</code>
+## dateCustomFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes the ability to use a custom date format
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -182,7 +181,7 @@ used, so the default works for every chart.
 
 <a name="module_Tooltip--exports.hide" id="module_Tooltip--exports.hide"></a>
 
-## exports.hide() ⇒ <code>module</code>
+## hide() ⇒ <code>module</code>
 Hides the tooltip
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -190,7 +189,7 @@ Hides the tooltip
 **Access**: public  
 <a name="module_Tooltip--exports.locale" id="module_Tooltip--exports.locale"></a>
 
-## exports.locale(_x) ⇒ <code>String</code> \| <code>module</code>
+## locale(_x) ⇒ <code>String</code> \| <code>module</code>
 Pass locale for the tooltip to render the date in
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -218,7 +217,7 @@ Gets or Sets the nameLabel of the data
 
 <a name="module_Tooltip--exports.numberFormat" id="module_Tooltip--exports.numberFormat"></a>
 
-## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format for the value displayed on the tooltip
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -231,7 +230,7 @@ Gets or Sets the number format for the value displayed on the tooltip
 
 <a name="module_Tooltip--exports.valueFormatter" id="module_Tooltip--exports.valueFormatter"></a>
 
-## exports.valueFormatter(_x) ⇒ <code>function</code> \| <code>module</code>
+## valueFormatter(_x) ⇒ <code>function</code> \| <code>module</code>
 Gets or Sets the formatter function for the value displayed on the tooltip.
 Setting this property makes the tooltip ignore numberFormat.
 
@@ -249,7 +248,7 @@ tooltipChart.valueFormatter(value => value.toString().length.toString())
 ```
 <a name="module_Tooltip--exports.shouldShowDateInTitle" id="module_Tooltip--exports.shouldShowDateInTitle"></a>
 
-## exports.shouldShowDateInTitle(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## shouldShowDateInTitle(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets shouldShowDateInTitle
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -262,7 +261,7 @@ Gets or Sets shouldShowDateInTitle
 
 <a name="module_Tooltip--exports.show" id="module_Tooltip--exports.show"></a>
 
-## exports.show([dataPoint], [position]) ⇒ <code>module</code>
+## show([dataPoint], [position]) ⇒ <code>module</code>
 Shows the tooltip. Given the hovered data point and its position, as
 the single-value charts dispatch them on `customMouseOver`, it renders
 and places the tooltip at once; otherwise it shows empty until the
@@ -279,7 +278,7 @@ first `update`, which is what the multi-value charts need.
 
 <a name="module_Tooltip--exports.title" id="module_Tooltip--exports.title"></a>
 
-## exports.title(_x) ⇒ <code>String</code> \| <code>module</code>
+## title(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the title of the tooltip (to only show the date, set a blank title)
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -292,7 +291,7 @@ Gets or Sets the title of the tooltip (to only show the date, set a blank title)
 
 <a name="module_Tooltip--exports.tooltipOffset" id="module_Tooltip--exports.tooltipOffset"></a>
 
-## exports.tooltipOffset(_x) ⇒ <code>Object</code> \| <code>module</code>
+## tooltipOffset(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets an offset, in pixels, applied to the point the tooltip is
 placed next to: `x` moves the anchor along the chart, `y` moves the box
 up (negative) or down. The box still stays inside the chart.
@@ -311,7 +310,7 @@ tooltip.tooltipOffset({ x: 0, y: -20 })
 ```
 <a name="module_Tooltip--exports.layout" id="module_Tooltip--exports.layout"></a>
 
-## exports.layout([_x]) ⇒ <code>String</code> \| <code>module</code>
+## layout([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the layout: 'list' shows the title and one row per topic,
 with a colour dot, the topic's name and its value (the multi-value
 charts: line, stacked area, stacked bar and grouped bar); 'single'
@@ -335,7 +334,7 @@ tooltip.layout('single')
 ```
 <a name="module_Tooltip--exports.maxEntries" id="module_Tooltip--exports.maxEntries"></a>
 
-## exports.maxEntries([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## maxEntries([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the most rows the tooltip shows. Past that, the last row
 reads "+n more" instead, so the box keeps a height that fits in the
 chart. 0 shows every row.
@@ -354,7 +353,7 @@ tooltip.maxEntries(6)
 ```
 <a name="module_Tooltip--exports.topicsOrder" id="module_Tooltip--exports.topicsOrder"></a>
 
-## exports.topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Pass an override for the ordering of your tooltip
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
@@ -382,7 +381,7 @@ Gets or Sets the topicLabel of the data
 
 <a name="module_Tooltip--exports.update" id="module_Tooltip--exports.update"></a>
 
-## exports.update(dataPoint, position, [chartSize], [colorMap]) ⇒ <code>module</code>
+## update(dataPoint, position, [chartSize], [colorMap]) ⇒ <code>module</code>
 Updates the content and position of the tooltip. The arguments are
 what every chart dispatches with `customMouseMove`, so
 `chart.on('customMouseMove', tooltip.update)` is all the wiring
@@ -424,7 +423,7 @@ Gets or Sets the valueLabel of the data
 
 <a name="module_Tooltip--exports.xAxisValueType" id="module_Tooltip--exports.xAxisValueType"></a>
 
-## exports.xAxisValueType([_x]) ⇒ <code>String</code> \| <code>module</code>
+## xAxisValueType([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets how the key of the data point is shown in the title:
 'date' formats it as a date, 'number' as a number, 'category' shows
 it as it is, and 'auto' (the default) picks one per key -- a Date or

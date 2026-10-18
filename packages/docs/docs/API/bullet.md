@@ -7,7 +7,6 @@ title: Bullet
 Reusable Bullet Chart API class that renders a
 simple and configurable Bullet Chart.
 
-**Requires**: <code>module:d3-axis,</code>  
 **Example**  
 ```js
 let bulletChart = bullet();
@@ -53,7 +52,7 @@ This function creates the graph using the selection as container
 
 <a name="module_Bullet--exports.a11yTitle" id="module_Bullet--exports.a11yTitle"></a>
 
-## exports.a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Bullet chart".
@@ -68,7 +67,7 @@ set as the svg's `aria-label`. Unset, the chart is announced as
 
 <a name="module_Bullet--exports.a11yDescription" id="module_Bullet--exports.a11yDescription"></a>
 
-## exports.a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
@@ -83,7 +82,7 @@ chart's name, such as what the data shows. It is rendered as the svg's
 
 <a name="module_Bullet--exports.colorSchema" id="module_Bullet--exports.colorSchema"></a>
 
-## exports.colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart.
 The first color from the array will be applied to range bars (the wider bars).
 The second color from the array will be applied to measure bars (the narrow bars) and
@@ -99,7 +98,7 @@ the third color will be applied to the marker lines.
 
 <a name="module_Bullet--exports.exportChart" id="module_Bullet--exports.exportChart"></a>
 
-## exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
@@ -113,7 +112,7 @@ Chart exported to png and a download action is fired
 
 <a name="module_Bullet--exports.isLoading" id="module_Bullet--exports.isLoading"></a>
 
-## exports.isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
+## isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
@@ -130,7 +129,7 @@ chart.isLoading(true)
 ```
 <a name="module_Bullet--exports.height" id="module_Bullet--exports.height"></a>
 
-## exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
+## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
@@ -143,7 +142,7 @@ Gets or Sets the height of the chart
 
 <a name="module_Bullet--exports.isReverse" id="module_Bullet--exports.isReverse"></a>
 
-## exports.isReverse(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## isReverse(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isReverse status of the chart. If true,
 the elements will be rendered in reverse order.
 
@@ -157,7 +156,7 @@ the elements will be rendered in reverse order.
 
 <a name="module_Bullet--exports.margin" id="module_Bullet--exports.margin"></a>
 
-## exports.margin(_x) ⇒ <code>margin</code> \| <code>module</code>
+## margin(_x) ⇒ <code>margin</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
@@ -170,7 +169,7 @@ Gets or Sets the margin of the chart
 
 <a name="module_Bullet--exports.numberFormat" id="module_Bullet--exports.numberFormat"></a>
 
-## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the bar chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
@@ -183,7 +182,7 @@ Gets or Sets the number format of the bar chart
 
 <a name="module_Bullet--exports.paddingBetweenAxisAndChart" id="module_Bullet--exports.paddingBetweenAxisAndChart"></a>
 
-## exports.paddingBetweenAxisAndChart(_x) ⇒ <code>Number</code> \| <code>module</code>
+## paddingBetweenAxisAndChart(_x) ⇒ <code>Number</code> \| <code>module</code>
 Space between axis and chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
@@ -196,7 +195,7 @@ Space between axis and chart
 
 <a name="module_Bullet--exports.startMaxRangeOpacity" id="module_Bullet--exports.startMaxRangeOpacity"></a>
 
-## exports.startMaxRangeOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
+## startMaxRangeOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the starting point of the capacity range.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
@@ -213,7 +212,7 @@ bulletChart.startMaxRangeOpacity(0.8)
 ```
 <a name="module_Bullet--exports.ticks" id="module_Bullet--exports.ticks"></a>
 
-## exports.ticks(_x) ⇒ <code>Number</code> \| <code>module</code>
+## ticks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the x axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
@@ -226,7 +225,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 
 <a name="module_Bullet--exports.width" id="module_Bullet--exports.width"></a>
 
-## exports.width(_x) ⇒ <code>Number</code> \| <code>module</code>
+## width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  

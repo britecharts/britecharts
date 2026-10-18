@@ -273,7 +273,6 @@ type TrendLinePoint = {
  *
  * @module Scatter-plot
  * @tutorial scatter-plot
- * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-ease, d3-scale, d3-selection, d3-shape, d3-voronoi
  *
  * @example
  * let scatterPlot = scatterPlot();

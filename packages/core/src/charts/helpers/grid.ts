@@ -1078,7 +1078,6 @@ export function gridVertical(scale: GridScale): GridBaseGenerator {
  * the 2D grid, ticksH() sets the ticks of the horizontal lines (from scaleY())
  * and ticksV() those of the vertical lines (from scaleX()).
  * @module Grid
- * @requires d3-scale
  * @exports gridHorizontal
  * @exports gridVertical
  * @exports grid

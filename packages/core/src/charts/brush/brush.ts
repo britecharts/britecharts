@@ -155,17 +155,6 @@ type BrushDatum = {
  *
  * @module Brush
  * @tutorial brush
- * @requires d3-array
- * @requires d3-axis
- * @requires d3-brush
- * @requires d3-ease
- * @requires d3-scale
- * @requires d3-shape
- * @requires d3-dispatch
- * @requires d3-selection
- * @requires d3-time
- * @requires d3-transition
- * @requires d3-time-format
  *
  * @example
  * let brushChart = brush();

@@ -63,7 +63,6 @@ export type HeatmapChartModule = ChartModuleSelection<HeatmapChartDataShape[]> &
  *
  * @module Heatmap
  * @tutorial heatmap
- * @requires d3-array, d3-selection, d3-scale, d3-interpolate, d3-transition
  *
  * @example
  * let heatmap = heatmap();

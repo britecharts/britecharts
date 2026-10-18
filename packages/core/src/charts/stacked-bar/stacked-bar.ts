@@ -212,8 +212,6 @@ type StackedBarPoint = SeriesPoint<StackedBarColumn>;
  *
  * @module Stacked-bar
  * @tutorial stacked-bar
- * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
- *  d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
  *
  * @example
  * let stackedBar = stackedBar();
@@ -224,7 +222,6 @@ type StackedBarPoint = SeriesPoint<StackedBarColumn>;
  * d3Selection.select('.css-selector')
  *     .datum(dataset.data)
  *     .call(stackedBar);
- *
  */
 
 /**

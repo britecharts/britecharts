@@ -364,7 +364,6 @@ let hasWarnedLegacyOrder = false;
  *
  * @module Tooltip
  * @tutorial tooltip
- * @requires d3-array, d3-format, d3-selection, d3-time-format, d3-transition
  *
  * @example
  * const lineChart = line(),
@@ -386,7 +385,6 @@ let hasWarnedLegacyOrder = false;
  * d3Selection.select('.metadata-group .vertical-marker-container')
  *     .datum([])
  *     .call(chartTooltip);
- *
  */
 export default function module(): TooltipModule {
     // Kept as one `let` chain with annotations rather than split into `let`
@@ -1221,7 +1219,6 @@ export default function module(): TooltipModule {
      * REF: http://bl.ocks.org/mbostock/7555321
      * More discussions on https://github.com/mbostock/d3/issues/1642
      * @private
-     *
      */
     function textWrap(
         text: ChartSelection<SVGTextElement>,

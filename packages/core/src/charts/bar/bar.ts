@@ -261,7 +261,6 @@ type BarColorEntry = {
  *
  * @module Bar
  * @tutorial bar
- * @requires d3-array, d3-ease, d3-axis, d3-color, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
  * const barChart = bar();
@@ -273,7 +272,6 @@ type BarColorEntry = {
  * d3.select('.css-selector')
  *     .datum(dataset)
  *     .call(barChart);
- *
  */
 
 /**

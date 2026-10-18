@@ -3,7 +3,6 @@
  * orientation.
  *
  * @module Scale
- * @requires d3-scale
  */
 
 /**

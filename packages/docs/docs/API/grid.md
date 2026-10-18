@@ -13,7 +13,6 @@ gridHorizontal(yScale) draws horizontal lines from the y-scale's ticks; on
 the 2D grid, ticksH() sets the ticks of the horizontal lines (from scaleY())
 and ticksV() those of the vertical lines (from scaleX()).
 
-**Requires**: <code>module:d3-scale</code>  
 
 * [Grid](#module_Grid)
     * [.grid(scaleX, scaleY)](#module_Grid.grid) ⇒ <code>gridGenerator</code>

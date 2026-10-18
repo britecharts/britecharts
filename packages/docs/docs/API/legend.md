@@ -7,7 +7,6 @@ title: Legend
 Legend Component reusable API class that renders a
 simple and configurable legend element.
 
-**Requires**: <code>module:d3-format,</code>  
 **Example**  
 ```js
 const donutChart = donut(),
@@ -67,7 +66,7 @@ This function creates the graph using the selection as container
 
 <a name="module_Legend--exports.a11yTitle" id="module_Legend--exports.a11yTitle"></a>
 
-## exports.a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Legend".
@@ -82,7 +81,7 @@ set as the svg's `aria-label`. Unset, the chart is announced as
 
 <a name="module_Legend--exports.a11yDescription" id="module_Legend--exports.a11yDescription"></a>
 
-## exports.a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
@@ -97,14 +96,14 @@ chart's name, such as what the data shows. It is rendered as the svg's
 
 <a name="module_Legend--exports.clearHighlight" id="module_Legend--exports.clearHighlight"></a>
 
-## exports.clearHighlight()
+## clearHighlight()
 Command that clears all highlighted entries on a legend instance
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
 **Access**: public  
 <a name="module_Legend--exports.colorMap" id="module_Legend--exports.colorMap"></a>
 
-## exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
+## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -117,7 +116,7 @@ Gets or Sets the colorMap of the chart
 
 <a name="module_Legend--exports.colorSchema" id="module_Legend--exports.colorSchema"></a>
 
-## exports.colorSchema([_x]) ⇒ <code>number</code> \| <code>module</code>
+## colorSchema([_x]) ⇒ <code>number</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -130,7 +129,7 @@ Gets or Sets the colorSchema of the chart
 
 <a name="module_Legend--exports.height" id="module_Legend--exports.height"></a>
 
-## exports.height([_x]) ⇒ <code>height</code> \| <code>module</code>
+## height([_x]) ⇒ <code>height</code> \| <code>module</code>
 Gets or Sets the height of the legend chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -143,7 +142,7 @@ Gets or Sets the height of the legend chart
 
 <a name="module_Legend--exports.highlight" id="module_Legend--exports.highlight"></a>
 
-## exports.highlight(entryId)
+## highlight(entryId)
 Command that highlights a line entry by fading the rest of lines on a legend instance
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -155,7 +154,7 @@ Command that highlights a line entry by fading the rest of lines on a legend ins
 
 <a name="module_Legend--exports.highlightEntryById" id="module_Legend--exports.highlightEntryById"></a>
 
-## exports.highlightEntryById([_x]) ⇒ <code>Number</code> \| <code>Module</code>
+## highlightEntryById([_x]) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the id of the entry to highlight
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -168,7 +167,7 @@ Gets or Sets the id of the entry to highlight
 
 <a name="module_Legend--exports.isHorizontal" id="module_Legend--exports.isHorizontal"></a>
 
-## exports.isHorizontal([_x]) ⇒ <code>Boolean</code> \| <code>module</code>
+## isHorizontal([_x]) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the horizontal mode on the legend
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -181,7 +180,7 @@ Gets or Sets the horizontal mode on the legend
 
 <a name="module_Legend--exports.margin" id="module_Legend--exports.margin"></a>
 
-## exports.margin(_x) ⇒ <code>object</code> \| <code>module</code>
+## margin(_x) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the margin of the legend chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -194,7 +193,7 @@ Gets or Sets the margin of the legend chart
 
 <a name="module_Legend--exports.marginRatio" id="module_Legend--exports.marginRatio"></a>
 
-## exports.marginRatio([_x]) ⇒ <code>number</code> \| <code>module</code>
+## marginRatio([_x]) ⇒ <code>number</code> \| <code>module</code>
 Gets or Sets the margin ratio of the legend chart.
 Used to determine spacing between legend elements.
 
@@ -208,7 +207,7 @@ Used to determine spacing between legend elements.
 
 <a name="module_Legend--exports.markerSize" id="module_Legend--exports.markerSize"></a>
 
-## exports.markerSize([_x]) ⇒ <code>object</code> \| <code>module</code>
+## markerSize([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the markerSize of the legend chart.
 This markerSize will determine the horizontal and vertical size of the colored marks
 added as color identifiers for the chart's categories.
@@ -223,7 +222,7 @@ added as color identifiers for the chart's categories.
 
 <a name="module_Legend--exports.numberFormat" id="module_Legend--exports.numberFormat"></a>
 
-## exports.numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
+## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the legend chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -236,7 +235,7 @@ Gets or Sets the number format of the legend chart
 
 <a name="module_Legend--exports.unit" id="module_Legend--exports.unit"></a>
 
-## exports.unit([_x]) ⇒ <code>String</code> \| <code>module</code>
+## unit([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the unit of the value
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
@@ -249,7 +248,7 @@ Gets or Sets the unit of the value
 
 <a name="module_Legend--exports.width" id="module_Legend--exports.width"></a>
 
-## exports.width([_x]) ⇒ <code>number</code> \| <code>module</code>
+## width([_x]) ⇒ <code>number</code> \| <code>module</code>
 Gets or Sets the width of the legend chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
