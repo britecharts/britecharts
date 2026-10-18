@@ -1337,7 +1337,7 @@ export default function module(): BarChartModule {
     // API
     /**
      * Gets or Sets the name screen readers announce for the chart. It is
-     * rendered as the svg's `<title>`. Unset, the chart is announced as
+     * set as the svg's `aria-label`. Unset, the chart is announced as
      * "Bar chart".
      * @param  {String | null} _x     Desired accessible title for the chart
      * @return {String | null | module} Current a11yTitle or Chart module to chain calls

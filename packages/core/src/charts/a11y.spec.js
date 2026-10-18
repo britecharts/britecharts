@@ -140,22 +140,21 @@ describe.each(CHARTS)(
             expect(svg().getAttribute('role')).toBe(
                 fallbackTitle === 'Legend' ? 'group' : 'img'
             );
-            expect(svg().firstElementChild.tagName).toBe('title');
-            expect(svg().firstElementChild.textContent).toBe(fallbackTitle);
+            expect(svg().getAttribute('aria-label')).toBe(fallbackTitle);
+            // Not a <title>: browsers show that as a tooltip on hover
+            expect(svg().querySelector(':scope > title')).toBeNull();
         });
 
-        it('should render the title and description it is given, linked by id', () => {
+        it('should render the title it is given as the label, and its description linked by id', () => {
             instance
                 .a11yTitle('Visits')
                 .a11yDescription('Visits doubled in May');
             render();
 
-            const title = svg().querySelector(':scope > title');
             const desc = svg().querySelector(':scope > desc');
 
-            expect(title.textContent).toBe('Visits');
+            expect(svg().getAttribute('aria-label')).toBe('Visits');
             expect(desc.textContent).toBe('Visits doubled in May');
-            expect(svg().getAttribute('aria-labelledby')).toBe(title.id);
             expect(svg().getAttribute('aria-describedby')).toBe(desc.id);
         });
 
@@ -165,10 +164,7 @@ describe.each(CHARTS)(
             instance.a11yTitle('Second').a11yDescription(null);
             render();
 
-            expect(svg().querySelectorAll(':scope > title')).toHaveLength(1);
-            expect(svg().querySelector(':scope > title').textContent).toBe(
-                'Second'
-            );
+            expect(svg().getAttribute('aria-label')).toBe('Second');
             expect(svg().querySelector(':scope > desc')).toBeNull();
         });
     }

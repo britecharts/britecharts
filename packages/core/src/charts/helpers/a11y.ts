@@ -16,37 +16,32 @@ export type ChartLabel = {
     role?: 'img' | 'group';
 };
 
-const ownChild = (svg: Element, tagName: 'title' | 'desc') =>
+const ownDesc = (svg: Element) =>
     Array.from(svg.children).find(
-        (child) => child.tagName.toLowerCase() === tagName
+        (child) => child.tagName.toLowerCase() === 'desc'
     );
 
-const ensureOwnChild = (
-    svg: Element,
-    tagName: 'title' | 'desc',
-    after: Element | null
-) => {
-    const existing = ownChild(svg, tagName);
+const ensureOwnDesc = (svg: Element) => {
+    const existing = ownDesc(svg);
 
     if (existing) {
         return existing;
     }
 
-    const element = svg.ownerDocument.createElementNS(SVG_NAMESPACE, tagName);
+    const element = svg.ownerDocument.createElementNS(SVG_NAMESPACE, 'desc');
 
-    element.id = `britechart-${tagName}-${++lastId}`;
-    // A `<title>` only names its parent when it is the first child, so both
-    // elements go at the top, title first.
-    svg.insertBefore(element, after ? after.nextSibling : svg.firstChild);
+    element.id = `britechart-desc-${++lastId}`;
+    svg.insertBefore(element, svg.firstChild);
 
     return element;
 };
 
 /**
- * Gives a chart's svg the role, `<title>` and `<desc>` that screen readers
- * announce. Run on every render: it reuses the elements it made the first time
- * and only updates their text, so the ids, and the attributes that point at
- * them, stay stable.
+ * Gives a chart's svg the role, `aria-label` and `<desc>` that screen readers
+ * announce. The name is an attribute, not a `<title>`: browsers show an svg's
+ * `<title>` as a tooltip when the pointer rests on the chart. Run on every
+ * render: it reuses the `<desc>` it made the first time and only updates its
+ * text, so its id, and the attribute that points at it, stay stable.
  */
 export const labelChart = (
     svg: Element | null,
@@ -57,19 +52,15 @@ export const labelChart = (
     }
 
     svg.setAttribute('role', role);
-
-    const titleElement = ensureOwnChild(svg, 'title', null);
-
-    titleElement.textContent = a11yTitle ?? fallbackTitle;
-    svg.setAttribute('aria-labelledby', titleElement.id);
+    svg.setAttribute('aria-label', a11yTitle ?? fallbackTitle);
 
     if (a11yDescription) {
-        const descElement = ensureOwnChild(svg, 'desc', titleElement);
+        const descElement = ensureOwnDesc(svg);
 
         descElement.textContent = a11yDescription;
         svg.setAttribute('aria-describedby', descElement.id);
     } else {
-        ownChild(svg, 'desc')?.remove();
+        ownDesc(svg)?.remove();
         svg.removeAttribute('aria-describedby');
     }
 };

@@ -54,7 +54,7 @@ This function creates the graph using the selection as container
 
 ## exports.a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets the name screen readers announce for the chart. It is
-rendered as the svg's `<title>`. Unset, the chart is announced as
+set as the svg's `aria-label`. Unset, the chart is announced as
 "Heatmap".
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  

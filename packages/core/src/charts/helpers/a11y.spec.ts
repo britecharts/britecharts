@@ -44,47 +44,46 @@ describe('labelChart', () => {
 
         label(svg);
 
-        expect(svg.querySelector('title')?.textContent).toBe('Bar chart');
+        expect(svg.getAttribute('aria-label')).toBe('Bar chart');
     });
 
-    it('should put the title first and point aria-labelledby at it', () => {
+    it('should name the chart with an aria-label, not a title element', () => {
         const svg = anSvg();
 
         label(svg, 'Sales by month');
 
-        const title = svg.firstElementChild;
-
-        expect(title?.tagName).toBe('title');
-        expect(title?.textContent).toBe('Sales by month');
-        expect(svg.getAttribute('aria-labelledby')).toBe(title?.id);
+        // Browsers show an svg's <title> as a tooltip on hover
+        expect(svg.getAttribute('aria-label')).toBe('Sales by month');
+        expect(svg.querySelector('title')).toBeNull();
+        expect(svg.hasAttribute('aria-labelledby')).toBe(false);
     });
 
-    it('should add a description after the title and point aria-describedby at it', () => {
+    it('should add a description first and point aria-describedby at it', () => {
         const svg = anSvg();
 
         label(svg, 'Sales by month', 'Sales peak in December');
 
-        const desc = svg.children[1];
+        const desc = svg.firstElementChild;
 
-        expect(desc.tagName).toBe('desc');
-        expect(desc.textContent).toBe('Sales peak in December');
-        expect(svg.getAttribute('aria-describedby')).toBe(desc.id);
+        expect(desc?.tagName).toBe('desc');
+        expect(desc?.textContent).toBe('Sales peak in December');
+        expect(svg.getAttribute('aria-describedby')).toBe(desc?.id);
     });
 
-    it('should reuse its elements on the next render, keeping their ids', () => {
+    it('should reuse its description on the next render, keeping its id', () => {
         const svg = anSvg();
 
         label(svg, 'First', 'First description');
-        const titleId = svg.querySelector('title')?.id;
         const descId = svg.querySelector('desc')?.id;
 
         label(svg, 'Second', 'Second description');
 
-        expect(svg.querySelectorAll('title')).toHaveLength(1);
         expect(svg.querySelectorAll('desc')).toHaveLength(1);
-        expect(svg.querySelector('title')?.id).toBe(titleId);
         expect(svg.querySelector('desc')?.id).toBe(descId);
-        expect(svg.querySelector('title')?.textContent).toBe('Second');
+        expect(svg.querySelector('desc')?.textContent).toBe(
+            'Second description'
+        );
+        expect(svg.getAttribute('aria-label')).toBe('Second');
     });
 
     it('should remove the description once it is unset', () => {
@@ -101,22 +100,22 @@ describe('labelChart', () => {
         const first = anSvg();
         const second = anSvg();
 
-        label(first);
-        label(second);
+        label(first, null, 'One');
+        label(second, null, 'Two');
 
-        expect(first.querySelector('title')?.id).not.toBe(
-            second.querySelector('title')?.id
+        expect(first.querySelector('desc')?.id).not.toBe(
+            second.querySelector('desc')?.id
         );
     });
 
-    it('should ignore a title nested deeper in the chart', () => {
+    it('should ignore a desc nested deeper in the chart', () => {
         const svg = anSvg();
-        const nested = document.createElementNS(SVG_NAMESPACE, 'title');
+        const nested = document.createElementNS(SVG_NAMESPACE, 'desc');
 
         svg.firstElementChild?.appendChild(nested);
-        label(svg, 'Sales');
+        label(svg, 'Sales', 'A description');
 
-        expect(svg.firstElementChild?.tagName).toBe('title');
+        expect(svg.firstElementChild?.tagName).toBe('desc');
         expect(nested.textContent).toBe('');
     });
 
