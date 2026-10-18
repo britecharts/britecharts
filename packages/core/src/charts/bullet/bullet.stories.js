@@ -89,7 +89,7 @@ export const WithNoMarker = () => {
     return container;
 };
 
-export const AlignedAsDashboard = () => {
+export const WithDashboardAlignment = () => {
     const container = getCleanContainer();
     const bulletContainer = select(container);
     const containerWidth = bulletContainer.node()
