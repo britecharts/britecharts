@@ -135,13 +135,16 @@ export const AnimatedWithLegend = () => {
     const donutChart = donut();
 
     if (containerWidth) {
+        // Capped, so a wide canvas does not draw a ring as wide as itself
+        const chartHeight = Math.min(containerWidth, 400);
+
         donutChart
             .isAnimated(true)
             .highlightSliceById(2)
             .width(containerWidth)
-            .height(containerWidth)
-            .externalRadius(containerWidth / 2.5)
-            .internalRadius(containerWidth / 5)
+            .height(chartHeight)
+            .externalRadius(chartHeight / 2.5)
+            .internalRadius(chartHeight / 5)
             .on('customMouseOver', (data) => {
                 legendChart.highlight(data.data.id);
             })
