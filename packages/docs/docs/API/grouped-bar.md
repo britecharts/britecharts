@@ -7,7 +7,6 @@ title: Grouped Bar
 Grouped Bar Chart reusable API module that allows us
 rendering a multi grouped bar and configurable chart.
 
-**Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
 let groupedBar = GroupedBar();
@@ -64,7 +63,7 @@ This function creates the graph using the selection and data provided
 
 <a name="module_Grouped-bar--exports.a11yTitle" id="module_Grouped-bar--exports.a11yTitle"></a>
 
-## exports.a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Grouped bar chart".
@@ -79,7 +78,7 @@ set as the svg's `aria-label`. Unset, the chart is announced as
 
 <a name="module_Grouped-bar--exports.a11yDescription" id="module_Grouped-bar--exports.a11yDescription"></a>
 
-## exports.a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
@@ -94,7 +93,7 @@ chart's name, such as what the data shows. It is rendered as the svg's
 
 <a name="module_Grouped-bar--exports.animationDuration" id="module_Grouped-bar--exports.animationDuration"></a>
 
-## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -107,7 +106,7 @@ Gets or Sets the duration of the animation
 
 <a name="module_Grouped-bar--exports.betweenBarsPadding" id="module_Grouped-bar--exports.betweenBarsPadding"></a>
 
-## exports.betweenBarsPadding([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## betweenBarsPadding([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the padding between bars.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -120,7 +119,7 @@ Gets or Sets the padding between bars.
 
 <a name="module_Grouped-bar--exports.betweenGroupsPadding" id="module_Grouped-bar--exports.betweenGroupsPadding"></a>
 
-## exports.betweenGroupsPadding([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## betweenGroupsPadding([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the padding between groups of bars.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -133,7 +132,7 @@ Gets or Sets the padding between groups of bars.
 
 <a name="module_Grouped-bar--exports.colorMap" id="module_Grouped-bar--exports.colorMap"></a>
 
-## exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
+## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -150,7 +149,7 @@ groupedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
 ```
 <a name="module_Grouped-bar--exports.colorSchema" id="module_Grouped-bar--exports.colorSchema"></a>
 
-## exports.colorSchema(_x) ⇒ <code>colorSchema</code> \| <code>module</code>
+## colorSchema(_x) ⇒ <code>colorSchema</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -163,7 +162,7 @@ Gets or Sets the colorSchema of the chart
 
 <a name="module_Grouped-bar--exports.exportChart" id="module_Grouped-bar--exports.exportChart"></a>
 
-## exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -177,7 +176,7 @@ Chart exported to png and a download action is fired
 
 <a name="module_Grouped-bar--exports.grid" id="module_Grouped-bar--exports.grid"></a>
 
-## exports.grid([_x]) ⇒ <code>String</code> \| <code>module</code>
+## grid([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the grid mode.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -190,7 +189,7 @@ Gets or Sets the grid mode.
 
 <a name="module_Grouped-bar--exports.height" id="module_Grouped-bar--exports.height"></a>
 
-## exports.height([_x]) ⇒ <code>height</code> \| <code>module</code>
+## height([_x]) ⇒ <code>height</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -203,7 +202,7 @@ Gets or Sets the height of the chart
 
 <a name="module_Grouped-bar--exports.isHorizontal" id="module_Grouped-bar--exports.isHorizontal"></a>
 
-## exports.isHorizontal([_x]) ⇒ <code>isHorizontal</code> \| <code>module</code>
+## isHorizontal([_x]) ⇒ <code>isHorizontal</code> \| <code>module</code>
 Gets or Sets the horizontal direction of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -216,7 +215,7 @@ Gets or Sets the horizontal direction of the chart
 
 <a name="module_Grouped-bar--exports.isAnimated" id="module_Grouped-bar--exports.isAnimated"></a>
 
-## exports.isAnimated([_x]) ⇒ <code>isAnimated</code> \| <code>module</code>
+## isAnimated([_x]) ⇒ <code>isAnimated</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
 By default this is 'false'
 
@@ -230,7 +229,7 @@ By default this is 'false'
 
 <a name="module_Grouped-bar--exports.isLoading" id="module_Grouped-bar--exports.isLoading"></a>
 
-## exports.isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
+## isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -242,7 +241,7 @@ Gets or Sets the loading state of the chart
 
 <a name="module_Grouped-bar--exports.margin" id="module_Grouped-bar--exports.margin"></a>
 
-## exports.margin(_x) ⇒ <code>margin</code> \| <code>module</code>
+## margin(_x) ⇒ <code>margin</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -255,7 +254,7 @@ Gets or Sets the margin of the chart
 
 <a name="module_Grouped-bar--exports.numberFormat" id="module_Grouped-bar--exports.numberFormat"></a>
 
-## exports.numberFormat(_x) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
+## numberFormat(_x) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
 Gets or Sets the numberFormat of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -268,7 +267,7 @@ Gets or Sets the numberFormat of the chart
 
 <a name="module_Grouped-bar--exports.on" id="module_Grouped-bar--exports.on"></a>
 
-## exports.on() ⇒ <code>module</code>
+## on() ⇒ <code>module</code>
 Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
@@ -278,7 +277,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick
 **Access**: public  
 <a name="module_Grouped-bar--exports.tooltipThreshold" id="module_Grouped-bar--exports.tooltipThreshold"></a>
 
-## exports.tooltipThreshold([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## tooltipThreshold([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
@@ -292,7 +291,7 @@ NOTE: This could also depend on the aspect ratio
 
 <a name="module_Grouped-bar--exports.valueLocale" id="module_Grouped-bar--exports.valueLocale"></a>
 
-## exports.valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
+## valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
@@ -311,7 +310,7 @@ groupedBarChart
 ```
 <a name="module_Grouped-bar--exports.width" id="module_Grouped-bar--exports.width"></a>
 
-## exports.width([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## width([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -324,7 +323,7 @@ Gets or Sets the width of the chart
 
 <a name="module_Grouped-bar--exports.xTicks" id="module_Grouped-bar--exports.xTicks"></a>
 
-## exports.xTicks([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## xTicks([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the x axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -337,7 +336,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 
 <a name="module_Grouped-bar--exports.yAxisLabel" id="module_Grouped-bar--exports.yAxisLabel"></a>
 
-## exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+## yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the y-axis label of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -354,7 +353,7 @@ groupedBar.yAxisLabel('Ticket Sales')
 ```
 <a name="module_Grouped-bar--exports.yAxisLabelOffset" id="module_Grouped-bar--exports.yAxisLabelOffset"></a>
 
-## exports.yAxisLabelOffset([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## yAxisLabelOffset([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
@@ -372,7 +371,7 @@ groupedBar.yAxisLabelOffset(-55)
 ```
 <a name="module_Grouped-bar--exports.yTicks" id="module_Grouped-bar--exports.yTicks"></a>
 
-## exports.yTicks([_x]) ⇒ <code>Number</code> \| <code>module</code>
+## yTicks([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the y axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
@@ -385,7 +384,7 @@ Gets or Sets the number of ticks of the y axis on the chart
 
 <a name="module_Grouped-bar--exports.yTickTextOffset" id="module_Grouped-bar--exports.yTickTextOffset"></a>
 
-## exports.yTickTextOffset([_x]) ⇒ <code>Object</code> \| <code>module</code>
+## yTickTextOffset([_x]) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the x and y offset of ticks of the y axis on the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  

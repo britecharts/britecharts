@@ -515,9 +515,13 @@ async function generateDocs() {
         // heading level 2 and every accessor at level 3, so the first entry
         // on a page sits one level above the rest. One level for all of
         // them: the page's title is the only level-1 heading.
+        // Each accessor is `exports.name` in the source, which jsdoc2md puts
+        // at the start of its heading; the name alone is what a reader scans
+        // for, in the page and in its table of contents.
         const markdown = apiMarkdown
             .replace(/<a name="([^"]+)"><\/a>/g, '<a name="$1" id="$1"></a>')
-            .replace(/^### /gm, '## ');
+            .replace(/^### /gm, '## ')
+            .replace(/^(#+ )exports\./gm, '$1');
 
         // if there's markdown, do stuff
         if (markdown && markdown.length > 0) {

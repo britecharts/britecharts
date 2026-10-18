@@ -120,7 +120,6 @@ type LegendDatum = {
  * @module Legend
  * @tutorial legend
  * @exports charts/legend
- * @requires d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
  * const donutChart = donut(),
@@ -143,7 +142,6 @@ type LegendDatum = {
  * d3Selection.select('.other-css-selector')
  *     .datum(dataset)
  *     .call(legendBox);
- *
  */
 
 /**

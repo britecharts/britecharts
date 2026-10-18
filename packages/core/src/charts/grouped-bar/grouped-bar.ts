@@ -197,8 +197,6 @@ type NearestDatum = GroupedBarDatum & {
  *
  * @module Grouped-bar
  * @tutorial grouped-bar
- * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
- *  d3-interpolate, d3-scale, d3-selection, d3-transition
  *
  * @example
  * let groupedBar = GroupedBar();
@@ -209,7 +207,6 @@ type NearestDatum = GroupedBarDatum & {
  * d3Selection.select('.css-selector')
  *     .datum(dataset.data)
  *     .call(groupedBar);
- *
  */
 
 /**

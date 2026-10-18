@@ -8,7 +8,6 @@ title: Scale helpers
 Scale types and readers for the charts whose axes change kind with their
 orientation.
 
-**Requires**: <code>module:d3-scale</code>  
 <a name="module_Scale..AxisScale" id="module_Scale..AxisScale"></a>
 
 ## Scale~AxisScale : <code>function</code>

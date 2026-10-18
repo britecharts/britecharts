@@ -92,7 +92,6 @@ type BulletData = {
  *
  * @module Bullet
  * @tutorial bullet-chart
- * @requires d3-axis, d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
  * let bulletChart = bullet();
@@ -118,7 +117,6 @@ type BulletData = {
  *      measures: [150, 180],
  *      markers: [175]
  * }
- *
  */
 
 export default function module(): BulletChartModule {

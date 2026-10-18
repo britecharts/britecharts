@@ -229,7 +229,6 @@ type SliceElement = SVGPathElement & { __data__?: DonutArcDatum };
  *
  * @module Donut
  * @tutorial donut
- * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
  *
  * @example
  * const donutChart = donut();
@@ -241,7 +240,6 @@ type SliceElement = SVGPathElement & { __data__?: DonutArcDatum };
  * d3Selection.select('.css-selector')
  *     .datum(dataset)
  *     .call(donutChart);
- *
  */
 
 /**

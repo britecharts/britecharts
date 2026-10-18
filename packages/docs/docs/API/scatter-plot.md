@@ -7,7 +7,6 @@ title: Scatter Plot
 Reusable Scatter Plot API class that renders a
 simple and configurable scatter chart.
 
-**Requires**: <code>module:d3-array,</code>  
 **Example**  
 ```js
 let scatterPlot = scatterPlot();
@@ -74,7 +73,7 @@ This function creates the graph using the selection as container
 
 <a name="module_Scatter-plot--exports.a11yTitle" id="module_Scatter-plot--exports.a11yTitle"></a>
 
-## exports.a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yTitle(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Scatter plot".
@@ -89,7 +88,7 @@ set as the svg's `aria-label`. Unset, the chart is announced as
 
 <a name="module_Scatter-plot--exports.a11yDescription" id="module_Scatter-plot--exports.a11yDescription"></a>
 
-## exports.a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+## a11yDescription(_x) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
 Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
@@ -104,7 +103,7 @@ chart's name, such as what the data shows. It is rendered as the svg's
 
 <a name="module_Scatter-plot--exports.animationDuration" id="module_Scatter-plot--exports.animationDuration"></a>
 
-## exports.animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
+## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the circle animation
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -117,7 +116,7 @@ Gets or Sets the duration of the circle animation
 
 <a name="module_Scatter-plot--exports.circleStrokeOpacity" id="module_Scatter-plot--exports.circleStrokeOpacity"></a>
 
-## exports.circleStrokeOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
+## circleStrokeOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets each circle's border opacity value of the chart.
 It makes each circle border transparent if it's less than 1.
 
@@ -135,7 +134,7 @@ scatterPlot.circleStrokeOpacity(0.6)
 ```
 <a name="module_Scatter-plot--exports.circleStrokeWidth" id="module_Scatter-plot--exports.circleStrokeWidth"></a>
 
-## exports.circleStrokeWidth(_x) ⇒ <code>Number</code> \| <code>module</code>
+## circleStrokeWidth(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets each circle's border width value of the chart.
 It makes each circle border transparent if it's less than 1.
 
@@ -153,7 +152,7 @@ scatterPlot.circleStrokeWidth(10)
 ```
 <a name="module_Scatter-plot--exports.circleOpacity" id="module_Scatter-plot--exports.circleOpacity"></a>
 
-## exports.circleOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
+## circleOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the circles opacity value of the chart.
 Use this to set opacity of a circle for each data point of the chart.
 It makes the area of each data point more transparent if it's less than 1.
@@ -172,7 +171,7 @@ scatterPlot.circleOpacity(0.6)
 ```
 <a name="module_Scatter-plot--exports.colorMap" id="module_Scatter-plot--exports.colorMap"></a>
 
-## exports.colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
+## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -189,7 +188,7 @@ scatterPlot.colorMap({name: 'colorHex', name2: 'colorString'})
 ```
 <a name="module_Scatter-plot--exports.colorSchema" id="module_Scatter-plot--exports.colorSchema"></a>
 
-## exports.colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
+## colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -206,7 +205,7 @@ scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
 ```
 <a name="module_Scatter-plot--exports.exportChart" id="module_Scatter-plot--exports.exportChart"></a>
 
-## exports.exportChart(filename, title) ⇒ <code>Promise</code>
+## exportChart(filename, title) ⇒ <code>Promise</code>
 Chart exported to png and a download action is fired
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -220,7 +219,7 @@ Chart exported to png and a download action is fired
 
 <a name="module_Scatter-plot--exports.grid" id="module_Scatter-plot--exports.grid"></a>
 
-## exports.grid(_x) ⇒ <code>String</code> \| <code>module</code>
+## grid(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the grid mode.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -233,7 +232,7 @@ Gets or Sets the grid mode.
 
 <a name="module_Scatter-plot--exports.hasCrossHairs" id="module_Scatter-plot--exports.hasCrossHairs"></a>
 
-## exports.hasCrossHairs(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## hasCrossHairs(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasCrossHairs status. If true,
 the hovered data point will be highlighted with lines
 and legend from both x and y axis. The user will see
@@ -250,7 +249,7 @@ will be drawn with respect to highlighted data point
 
 <a name="module_Scatter-plot--exports.hasHollowCircles" id="module_Scatter-plot--exports.hasHollowCircles"></a>
 
-## exports.hasHollowCircles(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## hasHollowCircles(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasHollowCircles value of the chart area
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -263,7 +262,7 @@ Gets or Sets the hasHollowCircles value of the chart area
 
 <a name="module_Scatter-plot--exports.hasTrendline" id="module_Scatter-plot--exports.hasTrendline"></a>
 
-## exports.hasTrendline(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## hasTrendline(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasTrendline value of the chart area
 If true, the trendline calculated based off linear regression
 formula will be drawn
@@ -278,7 +277,7 @@ formula will be drawn
 
 <a name="module_Scatter-plot--exports.enableZoom" id="module_Scatter-plot--exports.enableZoom"></a>
 
-## exports.enableZoom(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## enableZoom(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets weather the chart support zoom controls
 If true, zoom event handling will be added to the chart.
 
@@ -292,7 +291,7 @@ If true, zoom event handling will be added to the chart.
 
 <a name="module_Scatter-plot--exports.isLoading" id="module_Scatter-plot--exports.isLoading"></a>
 
-## exports.isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
+## isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -309,7 +308,7 @@ chart.isLoading(true)
 ```
 <a name="module_Scatter-plot--exports.height" id="module_Scatter-plot--exports.height"></a>
 
-## exports.height(_x) ⇒ <code>Number</code> \| <code>module</code>
+## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -322,7 +321,7 @@ Gets or Sets the height of the chart
 
 <a name="module_Scatter-plot--exports.highlightTextLegendOffset" id="module_Scatter-plot--exports.highlightTextLegendOffset"></a>
 
-## exports.highlightTextLegendOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
+## highlightTextLegendOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
 Sets a custom distance between legend
 values with respect to both axises. The legends
 show up when hasCrossHairs is true.
@@ -341,7 +340,7 @@ scatterPlot.highlightTextLegendOffset(-55)
 ```
 <a name="module_Scatter-plot--exports.isAnimated" id="module_Scatter-plot--exports.isAnimated"></a>
 
-## exports.isAnimated(_x) ⇒ <code>boolean</code> \| <code>module</code>
+## isAnimated(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets isAnimated value. If set to true,
 the chart will be initialized or updated with animation.
 
@@ -355,7 +354,7 @@ the chart will be initialized or updated with animation.
 
 <a name="module_Scatter-plot--exports.margin" id="module_Scatter-plot--exports.margin"></a>
 
-## exports.margin(_x) ⇒ <code>Object</code> \| <code>module</code>
+## margin(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the margin object of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -368,7 +367,7 @@ Gets or Sets the margin object of the chart
 
 <a name="module_Scatter-plot--exports.maxCircleArea" id="module_Scatter-plot--exports.maxCircleArea"></a>
 
-## exports.maxCircleArea(_x) ⇒ <code>Number</code> \| <code>module</code>
+## maxCircleArea(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the maximum value of the chart area
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -381,7 +380,7 @@ Gets or Sets the maximum value of the chart area
 
 <a name="module_Scatter-plot--exports.on" id="module_Scatter-plot--exports.on"></a>
 
-## exports.on() ⇒ <code>module</code>
+## on() ⇒ <code>module</code>
 Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customClick, customMouseOut, customMouseOver, and customMouseMove
@@ -391,7 +390,7 @@ customClick, customMouseOut, customMouseOver, and customMouseMove
 **Access**: public  
 <a name="module_Scatter-plot--exports.valueLocale" id="module_Scatter-plot--exports.valueLocale"></a>
 
-## exports.valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
+## valueLocale([_x]) ⇒ <code>LocaleObject</code> \| <code>module</code>
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
@@ -410,7 +409,7 @@ scatterPlot
 ```
 <a name="module_Scatter-plot--exports.width" id="module_Scatter-plot--exports.width"></a>
 
-## exports.width(_x) ⇒ <code>Number</code> \| <code>module</code>
+## width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -423,7 +422,7 @@ Gets or Sets the height of the chart
 
 <a name="module_Scatter-plot--exports.xAxisLabel" id="module_Scatter-plot--exports.xAxisLabel"></a>
 
-## exports.xAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+## xAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the xAxisLabel of the chart. Adds a
 label bellow x-axis for better clarify of data representation.
 
@@ -437,7 +436,7 @@ label bellow x-axis for better clarify of data representation.
 
 <a name="module_Scatter-plot--exports.xAxisLabelOffset" id="module_Scatter-plot--exports.xAxisLabelOffset"></a>
 
-## exports.xAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
+## xAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the xAxisLabel of the chart.
 The method accepts both positive and negative values.
 
@@ -455,7 +454,7 @@ scatterPlot.xAxisLabelOffset(-55)
 ```
 <a name="module_Scatter-plot--exports.xAxisFormat" id="module_Scatter-plot--exports.xAxisFormat"></a>
 
-## exports.xAxisFormat(_x) ⇒ <code>String</code> \| <code>module</code>
+## xAxisFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes ability to set the format of x-axis values
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -468,7 +467,7 @@ Exposes ability to set the format of x-axis values
 
 <a name="module_Scatter-plot--exports.xAxisFormatType" id="module_Scatter-plot--exports.xAxisFormatType"></a>
 
-## exports.xAxisFormatType(_x) ⇒ <code>string</code> \| <code>module</code>
+## xAxisFormatType(_x) ⇒ <code>string</code> \| <code>module</code>
 Exposes ability to set the formatter of x-axis values
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -483,7 +482,7 @@ Exposes ability to set the formatter of x-axis values
 
 <a name="module_Scatter-plot--exports.xTicks" id="module_Scatter-plot--exports.xTicks"></a>
 
-## exports.xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
+## xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the xTicks of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -496,7 +495,7 @@ Gets or Sets the xTicks of the chart
 
 <a name="module_Scatter-plot--exports.yAxisFormat" id="module_Scatter-plot--exports.yAxisFormat"></a>
 
-## exports.yAxisFormat(_x) ⇒ <code>String</code> \| <code>module</code>
+## yAxisFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes ability to set the format of y-axis values
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -509,7 +508,7 @@ Exposes ability to set the format of y-axis values
 
 <a name="module_Scatter-plot--exports.yAxisLabel" id="module_Scatter-plot--exports.yAxisLabel"></a>
 
-## exports.yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+## yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the y-axis label of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
@@ -526,7 +525,7 @@ scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
 ```
 <a name="module_Scatter-plot--exports.yAxisLabelOffset" id="module_Scatter-plot--exports.yAxisLabelOffset"></a>
 
-## exports.yAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
+## yAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
@@ -544,7 +543,7 @@ scatterPlot.yAxisLabelOffset(-55)
 ```
 <a name="module_Scatter-plot--exports.yTicks" id="module_Scatter-plot--exports.yTicks"></a>
 
-## exports.yTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
+## yTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the xTicks of the chart
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  

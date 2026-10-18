@@ -273,7 +273,6 @@ type StackedAreaXScale =
  *
  * @module Stacked-area
  * @tutorial stacked-area
- * @requires d3-array, d3-axis, d3-collection, d3-dispatch, d3-ease, d3-scale, d3-shape, d3-selection, d3-transition, d3-time-format
  *
  * @example
  * let stackedArea = stackedArea();
@@ -284,7 +283,6 @@ type StackedAreaXScale =
  * d3Selection.select('.css-selector')
  *     .datum(dataset.data)
  *     .call(stackedArea);
- *
  */
 
 /**
