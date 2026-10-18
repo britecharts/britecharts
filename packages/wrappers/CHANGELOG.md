@@ -1,5 +1,15 @@
 # @britecharts/wrappers
 
+## 3.0.0-beta.7
+
+### Patch Changes
+
+- Updated dependencies [74c8087]
+- Updated dependencies [a26ccd2]
+- Updated dependencies [c34273d]
+- Updated dependencies [4e05928]
+    - @britecharts/core@3.0.0-beta.7
+
 ## 3.0.0-beta.6
 
 ### Major Changes
