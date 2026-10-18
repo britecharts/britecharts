@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";function t(e){return((e*=2)<=1?e*e:--e*(2-e)+1)/2}function n(){return(n=e((()=>{})))()}var r;function i(){return(i=e((()=>{r=e=>{console.warn(`This method is being deprecated! Please modify your data to use "${e}" as the key.`)}})))()}export{t as i,i as n,n as r,r as t};
