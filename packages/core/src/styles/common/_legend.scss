@@ -7,7 +7,9 @@
 $child-font-size: 1em !important;
 $letter-spacing: 0.5px;
 $value-letter-spacing: 0.8px;
-$enter-opacity: 0.6;
+
+// The entries a highlight leaves out; low enough to tell apart at a glance
+$faded-opacity: 0.3;
 
 .britechart-legend {
     .legend-entry {
@@ -18,7 +20,7 @@ $enter-opacity: 0.6;
         .legend-entry-name,
         .legend-entry-value,
         .legend-circle {
-            opacity: $enter-opacity;
+            opacity: $faded-opacity;
             transition: opacity 0.2s ease-out;
         }
     }
