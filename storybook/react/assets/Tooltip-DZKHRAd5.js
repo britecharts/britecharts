@@ -15,8 +15,8 @@ name and a big value) or 'auto' (the default: by the data point's shape).`},maxE
 0 shows every row. Default 12.`},xAxisValueType:{required:!1,tsType:{name:`union`,raw:`'auto' | 'date' | 'number' | 'category'`,elements:[{name:`literal`,value:`'auto'`},{name:`literal`,value:`'date'`},{name:`literal`,value:`'number'`},{name:`literal`,value:`'category'`}]},description:`Gets or Sets how the key of the data point is shown in the title: 'date', 'number',
 'category' (as it is), or 'auto' (the default), which picks one per key.`},chart:{required:!1,tsType:{name:`TooltipWrapperShape`},description:`Internally used, do not overwrite.
 
-@ignore`},render:{required:!1,tsType:{name:`signature`,type:`function`,raw:`(args: TooltipRenderArgs) => ReactNode`,signature:{arguments:[{type:{name:`signature`,type:`object`,raw:`{
-    data: TooltipProps['data'];
+@ignore`},render:{required:!1,tsType:{name:`signature`,type:`function`,raw:`(args: TooltipRenderArgs<TData>) => ReactNode`,signature:{arguments:[{type:{name:`signature`,type:`object`,raw:`{
+    data: TData;
     createTooltip: () => void;
     customMouseMove: (
         dataPoint: object,
@@ -26,14 +26,14 @@ name and a big value) or 'auto' (the default: by the data point's shape).`},maxE
     ) => void;
     customMouseOut: () => void;
     customMouseOver: () => void;
-}`,signature:{properties:[{key:`data`,value:{name:`TooltipProps['data']`,raw:`TooltipProps['data']`,required:!0}},{key:`createTooltip`,value:{name:`signature`,type:`function`,raw:`() => void`,signature:{arguments:[],return:{name:`void`}},required:!0}},{key:`customMouseMove`,value:{name:`signature`,type:`function`,raw:`(
+}`,signature:{properties:[{key:`data`,value:{name:`TData`,required:!0}},{key:`createTooltip`,value:{name:`signature`,type:`function`,raw:`() => void`,signature:{arguments:[],return:{name:`void`}},required:!0}},{key:`customMouseMove`,value:{name:`signature`,type:`function`,raw:`(
     dataPoint: object,
     position: [number, number],
     size?: [number, number],
     topicColorMap?: Record<string, string>
 ) => void`,signature:{arguments:[{type:{name:`object`},name:`dataPoint`},{type:{name:`tuple`,raw:`[number, number]`,elements:[{name:`number`},{name:`number`}]},name:`position`},{type:{name:`tuple`,raw:`[number, number]`,elements:[{name:`number`},{name:`number`}]},name:`size`},{type:{name:`Record`,elements:[{name:`string`},{name:`string`}],raw:`Record<string, string>`},name:`topicColorMap`}],return:{name:`void`}},required:!0}},{key:`customMouseOut`,value:{name:`signature`,type:`function`,raw:`() => void`,signature:{arguments:[],return:{name:`void`}},required:!0}},{key:`customMouseOver`,value:{name:`signature`,type:`function`,raw:`() => void`,signature:{arguments:[],return:{name:`void`}},required:!0}}]}},name:`args`}],return:{name:`ReactNode`}}},description:`Internally used, do not overwrite.
 
-@ignore`},data:{required:!0,tsType:{name:`union`,raw:`{ [s: string]: any } | any[]`,elements:[{name:`signature`,type:`object`,raw:`{ [s: string]: any }`,signature:{properties:[{key:{name:`string`},value:{name:`any`,required:!0}}]}},{name:`Array`,elements:[{name:`any`}],raw:`any[]`}]},description:`Internally used, do not overwrite.
+@ignore`},data:{required:!0,tsType:{name:`TData`},description:`Internally used, do not overwrite.
 
 @ignore`},customMouseMove:{required:!1,tsType:{name:`signature`,type:`function`,raw:`(
     dataPoint: object,
