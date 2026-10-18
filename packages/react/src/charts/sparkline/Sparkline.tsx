@@ -48,11 +48,6 @@ export interface SparklineProps {
     areaGradient?: ColorGradientType;
 
     /**
-     * Gets or Sets the dateLabel of the chart
-     */
-    dateLabel?: string;
-
-    /**
      * The filename to export the chart to. Setting it exports a png and fires
      * a download, which is what the chart's `exportChart` command does; it is
      * not a callback. The chart's exporter treats the title as optional, so a
@@ -91,11 +86,6 @@ export interface SparklineProps {
         left?: number;
         right?: number;
     };
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     */
-    valueLabel?: string;
 
     /**
      * Gets or Sets the width of the chart

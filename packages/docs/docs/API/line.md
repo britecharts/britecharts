@@ -31,7 +31,6 @@ d3Selection.select('.css-selector')
             * [.yAxisLabel(_x)](#module_Line--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
             * [.colorSchema(_x)](#module_Line--exports.colorSchema) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
             * [.colorMap([_x])](#module_Line--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
-            * ~~[.dateLabel(_x)](#module_Line--exports.dateLabel) ⇒ <code>number</code> \| <code>module</code>~~
             * [.xAxisCustomFormat(_x)](#module_Line--exports.xAxisCustomFormat) ⇒ <code>string</code> \| <code>module</code>
             * [.xAxisFormat(_x)](#module_Line--exports.xAxisFormat) ⇒ <code>String</code> \| <code>Module</code>
             * [.xTicks(_x)](#module_Line--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
@@ -48,8 +47,6 @@ d3Selection.select('.css-selector')
             * [.numberFormat(_x)](#module_Line--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
             * [.shouldShowAllDataPoints(_x)](#module_Line--exports.shouldShowAllDataPoints) ⇒ <code>shouldShowAllDataPoints</code> \| <code>module</code>
             * [.tooltipThreshold(_x)](#module_Line--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
-            * ~~[.topicLabel(_x)](#module_Line--exports.topicLabel) ⇒ <code>topicLabel</code> \| <code>module</code>~~
-            * ~~[.valueLabel(_x)](#module_Line--exports.valueLabel) ⇒ <code>valueLabel</code> \| <code>module</code>~~
             * [.yAxisLabelPadding(_x&#x3D;)](#module_Line--exports.yAxisLabelPadding) ⇒ <code>yAxisLabelPadding</code> \| <code>module</code>
             * [.yTicks(_x)](#module_Line--exports.yTicks) ⇒ <code>number</code> \| <code>module</code>
             * [.width(_x)](#module_Line--exports.width) ⇒ <code>number</code> \| <code>Module</code>
@@ -185,21 +182,6 @@ Gets or Sets the colorMap of the chart
 ```js
 lineChart.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
 ```
-<a name="module_Line--exports.dateLabel" id="module_Line--exports.dateLabel"></a>
-
-## ~~exports.dateLabel(_x) ⇒ <code>number</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the dateLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
-**Returns**: <code>number</code> \| <code>module</code> - Current dateLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>number</code> | Desired dateLabel for the graph |
-
 <a name="module_Line--exports.xAxisCustomFormat" id="module_Line--exports.xAxisCustomFormat"></a>
 
 ## exports.xAxisCustomFormat(_x) ⇒ <code>string</code> \| <code>module</code>
@@ -406,7 +388,7 @@ Gets or Sets the number format of the line chart
 <a name="module_Line--exports.shouldShowAllDataPoints" id="module_Line--exports.shouldShowAllDataPoints"></a>
 
 ## exports.shouldShowAllDataPoints(_x) ⇒ <code>shouldShowAllDataPoints</code> \| <code>module</code>
-Gets or Sets the topicLabel of the chart
+Gets or Sets whether every data point shows its marker, not just the hovered ones
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
 **Returns**: <code>shouldShowAllDataPoints</code> \| <code>module</code> - Current shouldShowAllDataPoints or Chart module to chain calls  
@@ -429,36 +411,6 @@ NOTE: This could also depend on the aspect ratio
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>number</code> | Desired tooltip threshold for the graph |
-
-<a name="module_Line--exports.topicLabel" id="module_Line--exports.topicLabel"></a>
-
-## ~~exports.topicLabel(_x) ⇒ <code>topicLabel</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the topicLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
-**Returns**: <code>topicLabel</code> \| <code>module</code> - Current topicLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>number</code> | Desired topicLabel for the graph |
-
-<a name="module_Line--exports.valueLabel" id="module_Line--exports.valueLabel"></a>
-
-## ~~exports.valueLabel(_x) ⇒ <code>valueLabel</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the valueLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
-**Returns**: <code>valueLabel</code> \| <code>module</code> - Current valueLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>number</code> | Desired valueLabel for the graph |
 
 <a name="module_Line--exports.yAxisLabelPadding" id="module_Line--exports.yAxisLabelPadding"></a>
 

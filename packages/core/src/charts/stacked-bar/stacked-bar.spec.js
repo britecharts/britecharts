@@ -578,30 +578,6 @@ describe('stacked Bar Chart', () => {
             });
         });
 
-        it('should provide nameLabel getter and setter', () => {
-            let previous = stackedBarChart.nameLabel(),
-                expected = 'key',
-                actual;
-
-            stackedBarChart.nameLabel(expected);
-            actual = stackedBarChart.nameLabel();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide stackLabel getter and setter', () => {
-            let previous = stackedBarChart.stackLabel(),
-                expected = 'testLabel',
-                actual;
-
-            stackedBarChart.stackLabel(expected);
-            actual = stackedBarChart.stackLabel();
-
-            expect(previous).not.toBe(actual);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide a tooltip threshold getter and setter', () => {
             let previous = stackedBarChart.tooltipThreshold(),
                 expected = 600,
@@ -609,18 +585,6 @@ describe('stacked Bar Chart', () => {
 
             stackedBarChart.tooltipThreshold(expected);
             actual = stackedBarChart.tooltipThreshold();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide valueLabel getter and setter', () => {
-            let previous = stackedBarChart.valueLabel(),
-                expected = 'quantity',
-                actual;
-
-            stackedBarChart.valueLabel(expected);
-            actual = stackedBarChart.valueLabel();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);

@@ -92,15 +92,12 @@ export const heatmapAccessors = {
     heatmapDuration,
 };
 
-// The label accessors, and three others: eighteen in total across eight
-// charts. `check:api-parity` in core compares each chart's runtime surface
-// against its typings through the TypeScript compiler, so it resolves `Omit`,
-// inherited members and intersections properly.
-//
-// Fifteen of the eighteen are one family: the keys a chart reads its data by.
-// Their types come from the implementation's own defaults rather than the
-// JSDoc -- `nameLabel` defaults to `'name'`, `valueLabel` to `'value'`,
-// `dateLabel` to `'date'`. They are strings.
+// Accessors the typings once left out, read back as their values.
+// `check:api-parity` in core compares each chart's runtime surface against its
+// typings through the TypeScript compiler, so it resolves `Omit`, inherited
+// members and intersections properly. The data-key accessors (`nameLabel`,
+// `valueLabel`, `dateLabel` and the rest) were here too, until 3.0 removed
+// them from every chart but the tooltip.
 import {
     groupedBar,
     legend,
@@ -127,7 +124,6 @@ import type {
     TooltipXAxisValueType,
 } from '@britecharts/core';
 
-const barNameLabel: string = bar().nameLabel();
 
 // The bar chart's other twenty-two accessors, each read back as its value
 // rather than the chart.
@@ -154,7 +150,6 @@ const barLabelsFormat: string = barOwn.labelsNumberFormat();
 const barLabelsSize: number = barOwn.labelsSize();
 const barAxisRatio: number = barOwn.percentageAxisToMaxRatio();
 const barReverseColors: boolean = barOwn.shouldReverseColorList();
-const barValueLabel: string = barOwn.valueLabel();
 const barXLabelOffset: number = barOwn.xAxisLabelOffset();
 const barXTicks: number = barOwn.xTicks();
 const barYLabelOffset: number = barOwn.yAxisLabelOffset();
@@ -306,7 +301,6 @@ const areaChainedFromOn: string = stackedArea()
 const areaCurve: string = areaChart.areaCurve();
 const areaOpacity: number = areaChart.areaOpacity();
 const areaOutline: boolean = areaChart.hasOutline();
-const areaKeyLabel: string = areaChart.keyLabel();
 const areaThreshold: number = areaChart.tooltipThreshold();
 const areaBaseline: number = areaChart.yAxisBaseline();
 const areaYLabelOffset: number = areaChart.yAxisLabelOffset();
@@ -396,7 +390,6 @@ export const stackedAreaAccessors = {
     areaCurve,
     areaOpacity,
     areaOutline,
-    areaKeyLabel,
     areaThreshold,
     areaBaseline,
     areaYLabelOffset,
@@ -470,7 +463,6 @@ export const barOwnAccessors = {
     barLabelsSize,
     barAxisRatio,
     barReverseColors,
-    barValueLabel,
     barXLabelOffset,
     barXTicks,
     barYLabelOffset,
@@ -489,13 +481,9 @@ const donutCenterLegend: boolean = donut().hasCenterLegend();
 const legendUnit: string = legend().unit();
 
 const groupedBarChart = groupedBar();
-const groupLabel: string = groupedBarChart.groupLabel();
-const groupedNameLabel: string = groupedBarChart.nameLabel();
-const groupedValueLabel: string = groupedBarChart.valueLabel();
 
-// The grouped bar's other eleven accessors, each read back as its value
-// rather than the chart. The three label getters just above are covered with
-// the shared ones.
+// The grouped bar's eleven accessors, each read back as its value
+// rather than the chart.
 //
 // Three of the eleven have a getter wider than their setter, which is the whole
 // of what reading one before setting it gives you: `grid` and `valueLocale` are
@@ -565,28 +553,17 @@ export const groupedBarAccessors = {
 };
 
 const lineChart = line();
-const lineDateLabel: string = lineChart.dateLabel();
-const lineTopicLabel: string = lineChart.topicLabel();
-const lineValueLabel: string = lineChart.valueLabel();
 const hasMinimumValueScale: boolean = lineChart.hasMinimumValueScale();
 
 const sparklineChart = sparkline();
-const sparklineDateLabel: string = sparklineChart.dateLabel();
-const sparklineValueLabel: string = sparklineChart.valueLabel();
 const sparklineIsLoading: boolean = sparklineChart.isLoading();
 
-const stackedAreaChart = stackedArea();
-const areaDateLabel: string = stackedAreaChart.dateLabel();
-const areaValueLabel: string = stackedAreaChart.valueLabel();
+
 
 const stackedBarChart = stackedBar();
-const barStackLabel: string = stackedBarChart.stackLabel();
-const stackedNameLabel: string = stackedBarChart.nameLabel();
-const stackedValueLabel: string = stackedBarChart.valueLabel();
 
-// The stacked bar's other twelve accessors, each read back as its value
-// rather than the chart. Its three label getters just above are covered with
-// the shared ones.
+// The stacked bar's twelve accessors, each read back as its value
+// rather than the chart.
 //
 // `hasPercentage` is the odd one: its getter is computed rather than stored,
 // reporting whether `numberFormat` is currently the percentage one. Setting it
@@ -645,33 +622,11 @@ export const stackedBarAccessors = {
     stackedChained,
 };
 
-// Setting one still chains, so the overloads do not cost the setter anything.
-const chainedLabels: string = stackedBar()
-    .nameLabel('name')
-    .valueLabel('value')
-    .stackLabel('stack')
-    .nameLabel();
-
 export const labelAccessors = {
-    barNameLabel,
     donutCenterLegend,
     legendUnit,
-    groupLabel,
-    groupedNameLabel,
-    groupedValueLabel,
-    lineDateLabel,
-    lineTopicLabel,
-    lineValueLabel,
     hasMinimumValueScale,
-    sparklineDateLabel,
-    sparklineValueLabel,
     sparklineIsLoading,
-    areaDateLabel,
-    areaValueLabel,
-    barStackLabel,
-    stackedNameLabel,
-    stackedValueLabel,
-    chainedLabels,
 };
 
 // The bullet chart's own accessors, each read back as its value rather than
@@ -835,8 +790,7 @@ export const bulletAccessors = {
 };
 
 // The sparkline's own two, each read back as its value rather than the chart.
-// Its three shared ones -- `dateLabel`, `valueLabel`, `isLoading` -- are
-// asserted further up.
+// Its shared `isLoading` is asserted further up.
 //
 // The two gradients are a two-element tuple, not `string[]`: the chart reads
 // `[0]` and `[1]` and nothing else, and `ColorGradientType` says so.

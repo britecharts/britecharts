@@ -130,11 +130,6 @@ export interface BarChartProps {
     margin?: { top?: number; bottom?: number; left?: number; right?: number };
 
     /**
-     * Gets or Sets the nameLabel of the chart
-     */
-    nameLabel?: string;
-
-    /**
      * Gets or Sets the number format of the bar chart
      */
     numberFormat?: string;
@@ -154,11 +149,6 @@ export interface BarChartProps {
      * Gets or Sets whether the color list should be reversed or not
      */
     shouldReverseColorList?: boolean;
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     */
-    valueLabel?: string;
 
     /**
      * Current locale object or Chart module to chain calls

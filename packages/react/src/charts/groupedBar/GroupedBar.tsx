@@ -80,11 +80,6 @@ export interface GroupedBarProps {
     grid?: 'vertical' | 'horizontal' | 'full' | null;
 
     /**
-     * Gets or Sets the groupLabel of the chart
-     */
-    groupLabel?: string;
-
-    /**
      * Gets or Sets the height of the chart
      */
     height?: number;
@@ -116,11 +111,6 @@ export interface GroupedBarProps {
     };
 
     /**
-     * Gets or Sets the nameLabel of the chart
-     */
-    nameLabel?: string;
-
-    /**
      * Gets or Sets the number format of the bar chart
      */
     numberFormat?: string;
@@ -129,11 +119,6 @@ export interface GroupedBarProps {
      * Gets or Sets the minimum width of the graph in order to show the tooltip NOTE: This could also depend on the aspect ratio
      */
     tooltipThreshold?: number;
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     */
-    valueLabel?: string;
 
     /**
      * Current locale object or Chart module to chain calls

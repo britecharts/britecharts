@@ -19,7 +19,6 @@ import colorHelper from '../helpers/color.js';
 import { barLoadingMarkup } from '../helpers/load.js';
 import { uniqueId } from '../helpers/number.js';
 import { setDefaultLocale } from '../helpers/locale.js';
-import { dataKeyDeprecationMessage } from '../helpers/project.js';
 import { motion } from '../helpers/constants.js';
 import { gridHorizontal, gridVertical } from '../helpers/grid.js';
 import { asCategoryScale, asValueScale } from '../helpers/scale.js';
@@ -159,9 +158,6 @@ export interface BarChartAPI
     /** Gets or Sets whether the color list should be reversed or not */
     shouldReverseColorList(): boolean;
     shouldReverseColorList(shouldReverse: boolean): BarChartModule;
-    /** Gets or Sets the valueLabel of the chart */
-    valueLabel(): string;
-    valueLabel(valueLabel: string): BarChartModule;
     /**
      * Gets or Sets the locale which our formatting functions use.
      * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
@@ -201,9 +197,6 @@ export interface BarChartAPI
     /** Gets or Sets the number of vertical ticks on the chart */
     yTicks(): number;
     yTicks(ticks: number): BarChartModule;
-    /** Gets or Sets the `name` key of the data */
-    nameLabel(): string;
-    nameLabel(value: string): BarChartModule;
 }
 
 export type BarChartModule = ChartModuleSelection<BarChartDataShape[]> &
@@ -229,14 +222,8 @@ type ChartSelection<TElement extends BaseType> = Selection<
     any
 >;
 
-/**
- * What `cleanData` hands the drawing functions. The index signature is the
- * deprecated `nameLabel`/`valueLabel` accessors: they let the data carry those
- * two values under any key, so the reads in `cleanData` really are dynamic.
- */
-type BarDatum = BarChartDataShape & {
-    [key: string]: unknown;
-};
+/** What `cleanData` hands the drawing functions. */
+type BarDatum = BarChartDataShape;
 
 /**
  * What `cleanData` returns and `sortData` passes on: the data itself and a
@@ -333,6 +320,9 @@ export default function module(): BarChartModule {
     // Split into `let` and `const`: the TypeScript ESLint override runs
     // `prefer-const` as an error, and the bindings below it are never
     // reassigned.
+    // The data's keys, fixed: the accessors that renamed them are gone
+    const nameLabel = 'name';
+    const valueLabel = 'value';
     let margin: ChartMarginParams = {
             top: 20,
             right: 20,
@@ -396,8 +386,6 @@ export default function module(): BarChartModule {
             | ((a: BarChartDataShape, b: BarChartDataShape) => number)
             | undefined,
         // To Deprecate
-        valueLabel = 'value',
-        nameLabel = 'name',
         // The selection this ends on is the label `text` elements, not the
         // group the chain starts from -- again the chart's own name.
         labelEl: ChartSelection<SVGTextElement>,
@@ -1712,26 +1700,6 @@ export default function module(): BarChartModule {
     } as BarChartModule['margin'];
 
     /**
-     * Gets or Sets the nameLabel of the chart
-     * @param  {number} _x Desired nameLabel for the graph
-     * @return {number | module} Current nameLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as BarChartModule).nameLabel = function (
-        this: BarChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return nameLabel;
-        }
-        nameLabel = _x;
-        dataKeyDeprecationMessage('name');
-
-        return this;
-    } as BarChartModule['nameLabel'];
-
-    /**
      * Gets or Sets the number format of the bar chart
      * @param  {string} _x = ',f'     Desired numberFormat for the chart. See examples [here]{@link https://d3js.org/d3-format}
      * @return {string | module}      Current numberFormat or Chart module to chain calls
@@ -1824,26 +1792,6 @@ export default function module(): BarChartModule {
 
         return this;
     } as BarChartModule['orderingFunction'];
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     * @param  {Number} _x Desired valueLabel for the graph
-     * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as BarChartModule).valueLabel = function (
-        this: BarChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return valueLabel;
-        }
-        valueLabel = _x;
-        dataKeyDeprecationMessage('value');
-
-        return this;
-    } as BarChartModule['valueLabel'];
 
     /**
      * Gets or Sets the locale which our formatting functions use.

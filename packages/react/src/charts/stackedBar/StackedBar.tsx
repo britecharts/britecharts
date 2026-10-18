@@ -113,31 +113,16 @@ export interface StackedBarProps {
     };
 
     /**
-     * Gets or Sets the nameLabel of the chart
-     */
-    nameLabel?: string;
-
-    /**
      * Configurable extension of the x axis
      * If your max point was 50% you might want to show x axis to 60%, pass 1.2
      */
     percentageAxisToMaxRatio?: number;
 
     /**
-     * Gets or Sets the stackLabel of the chart
-     */
-    stackLabel?: string;
-
-    /**
      * Gets or Sets the minimum width of the graph in order
      * to show the tooltip NOTE: This could also depend on the aspect ratio
      */
     tooltipThreshold?: number;
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     */
-    valueLabel?: string;
 
     /**
      * Current locale object or Chart module to chain calls

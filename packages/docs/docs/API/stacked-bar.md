@@ -38,13 +38,10 @@ d3Selection.select('.css-selector')
             * [.isHorizontal(_x)](#module_Stacked-bar--exports.isHorizontal) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.isLoading(flag)](#module_Stacked-bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Stacked-bar--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
-            * ~~[.nameLabel(_x)](#module_Stacked-bar--exports.nameLabel) ⇒ <code>Number</code> \| <code>module</code>~~
             * [.numberFormat(_x)](#module_Stacked-bar--exports.numberFormat) ⇒ <code>String</code> \| <code>module</code>
             * [.on()](#module_Stacked-bar--exports.on) ⇒ <code>module</code>
             * [.percentageAxisToMaxRatio(_x)](#module_Stacked-bar--exports.percentageAxisToMaxRatio) ⇒ <code>Number</code> \| <code>module</code>
-            * ~~[.stackLabel(_x)](#module_Stacked-bar--exports.stackLabel) ⇒ <code>String</code> \| <code>module</code>~~
             * [.tooltipThreshold([_x])](#module_Stacked-bar--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
-            * ~~[.valueLabel(_x)](#module_Stacked-bar--exports.valueLabel) ⇒ <code>Number</code> \| <code>module</code>~~
             * [.valueLocale([_x])](#module_Stacked-bar--exports.valueLocale) ⇒ <code>LocaleObject</code> \| <code>module</code>
             * [.width(_x)](#module_Stacked-bar--exports.width) ⇒ <code>Number</code> \| <code>module</code>
             * [.xTicks(_x)](#module_Stacked-bar--exports.xTicks) ⇒ <code>Number</code> \| <code>module</code>
@@ -271,21 +268,6 @@ Gets or Sets the margin of the chart
 | --- | --- | --- |
 | _x | <code>Object</code> | Margin object to get/set |
 
-<a name="module_Stacked-bar--exports.nameLabel" id="module_Stacked-bar--exports.nameLabel"></a>
-
-## ~~exports.nameLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the nameLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
-**Returns**: <code>Number</code> \| <code>module</code> - Current nameLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>Number</code> | Desired dateLabel for the graph |
-
 <a name="module_Stacked-bar--exports.numberFormat" id="module_Stacked-bar--exports.numberFormat"></a>
 
 ## exports.numberFormat(_x) ⇒ <code>String</code> \| <code>module</code>
@@ -323,21 +305,6 @@ If your max point was 50% you might want to show x axis to 60%, pass 1.2
 | --- | --- | --- |
 | _x | <code>Number</code> | Ratio to max data point to add to the x axis |
 
-<a name="module_Stacked-bar--exports.stackLabel" id="module_Stacked-bar--exports.stackLabel"></a>
-
-## ~~exports.stackLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the stackLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
-**Returns**: <code>String</code> \| <code>module</code> - Current stackLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>String</code> | Desired stackLabel for the graph |
-
 <a name="module_Stacked-bar--exports.tooltipThreshold" id="module_Stacked-bar--exports.tooltipThreshold"></a>
 
 ## exports.tooltipThreshold([_x]) ⇒ <code>Number</code> \| <code>module</code>
@@ -351,21 +318,6 @@ NOTE: This could also depend on the aspect ratio
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [_x] | <code>Number</code> | <code>480</code> | Minimum width of the graph |
-
-<a name="module_Stacked-bar--exports.valueLabel" id="module_Stacked-bar--exports.valueLabel"></a>
-
-## ~~exports.valueLabel(_x) ⇒ <code>Number</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the valueLabel of the chart
-
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
-**Returns**: <code>Number</code> \| <code>module</code> - Current valueLabel or Chart module to chain calls  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| _x | <code>Number</code> | Desired valueLabel for the graph |
 
 <a name="module_Stacked-bar--exports.valueLocale" id="module_Stacked-bar--exports.valueLocale"></a>
 

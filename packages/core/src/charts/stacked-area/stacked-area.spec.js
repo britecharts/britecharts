@@ -678,18 +678,6 @@ describe('stacked Area Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide dateLabel getter and setter', () => {
-            let previous = stackedAreaChart.dateLabel(),
-                expected = 'dateFull',
-                actual;
-
-            stackedAreaChart.dateLabel(expected);
-            actual = stackedAreaChart.dateLabel();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide emptyDataConfig getter and setter', () => {
             let previous = stackedAreaChart.emptyDataConfig(),
                 expected = {
@@ -749,18 +737,6 @@ describe('stacked Area Chart', () => {
 
             stackedAreaChart.isAnimated(expected);
             actual = stackedAreaChart.isAnimated();
-
-            expect(previous).not.toEqual(expected);
-            expect(actual).toEqual(expected);
-        });
-
-        it('should provide keyLabel getter and setter', () => {
-            let previous = stackedAreaChart.keyLabel(),
-                expected = 'val',
-                actual;
-
-            stackedAreaChart.keyLabel(expected);
-            actual = stackedAreaChart.keyLabel();
 
             expect(previous).not.toEqual(expected);
             expect(actual).toEqual(expected);
@@ -879,18 +855,6 @@ describe('stacked Area Chart', () => {
 
             stackedAreaChart.topicsOrder(expected);
             actual = stackedAreaChart.topicsOrder();
-
-            expect(previous).not.toEqual(expected);
-            expect(actual).toEqual(expected);
-        });
-
-        it('should provide valueLabel getter and setter', () => {
-            let previous = stackedAreaChart.valueLabel(),
-                expected = 'quantity',
-                actual;
-
-            stackedAreaChart.valueLabel(expected);
-            actual = stackedAreaChart.valueLabel();
 
             expect(previous).not.toEqual(expected);
             expect(actual).toEqual(expected);

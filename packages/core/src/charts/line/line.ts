@@ -24,7 +24,6 @@ import { exportChart } from '../helpers/export.js';
 import colorHelper from '../helpers/color.js';
 import { lineLoadingMarkup } from '../helpers/load.js';
 import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis.js';
-import { dataKeyDeprecationMessage } from '../helpers/project.js';
 import {
     axisTimeCombinations,
     curveMap,
@@ -152,7 +151,7 @@ export interface LineChartAPI
      */
     lines(): CustomLine[];
     lines(customLines: CustomLine[]): LineChartModule;
-    /** Gets or Sets the topicLabel of the chart */
+    /** Gets or Sets whether every data point shows its marker, not just the hovered ones */
     shouldShowAllDataPoints(): boolean;
     shouldShowAllDataPoints(showAllDataPoints: boolean): LineChartModule;
     /**
@@ -203,18 +202,9 @@ export interface LineChartAPI
     /** Gets or Sets the number of ticks of the y axis on the chart */
     yTicks(): number;
     yTicks(ticks: number): LineChartModule;
-    /** Gets or Sets the `date` key of the data */
-    dateLabel(): string;
-    dateLabel(value: string): LineChartModule;
     /** Gets or Sets whether the y axis starts at the lowest value rather than zero */
     hasMinimumValueScale(): boolean;
     hasMinimumValueScale(value: boolean): LineChartModule;
-    /** Gets or Sets the `topic` key of the data */
-    topicLabel(): string;
-    topicLabel(value: string): LineChartModule;
-    /** Gets or Sets the `value` key of the data */
-    valueLabel(): string;
-    valueLabel(value: string): LineChartModule;
 }
 
 export type LineChartModule = ChartModuleSelection<LineChartData> &
@@ -254,10 +244,9 @@ type LineDatum = {
 };
 
 /**
- * A row read through the label accessors -- `dateLabel`, `valueLabel`,
- * `topicLabel`, `topicNameLabel`. A chart's data may carry those under any
- * key, so the reads really are dynamic, and what comes back is one of the
- * things `castValueToType` and `acceptNullValue` accept.
+ * A row as `cleanData` reads it, by the keys `dateLabel`, `valueLabel`,
+ * `topicLabel` and `topicNameLabel` hold. What comes back is one of the things
+ * `castValueToType` and `acceptNullValue` accept.
  */
 type LabelledRow = Record<string, string | number | Date | null>;
 
@@ -422,6 +411,10 @@ export default function module(): LineChartModule {
     // Split into `let` and `const`: the TypeScript ESLint override runs
     // `prefer-const` as an error, and the bindings below it are never
     // reassigned.
+    // The data's keys, fixed: the accessors that renamed them are gone
+    const dateLabel = 'date';
+    const topicLabel = 'topic';
+    const valueLabel = 'value';
     let margin: ChartMarginParams = {
             top: 60,
             right: 30,
@@ -462,9 +455,6 @@ export default function module(): LineChartModule {
         lineCurve = 'linear',
         dataByTopic: LineTopic[],
         dataSorted: LineDateGroup[],
-        dateLabel = 'date',
-        valueLabel = 'value',
-        topicLabel = 'topic',
         // Null, not undefined: this chart initialises its axis labels where
         // the grouped and stacked bars leave theirs unset, which is what their
         // declarations each say.
@@ -1831,26 +1821,6 @@ export default function module(): LineChartModule {
     } as LineChartModule['colorMap'];
 
     /**
-     * Gets or Sets the dateLabel of the chart
-     * @param  {number} _x Desired dateLabel for the graph
-     * @return { number | module} Current dateLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as LineChartModule).dateLabel = function (
-        this: LineChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return dateLabel;
-        }
-        dateLabel = _x;
-        dataKeyDeprecationMessage('date');
-
-        return this;
-    } as LineChartModule['dateLabel'];
-
-    /**
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
@@ -2110,7 +2080,7 @@ export default function module(): LineChartModule {
     } as LineChartModule['numberFormat'];
 
     /**
-     * Gets or Sets the topicLabel of the chart
+     * Gets or Sets whether every data point shows its marker, not just the hovered ones
      * @param  {boolean} _x=false                   Whether all data points should be drawn
      * @return {shouldShowAllDataPoints | module}   Current shouldShowAllDataPoints or Chart module to chain calls
      * @public
@@ -2145,46 +2115,6 @@ export default function module(): LineChartModule {
 
         return this;
     } as LineChartModule['tooltipThreshold'];
-
-    /**
-     * Gets or Sets the topicLabel of the chart
-     * @param  {number} _x              Desired topicLabel for the graph
-     * @return {topicLabel | module}    Current topicLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as LineChartModule).topicLabel = function (
-        this: LineChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return topicLabel;
-        }
-        topicLabel = _x;
-        dataKeyDeprecationMessage('topic');
-
-        return this;
-    } as LineChartModule['topicLabel'];
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     * @param  {number} _x              Desired valueLabel for the graph
-     * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as LineChartModule).valueLabel = function (
-        this: LineChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return valueLabel;
-        }
-        valueLabel = _x;
-        dataKeyDeprecationMessage('value');
-
-        return this;
-    } as LineChartModule['valueLabel'];
 
     /**
      * Gets or Sets the yAxisLabelPadding of the chart.

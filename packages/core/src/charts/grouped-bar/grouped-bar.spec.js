@@ -469,18 +469,6 @@ describe('grouped Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide group label getter and setter', () => {
-            let previous = groupedBarChart.groupLabel(),
-                expected = 'label',
-                actual;
-
-            groupedBarChart.groupLabel(expected);
-            actual = groupedBarChart.groupLabel();
-
-            expect(previous).not.toBe(actual);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide grid mode getter and setter', () => {
             let previous = groupedBarChart.grid(),
                 expected = 'vertical',
@@ -571,18 +559,6 @@ describe('grouped Bar Chart', () => {
             });
         });
 
-        it('should provide nameLabel getter and setter', () => {
-            let previous = groupedBarChart.nameLabel(),
-                expected = 'key',
-                actual;
-
-            groupedBarChart.nameLabel(expected);
-            actual = groupedBarChart.nameLabel();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide numberFormat getter and setter', () => {
             let previous = groupedBarChart.numberFormat(),
                 expected = 's',
@@ -602,18 +578,6 @@ describe('grouped Bar Chart', () => {
 
             groupedBarChart.tooltipThreshold(expected);
             actual = groupedBarChart.tooltipThreshold();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide valueLabel getter and setter', () => {
-            let previous = groupedBarChart.valueLabel(),
-                expected = 'quantity',
-                actual;
-
-            groupedBarChart.valueLabel(expected);
-            actual = groupedBarChart.valueLabel();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);

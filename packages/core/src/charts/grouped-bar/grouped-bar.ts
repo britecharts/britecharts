@@ -16,7 +16,6 @@ import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
 import { getBaselineExtent, getValueDomain } from '../helpers/domain.js';
-import { dataKeyDeprecationMessage } from '../helpers/project.js';
 import colorHelper from '../helpers/color.js';
 import { barLoadingMarkup } from '../helpers/load.js';
 import { setDefaultLocale } from '../helpers/locale.js';
@@ -134,15 +133,6 @@ export interface GroupedBarChartAPI
     /** Gets or Sets the x and y offset of ticks of the y axis on the chart */
     yTickTextOffset(): Offset;
     yTickTextOffset(yTickTextOffset: Offset): GroupedBarChartModule;
-    /** Gets or Sets the `group` key of the data */
-    groupLabel(): string;
-    groupLabel(value: string): GroupedBarChartModule;
-    /** Gets or Sets the `name` key of the data */
-    nameLabel(): string;
-    nameLabel(value: string): GroupedBarChartModule;
-    /** Gets or Sets the `value` key of the data */
-    valueLabel(): string;
-    valueLabel(value: string): GroupedBarChartModule;
 }
 
 export type GroupedBarChartModule = ChartModuleSelection<
@@ -172,17 +162,11 @@ type ChartSelection<TElement extends BaseType> = Selection<
 >;
 
 /**
- * What `cleanData` hands the drawing functions. The index signature is the
- * deprecated `nameLabel`/`valueLabel`/`groupLabel` accessors: they let the data
- * carry those three values under any key, so the reads in `cleanData`,
- * `prepareData` and the two nearest-point searches really are dynamic.
- *
- * `topicName` is `cleanData`'s own addition, a copy of the group under the name
+ * What `cleanData` hands the drawing functions. `topicName` is `cleanData`'s own addition, a copy of the group under the name
  * the tooltip reads, and it is not part of the published data shape.
  */
 type GroupedBarDatum = GroupedBarChartDataShape & {
     topicName: string;
-    [key: string]: unknown;
 };
 
 /**
@@ -254,6 +238,10 @@ export default function module(): GroupedBarChartModule {
     // Split into `let` and `const`: the TypeScript ESLint override runs
     // `prefer-const` as an error, and the bindings below it are never
     // reassigned.
+    // The data's keys, fixed: the accessors that renamed them are gone
+    const groupLabel = 'group';
+    const nameLabel = 'name';
+    const valueLabel = 'value';
     let margin: ChartMarginParams = {
             top: 40,
             right: 30,
@@ -305,9 +293,6 @@ export default function module(): GroupedBarChartModule {
         animationDelays: number[],
         animationDuration = motion.duration,
         grid: GridTypes | null = null,
-        nameLabel = 'name',
-        valueLabel = 'value',
-        groupLabel = 'group',
         numberFormat = NUMBER_FORMAT,
         betweenBarsPadding = 0.1,
         betweenGroupsPadding = 0.1,
@@ -1431,26 +1416,6 @@ export default function module(): GroupedBarChartModule {
     } as GroupedBarChartModule['exportChart'];
 
     /**
-     * Gets or Sets the groupLabel of the chart
-     * @param  {String} _x              Desired groupLabel for the graph
-     * @return { groupLabel | module}   Current groupLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as GroupedBarChartModule).groupLabel = function (
-        this: GroupedBarChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return groupLabel;
-        }
-        groupLabel = _x;
-        dataKeyDeprecationMessage('group');
-
-        return this;
-    } as GroupedBarChartModule['groupLabel'];
-
-    /**
      * Gets or Sets the grid mode.
      * @param  {String} [_x=null]   Desired mode for the grid ('vertical'|'horizontal'|'full')
      * @return { String | module}   Current mode of the grid or Area Chart module to chain calls
@@ -1563,26 +1528,6 @@ export default function module(): GroupedBarChartModule {
     } as GroupedBarChartModule['margin'];
 
     /**
-     * Gets or Sets the nameLabel of the chart
-     * @param  {Number} _x              Desired dateLabel for the graph
-     * @return { nameLabel | module}    Current nameLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as GroupedBarChartModule).nameLabel = function (
-        this: GroupedBarChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return nameLabel;
-        }
-        nameLabel = _x;
-        dataKeyDeprecationMessage('name');
-
-        return this;
-    } as GroupedBarChartModule['nameLabel'];
-
-    /**
      * Gets or Sets the numberFormat of the chart
      * @param  {string[]} _x = ',f'     Desired numberFormat for the chart. See examples [here]{@link https://d3js.org/d3-format}
      * @return {string[] | module}      Current numberFormat or Chart module to chain calls
@@ -1641,26 +1586,6 @@ export default function module(): GroupedBarChartModule {
 
         return this;
     } as GroupedBarChartModule['tooltipThreshold'];
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     * @param  {Number} _x          Desired valueLabel for the graph
-     * @return {Number | module}    Current valueLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as GroupedBarChartModule).valueLabel = function (
-        this: GroupedBarChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return valueLabel;
-        }
-        valueLabel = _x;
-        dataKeyDeprecationMessage('value');
-
-        return this;
-    } as GroupedBarChartModule['valueLabel'];
 
     /**
      * Gets or Sets the locale which our formatting functions use.

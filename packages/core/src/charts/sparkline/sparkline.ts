@@ -9,7 +9,6 @@ import type { Area, Line } from 'd3-shape';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
-import { dataKeyDeprecationMessage } from '../helpers/project.js';
 import colorHelper from '../helpers/color.js';
 import { sparkLineLoadingMarkup } from '../helpers/load.js';
 import { uniqueId } from '../helpers/number.js';
@@ -59,15 +58,9 @@ export interface SparklineChartAPI
     /** Gets or Sets the lineGradient of the chart */
     lineGradient(): [string, string];
     lineGradient(gradient: [string, string]): SparklineChartModule;
-    /** Gets or Sets the `date` key of the data */
-    dateLabel(): string;
-    dateLabel(value: string): SparklineChartModule;
     /** Gets or Sets the loading state of the chart */
     isLoading(): boolean;
     isLoading(value: boolean): SparklineChartModule;
-    /** Gets or Sets the `value` key of the data */
-    valueLabel(): string;
-    valueLabel(value: string): SparklineChartModule;
 }
 
 export type SparklineChartModule = ChartModuleSelection<
@@ -95,14 +88,11 @@ type ChartSelection<TElement extends BaseType> = Selection<
  * What `cleanData` hands the drawing functions. The published
  * `SparklineChartDataShape` describes the chart's *input*, where `date` is a
  * string; `cleanData` replaces it with a Date in place, and every drawing
- * function downstream reads that Date. The index signature is the deprecated
- * `dateLabel`/`valueLabel` accessors: they let the data carry those two values
- * under any key, so the two reads in `cleanData` really are dynamic.
+ * function downstream reads that Date.
  */
 type SparklineDatum = {
     date: Date;
     value: number;
-    [key: string]: string | number | Date;
 };
 
 /**
@@ -149,6 +139,9 @@ export default function module(): SparklineChartModule {
     // Split into `let` and `const`: the TypeScript ESLint override runs
     // `prefer-const` as an error, and the bindings below it are never
     // reassigned.
+    // The data's keys, fixed: the accessors that renamed them are gone
+    const dateLabel = 'date';
+    const valueLabel = 'value';
     let margin: ChartMarginParams = {
             left: 5,
             right: 5,
@@ -177,9 +170,7 @@ export default function module(): SparklineChartModule {
         // be undefined (TS2774) where it says nothing about an object one.
         topLine: Line<SparklineDatum> | undefined,
         areaBelow: Area<SparklineDatum> | undefined,
-        circle: ChartSelection<SVGCircleElement>,
-        valueLabel = 'value',
-        dateLabel = 'date';
+        circle: ChartSelection<SVGCircleElement>;
 
     const areaGradientId = uniqueId('sparkline-area-gradient');
     const lineGradientId = uniqueId('sparkline-line-gradient');
@@ -560,26 +551,6 @@ export default function module(): SparklineChartModule {
     } as SparklineChartModule['areaGradient'];
 
     /**
-     * Gets or Sets the dateLabel of the chart
-     * @param  {number} _x          Desired dateLabel for the graph
-     * @return {dateLabel | module} Current dateLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as SparklineChartModule).dateLabel = function (
-        this: SparklineChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return dateLabel;
-        }
-        dateLabel = _x;
-        dataKeyDeprecationMessage('date');
-
-        return this;
-    } as SparklineChartModule['dateLabel'];
-
-    /**
      * Chart exported to png and a download action is fired
      * @param {string} filename     File title for the resulting picture
      * @param {string} title        Title to add at the top of the exported picture
@@ -691,26 +662,6 @@ export default function module(): SparklineChartModule {
 
         return this;
     } as SparklineChartModule['margin'];
-
-    /**
-     * Gets or Sets the valueLabel of the chart
-     * @param  {number} _x              Desired valueLabel for the graph
-     * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
-     * @public
-     * @deprecated
-     */
-    (exports as SparklineChartModule).valueLabel = function (
-        this: SparklineChartModule,
-        _x
-    ) {
-        if (!arguments.length) {
-            return valueLabel;
-        }
-        valueLabel = _x;
-        dataKeyDeprecationMessage('value');
-
-        return this;
-    } as SparklineChartModule['valueLabel'];
 
     /**
      * Gets or Sets the width of the chart

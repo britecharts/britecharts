@@ -770,18 +770,6 @@ describe('bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide nameLabel getter and setter', () => {
-            let previous = barChart.nameLabel(),
-                expected = 'key',
-                actual;
-
-            barChart.nameLabel(expected);
-            actual = barChart.nameLabel();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide orderingFunction getter and setter', () => {
             let previous = barChart.orderingFunction(),
                 expected = () => {},
@@ -825,18 +813,6 @@ describe('bar Chart', () => {
 
             barChart.hasPercentage(expected);
             actual = barChart.hasPercentage();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide valueLabel getter and setter', () => {
-            let previous = barChart.valueLabel(),
-                expected = 'quantity',
-                actual;
-
-            barChart.valueLabel(expected);
-            actual = barChart.valueLabel();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);

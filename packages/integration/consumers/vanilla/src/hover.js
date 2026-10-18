@@ -91,7 +91,6 @@ withTooltip(
     '.metadata-group',
     'values',
     (chart, chartTooltip) => {
-        chart.stackLabel('stack');
         chartTooltip.dateLabel('key');
     }
 );
@@ -102,7 +101,6 @@ withTooltip(
     '.metadata-group',
     'values',
     (chart, chartTooltip) => {
-        chart.groupLabel('group');
         chartTooltip.dateLabel('key');
     }
 );
