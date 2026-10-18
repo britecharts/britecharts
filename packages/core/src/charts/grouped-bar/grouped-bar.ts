@@ -18,7 +18,7 @@ import { exportChart } from '../helpers/export.js';
 import { getBaselineExtent, getValueDomain } from '../helpers/domain.js';
 import colorHelper from '../helpers/color.js';
 import { barLoadingMarkup } from '../helpers/load.js';
-import { setDefaultLocale } from '../helpers/locale.js';
+import { localeFormatterFor } from '../helpers/locale.js';
 import { hoverExitDelay, motion } from '../helpers/constants.js';
 import { gridHorizontal, gridVertical } from '../helpers/grid.js';
 import { asCategoryScale, asValueScale } from '../helpers/scale.js';
@@ -344,7 +344,7 @@ export default function module(): GroupedBarChartModule {
         >
     ) {
         if (locale) {
-            localeFormatter = setDefaultLocale(locale);
+            localeFormatter = localeFormatterFor(locale);
         }
 
         _selection.each(function (_data) {

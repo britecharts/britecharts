@@ -835,6 +835,22 @@ describe('bar Chart', () => {
             expect(newLocale).toBe(testLocale);
         });
 
+        it('should keep its valueLocale to itself, not change the default of the page', () => {
+            const germanLocale = {
+                decimal: ',',
+                thousands: '.',
+                grouping: [3],
+                currency: ['', ' €'],
+            };
+
+            barChart.valueLocale(germanLocale);
+            containerFixture.datum(dataset).call(barChart);
+
+            // Another chart, or any d3.format call on the page, still reads
+            // d3's own default
+            expect(d3.format(',.2f')(1234.5)).toEqual('1,234.50');
+        });
+
         it('should provide width getter and setter', () => {
             let previous = barChart.width(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },
