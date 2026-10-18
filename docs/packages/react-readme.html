@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.02570f28.css">
-<script src="/britecharts/assets/js/runtime~main.4cbd786d.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.cd97ec7c.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.f12e14b6.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.864f76b8.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -35,6 +35,42 @@
 <p>Function components have no instance to point a <code>ref</code> at, so a <code>ref</code> on a chart is not accepted (the typings say so). A chart is drawn into a <code>&lt;div&gt;</code> the component owns, and removes what it drew when it unmounts.</p>
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="tooltips">Tooltips<a href="#tooltips" class="hash-link" aria-label="Direct link to Tooltips" title="Direct link to Tooltips" translate="no">​</a></h3>
 <p>A <code>Tooltip</code> wraps the chart it decorates: give it a <code>render</code> prop that returns the chart, and pass on the props it hands you, which are what connect the two.</p>
+<p>The charts name the fields of their data points differently, so some of them need the tooltip told where to look:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Chart</th><th><code>Tooltip</code> props</th></tr></thead><tbody><tr><td><code>Line</code></td><td><code>topicLabel=&quot;topics&quot;</code></td></tr><tr><td><code>StackedArea</code></td><td>none</td></tr><tr><td><code>StackedBar</code></td><td><code>nameLabel=&quot;stack&quot;</code></td></tr><tr><td><code>GroupedBar</code></td><td><code>nameLabel=&quot;group&quot;</code></td></tr><tr><td><code>ScatterPlot</code></td><td><code>valueLabel=&quot;y&quot;</code></td></tr><tr><td><code>Bar</code>, <code>Donut</code></td><td>none</td></tr></tbody></table>
+<p>Without them, the tooltip shows no rows (line), rows without their colours (stacked and grouped bar) or no value (scatter plot).</p>
 <div class="language-jsx codeBlockContainer_sfVD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_Dzgi"><pre tabindex="0" class="prism-code language-jsx codeBlock_I0A4 thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_KEVW"><div class="token-line" style="color:#393A34"><span class="token keyword module" style="color:#00009f">import</span><span class="token plain"> </span><span class="token imports punctuation" style="color:#393A34">{</span><span class="token imports"> </span><span class="token imports maybe-class-name">Line</span><span class="token imports punctuation" style="color:#393A34">,</span><span class="token imports"> </span><span class="token imports maybe-class-name">Tooltip</span><span class="token imports"> </span><span class="token imports punctuation" style="color:#393A34">}</span><span class="token plain"> </span><span class="token keyword module" style="color:#00009f">from</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;@britecharts/react&#x27;</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag class-name" style="color:#00009f">Tooltip</span><span class="token tag" style="color:#00009f"></span><br></div><div class="token-line" style="color:#393A34"><span class="token tag" style="color:#00009f">    </span><span class="token tag attr-name" style="color:#00a4db">data</span><span class="token tag script language-javascript script-punctuation punctuation" style="color:#393A34">=</span><span class="token tag script language-javascript punctuation" style="color:#393A34">{</span><span class="token tag script language-javascript" style="color:#00009f">data</span><span class="token tag script language-javascript punctuation" style="color:#393A34">}</span><span class="token tag" style="color:#00009f"></span><br></div><div class="token-line" style="color:#393A34"><span class="token tag" style="color:#00009f">    </span><span class="token tag attr-name" style="color:#00a4db">render</span><span class="token tag script language-javascript script-punctuation punctuation" style="color:#393A34">=</span><span class="token tag script language-javascript punctuation" style="color:#393A34">{</span><span class="token tag script language-javascript punctuation" style="color:#393A34">(</span><span class="token tag script language-javascript parameter" style="color:#00009f">props</span><span class="token tag script language-javascript punctuation" style="color:#393A34">)</span><span class="token tag script language-javascript" style="color:#00009f"> </span><span class="token tag script language-javascript arrow operator" style="color:#393A34">=&gt;</span><span class="token tag script language-javascript" style="color:#00009f"> </span><span class="token tag script language-javascript tag punctuation" style="color:#393A34">&lt;</span><span class="token tag script language-javascript tag class-name" style="color:#00009f">Line</span><span class="token tag script language-javascript tag" style="color:#00009f"> </span><span class="token tag script language-javascript tag spread punctuation" style="color:#393A34">{</span><span class="token tag script language-javascript tag spread operator" style="color:#393A34">...</span><span class="token tag script language-javascript tag spread" style="color:#00009f">props</span><span class="token tag script language-javascript tag spread punctuation" style="color:#393A34">}</span><span class="token tag script language-javascript tag" style="color:#00009f"> </span><span class="token tag script language-javascript tag punctuation" style="color:#393A34">/&gt;</span><span class="token tag script language-javascript punctuation" style="color:#393A34">}</span><span class="token tag" style="color:#00009f"></span><br></div><div class="token-line" style="color:#393A34"><span class="token tag" style="color:#00009f">    </span><span class="token tag attr-name" style="color:#00a4db">topicLabel</span><span class="token tag attr-value punctuation attr-equals" style="color:#393A34">=</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag attr-value" style="color:#e3116c">topics</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag" style="color:#00009f"></span><br></div><div class="token-line" style="color:#393A34"><span class="token tag" style="color:#00009f">    </span><span class="token tag attr-name" style="color:#00a4db">title</span><span class="token tag attr-value punctuation attr-equals" style="color:#393A34">=</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag attr-value" style="color:#e3116c">A title</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag" style="color:#00009f"></span><br></div><div class="token-line" style="color:#393A34"><span class="token tag" style="color:#00009f"></span><span class="token tag punctuation" style="color:#393A34">/&gt;</span><br></div></code></pre></div></div>
 <h3 class="anchor anchorTargetStickyNavbar_E8gw" id="responsive-charts">Responsive charts<a href="#responsive-charts" class="hash-link" aria-label="Direct link to Responsive charts" title="Direct link to Responsive charts" translate="no">​</a></h3>
 <p><code>ResponsiveContainer</code> hands its <code>render</code> prop the width it has measured, and measures again when the window is resized. <code>withResponsiveness</code> does the same for a component you wrap, as its <code>width</code> prop (a <code>width</code> you pass yourself wins).</p>
