@@ -303,7 +303,7 @@ if (lineChart.numberFormat() === undefined) { /* ... */ }
 if (lineChart.numberFormat() === null) { /* ... */ }
 ```
 
-16. Name your data's keys as the charts expect
+17. Name your data's keys as the charts expect
 
 The accessors that let a chart read its data under other keys are removed: `nameLabel` and `valueLabel` on the bar chart, `groupLabel`, `nameLabel` and `valueLabel` on the grouped bar, `stackLabel`, `nameLabel` and `valueLabel` on the stacked bar, `dateLabel`, `topicLabel` and `valueLabel` on the line chart, `dateLabel`, `keyLabel` and `valueLabel` on the stacked area, and `dateLabel` and `valueLabel` on the sparkline. They warned that they were deprecated since version 2. The React components drop the matching props.
 
