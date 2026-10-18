@@ -57,29 +57,10 @@
     "sass": "catalog:",
     "storybook": "catalog:",
     "stylelint": "catalog:",
-    "stylelint-config-sass-guidelines": "catalog:",
-    "stylelint-config-standard": "catalog:",
-    "stylelint-scss": "4.7.0",
     "underscore": "1.13.8",
     "vite": "catalog:"
   },
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
-  "stylelint": {
-    "plugins": [
-      "stylelint-scss"
-    ],
-    "extends": [
-      "stylelint-config-sass-guidelines",
-      "stylelint-config-standard-scss"
-    ],
-    "rules": {
-      "indentation": 4,
-      "scss/dollar-variable-colon-space-after": "always",
-      "no-descending-specificity": null,
-      "selector-class-pattern": null,
-      "max-nesting-depth": 2
-    }
-  },
   "scripts": {
     "build": "pnpm run clean && pnpm run build:types && pnpm run build:esm && pnpm run build:types:cjs && pnpm run build:bundles && pnpm run build:check",
     "build:types": "tsc -p tsconfig.build.json",
