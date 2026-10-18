@@ -25,7 +25,7 @@ barChart.colorMap({
 });
 ```
 
-List every category in the map: one left out is drawn without a colour. Each chart matches the keys against one field of its data:
+A category the map leaves out keeps its palette colour. Each chart matches the keys against one field of its data:
 
 | Chart | `colorMap` keys match |
 | --- | --- |
