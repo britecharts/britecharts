@@ -18,9 +18,9 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
-    "@playwright/test": "1.63.0",
-    "@vitejs/plugin-react": "6.1.1",
-    "publint": "0.3.24",
+    "@playwright/test": "1.64.1",
+    "@vitejs/plugin-react": "6.1.2",
+    "publint": "0.3.25",
     "rimraf": "catalog:",
     "vite": "catalog:"
   }
