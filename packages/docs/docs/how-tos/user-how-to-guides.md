@@ -92,7 +92,7 @@ barChart
 
 Negative numbers use the typographic minus sign (`−`), as d3-format does. To get the ASCII hyphen back, add `minus: '-'` to the locale definition.
 
-`valueLocale` currently sets the locale for every chart on the page, not only the one you call it on, so give all your charts the same definition.
+Each chart keeps its `valueLocale` to itself, so two charts on a page can use different ones.
 
 ## How to Show a Loading State
 Every data chart can draw a skeleton in its own shape while the data loads:
