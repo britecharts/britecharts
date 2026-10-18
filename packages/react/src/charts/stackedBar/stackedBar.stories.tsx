@@ -28,7 +28,7 @@ export const Playground: StoryFn<typeof StackedBar> = (args) => {
             data={data}
             render={renderStackedBar}
             title="Tooltip Title"
-            dateLabel="key"
+            // The stacked bar names its rows by `stack`
             nameLabel="stack"
         />
     );
@@ -60,7 +60,7 @@ export const WithAnimation = () => {
             data={data}
             render={renderStackedBar}
             title="Tooltip Title"
-            dateLabel="key"
+            // The stacked bar names its rows by `stack`
             nameLabel="stack"
         />
     );

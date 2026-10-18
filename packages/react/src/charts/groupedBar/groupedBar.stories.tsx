@@ -30,7 +30,7 @@ export const Playground: StoryFn<typeof GroupedBar> = (args) => {
             data={data}
             render={renderGroupedBar}
             title="Tooltip Title"
-            dateLabel="key"
+            // The grouped bar names its rows by `group`
             nameLabel="group"
         />
     );
@@ -64,7 +64,7 @@ export const WithAnimation = () => {
             data={data}
             render={renderGroupedBar}
             title="Tooltip Title"
-            dateLabel="key"
+            // The grouped bar names its rows by `group`
             nameLabel="group"
         />
     );

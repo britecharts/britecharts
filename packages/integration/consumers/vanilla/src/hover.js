@@ -26,11 +26,10 @@ import {
 const WIDTH = 600;
 const HEIGHT = 300;
 
-// The multi-value tooltip: attached where the docs and stories attach it.
-// The line chart's data points carry `topics`; the other three carry
-// `values`, and their stories set the topic label accordingly. The bar
-// charts dispatch the band's `key`, not a `date`, so their stories point
-// the title at it too.
+// The multi-value tooltip: attached where the docs and stories attach it, and
+// told where each chart keeps its rows, as the tooltip's API page lists. The
+// line chart's data points carry `topics`; the other three carry `values`,
+// and the stacked and grouped bars name their rows by `stack` and `group`.
 function withTooltip(
     chart,
     container,
@@ -65,7 +64,7 @@ function withMiniTooltip(chart, container, data, configure = () => {}) {
         .on('customMouseOver', chartTooltip.show)
         .on('customMouseMove', chartTooltip.update)
         .on('customMouseOut', chartTooltip.hide);
-    configure(chart);
+    configure(chart, chartTooltip);
 
     container.datum(data).call(chart);
     container.select('.metadata-group').datum([]).call(chartTooltip);
@@ -91,7 +90,7 @@ withTooltip(
     '.metadata-group',
     'values',
     (chart, chartTooltip) => {
-        chartTooltip.dateLabel('key');
+        chartTooltip.nameLabel('stack');
     }
 );
 withTooltip(
@@ -101,12 +100,18 @@ withTooltip(
     '.metadata-group',
     'values',
     (chart, chartTooltip) => {
-        chartTooltip.dateLabel('key');
+        chartTooltip.nameLabel('group');
     }
 );
 
 withMiniTooltip(bar(), select('.hover-bar'), barData);
-withMiniTooltip(scatterPlot(), select('.hover-scatter-plot'), scatterData);
+// A scatter point's value is its `y`
+withMiniTooltip(
+    scatterPlot(),
+    select('.hover-scatter-plot'),
+    scatterData,
+    (chart, chartTooltip) => chartTooltip.valueLabel('y')
+);
 withMiniTooltip(heatmap(), select('.hover-heatmap'), heatmapData, (chart) =>
     chart.boxSize(20)
 );

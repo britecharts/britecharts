@@ -30,6 +30,7 @@ export const Playground: StoryFn<typeof ScatterPlot> = (args) => {
             data={data}
             render={renderScatterPlot}
             title="Temperature (C)"
+            // A point's value is its `y`; `nameLabel` shows its `x` instead of its name
             nameLabel="x"
             valueLabel="y"
             numberFormat="$"
@@ -81,6 +82,7 @@ export const WithAnimation = () => {
             data={data}
             render={renderScatterPlot}
             title="Temperature (C)"
+            // A point's value is its `y`; `nameLabel` shows its `x` instead of its name
             nameLabel="x"
             valueLabel="y"
             numberFormat="$"

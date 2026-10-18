@@ -6,7 +6,6 @@ import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
 import { axisTimeCombinations } from '../helpers/constants.js';
-import { dataKeyDeprecationMessage } from '../helpers/project.js';
 import {
     formatIntegerValue,
     formatDecimalValue,
@@ -335,6 +334,25 @@ let hasWarnedLegacyOrder = false;
  * margins). The chart's size is accepted and ignored: the tooltip measures
  * the chart itself. The line and stacked area charts dispatch nothing while
  * narrower than `tooltipThreshold` (480 px by default).
+ *
+ * ### Reading each chart's data point
+ *
+ * The charts do not all name the fields of the data point they dispatch the
+ * same way, so the tooltip has to be told where to look for some of them.
+ * Without these settings, a tooltip on these charts shows no rows, rows
+ * without their colours, or no value:
+ *
+ * | Chart | Configure the tooltip with | Why |
+ * | --- | --- | --- |
+ * | line | nothing | its data point carries `date` and `topics`, the defaults |
+ * | stacked area | `topicLabel('values')` | its rows are under `values` |
+ * | stacked bar | `topicLabel('values')`, `nameLabel('stack')` | its rows are under `values`, named by `stack` |
+ * | grouped bar | `topicLabel('values')`, `nameLabel('group')` | its rows are under `values`, named by `group` |
+ * | scatter plot | `valueLabel('y')` | a point's value is its `y` (add `nameLabel('x')` to show `x` instead of its name) |
+ * | bar, donut, heatmap | nothing | their data points carry `name` and `value` |
+ *
+ * In React, `Tooltip` starts from `topicLabel('values')`, so the line chart
+ * is the one that needs a setting there: `topicLabel="topics"`.
  *
  * ### miniTooltip, the single-value preset
  *
@@ -1499,14 +1517,12 @@ export default function module(): TooltipModule {
      * @param  {String} _x          Desired dateLabel
      * @return {String | module}   Current dateLabel or Chart module to chain calls
      * @public
-     * @deprecated
      */
     (exports as TooltipModule).dateLabel = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return dateLabel;
         }
         dateLabel = _x;
-        dataKeyDeprecationMessage('date');
 
         return this;
     } as TooltipModule['dateLabel'];
@@ -1538,18 +1554,21 @@ export default function module(): TooltipModule {
     } as TooltipModule['locale'];
 
     /**
-     * Gets or Sets the nameLabel of the data
+     * Gets or Sets the nameLabel of the data: the field that identifies each
+     * row of the list, and the colour the chart gave it, or the name shown in
+     * the single layout. `'name'` by default. The stacked bar chart names its
+     * rows by `stack` and the grouped bar chart by `group`: without
+     * `nameLabel('stack')` or `nameLabel('group')`, the tooltip looks up each
+     * row's colour under the bar's name, and the rows show none.
      * @param  {String} _x           Desired nameLabel
      * @return {String | module}    Current nameLabel or Chart module to chain calls
      * @public
-     * @deprecated
      */
     (exports as TooltipModule).nameLabel = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return nameLabel;
         }
         nameLabel = _x;
-        dataKeyDeprecationMessage('name');
 
         return this;
     } as TooltipModule['nameLabel'];
@@ -1726,18 +1745,21 @@ export default function module(): TooltipModule {
     } as TooltipModule['topicsOrder'];
 
     /**
-     * Gets or Sets the topicLabel of the data
+     * Gets or Sets the topicLabel of the data: the field of the data point
+     * that holds the list's rows. `'topics'` by default, which is what the
+     * line chart dispatches. The stacked area, stacked bar and grouped bar
+     * charts dispatch their rows as `values`, so set `topicLabel('values')`
+     * for them. (`@britecharts/wrappers`, and so React's `Tooltip`, set
+     * `'values'` themselves: there, the line chart needs `'topics'`.)
      * @param  {String} _x          Desired topicLabel
      * @return {String | module}   Current topicLabel or Chart module to chain calls
      * @public
-     * @deprecated
      */
     (exports as TooltipModule).topicLabel = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return topicLabel;
         }
         topicLabel = _x;
-        dataKeyDeprecationMessage('topic');
 
         return this;
     } as TooltipModule['topicLabel'];
@@ -1817,18 +1839,19 @@ export default function module(): TooltipModule {
     } as TooltipModule['update'];
 
     /**
-     * Gets or Sets the valueLabel of the data
+     * Gets or Sets the valueLabel of the data: the field holding the value
+     * shown for each row, or the big value of the single layout. `'value'`
+     * by default. The scatter plot's points carry theirs as `y`, so set
+     * `valueLabel('y')` for it.
      * @param  {String} _x          Desired valueLabel
      * @return {String | module}   Current valueLabel or Chart module to chain calls
      * @public
-     * @deprecated
      */
     (exports as TooltipModule).valueLabel = function (this: TooltipModule, _x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
-        dataKeyDeprecationMessage('value');
 
         return this;
     } as TooltipModule['valueLabel'];

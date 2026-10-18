@@ -70,9 +70,9 @@ export const Playground = (args) => {
 
         groupedBarContainer.datum(dataset).call(groupedBar);
 
+        // The grouped bar dispatches its rows as `values`, named by `group`
         chartTooltip
             .topicLabel('values')
-            .dateLabel('key')
             .nameLabel('group')
             .title('Testing tooltip');
 
@@ -140,9 +140,9 @@ export const WithHorizontalDirection = () => {
         groupedBarContainer.datum(dataset).call(groupedBar);
 
         // Tooltip Setup and start
+        // The grouped bar dispatches its rows as `values`, named by `group`
         chartTooltip
             .topicLabel('values')
-            .dateLabel('key')
             .nameLabel('group')
             .title('Testing tooltip');
 
@@ -180,9 +180,9 @@ export const WithAnimation = () => {
 
         groupedBarContainer.datum(dataset).call(groupedBar);
 
+        // The grouped bar dispatches its rows as `values`, named by `group`
         chartTooltip
             .topicLabel('values')
-            .dateLabel('key')
             .nameLabel('group')
             .title('Testing tooltip');
 

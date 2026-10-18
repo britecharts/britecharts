@@ -328,3 +328,70 @@ for (const [name, selector] of [
         await expect(tooltip, 'back above the bar').toBeHidden();
     });
 }
+
+// The stacked and grouped bars name their rows by `stack` and `group`, and the
+// tooltip has to be told so (`nameLabel`): it finds each row's colour by that
+// name, and without it the rows have none. Each band here has two.
+for (const [name, selector] of [
+    ['stacked bar', '.hover-stacked-bar'],
+    ['grouped bar', '.hover-grouped-bar'],
+]) {
+    test(`H · ${name} lists every row of the band, each in its colour`, async ({
+        page,
+    }) => {
+        await page.goto(URL);
+
+        const container = page.locator(selector);
+        const svg = container.locator('svg').first();
+        const tooltip = container.locator('.britechart-tooltip');
+
+        await svg.scrollIntoViewIfNeeded();
+
+        const frame = await svg.boundingBox();
+        const bar = await container.locator('rect.bar').first().boundingBox();
+
+        await page.mouse.move(frame.x - 40, frame.y - 40);
+        await page.mouse.move(bar.x + bar.width / 2, bar.y + bar.height / 2, {
+            steps: 4,
+        });
+        await expect(tooltip).toBeVisible();
+        await page.waitForTimeout(SETTLE_MS);
+
+        const fills = await tooltip
+            .locator('.tooltip-circle')
+            .evaluateAll((circles) =>
+                circles
+                    .filter((circle) => circle.style.display !== 'none')
+                    .map((circle) => circle.style.fill)
+            );
+
+        expect(fills).toHaveLength(2);
+        expect(fills.every(Boolean), 'every row has a colour').toBe(true);
+        expect(new Set(fills).size, 'and they differ').toBe(2);
+    });
+}
+
+// A scatter point carries its value as `y`, so its tooltip is told
+// `valueLabel('y')`; without it there is no value to show.
+test(`H · scatter plot shows the hovered point's value`, async ({ page }) => {
+    await page.goto(URL);
+
+    const container = page.locator('.hover-scatter-plot');
+    const svg = container.locator('svg').first();
+    const tooltip = container.locator('.britechart-mini-tooltip');
+
+    await svg.scrollIntoViewIfNeeded();
+
+    const frame = await svg.boundingBox();
+
+    await page.mouse.move(frame.x - 40, frame.y - 40);
+    await page.mouse.move(
+        frame.x + frame.width / 2,
+        frame.y + frame.height / 2,
+        {
+            steps: 4,
+        }
+    );
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip.locator('.mini-tooltip-value')).toHaveText(/\d/);
+});

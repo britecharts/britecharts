@@ -61,6 +61,19 @@ Function components have no instance to point a `ref` at, so a `ref` on a chart 
 
 A `Tooltip` wraps the chart it decorates: give it a `render` prop that returns the chart, and pass on the props it hands you, which are what connect the two.
 
+The charts name the fields of their data points differently, so some of them need the tooltip told where to look:
+
+| Chart | `Tooltip` props |
+| --- | --- |
+| `Line` | `topicLabel="topics"` |
+| `StackedArea` | none |
+| `StackedBar` | `nameLabel="stack"` |
+| `GroupedBar` | `nameLabel="group"` |
+| `ScatterPlot` | `valueLabel="y"` |
+| `Bar`, `Donut` | none |
+
+Without them, the tooltip shows no rows (line), rows without their colours (stacked and grouped bar) or no value (scatter plot).
+
 ```jsx
 import { Line, Tooltip } from '@britecharts/react';
 
