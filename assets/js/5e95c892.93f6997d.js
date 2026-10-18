@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_britecharts_docs||=[]).push([[9647],{6200(e,r,s){s.r(r),s.d(r,{default:()=>i});s(4394);var a=s(851),c=s(4707),t=s(9704),u=s(5002),d=s(1933),h=s(4066);function i(e){return(0,h.jsx)(t.e3,{className:(0,a.A)(c.G.wrapper.docsPages),children:(0,h.jsx)(d.A,{children:(0,u.v)(e.route.routes)})})}}}]);

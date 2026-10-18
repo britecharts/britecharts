@@ -1,0 +1,28 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{M as t,N as n,a as r,b as i,o as a,s as o}from"./blocks-C7hczs9H.js";var s;function c(){return(c=e((()=>{s=`# @britecharts/demos
+
+> Storybook installation to create the [demos site][demos] for Britecharts, using a multi-storybook setup.
+
+## Usage
+\`@britecharts/demos\` by itself is a simple Storybook installation that exports Storybooks from other Britecharts packages.
+
+It has no stories of its own beyond an introduction: it *composes* the core and react Storybooks, which it expects on \`localhost:2001\` and \`localhost:2002\` in development.
+
+From the repo root:
+
+\`\`\`sh
+pnpm demos
+\`\`\`
+
+That starts core on 2001, react on 2002 and this shell on 2000 — open [localhost:2000](http://localhost:2000). \`pnpm demos:demos\` does the same thing.
+
+If core and react are already running, \`pnpm demos:shell\` brings up just this package. On its own it renders the shell with both refs unavailable, which is why the composed command is the default.
+
+
+The production build is deployed with the docs site on every push to \`main\`, under [/storybook/][demos], together with the core and react Storybooks it composes (\`/storybook/core\`, \`/storybook/react\`). Composition there is same-origin, so it needs no CORS setup and no login.
+
+If you want to help completing these, check our [contributing guide][contributing] and get started collaborating with Britecharts.
+
+[demos]: https://britecharts.github.io/britecharts/storybook/
+[contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
+`})))()}function l(e){return(0,d.jsxs)(d.Fragment,{children:[(0,d.jsx)(a,{title:`Introduction`}),`
+`,(0,d.jsx)(r,{children:s})]})}function u(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,d.jsx)(t,{...e,children:(0,d.jsx)(l,{...e})}):l(e)}var d;function f(){return(f=e((()=>{d=i(),t(),o(),c()})))()}f();export{u as default};
