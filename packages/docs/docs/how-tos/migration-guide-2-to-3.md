@@ -145,10 +145,16 @@ lineChart
 
 Britecharts v3 runs on the current d3 modules, and d3-format changed its default minus sign from the ASCII hyphen (`-`, U+002D) to the typographic minus (`−`, U+2212). Negative values on axes and in tooltips now render with the latter.
 
-Nothing to change unless you assert on that text — snapshot tests and string comparisons against axis labels will need updating. If you would rather keep the ASCII hyphen, set it through a value locale:
+Nothing to change unless you assert on that text — snapshot tests and string comparisons against axis labels will need updating. If you would rather keep the ASCII hyphen, set it through a value locale on the charts that have one (the bar, grouped bar, stacked bar and scatter plot). The definition needs `decimal`, `thousands`, `grouping` and `currency` as well:
 
 ```js
-lineChart.valueLocale({ minus: '-' });
+barChart.valueLocale({
+    decimal: '.',
+    thousands: ',',
+    grouping: [3],
+    currency: ['$', ''],
+    minus: '-',
+});
 ```
 
 8. Use the d3 v7 modules alongside Britecharts

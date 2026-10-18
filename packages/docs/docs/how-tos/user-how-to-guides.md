@@ -15,6 +15,27 @@ Follow these steps to customize Britecharts' charts to use different color schem
 
 Note that in some charts we can only configure a gradient. Use the `colorGradients` object instead of `colorSchemas` within the colors helper. You can explore other options in the source code of the [colors file][colorsHelper].
 
+### Give each category its own colour
+A palette assigns colours in order, so a category's colour changes when the data does. To pin one colour to each category, pass `colorMap` an object from category to colour:
+
+```js
+barChart.colorMap({
+    Shiny: '#39c2c9',
+    Blazing: '#fcc870',
+});
+```
+
+List every category in the map: one left out is drawn without a colour. Each chart matches the keys against one field of its data:
+
+| Chart | `colorMap` keys match |
+| --- | --- |
+| Bar, donut, scatter plot, stacked area | `name` |
+| Line | `name`, the topic's identifier (not `topicName`) |
+| Stacked bar | `stack` |
+| Grouped bar | `group` |
+
+The legend takes `colorMap` too: pass it the same object so its entries match the chart. In React, `colorMap` is a prop with the same shape.
+
 ## How to Add a Tooltip to a Chart
 Every chart dispatches the same three events, and the tooltip has a handler for each:
 1. Create the tooltip: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, donut, heatmap and scatter plot, which show one value
@@ -50,6 +71,87 @@ The charts do not all name the fields of the data point they send the tooltip th
 
 React's `Tooltip` starts from `topicLabel('values')`, which is why the line chart is the one that needs a prop there. The [tooltip reference][tooltipAPI] describes each setting, and the [Storybook][storybook] shows each chart with its tooltip configured.
 
+## How to Format Numbers and Dates for Your Language
+Three settings control how values read. They do different things, so check which one a chart has in its [API reference][apiReference]:
+
+* `numberFormat` takes a [d3-format specifier][formatSpecifiers], such as `',.2f'` for two decimals with a thousands separator, or `'.0%'` for a percentage. It formats the values on the chart's axes and labels; the tooltip has a `numberFormat` of its own.
+* `valueLocale` takes a [d3-format locale definition][formatLocale] and sets the separators and currency those values use. The bar, grouped bar, stacked bar and scatter plot charts have it. The definition needs at least `decimal`, `thousands`, `grouping` and `currency`, or the chart throws.
+* `locale` takes a language tag such as `'fr-FR'`, and localizes the dates in the tooltip and the brush with `Intl.DateTimeFormat`.
+
+```js
+barChart
+    .numberFormat(',.2f')
+    .valueLocale({
+        decimal: ',',
+        thousands: '.',
+        grouping: [3],
+        currency: ['', ' €'],
+    });
+// The axis reads 1.000,00 instead of 1,000.00
+```
+
+Negative numbers use the typographic minus sign (`−`), as d3-format does. To get the ASCII hyphen back, add `minus: '-'` to the locale definition.
+
+`valueLocale` currently sets the locale for every chart on the page, not only the one you call it on, so give all your charts the same definition.
+
+## How to Show a Loading State
+Every data chart can draw a skeleton in its own shape while the data loads:
+1. Set `isLoading(true)` and draw the chart with whatever data you have, even an empty array
+1. When the data arrives, set `isLoading(false)` and draw the chart again with it
+
+```js
+barChart.isLoading(true);
+container.datum([]).call(barChart);
+
+fetchData().then((data) => {
+    barChart.isLoading(false);
+    container.datum(data).call(barChart);
+});
+```
+
+In React, pass `isLoading` together with the data you have, an empty array included, and set it to `false` when the data arrives. With `data={null}`, the component draws nothing at all, skeleton included.
+
+## How to Animate a Chart
+Charts draw without animation by default. Set `isAnimated(true)` to animate them as they draw, and `animationDuration` to set how long that takes, in milliseconds (1200 by default):
+
+```js
+lineChart.isAnimated(true).animationDuration(600);
+```
+
+`animationDuration` does nothing while `isAnimated` is `false`. The bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, scatter plot, sparkline and brush charts animate. React components take both as props.
+
+## How to Chart Negative Values
+The bar, grouped bar, stacked bar, brush and scatter plot charts draw negative values with no setting to turn on:
+
+* The bar charts draw bars below, or to the left of, a zero baseline, and a stacked bar stacks its negative parts down from zero.
+* The scatter plot's value axis runs below zero when the data does, and a circle's size shows the size of its value, so -50 draws as large as 50.
+
+The line and stacked area charts plot negative values as they are. Axis labels for negative numbers use the typographic minus sign: see [how to format numbers](#how-to-format-numbers-and-dates-for-your-language) to change it.
+
+## How to Make a Chart Accessible
+Every chart gives its svg a role and a name that screen readers announce: "Bar chart" by default. Name it after what it shows, and add a sentence about what it means:
+
+```js
+barChart
+    .a11yTitle('Monthly visits')
+    .a11yDescription('Visits doubled in May');
+```
+
+The name goes in an `aria-label`, so browsers do not show it as a tooltip on hover. React components take `a11yTitle` and `a11yDescription` as props.
+
+### Label a bullet chart or a sparkline
+The bullet chart and the sparkline draw only their data, with no title: text inside an svg cannot wrap and ignores the page's typography. Put the label in your own markup, next to the chart, and give screen readers the same words:
+
+```html
+<h3>CPU load <small>GHz</small></h3>
+<div class="js-bullet-chart"></div>
+```
+
+```js
+bulletChart.a11yTitle('CPU load, GHz');
+select('.js-bullet-chart').datum(data).call(bulletChart);
+```
+
 ## How to Configure Time Scales
 Britecharts has some logic to try guessing the best date format on time series charts from the time period of the dataset. As we haven't bulletproofed this algorithm, and sometimes users want specific formats, we also expose configuration options to set custom formats.
 
@@ -83,6 +185,9 @@ Remember that for increased accuracy, all date formats in Britecharts should be 
 [ISOFormat]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
 [lineChartAPI]: /docs/API/line
 [tooltipAPI]: /docs/API/tooltip
+[apiReference]: /docs/API/bar
+[formatSpecifiers]: https://github.com/d3/d3-format#locale_format
+[formatLocale]: https://github.com/d3/d3-format#formatLocale
 [storybook]: pathname:///storybook/
 [timeFormatSpecifiers]: https://github.com/d3/d3-time-format#locale_format
 [timeFormatsBlock]: https://bl.ocks.org/zanarmstrong/ca0adb7e426c12c06a95
