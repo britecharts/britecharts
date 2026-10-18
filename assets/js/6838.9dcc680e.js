@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_britecharts_docs||=[]).push([[6838],{6838(s,c,h){h.r(c)}}]);
