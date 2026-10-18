@@ -1563,8 +1563,10 @@ export default function module(): LineChartModule {
         dataPoint.topics = topicsWithNode.map(({ topic }) => topic);
 
         dataPoint.topics.forEach((d, index) => {
+            // Before the tooltip, when it is mounted in this container: the
+            // later sibling paints on top, and the markers belong under it.
             const marker = verticalMarkerContainer
-                .append('g')
+                .insert('g', ':scope > .britechart')
                 .classed('circle-container', true)
                 .append('circle')
                 .classed('data-point-highlighter', true)

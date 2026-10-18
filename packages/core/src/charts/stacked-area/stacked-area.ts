@@ -1545,8 +1545,10 @@ export default function module(): StackedAreaChartModule {
                 return;
             }
 
+            // Before the tooltip, when it is mounted in this container: the
+            // later sibling paints on top, and the markers belong under it.
             const marker = verticalMarkerContainer
-                .append('g')
+                .insert('g', ':scope > .britechart')
                 .classed('circle-container', true)
                 .append('circle')
                 .classed('data-point-highlighter', true)
