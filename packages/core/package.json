@@ -68,7 +68,7 @@
     "build:types:cjs": "node -e \"const fs=require('node:fs');fs.cpSync('dist/types','dist/types-cjs',{recursive:true,filter:(p)=>fs.statSync(p).isDirectory()||p.endsWith('.d.ts')});fs.writeFileSync('dist/types-cjs/package.json','{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:bundles": "vite build && vite build --mode cdn && vite build --mode styles && vite build --mode styles-min",
     "build:check": "es-check es2020 \"./dist/umd/bundle/core.bundled.min.cjs\" \"./dist/cdn/bundle/core.cdn.min.js\"",
-    "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_CORE",
+    "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_CORE --build-script-name=demo:build",
     "clean": "rimraf dist",
     "demo": "pnpm run storybook",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
