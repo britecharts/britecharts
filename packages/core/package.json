@@ -64,7 +64,7 @@
   "scripts": {
     "build": "pnpm run clean && pnpm run build:types && pnpm run build:esm && pnpm run build:types:cjs && pnpm run build:bundles && pnpm run build:check",
     "build:types": "tsc -p tsconfig.build.json",
-    "build:esm": "babel src --out-dir dist/esm --extensions .ts,.js --no-babelrc --presets @babel/preset-typescript --ignore \"src/**/*.d.ts,src/**/*.spec.ts,src/**/*.spec.js,src/**/*.stories.js,src/**/*.stories.ts,src/**/*DataBuilder.js,src/**/*Data.js,src/**/*.fixtures.js,src/**/*.fixtures.ts\"",
+    "build:esm": "babel src --out-dir dist/esm --extensions .ts,.js --config-file ./babel.config.esm.cjs --ignore \"src/**/*.d.ts,src/**/*.spec.ts,src/**/*.spec.js,src/**/*.stories.js,src/**/*.stories.ts,src/**/*DataBuilder.js,src/**/*Data.js,src/**/*.fixtures.js,src/**/*.fixtures.ts\"",
     "build:types:cjs": "node -e \"const fs=require('node:fs');fs.cpSync('dist/types','dist/types-cjs',{recursive:true,filter:(p)=>fs.statSync(p).isDirectory()||p.endsWith('.d.ts')});fs.writeFileSync('dist/types-cjs/package.json','{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:bundles": "vite build && vite build --mode cdn && vite build --mode styles && vite build --mode styles-min",
     "build:check": "es-check es2020 \"./dist/umd/bundle/core.bundled.min.cjs\" \"./dist/cdn/bundle/core.cdn.min.js\"",
