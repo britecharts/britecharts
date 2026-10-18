@@ -318,6 +318,71 @@ describe('bar Chart', () => {
             });
         });
 
+        describe('when the colorMap leaves categories out', () => {
+            beforeEach(() => {
+                document.body.insertAdjacentHTML(
+                    'afterbegin',
+                    '<div id="fixture"><div class="test-container"></div></div>'
+                );
+                containerFixture = d3.select('.test-container');
+            });
+
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should colour them from the palette', () => {
+                const data = [
+                    { name: 'A', value: 1 },
+                    { name: 'B', value: 2 },
+                ];
+
+                barChart = chart().colorMap({ A: '#ff0000' });
+                containerFixture.datum(data).call(barChart);
+
+                const [a, b] = containerFixture
+                    .selectAll('.bar')
+                    .nodes()
+                    .map((node) => node.getAttribute('fill'));
+
+                expect(a).toEqual('#ff0000');
+                expect(b).toBeTruthy();
+                expect(b).not.toEqual('#ff0000');
+            });
+
+            it('should colour a category that only arrives on a later draw', () => {
+                barChart = chart();
+                containerFixture
+                    .datum([{ name: 'A', value: 1 }])
+                    .call(barChart);
+                containerFixture
+                    .datum([
+                        { name: 'A', value: 1 },
+                        { name: 'C', value: 2 },
+                    ])
+                    .call(barChart);
+
+                const fills = containerFixture
+                    .selectAll('.bar')
+                    .nodes()
+                    .map((node) => node.getAttribute('fill'));
+
+                expect(fills).toHaveLength(2);
+                expect(fills.every(Boolean)).toBe(true);
+            });
+
+            it('should still read back the colorMap that was set, or null', () => {
+                const unset = chart();
+                const set = chart().colorMap({ A: '#ff0000' });
+
+                containerFixture.datum([{ name: 'A', value: 1 }]).call(unset);
+                containerFixture.datum([{ name: 'A', value: 1 }]).call(set);
+
+                expect(unset.colorMap()).toBeNull();
+                expect(set.colorMap()).toEqual({ A: '#ff0000' });
+            });
+        });
+
         describe('when isLoading is true', () => {
             it('should render the loading state', () => {
                 const expected = 1;

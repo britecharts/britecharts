@@ -36,6 +36,7 @@ import type {
 } from '../../typings/common/base.js';
 import { labelChart } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
+import { withCustomColors } from '../helpers/color.js';
 
 export declare enum BarChartKeys {
     Value = 'value',
@@ -339,6 +340,8 @@ export default function module(): BarChartModule {
         colorSchema: ColorsSchemasType = colorHelper.singleColors.aloeGreen,
         colorList: BarColorEntry[],
         nameToColorMap: Record<string, string> | null = null,
+        // The map the consumer set, if any; nameToColorMap is what is drawn
+        customColorMap: Record<string, string> | null = null,
         chartGradientColors: [string, string] | null = null,
         // The selection this ends on is the gradient's `stop` elements, not
         // the `linearGradient` the chain starts from -- the name is the
@@ -611,8 +614,7 @@ export default function module(): BarChartModule {
                 }));
         }
 
-        nameToColorMap =
-            nameToColorMap ||
+        nameToColorMap = withCustomColors(
             data
                 .map((d) => d)
                 .reduce(
@@ -621,7 +623,9 @@ export default function module(): BarChartModule {
                         [name]: colorSchema[i % colorSchema.length],
                     }),
                     {}
-                );
+                ),
+            customColorMap
+        );
     }
 
     let a11yTitle: string | null = null;
@@ -1424,9 +1428,9 @@ export default function module(): BarChartModule {
      */
     (exports as BarChartModule).colorMap = function (this: BarChartModule, _x) {
         if (!arguments.length) {
-            return nameToColorMap;
+            return customColorMap;
         }
-        nameToColorMap = _x;
+        customColorMap = _x;
 
         return this;
     } as BarChartModule['colorMap'];

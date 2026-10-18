@@ -38,6 +38,7 @@ import type {
 } from '../../typings/common/base.js';
 import { labelChart } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
+import { withCustomColors } from '../helpers/color.js';
 
 export declare enum GroupedBarChartKeys {
     Group = 'group',
@@ -262,6 +263,8 @@ export default function module(): GroupedBarChartModule {
         xTicks = 5,
         colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
         nameToColorMap: Record<string, string> | null = null,
+        // The map the consumer set, if any; nameToColorMap is what is drawn
+        customColorMap: Record<string, string> | null = null,
         // Whether the pointer is over one of the bars (not the empty space
         // of the chart), which is when the tooltip events are dispatched
         isPointerOverBars = false,
@@ -550,8 +553,7 @@ export default function module(): GroupedBarChartModule {
             .range(colorSchema)
             .domain(data.map(getGroup));
 
-        nameToColorMap =
-            nameToColorMap ||
+        nameToColorMap = withCustomColors(
             colorScale
                 .domain(data.map(getName))
                 .domain()
@@ -563,7 +565,9 @@ export default function module(): GroupedBarChartModule {
                     });
 
                     return memo;
-                }, {});
+                }, {}),
+            customColorMap
+        );
     }
 
     let a11yTitle: string | null = null;
@@ -1368,9 +1372,9 @@ export default function module(): GroupedBarChartModule {
         _x
     ) {
         if (!arguments.length) {
-            return nameToColorMap;
+            return customColorMap;
         }
-        nameToColorMap = _x;
+        customColorMap = _x;
 
         return this;
     } as GroupedBarChartModule['colorMap'];

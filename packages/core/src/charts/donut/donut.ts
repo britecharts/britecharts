@@ -29,6 +29,7 @@ import type {
 } from '../../typings/common/base.js';
 import { labelChart } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
+import { withCustomColors } from '../helpers/color.js';
 
 export declare enum DonutChartKeys {
     ID = 'id',
@@ -313,6 +314,8 @@ export default function module(): DonutChartModule {
         // colors
         colorScale: ScaleOrdinal<string, string>,
         nameToColorMap: Record<string, string> | null = null,
+        // The map the consumer set, if any; nameToColorMap is what is drawn
+        customColorMap: Record<string, string> | null = null,
         colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
         centeredTextFunction: (d: DonutDatum) => string = (d) =>
             `${d.percentage}% ${d.name}`,
@@ -405,8 +408,7 @@ export default function module(): DonutChartModule {
         if (colorSchema) {
             colorScale = scaleOrdinal<string, string>().range(colorSchema);
 
-            nameToColorMap =
-                nameToColorMap ||
+            nameToColorMap = withCustomColors(
                 colorScale
                     .domain(data.map(getName))
                     .domain()
@@ -414,7 +416,9 @@ export default function module(): DonutChartModule {
                         memo[item] = colorScale(item);
 
                         return memo;
-                    }, {});
+                    }, {}),
+                customColorMap
+            );
         }
     }
 
@@ -1032,9 +1036,9 @@ export default function module(): DonutChartModule {
         _x
     ) {
         if (!arguments.length) {
-            return nameToColorMap;
+            return customColorMap;
         }
-        nameToColorMap = _x;
+        customColorMap = _x;
 
         return this;
     } as DonutChartModule['colorMap'];

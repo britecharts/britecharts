@@ -50,6 +50,7 @@ import type {
 } from '../../typings/common/base.js';
 import { labelChart } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
+import { withCustomColors } from '../helpers/color.js';
 
 export declare enum ScatterPlotKeys {
     Name = 'name',
@@ -331,6 +332,8 @@ export default function module(): ScatterPlotModule {
         height = 500,
         isLoading = false,
         nameToColorMap: Record<string, string> | null = null,
+        // The map the consumer set, if any; nameToColorMap is what is drawn
+        customColorMap: Record<string, string> | null = null,
         dataPoints: ScatterPlotDatum[],
         xTicks = 6,
         // Null by default, which the chart hands straight to d3's `axis.ticks`
@@ -643,15 +646,16 @@ export default function module(): ScatterPlotModule {
          *     ...
          * }
          */
-        nameToColorMap =
-            nameToColorMap ||
+        nameToColorMap = withCustomColors(
             colorScale
                 .domain()
                 .reduce<Record<string, string>>((accum, item, i) => {
                     accum[item] = colorRange[i];
 
                     return accum;
-                }, {});
+                }, {}),
+            customColorMap
+        );
     }
 
     let a11yTitle: string | null = null;
@@ -1501,9 +1505,9 @@ export default function module(): ScatterPlotModule {
         _x
     ) {
         if (!arguments.length) {
-            return nameToColorMap;
+            return customColorMap;
         }
-        nameToColorMap = _x;
+        customColorMap = _x;
 
         return this;
     } as ScatterPlotModule['colorMap'];

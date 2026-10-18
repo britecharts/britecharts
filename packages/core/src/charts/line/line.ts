@@ -63,6 +63,7 @@ import type {
 } from '../../typings/common/base.js';
 import { labelChart } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
+import { withCustomColors } from '../helpers/color.js';
 
 export declare enum LineChartKeys {
     Date = 'date',
@@ -435,6 +436,8 @@ export default function module(): LineChartModule {
         yAxis: Axis<NumberValue>,
         colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
         nameToColorMap: Record<string, string> | null = null,
+        // The map the consumer set, if any; nameToColorMap is what is drawn
+        customColorMap: Record<string, string> | null = null,
         singleLineGradientColors: ColorGradientType =
             colorHelper.colorGradients.greenBlue,
         linearGradient: ChartSelection<SVGStopElement>,
@@ -836,15 +839,16 @@ export default function module(): LineChartModule {
 
         const range = colorScale.range();
 
-        nameToColorMap =
-            nameToColorMap ||
+        nameToColorMap = withCustomColors(
             colorScale
                 .domain()
                 .reduce<Record<string, string>>((memo, item, i) => {
                     memo[item] = range[i];
 
                     return memo;
-                }, {});
+                }, {}),
+            customColorMap
+        );
     }
 
     /**
@@ -1811,9 +1815,9 @@ export default function module(): LineChartModule {
         _x
     ) {
         if (!arguments.length) {
-            return nameToColorMap;
+            return customColorMap;
         }
-        nameToColorMap = _x;
+        customColorMap = _x;
 
         return this;
     } as LineChartModule['colorMap'];
