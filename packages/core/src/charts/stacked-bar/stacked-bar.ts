@@ -40,6 +40,7 @@ import type {
 } from '../../typings/common/base.js';
 import { labelChart } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
+import { withCustomColors } from '../helpers/color.js';
 
 export declare enum StackedBarChartKeys {
     Stack = 'stack',
@@ -280,6 +281,8 @@ export default function module(): StackedBarChartModule {
         percentageAxisToMaxRatio = 1,
         colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
         nameToColorMap: Record<string, string> | null = null,
+        // The map the consumer set, if any; nameToColorMap is what is drawn
+        customColorMap: Record<string, string> | null = null,
         // Whether the pointer is over one of the bars (not the empty space
         // of the chart), which is when the tooltip events are dispatched
         isPointerOverBars = false,
@@ -526,8 +529,7 @@ export default function module(): StackedBarChartModule {
             .range(colorSchema)
             .domain(data.map(getStack));
 
-        nameToColorMap =
-            nameToColorMap ||
+        nameToColorMap = withCustomColors(
             colorScale
                 .domain(data.map(getStack))
                 .domain()
@@ -535,7 +537,9 @@ export default function module(): StackedBarChartModule {
                     memo[item] = colorScale(item);
 
                     return memo;
-                }, {});
+                }, {}),
+            customColorMap
+        );
     }
 
     let a11yTitle: string | null = null;
@@ -1323,9 +1327,9 @@ export default function module(): StackedBarChartModule {
         _x
     ) {
         if (!arguments.length) {
-            return nameToColorMap;
+            return customColorMap;
         }
-        nameToColorMap = _x;
+        customColorMap = _x;
 
         return this;
     } as StackedBarChartModule['colorMap'];

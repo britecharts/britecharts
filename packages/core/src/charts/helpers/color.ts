@@ -209,3 +209,16 @@ export default {
     singleColors,
     singleColorsHuman,
 };
+
+/**
+ * The colours a chart draws with: its palette, with the consumer's colorMap
+ * over it. A category the colorMap leaves out keeps its palette colour.
+ * @param palette       Category to colour, from the chart's colour schema
+ * @param customColors  The colorMap the consumer set, or null
+ * @private
+ */
+export const withCustomColors = (
+    palette: Record<string, string>,
+    customColors: Record<string, string> | null
+): Record<string, string> =>
+    customColors ? { ...palette, ...customColors } : palette;

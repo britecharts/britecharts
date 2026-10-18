@@ -59,6 +59,7 @@ import type {
 } from '../../typings/common/base.js';
 import { labelChart } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
+import { withCustomColors } from '../helpers/color.js';
 
 export declare enum StackedAreaChartKeys {
     Date = 'date',
@@ -339,6 +340,8 @@ export default function module(): StackedAreaChartModule {
         yAxisLabelOffset = -60,
         colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
         nameToColorMap: Record<string, string> | null = null,
+        // The map the consumer set, if any; nameToColorMap is what is drawn
+        customColorMap: Record<string, string> | null = null,
         highlightFilter: ChartSelection<SVGFilterElement> | null = null,
         highlightFilterId: string | null = null,
         areaOpacity = 0.24,
@@ -807,13 +810,14 @@ export default function module(): StackedAreaChartModule {
         xScale = buildXAxisScale();
         yScale = buildYAxisScale();
 
-        nameToColorMap =
-            nameToColorMap ||
+        nameToColorMap = withCustomColors(
             order.reduce(
                 (memo, topic, index) =>
                     Object.assign({}, memo, { [topic]: colorSchema[index] }),
                 {}
-            );
+            ),
+            customColorMap
+        );
     }
 
     /**
@@ -1716,9 +1720,9 @@ export default function module(): StackedAreaChartModule {
         _x
     ) {
         if (!arguments.length) {
-            return nameToColorMap;
+            return customColorMap;
         }
-        nameToColorMap = _x;
+        customColorMap = _x;
 
         return this;
     } as StackedAreaChartModule['colorMap'];
