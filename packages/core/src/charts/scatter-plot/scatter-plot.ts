@@ -32,7 +32,7 @@ import {
     bounceCircleHighlight,
 } from '../helpers/filter.js';
 import { calcLinearRegression } from '../helpers/number.js';
-import { setDefaultLocale } from '../helpers/locale.js';
+import { localeFormatterFor } from '../helpers/locale.js';
 import { motion } from '../helpers/constants.js';
 import { gridHorizontal, gridVertical } from '../helpers/grid.js';
 
@@ -451,7 +451,7 @@ export default function module(): ScatterPlotModule {
         >
     ) {
         if (locale) {
-            localeFormatter = setDefaultLocale(locale);
+            localeFormatter = localeFormatterFor(locale);
         }
 
         _selection.each(function (_data) {
@@ -1121,7 +1121,8 @@ export default function module(): ScatterPlotModule {
      */
     function getXAxisFormat(): (value: NumberValue) => string {
         if (xAxisFormatType === 'number') {
-            return d3Format.format(xAxisFormat);
+            // The chart's own formatter, so `valueLocale` reaches this axis too
+            return localeFormatter.format(xAxisFormat);
         } else {
             // `timeFormat` takes a Date, and every caller here passes a
             // number: the x scale is linear, so both the axis's tick values

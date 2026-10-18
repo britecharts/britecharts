@@ -99,7 +99,7 @@ Within the core package, we have a set of [helpers](https://github.com/britechar
 
 **load** The load helper provides SVG components that render the loading state of each chart.
 
-**locale** Keeps code helpers like `setDefaultLocale` and `isValidLocaleDefinion` for helping with localization features.
+**locale** Keeps code helpers like `localeFormatterFor` and `isValidLocaleDefinion` for helping with localization features.
 
 **number** The number file supports developers by supplying methods that relate to numbers and number formatting. Includes a unique id generator, an integer checker and a method to calculate percentages.
 

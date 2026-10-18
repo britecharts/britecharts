@@ -36,9 +36,9 @@ const isValidLocaleDefinition = (
 };
 
 /**
- * Sets the given locale as the new default locale through d3-format's
- * formatDefaultLocale. When an object is used, it simply uses it to set the
- * new locale.
+ * Builds a formatter from the given locale definition, through d3-format's
+ * formatLocale. It leaves d3-format's default locale alone, so the locale
+ * applies to the chart that asked for it and to no other chart on the page.
  *
  * This is a d3-format locale *definition* -- `{ decimal, thousands, grouping,
  * currency, ... }` -- not a BCP 47 tag. The date helpers and the tooltip take
@@ -47,9 +47,9 @@ const isValidLocaleDefinition = (
  * @return Object with 'format' and 'formatPrefix' functions
  * @private
  */
-export const setDefaultLocale = (locale: unknown): FormatLocaleObject => {
+export const localeFormatterFor = (locale: unknown): FormatLocaleObject => {
     if (isValidLocaleDefinition(locale)) {
-        return d3Format.formatDefaultLocale(locale);
+        return d3Format.formatLocale(locale);
     } else {
         throw new Error(WRONG_LOCALE_OBJECT_MESSAGE);
     }

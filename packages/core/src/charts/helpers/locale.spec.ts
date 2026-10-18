@@ -1,17 +1,8 @@
-import { setDefaultLocale } from './locale';
+import { format } from 'd3-format';
+
+import { localeFormatterFor } from './locale';
 
 describe('locale Helper', () => {
-    afterEach(() => {
-        const USLocale = {
-            decimal: '.',
-            thousands: ',',
-            grouping: [3],
-            currency: ['$', ''],
-        };
-
-        setDefaultLocale(USLocale);
-    });
-
     describe('when a valid locale definition is given', () => {
         it('should return an object', () => {
             const validLocaleDefinition = {
@@ -21,7 +12,7 @@ describe('locale Helper', () => {
                 currency: ['$', ''],
             };
             const expected = 'object';
-            const actual = typeof setDefaultLocale(validLocaleDefinition);
+            const actual = typeof localeFormatterFor(validLocaleDefinition);
 
             expect(actual).toEqual(expected);
         });
@@ -34,10 +25,24 @@ describe('locale Helper', () => {
                 currency: ['$', ''],
             };
             const expected = 'function';
-            const actual = typeof setDefaultLocale(validLocaleDefinition)
+            const actual = typeof localeFormatterFor(validLocaleDefinition)
                 .format;
 
             expect(actual).toEqual(expected);
+        });
+
+        it('should format with the definition, and leave the default locale alone', () => {
+            const germanLocaleDefinition = {
+                decimal: ',',
+                thousands: '.',
+                grouping: [3],
+                currency: ['', ' €'],
+            };
+
+            const formatter = localeFormatterFor(germanLocaleDefinition);
+
+            expect(formatter.format(',.2f')(1234.5)).toEqual('1.234,50');
+            expect(format(',.2f')(1234.5)).toEqual('1,234.50');
         });
     });
 
@@ -48,7 +53,7 @@ describe('locale Helper', () => {
                 'Please pass in a valid locale object definition'
             );
 
-            expect(() => setDefaultLocale(invalidLocaleDefinition)).toThrow(
+            expect(() => localeFormatterFor(invalidLocaleDefinition)).toThrow(
                 expected
             );
         });

@@ -157,7 +157,7 @@ export interface TooltipAPI {
      * ('en-US'). It goes straight to `Intl.DateTimeFormat(locale, ...)` in the
      * date formatting below, which is a different thing from the d3-format
      * locale *definition* object the value-formatting charts take -- bar and
-     * the rest pass theirs to `setDefaultLocale`, and those are rightly typed
+     * the rest pass theirs to `localeFormatterFor`, and those are rightly typed
      * `LocalObject`.
      *
      * Core's own `base.d.ts` types the same accessor as `LocaleString` for
