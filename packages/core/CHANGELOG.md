@@ -1,5 +1,17 @@
 # @britecharts/core
 
+## 3.0.0-beta.7
+
+### Major Changes
+
+- a26ccd2: The data-key accessors are removed from the bar, grouped bar, stacked bar, line, stacked area and sparkline charts: `nameLabel`, `valueLabel`, `groupLabel`, `stackLabel`, `dateLabel`, `topicLabel` and `keyLabel`. They let a chart read its data under other keys, and had warned that they were deprecated since version 2. Each chart now reads the keys its data shape names, such as `name` and `value` for the bar chart. The React `Bar`, `GroupedBar`, `StackedBar`, `Line`, `StackedArea` and `Sparkline` components drop the matching props. The tooltip keeps its own `dateLabel`, `nameLabel`, `topicLabel` and `valueLabel`, because it reads the data points of charts that use different keys.
+
+### Patch Changes
+
+- 74c8087: A `colorMap` that leaves categories out no longer leaves them uncoloured: the bar, donut, line, stacked area, stacked bar, grouped bar and scatter plot charts draw with their palette, with the `colorMap` over it, as the legend already did. The palette is also rebuilt on every draw, so a category that only appears in a later update gets a colour, and a new `colorSchema` takes effect. `colorMap()` reads back the map that was set, or `null` when none was, instead of the palette the chart drew with.
+- c34273d: The tooltip's `dateLabel`, `nameLabel`, `topicLabel` and `valueLabel` are no longer deprecated, and stop warning when set. The charts name the fields of their data points differently, so the tooltip needs them: `topicLabel('values')` for the stacked area, stacked bar and grouped bar, `nameLabel('stack')` and `nameLabel('group')` for the stacked and grouped bar, and `valueLabel('y')` for the scatter plot. The tooltip's API page lists them per chart.
+- 4e05928: A chart's `valueLocale` applies to that chart only. The bar, grouped bar, stacked bar and scatter plot set it as d3-format's default locale, so one chart's locale changed the numbers of every other chart on the page, and any `d3.format` call. They now build a formatter from it without touching the default. The scatter plot's x axis also uses it, which it did before only through that side effect.
+
 ## 3.0.0-beta.6
 
 ### Major Changes

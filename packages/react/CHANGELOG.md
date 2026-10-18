@@ -1,5 +1,20 @@
 # @britecharts/react
 
+## 3.0.0-beta.7
+
+### Major Changes
+
+- a26ccd2: The data-key accessors are removed from the bar, grouped bar, stacked bar, line, stacked area and sparkline charts: `nameLabel`, `valueLabel`, `groupLabel`, `stackLabel`, `dateLabel`, `topicLabel` and `keyLabel`. They let a chart read its data under other keys, and had warned that they were deprecated since version 2. Each chart now reads the keys its data shape names, such as `name` and `value` for the bar chart. The React `Bar`, `GroupedBar`, `StackedBar`, `Line`, `StackedArea` and `Sparkline` components drop the matching props. The tooltip keeps its own `dateLabel`, `nameLabel`, `topicLabel` and `valueLabel`, because it reads the data points of charts that use different keys.
+
+### Patch Changes
+
+- Updated dependencies [74c8087]
+- Updated dependencies [a26ccd2]
+- Updated dependencies [c34273d]
+- Updated dependencies [4e05928]
+    - @britecharts/core@3.0.0-beta.7
+    - @britecharts/wrappers@3.0.0-beta.7
+
 ## 3.0.0-beta.6
 
 ### Major Changes
