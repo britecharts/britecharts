@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Migration Guide from version 2 to version 3
 :::note
-Version 3.0 is in beta: `@britecharts/core`, `@britecharts/wrappers` and `@britecharts/react` publish `3.0.0-beta` releases under the `beta` tag (`npm install @britecharts/core@beta`). The last stable release is still `britecharts@2.18.2`. This guide describes the migration to 3.0 and is kept up to date as the release takes shape.
+Version 3.0 is in beta: `@britecharts/core`, `@britecharts/wrappers` and `@britecharts/react` publish `3.0.0-beta` releases under the `beta` tag (`npm install @britecharts/core@beta`). `3.0.0-beta.6` is the last beta before 3.0.0. The last stable release is still `britecharts@2.18.2`. This guide describes the migration to 3.0 and is kept up to date until the release.
 :::
 
 Version 3.0 of Britecharts fixes many bugs, improves loading and animation performance, and adds minor features. It also introduces breaking changes that make the components' APIs and data shapes more consistent, and moves the library to the `@britecharts` scope on npm: `britecharts` becomes `@britecharts/core`, and `britecharts-react` becomes `@britecharts/react`. Both are now written in TypeScript.
@@ -35,8 +35,6 @@ import { bar } from '@britecharts/core';
 const { bar } = require('@britecharts/core');
 
 ```
-
-Under `require`, the package is the object of charts itself, so `require('@britecharts/core').default` is `undefined`: take the named charts from it, as above.
 
 The stylesheets move too. `britecharts/dist/css/britecharts.min.css` is now `@britecharts/core/dist/styles/bundle/britecharts.min.css`, and each chart's own stylesheet is under `@britecharts/core/dist/styles/charts/`.
 
@@ -291,6 +289,20 @@ The colors come with the bundle as `core.colors`. The per-chart stylesheets unde
 
 The packages are ES modules (`"type": "module"`), so they load with `import` in Node as well as in bundlers. `require` still works and gets the CommonJS bundle, which is now a `.cjs` file. If you required a bundle by its path, update the extension: `@britecharts/core/dist/umd/bundle/core.bundled.min.js` is now `core.bundled.min.cjs`, and likewise for `wrappers` and `react`. The CDN bundle keeps its `.js` name.
 
+16. Expect `null` from an accessor you have not set
+
+An accessor that has not been set now reads `null` on every chart. Before, the same accessor read `null` on some charts and `undefined` on others: `yAxisLabel` on the grouped bar, stacked bar, scatter plot and stacked area, `xAxisLabel` on the scatter plot, `numberFormat` on the donut, line and stacked area, and `locale` on the line, stacked area and tooltip.
+
+A truthiness check works as before. Update code that compares with `=== undefined`, and TypeScript code that annotated the old type: the getters are typed `T | null`.
+
+```js
+// Version 2
+if (lineChart.numberFormat() === undefined) { /* ... */ }
+
+// Version 3
+if (lineChart.numberFormat() === null) { /* ... */ }
+```
+
 ### New features
 1. Start using TypeScript with Britecharts.
 
@@ -320,6 +332,16 @@ The bar, grouped bar, stacked bar and brush charts draw negative values, below o
 
 `isLoading` now covers every data chart, including the bullet, heatmap and scatter plot, each with a skeleton in its own shape.
 
+8. Name your charts for screen readers
+
+Every chart gives its svg a role and an accessible name, so a screen reader announces it as an image called, for example, "Bar chart". Set `a11yTitle` to name it after what it shows, and `a11yDescription` to add a sentence that screen readers read after the name. The React components take both as props.
+
+```js
+barChart
+    .a11yTitle('Monthly visits')
+    .a11yDescription('Visits doubled in May');
+```
+
 ## Summary of Changes
 We changed many things in the third version of Britecharts; here are some summaries:
 
@@ -331,6 +353,7 @@ We changed many things in the third version of Britecharts; here are some summar
 * Removes the line chart's 'dataByTopic' data shape.
 * Publishes one UMD bundle and one CDN bundle instead of a UMD file per chart. The per-chart stylesheets stay.
 * The packages are ES modules: `import` works in Node, and the CommonJS bundles `require` loads end in `.cjs`.
+* An accessor that has not been set reads `null` on every chart, never `undefined`.
 * Removes the bullet chart's title and subtitle ('customTitle', 'customSubtitle' and the 'title' and 'subtitle' data fields) and the sparkline's title ('titleText', 'titleTextStyle'), with the matching React props.
 * Changes 'loadingMarkup' option into an explicit option for 'isLoading' in most of the charts.
 * Adds 'valueLocale' or renames 'locale' into 'valueLocale' for formatting values in the bar chart, grouped bar chart, scatter plot, and stacked bar.
@@ -347,6 +370,7 @@ We changed many things in the third version of Britecharts; here are some summar
 * Written in TypeScript, with type declarations generated from the source
 * Negative values in the bar, grouped bar, stacked bar, brush and scatter plot charts
 * Loading states on every data chart, including the bullet, heatmap and scatter plot
+* Accessible names for every chart, set with 'a11yTitle' and 'a11yDescription'
 * A `ScatterPlot` component in `@britecharts/react`
 * Charts are responsive by default using the viewBox property.
 * Adds colorMap to all charts
@@ -386,8 +410,8 @@ We changed many things in the third version of Britecharts; here are some summar
 
 ### Contributor's Developer Experience Changes
 * Deprecated Travis into Github Actions
-* Moved the tests from Karma to Jest
-* Moved from Yarn to pnpm, and from webpack 4 to webpack 5
+* Moved the tests from Karma to Vitest
+* Moved from Yarn to pnpm, and the build from webpack to Vite
 * Rewrote the packages in TypeScript, type-checked in CI
 * Integration tests install the packed packages into vanilla, TypeScript and React projects
 * Added linting and formatting for CSS and JS 

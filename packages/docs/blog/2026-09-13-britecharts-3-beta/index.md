@@ -34,7 +34,7 @@ Most of the work is renaming, and I tried to keep it that way on purpose — a r
 4. **Tooltips.** The line, stacked area, stacked bar and grouped bar charts now dispatch `customMouseMove` the same way every other chart does, as `(dataPoint, [x, y], [width, height], colorMap)`. If you drive `tooltip.update` yourself, it still accepts the old argument order and warns once.
 5. **`exportChart`** returns a promise.
 
-Version 2 ends at 2.18.4. I am not going to pretend I will keep patching it once 3.0 ships, so if you are on v2 and this list looks manageable, better to do it now than after a security report forces the question.
+Version 2 ends at 2.18.2. I am not going to pretend I will keep patching it once 3.0 ships, so if you are on v2 and this list looks manageable, better to do it now than after a security report forces the question.
 
 ## Where to start
 
