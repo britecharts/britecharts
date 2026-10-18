@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{M as t,N as n,a as r,b as i,o as a,s as o}from"./blocks-C8KU5C0j.js";var s;function c(){return(c=e((()=>{s=`# @britecharts/core
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{M as t,N as n,a as r,b as i,o as a,s as o}from"./blocks-C9s_pL9A.js";var s;function c(){return(c=e((()=>{s=`# @britecharts/core
 
 > \`@britecharts/core\` is the main package for the [Britecharts][homepage] charting library. Use this package directly in your JavaScript projects.
 

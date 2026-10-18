@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{M as t,N as n,a as r,b as i,o as a,s as o}from"./blocks-C8KU5C0j.js";var s;function c(){return(c=e((()=>{s=`# @britecharts/demos
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{M as t,N as n,a as r,b as i,o as a,s as o}from"./blocks-C9s_pL9A.js";var s;function c(){return(c=e((()=>{s=`# @britecharts/demos
 
 > Storybook installation to create the [demos site][demos] for Britecharts, using a multi-storybook setup.
 

@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{M as t,a as n,b as r,j as i,o as a,s as o}from"./blocks-CqCUAxgF.js";var s;function c(){return(c=e((()=>{s=`# @britecharts/react
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{M as t,a as n,b as r,j as i,o as a,s as o}from"./blocks-BojF0PtK.js";var s;function c(){return(c=e((()=>{s=`# @britecharts/react
 
 > \`@britecharts/react\` is a package that allows you use [Britecharts][britecharts] within [React][react] applications.
 
