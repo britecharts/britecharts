@@ -36,6 +36,7 @@ export const Playground = (args) => {
 
         stackedAreaContainer.datum(dataset).call(stackedAreaChart);
 
+        // The stacked area dispatches its rows as `values`
         chartTooltip.topicLabel('values').title('Testing tooltip');
 
         select('.metadata-group .vertical-marker-container')
@@ -98,6 +99,7 @@ export const WithThreeSources = () => {
         stackedAreaContainer.datum(dataset).call(stackedAreaChart);
 
         // Tooltip Setup and start
+        // The stacked area dispatches its rows as `values`
         chartTooltip.topicLabel('values').title('Tooltip Title');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
@@ -130,6 +132,7 @@ export const WithAnimation = () => {
 
         stackedAreaContainer.datum(dataset).call(stackedAreaChart);
 
+        // The stacked area dispatches its rows as `values`
         chartTooltip.topicLabel('values').title('Testing tooltip');
 
         select('.metadata-group .vertical-marker-container')
@@ -182,6 +185,7 @@ export const WithSyncedTooltip = () => {
                 'Flashing',
                 'Shining',
             ])
+            // The stacked area dispatches its rows as `values`
             .topicLabel('values')
             .title('Testing tooltip')
             .topicsOrder(uniq(dataset.map((d) => d.name)));

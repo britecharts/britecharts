@@ -28,6 +28,7 @@ export const Playground: StoryFn<typeof Line> = (args) => {
         <Tooltip
             data={data}
             render={renderLine}
+            // Tooltip reads rows from `values`; the line's are under `topics`
             topicLabel="topics"
             title="Tooltip Title"
         />
@@ -60,6 +61,7 @@ export const WithOneLineAndTooltipAndBasisCurve = () => {
         <Tooltip
             data={data}
             render={renderLine}
+            // Tooltip reads rows from `values`; the line's are under `topics`
             topicLabel="topics"
             title="Tooltip Title"
         />
@@ -83,7 +85,13 @@ export const WithMultipleLinesAndTooltip = () => {
     );
 
     return (
-        <Tooltip data={data} render={renderLine} topicLabel="topics" title="" />
+        <Tooltip
+            data={data}
+            render={renderLine}
+            // Tooltip reads rows from `values`; the line's are under `topics`
+            topicLabel="topics"
+            title=""
+        />
     );
 };
 
@@ -98,6 +106,7 @@ export const WithAnimation = () => {
         <Tooltip
             data={data}
             render={renderLine}
+            // Tooltip reads rows from `values`; the line's are under `topics`
             topicLabel="topics"
             title="Tooltip Title"
         />

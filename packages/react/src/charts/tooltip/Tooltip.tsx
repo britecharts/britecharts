@@ -70,7 +70,8 @@ export interface TooltipProps<TData = TooltipData> {
     dateFormat?: string;
 
     /**
-     * Gets or Sets the dateLabel of the data
+     * The field of the data point shown in the title. Falls back to its `key`
+     * or `date`, so no chart needs it.
      */
     dateLabel?: string;
 
@@ -87,7 +88,9 @@ export interface TooltipProps<TData = TooltipData> {
     locale?: string;
 
     /**
-     * Gets or Sets the nameLabel of the data
+     * The field that names each row, and finds its colour. `'name'` unless
+     * set: the stacked bar needs `"stack"` and the grouped bar `"group"`, or
+     * the rows show no colour.
      */
     nameLabel?: string;
 
@@ -122,7 +125,9 @@ export interface TooltipProps<TData = TooltipData> {
     };
 
     /**
-     * Gets or Sets the topicLabel of the data
+     * The field of the data point that holds the rows. `'values'` unless set,
+     * which suits the stacked area, stacked bar and grouped bar; the line
+     * chart needs `"topics"`.
      */
     topicLabel?: string;
 
@@ -155,7 +160,8 @@ export interface TooltipProps<TData = TooltipData> {
     valueFormatter?: (value: number) => number;
 
     /**
-     * Gets or Sets the valueLabel of the data
+     * The field holding each row's value. `'value'` unless set: the scatter
+     * plot needs `"y"`.
      */
     valueLabel?: string;
 

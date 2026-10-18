@@ -68,9 +68,9 @@ export const Playground = (args) => {
 
         stackedBarContainer.datum(dataset).call(stackedBar);
 
+        // The stacked bar dispatches its rows as `values`, named by `stack`
         chartTooltip
             .topicLabel('values')
-            .dateLabel('key')
             .nameLabel('stack')
             .title('Tooltip title');
 
@@ -140,9 +140,9 @@ export const WithHorizontalDirection = () => {
         stackedBarContainer.datum(dataset).call(stackedBar);
 
         // Tooltip Setup and start
+        // The stacked bar dispatches its rows as `values`, named by `stack`
         chartTooltip
             .topicLabel('values')
-            .dateLabel('key')
             .nameLabel('stack')
             .title('Tooltip Title');
 
@@ -180,9 +180,9 @@ export const WithAnimation = () => {
 
         stackedBarContainer.datum(dataset).call(stackedBar);
 
+        // The stacked bar dispatches its rows as `values`, named by `stack`
         chartTooltip
             .topicLabel('values')
-            .dateLabel('key')
             .nameLabel('stack')
             .title('Tooltip title');
 

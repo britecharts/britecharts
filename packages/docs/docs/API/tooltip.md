@@ -35,6 +35,25 @@ margins). The chart's size is accepted and ignored: the tooltip measures
 the chart itself. The line and stacked area charts dispatch nothing while
 narrower than `tooltipThreshold` (480 px by default).
 
+## Reading each chart's data point
+
+The charts do not all name the fields of the data point they dispatch the
+same way, so the tooltip has to be told where to look for some of them.
+Without these settings, a tooltip on these charts shows no rows, rows
+without their colours, or no value:
+
+| Chart | Configure the tooltip with | Why |
+| --- | --- | --- |
+| line | nothing | its data point carries `date` and `topics`, the defaults |
+| stacked area | `topicLabel('values')` | its rows are under `values` |
+| stacked bar | `topicLabel('values')`, `nameLabel('stack')` | its rows are under `values`, named by `stack` |
+| grouped bar | `topicLabel('values')`, `nameLabel('group')` | its rows are under `values`, named by `group` |
+| scatter plot | `valueLabel('y')` | a point's value is its `y` (add `nameLabel('x')` to show `x` instead of its name) |
+| bar, donut, heatmap | nothing | their data points carry `name` and `value` |
+
+In React, `Tooltip` starts from `topicLabel('values')`, so the line chart
+is the one that needs a setting there: `topicLabel="topics"`.
+
 ## miniTooltip, the single-value preset
 
 `miniTooltip()` is `tooltip().layout('single').title('').numberFormat('.2f')`:
@@ -89,10 +108,10 @@ d3Selection.select('.metadata-group .vertical-marker-container')
         * [.axisTimeCombinations](#module_Tooltip--exports.axisTimeCombinations)
         * [.dateFormat(_x)](#module_Tooltip--exports.dateFormat) ⇒ <code>String</code> \| <code>module</code>
         * [.dateCustomFormat(_x)](#module_Tooltip--exports.dateCustomFormat) ⇒ <code>String</code> \| <code>module</code>
-        * ~~[.dateLabel(_x)](#module_Tooltip--exports.dateLabel) ⇒ <code>String</code> \| <code>module</code>~~
+        * [.dateLabel(_x)](#module_Tooltip--exports.dateLabel) ⇒ <code>String</code> \| <code>module</code>
         * [.hide()](#module_Tooltip--exports.hide) ⇒ <code>module</code>
         * [.locale(_x)](#module_Tooltip--exports.locale) ⇒ <code>String</code> \| <code>module</code>
-        * ~~[.nameLabel(_x)](#module_Tooltip--exports.nameLabel) ⇒ <code>String</code> \| <code>module</code>~~
+        * [.nameLabel(_x)](#module_Tooltip--exports.nameLabel) ⇒ <code>String</code> \| <code>module</code>
         * [.numberFormat(_x)](#module_Tooltip--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
         * [.valueFormatter(_x)](#module_Tooltip--exports.valueFormatter) ⇒ <code>function</code> \| <code>module</code>
         * [.shouldShowDateInTitle(_x)](#module_Tooltip--exports.shouldShowDateInTitle) ⇒ <code>Boolean</code> \| <code>module</code>
@@ -102,9 +121,9 @@ d3Selection.select('.metadata-group .vertical-marker-container')
         * [.layout([_x])](#module_Tooltip--exports.layout) ⇒ <code>String</code> \| <code>module</code>
         * [.maxEntries([_x])](#module_Tooltip--exports.maxEntries) ⇒ <code>Number</code> \| <code>module</code>
         * [.topicsOrder(_x)](#module_Tooltip--exports.topicsOrder) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-        * ~~[.topicLabel(_x)](#module_Tooltip--exports.topicLabel) ⇒ <code>String</code> \| <code>module</code>~~
+        * [.topicLabel(_x)](#module_Tooltip--exports.topicLabel) ⇒ <code>String</code> \| <code>module</code>
         * [.update(dataPoint, position, [chartSize], [colorMap])](#module_Tooltip--exports.update) ⇒ <code>module</code>
-        * ~~[.valueLabel(_x)](#module_Tooltip--exports.valueLabel) ⇒ <code>String</code> \| <code>module</code>~~
+        * [.valueLabel(_x)](#module_Tooltip--exports.valueLabel) ⇒ <code>String</code> \| <code>module</code>
         * [.xAxisValueType([_x])](#module_Tooltip--exports.xAxisValueType) ⇒ <code>String</code> \| <code>module</code>
 
 <a name="exp_module_Tooltip--exports" id="exp_module_Tooltip--exports"></a>
@@ -163,9 +182,7 @@ tooltip.dateCustomFormat('%H:%M %p')
 ```
 <a name="module_Tooltip--exports.dateLabel" id="module_Tooltip--exports.dateLabel"></a>
 
-## ~~exports.dateLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
-***Deprecated***
-
+## dateLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the dateLabel of the data: the field of the data point
 shown in the title. When the data point has no such field, its `key`
 (what the stacked and grouped bar charts dispatch) or its `date` is
@@ -202,10 +219,13 @@ Pass locale for the tooltip to render the date in
 
 <a name="module_Tooltip--exports.nameLabel" id="module_Tooltip--exports.nameLabel"></a>
 
-## ~~exports.nameLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the nameLabel of the data
+## nameLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+Gets or Sets the nameLabel of the data: the field that identifies each
+row of the list, and the colour the chart gave it, or the name shown in
+the single layout. `'name'` by default. The stacked bar chart names its
+rows by `stack` and the grouped bar chart by `group`: without
+`nameLabel('stack')` or `nameLabel('group')`, the tooltip looks up each
+row's colour under the bar's name, and the rows show none.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current nameLabel or Chart module to chain calls  
@@ -366,10 +386,13 @@ Pass an override for the ordering of your tooltip
 
 <a name="module_Tooltip--exports.topicLabel" id="module_Tooltip--exports.topicLabel"></a>
 
-## ~~exports.topicLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the topicLabel of the data
+## topicLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+Gets or Sets the topicLabel of the data: the field of the data point
+that holds the list's rows. `'topics'` by default, which is what the
+line chart dispatches. The stacked area, stacked bar and grouped bar
+charts dispatch their rows as `values`, so set `topicLabel('values')`
+for them. (`@britecharts/wrappers`, and so React's `Tooltip`, set
+`'values'` themselves: there, the line chart needs `'topics'`.)
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current topicLabel or Chart module to chain calls  
@@ -408,10 +431,11 @@ chart.on('customMouseMove', tooltip.update)
 ```
 <a name="module_Tooltip--exports.valueLabel" id="module_Tooltip--exports.valueLabel"></a>
 
-## ~~exports.valueLabel(_x) ⇒ <code>String</code> \| <code>module</code>~~
-***Deprecated***
-
-Gets or Sets the valueLabel of the data
+## valueLabel(_x) ⇒ <code>String</code> \| <code>module</code>
+Gets or Sets the valueLabel of the data: the field holding the value
+shown for each row, or the big value of the single layout. `'value'`
+by default. The scatter plot's points carry theirs as `y`, so set
+`valueLabel('y')` for it.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current valueLabel or Chart module to chain calls  

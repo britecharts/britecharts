@@ -15,6 +15,41 @@ Follow these steps to customize Britecharts' charts to use different color schem
 
 Note that in some charts we can only configure a gradient. Use the `colorGradients` object instead of `colorSchemas` within the colors helper. You can explore other options in the source code of the [colors file][colorsHelper].
 
+## How to Add a Tooltip to a Chart
+Every chart dispatches the same three events, and the tooltip has a handler for each:
+1. Create the tooltip: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, donut, heatmap and scatter plot, which show one value
+1. Connect the chart's `customMouseOver`, `customMouseMove` and `customMouseOut` events to the tooltip's `show`, `update` and `hide`
+1. Tell the tooltip where the chart keeps its data, if the table below lists a setting for it
+1. Draw the chart, then call the tooltip on the chart's `.metadata-group` (for the line and stacked area, on `.metadata-group .vertical-marker-container`)
+
+```js
+const stackedBarChart = stackedBar();
+const chartTooltip = tooltip()
+    .topicLabel('values')
+    .nameLabel('stack');
+
+stackedBarChart
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
+
+select('.js-chart').datum(data).call(stackedBarChart);
+select('.js-chart .metadata-group').datum([]).call(chartTooltip);
+```
+
+The charts do not all name the fields of the data point they send the tooltip the same way, so some need a setting. Without it, the tooltip shows no rows, rows without their colours, or no value:
+
+| Chart | Tooltip settings | React `Tooltip` props |
+| --- | --- | --- |
+| Line | none | `topicLabel="topics"` |
+| Stacked area | `topicLabel('values')` | none |
+| Stacked bar | `topicLabel('values')`, `nameLabel('stack')` | `nameLabel="stack"` |
+| Grouped bar | `topicLabel('values')`, `nameLabel('group')` | `nameLabel="group"` |
+| Scatter plot | `valueLabel('y')` | `valueLabel="y"` |
+| Bar, donut, heatmap | none | none |
+
+React's `Tooltip` starts from `topicLabel('values')`, which is why the line chart is the one that needs a prop there. The [tooltip reference][tooltipAPI] describes each setting, and the [Storybook][storybook] shows each chart with its tooltip configured.
+
 ## How to Configure Time Scales
 Britecharts has some logic to try guessing the best date format on time series charts from the time period of the dataset. As we haven't bulletproofed this algorithm, and sometimes users want specific formats, we also expose configuration options to set custom formats.
 
@@ -47,5 +82,7 @@ Remember that for increased accuracy, all date formats in Britecharts should be 
 [colorsHelper]: https://github.com/britecharts/britecharts/blob/main/packages/core/src/charts/helpers/color.ts
 [ISOFormat]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
 [lineChartAPI]: /docs/API/line
+[tooltipAPI]: /docs/API/tooltip
+[storybook]: pathname:///storybook/
 [timeFormatSpecifiers]: https://github.com/d3/d3-time-format#locale_format
 [timeFormatsBlock]: https://bl.ocks.org/zanarmstrong/ca0adb7e426c12c06a95

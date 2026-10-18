@@ -34,6 +34,7 @@ export const Playground = (args) => {
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
+        // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
         tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
 
         select('.scatter-plot .metadata-group').datum([]).call(tooltip);
@@ -104,6 +105,7 @@ export const WithSingleSource = () => {
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
         // tooltip set up
+        // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
         tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
 
         tooltipContainer = select('.scatter-plot .metadata-group');
@@ -175,6 +177,7 @@ export const WithAnimation = () => {
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
+        // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
         tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
 
         select('.scatter-plot .metadata-group').datum([]).call(tooltip);
@@ -229,6 +232,7 @@ export const WithValuesAboveAndBelowZero = () => {
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
+        // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
         tooltip.valueLabel('y').nameLabel('x');
 
         select('.scatter-plot .metadata-group').datum([]).call(tooltip);
