@@ -24,8 +24,8 @@ import { axisTimeCombinations as combinations } from '../constants.js';
  */
 export interface LineProps {
     /**
-     * The name screen readers announce for the chart, rendered as its svg's
-     * `<title>`. Unset, the chart is announced by its type, such as "Bar chart".
+     * The name screen readers announce for the chart, set as its svg's
+     * `aria-label`. Unset, the chart is announced by its type, such as "Bar chart".
      */
     a11yTitle?: string | null;
     /**

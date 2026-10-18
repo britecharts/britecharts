@@ -172,7 +172,7 @@ export interface TimeSeriesChartAPI<T> {
 export interface AccessibleChartAPI<T> {
     /**
      * Gets or Sets the name screen readers announce for the chart. It is
-     * rendered as the svg's `<title>` and linked with `aria-labelledby`. Unset,
+     * set as the svg's `aria-label`. Unset,
      * the getter reads `null` and the chart is announced by its type, such as
      * "Bar chart".
      */

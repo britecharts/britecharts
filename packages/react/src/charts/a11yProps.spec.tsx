@@ -125,7 +125,7 @@ describe('accessibility props', () => {
             expect(chart.a11yDescription()).toBe('Visits doubled in May');
         });
 
-        it('should render them as the svg title and description', () => {
+        it('should render them as the svg label and description', () => {
             const wrapper = mount(
                 <Component
                     {...getProps()}
@@ -135,9 +135,7 @@ describe('accessibility props', () => {
             );
             const svg = wrapper.find('svg.britechart');
 
-            expect(svg?.querySelector(':scope > title')?.textContent).toBe(
-                'Monthly visits'
-            );
+            expect(svg?.getAttribute('aria-label')).toBe('Monthly visits');
             expect(svg?.querySelector(':scope > desc')?.textContent).toBe(
                 'Visits doubled in May'
             );
