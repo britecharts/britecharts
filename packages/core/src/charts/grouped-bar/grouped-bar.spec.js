@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 
 import chart from './grouped-bar';
 import { GroupedBarDataBuilder } from './groupedBarChartDataBuilder';
+import { hoverExitDelay } from '../helpers/constants';
 
 const aTestDataSet = () => new GroupedBarDataBuilder();
 const buildDataSet = (dataSetName) => {
@@ -339,6 +340,7 @@ describe('grouped Bar Chart', () => {
             });
 
             it('mouseout should trigger a callback when the pointer leaves the bars for the empty space', () => {
+                vi.useFakeTimers();
                 const callbackSpy = vi.fn();
                 const expectedCallCount = 1;
                 const expectedArgumentsCount = 2;
@@ -347,11 +349,32 @@ describe('grouped Bar Chart', () => {
                 overABar();
                 overTheEmptySpace();
                 overTheEmptySpace();
+                vi.advanceTimersByTime(hoverExitDelay);
+                vi.useRealTimers();
 
                 expect(callbackSpy.mock.calls).toHaveLength(expectedCallCount);
                 expect(callbackSpy.mock.calls[0]).toHaveLength(
                     expectedArgumentsCount
                 );
+            });
+
+            it('mouseout should not trigger a callback when the pointer crosses a gap between bars', () => {
+                vi.useFakeTimers();
+                const outSpy = vi.fn();
+                const overSpy = vi.fn();
+
+                groupedBarChart
+                    .on('customMouseOut', outSpy)
+                    .on('customMouseOver', overSpy);
+                overABar();
+                overTheEmptySpace();
+                vi.advanceTimersByTime(hoverExitDelay - 1);
+                overABar();
+                vi.advanceTimersByTime(hoverExitDelay);
+                vi.useRealTimers();
+
+                expect(outSpy).not.toHaveBeenCalled();
+                expect(overSpy).toHaveBeenCalledTimes(1);
             });
 
             it('mouseout should trigger a callback when the pointer leaves the chart from a bar', () => {

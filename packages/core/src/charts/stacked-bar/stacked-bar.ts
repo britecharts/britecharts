@@ -23,7 +23,7 @@ import { isDefined } from '../helpers/type.js';
 import colorHelper from '../helpers/color.js';
 import { barLoadingMarkup } from '../helpers/load.js';
 import { setDefaultLocale } from '../helpers/locale.js';
-import { motion } from '../helpers/constants.js';
+import { hoverExitDelay, motion } from '../helpers/constants.js';
 import { gridHorizontal, gridVertical } from '../helpers/grid.js';
 import { asCategoryScale, asValueScale } from '../helpers/scale.js';
 import type { AxisScale } from '../helpers/scale.js';
@@ -298,6 +298,7 @@ export default function module(): StackedBarChartModule {
         // Whether the pointer is over one of the bars (not the empty space
         // of the chart), which is when the tooltip events are dispatched
         isPointerOverBars = false,
+        pendingMouseOut: ReturnType<typeof setTimeout> | null = null,
         colorScale: ScaleOrdinal<string, string>,
         layers: Series<StackedBarColumn, string>[],
         isHorizontal = false,
@@ -970,14 +971,20 @@ export default function module(): StackedBarChartModule {
         // The listener is on the svg, so it sees every move; the tooltip
         // is only for the bars, not the empty space around them. Entering
         // a bar from that space is a mouse over; leaving the bars for it
-        // is a mouse out.
+        // is a mouse out, unless the pointer is back on a bar within
+        // hoverExitDelay: crossing a gap keeps the tooltip.
         if (!isPointerOverBar(event)) {
-            if (isPointerOverBars) {
-                handleMouseOut(e, d, event);
+            if (isPointerOverBars && !pendingMouseOut) {
+                pendingMouseOut = setTimeout(
+                    () => handleMouseOut(e, d, event),
+                    hoverExitDelay
+                );
             }
 
             return;
         }
+
+        cancelPendingMouseOut();
 
         if (!isPointerOverBars) {
             handleMouseOver(e, d, event);
@@ -1087,12 +1094,24 @@ export default function module(): StackedBarChartModule {
      * @private
      */
     function handleMouseOut(e: Element, d: unknown, event: Event) {
+        cancelPendingMouseOut();
         if (!isPointerOverBars) {
             return;
         }
         isPointerOverBars = false;
         svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
         dispatcher.call('customMouseOut', e, d, pointer(event, e));
+    }
+
+    /**
+     * Drops a mouse out waiting for hoverExitDelay, if there is one
+     * @private
+     */
+    function cancelPendingMouseOut() {
+        if (pendingMouseOut) {
+            clearTimeout(pendingMouseOut);
+            pendingMouseOut = null;
+        }
     }
 
     /**

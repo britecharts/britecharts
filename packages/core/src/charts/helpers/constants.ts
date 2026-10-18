@@ -100,6 +100,11 @@ export const motion = {
     shortDuration: 300,
 };
 
+// How long a hover may stray off the bars before it ends. A pointer moving
+// across the bars passes over the gaps between them; ending the hover in
+// each gap fades the tooltip out and back in, which reads as a flicker.
+export const hoverExitDelay = 150;
+
 // Deliberately not `as const`: the charts look these up with a dynamic
 // string (`curveMap[areaCurve]` in stacked-area and brush), which a readonly
 // literal-keyed object would reject.
