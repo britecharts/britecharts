@@ -187,7 +187,7 @@ export interface DonutChartProps {
 const Donut: FunctionComponent<DonutChartProps> = ({
     chart = DonutWrapper,
     isAnimated = true,
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     createTooltip,
     data,
     ...rest

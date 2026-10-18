@@ -28,7 +28,7 @@
     "build:esm:types": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist",
     "lint": "pnpm run lint:js",
-    "lint:js": "eslint src/charts/ src/helpers vite.config.js --ext .js,.ts,.tsx --cache",
+    "lint:js": "eslint src/charts/ src/helpers vite.config.js --cache",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "type-check": "tsc --noEmit"

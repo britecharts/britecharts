@@ -138,7 +138,7 @@ export interface LegendProps {
 // configuration key of the wrapper, and a legend has no tooltip to redraw.
 const Legend: FunctionComponent<LegendProps> = ({
     chart = LegendWrapper,
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     createTooltip,
     data,
     ...configuration

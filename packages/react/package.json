@@ -51,7 +51,7 @@
     "demo": "pnpm run storybook",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
     "lint": "pnpm run lint:js",
-    "lint:js": "eslint src/charts src/index.ts vite.config.js --ext .js,.ts,.tsx --ignore-pattern \"*.spec.js\" --cache",
+    "lint:js": "eslint src/charts src/index.ts vite.config.js --ignore-pattern \"*.spec.js\" --cache",
     "storybook": "storybook dev -p 2002 --exact-port",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
