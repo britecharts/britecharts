@@ -126,7 +126,7 @@ Playground.args = playgroundArgs(donut, [
 Playground.args.isAnimated = false;
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
-export const AnimatedWithLegend = () => {
+export const WithAnimationAndLegend = () => {
     const container = getCleanContainer();
     const donutContainer = select(container);
     const containerWidth = donutContainer.node()
