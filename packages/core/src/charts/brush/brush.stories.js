@@ -45,8 +45,9 @@ Playground.args = playgroundArgs(brush, [
     'isLoading',
 ]);
 Playground.args.isAnimated = false;
-// As tall as the other charts' Playgrounds, with a window already selected.
-Playground.args.height = 500;
+// A brush is a strip under another chart, so it is shorter than the other
+// charts' Playgrounds, with a window already selected.
+Playground.args.height = 200;
 Playground.args.dateRange = ['7/10/2015', '7/20/2015'];
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
