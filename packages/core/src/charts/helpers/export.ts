@@ -86,7 +86,6 @@ const config = {
     chartBackground: 'white',
     imageSourceBase: 'data:image/svg+xml;base64,',
     titleFontSize: '15px',
-    // eslint-disable-next-line quotes
     titleFontFamily: DEFAULT_FONT_STACK,
     titleTopOffset: 15,
     get styleBackgroundString() {

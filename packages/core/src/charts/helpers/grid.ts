@@ -238,12 +238,8 @@ function gridBase(orient: string, scale: GridScale) {
             // Set parameter to ensure correct line offset positions for inverted ranges
             k = range[range.length - 1] >= range[0] ? 1 : -1,
             // If passed a transition, convert to selection
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             selection = (
-                'selection' in context
-                    ? context.selection()
-                    : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      context
+                'selection' in context ? context.selection() : context
             ) as Selection<any, any, any, any>,
             // Set up container element
             initContainer = selection

@@ -92,7 +92,7 @@
     "demo": "pnpm run storybook",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
     "lint": "pnpm run lint:js && pnpm run lint:styles",
-    "lint:js": "eslint src/charts/ vite.config.js --ext .js,.ts,.tsx --cache",
+    "lint:js": "eslint src/charts/ vite.config.js --cache",
     "lint:styles": "stylelint './src/styles/**/*.scss'",
     "start": "pnpm run demo",
     "storybook": "storybook dev -p 2001 --exact-port",
