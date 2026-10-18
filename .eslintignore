@@ -1,7 +1,0 @@
-
-packages/docs/build
-packages/docs/scripts
-packages/docs/docs_build_bk
-packages/docs/doc_bk
-
-*.min.js
