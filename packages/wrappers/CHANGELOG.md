@@ -1,5 +1,37 @@
 # @britecharts/wrappers
 
+## 3.0.0-beta.6
+
+### Major Changes
+
+- 8fb30f9: The bullet chart and the sparkline no longer draw a title. Text inside the
+  svg cannot wrap, clips at the chart's edge and ignores the page's
+  typography, so these charts now draw only the data.
+
+    Removed: the bullet chart's `customTitle` and `customSubtitle` accessors and
+    its `title` and `subtitle` data fields, and the sparkline's `titleText` and
+    `titleTextStyle` accessors, along with the `SparklineTitleTextStyle` type
+    and the matching React props. The bullet chart no longer reserves 100px on
+    the left for its title, so the bars now span the full width. Label these
+    charts in your own markup next to them, and set `a11yTitle` for screen
+    readers. The migration guide's step 14 shows how.
+
+- 7c0fb2a: The package is now an ES module package (`"type": "module"`), so `import` works in Node as well as in bundlers, with matching types under each condition. `require` still works and resolves to the CommonJS bundle, renamed from `.js` to `.cjs` (`dist/umd/bundle/wrappers.bundled.min.cjs` and `dist/cjs/bundle/wrappers.bundled.min.cjs`). Update any deep path that named the old file.
+- 469d999: Wrappers publishes its UMD and CommonJS bundles only. The per-chart UMD files in `dist/umd/charts/` are removed: import the wrappers from the package (`import { BarWrapper } from '@britecharts/wrappers'`), or use the bundle's `wrappers` global. The bundles are now built with Vite instead of webpack, with the same exports.
+
+### Patch Changes
+
+- Updated dependencies [54bbef1]
+- Updated dependencies [90dc62c]
+- Updated dependencies [d62400b]
+- Updated dependencies [a3852c2]
+- Updated dependencies [2d27ae5]
+- Updated dependencies [8fb30f9]
+- Updated dependencies [983526c]
+- Updated dependencies [daca322]
+- Updated dependencies [7c0fb2a]
+    - @britecharts/core@3.0.0-beta.6
+
 ## 3.0.0-beta.5
 
 ### Minor Changes

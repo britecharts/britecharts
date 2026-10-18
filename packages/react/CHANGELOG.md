@@ -1,5 +1,46 @@
 # @britecharts/react
 
+## 3.0.0-beta.6
+
+### Major Changes
+
+- 469d999: React publishes its UMD bundle only. The per-component files in `dist/umd/charts/` and `dist/cjs/charts/` are removed: import the components from the package (`import { Donut } from '@britecharts/react'`). The bundle is now built with Vite instead of webpack, with the same exports, and is 11% smaller.
+- 8fb30f9: The bullet chart and the sparkline no longer draw a title. Text inside the
+  svg cannot wrap, clips at the chart's edge and ignores the page's
+  typography, so these charts now draw only the data.
+
+    Removed: the bullet chart's `customTitle` and `customSubtitle` accessors and
+    its `title` and `subtitle` data fields, and the sparkline's `titleText` and
+    `titleTextStyle` accessors, along with the `SparklineTitleTextStyle` type
+    and the matching React props. The bullet chart no longer reserves 100px on
+    the left for its title, so the bars now span the full width. Label these
+    charts in your own markup next to them, and set `a11yTitle` for screen
+    readers. The migration guide's step 14 shows how.
+
+- 7c0fb2a: The package is now an ES module package (`"type": "module"`), so `import` works in Node as well as in bundlers, with matching types under each condition. `require` still works and resolves to the CommonJS bundle, renamed from `.js` to `.cjs` (`dist/umd/bundle/react.bundled.min.cjs`). Update any deep path that named the old file.
+
+### Minor Changes
+
+- 321e44a: `Tooltip` infers its data type from its `data` prop and hands the same type to its `render` callback, so `render={(props) => <Line {...props} />}` type-checks without a cast or a second `data` prop. `TooltipProps` and `TooltipRenderArgs` take the data type as a parameter, defaulting to the union of every chart's data, so existing code compiles unchanged. `TooltipRenderArgs` and `TooltipData` are exported from the package.
+
+### Patch Changes
+
+- 54bbef1: Charts take their accessible name from an `aria-label` on the svg instead of a `<title>` element, which browsers showed as a tooltip when the pointer rested on the chart. Screen readers announce the same name; `a11yDescription` is still a `<desc>` linked with `aria-describedby`.
+- 983526c: `Bullet` declares its `isLoading` prop, which it already passed to the chart. `Tooltip`'s `topicsOrder` is typed `Array<string | number>`, the same type written out, so Storybook can describe the prop.
+- Updated dependencies [54bbef1]
+- Updated dependencies [90dc62c]
+- Updated dependencies [d62400b]
+- Updated dependencies [a3852c2]
+- Updated dependencies [2d27ae5]
+- Updated dependencies [8fb30f9]
+- Updated dependencies [983526c]
+- Updated dependencies [daca322]
+- Updated dependencies [7c0fb2a]
+- Updated dependencies [7c0fb2a]
+- Updated dependencies [469d999]
+    - @britecharts/core@3.0.0-beta.6
+    - @britecharts/wrappers@3.0.0-beta.6
+
 ## 3.0.0-beta.5
 
 ### Minor Changes
