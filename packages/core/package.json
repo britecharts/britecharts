@@ -52,7 +52,6 @@
     "d3": "5.16.0",
     "es-check": "9.8.1",
     "eslint": "catalog:",
-    "node-gyp": "8.4.1",
     "postcss": "catalog:",
     "rimraf": "catalog:",
     "sass": "catalog:",
