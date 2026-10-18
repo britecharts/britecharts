@@ -1,0 +1,22 @@
+/*
+ * Shared story layout for the core and react Storybooks: each story's name
+ * above a card holding the chart. Each preview's decorator adds the markup.
+ */
+
+/* The charts' own type: their font stack and smoothing (base/_typography.scss) */
+.story-title {
+    margin: 24px 10px 4px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    color: #282c35;
+    -webkit-font-smoothing: antialiased;
+}
+
+.chart-container {
+    padding: 30px;
+    border-radius: 5px;
+    margin: 10px;
+    box-shadow: 2px 2px 8px lightgrey;
+}

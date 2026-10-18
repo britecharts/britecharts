@@ -1,4 +1,5 @@
 import '../src/styles/britecharts.scss';
+import '../../../scripts/storybook-preview.css';
 
 // Shows the story's name above its card. Only on the canvas: a docs page
 // already heads each story with its name.
