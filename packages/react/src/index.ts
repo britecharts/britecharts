@@ -28,5 +28,9 @@ export type { ScatterPlotProps } from './charts/scatterPlot/ScatterPlot.js';
 export type { SparklineProps } from './charts/sparkline/Sparkline.js';
 export type { StackedAreaProps } from './charts/stackedArea/StackedArea.js';
 export type { StackedBarProps } from './charts/stackedBar/StackedBar.js';
-export type { TooltipProps } from './charts/tooltip/Tooltip.js';
+export type {
+    TooltipData,
+    TooltipProps,
+    TooltipRenderArgs,
+} from './charts/tooltip/Tooltip.js';
 export type { ResponsiveContainerProps } from './charts/helpers/responsiveContainer.js';

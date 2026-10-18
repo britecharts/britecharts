@@ -19,8 +19,8 @@ export default {
 export const Playground: StoryFn<typeof ScatterPlot> = (args) => {
     const data = scatterPlotData.withOneSource();
 
-    const renderScatterPlot = (props: TooltipRenderArgs) => (
-        <ScatterPlot {...args} {...props} data={data} />
+    const renderScatterPlot = (props: TooltipRenderArgs<typeof data>) => (
+        <ScatterPlot {...args} {...props} />
     );
 
     // The chart dispatches the hovered point as { name, x, y }: the tooltip
@@ -70,8 +70,8 @@ export const WithTrendlineAndGrid = () => {
 export const WithAnimation = () => {
     const data = scatterPlotData.withOneSource();
 
-    const renderScatterPlot = (props: TooltipRenderArgs) => (
-        <ScatterPlot isAnimated={true} {...props} data={data} />
+    const renderScatterPlot = (props: TooltipRenderArgs<typeof data>) => (
+        <ScatterPlot isAnimated={true} {...props} />
     );
 
     // The chart dispatches the hovered point as { name, x, y }: the tooltip

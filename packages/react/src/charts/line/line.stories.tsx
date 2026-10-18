@@ -20,8 +20,8 @@ export default {
 export const Playground: StoryFn<typeof Line> = (args) => {
     const data = lineData.oneSet();
 
-    const renderLine = (props: TooltipRenderArgs) => (
-        <Line {...args} {...props} data={data} />
+    const renderLine = (props: TooltipRenderArgs<typeof data>) => (
+        <Line {...args} {...props} />
     );
 
     return (
@@ -43,7 +43,7 @@ Playground.parameters = {
 export const WithOneLineAndTooltipAndBasisCurve = () => {
     const data = lineData.oneSet();
 
-    const renderLine = (props: TooltipRenderArgs) => (
+    const renderLine = (props: TooltipRenderArgs<typeof data>) => (
         <Line
             margin={{
                 top: 60,
@@ -53,7 +53,6 @@ export const WithOneLineAndTooltipAndBasisCurve = () => {
             }}
             lineCurve="basis"
             {...props}
-            data={data}
         />
     );
 
@@ -70,7 +69,7 @@ export const WithOneLineAndTooltipAndBasisCurve = () => {
 export const WithMultipleLinesAndTooltip = () => {
     const data = lineData.fiveTopics();
 
-    const renderLine = (props: TooltipRenderArgs) => (
+    const renderLine = (props: TooltipRenderArgs<typeof data>) => (
         <Line
             margin={{
                 top: 60,
@@ -80,7 +79,6 @@ export const WithMultipleLinesAndTooltip = () => {
             }}
             tooltipThreshold={0}
             {...props}
-            data={data}
         />
     );
 
@@ -92,8 +90,8 @@ export const WithMultipleLinesAndTooltip = () => {
 export const WithAnimation = () => {
     const data = lineData.oneSet();
 
-    const renderLine = (props: TooltipRenderArgs) => (
-        <Line isAnimated={true} {...props} data={data} />
+    const renderLine = (props: TooltipRenderArgs<typeof data>) => (
+        <Line isAnimated={true} {...props} />
     );
 
     return (

@@ -19,8 +19,8 @@ export default {
 export const Playground: StoryFn<typeof GroupedBar> = (args) => {
     const data = groupedBarData.with3Groups();
 
-    const renderGroupedBar = (props: TooltipRenderArgs) => (
-        <GroupedBar {...args} {...props} data={data} />
+    const renderGroupedBar = (props: TooltipRenderArgs<typeof data>) => (
+        <GroupedBar {...args} {...props} />
     );
 
     // The chart dispatches each column as { key, values: [{ group, name,
@@ -53,8 +53,8 @@ export const WithHorizontalDirectionFixedSize = () => {
 export const WithAnimation = () => {
     const data = groupedBarData.with3Groups();
 
-    const renderGroupedBar = (props: TooltipRenderArgs) => (
-        <GroupedBar isAnimated={true} {...props} data={data} />
+    const renderGroupedBar = (props: TooltipRenderArgs<typeof data>) => (
+        <GroupedBar isAnimated={true} {...props} />
     );
 
     // The chart dispatches each column as { key, values: [{ group, name,

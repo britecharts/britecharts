@@ -20,8 +20,8 @@ export default {
 export const Playground: StoryFn<typeof StackedArea> = (args) => {
     const data = stackedAreaData.with3Sources();
 
-    const renderStackedArea = (props: TooltipRenderArgs) => (
-        <StackedArea {...args} {...props} data={data} />
+    const renderStackedArea = (props: TooltipRenderArgs<typeof data>) => (
+        <StackedArea {...args} {...props} />
     );
 
     // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
@@ -39,8 +39,8 @@ Playground.parameters = {
 export const WithAnimation = () => {
     const data = stackedAreaData.with3Sources();
 
-    const renderStackedArea = (props: TooltipRenderArgs) => (
-        <StackedArea isAnimated={true} {...props} data={data} />
+    const renderStackedArea = (props: TooltipRenderArgs<typeof data>) => (
+        <StackedArea isAnimated={true} {...props} />
     );
 
     // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
