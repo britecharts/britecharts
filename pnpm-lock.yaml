@@ -198,8 +198,8 @@ catalogs:
       specifier: 5.0.5
       version: 5.0.5
     chromatic:
-      specifier: 6.24.1
-      version: 6.24.1
+      specifier: 18.13.0
+      version: 18.13.0
     d3-selection:
       specifier: 3.0.0
       version: 3.0.0
@@ -466,7 +466,7 @@ importers:
         version: 10.6.2(storybook@10.6.2(@types/react@19.3.0)(react@19.3.0))(vite@8.3.4(@types/node@26.6.5)(jiti@1.21.7)(sass@1.105.2)(terser@5.51.2)(yaml@2.9.1))
       chromatic:
         specifier: 'catalog:'
-        version: 6.24.1
+        version: 18.13.0
       d3:
         specifier: 7.9.0
         version: 7.9.0
@@ -663,7 +663,7 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       chromatic:
         specifier: 'catalog:'
-        version: 6.24.1
+        version: 18.13.0
       eslint:
         specifier: 'catalog:'
         version: 10.13.0(jiti@1.21.7)(supports-color@8.1.1)
@@ -4417,9 +4417,21 @@ packages:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
 
-  chromatic@6.24.1:
-    resolution: {integrity: sha512-XbpdWWHvFpEHtcq1Km71UcuQ07effB+8q8L47E1Y7HJmJ4ZCoKCuPd8liNrbnvwEAxqfBZvTcONYU/3BPz2i5w==}
+  chromatic@18.13.0:
+    resolution: {integrity: sha512-AdN6tHB9anx/sdJKIMQ7JkQQV2RhVe1iTvXOFLlwFBRecbl9rp50h/25N0sZJDdpx22gG7Y81HoUALOORfMuxQ==}
+    engines: {node: '>=22.0.0'}
     hasBin: true
+    peerDependencies:
+      '@chromatic-com/cypress': ^0.*.* || ^1.0.0
+      '@chromatic-com/playwright': ^0.*.* || ^1.0.0
+      '@chromatic-com/vitest': ^0.*.* || ^1.0.0
+    peerDependenciesMeta:
+      '@chromatic-com/cypress':
+        optional: true
+      '@chromatic-com/playwright':
+        optional: true
+      '@chromatic-com/vitest':
+        optional: true
 
   chrome-trace-event@1.0.4:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
@@ -14498,7 +14510,9 @@ snapshots:
     dependencies:
       readdirp: 5.1.1
 
-  chromatic@6.24.1: {}
+  chromatic@18.13.0:
+    dependencies:
+      semver: 7.8.5
 
   chrome-trace-event@1.0.4: {}
 

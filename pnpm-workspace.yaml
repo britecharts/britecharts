@@ -19,7 +19,7 @@ catalog:
   "@storybook/react-vite": 10.6.2
   "@types/d3-selection": 3.0.12
   "@vitest/coverage-v8": 5.0.5
-  chromatic: 6.24.1
+  chromatic: 18.13.0
   d3-selection: 3.0.0
   eslint: 10.13.0
   jsdom: 30.1.3

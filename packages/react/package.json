@@ -46,7 +46,7 @@
     "build:esm": "pnpm run build:esm:js && pnpm run build:esm:types",
     "build:esm:js": "babel src --out-dir dist/esm --extensions .tsx,.ts,.js --config-file ./babel.config.esm.cjs --ignore \"src/**/*.d.ts,src/**/*.spec.js,src/**/*.spec.ts,src/**/*.spec.tsx,src/**/*.stories.js,src/**/*.stories.ts,src/**/*.stories.tsx,src/**/*.fixtures.js,src/**/*.fixtures.ts,src/docs\"",
     "build:esm:types": "tsc -p tsconfig.build.json",
-    "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_REACT",
+    "chromatic": "chromatic --project-token=$CHROMATIC_TOKEN_REACT --build-script-name=demo:build",
     "clean": "rimraf dist",
     "demo": "pnpm run storybook",
     "demo:build": "storybook build -c .storybook -o dist/storybook",
