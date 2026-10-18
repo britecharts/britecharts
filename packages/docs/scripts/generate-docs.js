@@ -7,7 +7,11 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const glob = require('glob');
+const { globSync } = require('glob');
+
+// glob returns paths in no particular order; sorting the way glob 7 did keeps
+// the generated pages and sidebar from depending on the file system's.
+const byPath = (a, b) => a.localeCompare(b, 'en');
 const babel = require('@babel/core');
 // The parser jsdoc reads tag types with. Depended on directly so the types
 // written into the comments below can be validated with the same grammar that
@@ -396,9 +400,9 @@ function stripTypesForJsdoc(sourceRoot) {
     // `.d.ts` files are excluded here as well as from IGNORED_PATHS: they are
     // declarations, so Babel rejects them outright (`declare const x: T;` has
     // no initializer), and jsdoc has nothing to read in them anyway.
-    const files = glob.sync(path.join(sourceRoot, '**/*.[jt]s?(x)'), {
+    const files = globSync(path.join(sourceRoot, '**/*.[jt]s?(x)'), {
         ignore: ['**/node_modules/**', '**/*.d.ts'],
-    });
+    }).sort(byPath);
     // Built once and shared, so a type jsdoc cannot take is reported for the
     // whole run rather than per file.
     const unsupportedTypes = [];
@@ -481,9 +485,9 @@ async function generateDocs() {
     const sourceRoot = path.join(__dirname, '../../core/src');
     const { tmpRoot, strippedRoot } = stripTypesForJsdoc(sourceRoot);
     const pathPattern = path.join(strippedRoot, '**/*.js');
-    const filePaths = glob.sync(pathPattern, {
+    const filePaths = globSync(pathPattern, {
         ignore: IGNORED_PATHS,
-    });
+    }).sort(byPath);
     const writeDir = path.join(__dirname, '../docs/API/');
 
     // Get the sidebar object
