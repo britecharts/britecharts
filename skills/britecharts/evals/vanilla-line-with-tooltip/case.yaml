@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: vanilla-line-with-tooltip
+expected_outcome: |
+  src/charts/signups.js imports line and tooltip from @britecharts/core and select
+  from d3-selection, maps the rows into the line chart's { data: [{ topicName,
+  name, date, value }] } shape with a numeric name per plan, sizes the chart from
+  its container, wires show/update/hide to the chart's mouse events, and attaches
+  the tooltip to .metadata-group .hover-marker after the chart has drawn.

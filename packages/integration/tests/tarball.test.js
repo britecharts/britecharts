@@ -92,8 +92,13 @@ const PACKAGES = {
             ['dist/types/index.d.ts', 1],
             ['dist/types/charts/*/*.d.ts', 34],
             ['dist/types/typings/*/*.d.ts', 8],
+            // The agent skill, copied in by prepack from skills/britecharts
+            // at the repository root, so coding agents find it in
+            // node_modules. Its evals stay out (see deny).
+            ['skills/britecharts/SKILL.md', 1],
+            ['skills/britecharts/references/*.md', 4],
         ],
-        deny: COMMON_DENY,
+        deny: [...COMMON_DENY, 'skills/**/evals/**'],
     },
     wrappers: {
         allow: [

@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: react-stacked-bar-loading-tooltip
+expected_outcome: |
+  RevenueByRegion.tsx renders StackedBar from @britecharts/react inside a Tooltip
+  (nameLabel="stack") and a ResponsiveContainer or withResponsiveness, maps rows to
+  { name, stack, value }, shows the loading state with isLoading and empty data
+  while fetching, stores the mapped data as a new array in state, and imports the
+  Britecharts stylesheet.
