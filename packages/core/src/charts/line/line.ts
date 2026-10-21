@@ -2169,8 +2169,9 @@ export default function module(): LineChartModule {
     } as LineChartModule['width'];
 
     /**
-     * Chart exported to png and a download action is fired
-     * @param {string} filename     File title for the resulting picture
+     * Exports the chart and fires a download: an svg file when the filename
+     * ends in `.svg`, and a png otherwise
+     * @param {string} filename     Name of the downloaded file, whose extension picks the format
      * @param {string} title        Title to add at the top of the exported picture
      * @return {Promise}            Promise that resolves if the chart image was loaded and downloaded successfully
      * @public

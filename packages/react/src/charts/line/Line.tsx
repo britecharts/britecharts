@@ -58,7 +58,9 @@ export interface LineProps {
     colorSchema?: ColorsSchemasType;
 
     /**
-     * Chart exported to png and a download action is fired
+     * The filename to export the chart to. Setting it exports the chart and
+     * fires a download: an svg file when the filename ends in `.svg`, and a
+     * png otherwise.
      */
     exportChart?: string;
 

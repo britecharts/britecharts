@@ -59,6 +59,105 @@ describe('export Helper', () => {
         document.body.removeChild(fixture);
     });
 
+    describe('exportChart', () => {
+        const context = (): ExportContext => ({
+            width: () => 200,
+            height: () => 100,
+            margin: () => ({ left: 0 }),
+        });
+        let clicked: HTMLAnchorElement[];
+
+        beforeEach(() => {
+            clicked = [];
+            vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(
+                function (this: HTMLAnchorElement) {
+                    clicked.push(this);
+                }
+            );
+        });
+
+        afterEach(() => {
+            vi.restoreAllMocks();
+        });
+
+        describe('when the filename ends in .svg', () => {
+            it('should download the chart as an svg file', async () => {
+                const svg = select<SVGSVGElement, unknown>(
+                    '.test-container svg'
+                );
+
+                await exportChart.exportChart.call(context(), svg, 'chart.svg');
+
+                expect(clicked).toHaveLength(1);
+                expect(clicked[0].download).toBe('chart.svg');
+                expect(clicked[0].href).toMatch(
+                    /^data:image\/svg\+xml;charset=utf-8,/
+                );
+            });
+
+            it('should start the file with the XML declaration, then the svg', async () => {
+                const svg = select<SVGSVGElement, unknown>(
+                    '.test-container svg'
+                );
+
+                await exportChart.exportChart.call(context(), svg, 'chart.svg');
+
+                const file = decodeURIComponent(
+                    clicked[0].href.split(',').slice(1).join(',')
+                );
+
+                expect(file).toMatch(
+                    /^<\?xml version="1\.0" encoding="UTF-8"\?>\n<svg/
+                );
+                expect(file).toContain('xmlns="http://www.w3.org/2000/svg"');
+            });
+
+            it('should add the title', async () => {
+                const svg = select<SVGSVGElement, unknown>(
+                    '.test-container svg'
+                );
+
+                await exportChart.exportChart.call(
+                    context(),
+                    svg,
+                    'chart.svg',
+                    'Visits by source'
+                );
+
+                expect(decodeURIComponent(clicked[0].href)).toContain(
+                    'Visits by source'
+                );
+            });
+
+            it('should read the extension whatever its case', async () => {
+                const svg = select<SVGSVGElement, unknown>(
+                    '.test-container svg'
+                );
+
+                await exportChart.exportChart.call(context(), svg, 'CHART.SVG');
+
+                expect(clicked[0].href).toMatch(/^data:image\/svg\+xml/);
+            });
+        });
+
+        describe('when the filename does not end in .svg', () => {
+            it('should go through an image, for a png, and download nothing yet', () => {
+                const svg = select<SVGSVGElement, unknown>(
+                    '.test-container svg'
+                );
+
+                const result = exportChart.exportChart.call(
+                    context(),
+                    svg,
+                    'chart.png'
+                );
+
+                expect(result).toBeInstanceOf(Promise);
+                expect(clicked).toHaveLength(0);
+            });
+        });
+    });
+
     describe.skip('convertSvgToHtml', () => {
         describe('when the title is regular text', () => {
             it('should add the title to the chart html', () => {

@@ -124,6 +124,16 @@ lineChart.isAnimated(true).animationDuration(600);
 
 A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set.
 
+## How to Export a Chart
+Call `exportChart` with a filename to download the chart as it is drawn. The filename picks the format: one ending in `.svg` downloads an svg file, and any other a png. An optional second argument adds a title at the top:
+
+```js
+barChart.exportChart('visits.svg', 'Visits by month');
+barChart.exportChart('visits.png');
+```
+
+The svg keeps the chart's styles inlined, so it looks the same in a design tool or a document, and it stays sharp at any size. `exportChart` returns a promise that resolves once the download starts. In React, the grouped bar, heatmap, line, sparkline, stacked area and stacked bar components take the filename as their `exportChart` prop.
+
 ## How to Chart Negative Values
 The bar, grouped bar, stacked bar, brush and scatter plot charts draw negative values with no setting to turn on:
 

@@ -51,10 +51,11 @@ export interface HeatmapProps {
     colorSchema?: ColorsSchemasType;
 
     /**
-     * The filename to export the chart to. Setting it exports a png and fires
+     * The filename to export the chart to. Setting it exports the chart and fires
      * a download, which is what the chart's `exportChart` command does; it is
      * not a callback. The chart's exporter treats the title as optional, so a
      * filename on its own is enough.
+     * A filename ending in `.svg` downloads an svg file, and any other a png.
      */
     exportChart?: string;
 
