@@ -4,7 +4,10 @@ import brush from '../brush/brush';
 import line from './line';
 import tooltip from '../tooltip/tooltip';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -73,6 +76,8 @@ export const Playground = (args) => {
             .on('customMouseOut', chartTooltip.hide);
 
         lineContainer.datum(dataset).call(lineChart);
+
+        addExportButtons(container, lineChart, 'line');
 
         chartTooltip.topicsOrder([
             ...new Set(dataset.data.map(({ name }) => name)),

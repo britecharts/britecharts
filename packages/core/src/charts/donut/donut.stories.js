@@ -3,7 +3,10 @@ import { select } from 'd3-selection';
 import donut from './donut';
 import legend from '../legend/legend';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -101,6 +104,8 @@ export const Playground = (args) => {
         applyArgs(donutChart, args).width(containerWidth);
 
         donutContainer.datum(dataset).call(donutChart);
+
+        addExportButtons(container, donutChart, 'donut');
     }
 
     return container;

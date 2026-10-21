@@ -4,7 +4,10 @@ import stackedBarChart from './stacked-bar';
 import tooltip from '../tooltip/tooltip';
 import legend from '../legend/legend';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -67,6 +70,8 @@ export const Playground = (args) => {
             });
 
         stackedBarContainer.datum(dataset).call(stackedBar);
+
+        addExportButtons(container, stackedBar, 'stacked-bar');
 
         // The stacked bar dispatches its rows as `values`, named by `stack`
         chartTooltip

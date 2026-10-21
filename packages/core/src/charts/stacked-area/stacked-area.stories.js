@@ -3,7 +3,10 @@ import { select } from 'd3-selection';
 import stackedArea from './stacked-area';
 import tooltip from '../tooltip/tooltip';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -35,6 +38,8 @@ export const Playground = (args) => {
             .on('customMouseOut', chartTooltip.hide);
 
         stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+
+        addExportButtons(container, stackedAreaChart, 'stacked-area');
 
         // The stacked area dispatches its rows as `values`
         chartTooltip.topicLabel('values').title('Testing tooltip');
