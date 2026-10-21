@@ -23,7 +23,7 @@ const stackedAreaChart: Wrapper<
         const chart = stackedArea();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'stacked-area');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -36,7 +36,7 @@ const stackedAreaChart: Wrapper<
         const shouldUpdateData = data && data.length;
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'stacked-area');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

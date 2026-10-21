@@ -20,7 +20,7 @@ const scatterPlotChart: Wrapper<ScatterPlotDataShape[], ScatterPlotModule> = {
         const chart = scatterPlot();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'scatter-plot');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -32,7 +32,7 @@ const scatterPlotChart: Wrapper<ScatterPlotDataShape[], ScatterPlotModule> = {
         const container = select<HTMLElement, ScatterPlotDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'scatter-plot');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

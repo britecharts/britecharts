@@ -17,7 +17,7 @@ const legendChart: Wrapper<LegendDataShape[], LegendModule> = {
         const chart = legend();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'legend');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -29,7 +29,7 @@ const legendChart: Wrapper<LegendDataShape[], LegendModule> = {
         const container = select<HTMLElement, LegendDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'legend');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

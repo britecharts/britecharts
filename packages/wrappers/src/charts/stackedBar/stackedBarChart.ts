@@ -23,7 +23,7 @@ const stackedBarChart: Wrapper<
         const chart = stackedBar();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'stacked-bar');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -35,7 +35,7 @@ const stackedBarChart: Wrapper<
         const container = select<HTMLElement, StackedBarChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'stacked-bar');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

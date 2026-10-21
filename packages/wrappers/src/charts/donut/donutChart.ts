@@ -16,7 +16,7 @@ const donutChart: Wrapper<DonutChartDataShape[], DonutChartModule> = {
         const chart = donut();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'donut');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -28,7 +28,7 @@ const donutChart: Wrapper<DonutChartDataShape[], DonutChartModule> = {
         const container = select<HTMLElement, DonutChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'donut');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

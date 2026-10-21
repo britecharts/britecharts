@@ -22,7 +22,7 @@ const tooltipChart: TooltipWrapper = {
         chart.topicLabel('values');
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'tooltip');
 
         const chartConfigured = applyConfiguration(chart, configuration);
 
@@ -42,7 +42,7 @@ const tooltipChart: TooltipWrapper = {
         const container = select<HTMLElement, TooltipDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'tooltip');
 
         const chartConfigured = applyConfiguration(chart, configuration);
 
