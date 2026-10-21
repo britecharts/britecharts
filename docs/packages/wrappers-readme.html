@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.aae73d69.css">
-<script src="/britecharts/assets/js/runtime~main.cb1d4632.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.403c6f9f.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.43952156.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.6a47da4c.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -50,12 +50,7 @@
 <div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token maybe-class-name">BarWrapper</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">destroy</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">container</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><br></div></code></pre></div></div>
 <p><code>TooltipWrapper.destroy</code> has its own contract: it removes the tooltip from inside the element and never an <code>svg</code>, because a tooltip is created inside the chart it decorates and destroyed against the element around it.</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="availability">Availability<a href="#availability" class="hash-link" aria-label="Direct link to Availability" title="Direct link to Availability" translate="no">​</a></h2>
-<p>The following components haven&#x27;t been adapted yet from Britecharts:</p>
-<ul>
-<li class="">Brush charts</li>
-<li class="">Heatmaps</li>
-</ul>
-<p>Feel free to <a href="https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="">send a PR</a> if you want them included.</p>
+<p>Every chart in <code>@britecharts/core</code> has a wrapper: <code>BarWrapper</code>, <code>BrushWrapper</code>, <code>BulletWrapper</code>, <code>DonutWrapper</code>, <code>GroupedBarWrapper</code>, <code>HeatmapWrapper</code>, <code>LegendWrapper</code>, <code>LineWrapper</code>, <code>ScatterPlotWrapper</code>, <code>SparklineWrapper</code>, <code>StackedAreaWrapper</code> and <code>StackedBarWrapper</code>, plus <code>TooltipWrapper</code> for the tooltip.</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="installation">Installation<a href="#installation" class="hash-link" aria-label="Direct link to Installation" title="Direct link to Installation" translate="no">​</a></h2>
 <p>To install run:</p>
 <div class="language-text codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-text codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token plain">pnpm add @britecharts/core @britecharts/wrappers</span><br></div></code></pre></div></div>

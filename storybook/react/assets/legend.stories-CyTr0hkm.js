@@ -1,0 +1,16 @@
+import{a as e,n as t}from"./rolldown-runtime-sJBDdmOt.js";import{t as n}from"./react-DlPsW1c0.js";import{n as r,t as i}from"./Legend-Ce_o4mNl.js";var a,o;function s(){return(s=t((()=>{a=()=>[{name:`Shiny`,id:1,quantity:86},{name:`Blazing`,id:2,quantity:300},{name:`Dazzling`,id:3,quantity:276},{name:`Radiant`,id:4,quantity:195},{name:`Sparkling`,id:5,quantity:36},{name:`Other`,id:0,quantity:814}],o={with6Points:a}})))()}var c,l,u,d,f,p,m;function h(){return(h=t((()=>{c=e(n(),1),r(),s(),l={title:`Charts/Legend`,component:i},u=e=>{let t=o.with6Points();return c.createElement(i,{height:250,width:400,...e,data:t})},u.parameters={controls:{exclude:[`data`,`chart`,`createTooltip`]}},d=()=>{let e=o.with6Points();return c.createElement(i,{data:e,isHorizontal:!0,marginRatio:1.8,height:100})},f=()=>{let e=o.with6Points();return c.createElement(i,{data:e,isHorizontal:!0,markerSize:10,marginRatio:1.8,width:500,height:100})},p=()=>c.createElement(i,{data:null,height:250,width:400}),u.__docgenInfo={description:`Every prop the chart takes, editable from the Controls panel. Left unset, a
+prop keeps the chart's own default, so this starts as the default chart.`,methods:[],displayName:`Playground`},d.__docgenInfo={description:``,methods:[],displayName:`WithHorizontalDirection`},f.__docgenInfo={description:``,methods:[],displayName:`WithHorizontalDirectionAndSmallerDots`},p.__docgenInfo={description:`With \`data={null}\` the legend waits like every other chart: nothing is
+drawn until the data arrives, rather than throwing ("Cannot read properties
+of undefined (reading 'filter')") on data it does not have yet.`,methods:[],displayName:`WithNoData`},m=[`Playground`,`WithHorizontalDirection`,`WithHorizontalDirectionAndSmallerDots`,`WithNoData`],u.parameters={...u.parameters,docs:{...u.parameters?.docs,source:{originalSource:`args => {
+  const data = legendData.with6Points();
+  return <Legend height={250} width={400} {...args} data={data} />;
+}`,...u.parameters?.docs?.source},description:{story:`Every prop the chart takes, editable from the Controls panel. Left unset, a
+prop keeps the chart's own default, so this starts as the default chart.`,...u.parameters?.docs?.description}}},d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`() => {
+  const data = legendData.with6Points();
+  return <Legend data={data} isHorizontal={true} marginRatio={1.8} height={100} />;
+}`,...d.parameters?.docs?.source}}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`() => {
+  const data = legendData.with6Points();
+  return <Legend data={data} isHorizontal={true} markerSize={10} marginRatio={1.8} width={500} height={100} />;
+}`,...f.parameters?.docs?.source}}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`() => <Legend data={null} height={250} width={400} />`,...p.parameters?.docs?.source},description:{story:`With \`data={null}\` the legend waits like every other chart: nothing is
+drawn until the data arrives, rather than throwing ("Cannot read properties
+of undefined (reading 'filter')") on data it does not have yet.`,...p.parameters?.docs?.description}}}})))()}h();export{u as Playground,d as WithHorizontalDirection,f as WithHorizontalDirectionAndSmallerDots,p as WithNoData,m as __namedExportsOrder,l as default};

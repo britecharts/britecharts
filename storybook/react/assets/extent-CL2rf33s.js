@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";function t(e,t){let n,r;if(t===void 0)for(let t of e)t!=null&&(n===void 0?t>=t&&(n=r=t):(n>t&&(n=t),r<t&&(r=t)));else{let i=-1;for(let a of e)(a=t(a,++i,e))!=null&&(n===void 0?a>=a&&(n=r=a):(n>a&&(n=a),r<a&&(r=a)))}return[n,r]}function n(){return(n=e((()=>{})))()}export{n,t};
