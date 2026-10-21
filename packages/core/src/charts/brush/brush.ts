@@ -36,7 +36,7 @@ import type {
     InteractiveChartAPI,
     TimeSeriesChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum BrushChartKeys {
@@ -565,7 +565,7 @@ export default function module(): BrushChartModule {
             .y1(({ value }) => yScale(value as number))
             .curve(curveMap[areaCurve]);
 
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             // Add a missing brush area when there is missing data
             if (
                 dataZeroed.filter(brushArea.defined()).length !==
@@ -625,7 +625,7 @@ export default function module(): BrushChartModule {
     function drawBrush(): void {
         chartBrush = svg.select<SVGGElement>('.brush-group').call(brush);
 
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             chartBrush.style('opacity', 0);
 
             setTimeout(() => {
@@ -981,6 +981,8 @@ export default function module(): BrushChartModule {
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+     * The chart draws without animation when the reader's system asks for
+     * reduced motion (`prefers-reduced-motion`), whatever this is set to.
      * @param  {Boolean} _x = false     Desired animation flag
      * @return {Boolean | module}       Current isAnimated flag or Chart module
      * @public

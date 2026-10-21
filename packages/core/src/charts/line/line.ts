@@ -61,7 +61,7 @@ import type {
     ThemableChartAPI,
     TimeSeriesChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -1022,7 +1022,7 @@ export default function module(): LineChartModule {
      * @return {void}
      */
     function animateLine() {
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             const totalLength = paths.nodes().reduce(findLongestPath, 0);
 
             paths
@@ -1935,6 +1935,8 @@ export default function module(): LineChartModule {
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+     * The chart draws without animation when the reader's system asks for
+     * reduced motion (`prefers-reduced-motion`), whatever this is set to.
      * @param  {boolean} _x = false     Desired animation flag
      * @return { isAnimated | module}   Current isAnimated flag or Chart module
      * @public

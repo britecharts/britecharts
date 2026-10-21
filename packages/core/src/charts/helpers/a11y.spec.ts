@@ -1,4 +1,4 @@
-import { labelChart } from './a11y';
+import { labelChart, prefersReducedMotion } from './a11y';
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -121,5 +121,31 @@ describe('labelChart', () => {
 
     it('should do nothing without an svg', () => {
         expect(() => label(null as unknown as Element)).not.toThrow();
+    });
+});
+
+describe('prefersReducedMotion', () => {
+    afterEach(() => {
+        vi.unstubAllGlobals();
+    });
+
+    it('should be true when the system asks for reduced motion', () => {
+        vi.stubGlobal('matchMedia', (query: string) => ({
+            matches: query === '(prefers-reduced-motion: reduce)',
+        }));
+
+        expect(prefersReducedMotion()).toBe(true);
+    });
+
+    it('should be false when the system does not', () => {
+        vi.stubGlobal('matchMedia', () => ({ matches: false }));
+
+        expect(prefersReducedMotion()).toBe(false);
+    });
+
+    it('should be false without matchMedia', () => {
+        vi.stubGlobal('matchMedia', undefined);
+
+        expect(prefersReducedMotion()).toBe(false);
     });
 });

@@ -38,7 +38,7 @@ import type {
     InteractiveChartAPI,
     ThemableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -708,7 +708,7 @@ export default function module(): StackedBarChartModule {
             .attr('y', (d) => categoryScale(d.data.key))
             .attr('height', categoryScale.bandwidth());
 
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             bars.style('opacity', barOpacity)
                 .transition()
                 .delay((_, i) => animationDelays[i])
@@ -769,7 +769,7 @@ export default function module(): StackedBarChartModule {
             // same number.
             .attr('width', categoryScale.bandwidth);
 
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             bars.style('opacity', barOpacity)
                 .transition()
                 .delay((_, i) => animationDelays[i])
@@ -1449,6 +1449,8 @@ export default function module(): StackedBarChartModule {
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+     * The chart draws without animation when the reader's system asks for
+     * reduced motion (`prefers-reduced-motion`), whatever this is set to.
      * By default this is 'false'
      *
      * @param  {Boolean} _x = false     Desired animation flag
