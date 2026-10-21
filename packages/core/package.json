@@ -1,6 +1,7 @@
 {
   "name": "@britecharts/core",
   "version": "3.0.0-beta.7",
+  "license": "Apache-2.0",
   "type": "module",
   "sideEffects": [
     "**/*.css"
