@@ -7,14 +7,14 @@ import type {
 import type { WrapperConfiguration } from './configuration.js';
 
 /**
- * The shape nine of the eleven wrappers share: draw a chart into an element,
+ * The shape every wrapper but the tooltip's shares: draw a chart into an element,
  * update it in place, and remove what it drew.
  *
  * `TData` is the whole `data` argument, not its element type, so each wrapper
  * says what it actually takes: `Wrapper<BarChartDataShape[], BarChartModule>`
- * for the eight that take an array, `Wrapper<LineChartData, LineChartModule>`
+ * for those that take an array, `Wrapper<LineChartData, LineChartModule>`
  * for line, whose data is an object (`{ data: LineChartDataShape[] }`) bound
- * directly. Spelling this as `data: TData[]` would fit the eight and could not
+ * directly. Spelling this as `data: TData[]` would fit those and could not
  * express line at all.
  *
  * `TChart` is the chart module core exports (`BarChartModule` and so on),
@@ -89,7 +89,7 @@ export interface TooltipState {
 }
 
 /**
- * tooltipChart alone, because it is shaped differently from the other ten:
+ * tooltipChart alone, because it is shaped differently from the others:
  * `create` takes no data (it binds an empty datum itself), and `update` takes
  * a {@link TooltipState} where the others take data -- in third position, with
  * the chart last.

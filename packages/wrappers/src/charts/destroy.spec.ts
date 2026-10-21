@@ -1,11 +1,15 @@
 import bar from './bar/barChart';
 import barData from './bar/barChart.fixtures';
+import brush from './brush/brushChart';
+import brushData from './brush/brushChart.fixtures';
 import bullet from './bullet/bulletChart';
 import bulletData from './bullet/bulletChart.fixtures';
 import donut from './donut/donutChart';
 import donutData from './donut/donutChart.fixtures';
 import groupedBar from './groupedBar/groupedBarChart';
 import groupedBarData from './groupedBar/groupedBarChart.fixtures';
+import heatmap from './heatmap/heatmapChart';
+import heatmapData from './heatmap/heatmapChart.fixtures';
 import legend from './legend/legendChart';
 import legendData from './legend/legendChart.fixtures';
 import line from './line/lineChart';
@@ -21,10 +25,10 @@ import stackedBarData from './stackedBar/stackedBarChart.fixtures';
 import tooltip from './tooltip/tooltipChart';
 import type { Wrapper } from '../helpers/wrapper';
 
-// Each row pairs a wrapper with data of its own shape -- nine over an array,
-// line over an object -- and only the row knows which. Holding the wrapper and
+// Each row pairs a wrapper with data of its own shape -- an array for all but
+// line, an object for line -- and only the row knows which. Holding the wrapper and
 // its data builder as separate columns loses that pairing: the table's element
-// type has to name one data type for all ten, and then no builder's return
+// type has to name one data type for all of them, and then no builder's return
 // value is assignable to any wrapper's `create`.
 //
 // So the pairing is resolved here, where both types are still known, and each
@@ -52,9 +56,11 @@ const destroyCase = <TData, TChart extends object>(
 // container (StrictMode does exactly this to every component in development).
 const CHARTS: DestroyCase[] = [
     destroyCase('bar', bar, () => barData.withLetters()),
+    destroyCase('brush', brush, () => brushData.withShortData()),
     destroyCase('bullet', bullet, () => bulletData.fullTestData()),
     destroyCase('donut', donut, () => donutData.with4Slices()),
     destroyCase('groupedBar', groupedBar, () => groupedBarData.with3Groups()),
+    destroyCase('heatmap', heatmap, () => heatmapData.withTwoDays()),
     destroyCase('legend', legend, () => legendData.with6Points()),
     destroyCase('line', line, () => lineData.flatData.a),
     destroyCase('scatterPlot', scatterPlot, () =>

@@ -86,11 +86,7 @@ BarWrapper.destroy(container);
 `TooltipWrapper.destroy` has its own contract: it removes the tooltip from inside the element and never an `svg`, because a tooltip is created inside the chart it decorates and destroyed against the element around it.
 
 ## Availability
-The following components haven't been adapted yet from Britecharts:
-- Brush charts
-- Heatmaps
-
-Feel free to [send a PR][contributing] if you want them included.
+Every chart in `@britecharts/core` has a wrapper: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper` and `StackedBarWrapper`, plus `TooltipWrapper` for the tooltip.
 
 ## Installation
 
@@ -110,5 +106,4 @@ Our idea for the short term is to update this package to use TypeScript natively
 
 [britecharts]: https://github.com/britecharts/
 [britecharts-api]: https://britecharts.github.io/britecharts/docs/Britecharts
-[contributing]: https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md
 [d3Slack]: https://d3js.slack.com/

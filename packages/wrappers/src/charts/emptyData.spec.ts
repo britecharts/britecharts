@@ -2,12 +2,16 @@ import { select } from 'd3-selection';
 
 import bar from './bar/barChart';
 import barData from './bar/barChart.fixtures';
+import brush from './brush/brushChart';
+import brushData from './brush/brushChart.fixtures';
 import bullet from './bullet/bulletChart';
 import bulletData from './bullet/bulletChart.fixtures';
 import donut from './donut/donutChart';
 import donutData from './donut/donutChart.fixtures';
 import groupedBar from './groupedBar/groupedBarChart';
 import groupedBarData from './groupedBar/groupedBarChart.fixtures';
+import heatmap from './heatmap/heatmapChart';
+import heatmapData from './heatmap/heatmapChart.fixtures';
 import legend from './legend/legendChart';
 import legendData from './legend/legendChart.fixtures';
 import line from './line/lineChart';
@@ -23,7 +27,7 @@ import stackedBarData from './stackedBar/stackedBarChart.fixtures';
 import type { Wrapper } from '../helpers/wrapper';
 
 // As in destroy.spec.ts, each row resolves its wrapper and data types where
-// both are known and carries closures, so one table can hold ten data shapes.
+// both are known and carries closures, so one table can hold every data shape.
 // `drawThenUpdate` draws the chart, updates it with the value given, and
 // returns the datum bound to the container before and after the update.
 type EmptyDataCase = [
@@ -56,6 +60,7 @@ const emptyDataCase = <TData, TChart extends object>(
 // with no rows.
 const CHARTS: EmptyDataCase[] = [
     emptyDataCase('bar', bar, () => barData.withLetters(), []),
+    emptyDataCase('brush', brush, () => brushData.withShortData(), []),
     emptyDataCase('bullet', bullet, () => bulletData.fullTestData(), []),
     emptyDataCase('donut', donut, () => donutData.with4Slices(), []),
     emptyDataCase(
@@ -64,6 +69,7 @@ const CHARTS: EmptyDataCase[] = [
         () => groupedBarData.with3Groups(),
         []
     ),
+    emptyDataCase('heatmap', heatmap, () => heatmapData.withTwoDays(), []),
     emptyDataCase('legend', legend, () => legendData.with6Points(), []),
     emptyDataCase('line', line, () => lineData.flatData.a, { data: [] }),
     emptyDataCase(

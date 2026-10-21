@@ -10,7 +10,7 @@ import type { WrapperConfiguration } from './configuration.js';
 // Selection: d3's Selection is invariant in both its element and its datum
 // (each appears in parameter position on merge, select, on and others), so any
 // one Selection type we picked here would reject every caller whose selection
-// is typed even slightly differently, and all ten wrappers would need a cast.
+// is typed even slightly differently, and every wrapper would need a cast.
 export type ChartContainer = Pick<
     Selection<BaseType, unknown, null, undefined>,
     'empty'

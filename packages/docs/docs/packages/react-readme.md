@@ -106,11 +106,13 @@ Each component's API is a reflection of [Britecharts][britecharts] charts and th
 
 For example, if we need to check the options of a bar chart, you will first check the [bar chart's API][barChartAPI] in the main project API reference page.
 
-The complete set of components is in progress; the following components are currently implemented and available for use:
+Every Britecharts chart has a component:
 - Bar charts [(API)][barChartAPI]
+- Brush charts [(API)][brushAPI]
 - Bullet charts [(API)][bulletAPI]
 - Grouped Bar charts [(API)][groupedBarChartAPI]
 - Donut charts [(API)][donutChartAPI]
+- Heatmaps [(API)][heatmapAPI]
 - Line charts [(API)][lineChartAPI]
 - Scatter Plots [(API)][scatterPlotAPI]
 - Sparkline charts [(API)][sparklineChartAPI]
@@ -119,10 +121,6 @@ The complete set of components is in progress; the following components are curr
 - Tooltips [(API)][tooltipAPI], wrapping the line, stacked area, stacked bar and grouped bar charts with a list of values, and the bar, scatter plot and heatmap charts with a single value (the mini tooltip)
 - Legends [(API)][legendAPI]
 - The `ResponsiveContainer` component and the `withResponsiveness` function, described above
-
-The following components haven't been adapted yet from Britecharts:
-- Brush charts
-- Heatmaps
 
 These components were previously hosted in the [britecharts-react][britecharts-react] repository, but became a package with Britecharts V3.
 
@@ -160,7 +158,7 @@ For this project, we have followed the approach called ‘Mapping Lifecycle meth
 - [Code of Conduct][codeOfConduct]
 
 ## Contribute
-If you need to use one of the missing charts, check out our [how-to guide for creating new charts][howtoCreate]. Check also the [contributing guide][contributing] if you want to help us bringing these in. 
+When Britecharts adds a chart, check out our [how-to guide for creating new charts][howtoCreate] to bring it to React. Check also the [contributing guide][contributing] if you want to help.
 
 Note that the aim of this project is to allow the usage of Britecharts within your React applications. For that, we are ‘wrapping’ Britecharts with `@britecharts/wrappers`. This means that **any new features need to first be implemented on Britecharts**. Only then you could update the props and logic that passes in the configuration.
 
@@ -181,6 +179,8 @@ The package is written in TypeScript, and its type declarations are generated fr
 [tooltipAPI]: https://britecharts.github.io/britecharts/docs/API/tooltip
 [legendAPI]: https://britecharts.github.io/britecharts/docs/API/legend
 [bulletAPI]: https://britecharts.github.io/britecharts/docs/API/bullet
+[brushAPI]: https://britecharts.github.io/britecharts/docs/API/brush
+[heatmapAPI]: https://britecharts.github.io/britecharts/docs/API/heatmap
 [jsDelivrLib]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/dist/
 [npmModule]: https://www.npmjs.com/package/britecharts-react

@@ -5,9 +5,11 @@ import { mount } from '../../testing/mount';
 
 import {
     BarWrapper,
+    BrushWrapper,
     BulletWrapper,
     DonutWrapper,
     GroupedBarWrapper,
+    HeatmapWrapper,
     LegendWrapper,
     LineWrapper,
     ScatterPlotWrapper,
@@ -19,12 +21,16 @@ import {
 
 import Bar from './bar/Bar';
 import barData from './bar/barChart.fixtures';
+import Brush from './brush/Brush';
+import brushData from './brush/brushChart.fixtures';
 import Bullet from './bullet/Bullet';
 import bulletData from './bullet/bulletChart.fixtures';
 import Donut from './donut/Donut';
 import donutData from './donut/donutChart.fixtures';
 import GroupedBar from './groupedBar/GroupedBar';
 import groupedBarData from './groupedBar/groupedBarChart.fixtures';
+import Heatmap from './heatmap/Heatmap';
+import heatmapData from './heatmap/heatmapChart.fixtures';
 import Legend from './legend/Legend';
 import legendData from './legend/legendChart.fixtures';
 import Line from './line/Line';
@@ -66,6 +72,9 @@ const chartCase = <TProps extends { chart?: SpiedWrapper }>(
 // one.
 const CHARTS: ChartCase[] = [
     chartCase('Bar', Bar, BarWrapper, () => ({ data: barData.withLetters() })),
+    chartCase('Brush', Brush, BrushWrapper, () => ({
+        data: brushData.withShortData(),
+    })),
     chartCase('Bullet', Bullet, BulletWrapper, () => ({
         data: bulletData.fullTestData(),
     })),
@@ -74,6 +83,9 @@ const CHARTS: ChartCase[] = [
     })),
     chartCase('GroupedBar', GroupedBar, GroupedBarWrapper, () => ({
         data: groupedBarData.with3Groups(),
+    })),
+    chartCase('Heatmap', Heatmap, HeatmapWrapper, () => ({
+        data: heatmapData.withWeeklyData(),
     })),
     chartCase('Legend', Legend, LegendWrapper, () => ({
         data: legendData.with6Points(),

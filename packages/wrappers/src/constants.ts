@@ -6,6 +6,9 @@ export const britechartsCustomEvents = [
     'customMouseMove',
     'customMouseOut',
     'customClick',
+    // The brush's own two, fired as its selection starts and ends
+    'customBrushStart',
+    'customBrushEnd',
 ] as const;
 
 export type BritechartsCustomEvent = (typeof britechartsCustomEvents)[number];

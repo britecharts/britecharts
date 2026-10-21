@@ -5,9 +5,11 @@
 // extension. In this repo they reach the TypeScript through TypeScript's and
 // Vite's own resolution, which Vitest uses too.
 export { default as BarWrapper } from './charts/bar/barChart.js';
+export { default as BrushWrapper } from './charts/brush/brushChart.js';
 export { default as BulletWrapper } from './charts/bullet/bulletChart.js';
 export { default as DonutWrapper } from './charts/donut/donutChart.js';
 export { default as GroupedBarWrapper } from './charts/groupedBar/groupedBarChart.js';
+export { default as HeatmapWrapper } from './charts/heatmap/heatmapChart.js';
 export { default as LegendWrapper } from './charts/legend/legendChart.js';
 export { default as LineWrapper } from './charts/line/lineChart.js';
 export { default as ScatterPlotWrapper } from './charts/scatterPlot/scatterPlotChart.js';

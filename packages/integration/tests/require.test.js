@@ -34,9 +34,11 @@ const CORE_EXPORTS = [
 ];
 const WRAPPER_EXPORTS = [
     'BarWrapper',
+    'BrushWrapper',
     'BulletWrapper',
     'DonutWrapper',
     'GroupedBarWrapper',
+    'HeatmapWrapper',
     'LegendWrapper',
     'LineWrapper',
     'ScatterPlotWrapper',
@@ -91,9 +93,11 @@ const requireFromReact = createRequire(
 
 const REACT_COMPONENTS = [
     'Bar',
+    'Brush',
     'Bullet',
     'Donut',
     'GroupedBar',
+    'Heatmap',
     'Legend',
     'Line',
     'ScatterPlot',

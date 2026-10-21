@@ -2,9 +2,11 @@
 // props type imported by name. Compiled, never rendered.
 import {
     Bar,
+    Brush,
     Bullet,
     Donut,
     GroupedBar,
+    Heatmap,
     Legend,
     Line,
     ScatterPlot,
@@ -17,9 +19,11 @@ import {
 } from '@britecharts/react';
 import type {
     BarChartProps,
+    BrushProps,
     BulletChartProps,
     DonutChartProps,
     GroupedBarProps,
+    HeatmapProps,
     LegendProps,
     LineProps,
     ScatterPlotProps,
@@ -37,6 +41,13 @@ export const barProps: BarChartProps = {
 };
 export const bar = <Bar {...barProps} />;
 
+export const brushProps: BrushProps = {
+    data: [{ value: 1, date: '2020-01-01' }],
+    dateRange: ['2020-01-01', '2020-01-02'],
+    customBrushEnd: () => undefined,
+};
+export const brush = <Brush {...brushProps} />;
+
 export const bulletProps: BulletChartProps = {
     data: [{ ranges: [130, 160, 250], measures: [150], markers: [220] }],
 };
@@ -51,6 +62,12 @@ export const groupedBarProps: GroupedBarProps = {
     data: [{ name: 'Jan', group: 'A', value: 1 }],
 };
 export const groupedBar = <GroupedBar {...groupedBarProps} />;
+
+export const heatmapProps: HeatmapProps = {
+    data: [{ day: 0, hour: 0, value: 1 }],
+    yAxisLabels: ['Sun'],
+};
+export const heatmap = <Heatmap {...heatmapProps} />;
 
 export const legendProps: LegendProps = {
     data: [{ id: 1, quantity: 2, name: 'Shiny' }],
