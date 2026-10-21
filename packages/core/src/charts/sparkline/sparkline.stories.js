@@ -27,6 +27,7 @@ export const Playground = (args) => {
     if (containerWidth) {
         const dataset = aTestDataSet().with1Source().build();
 
+        sparklineChart.height(containerWidth / 4);
         applyArgs(sparklineChart, args).width(containerWidth);
 
         sparklineContainer.datum(dataset).call(sparklineChart);
@@ -44,27 +45,12 @@ Playground.args = playgroundArgs(sparkline, [
     'isLoading',
 ]);
 Playground.args.isAnimated = false;
-Playground.argTypes = playgroundArgTypes(Playground.args);
-
-export const WithSimpleData = () => {
-    const container = getCleanContainer();
-    const sparklineChart = sparkline();
-    const sparklineContainer = select(container);
-    const containerWidth = sparklineContainer.node()
-        ? sparklineContainer.node().getBoundingClientRect().width
-        : false;
-    const dataset = aTestDataSet().with1Source().build();
-
-    if (containerWidth) {
-        sparklineChart
-            .isAnimated(true)
-            .height(containerWidth / 4)
-            .width(containerWidth);
-
-        sparklineContainer.datum(dataset).call(sparklineChart);
-    }
-
-    return container;
+// Left empty, the height is a quarter of the width, as in the other stories;
+// a number typed into its Control replaces it
+Playground.args.height = undefined;
+Playground.argTypes = {
+    ...playgroundArgTypes(Playground.args),
+    height: { control: 'number' },
 };
 
 export const WithAnimation = () => {
@@ -78,7 +64,10 @@ export const WithAnimation = () => {
     if (containerWidth) {
         const dataset = aTestDataSet().with1Source().build();
 
-        sparklineChart.isAnimated(true).width(containerWidth);
+        sparklineChart
+            .isAnimated(true)
+            .height(containerWidth / 4)
+            .width(containerWidth);
 
         sparklineContainer.datum(dataset).call(sparklineChart);
     }
