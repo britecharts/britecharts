@@ -2,7 +2,10 @@ import { select } from 'd3-selection';
 
 import bullet from './bullet';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -22,13 +25,18 @@ export const Playground = (args) => {
     const dataset = aTestDataSet().withAllElements().build();
 
     if (containerWidth) {
+        let bulletChart;
+
         dataset.forEach((data) => {
-            const bulletChart = bullet();
+            bulletChart = bullet();
 
             applyArgs(bulletChart, args).width(containerWidth);
 
             bulletContainer.datum(data).call(bulletChart);
         });
+
+        // Each bullet draws into the same container, so the last one is shown
+        addExportButtons(container, bulletChart, 'bullet');
     }
 
     return container;

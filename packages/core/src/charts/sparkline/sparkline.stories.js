@@ -2,7 +2,10 @@ import { select } from 'd3-selection';
 
 import sparkline from './sparkline';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -27,6 +30,8 @@ export const Playground = (args) => {
         applyArgs(sparklineChart, args).width(containerWidth);
 
         sparklineContainer.datum(dataset).call(sparklineChart);
+
+        addExportButtons(container, sparklineChart, 'sparkline');
     }
 
     return container;

@@ -3,7 +3,10 @@ import { select } from 'd3-selection';
 import scatterPlot from './scatter-plot';
 import miniTooltip from '../mini-tooltip/mini-tooltip';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -33,6 +36,8 @@ export const Playground = (args) => {
             .on('customMouseOut', tooltip.hide);
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
+
+        addExportButtons(container, scatterChart, 'scatter-plot');
 
         // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
         tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
