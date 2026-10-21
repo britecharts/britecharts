@@ -744,8 +744,14 @@ export default function module(): BrushChartModule {
         this: Element,
         event: D3BrushEvent<BrushDatum>
     ): void {
-        if (!event.sourceEvent) {
-            return; // Only transition after input.
+        // Only transition after input. A programmatic end has no event, or,
+        // when it comes from the rounding transition below, the brush group's
+        // datum: d3-transition calls its end and interrupt listeners with the
+        // datum where d3-brush expects an event. Letting that through starts
+        // another rounding transition, so the brush loops for as long as it is
+        // on the page, and a new selection is drawn back towards the old one.
+        if (!(event.sourceEvent instanceof Event)) {
+            return;
         }
 
         // Starts as the empty pair and is replaced wholesale when there is a
