@@ -4,8 +4,8 @@ title: Stacked Bar
 
 <a name="module_Stacked-bar" id="module_Stacked-bar"></a>
 
-Stacked Area Chart reusable API module that allows us
-rendering a multi area and configurable chart.
+Stacked Bar Chart reusable API module that allows us
+rendering a multi stacked bar and configurable chart.
 
 **Example**  
 ```js
