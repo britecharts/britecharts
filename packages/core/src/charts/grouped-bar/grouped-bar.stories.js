@@ -4,7 +4,10 @@ import groupedBarChart from './grouped-bar';
 import tooltip from '../tooltip/tooltip';
 import legend from '../legend/legend';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -69,6 +72,8 @@ export const Playground = (args) => {
             });
 
         groupedBarContainer.datum(dataset).call(groupedBar);
+
+        addExportButtons(container, groupedBar, 'grouped-bar');
 
         // The grouped bar dispatches its rows as `values`, named by `group`
         chartTooltip

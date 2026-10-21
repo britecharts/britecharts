@@ -3,7 +3,10 @@ import { select } from 'd3-selection';
 import heatmap from './heatmap';
 import miniTooltip from '../mini-tooltip/mini-tooltip';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -33,6 +36,8 @@ export const Playground = (args) => {
             .on('customMouseOut', tooltip.hide);
 
         heatmapContainer.datum(dataset).call(heatmapChart);
+
+        addExportButtons(container, heatmapChart, 'heatmap');
 
         select('.heatmap .metadata-group').datum([]).call(tooltip);
     }

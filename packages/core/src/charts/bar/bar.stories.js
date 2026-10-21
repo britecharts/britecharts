@@ -3,7 +3,10 @@ import { select } from 'd3-selection';
 import bar from './bar';
 import miniTooltip from '../mini-tooltip/mini-tooltip';
 
-import { getCleanContainer } from '../../../.storybook/helpers';
+import {
+    addExportButtons,
+    getCleanContainer,
+} from '../../../.storybook/helpers';
 import {
     applyArgs,
     playgroundArgs,
@@ -33,6 +36,8 @@ export const Playground = (args) => {
             .on('customMouseOut', tooltip.hide);
 
         barContainer.datum(dataset).call(barChart);
+
+        addExportButtons(container, barChart, 'bar');
 
         select('.bar-chart .metadata-group').datum([]).call(tooltip);
     }
