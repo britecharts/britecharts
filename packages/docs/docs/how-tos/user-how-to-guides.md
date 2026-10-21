@@ -132,7 +132,7 @@ barChart.exportChart('visits.svg', 'Visits by month');
 barChart.exportChart('visits.png');
 ```
 
-The svg keeps the chart's styles inlined, so it looks the same in a design tool or a document, and it stays sharp at any size. `exportChart` returns a promise that resolves once the download starts. In React, the grouped bar, heatmap, line, sparkline, stacked area and stacked bar components take the filename as their `exportChart` prop.
+The svg keeps the chart's styles inlined, so it looks the same in a design tool or a document, and it stays sharp at any size. `exportChart` returns a promise that resolves once the download starts. In React, every chart component except `Brush` and `Legend` takes the filename as its `exportChart` prop. Setting it downloads the chart once, so set a new filename to download again.
 
 ## How to Chart Negative Values
 The bar, grouped bar, stacked bar, brush and scatter plot charts draw negative values with no setting to turn on:
