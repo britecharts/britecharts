@@ -138,16 +138,20 @@ export const WithIncreasedAreaAndHollowCircles = () => {
                 right: 20,
             })
             .maxCircleArea(15)
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', function (dataPoint, mousePos, chartSize) {
-                tooltip.title(dataPoint.name);
-                // passing an empty object to not have any data
-                // in the tooltip - we want to only show the title
-                tooltip.update({}, mousePos, chartSize);
+            // Titled with the hovered point's group, set before the tooltip
+            // draws so it never shows the previous point's
+            .on('customMouseOver', (dataPoint, ...position) => {
+                tooltip.title(dataPoint.name).show(dataPoint, ...position);
+            })
+            .on('customMouseMove', (dataPoint, ...position) => {
+                tooltip.title(dataPoint.name).update(dataPoint, ...position);
             })
             .on('customMouseOut', tooltip.hide);
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
+
+        // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
+        tooltip.valueLabel('y').nameLabel('x');
 
         tooltipContainer = select('.scatter-plot .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
