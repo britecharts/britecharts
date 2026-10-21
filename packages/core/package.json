@@ -2,6 +2,9 @@
   "name": "@britecharts/core",
   "version": "3.0.0-beta.7",
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "main": "dist/umd/bundle/core.bundled.min.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
