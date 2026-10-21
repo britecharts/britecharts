@@ -20,7 +20,7 @@ const heatmapChart: Wrapper<HeatmapChartDataShape[], HeatmapChartModule> = {
         const chart = heatmap();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'heatmap');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -32,7 +32,7 @@ const heatmapChart: Wrapper<HeatmapChartDataShape[], HeatmapChartModule> = {
         const container = select<HTMLElement, HeatmapChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'heatmap');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

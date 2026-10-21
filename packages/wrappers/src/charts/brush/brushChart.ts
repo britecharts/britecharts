@@ -17,7 +17,7 @@ const brushChart: Wrapper<BrushChartDataShape[], BrushChartModule> = {
         const chart = brush();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'brush');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -29,7 +29,7 @@ const brushChart: Wrapper<BrushChartDataShape[], BrushChartModule> = {
         const container = select<HTMLElement, BrushChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'brush');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.
