@@ -35,7 +35,7 @@ The whole of this documentation, as one text file: https://britecharts.github.io
 - [Scatter Plot](https://britecharts.github.io/britecharts/docs/API/scatter-plot): Reusable Scatter Plot API class that renders a simple and configurable scatter chart
 - [Sparkline](https://britecharts.github.io/britecharts/docs/API/sparkline): Sparkline Chart reusable API module that allows us rendering a sparkline configurable chart
 - [Stacked Area](https://britecharts.github.io/britecharts/docs/API/stacked-area): Stacked Area Chart reusable API module that allows us rendering a multi area and configurable chart
-- [Stacked Bar](https://britecharts.github.io/britecharts/docs/API/stacked-bar): Stacked Area Chart reusable API module that allows us rendering a multi area and configurable chart
+- [Stacked Bar](https://britecharts.github.io/britecharts/docs/API/stacked-bar): Stacked Bar Chart reusable API module that allows us rendering a multi stacked bar and configurable chart
 - [Tooltip](https://britecharts.github.io/britecharts/docs/API/tooltip): Tooltip component: one box, drawn inside the chart's svg, that follows the pointer and shows what it is over
 
 ## Optional

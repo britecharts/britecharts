@@ -5177,8 +5177,8 @@ stackedArea.yAxisBaseline(20)
 
 Source: https://britecharts.github.io/britecharts/docs/API/stacked-bar
 
-Stacked Area Chart reusable API module that allows us
-rendering a multi area and configurable chart.
+Stacked Bar Chart reusable API module that allows us
+rendering a multi stacked bar and configurable chart.
 
 **Example**  
 ```js
