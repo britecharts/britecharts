@@ -868,6 +868,8 @@ Follow these steps to customize Britecharts' charts to use different color schem
 1. Set the color palette with `.colorSchema(colors.colorSchemas.orange)` or with any other color schema
 1. Draw the chart
 
+For readers with colour blindness, use `colors.colorSchemas.okabeIto`. Its eight colours, from Okabe and Ito's palette, stay distinct with the common kinds of colour blindness. Black comes last, so charts with up to seven categories never draw a series in black. Its yellow, orange and sky blue are light on a white background, so the palette suits filled marks such as bars and donut slices better than thin lines. Colour shouldn't be the only thing that tells series apart: a legend or labels help every reader.
+
 Note that in some charts we can only configure a gradient. Use the `colorGradients` object instead of `colorSchemas` within the colors helper. You can explore other options in the source code of the [colors file][colorsHelper].
 
 ### Give each category its own colour

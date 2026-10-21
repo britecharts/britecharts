@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.aae73d69.css">
-<script src="/britecharts/assets/js/runtime~main.0034cf6d.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.382cd867.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.45b1fb0f.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.63f26226.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -28,6 +28,7 @@
 <li class="">Set the color palette with <code>.colorSchema(colors.colorSchemas.orange)</code> or with any other color schema</li>
 <li class="">Draw the chart</li>
 </ol>
+<p>For readers with colour blindness, use <code>colors.colorSchemas.okabeIto</code>. Its eight colours, from Okabe and Ito&#x27;s palette, stay distinct with the common kinds of colour blindness. Black comes last, so charts with up to seven categories never draw a series in black. Its yellow, orange and sky blue are light on a white background, so the palette suits filled marks such as bars and donut slices better than thin lines. Colour shouldn&#x27;t be the only thing that tells series apart: a legend or labels help every reader.</p>
 <p>Note that in some charts we can only configure a gradient. Use the <code>colorGradients</code> object instead of <code>colorSchemas</code> within the colors helper. You can explore other options in the source code of the <a href="https://github.com/britecharts/britecharts/blob/main/packages/core/src/charts/helpers/color.ts" target="_blank" rel="noopener noreferrer" class="">colors file</a>.</p>
 <h3 class="anchor anchorTargetStickyNavbar_YBOc" id="give-each-category-its-own-colour">Give each category its own colour<a href="#give-each-category-its-own-colour" class="hash-link" aria-label="Direct link to Give each category its own colour" title="Direct link to Give each category its own colour" translate="no">​</a></h3>
 <p>A palette assigns colours in order, so a category&#x27;s colour changes when the data does. To pin one colour to each category, pass <code>colorMap</code> an object from category to colour:</p>
