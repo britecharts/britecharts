@@ -4,10 +4,15 @@ import { getCleanContainer } from '../../../.storybook/helpers';
 
 export const ColorSchemas = () => {
     const container = getCleanContainer();
-    const { colorSchemas } = colors;
+    const { colorSchemas, colorSchemasHuman } = colors;
 
     Object.keys(colorSchemas).forEach((colorPalette) => {
         const className = `js-palette-${colorPalette}`;
+        const label = document.createElement('p');
+        label.textContent = `${colorSchemasHuman[colorPalette]} · colorSchemas.${colorPalette}`;
+        label.style.margin = '0 0 6px';
+        container.appendChild(label);
+
         const wrapper = document.createElement('div');
         wrapper.classList = className;
         container.appendChild(wrapper);
