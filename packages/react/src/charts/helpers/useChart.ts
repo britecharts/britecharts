@@ -47,7 +47,7 @@ const isSameDrawing = <TData, TChart extends object>(
  * The wrapper is typed as the `Wrapper` the wrappers package publishes rather
  * than as a shape of react's own, so the two cannot drift: `TChart` is the
  * chart module core exports, and it is what gives `configuration` its
- * per-accessor value types. The ten components that call this hook all pass a
+ * per-accessor value types. Every component that calls this hook passes a
  * data-taking wrapper; `Tooltip` is shaped differently (no data, a state object
  * on update) and drives its own effect instead of this hook.
  *

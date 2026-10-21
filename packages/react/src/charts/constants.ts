@@ -3,9 +3,12 @@ export const britechartsCustomEvents = [
     'customMouseMove',
     'customMouseOut',
     'customClick',
+    // The brush's own two, fired as its selection starts and ends
+    'customBrushStart',
+    'customBrushEnd',
 ] as const;
 
-/** One of the four events a chart dispatches. */
+/** One of the events a chart dispatches. */
 export type BritechartsCustomEvent = (typeof britechartsCustomEvents)[number];
 
 // `as const`, so a consumer writing `xAxisFormat(axisTimeCombinations.HOUR_DAY)`
