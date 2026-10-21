@@ -148,6 +148,20 @@ export const red: ColorsSchemasType = [
     '#9c1e19',
 ];
 
+// Okabe-Ito Palette, distinguishable with the common kinds of colour
+// blindness. Black, first in the original, moves last so that charts with up
+// to seven categories don't draw a series in the colour of their axes and text
+export const okabeIto: ColorsSchemasType = [
+    '#e69f00', //orange
+    '#56b4e9', //sky blue
+    '#009e73', //bluish green
+    '#f0e442', //yellow
+    '#0072b2', //blue
+    '#d55e00', //vermillion
+    '#cc79a7', //reddish purple
+    '#000000', //black
+];
+
 export const colorSchemas = {
     britecharts,
     grey,
@@ -159,6 +173,7 @@ export const colorSchemas = {
     pink,
     purple,
     red,
+    okabeIto,
 } satisfies ColorSchemas;
 export const colorSchemasHuman = {
     britecharts: 'Britecharts Default',
@@ -171,6 +186,7 @@ export const colorSchemasHuman = {
     pink: 'Pink',
     purple: 'Purple',
     red: 'Red',
+    okabeIto: 'Okabe-Ito (colour-blind safe)',
 } satisfies ColorsSchemaHumanType;
 
 // Single Colors

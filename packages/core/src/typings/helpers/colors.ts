@@ -9,6 +9,7 @@ export declare enum ColorSchema {
     pink = 7,
     purple = 8,
     red = 9,
+    okabeIto = 10,
 }
 
 export type ColorsSchemaHumanType = {
