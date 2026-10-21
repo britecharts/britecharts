@@ -208,8 +208,8 @@ type StackedBarColumn = {
 type StackedBarPoint = SeriesPoint<StackedBarColumn>;
 
 /**
- * Stacked Area Chart reusable API module that allows us
- * rendering a multi area and configurable chart.
+ * Stacked Bar Chart reusable API module that allows us
+ * rendering a multi stacked bar and configurable chart.
  *
  * @module Stacked-bar
  * @tutorial stacked-bar
