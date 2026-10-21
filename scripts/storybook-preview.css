@@ -20,3 +20,31 @@
     margin: 10px;
     box-shadow: 2px 2px 8px lightgrey;
 }
+
+/* The Playgrounds' export buttons, under the chart inside its card (core) */
+.export-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.export-buttons button {
+    padding: 6px 12px;
+    border: 1px solid #d2d6df;
+    border-radius: 4px;
+    background: #fff;
+    color: #45494e;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.export-buttons button:hover {
+    background: #f8f8fa;
+    border-color: #adb0b6;
+}
+
+.export-buttons button:focus-visible {
+    outline: 2px solid #39c2c9;
+    outline-offset: 2px;
+}
