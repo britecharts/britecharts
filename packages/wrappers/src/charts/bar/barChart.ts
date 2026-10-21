@@ -17,7 +17,7 @@ const barChart: Wrapper<BarChartDataShape[], BarChartModule> = {
         const chart = bar();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'bar');
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
 
@@ -28,7 +28,7 @@ const barChart: Wrapper<BarChartDataShape[], BarChartModule> = {
         const container = select<HTMLElement, BarChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'bar');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

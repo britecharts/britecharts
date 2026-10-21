@@ -2,7 +2,11 @@ import { select } from 'd3-selection';
 
 import { britechartsCustomEvents } from '../constants';
 import type { WrapperConfiguration } from './configuration';
-import { validateConfiguration, validateContainer } from './validation';
+import {
+    nearestName,
+    validateConfiguration,
+    validateContainer,
+} from './validation';
 
 // Stands in for a core chart: its accessors are properties on the chart
 // function, which is what `validateConfiguration` reads.
@@ -59,6 +63,60 @@ describe('validation helpers', () => {
             }
         );
 
+        it('should suggest the accessor a misspelt key was meant to be', () => {
+            const chart = aChart();
+
+            expect(() =>
+                validateConfiguration(
+                    chart,
+                    untyped<typeof chart>({ heigth: 1 })
+                )
+            ).toThrow('heigth: did you mean height?');
+        });
+
+        it('should suggest the event a miscased key was meant to be', () => {
+            const chart = aChart();
+
+            expect(() =>
+                validateConfiguration(
+                    chart,
+                    untyped<typeof chart>({ customMouseover: () => undefined })
+                )
+            ).toThrow('customMouseover: did you mean customMouseOver?');
+        });
+
+        it('should suggest nothing for a key close to no accessor', () => {
+            const chart = aChart();
+            let message = '';
+
+            try {
+                validateConfiguration(
+                    chart,
+                    untyped<typeof chart>({ notAnAccessor: 1 })
+                );
+            } catch (error) {
+                message = (error as Error).message;
+            }
+
+            expect(message).toBe(
+                'Method not supported by Britechart: notAnAccessor'
+            );
+        });
+
+        it('should link the API page of the chart when given one', () => {
+            const chart = aChart();
+
+            expect(() =>
+                validateConfiguration(
+                    chart,
+                    untyped<typeof chart>({ notAnAccessor: 1 }),
+                    'grouped-bar'
+                )
+            ).toThrow(
+                'Supported accessors: https://britecharts.github.io/britecharts/docs/API/grouped-bar'
+            );
+        });
+
         it('should read the accessors of a chart that is an arrow function', () => {
             const arrowChart = Object.assign(() => undefined, {
                 width: (value?: number) => value,
@@ -85,6 +143,23 @@ describe('validation helpers', () => {
             expect(() => validateContainer(select('.missing'))).toThrow(
                 'A root container is required'
             );
+        });
+    });
+
+    describe('nearestName', () => {
+        const names = ['height', 'width', 'colorSchema', 'isAnimated'];
+
+        it.each([
+            ['heigth', 'height'],
+            ['colorschema', 'colorSchema'],
+            ['isAnimate', 'isAnimated'],
+            ['widht', 'width'],
+        ])('should find %s close to %s', (name, expected) => {
+            expect(nearestName(name, names)).toBe(expected);
+        });
+
+        it('should find nothing close to an unrelated name', () => {
+            expect(nearestName('barColor', names)).toBeNull();
         });
     });
 });

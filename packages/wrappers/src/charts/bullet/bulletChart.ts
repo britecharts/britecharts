@@ -19,7 +19,7 @@ const bulletChart: Wrapper<BulletChartDataShape[], BulletChartModule> = {
         const chart = bullet();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'bullet');
 
         // Calls the chart with the container and dataset
         container.datum(data[0]).call(applyConfiguration(chart, configuration));
@@ -31,7 +31,7 @@ const bulletChart: Wrapper<BulletChartDataShape[], BulletChartModule> = {
         const container = select<HTMLElement, BulletChartDataShape>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'bullet');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset

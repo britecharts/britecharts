@@ -22,7 +22,7 @@ const lineChart: Wrapper<LineChartData, LineChartModule> = {
         const chart = line();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'line');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -41,7 +41,7 @@ const lineChart: Wrapper<LineChartData, LineChartModule> = {
         const shouldUpdateData = data && data.data && data.data.length;
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'line');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset

@@ -23,7 +23,7 @@ const groupedBarChart: Wrapper<
         const chart = groupedBar();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'grouped-bar');
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -35,7 +35,7 @@ const groupedBarChart: Wrapper<
         const container = select<HTMLElement, GroupedBarChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration);
+        validateConfiguration(chart, configuration, 'grouped-bar');
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

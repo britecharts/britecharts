@@ -23,7 +23,7 @@ const sparklineChart: Wrapper<SparklineChartDataShape[], SparklineChartModule> =
             const chart = sparkline();
 
             validateContainer(container);
-            validateConfiguration(chart, configuration);
+            validateConfiguration(chart, configuration, 'sparkline');
 
             // Calls the chart with the container and dataset
             container
@@ -39,7 +39,7 @@ const sparklineChart: Wrapper<SparklineChartDataShape[], SparklineChartModule> =
             );
 
             validateContainer(container);
-            validateConfiguration(chart, configuration);
+            validateConfiguration(chart, configuration, 'sparkline');
             applyConfiguration(chart, configuration);
 
             // Calls the chart with the container and dataset.
