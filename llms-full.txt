@@ -979,6 +979,16 @@ lineChart.isAnimated(true).animationDuration(600);
 
 A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set.
 
+## How to Export a Chart
+Call `exportChart` with a filename to download the chart as it is drawn. The filename picks the format: one ending in `.svg` downloads an svg file, and any other a png. An optional second argument adds a title at the top:
+
+```js
+barChart.exportChart('visits.svg', 'Visits by month');
+barChart.exportChart('visits.png');
+```
+
+The svg keeps the chart's styles inlined, so it looks the same in a design tool or a document, and it stays sharp at any size. `exportChart` returns a promise that resolves once the download starts. In React, the grouped bar, heatmap, line, sparkline, stacked area and stacked bar components take the filename as their `exportChart` prop.
+
 ## How to Chart Negative Values
 The bar, grouped bar, stacked bar, brush and scatter plot charts draw negative values with no setting to turn on:
 
@@ -1957,13 +1967,14 @@ If true, adds labels at the end of the bars
 | [_x] | `Boolean` | `false` | 
 
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `String` | File title for the resulting picture |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
 
 ## hasPercentage(_x) ⇒ `boolean` \| `module`
@@ -2609,13 +2620,14 @@ the third color will be applied to the marker lines.
 | _x | `Array.<String>` | Desired colorSchema for the graph |
 
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `String` | File title for the resulting picture |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
 
 ## isLoading(_flag) ⇒ `boolean` \| `module`
@@ -2845,13 +2857,14 @@ with a given color (light gray by default)
 donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
 ```
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `String` | File title for the resulting picture |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
 
 ## externalRadius(_x) ⇒ `Number` \| `Module`
@@ -3148,13 +3161,14 @@ Gets or Sets the colorSchema of the chart
 | _x | `Array.<String>` | Desired colorSchema for the graph |
 
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `String` | File title for the resulting picture |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
 
 ## grid([_x]) ⇒ `String` \| `module`
@@ -3418,11 +3432,12 @@ Gets or Sets the colorSchema of the chart
 | _x | `Array.<String>` | `britecharts-red` | Desired colorSchema for the heatma boxes |
 
 ## exportChart(filename, title)
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `String` | File title for the resulting picture |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
 
 ## isLoading(_flag) ⇒ `boolean` \| `module`
@@ -4029,13 +4044,14 @@ Gets or Sets the width of the chart
 | _x | `number` | Desired width for the graph |
 
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `string` | File title for the resulting picture |
+| filename | `string` | Name of the downloaded file, whose extension picks the format |
 | title | `string` | Title to add at the top of the exported picture |
 
 ## on() ⇒ `module`
@@ -4319,13 +4335,14 @@ Gets or Sets the colorSchema of the chart
 scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
 ```
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `String` | File title for the resulting picture |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
 
 ## grid(_x) ⇒ `String` \| `module`
@@ -4693,13 +4710,14 @@ Gets or Sets the areaGradient of the chart
 | _x | `Array.<string>` | = ['#F5FDFF', '#F6FEFC']   Desired areaGradient for the graph |
 
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `string` | File title for the resulting picture |
+| filename | `string` | Name of the downloaded file, whose extension picks the format |
 | title | `string` | Title to add at the top of the exported picture |
 
 ## height(_x) ⇒ `height` \| `module`
@@ -5002,13 +5020,14 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 | _x | `String` | A language tag (BCP 47) like 'en-US' or 'fr-FR' |
 
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `String` | File title for the resulting picture |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
 
 ## on() ⇒ `module`
@@ -5261,13 +5280,14 @@ Gets or Sets the colorSchema of the chart
 | _x | `Array.<String>` | = colorSchemas.britecharts     Desired colorSchema for the graph |
 
 ## exportChart(filename, title) ⇒ `Promise`
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | `String` | File title for the resulting picture |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
 
 ## grid(_x) ⇒ `String` \| `module`

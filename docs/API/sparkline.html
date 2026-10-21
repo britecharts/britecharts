@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.aae73d69.css">
-<script src="/britecharts/assets/js/runtime~main.43952156.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.c16948c5.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.5f64871c.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.57324ce9.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -173,7 +173,8 @@ chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>_x</td><td><code>Array.&lt;string&gt;</code></td><td>= [&#x27;#F5FDFF&#x27;, &#x27;#F6FEFC&#x27;]   Desired areaGradient for the graph</td></tr></tbody></table>
 <p><a name="module_Sparkline--exports.exportChart" id="module_Sparkline--exports.exportChart" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportchartfilename-title--promise">exportChart(filename, title) ⇒ <code>Promise</code><a href="#exportchartfilename-title--promise" class="hash-link" aria-label="Direct link to exportchartfilename-title--promise" title="Direct link to exportchartfilename-title--promise" translate="no">​</a></h2>
-<p>Chart exported to png and a download action is fired</p>
+<p>Exports the chart and fires a download: an svg file when the filename
+ends in <code>.svg</code>, and a png otherwise</p>
 <p><strong>Kind</strong>: static method of <a href="#exp_module_Sparkline--exports" class=""><code>exports</code></a><br>
 <strong>Returns</strong>: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully<br>
 <strong>Access</strong>: public</p>
@@ -197,7 +198,7 @@ chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 
 
 
-<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>filename</td><td><code>string</code></td><td>File title for the resulting picture</td></tr><tr><td>title</td><td><code>string</code></td><td>Title to add at the top of the exported picture</td></tr></tbody></table>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>filename</td><td><code>string</code></td><td>Name of the downloaded file, whose extension picks the format</td></tr><tr><td>title</td><td><code>string</code></td><td>Title to add at the top of the exported picture</td></tr></tbody></table>
 <p><a name="module_Sparkline--exports.height" id="module_Sparkline--exports.height" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="height_x--height--module">height(_x) ⇒ <code>height</code> | <code>module</code><a href="#height_x--height--module" class="hash-link" aria-label="Direct link to height_x--height--module" title="Direct link to height_x--height--module" translate="no">​</a></h2>
 <p>Gets or Sets the height of the chart</p>

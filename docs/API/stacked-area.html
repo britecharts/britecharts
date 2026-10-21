@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.aae73d69.css">
-<script src="/britecharts/assets/js/runtime~main.43952156.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.c16948c5.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.5f64871c.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.57324ce9.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -521,7 +521,8 @@ Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>_x</td><td><code>String</code></td><td>A language tag (BCP 47) like &#x27;en-US&#x27; or &#x27;fr-FR&#x27;</td></tr></tbody></table>
 <p><a name="module_Stacked-area--exports.exportChart" id="module_Stacked-area--exports.exportChart" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportchartfilename-title--promise">exportChart(filename, title) ⇒ <code>Promise</code><a href="#exportchartfilename-title--promise" class="hash-link" aria-label="Direct link to exportchartfilename-title--promise" title="Direct link to exportchartfilename-title--promise" translate="no">​</a></h2>
-<p>Chart exported to png and a download action is fired</p>
+<p>Exports the chart and fires a download: an svg file when the filename
+ends in <code>.svg</code>, and a png otherwise</p>
 <p><strong>Kind</strong>: static method of <a href="#exp_module_Stacked-area--exports" class=""><code>exports</code></a><br>
 <strong>Returns</strong>: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully<br>
 <strong>Access</strong>: public</p>
@@ -545,7 +546,7 @@ Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 
 
 
-<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>filename</td><td><code>String</code></td><td>File title for the resulting picture</td></tr><tr><td>title</td><td><code>String</code></td><td>Title to add at the top of the exported picture</td></tr></tbody></table>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>filename</td><td><code>String</code></td><td>Name of the downloaded file, whose extension picks the format</td></tr><tr><td>title</td><td><code>String</code></td><td>Title to add at the top of the exported picture</td></tr></tbody></table>
 <p><a name="module_Stacked-area--exports.on" id="module_Stacked-area--exports.on" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="on--module">on() ⇒ <code>module</code><a href="#on--module" class="hash-link" aria-label="Direct link to on--module" title="Direct link to on--module" translate="no">​</a></h2>
 <p>Exposes an &#x27;on&#x27; method that acts as a bridge with the event dispatcher

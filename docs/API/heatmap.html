@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.aae73d69.css">
-<script src="/britecharts/assets/js/runtime~main.43952156.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.c16948c5.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.5f64871c.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.57324ce9.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -196,7 +196,8 @@ chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>_x</td><td><code>Array.&lt;String&gt;</code></td><td><code>britecharts-red</code></td><td>Desired colorSchema for the heatma boxes</td></tr></tbody></table>
 <p><a name="module_Heatmap--exports.exportChart" id="module_Heatmap--exports.exportChart" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportchartfilename-title">exportChart(filename, title)<a href="#exportchartfilename-title" class="hash-link" aria-label="Direct link to exportChart(filename, title)" title="Direct link to exportChart(filename, title)" translate="no">​</a></h2>
-<p>Chart exported to png and a download action is fired</p>
+<p>Exports the chart and fires a download: an svg file when the filename
+ends in <code>.svg</code>, and a png otherwise</p>
 <p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
 <strong>Access</strong>: public</p>
 
@@ -219,7 +220,7 @@ chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 
 
 
-<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>filename</td><td><code>String</code></td><td>File title for the resulting picture</td></tr><tr><td>title</td><td><code>String</code></td><td>Title to add at the top of the exported picture</td></tr></tbody></table>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>filename</td><td><code>String</code></td><td>Name of the downloaded file, whose extension picks the format</td></tr><tr><td>title</td><td><code>String</code></td><td>Title to add at the top of the exported picture</td></tr></tbody></table>
 <p><a name="module_Heatmap--exports.isLoading" id="module_Heatmap--exports.isLoading" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="isloading_flag--boolean--module">isLoading(_flag) ⇒ <code>boolean</code> | <code>module</code><a href="#isloading_flag--boolean--module" class="hash-link" aria-label="Direct link to isloading_flag--boolean--module" title="Direct link to isloading_flag--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets the loading state of the chart</p>
