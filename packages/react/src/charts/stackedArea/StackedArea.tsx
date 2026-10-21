@@ -72,9 +72,10 @@ export interface StackedAreaProps {
     emptyDataConfig?: StackedAreaEmptyDataConfig;
 
     /**
-     * The filename to export the chart to. Setting it exports a png and fires
+     * The filename to export the chart to. Setting it exports the chart and fires
      * a download, which is what the chart's `exportChart` command does; it is
      * not a callback.
+     * A filename ending in `.svg` downloads an svg file, and any other a png.
      */
     exportChart?: string;
 

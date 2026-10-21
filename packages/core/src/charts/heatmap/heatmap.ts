@@ -626,8 +626,9 @@ export default function module(): HeatmapChartModule {
     } as HeatmapChartModule['colorSchema'];
 
     /**
-     * Chart exported to png and a download action is fired
-     * @param {String} filename     File title for the resulting picture
+     * Exports the chart and fires a download: an svg file when the filename
+     * ends in `.svg`, and a png otherwise
+     * @param {String} filename     Name of the downloaded file, whose extension picks the format
      * @param {String} title        Title to add at the top of the exported picture
      * @public
      */

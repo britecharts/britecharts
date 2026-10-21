@@ -104,8 +104,8 @@ export interface AnimatedChartAPI<T> {
 
 export interface ExportableChartAPI {
     /**
-     * Executes a command that triggers the download of the current chart as a .png image file
-     * @param filename  The filename of the downloaded image
+     * Executes a command that triggers the download of the current chart: an svg file when the filename ends in `.svg`, and a png otherwise
+     * @param filename  The filename of the download, whose extension picks the format
      * @param title     The title attached to the image
      */
     exportChart(filename: string, title: string): Promise<void>;

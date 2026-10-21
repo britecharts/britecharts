@@ -85,6 +85,8 @@ const config = {
     defaultFilename: 'britechart.png',
     chartBackground: 'white',
     imageSourceBase: 'data:image/svg+xml;base64,',
+    svgSourceBase: 'data:image/svg+xml;charset=utf-8,',
+    xmlDeclaration: '<?xml version="1.0" encoding="UTF-8"?>\n',
     titleFontSize: '15px',
     titleFontFamily: DEFAULT_FONT_STACK,
     titleTopOffset: 15,
@@ -93,10 +95,16 @@ const config = {
     },
 };
 
+const isSvgFilename = (filename?: string): filename is string =>
+    !!filename && /\.svg$/i.test(filename);
+
 /**
- * Main function to be used as a method by chart instances to export charts to png
+ * Main function to be used as a method by chart instances to export charts.
+ * The filename picks the format: one ending in `.svg` downloads the chart as
+ * an svg file, with its styles inlined so it looks the same outside the page,
+ * and any other downloads a png.
  * @param  d3svg     The chart's svg selection
- * @param  filename  download to be called <filename>.png
+ * @param  filename  download to be called <filename>, britechart.png by default
  * @param  title     Title for the image
  * @private
  */
@@ -111,6 +119,15 @@ export function exportChart(
         console.error(IE_ERROR_MSG);
 
         return false;
+    }
+
+    if (isSvgFilename(filename)) {
+        downloadSvg(
+            convertSvgToHtml.call(this, d3svg, title) as string,
+            filename
+        );
+
+        return Promise.resolve();
     }
 
     return loadImage(convertSvgToHtml.call(this, d3svg, title) as string)
@@ -218,9 +235,7 @@ export function drawImageOnCanvas(
 }
 
 /**
- * Triggers browser to download image, convert canvas to url,
- * we need to append the link el to the dom before clicking it for Firefox to register
- * point <a> at it and trigger click
+ * Triggers browser to download the canvas as an image, a png by default
  * @private
  */
 function downloadCanvas(
@@ -228,7 +243,29 @@ function downloadCanvas(
     filename: string = config.defaultFilename,
     extensionType: string = 'image/png'
 ): void {
-    const url = canvas.toDataURL(extensionType);
+    downloadUrl(canvas.toDataURL(extensionType), filename);
+}
+
+/**
+ * Triggers browser to download the svg markup as a file, with the XML
+ * declaration a standalone svg file starts with
+ * @private
+ */
+function downloadSvg(svgHtml: string, filename: string): void {
+    downloadUrl(
+        `${config.svgSourceBase}${encodeURIComponent(
+            config.xmlDeclaration + svgHtml
+        )}`,
+        filename
+    );
+}
+
+/**
+ * Points a link at the url and clicks it, appended to the document first
+ * for Firefox to register the click
+ * @private
+ */
+function downloadUrl(url: string, filename: string): void {
     const link = document.createElement('a');
 
     link.href = url;
