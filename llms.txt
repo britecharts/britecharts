@@ -1,0 +1,49 @@
+# Britecharts
+
+> Britecharts is a library of reusable D3.js charts: bar, grouped bar, stacked bar, line, stacked area, donut, scatter plot, heatmap, sparkline and bullet charts, with a legend, tooltips and a brush. Each chart is a function configured through chained getter and setter accessors, then called on a D3 selection that holds the data. `@britecharts/core` has the charts, `@britecharts/wrappers` creates, updates and destroys them in one call, and `@britecharts/react` has them as React components.
+
+Version 3 is in beta: install `@britecharts/core@beta`, `@britecharts/wrappers@beta` or `@britecharts/react@beta`. Code written for version 2, the `britecharts` package, differs; the migration guide lists each change. Every chart shares one accessor vocabulary, such as `colorSchema`, `isAnimated`, `isLoading`, `numberFormat`, `a11yTitle` and `a11yDescription`, and an unset accessor reads back `null`.
+
+The whole of this documentation, as one text file: https://britecharts.github.io/britecharts/llms-full.txt
+
+## Guides
+
+- [Britecharts](https://britecharts.github.io/britecharts/docs/Britecharts): What Britecharts is, its three packages, and the charts it draws
+- [Getting Started Using Britecharts](https://britecharts.github.io/britecharts/docs/tutorials/getting-started): Draw a first chart: load Britecharts, configure a bar chart and render it with data
+- [Installing Britecharts](https://britecharts.github.io/britecharts/docs/tutorials/installing-britecharts): Install from npm, load from the CDN, or build from source
+- [Composing Your First Data Visualization](https://britecharts.github.io/britecharts/docs/tutorials/composing-dataviz): Combine a line chart with a tooltip, a legend and a brush
+- [Styling Britecharts](https://britecharts.github.io/britecharts/docs/tutorials/styling-charts): Colour palettes, gradients and overriding the default styles
+- [User How-To Guides](https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides): Recipes: colours, tooltips, number and date formats, loading states, animation, negative values, accessibility, time scales
+- [Migration Guide from version 2 to version 3](https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3): Every breaking change from version 2 to 3, and what to change
+
+## Packages
+
+- [@britecharts/core](https://britecharts.github.io/britecharts/docs/packages/core-readme): The charts, for plain JavaScript
+- [@britecharts/wrappers](https://britecharts.github.io/britecharts/docs/packages/wrappers-readme): One call that creates, updates and destroys a chart, for frameworks
+- [@britecharts/react](https://britecharts.github.io/britecharts/docs/packages/react-readme): The charts as React components
+
+## API reference
+
+- [Bar](https://britecharts.github.io/britecharts/docs/API/bar): Bar Chart reusable API class that renders a simple and configurable bar chart
+- [Brush](https://britecharts.github.io/britecharts/docs/API/brush): Brush Chart reusable API class that renders a simple and configurable brush chart
+- [Bullet](https://britecharts.github.io/britecharts/docs/API/bullet): Reusable Bullet Chart API class that renders a simple and configurable Bullet Chart
+- [Donut](https://britecharts.github.io/britecharts/docs/API/donut): Reusable Donut Chart API class that renders a simple and configurable donut chart
+- [Grouped Bar](https://britecharts.github.io/britecharts/docs/API/grouped-bar): Grouped Bar Chart reusable API module that allows us rendering a multi grouped bar and configurable chart
+- [Heatmap](https://britecharts.github.io/britecharts/docs/API/heatmap): Reusable Heatmap API module that renders a simple and configurable heatmap chart
+- [Legend](https://britecharts.github.io/britecharts/docs/API/legend): Legend Component reusable API class that renders a simple and configurable legend element
+- [Line](https://britecharts.github.io/britecharts/docs/API/line): Line Chart reusable API module that allows us rendering a multi line and configurable chart
+- [Scatter Plot](https://britecharts.github.io/britecharts/docs/API/scatter-plot): Reusable Scatter Plot API class that renders a simple and configurable scatter chart
+- [Sparkline](https://britecharts.github.io/britecharts/docs/API/sparkline): Sparkline Chart reusable API module that allows us rendering a sparkline configurable chart
+- [Stacked Area](https://britecharts.github.io/britecharts/docs/API/stacked-area): Stacked Area Chart reusable API module that allows us rendering a multi area and configurable chart
+- [Stacked Bar](https://britecharts.github.io/britecharts/docs/API/stacked-bar): Stacked Area Chart reusable API module that allows us rendering a multi area and configurable chart
+- [Tooltip](https://britecharts.github.io/britecharts/docs/API/tooltip): Tooltip component: one box, drawn inside the chart's svg, that follows the pointer and shows what it is over
+
+## Optional
+
+- [The Reusable Chart API](https://britecharts.github.io/britecharts/docs/topics/reusable-api): The reusable chart pattern every chart follows
+- [API Guidelines](https://britecharts.github.io/britecharts/docs/topics/api-guidelines): How accessors are named
+- [Contributor How To Guides](https://britecharts.github.io/britecharts/docs/how-tos/contributor-how-to-guides): Recipes for contributors
+- [A11y helpers](https://britecharts.github.io/britecharts/docs/API/a11y): Internal helpers the charts share
+- [Domain helpers](https://britecharts.github.io/britecharts/docs/API/domain): Internal helpers the charts share
+- [Grid helpers](https://britecharts.github.io/britecharts/docs/API/grid): Internal helpers the charts share
+- [Scale helpers](https://britecharts.github.io/britecharts/docs/API/scale): Internal helpers the charts share
