@@ -94,7 +94,7 @@ export interface ChartDimensionsAPI<T> {
 }
 
 export interface AnimatedChartAPI<T> {
-    /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
+    /** Gets or Sets the isAnimated property of the chart, making it to animate when render. Ignored when the reader's system asks for reduced motion */
     isAnimated(): boolean;
     isAnimated(isAnimated: boolean): T & AnimatedChartAPI<T>;
     /** Gets or Sets the duration of the animation */

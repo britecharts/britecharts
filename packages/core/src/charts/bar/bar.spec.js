@@ -731,6 +731,50 @@ describe('bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        describe('when the reader prefers reduced motion', () => {
+            const barHeights = () =>
+                containerFixture
+                    .selectAll('.bar')
+                    .nodes()
+                    .map((bar) => Number(bar.getAttribute('height')));
+
+            const stubReducedMotion = (matches) =>
+                vi.stubGlobal('matchMedia', (query) => ({
+                    matches:
+                        matches && query === '(prefers-reduced-motion: reduce)',
+                }));
+
+            afterEach(() => {
+                vi.unstubAllGlobals();
+            });
+
+            it('should draw the bars at their values at once, though isAnimated is true', () => {
+                stubReducedMotion(true);
+
+                barChart.isAnimated(true);
+                containerFixture.datum(dataset).call(barChart);
+
+                expect(barHeights().every((height) => height > 0)).toBe(true);
+            });
+
+            it('should still read back the isAnimated that was set', () => {
+                stubReducedMotion(true);
+
+                barChart.isAnimated(true);
+
+                expect(barChart.isAnimated()).toBe(true);
+            });
+
+            it('should animate from zero when the reader does not', () => {
+                stubReducedMotion(false);
+
+                barChart.isAnimated(true);
+                containerFixture.datum(dataset).call(barChart);
+
+                expect(barHeights().every((height) => height === 0)).toBe(true);
+            });
+        });
+
         it('should provide isAnimated getter and setter', () => {
             let previous = barChart.isAnimated(),
                 expected = true,

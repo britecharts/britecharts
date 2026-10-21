@@ -64,3 +64,14 @@ export const labelChart = (
         svg.removeAttribute('aria-describedby');
     }
 };
+
+/**
+ * Whether the reader's system asks for reduced motion. Charts check it on
+ * every render, so `isAnimated` gives way to it, and a change to the setting
+ * applies from the next render. False where there is no `matchMedia`, as on a
+ * server or in jsdom.
+ */
+export const prefersReducedMotion = (): boolean =>
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;

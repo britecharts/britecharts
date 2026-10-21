@@ -48,7 +48,7 @@ import type {
     InteractiveChartAPI,
     ThemableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -961,7 +961,7 @@ export default function module(): ScatterPlotModule {
             .data(dataPoints)
             .enter();
 
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             circles
                 .append('circle')
                 .attr('class', 'data-point')

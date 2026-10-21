@@ -57,7 +57,7 @@ import type {
     ThemableChartAPI,
     TimeSeriesChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -1162,7 +1162,7 @@ export default function module(): StackedAreaChartModule {
             .x(({ data }) => xScale(Number(data.date)))
             .y((d) => yScale(d[1]));
 
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             series = svg
                 .select('.chart-group')
                 .selectAll('.layer')
@@ -1819,6 +1819,8 @@ export default function module(): StackedAreaChartModule {
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+     * The chart draws without animation when the reader's system asks for
+     * reduced motion (`prefers-reduced-motion`), whatever this is set to.
      * @param  {Boolean} _x = false     Desired animation flag
      * @return {Boolean | module}       Current isAnimated flag or Chart module
      * @public

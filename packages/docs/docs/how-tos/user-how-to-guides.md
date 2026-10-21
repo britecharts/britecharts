@@ -120,6 +120,8 @@ lineChart.isAnimated(true).animationDuration(600);
 
 `animationDuration` does nothing while `isAnimated` is `false`. The bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, scatter plot, sparkline and brush charts animate. React components take both as props.
 
+A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set.
+
 ## How to Chart Negative Values
 The bar, grouped bar, stacked bar, brush and scatter plot charts draw negative values with no setting to turn on:
 

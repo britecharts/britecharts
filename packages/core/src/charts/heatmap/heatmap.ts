@@ -19,7 +19,7 @@ import type {
     ExportableChartAPI,
     InteractiveChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum HeatmapChartKeys {
@@ -397,7 +397,7 @@ export default function module(): HeatmapChartModule {
                 handleClick(this, d, chartWidth, chartHeight, event);
             });
 
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             boxElements
                 .transition()
                 .duration(animationDuration)
@@ -668,6 +668,8 @@ export default function module(): HeatmapChartModule {
 
     /**
      * Gets or Sets the isAnimated value of the chart
+     * The chart draws without animation when the reader's system asks for
+     * reduced motion (`prefers-reduced-motion`), whatever this is set to.
      * @param  {Boolean} _x=false         Decide whether to show chart animation
      * @return {Boolean | module}         Current isAnimated value or Chart module to chain calls
      * @public

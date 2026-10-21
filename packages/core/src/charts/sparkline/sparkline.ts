@@ -21,7 +21,7 @@ import type {
     ChartDimensionsAPI,
     ExportableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum SparklineChartKeys {
@@ -380,7 +380,7 @@ export default function module(): SparklineChartModule {
             svg.selectAll(`#${maskingClipId}`).remove();
         }
 
-        if (isAnimated) {
+        if (isAnimated && !prefersReducedMotion()) {
             maskingClip = svg
                 .select('.metadata-group')
                 .append('clipPath')
@@ -586,6 +586,8 @@ export default function module(): SparklineChartModule {
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+     * The chart draws without animation when the reader's system asks for
+     * reduced motion (`prefers-reduced-motion`), whatever this is set to.
      * By default this is 'false'
      *
      * @param  {boolean} _x=false       Desired animation flag
