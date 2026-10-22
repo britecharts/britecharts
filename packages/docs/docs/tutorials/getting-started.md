@@ -11,11 +11,11 @@ In this tutorial, we will *create a simple data visualization using Britecharts*
 To use a Britechart, we need to install the library. In this tutorial, we are going to use a simple CDN link to install it. For that, create a simple HTML file and add these script tags:
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"
         type="text/javascript"></script>
 ```
-The bundle has every chart, and the d3 modules they use. Note that we also load `d3-selection` on its own. We use this module to create a selection and load the data in the container where we render the chart.
+The bundle has every chart, and the d3 modules they use. Note that we also load `d3-selection` on its own, version 3, which matches the d3 v7 modules the bundle is built on. We use this module to create a selection and load the data in the container where we render the chart.
 
 We also need to load the styling of our chart, and we do it similarly by accesing the CDN link:
 ```html
