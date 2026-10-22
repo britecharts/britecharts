@@ -309,7 +309,7 @@ export default function module(): DonutChartModule {
         hasLastHoverSliceHighlighted = false,
         lastHighlightedSlice: SliceElement | null = null,
         emptyDataConfig: DonutEmptyDataConfig = {
-            emptySliceColor: 'var(--bc-skeleton)',
+            emptySliceColor: 'var(--bc-skeleton, #eff2f5)',
             showEmptySlice: false,
         },
         percentageFormat = '.1f',

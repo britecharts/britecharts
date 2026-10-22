@@ -166,7 +166,7 @@ function addBackground(html: string, background: string): string {
  * page, where the tokens are not defined, so it has to carry the colour
  * itself.
  * @param  svgNode   the chart's svg
- * @param  color     a CSS colour, such as `var(--bc-background)`
+ * @param  color     a CSS colour, such as `var(--bc-background, #fff)`
  * @param  fallback  what to use when it can't be resolved, as in jsdom
  * @private
  */
@@ -218,11 +218,19 @@ export function convertSvgToHtml(
         html,
         title,
         parseInt(d3svg.attr('width'), 10),
-        resolveColor(svgNode, 'var(--bc-text-muted)', colorSchemas.grey[6])
+        resolveColor(
+            svgNode,
+            'var(--bc-text-muted, #666a73)',
+            colorSchemas.grey[6]
+        )
     );
     html = addBackground(
         html,
-        resolveColor(svgNode, 'var(--bc-background)', config.chartBackground)
+        resolveColor(
+            svgNode,
+            'var(--bc-background, #fff)',
+            config.chartBackground
+        )
     );
 
     return html;

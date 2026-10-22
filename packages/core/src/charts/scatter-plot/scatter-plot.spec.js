@@ -323,7 +323,7 @@ describe('scatter Plot', () => {
             });
 
             it('data points should have a fixed fill', () => {
-                const expected = asStyle('var(--bc-surface)');
+                const expected = asStyle('var(--bc-surface, #fff)');
 
                 containerFixture.datum(dataset).call(scatterPlot);
                 const circles = containerFixture

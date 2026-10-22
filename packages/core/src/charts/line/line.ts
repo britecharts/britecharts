@@ -501,7 +501,7 @@ export default function module(): LineChartModule {
     const strokeDashoffset = 10;
     const strokeDasharrayOffset = 3;
     const overlayColor = 'rgba(0, 0, 0, 0)';
-    const defaultCustomLineColor = 'var(--bc-axis)';
+    const defaultCustomLineColor = 'var(--bc-axis, #adb0b6)';
     // extractors
     // These three read a single field, and they are reached with a row at
     // every stage of `cleanData`: the raw shape the consumer passed in, the

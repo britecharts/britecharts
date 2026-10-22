@@ -162,7 +162,7 @@ export default function module(): HeatmapChartModule {
     const boxInitialOpacity = 0.2;
     const boxFinalOpacity = 1;
     const boxInitialColor = '#BBBBBB';
-    const boxBorderColor = 'var(--bc-surface)';
+    const boxBorderColor = 'var(--bc-surface, #fff)';
     const daysHuman = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
     const dayLabelWidth = 30;
     const hourLabelHeight = 20;

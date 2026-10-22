@@ -404,7 +404,7 @@ export default function module(): ScatterPlotModule {
     const nameKey = 'name';
     const tickPadding = 5;
     // A theme token, so it is set as a style: attributes cannot read var()
-    const hollowColor = 'var(--bc-surface)';
+    const hollowColor = 'var(--bc-surface, #fff)';
     const minZoom = 0.5;
     const maxZoom = 20;
     const trendLineCurve: CurveFactory = curveBasis;

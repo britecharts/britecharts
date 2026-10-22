@@ -156,8 +156,8 @@ export default function module(): SparklineChartModule {
         xScale: ScaleLinear<number, number>,
         yScale: ScaleLinear<number, number>,
         areaGradient: ColorGradientType = [
-            'var(--bc-sparkline-area-start)',
-            'var(--bc-sparkline-area-end)',
+            'var(--bc-sparkline-area-start, #f5fdff)',
+            'var(--bc-sparkline-area-end, #f6fefc)',
         ],
         areaGradientEl: ChartSelection<SVGStopElement>,
         lineGradient: ColorGradientType = colorHelper.colorGradients.greenBlue,
