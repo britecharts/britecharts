@@ -1,9 +1,16 @@
 import '../src/styles/britecharts.scss';
 import '../../../scripts/storybook-preview.css';
+import {
+    applyColorScheme,
+    colorSchemeGlobalTypes,
+    colorSchemeInitialGlobals,
+} from '../../../scripts/storybook-color-scheme.js';
 
 // Shows the story's name above its card. Only on the canvas: a docs page
 // already heads each story with its name.
 const withStoryTitle = (storyFn, context) => {
+    applyColorScheme(context.globals.colorScheme);
+
     const story = storyFn();
 
     if (context.viewMode !== 'story') {
@@ -27,6 +34,9 @@ const withStoryTitle = (storyFn, context) => {
 };
 
 export const decorators = [withStoryTitle];
+
+export const globalTypes = colorSchemeGlobalTypes;
+export const initialGlobals = colorSchemeInitialGlobals;
 
 export const parameters = {
     a11y: {

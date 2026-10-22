@@ -309,7 +309,7 @@ export default function module(): DonutChartModule {
         hasLastHoverSliceHighlighted = false,
         lastHighlightedSlice: SliceElement | null = null,
         emptyDataConfig: DonutEmptyDataConfig = {
-            emptySliceColor: '#EFF2F5',
+            emptySliceColor: 'var(--bc-skeleton)',
             showEmptySlice: false,
         },
         percentageFormat = '.1f',
@@ -587,7 +587,7 @@ export default function module(): DonutChartModule {
                 // types works because d3 only cares that the groups line up.
                 slices as unknown as ChartSelection<SVGPathElement>
             )
-            .attr('fill', emptyDataConfig.emptySliceColor)
+            .style('fill', emptyDataConfig.emptySliceColor)
             .attr('d', shape)
             .transition()
             .ease(ease)

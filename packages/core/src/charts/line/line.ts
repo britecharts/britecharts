@@ -501,7 +501,7 @@ export default function module(): LineChartModule {
     const strokeDashoffset = 10;
     const strokeDasharrayOffset = 3;
     const overlayColor = 'rgba(0, 0, 0, 0)';
-    const defaultCustomLineColor = colorHelper.colorSchemas.grey[3];
+    const defaultCustomLineColor = 'var(--bc-axis)';
     // extractors
     // These three read a single field, and they are reached with a row at
     // every stage of `cleanData`: the raw shape the consumer passed in, the
@@ -1246,7 +1246,8 @@ export default function module(): LineChartModule {
             .attr('x2', chartWidth)
             .attr('y1', (d) => yScale(d))
             .attr('y2', (d) => yScale(d))
-            .attr('stroke', (d) => getColor(d))
+            // A style, so the default can be a theme token
+            .style('stroke', (d) => getColor(d))
             .attr('fill', 'none');
 
         // draw the annotations right above the line at the right end of the chart

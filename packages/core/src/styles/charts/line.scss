@@ -1,4 +1,5 @@
 @use "../helpers/variables" as vars;
+@use "../helpers/theme";
 
 $line-width: 2;
 $text-size: 0.75rem;
@@ -6,7 +7,7 @@ $text-size: 0.75rem;
 .line-chart {
     // Class for data point markers
     .data-point-mark {
-        fill: vars.$white;
+        fill: theme.color("surface");
     }
 
     // Lines
@@ -29,14 +30,14 @@ $text-size: 0.75rem;
     }
 
     .custom-line-annotation {
-        fill: vars.$grey-600;
+        fill: theme.color("text-muted");
         font-size: $text-size;
         line-height: $text-size;
     }
 
     // This is the div that we use to simulate a line drawing animation
-    // NOTE: it should be of the same color of the background of the chart
+    // It has to match what is behind the chart: the background token
     .masking-rectangle {
-        fill: vars.$white;
+        fill: theme.color("background");
     }
 }

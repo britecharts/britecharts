@@ -1,0 +1,84 @@
+@use "sass:list";
+@use "sass:map";
+@use "variables" as vars;
+
+// The colours of everything around the data: text, axes, grid, tooltips,
+// legend, loading skeletons. Each is a CSS custom property, set on every
+// chart's svg, so an app can restyle any of them with plain CSS, as in
+// `.britechart { --bc-text-muted: #555; }`.
+
+// Each default is a light and a dark value. light-dark() picks between them
+// by the `color-scheme` of the chart's element, which it inherits from the
+// page, so a page that declares `color-scheme: light dark` gets dark charts
+// on a dark system, and a page or container with `color-scheme: dark` gets
+// them always. A page that declares nothing stays light, as before.
+
+// Data colours (colorSchema, colorMap) are not tokens: they come from the
+// chart's configuration.
+$tokens: (
+    // Tooltip values and other primary text
+    "text": (vars.$grey-900, vars.$grey-200),
+    // Tick labels, data labels, tooltip titles
+    "text-muted": (vars.$grey-600, vars.$grey-400),
+    // Axis titles
+    "text-subtle": (vars.$grey-500, vars.$grey-500),
+    // Tick marks and the lines that extend the axes
+    "axis": (vars.$grey-500, vars.$grey-600),
+    "grid": (vars.$grey-200, vars.$grey-800),
+    "grid-highlight": (vars.$grey-700, vars.$grey-400),
+    // Behind the chart: the line chart's drawing mask, and the background of
+    // an export. Canvas is the page's background in the current colour scheme.
+    "background": (Canvas, Canvas),
+    // Raised elements: the tooltip box, data point markers, hollow circles,
+    // heatmap box borders, the glow behind a highlighted point
+    "surface": (vars.$white, vars.$grey-900),
+    "border": (vars.$grey-300, vars.$grey-700),
+    "skeleton": (vars.$grey-200, vars.$grey-800),
+    "skeleton-strong": (vars.$grey-400, vars.$grey-700),
+    "brush-area": (vars.$grey-300, vars.$grey-700),
+    "brush-area-missing": (vars.$grey-100, vars.$grey-800),
+    // The sparkline's default area gradient, a faint tint under the line
+    "sparkline-area-start": (#f5fdff, #1c3a3e),
+    "sparkline-area-end": (#f6fefc, #1b3a33),
+);
+
+/// The token as a value: `fill: theme.color("grid")`
+@function color($name) {
+    @if not map.has-key($tokens, $name) {
+        @error "Unknown Britecharts colour token: #{$name}";
+    }
+
+    @return var(--bc-#{$name});
+}
+
+@mixin light-values {
+    @each $name, $values in $tokens {
+        --bc-#{$name}: #{list.nth($values, 1)};
+    }
+}
+
+@mixin light-dark-values {
+    @each $name, $values in $tokens {
+        $light: list.nth($values, 1);
+        $dark: list.nth($values, 2);
+
+        @if $light != $dark {
+            --bc-#{$name}: light-dark(#{$light}, #{$dark});
+        }
+    }
+}
+
+/// Declares every token with its default. :where() keeps the specificity at
+/// zero, so any rule of an app's sets a token over these defaults.
+@mixin declare-tokens {
+    :where(.britechart) {
+        @include light-values;
+    }
+
+    // Browsers without light-dark() keep the light values above
+    @supports (color: light-dark(#000, #fff)) {
+        :where(.britechart) {
+            @include light-dark-values;
+        }
+    }
+}

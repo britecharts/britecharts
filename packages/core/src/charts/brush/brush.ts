@@ -654,12 +654,8 @@ export default function module(): BrushChartModule {
      * @return {void}
      */
     function drawHandles(): void {
-        const handleFillColor = colorHelper.colorSchemasHuman.grey[1];
-
-        // Styling
-        handle = chartBrush
-            .selectAll('.handle.brush-rect')
-            .style('fill', handleFillColor);
+        // Their colour is the stylesheet's
+        handle = chartBrush.selectAll('.handle.brush-rect');
     }
 
     /**

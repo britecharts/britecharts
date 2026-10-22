@@ -403,7 +403,8 @@ export default function module(): ScatterPlotModule {
     const yKey = 'y';
     const nameKey = 'name';
     const tickPadding = 5;
-    const hollowColor = '#fff';
+    // A theme token, so it is set as a style: attributes cannot read var()
+    const hollowColor = 'var(--bc-surface)';
     const minZoom = 0.5;
     const maxZoom = 20;
     const trendLineCurve: CurveFactory = curveBasis;
@@ -976,7 +977,7 @@ export default function module(): ScatterPlotModule {
                 .attr('stroke-opacity', circleStrokeOpacity)
                 .attr('stroke-width', circleStrokeWidth)
                 .style('stroke', (d) => colorForName(d.name))
-                .attr('fill', (d) =>
+                .style('fill', (d) =>
                     hasHollowCircles ? hollowColor : colorForName(d.name)
                 )
                 .attr('fill-opacity', circleOpacity)
@@ -991,7 +992,7 @@ export default function module(): ScatterPlotModule {
                 .attr('stroke-opacity', circleStrokeOpacity)
                 .attr('stroke-width', circleStrokeWidth)
                 .style('stroke', (d) => colorForName(d.name))
-                .attr('fill', (d) =>
+                .style('fill', (d) =>
                     hasHollowCircles ? hollowColor : colorForName(d.name)
                 )
                 .attr('fill-opacity', circleOpacity)

@@ -396,6 +396,7 @@ We changed many things in the third version of Britecharts; here are some summar
 * Negative values in the bar, grouped bar, stacked bar, brush and scatter plot charts
 * Loading states on every data chart, including the bullet, heatmap and scatter plot
 * Accessible names for every chart, set with 'a11yTitle' and 'a11yDescription'
+* Theming with CSS custom properties, and dark mode that follows the page's `color-scheme`
 * A `ScatterPlot` component in `@britecharts/react`
 * `Brush` and `Heatmap` components in `@britecharts/react`, and `BrushWrapper` and `HeatmapWrapper` in `@britecharts/wrappers`, so every chart has both
 * Charts are responsive by default using the viewBox property.

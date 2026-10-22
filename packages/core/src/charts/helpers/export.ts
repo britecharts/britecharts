@@ -86,6 +86,7 @@ const b64EncodeUnicode = (str: string): string => {
 const config = {
     styleClass: 'britechartStyle',
     defaultFilename: 'britechart.png',
+    // Used where the chart's theme tokens can't be read, as outside a browser
     chartBackground: 'white',
     imageSourceBase: 'data:image/svg+xml;base64,',
     svgSourceBase: 'data:image/svg+xml;charset=utf-8,',
@@ -96,8 +97,8 @@ const config = {
     // within it
     titleBandHeight: 30,
     titleBaseline: 20,
-    get styleBackgroundString() {
-        return `<style>svg{background:${this.chartBackground};}</style>`;
+    styleBackgroundString(background: string) {
+        return `<style>svg{background:${background};}</style>`;
     },
 };
 
@@ -151,11 +152,43 @@ export function exportChart(
 
 /**
  * adds background styles to raw html
- * @param html raw html
+ * @param html        raw html
+ * @param background  the colour behind the chart
  * @private
  */
-function addBackground(html: string): string {
-    return html.replace('>', `>${config.styleBackgroundString}`);
+function addBackground(html: string, background: string): string {
+    return html.replace('>', `>${config.styleBackgroundString(background)}`);
+}
+
+/**
+ * A colour as the chart's svg resolves it, such as one of its theme tokens in
+ * the page's light or dark scheme. An exported file is opened away from the
+ * page, where the tokens are not defined, so it has to carry the colour
+ * itself.
+ * @param  svgNode   the chart's svg
+ * @param  color     a CSS colour, such as `var(--bc-background)`
+ * @param  fallback  what to use when it can't be resolved, as in jsdom
+ * @private
+ */
+function resolveColor(
+    svgNode: Element,
+    color: string,
+    fallback: string
+): string {
+    const probe = svgNode.ownerDocument.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'rect'
+    );
+
+    probe.style.setProperty('fill', color);
+    svgNode.appendChild(probe);
+    const resolved = window.getComputedStyle(probe).fill;
+
+    probe.remove();
+
+    return resolved && resolved !== 'none' && !resolved.includes('var(')
+        ? resolved
+        : fallback;
 }
 
 /**
@@ -176,16 +209,21 @@ export function convertSvgToHtml(
 
     d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
     const serializer = serializeWithStyles.initializeSerializer();
-    let html = serializer(d3svg.node() as Element) as string;
+    const svgNode = d3svg.node() as Element;
+    let html = serializer(svgNode) as string;
 
     html = formatHtmlByBrowser(html);
     html = prependTitle.call(
         this,
         html,
         title,
-        parseInt(d3svg.attr('width'), 10)
+        parseInt(d3svg.attr('width'), 10),
+        resolveColor(svgNode, 'var(--bc-text-muted)', colorSchemas.grey[6])
     );
-    html = addBackground(html);
+    html = addBackground(
+        html,
+        resolveColor(svgNode, 'var(--bc-background)', config.chartBackground)
+    );
 
     return html;
 }
@@ -342,6 +380,7 @@ const escapeXml = (text: string): string =>
  * @param  html      raw html string
  * @param  title     title of the graph
  * @param  svgWidth  width of graph container
+ * @param  color     the title's colour
  * @return raw html with the title band added
  * @private
  */
@@ -349,14 +388,14 @@ function prependTitle(
     this: ExportableChartContext,
     html: string,
     title: string | undefined,
-    svgWidth: number
+    svgWidth: number,
+    color: string
 ): string {
     const openingTag = html.match(/^<svg\b[^>]*>/)?.[0];
 
     if (!title || !svgWidth || !openingTag) {
         return html;
     }
-    const { grey } = colorSchemas;
     const band = config.titleBandHeight;
     const grownTag = openingTag
         .replace(
@@ -372,7 +411,7 @@ function prependTitle(
         config.titleBaseline
     }" font-family="${config.titleFontFamily}" font-size="${
         config.titleFontSize
-    }" fill="${grey[6]}">${escapeXml(title)}</text>`;
+    }" fill="${color}">${escapeXml(title)}</text>`;
     const chart = html.slice(openingTag.length, html.lastIndexOf('</svg>'));
 
     return `${grownTag}${titleText}<g transform="translate(0, ${band})">${chart}</g></svg>`;

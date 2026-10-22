@@ -3,6 +3,17 @@
  * above a card holding the chart. Each preview's decorator adds the markup.
  */
 
+/*
+ * The page follows the colour scheme the toolbar sets on its root element:
+ * Canvas and CanvasText are the browser's own background and text colours
+ * for it, and light-dark() picks the rest.
+ */
+html,
+body {
+    background: Canvas;
+    color: CanvasText;
+}
+
 /* The charts' own type: their font stack and smoothing (base/_typography.scss) */
 .story-title {
     margin: 24px 10px 4px;
@@ -10,7 +21,7 @@
     font-size: 22px;
     font-weight: 300;
     letter-spacing: 0.5px;
-    color: #282c35;
+    color: CanvasText;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -18,7 +29,7 @@
     padding: 30px;
     border-radius: 5px;
     margin: 10px;
-    box-shadow: 2px 2px 8px lightgrey;
+    box-shadow: 2px 2px 8px light-dark(lightgrey, rgb(0 0 0 / 60%));
 }
 
 /* The Playgrounds' export buttons, under the chart inside its card (core) */
@@ -30,18 +41,18 @@
 
 .export-buttons button {
     padding: 6px 12px;
-    border: 1px solid #d2d6df;
+    border: 1px solid light-dark(#d2d6df, #45494e);
     border-radius: 4px;
-    background: #fff;
-    color: #45494e;
+    background: light-dark(#fff, #282c35);
+    color: light-dark(#45494e, #eff2f5);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 13px;
     cursor: pointer;
 }
 
 .export-buttons button:hover {
-    background: #f8f8fa;
-    border-color: #adb0b6;
+    background: light-dark(#f8f8fa, #363a43);
+    border-color: light-dark(#adb0b6, #666a73);
 }
 
 .export-buttons button:focus-visible {

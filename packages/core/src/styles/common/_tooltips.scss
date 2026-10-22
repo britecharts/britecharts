@@ -1,4 +1,5 @@
 @use "../helpers/variables" as vars;
+@use "../helpers/theme";
 
 $marker-stroke-width: 1;
 $marker-stroke-width-highlight: 2;
@@ -19,19 +20,20 @@ $tooltip-value-text-size: 27px;
 .vertical-marker-container {
     .vertical-marker {
         fill: none;
-        stroke: vars.$grey-300;
+        stroke: theme.color("border");
         stroke-width: $marker-stroke-width;
     }
 
     .data-point-highlighter {
-        fill: vars.$white;
+        fill: theme.color("surface");
         stroke-width: $marker-stroke-width-highlight;
     }
 }
 
 // Tooltip
 .tooltip-background {
-    fill: rgba(vars.$white, $tooltip-background-opacity);
-    stroke: vars.$grey-300;
+    fill: theme.color("surface");
+    fill-opacity: $tooltip-background-opacity;
+    stroke: theme.color("border");
     stroke-width: $tooltip-stroke-width;
 }

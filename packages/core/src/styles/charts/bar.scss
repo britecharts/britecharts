@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "../helpers/variables" as vars;
+@use "../helpers/theme";
 
 $bar-color: color.adjust(vars.$bc-green, $saturation: -20%);
 $bar-color-hover: vars.$bc-e-green-600;
@@ -31,6 +32,6 @@ $bar-stroke-width: 0;
     }
 
     .percentage-label {
-        fill: vars.$grey-600;
+        fill: theme.color("text-muted");
     }
 }

@@ -3,6 +3,16 @@ import * as d3 from 'd3';
 import chart from './scatter-plot';
 import { ScatterPlotDataBuilder } from './scatterPlotDataBuilder';
 
+// A colour as an element's style holds it: the fills below are styles, which
+// jsdom normalises, so the expected colour goes through a style too
+const asStyle = (color) => {
+    const el = document.createElement('div');
+
+    el.style.fill = color;
+
+    return el.style.fill;
+};
+
 const aTestDataSet = () => new ScatterPlotDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
@@ -313,7 +323,7 @@ describe('scatter Plot', () => {
             });
 
             it('data points should have a fixed fill', () => {
-                const expected = '#fff';
+                const expected = asStyle('var(--bc-surface)');
 
                 containerFixture.datum(dataset).call(scatterPlot);
                 const circles = containerFixture
@@ -321,7 +331,7 @@ describe('scatter Plot', () => {
                     .nodes();
 
                 circles.forEach((circle) => {
-                    expect(circle.getAttribute('fill')).toBe(expected);
+                    expect(circle.style.fill).toBe(expected);
                 });
             });
         });
@@ -723,8 +733,8 @@ describe('scatter Plot', () => {
                     .nodes();
 
                 circles.forEach((d) => {
-                    expect(d.getAttribute('fill')).toEqual(
-                        colorMap[d.__data__.name]
+                    expect(d.style.fill).toEqual(
+                        asStyle(colorMap[d.__data__.name])
                     );
                 });
             });

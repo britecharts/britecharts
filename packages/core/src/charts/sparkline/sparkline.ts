@@ -155,7 +155,10 @@ export default function module(): SparklineChartModule {
         isLoading = false,
         xScale: ScaleLinear<number, number>,
         yScale: ScaleLinear<number, number>,
-        areaGradient: ColorGradientType = ['#F5FDFF', '#F6FEFC'],
+        areaGradient: ColorGradientType = [
+            'var(--bc-sparkline-area-start)',
+            'var(--bc-sparkline-area-end)',
+        ],
         areaGradientEl: ChartSelection<SVGStopElement>,
         lineGradient: ColorGradientType = colorHelper.colorGradients.greenBlue,
         lineGradientEl: ChartSelection<SVGStopElement>,
@@ -351,7 +354,7 @@ export default function module(): SparklineChartModule {
             .enter()
             .append('stop')
             .attr('offset', ({ offset }) => offset)
-            .attr('stop-color', ({ color }) => color);
+            .style('stop-color', ({ color }) => color);
 
         lineGradientEl = metadataGroup
             .append('linearGradient')
@@ -370,7 +373,7 @@ export default function module(): SparklineChartModule {
             .enter()
             .append('stop')
             .attr('offset', ({ offset }) => offset)
-            .attr('stop-color', ({ color }) => color);
+            .style('stop-color', ({ color }) => color);
     }
 
     /**

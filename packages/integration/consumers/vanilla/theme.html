@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>T · theme: light, dark and a token override</title>
+        <link rel="stylesheet" href="/src/page.css" />
+        <style>
+            .light { color-scheme: light; }
+            .dark { color-scheme: dark; background: #121212; }
+            .override { color-scheme: light; }
+            .override .britechart { --bc-text-muted: rgb(200, 0, 0); }
+        </style>
+    </head>
+    <body>
+        <h1>T · theme: light, dark and a token override</h1>
+        <p>
+            The same bar chart under color-scheme light, under color-scheme
+            dark, and with a token set by the page; tests/theme.spec.js reads
+            the colours each one resolves to.
+        </p>
+        <div class="light"><div class="theme-chart"></div></div>
+        <div class="dark"><div class="theme-chart"></div></div>
+        <div class="override"><div class="theme-chart"></div></div>
+        <script type="module" src="/src/theme.js"></script>
+    </body>
+</html>
