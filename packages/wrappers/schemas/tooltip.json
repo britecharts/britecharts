@@ -1,0 +1,271 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://britecharts.github.io/britecharts/schema/v3/tooltip.json",
+    "title": "Britecharts tooltip spec",
+    "description": "A tooltip chart: the chart's name, its configuration (the accessors, commands and events the tooltip wrapper takes) and its data.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "chart": {
+            "const": "tooltip"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "axisTimeCombinations": {
+                    "description": "Constants to be used to force the x axis to respect a certain granularity current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR",
+                    "type": "boolean"
+                },
+                "customBrushEnd": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customBrushStart": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customClick": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseMove": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOut": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOver": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "dateCustomFormat": {
+                    "description": "Exposes the ability to use a custom date format",
+                    "type": "string"
+                },
+                "dateFormat": {
+                    "description": "Exposes the ability to force the tooltip to use a certain date format",
+                    "type": "string"
+                },
+                "dateLabel": {
+                    "description": "Gets or Sets the dateLabel of the data",
+                    "type": "string"
+                },
+                "hide": {
+                    "description": "Hides the tooltip",
+                    "type": "boolean"
+                },
+                "layout": {
+                    "description": "Gets or Sets the layout: 'list' (title and one row per topic), 'single' (title, name and a big value; what miniTooltip renders) or 'auto' (the default: by the data point's shape). Set before the tooltip is drawn.",
+                    "enum": [
+                        "auto",
+                        "list",
+                        "single"
+                    ]
+                },
+                "locale": {
+                    "description": "The locale the tooltip renders its date in, as a BCP 47 tag ('en-US'). It goes straight to `Intl.DateTimeFormat(locale, ...)` in the date formatting below, which is a different thing from the d3-format locale *definition* object the value-formatting charts take -- bar and the rest pass theirs to `localeFormatterFor`, and those are rightly typed `LocalObject`.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "maxEntries": {
+                    "description": "Gets or Sets the most rows the tooltip shows; past that, the last row reads \"+n more\". 0 shows every row. Default 12.",
+                    "type": "number"
+                },
+                "nameLabel": {
+                    "description": "Gets or Sets the nameLabel of the data",
+                    "type": "string"
+                },
+                "numberFormat": {
+                    "description": "Gets or Sets the number format for the value displayed on the tooltip",
+                    "type": "string"
+                },
+                "shouldShowDateInTitle": {
+                    "description": "Shows or hides the date on the title",
+                    "type": "boolean"
+                },
+                "show": {
+                    "description": "Shows the tooltip. Given the hovered data point and its position, as the single-value charts dispatch them on `customMouseOver`, it renders and places the tooltip at once; otherwise it shows empty until the first update.",
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "date": {
+                                    "type": "string"
+                                },
+                                "topics": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "date": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            },
+                                            "value": {
+                                                "type": "number"
+                                            },
+                                            "topicName": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "date",
+                                            "name",
+                                            "value",
+                                            "topicName"
+                                        ]
+                                    }
+                                }
+                            },
+                            "required": [
+                                "date",
+                                "topics"
+                            ]
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "value"
+                            ]
+                        }
+                    ]
+                },
+                "title": {
+                    "description": "Gets or Sets the title of the tooltip",
+                    "type": "string"
+                },
+                "tooltipOffset": {
+                    "description": "Pass an override for the offset of your tooltip",
+                    "type": "object",
+                    "properties": {
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "x",
+                        "y"
+                    ]
+                },
+                "topicLabel": {
+                    "description": "Gets or Sets the topicLabel of the data",
+                    "type": "string"
+                },
+                "topicsOrder": {
+                    "description": "Pass an override for the ordering of your tooltip",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "number"
+                            }
+                        ]
+                    }
+                },
+                "update": {
+                    "description": "Updates the content and position of the tooltip with what every chart dispatches on `customMouseMove`: the data point, its anchor, the chart's size (ignored) and, from the multi-value charts, the topic colours.",
+                    "type": "object",
+                    "properties": {
+                        "date": {
+                            "type": "string"
+                        },
+                        "topics": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "date": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ]
+                                    },
+                                    "value": {
+                                        "type": "number"
+                                    },
+                                    "topicName": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "date",
+                                    "name",
+                                    "value",
+                                    "topicName"
+                                ]
+                            }
+                        }
+                    },
+                    "required": [
+                        "date",
+                        "topics"
+                    ]
+                },
+                "valueFormatter": {
+                    "description": "Gets or Sets the formatter function for the value displayed on the tooltip. Setting this property makes the tooltip ignore numberFormat.",
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "valueLabel": {
+                    "description": "Gets or Sets the valueLabel of the data",
+                    "type": "string"
+                },
+                "xAxisValueType": {
+                    "description": "Gets or Sets how the key of the data point is shown in the title: 'date', 'number', 'category' (as it is), or 'auto' (the default), which picks one per key.",
+                    "enum": [
+                        "number",
+                        "date",
+                        "auto",
+                        "category"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "required": [
+        "chart"
+    ],
+    "additionalProperties": false
+}

@@ -11,6 +11,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/bullet.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 const bulletChart: Wrapper<BulletChartDataShape[], BulletChartModule> = {
@@ -19,7 +20,7 @@ const bulletChart: Wrapper<BulletChartDataShape[], BulletChartModule> = {
         const chart = bullet();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'bullet');
+        validateConfiguration(chart, configuration, 'bullet', schema);
 
         // Calls the chart with the container and dataset
         container.datum(data[0]).call(applyConfiguration(chart, configuration));
@@ -31,7 +32,7 @@ const bulletChart: Wrapper<BulletChartDataShape[], BulletChartModule> = {
         const container = select<HTMLElement, BulletChartDataShape>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'bullet');
+        validateConfiguration(chart, configuration, 'bullet', schema);
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset

@@ -9,6 +9,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/line.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 // `LineChartData`, not `LineChartDataShape[]`: line is the one data-taking
@@ -22,7 +23,7 @@ const lineChart: Wrapper<LineChartData, LineChartModule> = {
         const chart = line();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'line');
+        validateConfiguration(chart, configuration, 'line', schema);
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -41,7 +42,7 @@ const lineChart: Wrapper<LineChartData, LineChartModule> = {
         const shouldUpdateData = data && data.data && data.data.length;
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'line');
+        validateConfiguration(chart, configuration, 'line', schema);
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset

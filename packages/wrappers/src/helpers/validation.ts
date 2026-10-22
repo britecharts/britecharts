@@ -2,6 +2,8 @@ import type { BaseType, Selection } from 'd3-selection';
 
 import { britechartsCustomEvents } from '../constants.js';
 import type { WrapperConfiguration } from './configuration.js';
+import { checkValue } from './schema.js';
+import type { ConfigurationSchema } from './schema.js';
 
 // The container a wrapper is handed is always the d3 selection, not the raw
 // element -- every wrapper does `const container = select(el)` first.
@@ -67,15 +69,19 @@ export const nearestName = (name: string, candidates: readonly string[]) => {
 
 /**
  * Throws when the configuration names something the chart has no accessor
- * for. The message names each one, suggests the nearest accessor or event for
- * any that looks like a typo, and links the chart's API page.
+ * for, or, given the chart's schema, sets one to a value of the wrong type.
+ * The message names each one, suggests the nearest accessor or event for any
+ * that looks like a typo, says what each wrong value should be, and links the
+ * chart's API page.
  *
  * @param apiPage The chart's page under docs/API, such as `grouped-bar`
+ * @param schema The chart's generated config schema, from `src/schemas`
  */
 export const validateConfiguration = <TChart extends object>(
     chart: TChart,
     configuration: WrapperConfiguration<TChart>,
-    apiPage?: string
+    apiPage?: string,
+    schema?: ConfigurationSchema
 ) => {
     const configurationProperties = Object.keys(configuration);
     const configurationPropertiesWithoutEvents =
@@ -98,9 +104,6 @@ export const validateConfiguration = <TChart extends object>(
 
             return nearest ? [`  ${methodName}: did you mean ${nearest}?`] : [];
         });
-        const docs = apiPage
-            ? [`Supported accessors: ${API_DOCS}${apiPage}`]
-            : [];
 
         // The first line is the message this has always thrown, which
         // callers may match on; the hints follow it
@@ -110,7 +113,47 @@ export const validateConfiguration = <TChart extends object>(
                     ' '
                 )}`,
                 ...suggestions,
-                ...docs,
+                ...docsLink(apiPage),
+            ].join('\n')
+        );
+    }
+
+    if (schema) {
+        validateValues(configuration, schema, apiPage);
+    }
+};
+
+const docsLink = (apiPage?: string) =>
+    apiPage ? [`Supported accessors: ${API_DOCS}${apiPage}`] : [];
+
+// Undefined and null are skipped, as applyConfiguration skips them: the chart
+// keeps its own default
+const validateValues = (
+    configuration: Record<string, unknown>,
+    schema: ConfigurationSchema,
+    apiPage?: string
+) => {
+    const problems = Object.entries(configuration)
+        .filter(
+            ([key, value]) =>
+                value !== undefined && value !== null && schema.properties[key]
+        )
+        .map(([key, value]) => ({
+            key,
+            problems: checkValue(value, schema.properties[key], key),
+        }))
+        .filter(({ problems }) => problems.length);
+
+    if (problems.length) {
+        throw new Error(
+            [
+                `Value not supported by Britechart: ${problems
+                    .map(({ key }) => key)
+                    .join(' ')}`,
+                ...problems.flatMap(({ problems }) =>
+                    problems.map((problem) => `  ${problem}`)
+                ),
+                ...docsLink(apiPage),
             ].join('\n')
         );
     }

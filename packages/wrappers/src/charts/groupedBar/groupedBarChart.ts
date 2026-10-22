@@ -12,6 +12,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/groupedBar.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 const groupedBarChart: Wrapper<
@@ -23,7 +24,7 @@ const groupedBarChart: Wrapper<
         const chart = groupedBar();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'grouped-bar');
+        validateConfiguration(chart, configuration, 'grouped-bar', schema);
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -35,7 +36,7 @@ const groupedBarChart: Wrapper<
         const container = select<HTMLElement, GroupedBarChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'grouped-bar');
+        validateConfiguration(chart, configuration, 'grouped-bar', schema);
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

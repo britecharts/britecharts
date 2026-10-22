@@ -9,6 +9,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/brush.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 const brushChart: Wrapper<BrushChartDataShape[], BrushChartModule> = {
@@ -17,7 +18,7 @@ const brushChart: Wrapper<BrushChartDataShape[], BrushChartModule> = {
         const chart = brush();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'brush');
+        validateConfiguration(chart, configuration, 'brush', schema);
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -29,7 +30,7 @@ const brushChart: Wrapper<BrushChartDataShape[], BrushChartModule> = {
         const container = select<HTMLElement, BrushChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'brush');
+        validateConfiguration(chart, configuration, 'brush', schema);
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

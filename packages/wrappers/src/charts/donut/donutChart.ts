@@ -8,6 +8,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/donut.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 const donutChart: Wrapper<DonutChartDataShape[], DonutChartModule> = {
@@ -16,7 +17,7 @@ const donutChart: Wrapper<DonutChartDataShape[], DonutChartModule> = {
         const chart = donut();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'donut');
+        validateConfiguration(chart, configuration, 'donut', schema);
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -28,7 +29,7 @@ const donutChart: Wrapper<DonutChartDataShape[], DonutChartModule> = {
         const container = select<HTMLElement, DonutChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'donut');
+        validateConfiguration(chart, configuration, 'donut', schema);
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

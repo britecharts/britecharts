@@ -12,6 +12,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/scatterPlot.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 const scatterPlotChart: Wrapper<ScatterPlotDataShape[], ScatterPlotModule> = {
@@ -20,7 +21,7 @@ const scatterPlotChart: Wrapper<ScatterPlotDataShape[], ScatterPlotModule> = {
         const chart = scatterPlot();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'scatter-plot');
+        validateConfiguration(chart, configuration, 'scatter-plot', schema);
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -32,7 +33,7 @@ const scatterPlotChart: Wrapper<ScatterPlotDataShape[], ScatterPlotModule> = {
         const container = select<HTMLElement, ScatterPlotDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'scatter-plot');
+        validateConfiguration(chart, configuration, 'scatter-plot', schema);
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

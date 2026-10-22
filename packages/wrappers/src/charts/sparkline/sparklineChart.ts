@@ -12,6 +12,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/sparkline.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 const sparklineChart: Wrapper<SparklineChartDataShape[], SparklineChartModule> =
@@ -23,7 +24,7 @@ const sparklineChart: Wrapper<SparklineChartDataShape[], SparklineChartModule> =
             const chart = sparkline();
 
             validateContainer(container);
-            validateConfiguration(chart, configuration, 'sparkline');
+            validateConfiguration(chart, configuration, 'sparkline', schema);
 
             // Calls the chart with the container and dataset
             container
@@ -39,7 +40,7 @@ const sparklineChart: Wrapper<SparklineChartDataShape[], SparklineChartModule> =
             );
 
             validateContainer(container);
-            validateConfiguration(chart, configuration, 'sparkline');
+            validateConfiguration(chart, configuration, 'sparkline', schema);
             applyConfiguration(chart, configuration);
 
             // Calls the chart with the container and dataset.

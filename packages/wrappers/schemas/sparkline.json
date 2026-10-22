@@ -1,0 +1,160 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://britecharts.github.io/britecharts/schema/v3/sparkline.json",
+    "title": "Britecharts sparkline spec",
+    "description": "A sparkline chart: the chart's name, its configuration (the accessors, commands and events the sparkline wrapper takes) and its data.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "chart": {
+            "const": "sparkline"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "a11yDescription": {
+                    "description": "Gets or Sets a longer description screen readers announce after the name, such as what the data shows. It is rendered as the svg's `<desc>` and linked with `aria-describedby`. Unset, there is no description.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "a11yTitle": {
+                    "description": "Gets or Sets the name screen readers announce for the chart. It is set as the svg's `aria-label`. Unset, the getter reads `null` and the chart is announced by its type, such as \"Bar chart\".",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "animationDuration": {
+                    "description": "Gets or Sets the duration of the animation",
+                    "type": "number"
+                },
+                "areaGradient": {
+                    "description": "Gets or Sets the areaGradient of the chart",
+                    "type": "array",
+                    "prefixItems": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "items": false,
+                    "minItems": 2
+                },
+                "customBrushEnd": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customBrushStart": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customClick": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseMove": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOut": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOver": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "exportChart": {
+                    "description": "Executes a command that triggers the download of the current chart: an svg file when the filename ends in `.svg`, and a png otherwise",
+                    "type": "string"
+                },
+                "height": {
+                    "description": "Gets or Sets the height of the chart",
+                    "type": "number"
+                },
+                "isAnimated": {
+                    "description": "Gets or Sets the isAnimated property of the chart, making it to animate when render. Ignored when the reader's system asks for reduced motion",
+                    "type": "boolean"
+                },
+                "isLoading": {
+                    "description": "Gets or Sets the loading state of the chart",
+                    "type": "boolean"
+                },
+                "lineGradient": {
+                    "description": "Gets or Sets the lineGradient of the chart",
+                    "type": "array",
+                    "prefixItems": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "items": false,
+                    "minItems": 2
+                },
+                "margin": {
+                    "description": "Gets or Sets the margin object of the chart (top, bottom, left and right)",
+                    "type": "object",
+                    "properties": {
+                        "left": {
+                            "type": "number"
+                        },
+                        "right": {
+                            "type": "number"
+                        },
+                        "top": {
+                            "type": "number"
+                        },
+                        "bottom": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "width": {
+                    "description": "Gets or Sets the width of the chart",
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "value": {
+                        "type": "number"
+                    },
+                    "date": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "value",
+                    "date"
+                ]
+            }
+        }
+    },
+    "required": [
+        "chart",
+        "data"
+    ],
+    "additionalProperties": false
+}

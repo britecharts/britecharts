@@ -82,6 +82,32 @@ BarWrapper.destroy(container);
 
 `TooltipWrapper.destroy` has its own contract: it removes the tooltip from inside the element and never an `svg`, because a tooltip is created inside the chart it decorates and destroyed against the element around it.
 
+### Validation
+`create` and `update` check the configuration before drawing, and throw an error that says what to fix: a key the chart has no accessor for, with the nearest one it does have, and a value of the wrong type, with the type it should be.
+
+```
+Value not supported by Britechart: height chartGradient
+  height: expected a number, got the string "300"
+  chartGradient: expected an array of 2 strings, got an array of 1
+Supported accessors: https://britecharts.github.io/britecharts/docs/API/bar
+```
+
+An `undefined` or `null` value is skipped, and the chart keeps its default.
+
+### Chart specs and their JSON Schemas
+A chart can be written down as a spec: its name, its configuration and its data. Each chart has a JSON Schema for its spec, generated from the TypeScript types the wrappers take, so editors and coding agents can check a spec, and complete it, without running it:
+
+```json
+{
+    "$schema": "https://britecharts.github.io/britecharts/schema/v3/bar.json",
+    "chart": "bar",
+    "config": { "isHorizontal": true, "a11yTitle": "Signups by plan" },
+    "data": [{ "name": "Pro", "value": 412 }]
+}
+```
+
+The schemas are published at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json` and ship in this package as `@britecharts/wrappers/schemas/<chart>.json`, one per chart, named as core names it (`bar`, `groupedBar`, `scatterPlot`…). Draw a spec with its wrapper: `BarWrapper.create(element, spec.data, spec.config)`. Options that take a function, such as the events and the formatting functions, can't be written in JSON; set them from JavaScript.
+
 ## Availability
 Every chart in `@britecharts/core` has a wrapper: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper` and `StackedBarWrapper`, plus `TooltipWrapper` for the tooltip.
 
