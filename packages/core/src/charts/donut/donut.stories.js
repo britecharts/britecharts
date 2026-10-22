@@ -19,27 +19,20 @@ const aTestDataSet = () => new DonutDataBuilder();
 const dataset = aTestDataSet().withFivePlusOther().build();
 const datasetWithThreeItems = aTestDataSet().withThreeCategories().build();
 
-const getLegendChart = (container, dataset) => {
+// A vertical legend, given room for each entry: the legend splits its
+// height evenly between them, so a short one stacks the markers
+const getLegendChart = (container, dataset, width) => {
     const legendChart = legend();
     const wrapper = document.createElement('div');
     wrapper.classList = 'legend-chart-container';
     container.appendChild(wrapper);
-    const legendContainer = select(wrapper);
 
-    const containerWidth = legendContainer.node()
-        ? legendContainer.node().getBoundingClientRect().width
-        : false;
+    legendChart
+        .width(width)
+        .height((dataset.length + 1) * 32)
+        .numberFormat('s');
 
-    if (containerWidth) {
-        legendContainer.selectAll('.britechart-legend').remove();
-
-        legendChart
-            .width(containerWidth * 0.8)
-            .height(200)
-            .numberFormat('s');
-
-        legendContainer.datum(dataset).call(legendChart);
-    }
+    select(wrapper).datum(dataset).call(legendChart);
 
     return legendChart;
 };
@@ -58,9 +51,11 @@ const getInlineLegendChart = (container, dataset) => {
     if (containerWidth) {
         legendContainer.selectAll('.britechart-legend').remove();
 
+        // As wide as the chart: the inline legend centres its entries in its
+        // own width, so this lines them up under the donut
         legendChart
             .isHorizontal(true)
-            .width(containerWidth * 0.6)
+            .width(containerWidth)
             .markerSize(8)
             .height(40);
 
@@ -138,15 +133,21 @@ export const WithAnimationAndLegend = () => {
         ? donutContainer.node().getBoundingClientRect().width
         : false;
     const donutChart = donut();
+    let legendChart;
 
     if (containerWidth) {
+        const chartWidth = containerWidth * 0.55;
         // Capped, so a wide canvas does not draw a ring as wide as itself
-        const chartHeight = Math.min(containerWidth, 400);
+        const chartHeight = Math.min(chartWidth, 400);
+
+        // The donut and its legend side by side
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
 
         donutChart
             .isAnimated(true)
             .highlightSliceById(2)
-            .width(containerWidth)
+            .width(chartWidth)
             .height(chartHeight)
             .externalRadius(chartHeight / 2.5)
             .internalRadius(chartHeight / 5)
@@ -158,8 +159,8 @@ export const WithAnimationAndLegend = () => {
             });
 
         donutContainer.datum(dataset).call(donutChart);
+        legendChart = getLegendChart(container, dataset, containerWidth * 0.4);
     }
-    const legendChart = getLegendChart(container, dataset);
 
     return container;
 };
@@ -210,7 +211,7 @@ export const WithAnimation = () => {
     return container;
 };
 
-export const WithHighlightedSliceChart = () => {
+export const WithHighlightedSlice = () => {
     const container = getCleanContainer();
     const donutContainer = select(container);
     const containerWidth = donutContainer.node()

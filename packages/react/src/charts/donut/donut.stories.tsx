@@ -47,7 +47,7 @@ export const WithHighlightedLegend = () => {
     };
 
     return (
-        <>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
             <Donut
                 data={data}
                 height={width}
@@ -61,12 +61,49 @@ export const WithHighlightedLegend = () => {
             />
             <Legend
                 data={donutData.with4Slices()}
-                height={200}
-                width={width}
+                height={(data.length + 1) * 40}
+                width={300}
                 margin={legendMargin}
                 highlightEntryById={highlightedSlice}
             />
-        </>
+        </div>
+    );
+};
+
+/**
+ * One slice stays highlighted, `highlightSliceById` with
+ * `hasFixedHighlightedSlice`, and the legend follows it: hovering another
+ * slice highlights that one, and leaving returns to the fixed slice.
+ */
+export const WithHighlightedSlice = () => {
+    const data = donutData.with4Slices();
+    const fixedSlice = 2;
+    const width = 500;
+    const [highlightedEntry, setHighlightedEntry] = React.useState(fixedSlice);
+
+    return (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Donut
+                data={data}
+                height={width * 0.8}
+                width={width}
+                externalRadius={width / 3.5}
+                internalRadius={width / 7}
+                isAnimated={false}
+                highlightSliceById={fixedSlice}
+                hasFixedHighlightedSlice={true}
+                customMouseOver={(slice: { data: { id: number } }) =>
+                    setHighlightedEntry(slice.data.id)
+                }
+                customMouseOut={() => setHighlightedEntry(fixedSlice)}
+            />
+            <Legend
+                data={data}
+                height={(data.length + 1) * 40}
+                width={300}
+                highlightEntryById={highlightedEntry}
+            />
+        </div>
     );
 };
 
