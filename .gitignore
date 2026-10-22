@@ -63,6 +63,7 @@ packages/core/sandbox/build
 packages/core/demos/build
 packages/core/dist
 packages/core/skills
+packages/*/LICENSE.md
 packages/core/docs
 packages/core/node_modules
 

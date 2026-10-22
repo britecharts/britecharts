@@ -59,6 +59,8 @@ const PACKAGES = {
     core: {
         allow: [
             ['README.md', 1],
+            // Copied from the repository root by each package's prepack
+            ['LICENSE.md', 1],
             ['package.json', 1],
             ['dist/umd/bundle/core.bundled.min.cjs', 1],
             ['dist/types-cjs/package.json', 1],
@@ -103,6 +105,8 @@ const PACKAGES = {
     wrappers: {
         allow: [
             ['README.md', 1],
+            // Copied from the repository root by each package's prepack
+            ['LICENSE.md', 1],
             ['package.json', 1],
             ['dist/umd/bundle/wrappers.bundled.min.cjs', 1],
             ['dist/types-cjs/package.json', 1],
@@ -132,6 +136,8 @@ const PACKAGES = {
     react: {
         allow: [
             ['README.md', 1],
+            // Copied from the repository root by each package's prepack
+            ['LICENSE.md', 1],
             ['CHANGELOG.md', 1],
             ['package.json', 1],
             ['dist/umd/bundle/react.bundled.min.cjs', 1],

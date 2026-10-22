@@ -85,7 +85,8 @@
     "test:watch": "vitest",
     "check:api-parity": "node ./scripts/check-api-parity.mjs",
     "copy:skill": "node ./scripts/copy-skill.mjs",
-    "prepack": "pnpm run copy:skill",
+    "copy:license": "node ../../scripts/copy-license.mjs",
+    "prepack": "pnpm run copy:skill && pnpm run copy:license",
     "type-check": "tsc --noEmit"
   },
   "files": [
