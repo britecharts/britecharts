@@ -116,6 +116,13 @@ export interface StackedAreaProps {
     isAnimated?: boolean;
 
     /**
+     * Whether the areas fill the whole value axis, a 100% stacked area chart:
+     * each area shows its share of each date's total, and the value axis runs
+     * from 0% to 100%. The tooltip still shows the values.
+     */
+    isNormalized?: boolean;
+
+    /**
      * Gets or Sets whether a loading state will be shown
      */
     isLoading?: boolean;

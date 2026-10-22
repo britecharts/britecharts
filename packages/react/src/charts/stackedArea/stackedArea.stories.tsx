@@ -49,6 +49,21 @@ export const WithAnimation = () => {
     return <Tooltip data={data} render={renderStackedArea} title="Tooltip" />;
 };
 
+/**
+ * A 100% stacked area: `isNormalized` scales every date's areas to the full
+ * height, so each area shows its share of the total and the axis runs from 0%
+ * to 100%. The tooltip still shows the values.
+ */
+export const WithNormalizedAreas = () => {
+    const data = stackedAreaData.with3Sources();
+
+    const renderStackedArea = (props: TooltipRenderArgs<typeof data>) => (
+        <StackedArea isNormalized={true} {...props} />
+    );
+
+    return <Tooltip data={data} render={renderStackedArea} title="Tooltip" />;
+};
+
 export const WithMouseEventsOnConsole = () => {
     const data = stackedAreaData.with2Sources();
     const logMouseOver = () => console.log('Mouse Over');

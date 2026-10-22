@@ -135,6 +135,10 @@
                     "description": "Gets or Sets the loading state of the chart",
                     "type": "boolean"
                 },
+                "isNormalized": {
+                    "description": "Gets or Sets whether every stack fills the whole value axis, a 100% stacked bar chart: each segment shows its share of its stack, and the value axis runs from 0% to 100%. The tooltip still shows the values. Meant for data without negative values.",
+                    "type": "boolean"
+                },
                 "margin": {
                     "description": "Gets or Sets the margin object of the chart (top, bottom, left and right)",
                     "type": "object",

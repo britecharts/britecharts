@@ -161,6 +161,10 @@
                     "description": "Gets or Sets the loading state of the chart",
                     "type": "boolean"
                 },
+                "isNormalized": {
+                    "description": "Gets or Sets whether the areas fill the whole value axis, a 100% stacked area chart: each area shows its share of each date's total, and the value axis runs from 0% to 100%. The tooltip still shows the values. Meant for data without negative values.",
+                    "type": "boolean"
+                },
                 "locale": {
                     "description": "Pass language tag for the tooltip to localize the date. Uses Intl.DateTimeFormat, for compatability and support, refer to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat",
                     "anyOf": [

@@ -66,6 +66,29 @@ export const WithAnimation = () => {
     );
 };
 
+/**
+ * A 100% stacked bar: `isNormalized` scales every stack to the full height,
+ * so each segment shows its share of its stack and the axis runs from 0% to
+ * 100%. The tooltip still shows the values.
+ */
+export const WithNormalizedStacks = () => {
+    const data = stackedBarData.with3SourcesAndDates();
+
+    const renderStackedBar = (props: TooltipRenderArgs<typeof data>) => (
+        <StackedBar isNormalized={true} {...props} />
+    );
+
+    return (
+        <Tooltip
+            data={data}
+            render={renderStackedBar}
+            title="Tooltip Title"
+            // The stacked bar names its rows by `stack`
+            nameLabel="stack"
+        />
+    );
+};
+
 export const WithLoadingState = () => {
     const data: [] = [];
 

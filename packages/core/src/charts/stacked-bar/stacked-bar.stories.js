@@ -91,6 +91,7 @@ Playground.args = playgroundArgs(stackedBarChart, [
     'isAnimated',
     'colorSchema',
     'isHorizontal',
+    'isNormalized',
     'betweenBarsPadding',
     'hasPercentage',
     'hasReversedStacks',
@@ -174,6 +175,48 @@ export const WithAnimation = () => {
 
         stackedBar
             .isAnimated(true)
+            .width(containerWidth)
+            .on('customMouseOver', function () {
+                chartTooltip.show();
+            })
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', function () {
+                chartTooltip.hide();
+            });
+
+        stackedBarContainer.datum(dataset).call(stackedBar);
+
+        // The stacked bar dispatches its rows as `values`, named by `stack`
+        chartTooltip
+            .topicLabel('values')
+            .nameLabel('stack')
+            .title('Tooltip title');
+
+        select('.metadata-group').datum([]).call(chartTooltip);
+    }
+
+    return container;
+};
+
+/**
+ * A 100% stacked bar: `isNormalized(true)` scales every stack to the full
+ * height, so each segment shows its share of its stack and the axis runs from
+ * 0% to 100%. The tooltip still shows the values.
+ */
+export const WithNormalizedStacks = () => {
+    const container = getCleanContainer();
+    const stackedBar = stackedBarChart();
+    const stackedBarContainer = select(container);
+    const containerWidth = stackedBarContainer.node()
+        ? stackedBarContainer.node().getBoundingClientRect().width
+        : false;
+    const chartTooltip = tooltip();
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().with3Sources().build();
+
+        stackedBar
+            .isNormalized(true)
             .width(containerWidth)
             .on('customMouseOver', function () {
                 chartTooltip.show();
