@@ -42,6 +42,19 @@ describe('brush Chart', () => {
                 });
             });
 
+            describe('when a misspelt accessor is passed', () => {
+                it('should link the brush API page', () => {
+                    expect(() => {
+                        brush.create(anchor, brushData.withShortData(), {
+                            // @ts-expect-error not an accessor on the chart
+                            heigth: 300,
+                        });
+                    }).toThrow(
+                        'https://britecharts.github.io/britecharts/docs/API/brush'
+                    );
+                });
+            });
+
             describe('when wrong event handlers are passed', () => {
                 it('should throw an error', () => {
                     const callback = vi.fn();
