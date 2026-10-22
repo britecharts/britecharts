@@ -289,11 +289,11 @@ In this tutorial, we will *create a simple data visualization using Britecharts*
 To use a Britechart, we need to install the library. In this tutorial, we are going to use a simple CDN link to install it. For that, create a simple HTML file and add these script tags:
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"
         type="text/javascript"></script>
 ```
-The bundle has every chart, and the d3 modules they use. Note that we also load `d3-selection` on its own. We use this module to create a selection and load the data in the container where we render the chart.
+The bundle has every chart, and the d3 modules they use. Note that we also load `d3-selection` on its own, version 3, which matches the d3 v7 modules the bundle is built on. We use this module to create a selection and load the data in the container where we render the chart.
 
 We also need to load the styling of our chart, and we do it similarly by accesing the CDN link:
 ```html
@@ -977,7 +977,7 @@ lineChart.isAnimated(true).animationDuration(600);
 
 `animationDuration` does nothing while `isAnimated` is `false`. The bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, scatter plot, sparkline and brush charts animate. React components take both as props.
 
-A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set.
+A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set. The rest of the motion stops too: tooltips appear and move without fading or easing, the legend drops entries without a fade, and a hovered point is highlighted without its bounce.
 
 ## How to Export a Chart
 Call `exportChart` with a filename to download the chart as it is drawn. The filename picks the format: one ending in `.svg` downloads an svg file, and any other a png. An optional second argument adds a title at the top:
