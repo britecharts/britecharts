@@ -47,7 +47,7 @@ export const WithHighlightedLegend = () => {
     };
 
     return (
-        <>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
             <Donut
                 data={data}
                 height={width}
@@ -61,12 +61,49 @@ export const WithHighlightedLegend = () => {
             />
             <Legend
                 data={donutData.with4Slices()}
-                height={200}
-                width={width}
+                height={(data.length + 1) * 40}
+                width={300}
                 margin={legendMargin}
                 highlightEntryById={highlightedSlice}
             />
-        </>
+        </div>
+    );
+};
+
+/**
+ * One slice stays highlighted, `highlightSliceById` with
+ * `hasFixedHighlightedSlice`, and the legend follows it: hovering another
+ * slice highlights that one, and leaving returns to the fixed slice.
+ */
+export const WithHighlightedSlice = () => {
+    const data = donutData.with4Slices();
+    const fixedSlice = 2;
+    const width = 500;
+    const [highlightedEntry, setHighlightedEntry] = React.useState(fixedSlice);
+
+    return (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Donut
+                data={data}
+                height={width * 0.8}
+                width={width}
+                externalRadius={width / 3.5}
+                internalRadius={width / 7}
+                isAnimated={false}
+                highlightSliceById={fixedSlice}
+                hasFixedHighlightedSlice={true}
+                customMouseOver={(slice: { data: { id: number } }) =>
+                    setHighlightedEntry(slice.data.id)
+                }
+                customMouseOut={() => setHighlightedEntry(fixedSlice)}
+            />
+            <Legend
+                data={data}
+                height={(data.length + 1) * 40}
+                width={300}
+                highlightEntryById={highlightedEntry}
+            />
+        </div>
     );
 };
 
@@ -89,6 +126,46 @@ export const WithHoverEvent = () => {
             highlightSliceById={1}
             isAnimated={false}
         />
+    );
+};
+
+/**
+ * A pie chart is a donut without a hole: `internalRadius={0}`. With no hole,
+ * there is no room for the centred text, so `hasCenterLegend={false}` turns
+ * it off and the legend on its right names each slice, highlighting the one
+ * under the pointer.
+ */
+// An id no slice has, which highlights none: an unset prop keeps the last one
+const NO_SLICE = -1;
+
+export const WithPieChartFormat = () => {
+    const data = donutData.with4Slices();
+    const width = 500;
+    const [highlightedSlice, setHighlightedSlice] = React.useState(NO_SLICE);
+
+    return (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Donut
+                data={data}
+                height={width * 0.8}
+                width={width}
+                externalRadius={width / 3.5}
+                internalRadius={0}
+                hasCenterLegend={false}
+                a11yTitle="Visits by source"
+                isAnimated={false}
+                customMouseOver={(slice: { data: { id: number } }) =>
+                    setHighlightedSlice(slice.data.id)
+                }
+                customMouseOut={() => setHighlightedSlice(NO_SLICE)}
+            />
+            <Legend
+                data={data}
+                height={(data.length + 1) * 40}
+                width={300}
+                highlightEntryById={highlightedSlice}
+            />
+        </div>
     );
 };
 
