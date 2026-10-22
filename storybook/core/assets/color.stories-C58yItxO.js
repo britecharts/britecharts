@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,n,o as r,r as i}from"./helpers-CrbXQEV5.js";var a,o,s,c,l;function u(){return(u=e((()=>{r(),i(),a=()=>{let e=n(),{colorSchemas:r,colorSchemasHuman:i}=t;return Object.keys(r).forEach(t=>{let n=`js-palette-${t}`,a=document.createElement(`p`);a.textContent=`${i[t]} · colorSchemas.${t}`,a.style.margin=`0 0 6px`,e.appendChild(a);let o=document.createElement(`div`);o.classList=n,e.appendChild(o);let s=document.getElementsByClassName(n)[0];s.style.display=`flex`,s.style[`margin-bottom`]=`20px`,r[t].forEach(e=>{let t=document.createElement(`div`);t.style.width=`100px`,t.style.height=`100px`,t.style.background=e,s.appendChild(t)})}),e},o=()=>{let e=n(),{colorGradients:r}=t;return Object.keys(r).forEach(t=>{let n=`js-gradient-${t}`,i=document.createElement(`div`);i.classList=n,e.appendChild(i);let a=document.getElementsByClassName(n)[0];a.style.display=`flex`,a.style[`margin-bottom`]=`20px`;let[o,s]=r[t],c=document.createElement(`div`);c.style.width=`900px`,c.style.height=`100px`,c.style.background=`linear-gradient(to right, ${o} 0%, ${s} 100%)`,a.appendChild(c)}),e},s=()=>{let e=n(),{singleColors:r}=t,i=document.createElement(`div`);i.classList=`js-single-color-container`,e.appendChild(i);let a=document.getElementsByClassName(`js-single-color-container`)[0];return a.style.display=`flex`,Object.keys(r).forEach(e=>{let t=document.createElement(`div`);t.style.width=`100px`,t.style.height=`100px`,t.style.background=r[e],a.appendChild(t)}),e},c={title:`Attributes/Colors`},l=[`ColorSchemas`,`ColorGradients`,`SingleColors`],a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`() => {
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,n,o as r,r as i}from"./helpers-CrbXQEV5.js";var a,o,s,c,l;function u(){return(u=e((()=>{r(),i(),a=()=>{let e=n(),{colorSchemas:r,colorSchemasHuman:i}=t;return Object.keys(r).forEach(t=>{let n=`js-palette-${t}`,a=document.createElement(`h3`),o=document.createElement(`code`);a.className=`palette-title`,a.textContent=`${i[t]} `,o.textContent=`colorSchemas.${t}`,a.appendChild(o),e.appendChild(a);let s=document.createElement(`div`);s.classList=n,e.appendChild(s);let c=document.getElementsByClassName(n)[0];c.style.display=`flex`,c.style[`margin-bottom`]=`20px`,r[t].forEach(e=>{let t=document.createElement(`div`);t.style.width=`100px`,t.style.height=`100px`,t.style.background=e,c.appendChild(t)})}),e},o=()=>{let e=n(),{colorGradients:r}=t;return Object.keys(r).forEach(t=>{let n=`js-gradient-${t}`,i=document.createElement(`div`);i.classList=n,e.appendChild(i);let a=document.getElementsByClassName(n)[0];a.style.display=`flex`,a.style[`margin-bottom`]=`20px`;let[o,s]=r[t],c=document.createElement(`div`);c.style.width=`900px`,c.style.height=`100px`,c.style.background=`linear-gradient(to right, ${o} 0%, ${s} 100%)`,a.appendChild(c)}),e},s=()=>{let e=n(),{singleColors:r}=t,i=document.createElement(`div`);i.classList=`js-single-color-container`,e.appendChild(i);let a=document.getElementsByClassName(`js-single-color-container`)[0];return a.style.display=`flex`,Object.keys(r).forEach(e=>{let t=document.createElement(`div`);t.style.width=`100px`,t.style.height=`100px`,t.style.background=r[e],a.appendChild(t)}),e},c={title:`Attributes/Colors`},l=[`ColorSchemas`,`ColorGradients`,`SingleColors`],a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`() => {
   const container = getCleanContainer();
   const {
     colorSchemas,
@@ -6,9 +6,13 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,n,o as r,r as i
   } = colors;
   Object.keys(colorSchemas).forEach(colorPalette => {
     const className = \`js-palette-\${colorPalette}\`;
-    const label = document.createElement('p');
-    label.textContent = \`\${colorSchemasHuman[colorPalette]} · colorSchemas.\${colorPalette}\`;
-    label.style.margin = '0 0 6px';
+    // The palette's name, then the key to pass, styled in storybook-preview.css
+    const label = document.createElement('h3');
+    const key = document.createElement('code');
+    label.className = 'palette-title';
+    label.textContent = \`\${colorSchemasHuman[colorPalette]} \`;
+    key.textContent = \`colorSchemas.\${colorPalette}\`;
+    label.appendChild(key);
     container.appendChild(label);
     const wrapper = document.createElement('div');
     wrapper.classList = className;
