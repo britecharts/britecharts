@@ -46,4 +46,5 @@ The whole of this documentation, as one text file: https://britecharts.github.io
 - [A11y helpers](https://britecharts.github.io/britecharts/docs/API/a11y): Internal helpers the charts share
 - [Domain helpers](https://britecharts.github.io/britecharts/docs/API/domain): Internal helpers the charts share
 - [Grid helpers](https://britecharts.github.io/britecharts/docs/API/grid): Internal helpers the charts share
+- [Keyboard helpers](https://britecharts.github.io/britecharts/docs/API/keyboard): Internal helpers the charts share
 - [Scale helpers](https://britecharts.github.io/britecharts/docs/API/scale): Internal helpers the charts share

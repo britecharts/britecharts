@@ -29,6 +29,10 @@
                         }
                     ]
                 },
+                "a11yKeyboardNavigation": {
+                    "description": "Gets or Sets whether a keyboard can move through the chart's data points. The chart takes one tab stop; the arrow keys move between points, Home and End go to the first and last, and Escape lets go. The tooltip, highlights and custom events follow focus as they follow the pointer. On by default.",
+                    "type": "boolean"
+                },
                 "a11yTitle": {
                     "description": "Gets or Sets the name screen readers announce for the chart. It is set as the svg's `aria-label`. Unset, the getter reads `null` and the chart is announced by its type, such as \"Bar chart\".",
                     "anyOf": [

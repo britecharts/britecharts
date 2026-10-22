@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{n as t,t as n}from"./tooltip-BiUsUqjN.js";function r(){return t().layout(`single`).title(``).numberFormat(`.2f`)}function i(){return(i=e((()=>{n()})))()}export{r as n,i as t};
