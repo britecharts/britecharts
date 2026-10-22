@@ -55,7 +55,10 @@ const isIE = (navigator as Navigator & { msSaveOrOpenBlob?: unknown })
     .msSaveOrOpenBlob;
 const IE_ERROR_MSG =
     'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
-const DEFAULT_FONT_STACK = '‘Helvetica Neue’, Helvetica, Arial, sans-serif';
+// The charts' own stack (base/_typography.scss), with the family names
+// unquoted, which CSS allows. Typographic quotes would become part of the
+// name, which then matches no font.
+const DEFAULT_FONT_STACK = 'Helvetica Neue, Helvetica, Arial, sans-serif';
 
 let encoder: (input: string) => string = isBrowser
     ? window.btoa
