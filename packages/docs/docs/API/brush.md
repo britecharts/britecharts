@@ -9,13 +9,17 @@ simple and configurable brush chart.
 
 **Example**  
 ```js
-let brushChart = brush();
+import { select } from 'd3-selection';
+import { brush } from '@britecharts/core';
+
+// dataset: [{ date, value }]
+const brushChart = brush();
 
 brushChart
     .height(500)
     .width(800);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(brushChart);
 ```
@@ -175,6 +179,8 @@ Gets or Sets the height of the chart
 
 ## isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
+The chart draws without animation when the reader's system asks for
+reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current isAnimated flag or Chart module  

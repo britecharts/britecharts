@@ -200,14 +200,18 @@ type NearestDatum = GroupedBarDatum & {
  * @tutorial grouped-bar
  *
  * @example
- * let groupedBar = GroupedBar();
+ * import { select } from 'd3-selection';
+ * import { groupedBar } from '@britecharts/core';
  *
- * groupedBar
+ * // dataset: [{ name, group, value }]
+ * const groupedBarChart = groupedBar();
+ *
+ * groupedBarChart
  *     .width(containerWidth);
  *
- * d3Selection.select('.css-selector')
- *     .datum(dataset.data)
- *     .call(groupedBar);
+ * select('.css-selector')
+ *     .datum(dataset)
+ *     .call(groupedBarChart);
  */
 
 /**

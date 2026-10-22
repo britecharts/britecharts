@@ -215,14 +215,18 @@ type StackedBarPoint = SeriesPoint<StackedBarColumn>;
  * @tutorial stacked-bar
  *
  * @example
- * let stackedBar = stackedBar();
+ * import { select } from 'd3-selection';
+ * import { stackedBar } from '@britecharts/core';
  *
- * stackedBar
+ * // dataset: [{ name, stack, value }]
+ * const stackedBarChart = stackedBar();
+ *
+ * stackedBarChart
  *     .width(containerWidth);
  *
- * d3Selection.select('.css-selector')
- *     .datum(dataset.data)
- *     .call(stackedBar);
+ * select('.css-selector')
+ *     .datum(dataset)
+ *     .call(stackedBarChart);
  */
 
 /**

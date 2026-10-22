@@ -300,12 +300,16 @@ type LineXScale =
  * @tutorial line
  *
  * @example
- * let lineChart = line();
+ * import { select } from 'd3-selection';
+ * import { line } from '@britecharts/core';
+ *
+ * // dataset: { data: [{ topicName, name, date, value }] }
+ * const lineChart = line();
  *
  * lineChart
  *     .width(500);
  *
- * d3Selection.select('.css-selector')
+ * select('.css-selector')
  *     .datum(dataset)
  *     .call(lineChart);
  */

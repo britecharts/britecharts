@@ -94,12 +94,16 @@ type BulletData = {
  * @tutorial bullet-chart
  *
  * @example
- * let bulletChart = bullet();
+ * import { select } from 'd3-selection';
+ * import { bullet } from '@britecharts/core';
+ *
+ * // dataset: one object: { ranges, measures, markers }
+ * const bulletChart = bullet();
  *
  * bulletChart
  *     .width(containerWidth);
  *
- * d3Selection.select('.css-selector')
+ * select('.css-selector')
  *     .datum(dataset)
  *     .call(bulletChart);
  */

@@ -157,13 +157,17 @@ type BrushDatum = {
  * @tutorial brush
  *
  * @example
- * let brushChart = brush();
+ * import { select } from 'd3-selection';
+ * import { brush } from '@britecharts/core';
+ *
+ * // dataset: [{ date, value }]
+ * const brushChart = brush();
  *
  * brushChart
  *     .height(500)
  *     .width(800);
  *
- * d3Selection.select('.css-selector')
+ * select('.css-selector')
  *     .datum(dataset)
  *     .call(brushChart);
  */

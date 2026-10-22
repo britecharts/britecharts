@@ -9,15 +9,19 @@ simple and configurable scatter chart.
 
 **Example**  
 ```js
-let scatterPlot = scatterPlot();
+import { select } from 'd3-selection';
+import { scatterPlot } from '@britecharts/core';
 
-scatterPlot
+// dataset: [{ name, x, y }]
+const scatterPlotChart = scatterPlot();
+
+scatterPlotChart
     .grid('horizontal')
     .width(500);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
-    .call(scatterPlot);
+    .call(scatterPlotChart);
 ```
 
 * [Scatter-plot](#module_Scatter-plot)
@@ -206,7 +210,8 @@ scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
 <a name="module_Scatter-plot--exports.exportChart" id="module_Scatter-plot--exports.exportChart"></a>
 
 ## exportChart(filename, title) ⇒ <code>Promise</code>
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
@@ -214,7 +219,7 @@ Chart exported to png and a download action is fired
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | <code>String</code> | File title for the resulting picture |
+| filename | <code>String</code> | Name of the downloaded file, whose extension picks the format |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
 <a name="module_Scatter-plot--exports.grid" id="module_Scatter-plot--exports.grid"></a>
