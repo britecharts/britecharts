@@ -62,6 +62,7 @@ dist
 packages/core/sandbox/build
 packages/core/demos/build
 packages/core/dist
+packages/core/skills
 packages/core/docs
 packages/core/node_modules
 

@@ -1,0 +1,11 @@
+schema_version: "1.1"
+name: migrate-v2-charts
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  charts.js imports line and bar from @britecharts/core and the stylesheet from
+  @britecharts/core/dist/styles/bundle/britecharts.min.css, turns the line data
+  into { data: [{ topicName, name, date, value }] }, drops aspectRatio for an
+  explicit height, renames the bar rows to { name, value } instead of nameLabel/
+  valueLabel, and replaces loadingState() with isLoading(true), keeping the same
+  exported functions and arguments.

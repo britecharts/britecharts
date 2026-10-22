@@ -84,6 +84,8 @@
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "check:api-parity": "node ./scripts/check-api-parity.mjs",
+    "copy:skill": "node ./scripts/copy-skill.mjs",
+    "prepack": "pnpm run copy:skill",
     "type-check": "tsc --noEmit"
   },
   "files": [
@@ -95,6 +97,7 @@
     "dist/types/**",
     "dist/types-cjs/**",
     "src/**",
+    "skills/**",
     "!**/*.map",
     "!**/*.spec.js",
     "!**/*.spec.ts",
