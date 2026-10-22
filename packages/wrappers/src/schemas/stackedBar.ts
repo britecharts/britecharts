@@ -105,6 +105,9 @@ const schema: ConfigurationSchema = {
         isLoading: {
             type: 'boolean',
         },
+        isNormalized: {
+            type: 'boolean',
+        },
         margin: {
             type: 'object',
             properties: {

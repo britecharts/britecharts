@@ -125,6 +125,9 @@ const schema: ConfigurationSchema = {
         isLoading: {
             type: 'boolean',
         },
+        isNormalized: {
+            type: 'boolean',
+        },
         locale: {
             anyOf: [
                 {

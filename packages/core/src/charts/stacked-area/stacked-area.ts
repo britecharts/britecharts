@@ -4,7 +4,14 @@ import { dispatch } from 'd3-dispatch';
 import { easeQuadInOut } from 'd3-ease';
 import { format } from 'd3-format';
 import { scaleLinear, scaleTime, scaleLog } from 'd3-scale';
-import { line, area, stackOffsetNone, stackOrderNone, stack } from 'd3-shape';
+import {
+    line,
+    area,
+    stackOffsetExpand,
+    stackOffsetNone,
+    stackOrderNone,
+    stack,
+} from 'd3-shape';
 import { select, pointer } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 import type { Axis, AxisDomain } from 'd3-axis';
@@ -150,6 +157,14 @@ export interface StackedAreaChartAPI
     /** Enables or disables the outline at the top of the areas */
     hasOutline(): boolean;
     hasOutline(hasOutline: boolean): StackedAreaChartModule;
+    /**
+     * Gets or Sets whether the areas fill the whole value axis, a 100%
+     * stacked area chart: each area shows its share of each date's total, and
+     * the value axis runs from 0% to 100%. The tooltip still shows the values.
+     * Meant for data without negative values.
+     */
+    isNormalized(): boolean;
+    isNormalized(isNormalized: boolean): StackedAreaChartModule;
     /** Gets or Sets the minimum width of the graph in order to show the tooltip */
     tooltipThreshold(): number;
     tooltipThreshold(threshold: number): StackedAreaChartModule;
@@ -382,6 +397,7 @@ export default function module(): StackedAreaChartModule {
         verticalMarkerLine: ChartSelection<SVGLineElement>,
         epsilon: number,
         isAnimated = false,
+        isNormalized = false,
         areaAnimationDuration = motion.duration,
         hasOutline = true,
         svg: ChartSelection<SVGSVGElement>,
@@ -684,7 +700,8 @@ export default function module(): StackedAreaChartModule {
             // sets the size it looks like it does.
             .tickSize(+[0])
             .tickPadding(tickPadding)
-            .tickFormat(getFormattedValue);
+            // A normalized chart's values are shares of each date's total
+            .tickFormat(isNormalized ? format('.0%') : getFormattedValue);
 
         // `drawGridLines` takes no parameters: it reads `xTicks` and `yTicks`
         // off the module.
@@ -769,13 +786,17 @@ export default function module(): StackedAreaChartModule {
 
         order = topicsOrder || formatOrder(totals);
 
+        // Normalized, each date's areas are scaled to fill 0 to 1: a 100%
+        // stacked area, where a moved baseline would mean nothing
         const stack3 = stack<StackedAreaColumn, string>()
             .keys(order)
             .order(stackOrderNone)
-            .offset(stackOffsetNone);
+            .offset(isNormalized ? stackOffsetExpand : stackOffsetNone);
 
         layersInitial = stack3(dataSortedZeroed);
-        layers = moveLayersByBaseline(stack3(dataSortedFormatted));
+        layers = isNormalized
+            ? stack3(dataSortedFormatted)
+            : moveLayersByBaseline(stack3(dataSortedFormatted));
     }
 
     /**
@@ -878,6 +899,10 @@ export default function module(): StackedAreaChartModule {
      * @private
      */
     function buildYAxisScale() {
+        if (isNormalized && !isUsingFakeData) {
+            return scaleLinear().domain([0, 1]).rangeRound([chartHeight, 0]);
+        }
+
         const minY = Number(getMinYAxisScale());
         const maxY = Number(getMaxYAxisScale());
 
@@ -1585,6 +1610,10 @@ export default function module(): StackedAreaChartModule {
      */
     function highlightDataPoints({ values }: StackedAreaDateGroup) {
         let accumulator = 0;
+        // Normalized, each marker sits at its running share of the date's total
+        const total = isNormalized
+            ? values.reduce((sum, d) => sum + Number(d[valueLabel]), 0) || 1
+            : 1;
 
         cleanDataPointHighlights();
 
@@ -1630,7 +1659,7 @@ export default function module(): StackedAreaChartModule {
 
             marker.attr(
                 'transform',
-                `translate( ${-highlightCircleSize}, ${yScale(accumulator)} )`
+                `translate( ${-highlightCircleSize}, ${yScale(accumulator / total)} )`
             );
         });
     }
@@ -1943,6 +1972,29 @@ export default function module(): StackedAreaChartModule {
 
         return this;
     } as StackedAreaChartModule['isAnimated'];
+
+    /**
+     * Gets or Sets whether the areas fill the whole value axis, a 100%
+     * stacked area chart: each area shows its share of each date's total, and
+     * the value axis runs from 0% to 100%. The tooltip still shows the values.
+     * Meant for data without negative values.
+     * @param  {Boolean} _x = false     Whether to stack to 100%
+     * @return {Boolean | module}       If it is normalized or Chart module to chain calls
+     * @public
+     * @example
+     * stackedArea.isNormalized(true)
+     */
+    (exports as StackedAreaChartModule).isNormalized = function (
+        this: StackedAreaChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return isNormalized;
+        }
+        isNormalized = _x;
+
+        return this;
+    } as StackedAreaChartModule['isNormalized'];
 
     /**
      * Gets or Sets the number format of the stacked area chart

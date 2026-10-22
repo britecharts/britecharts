@@ -56,6 +56,7 @@ Playground.args = playgroundArgs(stackedArea, [
     'height',
     'margin',
     'isAnimated',
+    'isNormalized',
     'colorSchema',
     'areaCurve',
     'areaOpacity',
@@ -130,6 +131,43 @@ export const WithAnimation = () => {
 
         stackedAreaChart
             .isAnimated(true)
+            .width(containerWidth)
+            .on('customMouseOver', chartTooltip.show)
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', chartTooltip.hide);
+
+        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+
+        // The stacked area dispatches its rows as `values`
+        chartTooltip.topicLabel('values').title('Testing tooltip');
+
+        select('.metadata-group .vertical-marker-container')
+            .datum([])
+            .call(chartTooltip);
+    }
+
+    return container;
+};
+
+/**
+ * A 100% stacked area: `isNormalized(true)` scales every date's areas to the
+ * full height, so each area shows its share of the total and the axis runs
+ * from 0% to 100%. The tooltip still shows the values.
+ */
+export const WithNormalizedAreas = () => {
+    const container = getCleanContainer();
+    const stackedAreaChart = stackedArea();
+    const stackedAreaContainer = select(container);
+    const containerWidth = stackedAreaContainer.node()
+        ? stackedAreaContainer.node().getBoundingClientRect().width
+        : false;
+    const chartTooltip = tooltip();
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withSalesChannelData().build();
+
+        stackedAreaChart
+            .isNormalized(true)
             .width(containerWidth)
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)

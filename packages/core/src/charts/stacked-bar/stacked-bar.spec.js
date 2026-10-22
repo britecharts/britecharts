@@ -512,6 +512,18 @@ describe('stacked Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should provide isNormalized getter and setter', () => {
+            let previous = stackedBarChart.isNormalized(),
+                expected = true,
+                actual;
+
+            stackedBarChart.isNormalized(expected);
+            actual = stackedBarChart.isNormalized();
+
+            expect(previous).toBe(false);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide hasReversedStacks getter and setter', () => {
             let previous = stackedBarChart.hasReversedStacks(),
                 expected = true,
@@ -677,6 +689,72 @@ describe('stacked Bar Chart', () => {
 
             expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
             expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
+        });
+    });
+
+    describe('when normalized, as a 100% stacked bar', () => {
+        // Each segment's [lower, upper] bounds, by name, from the bound data
+        const extentsByName = () => {
+            const extents = {};
+
+            containerFixture.selectAll('.bar').each((d) => {
+                const [lower, upper] = d;
+                const name = d.data.key;
+
+                extents[name] = extents[name] || [Infinity, -Infinity];
+                extents[name][0] = Math.min(extents[name][0], lower);
+                extents[name][1] = Math.max(extents[name][1], upper);
+            });
+
+            return Object.values(extents);
+        };
+
+        beforeEach(() => {
+            stackedBarChart.isNormalized(true);
+            containerFixture.datum(dataset).call(stackedBarChart);
+        });
+
+        it('should fill every stack from 0 to 1', () => {
+            const extents = extentsByName();
+
+            expect(extents.length).toBeGreaterThan(0);
+            extents.forEach(([lower, upper]) => {
+                expect(lower).toBe(0);
+                expect(upper).toBeCloseTo(1);
+            });
+        });
+
+        it('should label the value axis as percentages, up to 100%', () => {
+            const ticks = containerFixture
+                .selectAll('.y-axis-group .tick text')
+                .nodes()
+                .map((tick) => tick.textContent);
+
+            expect(ticks.every((tick) => tick.endsWith('%'))).toBe(true);
+            expect(ticks[ticks.length - 1]).toBe('100%');
+        });
+
+        it('should label the horizontal value axis as percentages too', () => {
+            stackedBarChart.isHorizontal(true);
+            containerFixture.datum(dataset).call(stackedBarChart);
+
+            const ticks = containerFixture
+                .selectAll('.x-axis-group .tick text')
+                .nodes()
+                .map((tick) => tick.textContent);
+
+            expect(ticks.every((tick) => tick.endsWith('%'))).toBe(true);
+        });
+
+        it('should go back to the values when turned off', () => {
+            stackedBarChart.isNormalized(false);
+            containerFixture.datum(dataset).call(stackedBarChart);
+
+            const highest = Math.max(
+                ...extentsByName().map(([, upper]) => upper)
+            );
+
+            expect(highest).toBeGreaterThan(1);
         });
     });
 

@@ -408,6 +408,40 @@ describe('stacked Area Chart', () => {
             });
         });
 
+        describe('when normalized, as a 100% stacked area', () => {
+            beforeEach(function () {
+                dataset = aTestDataSet().withReportData().build();
+                stackedAreaChart = stackedArea().isNormalized(true);
+
+                containerFixture = d3.select('.test-container').append('svg');
+                containerFixture.datum(dataset).call(stackedAreaChart);
+            });
+
+            it('should be off by default, and read back when set', () => {
+                expect(stackedArea().isNormalized()).toBe(false);
+                expect(stackedAreaChart.isNormalized()).toBe(true);
+            });
+
+            it('should stack every date up to 1, starting from 0', () => {
+                const layers = containerFixture.selectAll('.layer').data();
+                const top = layers[layers.length - 1];
+
+                expect(layers.length).toBeGreaterThan(0);
+                layers[0].forEach(([lower]) => expect(lower).toBe(0));
+                top.forEach(([, upper]) => expect(upper).toBeCloseTo(1));
+            });
+
+            it('should label the value axis as percentages, up to 100%', () => {
+                const ticks = containerFixture
+                    .selectAll('.y-axis-group .tick text')
+                    .nodes()
+                    .map((tick) => tick.textContent);
+
+                expect(ticks.every((tick) => tick.endsWith('%'))).toBe(true);
+                expect(ticks[ticks.length - 1]).toBe('100%');
+            });
+        });
+
         describe('when has a modified y-axis baseline', () => {
             describe('and baseline is smaller', () => {
                 beforeEach(function () {

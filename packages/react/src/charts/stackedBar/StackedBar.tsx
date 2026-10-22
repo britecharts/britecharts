@@ -110,6 +110,13 @@ export interface StackedBarProps {
     isHorizontal?: boolean;
 
     /**
+     * Whether every stack fills the whole value axis, a 100% stacked bar
+     * chart: each segment shows its share of its stack, and the value axis
+     * runs from 0% to 100%. The tooltip still shows the values.
+     */
+    isNormalized?: boolean;
+
+    /**
      * Gets or Sets whether a loading state will be shown
      */
     isLoading?: boolean;

@@ -6,7 +6,7 @@ import * as d3Format from 'd3-format';
 import { easeQuadInOut } from 'd3-ease';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleOrdinal, scaleBand, scaleLinear } from 'd3-scale';
-import { stack, stackOffsetDiverging } from 'd3-shape';
+import { stack, stackOffsetDiverging, stackOffsetExpand } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
 import type { Axis, AxisDomain } from 'd3-axis';
 import type { Dispatch } from 'd3-dispatch';
@@ -118,6 +118,14 @@ export interface StackedBarChartAPI
     /** Gets or Sets the hasReversedStacks property of the chart, reversing the order of stacks. */
     hasReversedStacks(): boolean;
     hasReversedStacks(hasReversedStacks: boolean): StackedBarChartModule;
+    /**
+     * Gets or Sets whether every stack fills the whole value axis, a 100%
+     * stacked bar chart: each segment shows its share of its stack, and the
+     * value axis runs from 0% to 100%. The tooltip still shows the values.
+     * Meant for data without negative values.
+     */
+    isNormalized(): boolean;
+    isNormalized(isNormalized: boolean): StackedBarChartModule;
     /** Gets or Sets the horizontal direction of the chart */
     isHorizontal(): boolean;
     isHorizontal(isHorizontal: boolean): StackedBarChartModule;
@@ -306,6 +314,7 @@ export default function module(): StackedBarChartModule {
         colorScale: ScaleOrdinal<string, string>,
         layers: Series<StackedBarColumn, string>[],
         isHorizontal = false,
+        isNormalized = false,
         svg: ChartSelection<SVGSVGElement>,
         chartWidth: number,
         chartHeight: number,
@@ -460,15 +469,18 @@ export default function module(): StackedBarChartModule {
      * @private
      */
     function buildAxis(locale: FormatLocaleObject) {
+        // A normalized chart's values are shares of each stack
+        const valueFormat = isNormalized ? PERCENTAGE_FORMAT : numberFormat;
+
         if (isHorizontal) {
             xAxis = axisBottom(xScale).ticks(
                 xTicks,
-                locale.format(numberFormat)
+                locale.format(valueFormat)
             );
             yAxis = axisLeft(yScale);
         } else {
             xAxis = axisBottom(xScale);
-            yAxis = axisLeft(yScale).ticks(yTicks, locale.format(numberFormat));
+            yAxis = axisLeft(yScale).ticks(yTicks, locale.format(valueFormat));
         }
     }
 
@@ -504,9 +516,10 @@ export default function module(): StackedBarChartModule {
      * @private
      */
     function buildLayers() {
+        // Normalized, each stack is scaled to fill 0 to 1: a 100% stacked bar
         const stack3 = stack<StackedBarColumn, string>()
             .keys(stacks)
-            .offset(stackOffsetDiverging);
+            .offset(isNormalized ? stackOffsetExpand : stackOffsetDiverging);
         const dataInitial = transformedData.map((item) => {
             const ret: Record<string, unknown> = {};
 
@@ -1598,6 +1611,29 @@ export default function module(): StackedBarChartModule {
 
         return this;
     } as StackedBarChartModule['isHorizontal'];
+
+    /**
+     * Gets or Sets whether every stack fills the whole value axis, a 100%
+     * stacked bar chart: each segment shows its share of its stack, and the
+     * value axis runs from 0% to 100%. The tooltip still shows the values.
+     * Meant for data without negative values.
+     * @param  {Boolean} _x = false     Whether to stack to 100%
+     * @return {Boolean | module}       If it is normalized or Chart module to chain calls
+     * @public
+     * @example
+     * stackedBar.isNormalized(true)
+     */
+    (exports as StackedBarChartModule).isNormalized = function (
+        this: StackedBarChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return isNormalized;
+        }
+        isNormalized = _x;
+
+        return this;
+    } as StackedBarChartModule['isNormalized'];
 
     /**
      * Gets or Sets the loading state of the chart
