@@ -8,9 +8,14 @@ export const ColorSchemas = () => {
 
     Object.keys(colorSchemas).forEach((colorPalette) => {
         const className = `js-palette-${colorPalette}`;
-        const label = document.createElement('p');
-        label.textContent = `${colorSchemasHuman[colorPalette]} · colorSchemas.${colorPalette}`;
-        label.style.margin = '0 0 6px';
+        // The palette's name, then the key to pass, styled in storybook-preview.css
+        const label = document.createElement('h3');
+        const key = document.createElement('code');
+
+        label.className = 'palette-title';
+        label.textContent = `${colorSchemasHuman[colorPalette]} `;
+        key.textContent = `colorSchemas.${colorPalette}`;
+        label.appendChild(key);
         container.appendChild(label);
 
         const wrapper = document.createElement('div');

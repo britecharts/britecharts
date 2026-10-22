@@ -66,7 +66,7 @@ export const WithSelectionEvents = () => {
                 roundingTimeInterval="timeDay"
                 height={200}
             />
-            <p>{selection}</p>
+            <p className="story-caption">{selection}</p>
         </div>
     );
 };
