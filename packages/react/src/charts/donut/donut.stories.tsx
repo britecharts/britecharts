@@ -92,6 +92,46 @@ export const WithHoverEvent = () => {
     );
 };
 
+/**
+ * A pie chart is a donut without a hole: `internalRadius={0}`. With no hole,
+ * there is no room for the centred text, so `hasCenterLegend={false}` turns
+ * it off and the legend names each slice, highlighting the one under the
+ * pointer.
+ */
+// An id no slice has, which highlights none: an unset prop keeps the last one
+const NO_SLICE = -1;
+
+export const AsAPieChart = () => {
+    const data = donutData.with4Slices();
+    const width = 500;
+    const [highlightedSlice, setHighlightedSlice] = React.useState(NO_SLICE);
+
+    return (
+        <>
+            <Donut
+                data={data}
+                height={width / 1.5}
+                width={width}
+                externalRadius={width / 3.5}
+                internalRadius={0}
+                hasCenterLegend={false}
+                a11yTitle="Visits by source"
+                isAnimated={false}
+                customMouseOver={(slice: { data: { id: number } }) =>
+                    setHighlightedSlice(slice.data.id)
+                }
+                customMouseOut={() => setHighlightedSlice(NO_SLICE)}
+            />
+            <Legend
+                data={data}
+                height={200}
+                width={width}
+                highlightEntryById={highlightedSlice}
+            />
+        </>
+    );
+};
+
 export const WithLoadingState = () => {
     const data: [] = [];
 

@@ -249,6 +249,42 @@ export const WithHighlightedSliceChart = () => {
     return container;
 };
 
+/**
+ * A pie chart is a donut without a hole: `internalRadius(0)`. With no hole,
+ * there is no room for the centred text, so `hasCenterLegend(false)` turns it
+ * off and the legend beside the chart names each slice, highlighting the one
+ * under the pointer.
+ */
+export const AsAPieChart = () => {
+    const container = getCleanContainer();
+    const donutContainer = select(container);
+    const containerWidth = donutContainer.node()
+        ? donutContainer.node().getBoundingClientRect().width
+        : false;
+    const pieChart = donut();
+    const legendChart = getVerticalLegendChart(container, dataset);
+
+    if (containerWidth) {
+        pieChart
+            .width(containerWidth)
+            .height(containerWidth / 2)
+            .externalRadius(containerWidth / 5)
+            .internalRadius(0)
+            .hasCenterLegend(false)
+            .a11yTitle('Visits by source')
+            .on('customMouseOver', function (slice) {
+                legendChart.highlight(slice.data.id);
+            })
+            .on('customMouseOut', function () {
+                legendChart.clearHighlight();
+            });
+
+        donutContainer.datum(dataset).call(pieChart);
+    }
+
+    return container;
+};
+
 export const WithLoadingState = () => {
     const container = getCleanContainer();
     const donutContainer = select(container);
