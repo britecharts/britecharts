@@ -48,3 +48,32 @@
     outline: 2px solid #39c2c9;
     outline-offset: 2px;
 }
+
+/* The palette names in the Color Schemas story, in the story titles' type */
+.palette-title {
+    margin: 0 0 8px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    color: CanvasText;
+    -webkit-font-smoothing: antialiased;
+}
+
+.palette-title code {
+    margin-left: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: GrayText;
+}
+
+/* Text a story shows under its chart, such as the brush's selected range */
+.story-caption {
+    margin: 12px 0 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    color: CanvasText;
+    -webkit-font-smoothing: antialiased;
+}
+
