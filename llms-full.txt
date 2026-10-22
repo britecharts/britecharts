@@ -8,7 +8,7 @@ Every guide and API page from https://britecharts.github.io/britecharts/, as tex
 
 Source: https://britecharts.github.io/britecharts/docs/Britecharts
 
-> Britecharts makes it easier to build stunning [D3.js][d3]-powered interactive charts with little code.
+> Finished, accessible charts that any page, and any agent, can add with one script tag or one validated JSON config.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![test workflow](https://github.com/britecharts/britecharts/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/britecharts/britecharts/actions/workflows/unit-tests.yml) [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/britecharts/britecharts)](https://github.com/britecharts/britecharts/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc) [![](https://data.jsdelivr.com/v1/package/npm/britecharts/badge)](https://www.jsdelivr.com/package/npm/britecharts)
 
@@ -38,54 +38,131 @@ Source: https://britecharts.github.io/britecharts/docs/Britecharts
 </div>
 <br/>
 
-Britecharts is a client-side **reusable Charting Library** based on [D3.js][d3] that provides easy composition of charts and components to create amazing data visualizations.
+Britecharts is a library of finished [D3.js][d3] charts: bar, line, donut, stacked and grouped bar, stacked area, scatter plot, heatmap, sparkline, bullet and brush, plus a tooltip and a legend. You choose a chart, give it data and a few settings, and get a polished, interactive, accessible chart that works the same in plain HTML, any framework or React.
 
-## Key Features
+## Why Britecharts
 
--   🛠 **Reusable** - Configure your charts to create different looks and behaviors.
--   🏗 **Composable** - Mix and match components to create insightful experiences.
--   🌈 **Great design** - Clean and vivid looks to amaze your users.
--   ⚙️ **Simple** - The codebase is a regular D3.js code you can fork and modify.
+### Finished charts, not a grammar
+Grammar libraries hand you scales, marks and axes to assemble. Britecharts hands you a bar chart. Every chart shares one vocabulary (`width`, `colorSchema`, `isLoading`, `numberFormat`, `exportChart`, `a11yTitle`) and comes with loading and empty states, animation, tooltips and export already built. There are fewer ways to go wrong, for people and for coding agents alike.
 
-Britecharts [components][storybook] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
+### Accessible by default, and free
+Every chart is accessible without any setup:
+-   🔊 **Named for screen readers**, with its data as a table they can read cell by cell.
+-   ⌨️ **Keyboard navigable**: tab to a chart, move between data points with the arrow keys, and the tooltip follows focus.
+-   🎞 **Still when the reader asks for reduced motion.**
+-   🎨 **A colour-blind-safe palette**, Okabe–Ito, one setting away.
 
-## Usage
+Commercial libraries charge per seat for this set. In Britecharts it is on by default, and each part can be turned off.
 
-The typical use of Britecharts involves creating a chart using its simple API, then rendering it on a container that has previously had data applied to it. The code will look like this:
+### One script tag or one config, in any page
+The vanilla core runs anywhere: a server-rendered template, a static site, a Web Component, or an AI sandbox that only allows CDN scripts. The same chart is available as a framework-agnostic wrapper and as a React component. And because a chart is a name, a configuration and data, it can be written down as a JSON spec that a schema checks before it's drawn.
 
-```js
-    import { select } from 'd3-selection';
-    import { bar } from '@britecharts/core';
+### Made for coding agents too
+Agents write Britecharts correctly on the first try more often when the library helps them:
+-   📄 **[llms.txt][llms-txt]** and **llms-full.txt** describe every chart and accessor.
+-   🧠 **An agent skill** ships inside `@britecharts/core`, with each chart's data shape, accessors and common traps.
+-   ✅ **A JSON Schema for every chart's spec**, so an editor or an agent can validate a config without running it.
+-   💬 **Errors that say how to fix them**: a misspelt key gets "did you mean `height`?" and a link to the chart's API page, and a value of the wrong type says what it should be.
 
-    const barChart = bar();
-    const barContainer = select('.bar-chart-container');
-    const dataset = [...];
+## What's New in Version 3
 
-    barChart
-        .width(500)
-        .height(300);
+Version 3 is a rewrite of Britecharts in TypeScript, on D3 v7, as three packages: [`@britecharts/core`][core-package], [`@britecharts/wrappers`][wrappers-package] and [`@britecharts/react`][react-package].
 
-    barContainer.datum(dataset).call(barChart);
+-   **Accessibility built in.** Named charts, [data tables and keyboard navigation][a11y-howto], reduced motion and the Okabe–Ito palette, all on by default.
+-   **[Theming and dark mode][theming-howto]** with standard CSS. Every colour around the data is a `--bc-*` custom property, and the charts follow the page's `color-scheme` through `light-dark()`.
+-   **[Export to SVG or PNG][export-howto]** from one call: `exportChart('chart.svg')`.
+-   **[Chart specs and JSON Schemas][spec-howto]**, generated from the TypeScript types, with value checks in the wrappers.
+-   **TypeScript types** for every chart's data, configuration and React props.
+-   **Every chart in every package**, the brush and heatmap included, and **one tooltip** for all of them.
+-   **Responsive by default**: every svg scales to fit its container, with no resize listeners.
+-   **Negative values** in the bar, grouped bar, stacked bar, brush and scatter plot charts, and **loading states** on every chart.
+-   **Smaller bundles**: ES modules that tree-shake, so an app only ships the charts it imports.
+
+Coming from version 2? Read the [migration guide][migration-guide].
+
+## Quick Start
+
+### From a CDN, with no build step
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/styles/bundle/britecharts.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"></script>
+
+<div class="bar-container"></div>
+
+<script>
+    const barChart = core.bar().height(300).a11yTitle('Signups by plan');
+
+    d3.select('.bar-container')
+        .datum([
+            { name: 'Pro', value: 412 },
+            { name: 'Team', value: 236 },
+            { name: 'Free', value: 1200 },
+        ])
+        .call(barChart);
+</script>
 ```
 
-To use Britecharts with React, you will need to use the `@britecharts/react` [package][react-package]. Also, if you use Angular, check out [ngx-britecharts][angularwrapper] and their [demos][angularwrapperdemos]. We also include a set of wrappers in `@britecharts/wrappers` that you can use to employ Britecharts with other web frameworks.
+### From npm
 
-## API
+```bash
+npm install @britecharts/core d3-selection
+```
 
-All the components expose **common API methods** like width, height, and margin. Additionally, each component exposes specific methods you can find in the documentation:
+```js
+import { select } from 'd3-selection';
+import { bar } from '@britecharts/core';
+import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
+
+const barChart = bar().isHorizontal(true).height(300).a11yTitle('Signups by plan');
+
+select('.bar-container').datum(data).call(barChart);
+```
+
+### With React
+
+```bash
+npm install @britecharts/react
+```
+
+```jsx
+import { Bar } from '@britecharts/react';
+
+<Bar data={data} isHorizontal a11yTitle="Signups by plan" />;
+```
+
+To use Britecharts with another framework, use the `create`, `update` and `destroy` methods of the [wrappers package][wrappers-package]. For Angular, check out [ngx-britecharts][angularwrapper].
+
+### As a JSON spec
+
+```json
+{
+    "$schema": "https://britecharts.github.io/britecharts/schema/v3/bar.json",
+    "chart": "bar",
+    "config": { "isHorizontal": true, "a11yTitle": "Signups by plan" },
+    "data": [{ "name": "Pro", "value": 412 }]
+}
+```
+
+Editors validate and complete it from the schema, and `BarWrapper.create(element, spec.data, spec.config)` draws it.
+
+## Charts
+
+Every chart shares the common accessors (`width`, `height`, `margin`, `colorSchema`, `isLoading`, `a11yTitle` and so on) and adds its own:
 
 -   [API][line-docs], [Demo][linechart-story] Line Chart
 -   [API][bar-docs], [Demo][barchart-story] Bar Chart
 -   [API][donut-docs], [Demo][donutchart-story] Donut Chart
 -   [API][stacked-bar-docs], [Demo][stackedbarchart-story] Stacked Bar Chart
 -   [API][grouped-bar-docs], [Demo][groupedbarchart-story] Grouped Bar Chart
+-   [API][stacked-area-docs], [Demo][stackedareachart-story] Stacked Area Chart
+-   [API][scatter-docs], [Demo][scatterplot-story] Scatter Plot
+-   [API][heatmap-docs], [Demo][heatmap-story] Heatmap
+-   [API][sparkline-docs], [Demo][sparklinechart-story] Sparkline Chart
 -   [API][bullet-docs], [Demo][bulletchart-story] Bullet Chart
 -   [API][brush-docs], [Demo][brushchart-story] Brush Chart
--   [API][scatter-docs], [Demo][scatterplot-story] Scatter Plot
--   [API][sparkline-docs], [Demo][sparklinechart-story] Sparkline Chart
--   [API][stacked-area-docs], [Demo][stackedareachart-story] Stacked Area Chart
--   [API][mini-tooltip-docs], [Demo][barchart-story] Mini Tooltip (the tooltip's single-value preset)
--   [API][tooltip-docs], [Demo][linechart-story] Tooltip
+-   [API][tooltip-docs], [Demo][linechart-story] Tooltip, and its [single-value preset][mini-tooltip-docs]
 -   [API][legend-docs], [Demo][donutchart-story] Legend
 
 [line-docs]: https://britecharts.github.io/britecharts/docs/API/line
@@ -96,59 +173,14 @@ All the components expose **common API methods** like width, height, and margin.
 [bullet-docs]: https://britecharts.github.io/britecharts/docs/API/bullet
 [brush-docs]: https://britecharts.github.io/britecharts/docs/API/brush
 [scatter-docs]: https://britecharts.github.io/britecharts/docs/API/scatter-plot
+[heatmap-docs]: https://britecharts.github.io/britecharts/docs/API/heatmap
 [sparkline-docs]: https://britecharts.github.io/britecharts/docs/API/sparkline
 [stacked-area-docs]: https://britecharts.github.io/britecharts/docs/API/stacked-area
 [mini-tooltip-docs]: https://britecharts.github.io/britecharts/docs/API/tooltip#minitooltip-the-single-value-preset
 [tooltip-docs]: https://britecharts.github.io/britecharts/docs/API/tooltip
 [legend-docs]: https://britecharts.github.io/britecharts/docs/API/legend
 
-## Installation
-
-Britecharts components are distributed in **UMD modules** and **ES modules**, each one exposing a D3.js component written with the [Reusable API pattern][mike-chart]. To use any of the Britecharts modules, you will need to require the chart in your JS file using CommonJS modules, ES modules, or adding a `<script>` tag with the `src` pointing to the file or CDN bundle. You would also need to load the [d3-selection][d3-selection] submodule to select the chart container.
-
-```bash
-   npm install --save @britecharts/core d3-selection
-   # or
-   pnpm add @britecharts/core d3-selection
-```
-
-Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [CodePen][codependemos] demo projects.
-
-Then, in your JavaScript module file you can now import and use charts:
-
-```js
-import { bar } from '@britecharts/core';
-import { select } from 'd3-selection';
-
-const barChart = bar();
-const container = select('#container');
-
-const barData = [
-    { name: 'Luminous', value: 2 },
-    { name: 'Glittering', value: 5 },
-    { name: 'Intense', value: 4 },
-    { name: 'Radiant', value: 3 }
-];
-
-barChart
-    .margin({ left: 100 })
-    .isHorizontal(true)
-    .height(400)
-    .width(600);
-
-container.datum(barData).call(barChart);
-```
-
-Britecharts comes with a basic set of CSS styles that you would load with a `<link>` tag in your page's `<head>`.
-
-```html
-<link
-    rel="stylesheet"
-    href="./node_modules/britecharts/dist/css/britecharts.css"
-/>*
-```
-
-You can customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to get started.
+Britecharts is built with the [reusable chart pattern][mike-chart] on plain D3.js code you can read, fork and modify, and every chart is covered by unit tests and by browser tests in real consumer apps. To customise the look, see [Styling Britecharts][stylingbritecharts].
 
 ## See Also
 
@@ -219,6 +251,15 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 Read more in the [license document][britecharts-license]
 
+[core-package]: https://britecharts.github.io/britecharts/docs/packages/core-readme
+[wrappers-package]: https://britecharts.github.io/britecharts/docs/packages/wrappers-readme
+[llms-txt]: https://britecharts.github.io/britecharts/llms.txt
+[a11y-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-make-a-chart-accessible
+[theming-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-theme-a-chart-and-support-dark-mode
+[export-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-export-a-chart
+[spec-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-describe-a-chart-as-a-spec-and-check-it
+[migration-guide]: https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3
+[heatmap-story]: https://britecharts.github.io/britecharts/docs/API/heatmap 'Check the API reference'
 [d3]: https://d3js.org/
 [mike-chart]: https://bost.ocks.org/mike/chart/
 [changelog]: https://github.com/britecharts/britecharts/blob/main/CHANGELOG.md
