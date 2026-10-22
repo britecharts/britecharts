@@ -27,7 +27,7 @@ export const Playground = (args) => {
     const tooltip = miniTooltip();
 
     if (containerWidth) {
-        const dataset = aTestDataSet().withLettersFrequency().build();
+        const dataset = aTestDataSet().withColors().build();
 
         applyArgs(barChart, args)
             .width(containerWidth)
