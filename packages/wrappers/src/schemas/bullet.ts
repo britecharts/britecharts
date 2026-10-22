@@ -6,6 +6,9 @@ import type { ConfigurationSchema } from '../helpers/schema.js';
 const schema: ConfigurationSchema = {
     type: 'object',
     properties: {
+        a11yDataTable: {
+            type: 'boolean',
+        },
         a11yDescription: {
             anyOf: [
                 {
