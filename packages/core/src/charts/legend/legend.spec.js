@@ -30,6 +30,36 @@ describe('legend', () => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
+    describe('commands before the first render', () => {
+        // A wrapper or a React prop can call these on a legend that has not
+        // drawn yet; there is nothing to change, and they must not throw
+        it('should do nothing on clearHighlight', () => {
+            expect(() => legend().clearHighlight()).not.toThrow();
+        });
+
+        it('should do nothing on highlight', () => {
+            expect(() => legend().highlight(1)).not.toThrow();
+        });
+    });
+
+    describe('highlight commands', () => {
+        const faded = () =>
+            containerFixture.selectAll('g.legend-entry.is-faded').size();
+
+        it('should fade every entry but the highlighted one', () => {
+            legendChart.highlight(dataset[0].id);
+
+            expect(faded()).toBe(dataset.length - 1);
+        });
+
+        it('should clear the highlight', () => {
+            legendChart.highlight(dataset[0].id);
+            legendChart.clearHighlight();
+
+            expect(faded()).toBe(0);
+        });
+    });
+
     describe('render', () => {
         it('should show a chart with minimal requirements', () => {
             const expected = 1;
