@@ -15,10 +15,25 @@ export default {
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart.
+ * The heatmap dispatches the hovered box as { day, hour, value }: the tooltip
+ * shows its value, named by its hour.
  */
-export const Playground: StoryFn<typeof Heatmap> = (args) => (
-    <Heatmap {...args} data={heatmapData.withWeeklyData()} />
-);
+export const Playground: StoryFn<typeof Heatmap> = (args) => {
+    const data = heatmapData.withWeeklyData();
+
+    const renderHeatmap = (props: TooltipRenderArgs<typeof data>) => (
+        <Heatmap {...args} {...props} />
+    );
+
+    return (
+        <Tooltip
+            data={data}
+            render={renderHeatmap}
+            title="Visits"
+            nameLabel="hour"
+        />
+    );
+};
 
 Playground.args = { isAnimated: false };
 
@@ -47,27 +62,6 @@ export const WithDayLabels = () => (
         yAxisLabels={['S', 'M', 'T', 'W', 'T', 'F', 'S']}
     />
 );
-
-/**
- * The heatmap dispatches the hovered box as { day, hour, value }: the tooltip
- * shows its value, named by its hour.
- */
-export const WithTooltip = () => {
-    const data = heatmapData.withWeeklyData();
-
-    const renderHeatmap = (props: TooltipRenderArgs<typeof data>) => (
-        <Heatmap {...props} />
-    );
-
-    return (
-        <Tooltip
-            data={data}
-            render={renderHeatmap}
-            title="Visits"
-            nameLabel="hour"
-        />
-    );
-};
 
 export const WithLoadingState = () => {
     const data: [] = [];
