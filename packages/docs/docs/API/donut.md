@@ -1,5 +1,6 @@
 ---
 title: Donut
+sidebar_position: 1
 ---
 
 <a name="module_Donut" id="module_Donut"></a>
@@ -29,6 +30,8 @@ select('.css-selector')
         * _static_
             * [.a11yTitle(_x)](#module_Donut--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Donut--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+            * [.a11yDataTable(_x)](#module_Donut--exports.a11yDataTable) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.a11yKeyboardNavigation(_x)](#module_Donut--exports.a11yKeyboardNavigation) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.animationDuration(_x)](#module_Donut--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
             * [.centeredTextFunction(_x)](#module_Donut--exports.centeredTextFunction) ⇒ <code>function</code> \| <code>module</code>
             * [.colorMap([_x])](#module_Donut--exports.colorMap) ⇒ <code>number</code> \| <code>module</code>
@@ -96,6 +99,39 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>String</code> \| <code>null</code> | Desired accessible description for the chart |
+
+<a name="module_Donut--exports.a11yDataTable" id="module_Donut--exports.a11yDataTable"></a>
+
+## a11yDataTable(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
+**Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>Boolean</code> | Whether to render the data table |
+
+<a name="module_Donut--exports.a11yKeyboardNavigation" id="module_Donut--exports.a11yKeyboardNavigation"></a>
+
+## a11yKeyboardNavigation(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+Gets or Sets whether a keyboard can move through the chart's data
+points: the chart takes one tab stop, the arrow keys move between
+points, Home and End go to the first and last, and Escape lets go. The
+tooltip and highlights follow focus as they follow the pointer. On by
+default.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
+**Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>Boolean</code> | Whether the keyboard can move through the data |
 
 <a name="module_Donut--exports.animationDuration" id="module_Donut--exports.animationDuration"></a>
 

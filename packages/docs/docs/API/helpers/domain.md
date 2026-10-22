@@ -11,8 +11,7 @@ Charts whose marks grow from a baseline need that baseline inside the domain,
 otherwise a negative value scales to a coordinate outside the range and the
 mark is drawn with a negative width or height, which SVG rejects.
 
-For data that is entirely non-negative this returns the same `[0, max]` the
-charts used before, so nothing about existing charts changes.
+For data that is entirely non-negative this returns `[0, max]`.
 
 **Kind**: global constant  
 **Returns**: <code>Array.&lt;number&gt;</code> - [lower, upper], always spanning zero  

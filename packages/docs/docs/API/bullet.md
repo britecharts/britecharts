@@ -1,5 +1,6 @@
 ---
 title: Bullet
+sidebar_position: 1
 ---
 
 <a name="module_Bullet" id="module_Bullet"></a>
@@ -28,6 +29,7 @@ select('.css-selector')
         * _static_
             * [.a11yTitle(_x)](#module_Bullet--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Bullet--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+            * [.a11yDataTable(_x)](#module_Bullet--exports.a11yDataTable) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.colorSchema(_x)](#module_Bullet--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
             * [.exportChart(filename, title)](#module_Bullet--exports.exportChart) ⇒ <code>Promise</code>
             * [.isLoading(_flag)](#module_Bullet--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
@@ -83,6 +85,22 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>String</code> \| <code>null</code> | Desired accessible description for the chart |
+
+<a name="module_Bullet--exports.a11yDataTable" id="module_Bullet--exports.a11yDataTable"></a>
+
+## a11yDataTable(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>Boolean</code> | Whether to render the data table |
 
 <a name="module_Bullet--exports.colorSchema" id="module_Bullet--exports.colorSchema"></a>
 

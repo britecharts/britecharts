@@ -1,5 +1,6 @@
 ---
 title: Brush
+sidebar_position: 1
 ---
 
 <a name="module_Brush" id="module_Brush"></a>
@@ -30,6 +31,7 @@ select('.css-selector')
             * [.axisTimeCombinations](#module_Brush--exports.axisTimeCombinations)
             * [.a11yTitle(_x)](#module_Brush--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Brush--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
+            * [.a11yDataTable(_x)](#module_Brush--exports.a11yDataTable) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.animationDuration(_x)](#module_Brush--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
             * [.areaCurve([_x])](#module_Brush--exports.areaCurve) ⇒ <code>String</code> \| <code>module</code>
             * [.dateRange([_x])](#module_Brush--exports.dateRange) ⇒ <code>dateRange</code> \| <code>module</code>
@@ -105,6 +107,22 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | <code>String</code> \| <code>null</code> | Desired accessible description for the chart |
+
+<a name="module_Brush--exports.a11yDataTable" id="module_Brush--exports.a11yDataTable"></a>
+
+## a11yDataTable(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
+**Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>Boolean</code> | Whether to render the data table |
 
 <a name="module_Brush--exports.animationDuration" id="module_Brush--exports.animationDuration"></a>
 
