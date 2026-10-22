@@ -218,6 +218,62 @@ describe('stacked Bar Chart', () => {
                 expect(actualNLayers).toEqual(expectedNLayers);
                 expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
             });
+
+            // Midway through, each stack has grown as a whole: within a
+            // stack, every segment still ends where the next one begins
+            const expectSegmentsTogether = (start, size) => {
+                const byName = {};
+
+                containerFixture.selectAll('.bar').each(function (d) {
+                    const name = d.data.key;
+
+                    byName[name] = byName[name] || [];
+                    byName[name].push({
+                        start: Number(this.getAttribute(start)),
+                        size: Number(this.getAttribute(size)),
+                    });
+                });
+
+                const stacks = Object.values(byName);
+
+                expect(stacks.length).toBeGreaterThan(0);
+                stacks.forEach((all) => {
+                    // A zero-value segment has no size, so it can't open a gap
+                    const segments = all
+                        .filter(({ size }) => size > 0)
+                        .sort((a, b) => a.start - b.start);
+
+                    segments.slice(1).forEach((segment, index) => {
+                        const previous = segments[index];
+
+                        expect(segment.start).toBeCloseTo(
+                            previous.start + previous.size,
+                            0
+                        );
+                    });
+                });
+            };
+            const midway = () =>
+                new Promise((resolve) => setTimeout(resolve, 120));
+
+            it('grows each vertical stack as a whole, its segments together', async () => {
+                stackedBarChart.isAnimated(true).animationDuration(600);
+                containerFixture.datum(dataset).call(stackedBarChart);
+                await midway();
+
+                expectSegmentsTogether('y', 'height');
+            });
+
+            it('grows each horizontal stack as a whole, its segments together', async () => {
+                stackedBarChart
+                    .isHorizontal(true)
+                    .isAnimated(true)
+                    .animationDuration(600);
+                containerFixture.datum(dataset).call(stackedBarChart);
+                await midway();
+
+                expectSegmentsTogether('x', 'width');
+            });
         });
 
         describe('when isLoading is true', () => {

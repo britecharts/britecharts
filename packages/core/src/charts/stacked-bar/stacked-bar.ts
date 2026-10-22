@@ -4,7 +4,7 @@ import { color } from 'd3-color';
 import { dispatch } from 'd3-dispatch';
 import * as d3Format from 'd3-format';
 import { easeQuadInOut } from 'd3-ease';
-import { interpolateNumber, interpolateRound } from 'd3-interpolate';
+import { interpolateNumber } from 'd3-interpolate';
 import { scaleOrdinal, scaleBand, scaleLinear } from 'd3-scale';
 import { stack, stackOffsetDiverging } from 'd3-shape';
 import { select, pointer } from 'd3-selection';
@@ -1202,11 +1202,18 @@ export default function module(): StackedBarChartModule {
     function horizontalBarsTween(this: SVGRectElement, d: StackedBarPoint) {
         const valueScale = asValueScale(xScale);
         const node = select(this);
-        const i = interpolateRound(0, valueScale(d[1]) - valueScale(d[0]));
         const j = interpolateNumber(0, 1);
 
+        // Both edges grow out of the baseline at the same pace, so a stack's
+        // segments stay together and the whole stack grows, as the stacked
+        // area's does, rather than each segment from its own edge
         return function (t: number) {
-            node.attr('width', i(t)).style('opacity', j(t));
+            const start = valueScale(d[0] * t);
+            const end = valueScale(d[1] * t);
+
+            node.attr('x', start)
+                .attr('width', getValOrDefaultToZero(end - start))
+                .style('opacity', j(t));
         };
     }
 
@@ -1295,14 +1302,19 @@ export default function module(): StackedBarChartModule {
      */
     function verticalBarsTween(this: SVGRectElement, d: StackedBarPoint) {
         const valueScale = asValueScale(yScale);
-        const vertDiff = valueScale(d[0]) - valueScale(d[1]);
-
         const node = select(this);
-        const i = interpolateRound(0, getValOrDefaultToZero(vertDiff));
         const j = interpolateNumber(0, 1);
 
+        // Both edges grow out of the baseline at the same pace, so a stack's
+        // segments stay together and the whole stack grows, as the stacked
+        // area's does, rather than each segment from its own edge
         return function (t: number) {
-            node.attr('height', i(t)).style('opacity', j(t));
+            const top = valueScale(d[1] * t);
+            const bottom = valueScale(d[0] * t);
+
+            node.attr('y', top)
+                .attr('height', getValOrDefaultToZero(bottom - top))
+                .style('opacity', j(t));
         };
     }
 
