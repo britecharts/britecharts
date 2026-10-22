@@ -1877,13 +1877,17 @@ simple and configurable bar chart.
 
 **Example**  
 ```js
+import { select } from 'd3-selection';
+import { bar } from '@britecharts/core';
+
+// dataset: [{ name, value }]
 const barChart = bar();
 
 barChart
     .height(500)
     .width(800);
 
-d3.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(barChart);
 ```
@@ -2294,13 +2298,17 @@ simple and configurable brush chart.
 
 **Example**  
 ```js
-let brushChart = brush();
+import { select } from 'd3-selection';
+import { brush } from '@britecharts/core';
+
+// dataset: [{ date, value }]
+const brushChart = brush();
 
 brushChart
     .height(500)
     .width(800);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(brushChart);
 ```
@@ -2577,12 +2585,16 @@ simple and configurable Bullet Chart.
 
 **Example**  
 ```js
-let bulletChart = bullet();
+import { select } from 'd3-selection';
+import { bullet } from '@britecharts/core';
+
+// dataset: one object: { ranges, measures, markers }
+const bulletChart = bullet();
 
 bulletChart
     .width(containerWidth);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(bulletChart);
 ```
@@ -2762,13 +2774,17 @@ simple and configurable donut chart.
 
 **Example**  
 ```js
+import { select } from 'd3-selection';
+import { donut } from '@britecharts/core';
+
+// dataset: [{ name, quantity, id }]
 const donutChart = donut();
 
 donutChart
     .externalRadius(500)
     .internalRadius(200);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(donutChart);
 ```
@@ -3081,14 +3097,18 @@ rendering a multi grouped bar and configurable chart.
 
 **Example**  
 ```js
-let groupedBar = GroupedBar();
+import { select } from 'd3-selection';
+import { groupedBar } from '@britecharts/core';
 
-groupedBar
+// dataset: [{ name, group, value }]
+const groupedBarChart = groupedBar();
+
+groupedBarChart
     .width(containerWidth);
 
-d3Selection.select('.css-selector')
-    .datum(dataset.data)
-    .call(groupedBar);
+select('.css-selector')
+    .datum(dataset)
+    .call(groupedBarChart);
 ```
 
 ## exports(_selection, _data)
@@ -3375,14 +3395,18 @@ simple and configurable heatmap chart.
 
 **Example**  
 ```js
-let heatmap = heatmap();
+import { select } from 'd3-selection';
+import { heatmap } from '@britecharts/core';
 
-heatmap
+// dataset: [{ day, hour, value }], day 0-6 and hour 0-23
+const heatmapChart = heatmap();
+
+heatmapChart
     .width(500);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
-    .call(heatmap);
+    .call(heatmapChart);
 ```
 
 ## exports(_selection)
@@ -3557,26 +3581,26 @@ simple and configurable legend element.
 
 **Example**  
 ```js
-const donutChart = donut(),
-    legendBox = legend();
+import { select } from 'd3-selection';
+import { donut, legend } from '@britecharts/core';
+
+// dataset: [{ id, name, quantity }], the same ids for both
+const donutChart = donut();
+const legendChart = legend();
 
 donutChart
     .externalRadius(500)
     .internalRadius(200)
-    .on('customMouseOver', function(data) {
-        legendBox.highlight(data.data.id);
-    })
-    .on('customMouseOut', function() {
-        legendBox.clearHighlight();
-    });
+    .on('customMouseOver', (data) => legendChart.highlight(data.data.id))
+    .on('customMouseOut', () => legendChart.clearHighlight());
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(donutChart);
 
-d3Selection.select('.other-css-selector')
+select('.other-css-selector')
     .datum(dataset)
-    .call(legendBox);
+    .call(legendChart);
 ```
 
 ## exports(_selection, _data)
@@ -3760,12 +3784,16 @@ rendering a multi line and configurable chart.
 
 **Example**  
 ```js
-let lineChart = line();
+import { select } from 'd3-selection';
+import { line } from '@britecharts/core';
+
+// dataset: { data: [{ topicName, name, date, value }] }
+const lineChart = line();
 
 lineChart
     .width(500);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(lineChart);
 ```
@@ -4225,15 +4253,19 @@ simple and configurable scatter chart.
 
 **Example**  
 ```js
-let scatterPlot = scatterPlot();
+import { select } from 'd3-selection';
+import { scatterPlot } from '@britecharts/core';
 
-scatterPlot
+// dataset: [{ name, x, y }]
+const scatterPlotChart = scatterPlot();
+
+scatterPlotChart
     .grid('horizontal')
     .width(500);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
-    .call(scatterPlot);
+    .call(scatterPlotChart);
 ```
 
 ## exports(_selection, _data)
@@ -4660,15 +4692,19 @@ rendering a sparkline configurable chart.
 
 **Example**  
 ```js
-const sparkLineChart = sparkline();
+import { select } from 'd3-selection';
+import { sparkline } from '@britecharts/core';
 
-sparkLineChart
+// dataset: [{ date, value }]
+const sparklineChart = sparkline();
+
+sparklineChart
     .width(200)
     .height(100);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
-    .call(sparkLineChart);
+    .call(sparklineChart);
 ```
 
 ## exports(_selection, _data)
@@ -4823,14 +4859,18 @@ rendering a multi area and configurable chart.
 
 **Example**  
 ```js
-let stackedArea = stackedArea();
+import { select } from 'd3-selection';
+import { stackedArea } from '@britecharts/core';
 
-stackedArea
+// dataset: [{ date, name, value }]
+const stackedAreaChart = stackedArea();
+
+stackedAreaChart
     .width(containerWidth);
 
-d3Selection.select('.css-selector')
-    .datum(dataset.data)
-    .call(stackedArea);
+select('.css-selector')
+    .datum(dataset)
+    .call(stackedAreaChart);
 ```
 
 ## exports(_selection, _data)
@@ -5209,14 +5249,18 @@ rendering a multi stacked bar and configurable chart.
 
 **Example**  
 ```js
-let stackedBar = stackedBar();
+import { select } from 'd3-selection';
+import { stackedBar } from '@britecharts/core';
 
-stackedBar
+// dataset: [{ name, stack, value }]
+const stackedBarChart = stackedBar();
+
+stackedBarChart
     .width(containerWidth);
 
-d3Selection.select('.css-selector')
-    .datum(dataset.data)
-    .call(stackedBar);
+select('.css-selector')
+    .datum(dataset)
+    .call(stackedBarChart);
 ```
 
 ## exports(_selection, _data)
@@ -5586,11 +5630,12 @@ d3Selection.select('.metadata-group')
 
 **Example**  
 ```js
-const lineChart = line(),
-    chartTooltip = tooltip();
+import { select } from 'd3-selection';
+import { line, tooltip } from '@britecharts/core';
 
-chartTooltip
-    .title('Tooltip title');
+// dataset: { data: [{ topicName, name, date, value }] }
+const lineChart = line();
+const chartTooltip = tooltip().title('Tooltip title');
 
 lineChart
     .width(500)
@@ -5598,11 +5643,13 @@ lineChart
     .on('customMouseMove', chartTooltip.update)
     .on('customMouseOut', chartTooltip.hide);
 
-d3Selection.select('.css-selector')
-    .datum(dataset)
-    .call(lineChart);
+const container = select('.css-selector');
 
-d3Selection.select('.metadata-group .vertical-marker-container')
+container.datum(dataset).call(lineChart);
+
+// After the chart has drawn: the line chart's tooltip goes on its hover marker
+container
+    .select('.metadata-group .hover-marker')
     .datum([])
     .call(chartTooltip);
 ```
