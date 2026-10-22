@@ -894,6 +894,44 @@ A category the map leaves out keeps its palette colour. Each chart matches the k
 
 The legend takes `colorMap` too: pass it the same object so its entries match the chart. In React, `colorMap` is a prop with the same shape.
 
+## How to Theme a Chart and Support Dark Mode
+Everything around the data (text, axes, grid lines, tooltips, the legend, loading skeletons) takes its colour from a CSS custom property. Each defaults to a light and a dark value, picked by the [`color-scheme`](https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme) the chart inherits from your page.
+
+To follow the system's light or dark setting, declare both schemes on your page:
+
+```css
+:root {
+    color-scheme: light dark;
+}
+```
+
+To force one, set `color-scheme: light` or `color-scheme: dark` on the page, or on any element around the chart. An app with its own light/dark switch sets it there. A page that declares no colour scheme keeps the charts light, as before.
+
+To change a colour, set its token on the charts:
+
+```css
+.britechart {
+    --bc-text-muted: #555;
+    --bc-background: #10141a; /* the colour behind your charts */
+}
+```
+
+| Token | Colours |
+| --- | --- |
+| `--bc-text` | tooltip values and other primary text |
+| `--bc-text-muted` | tick labels, data labels, tooltip titles |
+| `--bc-text-subtle` | axis titles |
+| `--bc-axis` | tick marks, the lines that extend the axes, custom line annotations |
+| `--bc-grid`, `--bc-grid-highlight` | grid lines, and a highlighted one |
+| `--bc-background` | what is behind the chart: the line chart's drawing mask and an export's background. It defaults to `Canvas`, the page's background in the current scheme; set it if your page uses another. |
+| `--bc-surface` | the tooltip box, data point markers, hollow circles, heatmap borders |
+| `--bc-border` | the tooltip's border and the hover marker |
+| `--bc-skeleton`, `--bc-skeleton-strong` | loading states |
+| `--bc-brush-area`, `--bc-brush-area-missing` | the brush's area, and its gaps |
+| `--bc-sparkline-area-start`, `--bc-sparkline-area-end` | the sparkline's default area gradient |
+
+The data colours come from `colorSchema` and `colorMap`, not from these tokens. Exports carry the resolved colours, so an image exported in dark mode keeps its dark background. Browsers without `light-dark()` (before 2024) show the light values.
+
 ## How to Add a Tooltip to a Chart
 Every chart dispatches the same three events, and the tooltip has a handler for each:
 1. Create the tooltip: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, donut, heatmap and scatter plot, which show one value
@@ -1461,6 +1499,7 @@ We changed many things in the third version of Britecharts; here are some summar
 * Negative values in the bar, grouped bar, stacked bar, brush and scatter plot charts
 * Loading states on every data chart, including the bullet, heatmap and scatter plot
 * Accessible names for every chart, set with 'a11yTitle' and 'a11yDescription'
+* Theming with CSS custom properties, and dark mode that follows the page's `color-scheme`
 * A `ScatterPlot` component in `@britecharts/react`
 * `Brush` and `Heatmap` components in `@britecharts/react`, and `BrushWrapper` and `HeatmapWrapper` in `@britecharts/wrappers`, so every chart has both
 * Charts are responsive by default using the viewBox property.
