@@ -8,13 +8,13 @@ In the [Getting Started Guide][gettingStarted], we saw how to set up a responsiv
 In this tutorial, we will create a complex data visualization. You will learn how to draw a line chart with a tooltip, how to add a legend and a data filtering tool using a brush chart.
 
 ## Rendering a line chart
-Let's build on top of the Bar Chart tutorial by using its code structure. This time, we download the full library bundle instead of just one chart:
+Let's build on top of the Bar Chart tutorial by using its code structure. We load the same bundle, which has every chart:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/bundled/britecharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"></script>
 ```
 Then, we will instantiate a line chart:
 ```js
-const lineChart = britecharts.line();
+const lineChart = core.line();
 ```
 The shape of our data changed as well. We need to check the [line chart data schema][lineChartDataSchema] for this chart. In our case, it looks like this:
 ```js
@@ -22,13 +22,13 @@ const lineData = {
     "data": [
         {
             "value": 0,
-            "topic": -1,
+            "name": -1,
             "topicName": "Vivid",
             "date": "2016-08-01T00:00:00-07:00"
         },
         {
             "value": 3,
-            "topic": 2,
+            "name": 2,
             "topicName": "Radiant",
             "date": "2016-08-01T00:00:00-07:00"
         },
@@ -58,7 +58,7 @@ That renders the following chart:
 ## Adding a Tooltip
 Now that we have a line chart working, we are going to add a tooltip to allow users to check the specific values on each date. We start by instantiating a new [Tooltip component][tooltipAPIReference]:
 ```js
-const chartTooltip = tooltip();
+const chartTooltip = core.tooltip();
 ```
 
 In the next step, we are going to bind the events triggering when users hover, move or exit the line chart to the tooltip. The methods from the tooltip we are going to use are `show`, `update` and `hide`. Let's see how:
@@ -77,7 +77,7 @@ We still have to attach the tooltip to the rendered line chart. For that, and *o
 ```js
 const tooltipContainer = d3.select('.line-container .metadata-group .hover-marker');
 
-tooltipContainer.call(chartTooltip);
+tooltipContainer.datum([]).call(chartTooltip);
 ```
 After the previous code, we will see a tooltip like the following:
 ![Line Chart with Tooltip][lineChartTooltipImg]
@@ -89,7 +89,7 @@ First, we make a copy of the topic we already have and change some values. We na
 
 Now we instantiate our new [legend component][legendAPIReference]:
 ```js
-const chartLegend = britecharts.legend();
+const chartLegend = core.legend();
 ```
 The same way as we needed a container for the chart, we require another for the legend. To do it, we first create a div:
 ```html
@@ -115,16 +115,17 @@ The legend is a component that depends on the data and in a specific data shape.
     }
 ]
 ```
-As we want to show an inline legend, which doesn't show the quantity, we only need to pass an array with our topic names, an id, and a random quantity. Here is how we create that data:
+As we want to show an inline legend, which doesn't show the quantity, we only need one entry per line, with its name, an id and a quantity of zero. Here is how we create that data:
 ```js
-const topicInfo = lineData.data.map(
-    ({ topicName, topic }) => ({
-        id: topic,
-        name: topicName,
-        quantity: 0
-    })
+// One entry per line: every point repeats its line's name and topicName
+const legendData = Array.from(
+    new Map(
+        lineData.data.map(({ topicName, name }) => [
+            name,
+            { id: name, name: topicName, quantity: 0 },
+        ])
+    ).values()
 );
-const legendData = [... new Set(topicInfo)];
 ```
 And we are ready to configure and draw the legend:
 ```js
@@ -148,7 +149,7 @@ In this section, we go over the process of adding a brush chart to our visualiza
 ### Creating the brush chart
 Let's first instantiate the brush chart and its container:
 ```js
-const chartBrush = britecharts.brush();
+const chartBrush = core.brush();
 const brushContainer = d3.select('.brush-container');
 ```
 We would need to add the container to the DOM:
