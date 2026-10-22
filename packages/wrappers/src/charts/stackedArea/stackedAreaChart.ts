@@ -12,6 +12,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/stackedArea.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 const stackedAreaChart: Wrapper<
@@ -23,7 +24,7 @@ const stackedAreaChart: Wrapper<
         const chart = stackedArea();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'stacked-area');
+        validateConfiguration(chart, configuration, 'stacked-area', schema);
 
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
@@ -36,7 +37,7 @@ const stackedAreaChart: Wrapper<
         const shouldUpdateData = data && data.length;
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'stacked-area');
+        validateConfiguration(chart, configuration, 'stacked-area', schema);
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

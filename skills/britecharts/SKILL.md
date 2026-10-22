@@ -145,7 +145,7 @@ Props mirror the chart's accessors. `data` is required: pass `null` while loadin
 
 ## Other frameworks (Vue, Svelte, Angular…)
 
-Use `@britecharts/wrappers`: `BarWrapper.create(element, data, config)` returns the chart; `update(element, data, config, chart)` redraws; `destroy(element)` removes it on unmount. Read `references/wrappers.md`.
+Use `@britecharts/wrappers`: `BarWrapper.create(element, data, config)` returns the chart; `update(element, data, config, chart)` redraws; `destroy(element)` removes it on unmount. Read `references/wrappers.md`. The wrappers also throw on a value of the wrong type (`height: expected a number, got the string "300"`). To describe a chart as data, write a spec, `{ "$schema": "https://britecharts.github.io/britecharts/schema/v3/bar.json", "chart": "bar", "config": {…}, "data": […] }`, and check it against that chart's JSON Schema before drawing it with `BarWrapper.create(el, spec.data, spec.config)`.
 
 ## Check your work
 

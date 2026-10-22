@@ -9,6 +9,7 @@
 .cache-loader
 /static/llms.txt
 /static/llms-full.txt
+/static/schema
 
 # Misc
 .DS_Store

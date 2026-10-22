@@ -38,7 +38,7 @@
     ]
   },
   "scripts": {
-    "build": "pnpm run docs:readme && pnpm run docs:api && pnpm run docs:llms && docusaurus build",
+    "build": "pnpm run docs:readme && pnpm run docs:api && pnpm run docs:llms && pnpm run docs:schemas && docusaurus build",
     "clean": "pnpm run clear",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
@@ -47,10 +47,11 @@
     "docs:source-links": "node ./scripts/check-source-links.mjs",
     "docs:links": "node ./scripts/check-links.mjs",
     "docs:readme": "node ./scripts/copy-readme.js",
+    "docs:schemas": "node ./scripts/copy-schemas.mjs",
     "docusaurus": "docusaurus",
     "prebuild": "pnpm run clean",
     "serve": "docusaurus serve",
-    "start": "pnpm run docs:readme && pnpm run docs:api && pnpm run docs:llms && docusaurus start",
+    "start": "pnpm run docs:readme && pnpm run docs:api && pnpm run docs:llms && pnpm run docs:schemas && docusaurus start",
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids",
     "write-translations": "docusaurus write-translations"

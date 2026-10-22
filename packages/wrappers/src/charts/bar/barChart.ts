@@ -9,6 +9,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeChartSvg } from '../../helpers/destroy.js';
+import schema from '../../schemas/bar.js';
 import type { Wrapper } from '../../helpers/wrapper.js';
 
 const barChart: Wrapper<BarChartDataShape[], BarChartModule> = {
@@ -17,7 +18,7 @@ const barChart: Wrapper<BarChartDataShape[], BarChartModule> = {
         const chart = bar();
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'bar');
+        validateConfiguration(chart, configuration, 'bar', schema);
         // Calls the chart with the container and dataset
         container.datum(data).call(applyConfiguration(chart, configuration));
 
@@ -28,7 +29,7 @@ const barChart: Wrapper<BarChartDataShape[], BarChartModule> = {
         const container = select<HTMLElement, BarChartDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'bar');
+        validateConfiguration(chart, configuration, 'bar', schema);
         applyConfiguration(chart, configuration);
 
         // Calls the chart with the container and dataset.

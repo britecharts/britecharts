@@ -1,0 +1,265 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://britecharts.github.io/britecharts/schema/v3/groupedBar.json",
+    "title": "Britecharts groupedBar spec",
+    "description": "A groupedBar chart: the chart's name, its configuration (the accessors, commands and events the groupedBar wrapper takes) and its data.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "chart": {
+            "const": "groupedBar"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "a11yDescription": {
+                    "description": "Gets or Sets a longer description screen readers announce after the name, such as what the data shows. It is rendered as the svg's `<desc>` and linked with `aria-describedby`. Unset, there is no description.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "a11yTitle": {
+                    "description": "Gets or Sets the name screen readers announce for the chart. It is set as the svg's `aria-label`. Unset, the getter reads `null` and the chart is announced by its type, such as \"Bar chart\".",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "animationDuration": {
+                    "description": "Gets or Sets the duration of the animation",
+                    "type": "number"
+                },
+                "betweenBarsPadding": {
+                    "description": "Gets or Sets the padding between bars.",
+                    "type": "number"
+                },
+                "betweenGroupsPadding": {
+                    "description": "Gets or Sets the padding between groups of bars.",
+                    "type": "number"
+                },
+                "colorMap": {
+                    "description": "Gets or Sets the colorMap of the chart.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "colorSchema": {
+                    "description": "Gets or Sets the colorSchema of the chart",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "customBrushEnd": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customBrushStart": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customClick": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseMove": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOut": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOver": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "exportChart": {
+                    "description": "Executes a command that triggers the download of the current chart: an svg file when the filename ends in `.svg`, and a png otherwise",
+                    "type": "string"
+                },
+                "grid": {
+                    "description": "Gets or Sets the grid mode.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "const": "vertical"
+                        },
+                        {
+                            "const": "horizontal"
+                        },
+                        {
+                            "const": "full"
+                        }
+                    ]
+                },
+                "height": {
+                    "description": "Gets or Sets the height of the chart",
+                    "type": "number"
+                },
+                "isAnimated": {
+                    "description": "Gets or Sets the isAnimated property of the chart, making it to animate when render. Ignored when the reader's system asks for reduced motion",
+                    "type": "boolean"
+                },
+                "isHorizontal": {
+                    "description": "Gets or Sets the horizontal direction of the chart",
+                    "type": "boolean"
+                },
+                "isLoading": {
+                    "description": "Gets or Sets the loading state of the chart",
+                    "type": "boolean"
+                },
+                "margin": {
+                    "description": "Gets or Sets the margin object of the chart (top, bottom, left and right)",
+                    "type": "object",
+                    "properties": {
+                        "left": {
+                            "type": "number"
+                        },
+                        "right": {
+                            "type": "number"
+                        },
+                        "top": {
+                            "type": "number"
+                        },
+                        "bottom": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "numberFormat": {
+                    "description": "Gets or Sets the number format of the chart",
+                    "type": "string"
+                },
+                "tooltipThreshold": {
+                    "description": "Gets or Sets the minimum width of the graph in order to show the tooltip",
+                    "type": "number"
+                },
+                "valueLocale": {
+                    "description": "Gets or Sets the locale which our formatting functions use. Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "decimal": {
+                                    "type": "string"
+                                },
+                                "thousands": {
+                                    "type": "string"
+                                },
+                                "grouping": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                },
+                                "currency": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "numerals": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "percent": {
+                                    "type": "string"
+                                },
+                                "minus": {
+                                    "type": "string"
+                                },
+                                "nan": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "width": {
+                    "description": "Gets or Sets the width of the chart",
+                    "type": "number"
+                },
+                "xTicks": {
+                    "description": "Gets or Sets the number of ticks of the x axis on the chart",
+                    "type": "number"
+                },
+                "yAxisLabel": {
+                    "description": "Gets or Sets the y-axis label of the chart",
+                    "type": "string"
+                },
+                "yAxisLabelOffset": {
+                    "description": "Gets or Sets the offset of the yAxisLabel of the chart. The method accepts both positive and negative values.",
+                    "type": "number"
+                },
+                "yTicks": {
+                    "description": "Gets or Sets the number of ticks of the y axis on the chart",
+                    "type": "number"
+                },
+                "yTickTextOffset": {
+                    "description": "Gets or Sets the x and y offset of ticks of the y axis on the chart",
+                    "type": "object",
+                    "properties": {
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "x",
+                        "y"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "value": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "group": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "value",
+                    "name",
+                    "group"
+                ]
+            }
+        }
+    },
+    "required": [
+        "chart",
+        "data"
+    ],
+    "additionalProperties": false
+}

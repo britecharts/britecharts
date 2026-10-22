@@ -204,6 +204,30 @@ bulletChart.a11yTitle('CPU load, GHz');
 select('.js-bullet-chart').datum(data).call(bulletChart);
 ```
 
+## How to Describe a Chart as a Spec and Check It
+A chart can be written down as a spec, a plain object with its name, its configuration and its data, which you can store, send from a server, or have a coding agent write:
+
+```json
+{
+    "$schema": "https://britecharts.github.io/britecharts/schema/v3/bar.json",
+    "chart": "bar",
+    "config": { "isHorizontal": true, "a11yTitle": "Signups by plan" },
+    "data": [{ "name": "Pro", "value": 412 }]
+}
+```
+
+Each chart has a JSON Schema for its spec at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json`: `bar`, `brush`, `bullet`, `donut`, `groupedBar`, `heatmap`, `legend`, `line`, `scatterPlot`, `sparkline`, `stackedArea`, `stackedBar` and `tooltip`. They are generated from the charts' TypeScript types, so they list every accessor with its type and description. With the `$schema` line, editors such as VS Code check and complete the spec as you type, and any JSON Schema validator (Ajv, for example) can check one before you draw it.
+
+Draw a spec with the chart's wrapper, which checks it too:
+
+```js
+import { BarWrapper } from '@britecharts/wrappers';
+
+BarWrapper.create(element, spec.data, spec.config);
+```
+
+A key the chart doesn't have, or a value of the wrong type, throws an error that names each one and says what it should be. Options that take a function, such as the events and the formatting functions, can't be written in JSON: set them from JavaScript.
+
 ## How to Configure Time Scales
 Britecharts has some logic to try guessing the best date format on time series charts from the time period of the dataset. As we haven't bulletproofed this algorithm, and sometimes users want specific formats, we also expose configuration options to set custom formats.
 

@@ -9,6 +9,7 @@ import {
 } from '../../helpers/validation.js';
 import { applyConfiguration } from '../../helpers/configuration.js';
 import { removeTooltip } from '../../helpers/destroy.js';
+import schema from '../../schemas/tooltip.js';
 import type { TooltipWrapper } from '../../helpers/wrapper.js';
 
 // TooltipWrapper, not Wrapper: create takes no data and update takes a state
@@ -22,7 +23,7 @@ const tooltipChart: TooltipWrapper = {
         chart.topicLabel('values');
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'tooltip');
+        validateConfiguration(chart, configuration, 'tooltip', schema);
 
         const chartConfigured = applyConfiguration(chart, configuration);
 
@@ -42,7 +43,7 @@ const tooltipChart: TooltipWrapper = {
         const container = select<HTMLElement, TooltipDataShape[]>(el);
 
         validateContainer(container);
-        validateConfiguration(chart, configuration, 'tooltip');
+        validateConfiguration(chart, configuration, 'tooltip', schema);
 
         const chartConfigured = applyConfiguration(chart, configuration);
 

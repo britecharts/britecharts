@@ -2,6 +2,7 @@ import { select } from 'd3-selection';
 
 import { britechartsCustomEvents } from '../constants';
 import type { WrapperConfiguration } from './configuration';
+import type { ConfigurationSchema } from './schema';
 import {
     nearestName,
     validateConfiguration,
@@ -124,6 +125,75 @@ describe('validation helpers', () => {
 
             expect(() =>
                 validateConfiguration(arrowChart, { width: 500 })
+            ).not.toThrow();
+        });
+    });
+
+    describe('validateConfiguration with a schema', () => {
+        const schema: ConfigurationSchema = {
+            type: 'object',
+            properties: {
+                width: { type: 'number' },
+                height: { type: 'number' },
+                customClick: { not: {} },
+            },
+            additionalProperties: false,
+        };
+
+        it('should accept values of the right type', () => {
+            expect(() =>
+                validateConfiguration(
+                    aChart(),
+                    { width: 500, height: 300 },
+                    'bar',
+                    schema
+                )
+            ).not.toThrow();
+        });
+
+        it('should say what each wrong value should be, and link the API page', () => {
+            const chart = aChart();
+
+            expect(() =>
+                validateConfiguration(
+                    chart,
+                    untyped<typeof chart>({ width: '500px', height: true }),
+                    'bar',
+                    schema
+                )
+            ).toThrow(
+                [
+                    'Value not supported by Britechart: width height',
+                    '  width: expected a number, got the string "500px"',
+                    '  height: expected a number, got true',
+                    'Supported accessors: https://britecharts.github.io/britecharts/docs/API/bar',
+                ].join('\n')
+            );
+        });
+
+        it('should skip unset values, so the chart keeps its default', () => {
+            const chart = aChart();
+
+            expect(() =>
+                validateConfiguration(
+                    chart,
+                    untyped<typeof chart>({ width: undefined, height: null }),
+                    'bar',
+                    schema
+                )
+            ).not.toThrow();
+        });
+
+        it('should accept a function for an event', () => {
+            const chart = aChart();
+
+            expect(() =>
+                validateConfiguration(
+                    chart,
+                    untyped<typeof chart>({ customClick: () => undefined }),
+                    'bar',
+                    schema
+                )
             ).not.toThrow();
         });
     });

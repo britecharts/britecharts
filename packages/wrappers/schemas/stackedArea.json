@@ -1,0 +1,288 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://britecharts.github.io/britecharts/schema/v3/stackedArea.json",
+    "title": "Britecharts stackedArea spec",
+    "description": "A stackedArea chart: the chart's name, its configuration (the accessors, commands and events the stackedArea wrapper takes) and its data.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "chart": {
+            "const": "stackedArea"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "a11yDescription": {
+                    "description": "Gets or Sets a longer description screen readers announce after the name, such as what the data shows. It is rendered as the svg's `<desc>` and linked with `aria-describedby`. Unset, there is no description.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "a11yTitle": {
+                    "description": "Gets or Sets the name screen readers announce for the chart. It is set as the svg's `aria-label`. Unset, the getter reads `null` and the chart is announced by its type, such as \"Bar chart\".",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "animationDuration": {
+                    "description": "Gets or Sets the duration of the animation",
+                    "type": "number"
+                },
+                "areaCurve": {
+                    "description": "Gets or Sets the area curve of the stacked area.",
+                    "type": "string"
+                },
+                "areaOpacity": {
+                    "description": "Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)",
+                    "type": "number"
+                },
+                "axisTimeCombinations": {
+                    "description": "Exposes the constants to be used to force the x axis to respect a certain granularity current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR",
+                    "type": "boolean"
+                },
+                "colorMap": {
+                    "description": "Gets or Sets the colorMap of the chart.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "colorSchema": {
+                    "description": "Gets or Sets the colorSchema of the chart",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "customBrushEnd": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customBrushStart": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customClick": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseMove": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOut": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOver": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "emptyDataConfig": {
+                    "description": "Gets or Sets the emptyDataConfig of the chart",
+                    "type": "object",
+                    "properties": {
+                        "minDate": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "maxDate": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "minY": {
+                            "type": "number"
+                        },
+                        "maxY": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "minDate",
+                        "maxDate",
+                        "minY",
+                        "maxY"
+                    ]
+                },
+                "exportChart": {
+                    "description": "Executes a command that triggers the download of the current chart: an svg file when the filename ends in `.svg`, and a png otherwise",
+                    "type": "string"
+                },
+                "grid": {
+                    "description": "Gets or Sets the grid mode",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "const": "vertical"
+                        },
+                        {
+                            "const": "horizontal"
+                        },
+                        {
+                            "const": "full"
+                        }
+                    ]
+                },
+                "hasOutline": {
+                    "description": "Enables or disables the outline at the top of the areas",
+                    "type": "boolean"
+                },
+                "height": {
+                    "description": "Gets or Sets the height of the chart",
+                    "type": "number"
+                },
+                "isAnimated": {
+                    "description": "Gets or Sets the isAnimated property of the chart, making it to animate when render. Ignored when the reader's system asks for reduced motion",
+                    "type": "boolean"
+                },
+                "isLoading": {
+                    "description": "Gets or Sets the loading state of the chart",
+                    "type": "boolean"
+                },
+                "locale": {
+                    "description": "Pass language tag for the tooltip to localize the date. Uses Intl.DateTimeFormat, for compatability and support, refer to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "margin": {
+                    "description": "Gets or Sets the margin object of the chart (top, bottom, left and right)",
+                    "type": "object",
+                    "properties": {
+                        "left": {
+                            "type": "number"
+                        },
+                        "right": {
+                            "type": "number"
+                        },
+                        "top": {
+                            "type": "number"
+                        },
+                        "bottom": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "numberFormat": {
+                    "description": "Gets or Sets the number format of the chart. Null until one is set, where the shared declaration promises a string: this chart has no default format.",
+                    "type": "string"
+                },
+                "tooltipThreshold": {
+                    "description": "Gets or Sets the minimum width of the graph in order to show the tooltip",
+                    "type": "number"
+                },
+                "topicsOrder": {
+                    "description": "Pass an override for the ordering of the topics",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "width": {
+                    "description": "Gets or Sets the width of the chart",
+                    "type": "number"
+                },
+                "xAxisCustomFormat": {
+                    "description": "Exposes the ability to force the chart to show a certain x format It requires a `xAxisFormat` of 'custom' in order to work. NOTE: localization not supported Accepts the format for x axis, one of the d3.js date formats [here]{@link https://github.com/d3/d3-time-format#locale_format}",
+                    "type": "string"
+                },
+                "xAxisFormat": {
+                    "description": "Exposes the ability to force the chart to show a certain x axis grouping It is a combination of axisTimeCombinations (MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR) Set it to 'custom' to make use of specific formats with xAxisCustomFormat *",
+                    "enum": [
+                        "minute-hour",
+                        "hour-daymonth",
+                        "day-month",
+                        "month-year",
+                        "custom",
+                        "minute-hour",
+                        "hour-daymonth",
+                        "day-month",
+                        "month-year",
+                        "custom"
+                    ]
+                },
+                "xAxisScale": {
+                    "description": "Gets or Sets the `xAxisScale`. Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to 'number' as well, otherwise it won't influence the visualization.",
+                    "enum": [
+                        "linear",
+                        "logarithmic"
+                    ]
+                },
+                "xAxisValueType": {
+                    "description": "Gets or Sets the `xAxisValueType`. Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not be dates anymore, but can be arbitrary numbers.",
+                    "enum": [
+                        "number",
+                        "date"
+                    ]
+                },
+                "xTicks": {
+                    "description": "Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work. NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end how many and where the ticks will appear.",
+                    "type": "number"
+                },
+                "yAxisBaseline": {
+                    "description": "Gets or Sets the yAxisBaseline - this is the y-value where the area starts from in y-direction (default is 0). Change this value if you don't want to start your area from y=0.",
+                    "type": "number"
+                },
+                "yAxisLabel": {
+                    "description": "Gets or Sets the y-axis label of the chart",
+                    "type": "string"
+                },
+                "yAxisLabelOffset": {
+                    "description": "Gets or Sets the offset of the yAxisLabel of the chart. The method accepts both positive and negative values.",
+                    "type": "number"
+                },
+                "yTicks": {
+                    "description": "Gets or Sets the number of ticks of the y axis on the chart",
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "date",
+                    "name",
+                    "value"
+                ]
+            }
+        }
+    },
+    "required": [
+        "chart",
+        "data"
+    ],
+    "additionalProperties": false
+}

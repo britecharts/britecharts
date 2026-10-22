@@ -1,0 +1,295 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://britecharts.github.io/britecharts/schema/v3/bar.json",
+    "title": "Britecharts bar spec",
+    "description": "A bar chart: the chart's name, its configuration (the accessors, commands and events the bar wrapper takes) and its data.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "chart": {
+            "const": "bar"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "a11yDescription": {
+                    "description": "Gets or Sets a longer description screen readers announce after the name, such as what the data shows. It is rendered as the svg's `<desc>` and linked with `aria-describedby`. Unset, there is no description.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "a11yTitle": {
+                    "description": "Gets or Sets the name screen readers announce for the chart. It is set as the svg's `aria-label`. Unset, the getter reads `null` and the chart is announced by its type, such as \"Bar chart\".",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "animationDuration": {
+                    "description": "Gets or Sets the duration of the animation",
+                    "type": "number"
+                },
+                "betweenBarsPadding": {
+                    "description": "Gets or Sets the padding of the chart (Default is 0.1)",
+                    "type": "number"
+                },
+                "chartGradient": {
+                    "description": "Gets or Sets the gradient colors of a bar in the chart",
+                    "type": "array",
+                    "prefixItems": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "items": false,
+                    "minItems": 2
+                },
+                "colorMap": {
+                    "description": "Gets or Sets the colorMap of the chart.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "colorSchema": {
+                    "description": "Gets or Sets the colorSchema of the chart",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "customBrushEnd": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customBrushStart": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customClick": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseMove": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOut": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOver": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "enableLabels": {
+                    "description": "If true, adds labels at the end of the bars",
+                    "type": "boolean"
+                },
+                "exportChart": {
+                    "description": "Executes a command that triggers the download of the current chart: an svg file when the filename ends in `.svg`, and a png otherwise",
+                    "type": "string"
+                },
+                "hasPercentage": {
+                    "description": "Gets or Sets the hasPercentage status",
+                    "type": "boolean"
+                },
+                "hasSingleBarHighlight": {
+                    "description": "Gets or Sets the hasSingleBarHighlight status. If the value is true (default), only the hovered bar is considered to be highlighted and will be darkened by default. If the value is false, all the bars but the hovered bar are considered to be highlighted and will be darkened (by default).",
+                    "type": "boolean"
+                },
+                "height": {
+                    "description": "Gets or Sets the height of the chart",
+                    "type": "number"
+                },
+                "highlightBarFunction": {
+                    "description": "Gets or Sets the highlightBarFunction function. The callback passed to this function returns a bar selection from the bar chart. Use this function if you want to apply a custom behavior to the highlighted bar on hover. When hasSingleBarHighlight is true the highlighted bar will be the one that was hovered by the user. When hasSingleBarHighlight is false the highlighted bars are all the bars but the hovered one. The default highlight effect on a bar is darkening the highlighted bar(s) color.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                            "not": {}
+                        }
+                    ]
+                },
+                "isAnimated": {
+                    "description": "Gets or Sets the isAnimated property of the chart, making it to animate when render. Ignored when the reader's system asks for reduced motion",
+                    "type": "boolean"
+                },
+                "isHorizontal": {
+                    "description": "Gets or Sets the horizontal direction of the chart",
+                    "type": "boolean"
+                },
+                "isLoading": {
+                    "description": "Gets or Sets the loading state of the chart",
+                    "type": "boolean"
+                },
+                "labelsMargin": {
+                    "description": "Offset between end of bar and start of the percentage bars",
+                    "type": "number"
+                },
+                "labelsNumberFormat": {
+                    "description": "Gets or Sets the labels number format",
+                    "type": "string"
+                },
+                "labelsSize": {
+                    "description": "Get or Sets the labels text size",
+                    "type": "number"
+                },
+                "margin": {
+                    "description": "Gets or Sets the margin object of the chart (top, bottom, left and right)",
+                    "type": "object",
+                    "properties": {
+                        "left": {
+                            "type": "number"
+                        },
+                        "right": {
+                            "type": "number"
+                        },
+                        "top": {
+                            "type": "number"
+                        },
+                        "bottom": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "numberFormat": {
+                    "description": "Gets or Sets the number format of the chart",
+                    "type": "string"
+                },
+                "orderingFunction": {
+                    "description": "Changes the order of items given the custom function",
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "percentageAxisToMaxRatio": {
+                    "description": "Configurable extension of the x axis. If your max point was 50% you might want to show x axis to 60%, pass 1.2",
+                    "type": "number"
+                },
+                "shouldReverseColorList": {
+                    "description": "Gets or Sets whether the color list should be reversed or not",
+                    "type": "boolean"
+                },
+                "valueLocale": {
+                    "description": "Gets or Sets the locale which our formatting functions use. Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "decimal": {
+                                    "type": "string"
+                                },
+                                "thousands": {
+                                    "type": "string"
+                                },
+                                "grouping": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                },
+                                "currency": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "numerals": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "percent": {
+                                    "type": "string"
+                                },
+                                "minus": {
+                                    "type": "string"
+                                },
+                                "nan": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "width": {
+                    "description": "Gets or Sets the width of the chart",
+                    "type": "number"
+                },
+                "xAxisLabel": {
+                    "description": "Gets or Sets the text of the xAxisLabel on the chart",
+                    "type": "string"
+                },
+                "xAxisLabelOffset": {
+                    "description": "Gets or Sets the offset of the xAxisLabel on the chart",
+                    "type": "number"
+                },
+                "xTicks": {
+                    "description": "Gets or Sets the number of ticks of the x axis on the chart",
+                    "type": "number"
+                },
+                "yAxisLabel": {
+                    "description": "Gets or Sets the text of the yAxisLabel on the chart",
+                    "type": "string"
+                },
+                "yAxisLabelOffset": {
+                    "description": "Gets or Sets the offset of the yAxisLabel on the chart",
+                    "type": "number"
+                },
+                "yAxisPaddingBetweenChart": {
+                    "description": "Space between y axis and chart",
+                    "type": "number"
+                },
+                "yTicks": {
+                    "description": "Gets or Sets the number of vertical ticks on the chart",
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "value": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "value",
+                    "name"
+                ]
+            }
+        }
+    },
+    "required": [
+        "chart",
+        "data"
+    ],
+    "additionalProperties": false
+}

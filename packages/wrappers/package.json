@@ -31,6 +31,7 @@
     "build:esm:js": "babel src --out-dir dist/esm --extensions .ts,.js --config-file ./babel.config.esm.cjs --ignore \"src/**/*.spec.ts,src/**/*.spec.js,src/**/*.fixtures.ts,src/**/*.fixtures.js\"",
     "build:esm:types": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist",
+    "schemas": "node scripts/generate-schemas.mjs",
     "lint": "pnpm run lint:js",
     "lint:js": "eslint src/charts/ src/helpers vite.config.js --cache",
     "test": "vitest run --coverage",
@@ -40,6 +41,7 @@
   "files": [
     "CHANGELOG.md",
     "dist/**",
+    "schemas/**",
     "src/**",
     "!**/*.map",
     "!**/*.spec.js",
@@ -67,6 +69,7 @@
     },
     "./dist/*": "./dist/*",
     "./src/*": "./src/*",
+    "./schemas/*": "./schemas/*",
     "./package.json": "./package.json"
   }
 }
