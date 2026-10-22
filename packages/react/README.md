@@ -67,7 +67,7 @@ The charts name the fields of their data points differently, so some of them nee
 | `StackedBar` | `nameLabel="stack"` |
 | `GroupedBar` | `nameLabel="group"` |
 | `ScatterPlot` | `valueLabel="y"` |
-| `Bar`, `Donut` | none |
+| `Bar`, `Donut`, `Heatmap` | none |
 
 Without them, the tooltip shows no rows (line), rows without their colours (stacked and grouped bar) or no value (scatter plot).
 
