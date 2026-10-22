@@ -14,6 +14,10 @@
         "config": {
             "type": "object",
             "properties": {
+                "a11yDataTable": {
+                    "description": "Gets or Sets whether the chart renders its data as a table that screen readers can read, row by row and cell by cell. The table is visually hidden, placed right after the svg and linked from it with `aria-details`; its caption is the chart's name. On by default: set it to false for an app that gives the data its own accessible form.",
+                    "type": "boolean"
+                },
                 "a11yDescription": {
                     "description": "Gets or Sets a longer description screen readers announce after the name, such as what the data shows. It is rendered as the svg's `<desc>` and linked with `aria-describedby`. Unset, there is no description.",
                     "anyOf": [
