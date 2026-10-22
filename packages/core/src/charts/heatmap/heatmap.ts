@@ -14,12 +14,19 @@ import { hoursHuman, motion } from '../helpers/constants.js';
 import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     AnimatedChartAPI,
     BaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
+import {
+    labelChart,
+    pivotTable,
+    prefersReducedMotion,
+    renderDataTable,
+} from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum HeatmapChartKeys {
@@ -37,6 +44,7 @@ export type HeatmapChartDataShape = {
 export interface HeatmapChartAPI
     extends
         AccessibleChartAPI<HeatmapChartModule>,
+        DataTableChartAPI<HeatmapChartModule>,
         BaseAPI<HeatmapChartModule>,
         // `isAnimated` and `animationDuration` are documented `@public` on the
         // chart.
@@ -210,6 +218,10 @@ export default function module(): HeatmapChartModule {
             chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
 
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable() : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -231,6 +243,23 @@ export default function module(): HeatmapChartModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: a row per day and a
+     * column per hour
+     * @private
+     */
+    function dataTable(): DataTable {
+        const dayLabels = yAxisLabels || daysHuman;
+
+        return pivotTable(data, {
+            heading: 'Day',
+            row: (d) => dayLabels[d.day],
+            column: (d) => hoursHuman[d.hour],
+            value: (d) => d.value,
+        });
+    }
 
     /**
      * Builds the SVG element that will contain the chart
@@ -580,6 +609,24 @@ export default function module(): HeatmapChartModule {
 
         return this;
     } as HeatmapChartModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    exports.a11yDataTable = function (this: HeatmapChartModule, _x?: boolean) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x as boolean;
+
+        return this;
+    } as HeatmapChartModule['a11yDataTable'];
 
     /**
      * Gets or Sets the duration of the animation

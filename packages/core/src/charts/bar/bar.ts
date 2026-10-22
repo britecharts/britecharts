@@ -28,13 +28,19 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
+import {
+    labelChart,
+    prefersReducedMotion,
+    renderDataTable,
+} from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -71,6 +77,7 @@ export type BarSelection = Selection<
 export interface BarChartAPI
     extends
         AccessibleChartAPI<BarChartModule>,
+        DataTableChartAPI<BarChartModule>,
         ChartBaseAPI<BarChartModule>,
         ExportableChartAPI,
         InteractiveChartAPI<BarChartModule>,
@@ -472,6 +479,10 @@ export default function module(): BarChartModule {
             ({ data, dataZeroed } = sortData(cleanData(_data)));
 
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable() : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -634,6 +645,18 @@ export default function module(): BarChartModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: each bar's name and value
+     * @private
+     */
+    function dataTable(): DataTable {
+        return {
+            columns: ['Name', 'Value'],
+            rows: data.map((d) => [d.name, d.value]),
+        };
+    }
 
     /**
      * Builds the SVG element that will contain the chart
@@ -1368,6 +1391,27 @@ export default function module(): BarChartModule {
 
         return this;
     } as BarChartModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    (exports as BarChartModule).a11yDataTable = function (
+        this: BarChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x;
+
+        return this;
+    } as BarChartModule['a11yDataTable'];
 
     /**
      * Gets or Sets the duration of the animation

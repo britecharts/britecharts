@@ -169,3 +169,193 @@ describe.each(CHARTS)(
         });
     }
 );
+
+// Every chart above but the legend, whose entries are already text
+const TABLE_CHARTS = CHARTS.filter(([name]) => name !== 'legend');
+
+describe.each(TABLE_CHARTS)('%s chart data table', (_name, chart, data) => {
+    let container, instance;
+
+    const render = (datum = data()) => container.datum(datum).call(instance);
+    const svg = () => container.select('svg.britechart').node();
+    const wrapper = () => container.select('div.britechart-data-table').node();
+    const table = () =>
+        container.select('div.britechart-data-table > table').node();
+
+    beforeEach(() => {
+        document.body.insertAdjacentHTML(
+            'afterbegin',
+            '<div id="fixture"><div class="test-container"></div></div>'
+        );
+        container = d3.select('.test-container');
+        instance = chart();
+    });
+
+    afterEach(() => {
+        document.body.removeChild(document.getElementById('fixture'));
+    });
+
+    it('should be on by default, and chain from its setter', () => {
+        expect(instance.a11yDataTable()).toBe(true);
+        expect(instance.a11yDataTable(false)).toBe(instance);
+        expect(instance.a11yDataTable()).toBe(false);
+    });
+
+    it('should render the data as a table right after the svg, linked with aria-details', () => {
+        render();
+
+        expect(table()).not.toBeNull();
+        expect(svg().nextElementSibling).toBe(wrapper());
+        expect(svg().getAttribute('aria-details')).toBe(wrapper().id);
+    });
+
+    it('should caption the table with the chart name, and head its columns', () => {
+        instance.a11yTitle('Visits');
+        render();
+
+        const headings = table().querySelectorAll('thead th[scope="col"]');
+
+        expect(table().caption.textContent).toBe('Visits, data');
+        expect(headings.length).toBeGreaterThan(1);
+        expect(table().tBodies[0].rows.length).toBeGreaterThan(0);
+        // Every row is headed by its first cell, and has a cell per column
+        Array.from(table().tBodies[0].rows).forEach((row) => {
+            expect(row.cells[0].tagName).toBe('TH');
+            expect(row.cells[0].getAttribute('scope')).toBe('row');
+            expect(row.cells.length).toBe(headings.length);
+        });
+    });
+
+    it('should hide the table visually with inline styles on its wrapper', () => {
+        render();
+
+        expect(wrapper().style.position).toBe('absolute');
+        expect(wrapper().style.width).toBe('1px');
+        expect(wrapper().style.overflow).toBe('hidden');
+    });
+
+    it('should reuse its table on the next render', () => {
+        render();
+        const first = wrapper();
+
+        render();
+
+        expect(wrapper()).toBe(first);
+        expect(container.selectAll('table').size()).toBe(1);
+    });
+
+    it('should render no table when it is turned off, and remove one it drew', () => {
+        render();
+        instance.a11yDataTable(false);
+        render();
+
+        expect(wrapper()).toBeNull();
+        expect(svg().hasAttribute('aria-details')).toBe(false);
+    });
+
+    it('should render no table while loading', () => {
+        instance.isLoading(true);
+        render();
+
+        expect(table()).toBeNull();
+    });
+});
+
+describe('data table content', () => {
+    let container;
+
+    const cells = (row) =>
+        Array.from(row.cells).map((cell) => cell.textContent);
+    const tableOf = () =>
+        container.select('div.britechart-data-table > table').node();
+
+    beforeEach(() => {
+        document.body.insertAdjacentHTML(
+            'afterbegin',
+            '<div id="fixture"><div class="test-container"></div></div>'
+        );
+        container = d3.select('.test-container');
+    });
+
+    afterEach(() => {
+        document.body.removeChild(document.getElementById('fixture'));
+    });
+
+    it('should list each bar with its value', () => {
+        container
+            .datum([
+                { name: 'Pro', value: 412 },
+                { name: 'Free', value: 1200 },
+            ])
+            .call(bar());
+
+        const table = tableOf();
+
+        expect(cells(table.tHead.rows[0])).toEqual(['Name', 'Value']);
+        expect(cells(table.tBodies[0].rows[0])).toEqual(['Pro', '412']);
+        expect(cells(table.tBodies[0].rows[1])).toEqual(['Free', '1200']);
+    });
+
+    it('should lay a line chart out wide: a row per date, a column per topic', () => {
+        container
+            .datum({
+                data: [
+                    {
+                        topicName: 'San Francisco',
+                        name: 1,
+                        date: '2017-01-16T16:00:00-08:00',
+                        value: 1,
+                    },
+                    {
+                        topicName: 'San Francisco',
+                        name: 1,
+                        date: '2017-01-17T16:00:00-08:00',
+                        value: 2,
+                    },
+                    {
+                        topicName: 'Oakland',
+                        name: 2,
+                        date: '2017-01-16T16:00:00-08:00',
+                        value: 3,
+                    },
+                    {
+                        topicName: 'Oakland',
+                        name: 2,
+                        date: '2017-01-17T16:00:00-08:00',
+                        value: 4,
+                    },
+                ],
+            })
+            .call(line());
+
+        const table = tableOf();
+        const rows = Array.from(table.tBodies[0].rows).map(cells);
+
+        expect(cells(table.tHead.rows[0])).toEqual([
+            'Date',
+            'San Francisco',
+            'Oakland',
+        ]);
+        expect(rows.map((row) => row.slice(1))).toEqual([
+            ['1', '3'],
+            ['2', '4'],
+        ]);
+        // One date per row, without a time: no two fall on the same day
+        expect(rows[0][0]).not.toMatch(/:/);
+    });
+
+    it('should lay a heatmap out with a row per day and a column per hour', () => {
+        container
+            .datum([
+                { day: 0, hour: 0, value: 5 },
+                { day: 0, hour: 1, value: 6 },
+                { day: 1, hour: 0, value: 7 },
+            ])
+            .call(heatmap());
+
+        const table = tableOf();
+
+        expect(cells(table.tHead.rows[0])).toEqual(['Day', '00h', '01h']);
+        expect(cells(table.tBodies[0].rows[1])).toEqual(['Tu', '7', '']);
+    });
+});

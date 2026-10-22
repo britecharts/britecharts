@@ -54,6 +54,7 @@ import type {
 } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
@@ -61,7 +62,14 @@ import type {
     ThemableChartAPI,
     TimeSeriesChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
+import {
+    ascending,
+    labelChart,
+    pivotTable,
+    prefersReducedMotion,
+    renderDataTable,
+} from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -119,6 +127,7 @@ export type LineChartXAxisScale = 'linear' | 'logarithmic';
 export interface LineChartAPI
     extends
         AccessibleChartAPI<LineChartModule>,
+        DataTableChartAPI<LineChartModule>,
         Omit<ChartBaseAPI<LineChartModule>, 'numberFormat'>,
         InteractiveChartAPI<LineChartModule>,
         ExportableChartAPI,
@@ -557,6 +566,10 @@ export default function module(): LineChartModule {
             chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
 
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable() : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -913,6 +926,26 @@ export default function module(): LineChartModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: a row per date and a
+     * column per topic
+     * @private
+     */
+    function dataTable(): DataTable {
+        const points = dataByTopic.flatMap(({ topicName, dates }) =>
+            dates.map((d) => ({ topicName, ...d }))
+        );
+
+        return pivotTable(points, {
+            heading: 'Date',
+            row: (d) => d.date,
+            column: (d) => d.topicName,
+            value: (d) => d.value,
+            sortRows: ascending,
+        });
+    }
 
     /**
      * Builds the SVG element that will contain the chart
@@ -1726,6 +1759,27 @@ export default function module(): LineChartModule {
 
         return this;
     } as LineChartModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    (exports as LineChartModule).a11yDataTable = function (
+        this: LineChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x;
+
+        return this;
+    } as LineChartModule['a11yDataTable'];
 
     /**
      * Gets or Sets the duration of the animation

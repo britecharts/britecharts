@@ -186,3 +186,15 @@ export interface AccessibleChartAPI<T> {
     a11yDescription(): string | null;
     a11yDescription(a11yDescription: string | null): T & AccessibleChartAPI<T>;
 }
+
+export interface DataTableChartAPI<T> {
+    /**
+     * Gets or Sets whether the chart renders its data as a table that screen
+     * readers can read, row by row and cell by cell. The table is visually
+     * hidden, placed right after the svg and linked from it with
+     * `aria-details`; its caption is the chart's name. On by default: set it
+     * to false for an app that gives the data its own accessible form.
+     */
+    a11yDataTable(): boolean;
+    a11yDataTable(a11yDataTable: boolean): T & DataTableChartAPI<T>;
+}

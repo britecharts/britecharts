@@ -42,13 +42,19 @@ import type { GridTypes } from '../../typings/common/grid.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
+import {
+    labelChart,
+    prefersReducedMotion,
+    renderDataTable,
+} from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -85,6 +91,7 @@ export type ScatterPlotBaseAPI = Omit<
 export interface ScatterPlotAPI
     extends
         AccessibleChartAPI<ScatterPlotModule>,
+        DataTableChartAPI<ScatterPlotModule>,
         ScatterPlotBaseAPI,
         InteractiveChartAPI<ScatterPlotModule>,
         ExportableChartAPI,
@@ -469,6 +476,10 @@ export default function module(): ScatterPlotModule {
             chartHeight = height - (margin.top ?? 0) - (margin.bottom ?? 0);
 
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable() : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -665,6 +676,19 @@ export default function module(): ScatterPlotModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: each point's name and
+     * its x and y values
+     * @private
+     */
+    function dataTable(): DataTable {
+        return {
+            columns: ['Name', 'X', 'Y'],
+            rows: dataPoints.map((d) => [d.name, d.x, d.y]),
+        };
+    }
 
     /**
      * Builds the SVG element that will contain the chart
@@ -1416,6 +1440,27 @@ export default function module(): ScatterPlotModule {
 
         return this;
     } as ScatterPlotModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    (exports as ScatterPlotModule).a11yDataTable = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x;
+
+        return this;
+    } as ScatterPlotModule['a11yDataTable'];
 
     /**
      * Gets or Sets the duration of the circle animation

@@ -32,6 +32,11 @@ export interface BarChartProps {
      */
     a11yDescription?: string | null;
     /**
+     * Whether the chart renders its data as a visually hidden table after its
+     * svg, which screen readers can read cell by cell. On by default.
+     */
+    a11yDataTable?: boolean;
+    /**
      * Internally used, do not overwrite.
      *
      * Required. `null` means the data has not arrived yet: nothing is drawn

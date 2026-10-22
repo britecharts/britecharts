@@ -191,6 +191,19 @@ barChart
 
 The name goes in an `aria-label`, so browsers do not show it as a tooltip on hover. React components take `a11yTitle` and `a11yDescription` as props.
 
+### Read the data as a table
+Every chart but the legend also renders its data as a table, right after its svg, which screen readers reach as a table: they can read it row by row, move along a row or down a column, and hear each cell's headings. It is hidden from sight, takes no room on the page, and is linked from the chart with `aria-details`. Its caption is the chart's name, so set `a11yTitle` and the table is named after it too.
+
+Charts with several series lay it out wide, as a reader would expect: a line chart has a row per date and a column per topic, and a heatmap a row per day and a column per hour.
+
+The table is on by default. If your page already shows the data in an accessible form, turn it off:
+
+```js
+barChart.a11yDataTable(false);
+```
+
+In React, pass `a11yDataTable={false}`; in the wrappers, `a11yDataTable: false` in the configuration.
+
 ### Label a bullet chart or a sparkline
 The bullet chart and the sparkline draw only their data, with no title: text inside an svg cannot wrap and ignores the page's typography. Put the label in your own markup, next to the chart, and give screen readers the same words:
 
