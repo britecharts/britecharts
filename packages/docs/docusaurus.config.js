@@ -5,7 +5,8 @@ const lunrSearch = require.resolve('docusaurus-lunr-search');
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
     title: 'Britecharts',
-    tagline: 'Build stunning D3.js-powered interactive charts with little code',
+    tagline:
+        'Finished, accessible charts that any page, and any agent, can add with one script tag or one validated JSON config',
     url: 'https://britecharts.github.io',
     baseUrl: '/britecharts/',
     // A broken internal link fails the build. External links are checked by

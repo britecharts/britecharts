@@ -1,0 +1,7 @@
+.whatsNew {
+    padding: 3rem 0 2rem;
+}
+
+.item {
+    padding: 0 var(--ifm-spacing-horizontal) 1rem;
+}

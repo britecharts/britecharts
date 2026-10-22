@@ -5,33 +5,38 @@ import styles from './styles.module.css';
 
 const FeatureList = [
     {
-        title: 'Reusable and Composable',
+        title: 'Finished Charts, Not a Grammar',
         Svg: require('@site/static/img/undraw_takeout_boxes.svg').default,
         description: (
             <>
-                Configure your charts to create different looks and behaviors.
-                Mix and match components to create insightful experiences.
+                Pick a chart, give it data, and get a polished one with
+                tooltips, animation, loading states and export built in. Every
+                chart shares one vocabulary, so there are fewer ways to go
+                wrong.
             </>
         ),
     },
     {
-        title: 'Great Design',
+        title: 'Accessible by Default, and Free',
         Svg: require('@site/static/img/undraw_designer_girl.svg').default,
         description: (
             <>
-                Britechart&apos;s codebase is a regular D3.js code you can fork
-                and modify.
+                Named for screen readers, with the data as a table they can
+                read, keyboard navigation with the tooltip following focus,
+                reduced motion and a colour-blind-safe palette. All on by
+                default.
             </>
         ),
     },
     {
-        title: 'Powered by D3.js',
+        title: 'One Script Tag or One Config',
         Svg: require('@site/static/img/brand/d3/d3-outline.svg').default,
         description: (
             <>
-                Britechart&apos;s codebase is simple and conventional{' '}
-                <a href="https://d3js.org/">D3.js</a> code you can fork and
-                modify.
+                Plain <a href="https://d3js.org/">D3.js</a> that runs in any
+                page from a CDN, any framework through the wrappers, or React. A
+                chart is also a JSON spec, which a schema checks for you, or for
+                your coding agent.
             </>
         ),
     },
