@@ -122,7 +122,7 @@ lineChart.isAnimated(true).animationDuration(600);
 
 `animationDuration` does nothing while `isAnimated` is `false`. The bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, scatter plot, sparkline and brush charts animate. React components take both as props.
 
-A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set.
+A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set. The rest of the motion stops too: tooltips appear and move without fading or easing, the legend drops entries without a fade, and a hovered point is highlighted without its bounce.
 
 ## How to Export a Chart
 Call `exportChart` with a filename to download the chart as it is drawn. The filename picks the format: one ending in `.svg` downloads an svg file, and any other a png. An optional second argument adds a title at the top:

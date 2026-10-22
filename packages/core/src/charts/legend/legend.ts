@@ -14,7 +14,8 @@ import type {
     ComponentBaseAPI,
     ThemableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, motionDuration } from '../helpers/a11y.js';
+import { motion } from '../helpers/constants.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum LegendKeys {
@@ -475,6 +476,7 @@ export default function module(): LegendModule {
             .selectAll('g.legend-entry')
             .exit()
             .transition()
+            .duration(motionDuration(motion.defaultDuration))
             .style('opacity', 0)
             .remove();
 
@@ -538,6 +540,7 @@ export default function module(): LegendModule {
             .selectAll('g.legend-line')
             .exit()
             .transition()
+            .duration(motionDuration(motion.defaultDuration))
             .style('opacity', 0)
             .remove();
     }

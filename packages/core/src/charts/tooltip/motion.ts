@@ -14,6 +14,8 @@ import { select } from 'd3-selection';
 import type { Selection } from 'd3-selection';
 import 'd3-transition';
 
+import { motionDuration } from '../helpers/a11y.js';
+
 /**
  * The tooltip's root group, as a selection of it.
  *
@@ -90,7 +92,7 @@ export function fadeIn<TElement extends SVGElement | HTMLElement>(
     selection
         .interrupt(FADE)
         .transition(FADE)
-        .duration(fadeDuration)
+        .duration(motionDuration(fadeDuration))
         .ease(ease)
         .style('opacity', 1);
 }
@@ -107,7 +109,7 @@ export function fadeOut<TElement extends SVGElement | HTMLElement>(
     selection
         .interrupt(FADE)
         .transition(FADE)
-        .duration(fadeDuration)
+        .duration(motionDuration(fadeDuration))
         .ease(ease)
         .style('opacity', 0)
         .on('end', function () {

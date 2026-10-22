@@ -5,6 +5,8 @@ import type { BaseType, Selection } from 'd3-selection';
 // same reason at runtime.
 import 'd3-transition';
 
+import { prefersReducedMotion } from './a11y.js';
+
 /**
  * Any d3 selection these helpers are handed.
  *
@@ -170,6 +172,11 @@ export const bounceCircleHighlight = <TElement extends BaseType>(
 ): void => {
     const duration = 100;
     const delay = 50;
+
+    // A bounce is decoration: with reduced motion, the point keeps its size
+    if (prefersReducedMotion()) {
+        return;
+    }
 
     el.transition()
         .ease(ease)

@@ -75,3 +75,12 @@ export const prefersReducedMotion = (): boolean =>
     typeof window !== 'undefined' &&
     typeof window.matchMedia === 'function' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/**
+ * A transition's duration in milliseconds, or 0 when the reader's system asks
+ * for reduced motion. A transition of 0 still reaches its end state and fires
+ * its end event, so code that waits for it keeps working.
+ * @param duration  The duration with motion
+ */
+export const motionDuration = (duration: number): number =>
+    prefersReducedMotion() ? 0 : duration;
