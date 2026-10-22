@@ -21,13 +21,19 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
+import {
+    labelChart,
+    prefersReducedMotion,
+    renderDataTable,
+} from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -69,6 +75,7 @@ export interface DonutEmptyDataConfig {
 export interface DonutChartAPI
     extends
         AccessibleChartAPI<DonutChartModule>,
+        DataTableChartAPI<DonutChartModule>,
         Omit<ChartBaseAPI<DonutChartModule>, 'numberFormat'>,
         InteractiveChartAPI<DonutChartModule>,
         ExportableChartAPI,
@@ -383,6 +390,10 @@ export default function module(): DonutChartModule {
             data = cleanData(_data);
 
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable() : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -465,6 +476,19 @@ export default function module(): DonutChartModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: each slice's name,
+     * quantity and percentage
+     * @private
+     */
+    function dataTable(): DataTable {
+        return {
+            columns: ['Name', 'Quantity', 'Percentage'],
+            rows: data.map((d) => [d.name, d.quantity, `${d.percentage}%`]),
+        };
+    }
 
     /**
      * Builds the SVG element that will contain the chart
@@ -982,6 +1006,27 @@ export default function module(): DonutChartModule {
 
         return this;
     } as DonutChartModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    (exports as DonutChartModule).a11yDataTable = function (
+        this: DonutChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x;
+
+        return this;
+    } as DonutChartModule['a11yDataTable'];
 
     /**
      * Gets or Sets the duration of the animation

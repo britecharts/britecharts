@@ -14,10 +14,12 @@ import colorHelper from '../helpers/color.js';
 import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart } from '../helpers/a11y.js';
+import { labelChart, renderDataTable } from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 
@@ -38,6 +40,7 @@ export type BulletChartBaseAPI = ChartBaseAPI<BulletChartModule>;
 export interface BulletChartAPI
     extends
         AccessibleChartAPI<BulletChartModule>,
+        DataTableChartAPI<BulletChartModule>,
         BulletChartBaseAPI,
         ExportableChartAPI {
     /** Gets or Sets the colorSchema of the chart */
@@ -197,6 +200,10 @@ export default function module(): BulletChartModule {
             // has to be drawn before cleanData(), which expects a real datum
             // with ranges, measures and markers.
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable(_data) : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -290,6 +297,28 @@ export default function module(): BulletChartModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: its ranges, measures
+     * and markers, each listed in a row
+     * @private
+     */
+    function dataTable(datum: BulletChartDataShape): DataTable {
+        const cleaned = cleanData(datum);
+        const series: [string, number[]][] = [
+            ['Ranges', cleaned.ranges],
+            ['Measures', cleaned.measures],
+            ['Markers', cleaned.markers],
+        ];
+
+        return {
+            columns: ['Series', 'Values'],
+            rows: series
+                .filter(([, values]) => values.length)
+                .map(([name, values]) => [name, values.join(', ')]),
+        };
+    }
 
     /**
      * Builds the SVG element that will contain the chart
@@ -501,6 +530,27 @@ export default function module(): BulletChartModule {
 
         return this;
     } as BulletChartModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    (exports as BulletChartModule).a11yDataTable = function (
+        this: BulletChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x;
+
+        return this;
+    } as BulletChartModule['a11yDataTable'];
 
     /**
      * Gets or Sets the colorSchema of the chart.

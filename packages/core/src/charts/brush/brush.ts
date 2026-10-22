@@ -31,12 +31,18 @@ import type { AxisTimeCombinationValue } from '../helpers/constants.js';
 import type { AxisTickSettings } from '../helpers/axis.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     AnimatedChartAPI,
     ChartBaseAPIMinimal,
     InteractiveChartAPI,
     TimeSeriesChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
+import {
+    labelChart,
+    prefersReducedMotion,
+    renderDataTable,
+} from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum BrushChartKeys {
@@ -76,6 +82,7 @@ export type BrushSelection = Selection<
 export interface BrushChartAPI
     extends
         AccessibleChartAPI<BrushChartModule>,
+        DataTableChartAPI<BrushChartModule>,
         ChartBaseAPIMinimal<BrushChartModule>,
         AnimatedChartAPI<BrushChartModule>,
         TimeSeriesChartAPI<BrushChartModule>,
@@ -286,6 +293,10 @@ export default function module(): BrushChartModule {
             data = cleanData(cloneData(_data));
 
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable() : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -446,6 +457,18 @@ export default function module(): BrushChartModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: each date and its value
+     * @private
+     */
+    function dataTable(): DataTable {
+        return {
+            columns: ['Date', 'Value'],
+            rows: data.map((d) => [d.date, d.value]),
+        };
+    }
 
     /**
      * Builds the SVG element that will contain the chart
@@ -870,6 +893,27 @@ export default function module(): BrushChartModule {
 
         return this;
     } as BrushChartModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    (exports as BrushChartModule).a11yDataTable = function (
+        this: BrushChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x;
+
+        return this;
+    } as BrushChartModule['a11yDataTable'];
 
     /**
      * Gets or Sets the duration of the area animation

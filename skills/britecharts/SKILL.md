@@ -72,6 +72,7 @@ container.datum(data).call(barChart);
 - `isAnimated(true)` animates the draw; it is skipped automatically when the reader's system asks for reduced motion.
 - `colorSchema(colors.colorSchemas.okabeIto)` gives a colour-blind-safe palette (`import { colors } from '@britecharts/core'`). `colorMap({ category: '#hex' })` pins colours per category.
 - `exportChart('name.svg')` downloads an SVG, any other filename a PNG; an optional second argument adds a title.
+- Every chart but the legend renders its data as a visually hidden table after its svg, linked with `aria-details`, so screen readers can read the numbers. It is on by default; `a11yDataTable(false)` (a prop or config key of the same name) turns it off. Don't add your own hidden table unless you turn this one off.
 - Dark mode and theming are CSS, not accessors: the charts follow the page's `color-scheme` (`:root { color-scheme: light dark }`), and every non-data colour is a `--bc-*` custom property, such as `.britechart { --bc-text-muted: #555 }`. Don't hard-code axis or text colours in JavaScript.
 - Number formats are d3-format strings (`numberFormat('.1%')`); locales are objects passed to `valueLocale` (bar, grouped bar, stacked bar, scatter plot) or BCP 47 tags to `locale` (dates, time-series charts).
 

@@ -17,11 +17,17 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type { ColorGradientType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     AnimatedChartAPI,
     ChartDimensionsAPI,
     ExportableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
+import {
+    labelChart,
+    prefersReducedMotion,
+    renderDataTable,
+} from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum SparklineChartKeys {
@@ -49,6 +55,7 @@ export type SparklineSelection = Selection<
 export interface SparklineChartAPI
     extends
         AccessibleChartAPI<SparklineChartModule>,
+        DataTableChartAPI<SparklineChartModule>,
         ChartDimensionsAPI<SparklineChartModule>,
         AnimatedChartAPI<SparklineChartModule>,
         ExportableChartAPI {
@@ -212,6 +219,10 @@ export default function module(): SparklineChartModule {
             data = cleanData(_data);
 
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable() : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -266,6 +277,18 @@ export default function module(): SparklineChartModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: each date and its value
+     * @private
+     */
+    function dataTable(): DataTable {
+        return {
+            columns: ['Date', 'Value'],
+            rows: data.map((d) => [d.date, d.value]),
+        };
+    }
 
     /**
      * Builds the SVG element that will contain the chart
@@ -518,6 +541,27 @@ export default function module(): SparklineChartModule {
 
         return this;
     } as SparklineChartModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    (exports as SparklineChartModule).a11yDataTable = function (
+        this: SparklineChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x;
+
+        return this;
+    } as SparklineChartModule['a11yDataTable'];
 
     /**
      * Gets or Sets the duration of the animation

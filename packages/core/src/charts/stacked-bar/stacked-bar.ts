@@ -32,13 +32,20 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    DataTableChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
     InteractiveChartAPI,
     ThemableChartAPI,
 } from '../../typings/common/base.js';
-import { labelChart, prefersReducedMotion } from '../helpers/a11y.js';
+import {
+    labelChart,
+    pivotTable,
+    prefersReducedMotion,
+    renderDataTable,
+} from '../helpers/a11y.js';
+import type { DataTable } from '../helpers/a11y.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -75,6 +82,7 @@ export type StackedBarSelection = Selection<
 export interface StackedBarChartAPI
     extends
         AccessibleChartAPI<StackedBarChartModule>,
+        DataTableChartAPI<StackedBarChartModule>,
         ChartBaseAPI<StackedBarChartModule>,
         InteractiveChartAPI<StackedBarChartModule>,
         ExportableChartAPI,
@@ -376,6 +384,10 @@ export default function module(): StackedBarChartModule {
 
             prepareData(data);
             buildSVG(this);
+            renderDataTable(
+                svg.node(),
+                a11yDataTable && !isLoading ? dataTable() : null
+            );
             if (isLoading) {
                 drawLoadingState();
 
@@ -548,6 +560,21 @@ export default function module(): StackedBarChartModule {
 
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
+    let a11yDataTable = true;
+
+    /**
+     * The chart's data as a table, for screen readers: a row per name and a
+     * column per stack
+     * @private
+     */
+    function dataTable(): DataTable {
+        return pivotTable(data, {
+            heading: 'Name',
+            row: (d) => d.name,
+            column: (d) => d.stack,
+            value: (d) => d.value,
+        });
+    }
 
     /**
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
@@ -1282,6 +1309,27 @@ export default function module(): StackedBarChartModule {
 
         return this;
     } as StackedBarChartModule['a11yDescription'];
+
+    /**
+     * Gets or Sets whether the chart renders its data as a visually hidden
+     * table after its svg, which screen readers can read cell by cell. On by
+     * default; set it to false when the app gives the data its own accessible
+     * form.
+     * @param  {Boolean} _x     Whether to render the data table
+     * @return {Boolean | module} Current a11yDataTable or Chart module to chain calls
+     * @public
+     */
+    (exports as StackedBarChartModule).a11yDataTable = function (
+        this: StackedBarChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yDataTable;
+        }
+        a11yDataTable = _x;
+
+        return this;
+    } as StackedBarChartModule['a11yDataTable'];
 
     /**
      * Gets or Sets the duration of the animation

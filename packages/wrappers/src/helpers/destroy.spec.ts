@@ -29,6 +29,21 @@ describe('destroy helpers', () => {
             expect(el.parentNode).toBe(parent);
         });
 
+        it('should remove the data table the svg links, and no other table', () => {
+            const el = document.createElement('div');
+            const chart = svg();
+            const dataTable = document.createElement('div');
+            const appTable = document.createElement('table');
+
+            dataTable.id = 'britechart-data-table-1';
+            chart.setAttribute('aria-details', dataTable.id);
+            el.append(chart, dataTable, appTable);
+
+            removeChartSvg(el);
+
+            expect(Array.from(el.children)).toEqual([appTable]);
+        });
+
         it('should do nothing without an element', () => {
             expect(() => removeChartSvg(null)).not.toThrow();
         });
