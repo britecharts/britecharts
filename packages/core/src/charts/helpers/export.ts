@@ -89,7 +89,10 @@ const config = {
     xmlDeclaration: '<?xml version="1.0" encoding="UTF-8"?>\n',
     titleFontSize: '15px',
     titleFontFamily: DEFAULT_FONT_STACK,
-    titleTopOffset: 15,
+    // The band added above the chart for its title, and the title's baseline
+    // within it
+    titleBandHeight: 30,
+    titleBaseline: 20,
     get styleBackgroundString() {
         return `<style>svg{background:${this.chartBackground};}</style>`;
     },
@@ -133,7 +136,10 @@ export function exportChart(
     return loadImage(convertSvgToHtml.call(this, d3svg, title) as string)
         .then((img) => {
             return {
-                canvas: createCanvas(this.width(), this.height()),
+                canvas: createCanvas(
+                    this.width(),
+                    this.height() + (title ? config.titleBandHeight : 0)
+                ),
                 img,
             };
         })
@@ -317,12 +323,23 @@ function loadImage(svgHtml: string): Promise<HTMLImageElement> {
     });
 }
 
+const escapeXml = (text: string): string =>
+    text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+
 /**
- * if passed, append title to the raw html to appear on graph
+ * Adds the title in a band above the chart: the svg grows by the band, in its
+ * height and its viewBox, and the chart moves down into the space below it, so
+ * the title never covers the chart. The title is escaped, so a title with `&`
+ * or `<` still makes a valid file.
  * @param  html      raw html string
  * @param  title     title of the graph
  * @param  svgWidth  width of graph container
- * @return raw html with title prepended
+ * @return raw html with the title band added
  * @private
  */
 function prependTitle(
@@ -331,21 +348,31 @@ function prependTitle(
     title: string | undefined,
     svgWidth: number
 ): string {
-    if (!title || !svgWidth) {
+    const openingTag = html.match(/^<svg\b[^>]*>/)?.[0];
+
+    if (!title || !svgWidth || !openingTag) {
         return html;
     }
     const { grey } = colorSchemas;
+    const band = config.titleBandHeight;
+    const grownTag = openingTag
+        .replace(
+            /\sheight="([\d.]+)"/,
+            (match, height) => ` height="${Number(height) + band}"`
+        )
+        .replace(/\sviewBox="([^"]+)"/, (match, viewBox) => {
+            const [x, y, width, height] = viewBox.split(/[\s,]+/).map(Number);
 
-    html = html.replace(
-        /<g/,
-        `<text x="${this.margin().left}" y="${
-            config.titleTopOffset
-        }" font-family="${config.titleFontFamily}" font-size="${
-            config.titleFontSize
-        }" fill="${grey[6]}"> ${title} </text><g `
-    );
+            return ` viewBox="${x} ${y} ${width} ${height + band}"`;
+        });
+    const titleText = `<text x="${this.margin().left ?? 0}" y="${
+        config.titleBaseline
+    }" font-family="${config.titleFontFamily}" font-size="${
+        config.titleFontSize
+    }" fill="${grey[6]}">${escapeXml(title)}</text>`;
+    const chart = html.slice(openingTag.length, html.lastIndexOf('</svg>'));
 
-    return html;
+    return `${grownTag}${titleText}<g transform="translate(0, ${band})">${chart}</g></svg>`;
 }
 
 export default {

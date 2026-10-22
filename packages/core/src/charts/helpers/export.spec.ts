@@ -140,6 +140,62 @@ describe('export Helper', () => {
             });
         });
 
+        describe('when given a title', () => {
+            const exportedFile = async (title?: string) => {
+                const svg = select<SVGSVGElement, unknown>(
+                    '.test-container svg'
+                );
+
+                await exportChart.exportChart.call(
+                    context(),
+                    svg,
+                    'chart.svg',
+                    title
+                );
+
+                return decodeURIComponent(
+                    clicked[clicked.length - 1].href
+                        .split(',')
+                        .slice(1)
+                        .join(',')
+                );
+            };
+            const parse = (file: string) =>
+                new DOMParser().parseFromString(
+                    file.replace(/^<\?xml[^>]*>\n/, ''),
+                    'image/svg+xml'
+                );
+
+            it('should escape it, so the file stays valid XML', async () => {
+                const doc = parse(await exportedFile('Q1 & Q2 <draft>'));
+
+                expect(doc.querySelector('parsererror')).toBeNull();
+                expect(doc.querySelector('svg > text')?.textContent).toBe(
+                    'Q1 & Q2 <draft>'
+                );
+            });
+
+            it('should grow the svg by a band for the title', async () => {
+                const untitled = parse(await exportedFile()).documentElement;
+                const titled = parse(
+                    await exportedFile('Visits')
+                ).documentElement;
+                const heightOf = (svg: Element) =>
+                    Number(svg.getAttribute('viewBox')?.split(/[\s,]+/)[3]);
+
+                expect(heightOf(titled)).toBe(heightOf(untitled) + 30);
+            });
+
+            it('should move the chart below the title', async () => {
+                const doc = parse(await exportedFile('Visits'));
+                const chart = doc.querySelector('svg > g:last-child');
+
+                expect(chart?.getAttribute('transform')).toBe(
+                    'translate(0, 30)'
+                );
+            });
+        });
+
         describe('when the filename does not end in .svg', () => {
             it('should go through an image, for a png, and download nothing yet', () => {
                 const svg = select<SVGSVGElement, unknown>(
