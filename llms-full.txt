@@ -5389,6 +5389,22 @@ reduced motion (`prefers-reduced-motion`), whatever this is set to.
 | --- | --- | --- |
 | _x | `Boolean` | = false     Desired animation flag |
 
+## isNormalized(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the areas fill the whole value axis, a 100%
+stacked area chart: each area shows its share of each date's total, and
+the value axis runs from 0% to 100%. The tooltip still shows the values.
+Meant for data without negative values.
+
+**Returns**: `Boolean` \| `module` - If it is normalized or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | = false     Whether to stack to 100% |
+
+**Example**  
+```js
+stackedArea.isNormalized(true)
+```
 ## numberFormat(_x) ⇒ `string` \| `module`
 Gets or Sets the number format of the stacked area chart
 
@@ -5803,6 +5819,22 @@ Gets or Sets the horizontal direction of the chart
 | --- | --- | --- |
 | _x | `Boolean` | = false     Desired horizontal direction for the graph |
 
+## isNormalized(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether every stack fills the whole value axis, a 100%
+stacked bar chart: each segment shows its share of its stack, and the
+value axis runs from 0% to 100%. The tooltip still shows the values.
+Meant for data without negative values.
+
+**Returns**: `Boolean` \| `module` - If it is normalized or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | = false     Whether to stack to 100% |
+
+**Example**  
+```js
+stackedBar.isNormalized(true)
+```
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
