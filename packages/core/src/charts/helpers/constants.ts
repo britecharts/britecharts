@@ -95,6 +95,8 @@ export const hoursHuman = [
 ];
 
 export const motion = {
+    // d3's own default, for the transitions that set no duration of their own
+    defaultDuration: 250,
     duration: 1200,
     mediumDuration: 600,
     shortDuration: 300,

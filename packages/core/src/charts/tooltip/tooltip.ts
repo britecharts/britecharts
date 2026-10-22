@@ -5,7 +5,8 @@ import { timeFormat } from 'd3-time-format';
 import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
-import { axisTimeCombinations } from '../helpers/constants.js';
+import { motionDuration } from '../helpers/a11y.js';
+import { axisTimeCombinations, motion } from '../helpers/constants.js';
 import {
     formatIntegerValue,
     formatDecimalValue,
@@ -575,7 +576,10 @@ export default function module(): TooltipModule {
             // hide there would make the box fade in again on every move
             (exports as TooltipModule).hide();
         }
-        svg.transition().attr('width', width).attr('height', height);
+        svg.transition()
+            .duration(motionDuration(motion.defaultDuration))
+            .attr('width', width)
+            .attr('height', height);
     }
 
     /**
@@ -955,7 +959,7 @@ export default function module(): TooltipModule {
 
         group
             .transition()
-            .duration(chaseDuration)
+            .duration(motionDuration(chaseDuration))
             .ease(ease)
             .attr('transform', `translate(${x}, ${y})`);
     }

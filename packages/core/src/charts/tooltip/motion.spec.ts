@@ -76,6 +76,44 @@ describe('tooltip motion', () => {
             });
     });
 
+    describe('when the reader prefers reduced motion', () => {
+        // Well under fadeDuration: long enough for a transition of 0 to end
+        const aFrameOrTwo = () =>
+            new Promise((resolve) => setTimeout(resolve, 60));
+
+        beforeEach(() => {
+            vi.stubGlobal('matchMedia', () => ({ matches: true }));
+        });
+
+        afterEach(() => {
+            vi.unstubAllGlobals();
+        });
+
+        it('should show the box at once', () => {
+            prepareToShow(group);
+            fadeIn(group);
+
+            return aFrameOrTwo().then(() => {
+                expect(group.style('opacity')).toEqual('1');
+            });
+        });
+
+        it('should hide the box at once', () => {
+            prepareToShow(group);
+            fadeIn(group);
+
+            return aFrameOrTwo()
+                .then(() => {
+                    fadeOut(group);
+
+                    return aFrameOrTwo();
+                })
+                .then(() => {
+                    expect(group.style('visibility')).toEqual('hidden');
+                });
+        });
+    });
+
     it('should not drop to transparent when shown again during a fade out', () => {
         prepareToShow(group);
         fadeIn(group);
