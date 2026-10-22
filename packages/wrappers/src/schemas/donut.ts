@@ -19,6 +19,9 @@ const schema: ConfigurationSchema = {
                 },
             ],
         },
+        a11yKeyboardNavigation: {
+            type: 'boolean',
+        },
         a11yTitle: {
             anyOf: [
                 {

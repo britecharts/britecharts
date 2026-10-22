@@ -204,6 +204,26 @@ barChart.a11yDataTable(false);
 
 In React, pass `a11yDataTable={false}`; in the wrappers, `a11yDataTable: false` in the configuration.
 
+### Move through the data with a keyboard
+The bar, donut, grouped bar, heatmap, line, scatter plot, stacked area and stacked bar charts can be explored without a pointer. Each chart is one stop in the page's tab order; once it has focus:
+
+| Key | Does |
+| --- | --- |
+| Right or Left arrow | moves to the next or previous data point: a bar, a slice, a date, a point |
+| Down or Up arrow | the same, except on the heatmap, where they move a day |
+| Home, End | moves to the first or last point |
+| Escape | lets go of the point; leaving the chart does too |
+
+The chart responds as it does to a pointer: the point is highlighted, the tooltip follows focus, and the `customMouseOver`, `customMouseMove` and `customMouseOut` events fire, so your own hover code works from the keyboard too. The browser's focus ring shows which chart has focus.
+
+It is on by default. To take the charts out of the tab order, for example in a list of thumbnails, turn it off:
+
+```js
+barChart.a11yKeyboardNavigation(false);
+```
+
+In React, pass `a11yKeyboardNavigation={false}`; in the wrappers, `a11yKeyboardNavigation: false` in the configuration.
+
 ### Label a bullet chart or a sparkline
 The bullet chart and the sparkline draw only their data, with no title: text inside an svg cannot wrap and ignores the page's typography. Put the label in your own markup, next to the chart, and give screen readers the same words:
 

@@ -15,6 +15,7 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type {
     AccessibleChartAPI,
     DataTableChartAPI,
+    KeyboardChartAPI,
     AnimatedChartAPI,
     BaseAPI,
     ExportableChartAPI,
@@ -27,6 +28,8 @@ import {
     renderDataTable,
 } from '../helpers/a11y.js';
 import type { DataTable } from '../helpers/a11y.js';
+import { enableKeyboardNavigation } from '../helpers/keyboard.js';
+import type { KeyboardStop } from '../helpers/keyboard.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 
 export declare enum HeatmapChartKeys {
@@ -45,6 +48,7 @@ export interface HeatmapChartAPI
     extends
         AccessibleChartAPI<HeatmapChartModule>,
         DataTableChartAPI<HeatmapChartModule>,
+        KeyboardChartAPI<HeatmapChartModule>,
         BaseAPI<HeatmapChartModule>,
         // `isAnimated` and `animationDuration` are documented `@public` on the
         // chart.
@@ -222,6 +226,11 @@ export default function module(): HeatmapChartModule {
                 svg.node(),
                 a11yDataTable && !isLoading ? dataTable() : null
             );
+            enableKeyboardNavigation(svg.node(), {
+                isEnabled: a11yKeyboardNavigation && !isLoading,
+                stops: keyboardStops,
+                rowLength: hoursHuman.length,
+            });
             if (isLoading) {
                 drawLoadingState();
 
@@ -244,6 +253,29 @@ export default function module(): HeatmapChartModule {
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
+    let a11yKeyboardNavigation = true;
+
+    /**
+     * Where keyboard focus can rest: each box, by day and then by hour, so up
+     * and down move a day
+     * @private
+     */
+    function keyboardStops(): KeyboardStop[] {
+        return svg
+            .selectAll<SVGRectElement, HeatmapChartDataShape>('.box')
+            .nodes()
+            .map((target) => ({
+                target,
+                datum: select<SVGRectElement, HeatmapChartDataShape>(
+                    target
+                ).datum(),
+            }))
+            .sort(
+                (a, b) =>
+                    a.datum.day - b.datum.day || a.datum.hour - b.datum.hour
+            )
+            .map(({ target }) => ({ target }));
+    }
 
     /**
      * The chart's data as a table, for screen readers: a row per day and a
@@ -627,6 +659,28 @@ export default function module(): HeatmapChartModule {
 
         return this;
     } as HeatmapChartModule['a11yDataTable'];
+
+    /**
+     * Gets or Sets whether a keyboard can move through the chart's data
+     * points: the chart takes one tab stop, the arrow keys move between
+     * points, Home and End go to the first and last, and Escape lets go. The
+     * tooltip and highlights follow focus as they follow the pointer. On by
+     * default.
+     * @param  {Boolean} _x     Whether the keyboard can move through the data
+     * @return {Boolean | module} Current a11yKeyboardNavigation or Chart module to chain calls
+     * @public
+     */
+    exports.a11yKeyboardNavigation = function (
+        this: HeatmapChartModule,
+        _x?: boolean
+    ) {
+        if (!arguments.length) {
+            return a11yKeyboardNavigation;
+        }
+        a11yKeyboardNavigation = _x as boolean;
+
+        return this;
+    } as HeatmapChartModule['a11yKeyboardNavigation'];
 
     /**
      * Gets or Sets the duration of the animation
