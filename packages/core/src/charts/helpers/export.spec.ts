@@ -186,6 +186,15 @@ describe('export Helper', () => {
                 expect(heightOf(titled)).toBe(heightOf(untitled) + 30);
             });
 
+            it('should set it in the charts font, Helvetica Neue first', async () => {
+                const doc = parse(await exportedFile('Visits'));
+                const fontFamily = doc
+                    .querySelector('svg > text')
+                    ?.getAttribute('font-family');
+
+                expect(fontFamily?.split(',')[0]).toBe('Helvetica Neue');
+            });
+
             it('should move the chart below the title', async () => {
                 const doc = parse(await exportedFile('Visits'));
                 const chart = doc.querySelector('svg > g:last-child');
