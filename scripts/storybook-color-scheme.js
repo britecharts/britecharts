@@ -1,6 +1,6 @@
 /*
- * A toolbar switch for the core and react Storybooks: shows every story in the
- * light or dark colour scheme, or as the system prefers. It sets
+ * A toolbar switch for the core, react and composed Storybooks: shows every
+ * story in the light or dark colour scheme, or as the system prefers. It sets
  * `color-scheme` on the preview's root element, as an app would on its page,
  * and the charts' theme tokens follow it through light-dark().
  */
