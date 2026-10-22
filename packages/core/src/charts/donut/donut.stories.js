@@ -252,23 +252,29 @@ export const WithHighlightedSliceChart = () => {
 /**
  * A pie chart is a donut without a hole: `internalRadius(0)`. With no hole,
  * there is no room for the centred text, so `hasCenterLegend(false)` turns it
- * off and the legend beside the chart names each slice, highlighting the one
+ * off and the legend on its right names each slice, highlighting the one
  * under the pointer.
  */
-export const AsAPieChart = () => {
+export const WithPieChartFormat = () => {
     const container = getCleanContainer();
     const donutContainer = select(container);
     const containerWidth = donutContainer.node()
         ? donutContainer.node().getBoundingClientRect().width
         : false;
     const pieChart = donut();
-    const legendChart = getVerticalLegendChart(container, dataset);
+    const legendChart = legend();
 
     if (containerWidth) {
+        const pieWidth = containerWidth * 0.55;
+
+        // The pie and its legend side by side
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+
         pieChart
-            .width(containerWidth)
-            .height(containerWidth / 2)
-            .externalRadius(containerWidth / 5)
+            .width(pieWidth)
+            .height(pieWidth * 0.8)
+            .externalRadius(pieWidth / 3.5)
             .internalRadius(0)
             .hasCenterLegend(false)
             .a11yTitle('Visits by source')
@@ -280,6 +286,16 @@ export const AsAPieChart = () => {
             });
 
         donutContainer.datum(dataset).call(pieChart);
+
+        // On the pie's right, with room for each entry: the legend splits its
+        // height evenly between them, so a short one stacks the markers
+        const legendWrapper = document.createElement('div');
+
+        container.appendChild(legendWrapper);
+        legendChart
+            .width(containerWidth * 0.4)
+            .height((dataset.length + 1) * 32);
+        select(legendWrapper).datum(dataset).call(legendChart);
     }
 
     return container;
