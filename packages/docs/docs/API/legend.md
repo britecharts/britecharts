@@ -1,5 +1,6 @@
 ---
 title: Legend
+sidebar_position: 1
 ---
 
 <a name="module_Legend" id="module_Legend"></a>

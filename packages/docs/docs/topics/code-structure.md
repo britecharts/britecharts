@@ -113,5 +113,5 @@ Within the core package, we have a set of [helpers](https://github.com/britechar
 
 [reusableAPI]: ./reusable-api.md
 [tooltipAPI]: ../API/tooltip
-[domainAPI]: ../API/domain
-[gridAPI]: ../API/grid
+[domainAPI]: ../API/helpers/domain
+[gridAPI]: ../API/helpers/grid

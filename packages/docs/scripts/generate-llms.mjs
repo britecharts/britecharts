@@ -140,14 +140,16 @@ const firstSentence = (body) =>
         .split(/(?<=\.) (?=[A-Z])/)[0]
         .replace(/\.$/, '');
 
-// The charts and components. The helpers' pages document internals, so they
-// are listed under Optional and left out of llms-full.txt
-const apiPages = readdirSync(path.join(pagesDir, 'API'))
-    .filter((file) => file.endsWith('.md'))
-    .map((file) => parse(`API/${file.replace(/\.md$/, '')}`))
-    .sort((a, b) => a.title.localeCompare(b.title));
-const chartPages = apiPages.filter(({ title }) => !title.endsWith('helpers'));
-const helperPages = apiPages.filter(({ title }) => title.endsWith('helpers'));
+// The charts and components, then the helpers, whose pages sit in API/helpers.
+// The helpers' pages document internals, so they are listed under Optional
+// and left out of llms-full.txt
+const pagesIn = (dir) =>
+    readdirSync(path.join(pagesDir, dir))
+        .filter((file) => file.endsWith('.md'))
+        .map((file) => parse(`${dir}/${file.replace(/\.md$/, '')}`))
+        .sort((a, b) => a.title.localeCompare(b.title));
+const chartPages = pagesIn('API');
+const helperPages = pagesIn('API/helpers');
 
 const linkLine = ({ id, title }, description) =>
     `- [${title}](${urlOf(id)})${description ? `: ${description}` : ''}`;

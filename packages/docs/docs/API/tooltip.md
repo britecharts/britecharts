@@ -1,5 +1,6 @@
 ---
 title: Tooltip
+sidebar_position: 1
 ---
 
 <a name="module_Tooltip" id="module_Tooltip"></a>

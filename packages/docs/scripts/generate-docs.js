@@ -457,6 +457,11 @@ function stripTypesForJsdoc(sourceRoot) {
     return { tmpRoot, strippedRoot: destRoot };
 }
 
+// The helpers' pages (a11y, domain, grid, keyboard, scale) go in their own
+// folder, which the sidebar shows as a Helpers group after the charts
+const HELPERS_DIR = 'helpers';
+const HELPERS_CATEGORY = { label: 'Helpers', position: 99, collapsed: true };
+
 /**
  * Deletes API pages this run did not produce.
  *
@@ -466,17 +471,21 @@ function stripTypesForJsdoc(sourceRoot) {
  * kept serving stale content, which reads as current.
  */
 function removeStalePages(writeDir, generated) {
-    if (!fs.existsSync(writeDir)) {
-        return;
-    }
-
-    for (const file of fs.readdirSync(writeDir)) {
-        if (!file.endsWith('.md') || generated.has(file)) {
+    for (const dir of [writeDir, path.join(writeDir, HELPERS_DIR)]) {
+        if (!fs.existsSync(dir)) {
             continue;
         }
 
-        fs.unlinkSync(path.join(writeDir, file));
-        console.log(`-= Removed ${file}, which is no longer generated =-`);
+        for (const file of fs.readdirSync(dir)) {
+            const page = path.relative(writeDir, path.join(dir, file));
+
+            if (!file.endsWith('.md') || generated.has(page)) {
+                continue;
+            }
+
+            fs.unlinkSync(path.join(dir, file));
+            console.log(`-= Removed ${page}, which is no longer generated =-`);
+        }
     }
 }
 
@@ -598,17 +607,39 @@ async function generateDocs() {
                 )
                 .replace(/^# /gm, '## ');
 
-            // write the markdown file
+            // write the markdown file, a helper's into the helpers folder
+            const pagePath = isHelper
+                ? path.join(HELPERS_DIR, `${fileName}.md`)
+                : `${fileName}.md`;
+
+            if (isHelper) {
+                fs.mkdirSync(path.join(writeDir, HELPERS_DIR), {
+                    recursive: true,
+                });
+            }
+            // A position for the charts' pages too: Docusaurus lists positioned
+            // items first, so without one the Helpers group would come first
+            const frontMatter = isHelper
+                ? `title: ${pageTitle}`
+                : `title: ${pageTitle}\nsidebar_position: 1`;
+
             fs.writeFileSync(
-                `${writeDir}/${fileName}.md`,
-                `---\ntitle: ${pageTitle}\n---\n\n${page}`
+                path.join(writeDir, pagePath),
+                `---\n${frontMatter}\n---\n\n${page}`
             );
-            generatedPages.add(`${fileName}.md`);
+            generatedPages.add(pagePath);
         }
 
         // Add category metadata
         const readmeFile = fs.readFileSync('./scripts/_category_.json');
         fs.writeFileSync(`${writeDir}/_category_.json`, readmeFile);
+    }
+
+    if (fs.existsSync(path.join(writeDir, HELPERS_DIR))) {
+        fs.writeFileSync(
+            path.join(writeDir, HELPERS_DIR, '_category_.json'),
+            `${JSON.stringify(HELPERS_CATEGORY, null, 2)}\n`
+        );
     }
 
     removeStalePages(writeDir, generatedPages);
