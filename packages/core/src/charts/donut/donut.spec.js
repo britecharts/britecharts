@@ -3,6 +3,16 @@ import * as d3 from 'd3';
 import chart from './donut';
 import { DonutDataBuilder } from './donutChartDataBuilder';
 
+// A colour as an element's style holds it: the fills below are styles, which
+// jsdom normalises, so the expected colour goes through a style too
+const asStyle = (color) => {
+    const el = document.createElement('div');
+
+    el.style.fill = color;
+
+    return el.style.fill;
+};
+
 const donutDataSets = ['withFivePlusOther', 'withFivePlusOtherNoPercent'];
 
 const aTestDataSet = () => new DonutDataBuilder();
@@ -221,9 +231,9 @@ donutDataSets.forEach((datasetName) => {
                         .selectAll('.donut-chart .arc path')
                         .nodes();
 
-                    actual = paths[0].getAttribute('fill');
+                    actual = paths[0].style.fill;
 
-                    expect(actual).toEqual(expected);
+                    expect(actual).toEqual(asStyle(expected));
                 });
             });
 
@@ -259,9 +269,9 @@ donutDataSets.forEach((datasetName) => {
                         .selectAll('.donut-chart .arc path')
                         .nodes();
 
-                    actual = paths[0].getAttribute('fill');
+                    actual = paths[0].style.fill;
 
-                    expect(actual).toEqual(expected);
+                    expect(actual).toEqual(asStyle(expected));
                 });
             });
 

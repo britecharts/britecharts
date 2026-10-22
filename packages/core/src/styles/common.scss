@@ -1,5 +1,8 @@
 // What every chart needs, for use alongside a per-chart stylesheet.
 
+// The colour tokens, light and dark
+@use "base/tokens";
+
 // Loading states. These belong here rather than in britecharts.scss alone:
 // the per-chart stylesheets are meant to be used alongside common.css, and
 // without this the loading skeletons render but never animate.

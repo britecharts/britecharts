@@ -1,12 +1,13 @@
 @use "../helpers/variables" as vars;
+@use "../helpers/theme";
 
 .brush-chart {
     .brush-area {
-        fill: vars.$grey-300;
+        fill: theme.color("brush-area");
     }
 
     .missing-brush-area {
-        fill: vars.$grey-100;
+        fill: theme.color("brush-area-missing");
     }
 
     .brush-rect.selection {

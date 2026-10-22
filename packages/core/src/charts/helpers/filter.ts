@@ -128,7 +128,7 @@ export const createWhiteGlow = <TElement extends BaseType>(
     filterSelector
         .append('feFlood')
         .attr('result', 'flood')
-        .attr('flood-color', '#ffffff')
+        .style('flood-color', 'var(--bc-surface, #fff)')
         .attr('flood-opacity', '1');
 
     filterSelector

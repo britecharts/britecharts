@@ -1,0 +1,11 @@
+@use "../helpers/theme";
+
+// The colour tokens every chart reads; see helpers/theme for what they are
+@include theme.declare-tokens;
+
+// Text the chart draws without a colour of its own (legend entries, the
+// donut's centre, heatmap labels) would be black in SVG, unreadable on a dark
+// page. :where() keeps this below every rule that sets one.
+:where(.britechart) text {
+    fill: theme.color("text");
+}

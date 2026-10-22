@@ -1,4 +1,5 @@
 @use "../helpers/variables" as vars;
+@use "../helpers/theme";
 
 $text-padding: 12px;
 $tick-size: 1;
@@ -7,12 +8,12 @@ $tick-size: 1;
     line {
         fill: none;
         shape-rendering: crispedges;
-        stroke: vars.$grey-500;
+        stroke: theme.color("axis");
         stroke-width: $tick-size;
     }
 
     text {
-        fill: vars.$grey-600;
+        fill: theme.color("text-muted");
         font-size: vars.$text-size-small;
         padding: $text-padding;
     }
@@ -20,6 +21,6 @@ $tick-size: 1;
 
 .y-axis-label,
 .x-axis-label {
-    fill: vars.$grey-500;
+    fill: theme.color("text-subtle");
     font-size: vars.$text-size-medium;
 }
