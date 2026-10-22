@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.aae73d69.css">
-<script src="/britecharts/assets/js/runtime~main.50229d4b.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.6c6e06ff.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.3951345d.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.b3060abb.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -24,6 +24,46 @@ announce. The name is an attribute, not a <code>&lt;title&gt;</code>: browsers s
 <code>&lt;title&gt;</code> as a tooltip when the pointer rests on the chart. Run on every
 render: it reuses the <code>&lt;desc&gt;</code> it made the first time and only updates its
 text, so its id, and the attribute that points at it, stay stable.</p>
+<p><strong>Kind</strong>: global constant<br>
+<a name="renderDataTable" id="renderDataTable" class="anchorTargetStickyNavbar_YBOc"></a></p>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="renderdatatable">renderDataTable<a href="#renderdatatable" class="hash-link" aria-label="Direct link to renderDataTable" title="Direct link to renderDataTable" translate="no">​</a></h2>
+<p>Renders a chart&#x27;s data as a visually hidden table right after its svg, which
+screen readers can read cell by cell, and links it from the svg with
+<code>aria-details</code>. The table sits in a <code>div.britechart-data-table</code>, which the
+link names. Its caption is the chart&#x27;s name, so run it after
+<a href="#labelChart" class="">labelChart</a>. Run on every render: it reuses the table it made and
+rewrites its content. A null table, or one without rows, removes it.</p>
+<p><strong>Kind</strong>: global constant<br>
+<a name="pivotTable" id="pivotTable" class="anchorTargetStickyNavbar_YBOc"></a></p>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="pivottable">pivotTable<a href="#pivottable" class="hash-link" aria-label="Direct link to pivotTable" title="Direct link to pivotTable" translate="no">​</a></h2>
+<p>Lays long data out wide, one row per <code>row</code> key and one column per <code>column</code>
+key, in the order each first appears, as screen readers navigate a table
+best: a line chart&#x27;s dates down the side and its topics across the top.</p>
+<p><strong>Kind</strong>: global constant</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>heading</td><td><code>string</code></td><td>The first column&#x27;s heading, such as &quot;Date&quot;</td></tr><tr><td>sortRows</td><td><code>function</code></td><td>Orders the rows, such as by date</td></tr></tbody></table>
+<p><a name="ascending" id="ascending" class="anchorTargetStickyNavbar_YBOc"></a></p>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="ascending">ascending<a href="#ascending" class="hash-link" aria-label="Direct link to ascending" title="Direct link to ascending" translate="no">​</a></h2>
+<p>Orders dates or numbers ascending, for <a href="#pivotTable" class="">pivotTable</a>&#x27;s <code>sortRows</code></p>
 <p><strong>Kind</strong>: global constant<br>
 <a name="prefersReducedMotion" id="prefersReducedMotion" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="prefersreducedmotion">prefersReducedMotion<a href="#prefersreducedmotion" class="hash-link" aria-label="Direct link to prefersReducedMotion" title="Direct link to prefersReducedMotion" translate="no">​</a></h2>
@@ -53,6 +93,6 @@ its end event, so code that waits for it keeps working.</p>
 
 
 
-<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>duration</td><td><code>number</code></td><td>The duration with motion</td></tr></tbody></table></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/a11y.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/tutorials/styling-charts"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Styling Britecharts</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/bar"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Bar</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#labelchart" class="table-of-contents__link toc-highlight">labelChart</a></li><li><a href="#prefersreducedmotion" class="table-of-contents__link toc-highlight">prefersReducedMotion</a></li><li><a href="#motionduration" class="table-of-contents__link toc-highlight">motionDuration</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>duration</td><td><code>number</code></td><td>The duration with motion</td></tr></tbody></table></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/a11y.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/tutorials/styling-charts"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Styling Britecharts</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/bar"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Bar</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#labelchart" class="table-of-contents__link toc-highlight">labelChart</a></li><li><a href="#renderdatatable" class="table-of-contents__link toc-highlight">renderDataTable</a></li><li><a href="#pivottable" class="table-of-contents__link toc-highlight">pivotTable</a></li><li><a href="#ascending" class="table-of-contents__link toc-highlight">ascending</a></li><li><a href="#prefersreducedmotion" class="table-of-contents__link toc-highlight">prefersReducedMotion</a></li><li><a href="#motionduration" class="table-of-contents__link toc-highlight">motionDuration</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
 </body>
 </html>

@@ -1047,6 +1047,19 @@ barChart
 
 The name goes in an `aria-label`, so browsers do not show it as a tooltip on hover. React components take `a11yTitle` and `a11yDescription` as props.
 
+### Read the data as a table
+Every chart but the legend also renders its data as a table, right after its svg, which screen readers reach as a table: they can read it row by row, move along a row or down a column, and hear each cell's headings. It is hidden from sight, takes no room on the page, and is linked from the chart with `aria-details`. Its caption is the chart's name, so set `a11yTitle` and the table is named after it too.
+
+Charts with several series lay it out wide, as a reader would expect: a line chart has a row per date and a column per topic, and a heatmap a row per day and a column per hour.
+
+The table is on by default. If your page already shows the data in an accessible form, turn it off:
+
+```js
+barChart.a11yDataTable(false);
+```
+
+In React, pass `a11yDataTable={false}`; in the wrappers, `a11yDataTable: false` in the configuration.
+
 ### Label a bullet chart or a sparkline
 The bullet chart and the sparkline draw only their data, with no title: text inside an svg cannot wrap and ignores the page's typography. Put the label in your own markup, next to the chart, and give screen readers the same words:
 
@@ -1059,6 +1072,30 @@ The bullet chart and the sparkline draw only their data, with no title: text ins
 bulletChart.a11yTitle('CPU load, GHz');
 select('.js-bullet-chart').datum(data).call(bulletChart);
 ```
+
+## How to Describe a Chart as a Spec and Check It
+A chart can be written down as a spec, a plain object with its name, its configuration and its data, which you can store, send from a server, or have a coding agent write:
+
+```json
+{
+    "$schema": "https://britecharts.github.io/britecharts/schema/v3/bar.json",
+    "chart": "bar",
+    "config": { "isHorizontal": true, "a11yTitle": "Signups by plan" },
+    "data": [{ "name": "Pro", "value": 412 }]
+}
+```
+
+Each chart has a JSON Schema for its spec at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json`: `bar`, `brush`, `bullet`, `donut`, `groupedBar`, `heatmap`, `legend`, `line`, `scatterPlot`, `sparkline`, `stackedArea`, `stackedBar` and `tooltip`. They are generated from the charts' TypeScript types, so they list every accessor with its type and description. With the `$schema` line, editors such as VS Code check and complete the spec as you type, and any JSON Schema validator (Ajv, for example) can check one before you draw it.
+
+Draw a spec with the chart's wrapper, which checks it too:
+
+```js
+import { BarWrapper } from '@britecharts/wrappers';
+
+BarWrapper.create(element, spec.data, spec.config);
+```
+
+A key the chart doesn't have, or a value of the wrong type, throws an error that names each one and says what it should be. Options that take a function, such as the events and the formatting functions, can't be written in JSON: set them from JavaScript.
 
 ## How to Configure Time Scales
 Britecharts has some logic to try guessing the best date format on time series charts from the time period of the dataset. As we haven't bulletproofed this algorithm, and sometimes users want specific formats, we also expose configuration options to set custom formats.
@@ -1688,6 +1725,32 @@ BarWrapper.destroy(container);
 
 `TooltipWrapper.destroy` has its own contract: it removes the tooltip from inside the element and never an `svg`, because a tooltip is created inside the chart it decorates and destroyed against the element around it.
 
+### Validation
+`create` and `update` check the configuration before drawing, and throw an error that says what to fix: a key the chart has no accessor for, with the nearest one it does have, and a value of the wrong type, with the type it should be.
+
+```
+Value not supported by Britechart: height chartGradient
+  height: expected a number, got the string "300"
+  chartGradient: expected an array of 2 strings, got an array of 1
+Supported accessors: https://britecharts.github.io/britecharts/docs/API/bar
+```
+
+An `undefined` or `null` value is skipped, and the chart keeps its default.
+
+### Chart specs and their JSON Schemas
+A chart can be written down as a spec: its name, its configuration and its data. Each chart has a JSON Schema for its spec, generated from the TypeScript types the wrappers take, so editors and coding agents can check a spec, and complete it, without running it:
+
+```json
+{
+    "$schema": "https://britecharts.github.io/britecharts/schema/v3/bar.json",
+    "chart": "bar",
+    "config": { "isHorizontal": true, "a11yTitle": "Signups by plan" },
+    "data": [{ "name": "Pro", "value": 412 }]
+}
+```
+
+The schemas are published at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json` and ship in this package as `@britecharts/wrappers/schemas/<chart>.json`, one per chart, named as core names it (`bar`, `groupedBar`, `scatterPlot`…). Draw a spec with its wrapper: `BarWrapper.create(element, spec.data, spec.config)`. Options that take a function, such as the events and the formatting functions, can't be written in JSON; set them from JavaScript.
+
 ## Availability
 Every chart in `@britecharts/core` has a wrapper: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper` and `StackedBarWrapper`, plus `TooltipWrapper` for the tooltip.
 
@@ -1963,6 +2026,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
+
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
 
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
@@ -2394,6 +2469,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
 
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
+
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the area animation
 
@@ -2671,6 +2758,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
 
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
+
 ## colorSchema(_x) ⇒ `Array.<String>` \| `module`
 Gets or Sets the colorSchema of the chart.
 The first color from the array will be applied to range bars (the wider bars).
@@ -2860,6 +2959,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
+
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
 
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
@@ -3183,6 +3294,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
 
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
+
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
@@ -3479,6 +3602,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
+
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
 
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
@@ -3878,6 +4013,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
+
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
 
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
@@ -4340,6 +4487,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
 
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
+
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the circle animation
 
@@ -4779,6 +4938,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
 
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
+
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
@@ -4953,6 +5124,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
+
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
 
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the area animation
@@ -5334,6 +5517,18 @@ chart's name, such as what the data shows. It is rendered as the svg's
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | `String` \| `null` | Desired accessible description for the chart |
+
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
 
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation

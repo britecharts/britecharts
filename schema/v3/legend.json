@@ -1,0 +1,165 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://britecharts.github.io/britecharts/schema/v3/legend.json",
+    "title": "Britecharts legend spec",
+    "description": "A legend chart: the chart's name, its configuration (the accessors, commands and events the legend wrapper takes) and its data.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "chart": {
+            "const": "legend"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "a11yDescription": {
+                    "description": "Gets or Sets a longer description screen readers announce after the name, such as what the data shows. It is rendered as the svg's `<desc>` and linked with `aria-describedby`. Unset, there is no description.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "a11yTitle": {
+                    "description": "Gets or Sets the name screen readers announce for the chart. It is set as the svg's `aria-label`. Unset, the getter reads `null` and the chart is announced by its type, such as \"Bar chart\".",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "clearHighlight": {
+                    "description": "Command that clears all highlighted entries on a legend instance",
+                    "type": "boolean"
+                },
+                "colorMap": {
+                    "description": "Gets or Sets the colorMap of the chart.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "colorSchema": {
+                    "description": "Gets or Sets the colorSchema of the chart",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "customBrushEnd": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customBrushStart": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customClick": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseMove": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOut": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOver": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "height": {
+                    "description": "Gets or Sets the height of the chart",
+                    "type": "number"
+                },
+                "highlight": {
+                    "description": "Command that highlights a line entry by fading the rest of lines on a legend instance",
+                    "type": "number"
+                },
+                "highlightEntryById": {
+                    "description": "Gets or Sets the id of the entry to highlight.",
+                    "type": "number"
+                },
+                "isHorizontal": {
+                    "description": "Gets or Sets the horizontal mode on the legend",
+                    "type": "boolean"
+                },
+                "margin": {
+                    "description": "Gets or Sets the margin object of the chart (top, bottom, left and right)",
+                    "type": "object",
+                    "properties": {
+                        "left": {
+                            "type": "number"
+                        },
+                        "right": {
+                            "type": "number"
+                        },
+                        "top": {
+                            "type": "number"
+                        },
+                        "bottom": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "marginRatio": {
+                    "description": "Gets or Sets the margin ratio of the legend chart. Used to determine spacing between legend elements.",
+                    "type": "number"
+                },
+                "markerSize": {
+                    "description": "Gets or Sets the markerSize of the legend chart. This markerSize will determine the horizontal and vertical size of the colored marks added as color identifiers for the chart's categories.",
+                    "type": "number"
+                },
+                "numberFormat": {
+                    "description": "Gets or Sets the number format of the chart",
+                    "type": "string"
+                },
+                "unit": {
+                    "description": "Gets or Sets the unit shown beside each value",
+                    "type": "string"
+                },
+                "width": {
+                    "description": "Gets or Sets the width of the chart",
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "number"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "name",
+                    "id"
+                ]
+            }
+        }
+    },
+    "required": [
+        "chart",
+        "data"
+    ],
+    "additionalProperties": false
+}
