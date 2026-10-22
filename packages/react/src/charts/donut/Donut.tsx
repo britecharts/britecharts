@@ -34,6 +34,12 @@ export interface DonutChartProps {
      */
     a11yDataTable?: boolean;
     /**
+     * Whether a keyboard can move through the chart's data points: the chart
+     * takes one tab stop, the arrow keys move between points and the tooltip
+     * follows. On by default.
+     */
+    a11yKeyboardNavigation?: boolean;
+    /**
      * Internally used, do not overwrite.
      *
      * Required. `null` means the data has not arrived yet: nothing is drawn

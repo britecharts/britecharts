@@ -29,6 +29,7 @@ import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     DataTableChartAPI,
+    KeyboardChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
@@ -41,6 +42,8 @@ import {
     renderDataTable,
 } from '../helpers/a11y.js';
 import type { DataTable } from '../helpers/a11y.js';
+import { enableKeyboardNavigation } from '../helpers/keyboard.js';
+import type { KeyboardStop } from '../helpers/keyboard.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -78,6 +81,7 @@ export interface BarChartAPI
     extends
         AccessibleChartAPI<BarChartModule>,
         DataTableChartAPI<BarChartModule>,
+        KeyboardChartAPI<BarChartModule>,
         ChartBaseAPI<BarChartModule>,
         ExportableChartAPI,
         InteractiveChartAPI<BarChartModule>,
@@ -483,6 +487,10 @@ export default function module(): BarChartModule {
                 svg.node(),
                 a11yDataTable && !isLoading ? dataTable() : null
             );
+            enableKeyboardNavigation(svg.node(), {
+                isEnabled: a11yKeyboardNavigation && !isLoading,
+                stops: keyboardStops,
+            });
             if (isLoading) {
                 drawLoadingState();
 
@@ -646,6 +654,18 @@ export default function module(): BarChartModule {
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
+    let a11yKeyboardNavigation = true;
+
+    /**
+     * Where keyboard focus can rest: each bar, in order
+     * @private
+     */
+    function keyboardStops(): KeyboardStop[] {
+        return svg
+            .selectAll<SVGRectElement, BarDatum>('.bar')
+            .nodes()
+            .map((target) => ({ target }));
+    }
 
     /**
      * The chart's data as a table, for screen readers: each bar's name and value
@@ -1412,6 +1432,28 @@ export default function module(): BarChartModule {
 
         return this;
     } as BarChartModule['a11yDataTable'];
+
+    /**
+     * Gets or Sets whether a keyboard can move through the chart's data
+     * points: the chart takes one tab stop, the arrow keys move between
+     * points, Home and End go to the first and last, and Escape lets go. The
+     * tooltip and highlights follow focus as they follow the pointer. On by
+     * default.
+     * @param  {Boolean} _x     Whether the keyboard can move through the data
+     * @return {Boolean | module} Current a11yKeyboardNavigation or Chart module to chain calls
+     * @public
+     */
+    (exports as BarChartModule).a11yKeyboardNavigation = function (
+        this: BarChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yKeyboardNavigation;
+        }
+        a11yKeyboardNavigation = _x;
+
+        return this;
+    } as BarChartModule['a11yKeyboardNavigation'];
 
     /**
      * Gets or Sets the duration of the animation

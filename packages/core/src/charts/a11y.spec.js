@@ -359,3 +359,81 @@ describe('data table content', () => {
         expect(cells(table.tBodies[0].rows[1])).toEqual(['Tu', '7', '']);
     });
 });
+
+// The charts with points to move between, and a hover to follow them
+const KEYBOARD_CHARTS = CHARTS.filter(([name]) =>
+    [
+        'bar',
+        'donut',
+        'grouped bar',
+        'heatmap',
+        'line',
+        'scatter plot',
+        'stacked area',
+        'stacked bar',
+    ].includes(name)
+);
+
+describe.each(KEYBOARD_CHARTS)(
+    '%s chart keyboard navigation',
+    (_name, chart, data) => {
+        let container, instance;
+
+        const render = () => container.datum(data()).call(instance);
+        const svg = () => container.select('svg.britechart').node();
+        const press = (key) =>
+            svg().dispatchEvent(
+                new KeyboardEvent('keydown', { key, cancelable: true })
+            );
+
+        beforeEach(() => {
+            document.body.insertAdjacentHTML(
+                'afterbegin',
+                '<div id="fixture"><div class="test-container"></div></div>'
+            );
+            container = d3.select('.test-container');
+            instance = chart();
+        });
+
+        afterEach(() => {
+            document.body.removeChild(document.getElementById('fixture'));
+        });
+
+        it('should be on by default, and chain from its setter', () => {
+            expect(instance.a11yKeyboardNavigation()).toBe(true);
+            expect(instance.a11yKeyboardNavigation(false)).toBe(instance);
+            expect(instance.a11yKeyboardNavigation()).toBe(false);
+        });
+
+        it('should make the chart one tab stop', () => {
+            render();
+
+            expect(svg().getAttribute('tabindex')).toBe('0');
+        });
+
+        it('should fire the chart hover events on an arrow key, so the tooltip follows', () => {
+            const hover = vi.fn();
+
+            instance.on('customMouseOver', hover).on('customMouseMove', hover);
+            render();
+            press('ArrowRight');
+
+            expect(hover).toHaveBeenCalled();
+        });
+
+        it('should drop the tab stop when turned off', () => {
+            render();
+            instance.a11yKeyboardNavigation(false);
+            render();
+
+            expect(svg().hasAttribute('tabindex')).toBe(false);
+        });
+
+        it('should have no tab stop while loading', () => {
+            instance.isLoading(true);
+            render();
+
+            expect(svg().hasAttribute('tabindex')).toBe(false);
+        });
+    }
+);

@@ -43,6 +43,7 @@ import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     DataTableChartAPI,
+    KeyboardChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
@@ -55,6 +56,8 @@ import {
     renderDataTable,
 } from '../helpers/a11y.js';
 import type { DataTable } from '../helpers/a11y.js';
+import { enableKeyboardNavigation } from '../helpers/keyboard.js';
+import type { KeyboardStop } from '../helpers/keyboard.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -92,6 +95,7 @@ export interface ScatterPlotAPI
     extends
         AccessibleChartAPI<ScatterPlotModule>,
         DataTableChartAPI<ScatterPlotModule>,
+        KeyboardChartAPI<ScatterPlotModule>,
         ScatterPlotBaseAPI,
         InteractiveChartAPI<ScatterPlotModule>,
         ExportableChartAPI,
@@ -480,6 +484,10 @@ export default function module(): ScatterPlotModule {
                 svg.node(),
                 a11yDataTable && !isLoading ? dataTable() : null
             );
+            enableKeyboardNavigation(svg.node(), {
+                isEnabled: a11yKeyboardNavigation && !isLoading,
+                stops: keyboardStops,
+            });
             if (isLoading) {
                 drawLoadingState();
 
@@ -677,6 +685,25 @@ export default function module(): ScatterPlotModule {
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
+    let a11yKeyboardNavigation = true;
+
+    /**
+     * Where keyboard focus can rest: each point, from left to right
+     * @private
+     */
+    function keyboardStops(): KeyboardStop[] {
+        return svg
+            .selectAll<SVGCircleElement, ScatterPlotDatum>('.data-point')
+            .nodes()
+            .map((target) => ({
+                target,
+                datum: select<SVGCircleElement, ScatterPlotDatum>(
+                    target
+                ).datum(),
+            }))
+            .sort((a, b) => a.datum.x - b.datum.x || a.datum.y - b.datum.y)
+            .map(({ target }) => ({ target }));
+    }
 
     /**
      * The chart's data as a table, for screen readers: each point's name and
@@ -1461,6 +1488,28 @@ export default function module(): ScatterPlotModule {
 
         return this;
     } as ScatterPlotModule['a11yDataTable'];
+
+    /**
+     * Gets or Sets whether a keyboard can move through the chart's data
+     * points: the chart takes one tab stop, the arrow keys move between
+     * points, Home and End go to the first and last, and Escape lets go. The
+     * tooltip and highlights follow focus as they follow the pointer. On by
+     * default.
+     * @param  {Boolean} _x     Whether the keyboard can move through the data
+     * @return {Boolean | module} Current a11yKeyboardNavigation or Chart module to chain calls
+     * @public
+     */
+    (exports as ScatterPlotModule).a11yKeyboardNavigation = function (
+        this: ScatterPlotModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yKeyboardNavigation;
+        }
+        a11yKeyboardNavigation = _x;
+
+        return this;
+    } as ScatterPlotModule['a11yKeyboardNavigation'];
 
     /**
      * Gets or Sets the duration of the circle animation

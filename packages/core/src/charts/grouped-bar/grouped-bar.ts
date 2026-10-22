@@ -31,6 +31,7 @@ import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     DataTableChartAPI,
+    KeyboardChartAPI,
     AnimatedChartAPI,
     ChartBaseAPI,
     ExportableChartAPI,
@@ -44,6 +45,8 @@ import {
     renderDataTable,
 } from '../helpers/a11y.js';
 import type { DataTable } from '../helpers/a11y.js';
+import { enableKeyboardNavigation } from '../helpers/keyboard.js';
+import type { KeyboardStop } from '../helpers/keyboard.js';
 import type { ChartModuleSelection } from '../../typings/common/selection.js';
 import { withCustomColors } from '../helpers/color.js';
 
@@ -83,6 +86,7 @@ export interface GroupedBarChartAPI
     extends
         AccessibleChartAPI<GroupedBarChartModule>,
         DataTableChartAPI<GroupedBarChartModule>,
+        KeyboardChartAPI<GroupedBarChartModule>,
         ChartBaseAPI<GroupedBarChartModule>,
         InteractiveChartAPI<GroupedBarChartModule>,
         ExportableChartAPI,
@@ -372,6 +376,10 @@ export default function module(): GroupedBarChartModule {
                 svg.node(),
                 a11yDataTable && !isLoading ? dataTable() : null
             );
+            enableKeyboardNavigation(svg.node(), {
+                isEnabled: a11yKeyboardNavigation && !isLoading,
+                stops: keyboardStops,
+            });
             if (isLoading) {
                 drawLoadingState();
 
@@ -589,6 +597,26 @@ export default function module(): GroupedBarChartModule {
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
+    let a11yKeyboardNavigation = true;
+
+    /**
+     * Where keyboard focus can rest: each name's group of bars, in order. One
+     * bar stands for its group, as the tooltip shows the whole group
+     * @private
+     */
+    function keyboardStops(): KeyboardStop[] {
+        const firstBarByName = new Map<string, SVGRectElement>();
+
+        svg.selectAll<SVGRectElement, GroupedBarDatum>('.bar').each(
+            function (d) {
+                if (!firstBarByName.has(d.name)) {
+                    firstBarByName.set(d.name, this);
+                }
+            }
+        );
+
+        return [...firstBarByName.values()].map((target) => ({ target }));
+    }
 
     /**
      * The chart's data as a table, for screen readers: a row per name and a
@@ -1357,6 +1385,28 @@ export default function module(): GroupedBarChartModule {
 
         return this;
     } as GroupedBarChartModule['a11yDataTable'];
+
+    /**
+     * Gets or Sets whether a keyboard can move through the chart's data
+     * points: the chart takes one tab stop, the arrow keys move between
+     * points, Home and End go to the first and last, and Escape lets go. The
+     * tooltip and highlights follow focus as they follow the pointer. On by
+     * default.
+     * @param  {Boolean} _x     Whether the keyboard can move through the data
+     * @return {Boolean | module} Current a11yKeyboardNavigation or Chart module to chain calls
+     * @public
+     */
+    (exports as GroupedBarChartModule).a11yKeyboardNavigation = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return a11yKeyboardNavigation;
+        }
+        a11yKeyboardNavigation = _x;
+
+        return this;
+    } as GroupedBarChartModule['a11yKeyboardNavigation'];
 
     /**
      * Gets or Sets the duration of the animation

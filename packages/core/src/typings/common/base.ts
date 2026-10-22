@@ -198,3 +198,17 @@ export interface DataTableChartAPI<T> {
     a11yDataTable(): boolean;
     a11yDataTable(a11yDataTable: boolean): T & DataTableChartAPI<T>;
 }
+
+export interface KeyboardChartAPI<T> {
+    /**
+     * Gets or Sets whether a keyboard can move through the chart's data
+     * points. The chart takes one tab stop; the arrow keys move between
+     * points, Home and End go to the first and last, and Escape lets go. The
+     * tooltip, highlights and custom events follow focus as they follow the
+     * pointer. On by default.
+     */
+    a11yKeyboardNavigation(): boolean;
+    a11yKeyboardNavigation(
+        a11yKeyboardNavigation: boolean
+    ): T & KeyboardChartAPI<T>;
+}
