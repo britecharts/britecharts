@@ -23,6 +23,8 @@
   "browserslist": "> 0.25%, not dead, not op_mini all, not and_uc > 0, not android < 4.4.5, not samsung < 31",
   "scripts": {
     "build": "pnpm run clean && pnpm run build:esm && pnpm run build:types:cjs && pnpm run build:bundles",
+    "copy:license": "node ../../scripts/copy-license.mjs",
+    "prepack": "pnpm run copy:license",
     "build:types:cjs": "node -e \"const fs=require('node:fs');fs.cpSync('dist/esm','dist/types-cjs',{recursive:true,filter:(p)=>fs.statSync(p).isDirectory()||p.endsWith('.d.ts')});fs.writeFileSync('dist/types-cjs/package.json','{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:bundles": "vite build",
     "build:esm": "pnpm run build:esm:js && pnpm run build:esm:types",
