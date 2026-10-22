@@ -414,6 +414,11 @@ export default function module(): LegendModule {
      * @private
      */
     function cleanFadedLines(): void {
+        // Nothing is drawn before the first render, so there is nothing to clear
+        if (!svg) {
+            return;
+        }
+
         svg.select('.legend-group')
             .selectAll('g.legend-entry')
             .classed(isFadedClassName, false);
@@ -551,6 +556,10 @@ export default function module(): LegendModule {
      * @private
      */
     function fadeLinesBut(exceptionItemId: number): void {
+        if (!svg) {
+            return;
+        }
+
         const classToFade = 'g.legend-entry';
         const entryLine = svg.select(`[data-item="${exceptionItemId}"]`);
 
