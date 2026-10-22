@@ -7,9 +7,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './index.module.css';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageGetStarted from '@site/src/components/HomepageGetStarted';
+import HomepageWhatsNew from '@site/src/components/HomepageWhatsNew';
 
 const descriptions =
-    'Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.';
+    'Britecharts is a library of finished D3.js charts, accessible by default, with dark mode, SVG and PNG export, TypeScript types and a JSON Schema for every chart. Use it from a script tag, any framework or React.';
 
 function HomepageHeader() {
     const { siteConfig } = useDocusaurusContext();
@@ -32,7 +33,13 @@ function HomepageHeader() {
                         className="button button--secondary button--lg"
                         to="/docs/tutorials/getting-started"
                     >
-                        Britecharts Tutorial
+                        Get Started
+                    </Link>
+                    <Link
+                        className="button button--outline button--secondary button--lg"
+                        to="#whats-new"
+                    >
+                        What&apos;s New in v3
                     </Link>
                 </div>
             </div>
@@ -48,6 +55,7 @@ export default function Home() {
             <HomepageHeader />
             <main>
                 <HomepageFeatures />
+                <HomepageWhatsNew />
                 <HomepageGetStarted />
             </main>
         </Layout>
