@@ -122,26 +122,26 @@ type LegendDatum = {
  * @exports charts/legend
  *
  * @example
- * const donutChart = donut(),
- *     legendBox = legend();
+ * import { select } from 'd3-selection';
+ * import { donut, legend } from '@britecharts/core';
+ *
+ * // dataset: [{ id, name, quantity }], the same ids for both
+ * const donutChart = donut();
+ * const legendChart = legend();
  *
  * donutChart
  *     .externalRadius(500)
  *     .internalRadius(200)
- *     .on('customMouseOver', function(data) {
- *         legendBox.highlight(data.data.id);
- *     })
- *     .on('customMouseOut', function() {
- *         legendBox.clearHighlight();
- *     });
+ *     .on('customMouseOver', (data) => legendChart.highlight(data.data.id))
+ *     .on('customMouseOut', () => legendChart.clearHighlight());
  *
- * d3Selection.select('.css-selector')
+ * select('.css-selector')
  *     .datum(dataset)
  *     .call(donutChart);
  *
- * d3Selection.select('.other-css-selector')
+ * select('.other-css-selector')
  *     .datum(dataset)
- *     .call(legendBox);
+ *     .call(legendChart);
  */
 
 /**

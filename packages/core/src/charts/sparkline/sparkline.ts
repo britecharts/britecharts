@@ -103,15 +103,19 @@ type SparklineDatum = {
  * @tutorial sparkline
  *
  * @example
- * const sparkLineChart = sparkline();
+ * import { select } from 'd3-selection';
+ * import { sparkline } from '@britecharts/core';
  *
- * sparkLineChart
+ * // dataset: [{ date, value }]
+ * const sparklineChart = sparkline();
+ *
+ * sparklineChart
  *     .width(200)
  *     .height(100);
  *
- * d3Selection.select('.css-selector')
+ * select('.css-selector')
  *     .datum(dataset)
- *     .call(sparkLineChart);
+ *     .call(sparklineChart);
  */
 
 /**

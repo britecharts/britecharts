@@ -9,14 +9,18 @@ simple and configurable heatmap chart.
 
 **Example**  
 ```js
-let heatmap = heatmap();
+import { select } from 'd3-selection';
+import { heatmap } from '@britecharts/core';
 
-heatmap
+// dataset: [{ day, hour, value }], day 0-6 and hour 0-23
+const heatmapChart = heatmap();
+
+heatmapChart
     .width(500);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
-    .call(heatmap);
+    .call(heatmapChart);
 ```
 
 * [Heatmap](#module_Heatmap)
@@ -121,14 +125,15 @@ Gets or Sets the colorSchema of the chart
 <a name="module_Heatmap--exports.exportChart" id="module_Heatmap--exports.exportChart"></a>
 
 ## exportChart(filename, title)
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
 **Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | <code>String</code> | File title for the resulting picture |
+| filename | <code>String</code> | Name of the downloaded file, whose extension picks the format |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
 <a name="module_Heatmap--exports.isLoading" id="module_Heatmap--exports.isLoading"></a>
@@ -165,6 +170,8 @@ Gets or Sets the height of the chart
 
 ## isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isAnimated value of the chart
+The chart draws without animation when the reader's system asks for
+reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current isAnimated value or Chart module to chain calls  

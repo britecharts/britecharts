@@ -82,11 +82,12 @@ d3Selection.select('.metadata-group')
 
 **Example**  
 ```js
-const lineChart = line(),
-    chartTooltip = tooltip();
+import { select } from 'd3-selection';
+import { line, tooltip } from '@britecharts/core';
 
-chartTooltip
-    .title('Tooltip title');
+// dataset: { data: [{ topicName, name, date, value }] }
+const lineChart = line();
+const chartTooltip = tooltip().title('Tooltip title');
 
 lineChart
     .width(500)
@@ -94,11 +95,13 @@ lineChart
     .on('customMouseMove', chartTooltip.update)
     .on('customMouseOut', chartTooltip.hide);
 
-d3Selection.select('.css-selector')
-    .datum(dataset)
-    .call(lineChart);
+const container = select('.css-selector');
 
-d3Selection.select('.metadata-group .vertical-marker-container')
+container.datum(dataset).call(lineChart);
+
+// After the chart has drawn: the line chart's tooltip goes on its hover marker
+container
+    .select('.metadata-group .hover-marker')
     .datum([])
     .call(chartTooltip);
 ```

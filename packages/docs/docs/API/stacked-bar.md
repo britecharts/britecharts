@@ -9,14 +9,18 @@ rendering a multi stacked bar and configurable chart.
 
 **Example**  
 ```js
-let stackedBar = stackedBar();
+import { select } from 'd3-selection';
+import { stackedBar } from '@britecharts/core';
 
-stackedBar
+// dataset: [{ name, stack, value }]
+const stackedBarChart = stackedBar();
+
+stackedBarChart
     .width(containerWidth);
 
-d3Selection.select('.css-selector')
-    .datum(dataset.data)
-    .call(stackedBar);
+select('.css-selector')
+    .datum(dataset)
+    .call(stackedBarChart);
 ```
 
 * [Stacked-bar](#module_Stacked-bar)
@@ -151,7 +155,8 @@ Gets or Sets the colorSchema of the chart
 <a name="module_Stacked-bar--exports.exportChart" id="module_Stacked-bar--exports.exportChart"></a>
 
 ## exportChart(filename, title) ⇒ <code>Promise</code>
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
@@ -159,7 +164,7 @@ Chart exported to png and a download action is fired
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | <code>String</code> | File title for the resulting picture |
+| filename | <code>String</code> | Name of the downloaded file, whose extension picks the format |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
 <a name="module_Stacked-bar--exports.grid" id="module_Stacked-bar--exports.grid"></a>
@@ -218,6 +223,8 @@ Gets or Sets the hasReversedStacks property of the chart, reversing the order of
 
 ## isAnimated(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
+The chart draws without animation when the reader's system asks for
+reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  

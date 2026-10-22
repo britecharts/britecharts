@@ -276,15 +276,19 @@ type TrendLinePoint = {
  * @tutorial scatter-plot
  *
  * @example
- * let scatterPlot = scatterPlot();
+ * import { select } from 'd3-selection';
+ * import { scatterPlot } from '@britecharts/core';
  *
- * scatterPlot
+ * // dataset: [{ name, x, y }]
+ * const scatterPlotChart = scatterPlot();
+ *
+ * scatterPlotChart
  *     .grid('horizontal')
  *     .width(500);
  *
- * d3Selection.select('.css-selector')
+ * select('.css-selector')
  *     .datum(dataset)
- *     .call(scatterPlot);
+ *     .call(scatterPlotChart);
  */
 
 /**

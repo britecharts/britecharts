@@ -9,12 +9,16 @@ simple and configurable Bullet Chart.
 
 **Example**  
 ```js
-let bulletChart = bullet();
+import { select } from 'd3-selection';
+import { bullet } from '@britecharts/core';
+
+// dataset: one object: { ranges, measures, markers }
+const bulletChart = bullet();
 
 bulletChart
     .width(containerWidth);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(bulletChart);
 ```
@@ -99,7 +103,8 @@ the third color will be applied to the marker lines.
 <a name="module_Bullet--exports.exportChart" id="module_Bullet--exports.exportChart"></a>
 
 ## exportChart(filename, title) ⇒ <code>Promise</code>
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
@@ -107,7 +112,7 @@ Chart exported to png and a download action is fired
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | <code>String</code> | File title for the resulting picture |
+| filename | <code>String</code> | Name of the downloaded file, whose extension picks the format |
 | title | <code>String</code> | Title to add at the top of the exported picture |
 
 <a name="module_Bullet--exports.isLoading" id="module_Bullet--exports.isLoading"></a>

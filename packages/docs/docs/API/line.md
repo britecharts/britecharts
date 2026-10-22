@@ -9,12 +9,16 @@ rendering a multi line and configurable chart.
 
 **Example**  
 ```js
-let lineChart = line();
+import { select } from 'd3-selection';
+import { line } from '@britecharts/core';
+
+// dataset: { data: [{ topicName, name, date, value }] }
+const lineChart = line();
 
 lineChart
     .width(500);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
     .call(lineChart);
 ```
@@ -273,6 +277,8 @@ Gets or Sets the height of the chart
 
 ## isAnimated(_x) ⇒ <code>isAnimated</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
+The chart draws without animation when the reader's system asks for
+reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
 **Returns**: <code>isAnimated</code> \| <code>module</code> - Current isAnimated flag or Chart module  
@@ -453,7 +459,8 @@ Gets or Sets the width of the chart
 <a name="module_Line--exports.exportChart" id="module_Line--exports.exportChart"></a>
 
 ## exportChart(filename, title) ⇒ <code>Promise</code>
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
@@ -461,7 +468,7 @@ Chart exported to png and a download action is fired
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | <code>string</code> | File title for the resulting picture |
+| filename | <code>string</code> | Name of the downloaded file, whose extension picks the format |
 | title | <code>string</code> | Title to add at the top of the exported picture |
 
 <a name="module_Line--exports.on" id="module_Line--exports.on"></a>

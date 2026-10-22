@@ -9,15 +9,19 @@ rendering a sparkline configurable chart.
 
 **Example**  
 ```js
-const sparkLineChart = sparkline();
+import { select } from 'd3-selection';
+import { sparkline } from '@britecharts/core';
 
-sparkLineChart
+// dataset: [{ date, value }]
+const sparklineChart = sparkline();
+
+sparklineChart
     .width(200)
     .height(100);
 
-d3Selection.select('.css-selector')
+select('.css-selector')
     .datum(dataset)
-    .call(sparkLineChart);
+    .call(sparklineChart);
 ```
 
 * [Sparkline](#module_Sparkline)
@@ -108,7 +112,8 @@ Gets or Sets the areaGradient of the chart
 <a name="module_Sparkline--exports.exportChart" id="module_Sparkline--exports.exportChart"></a>
 
 ## exportChart(filename, title) ⇒ <code>Promise</code>
-Chart exported to png and a download action is fired
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
@@ -116,7 +121,7 @@ Chart exported to png and a download action is fired
 
 | Param | Type | Description |
 | --- | --- | --- |
-| filename | <code>string</code> | File title for the resulting picture |
+| filename | <code>string</code> | Name of the downloaded file, whose extension picks the format |
 | title | <code>string</code> | Title to add at the top of the exported picture |
 
 <a name="module_Sparkline--exports.height" id="module_Sparkline--exports.height"></a>
@@ -136,6 +141,8 @@ Gets or Sets the height of the chart
 
 ## isAnimated(_x) ⇒ <code>isAnimated</code> \| <code>module</code>
 Gets or Sets the isAnimated property of the chart, making it to animate when render.
+The chart draws without animation when the reader's system asks for
+reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
