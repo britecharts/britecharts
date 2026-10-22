@@ -78,7 +78,7 @@ Without them the tooltip shows no rows (line), rows without colours (stacked and
 
 ## Export
 
-`exportChart` is a prop on `GroupedBar`, `Heatmap`, `Line`, `Sparkline`, `StackedArea` and `StackedBar`. It isn't a callback: setting it to a filename downloads the chart once, as SVG for a `.svg` name and PNG for any other. Because charts redraw only on a change, export again with a different value:
+`exportChart` is a prop on every chart component except `Brush` (and `Legend`, which isn't a chart). It isn't a callback: setting it to a filename downloads the chart once, as SVG for a `.svg` name and PNG for any other. Because charts redraw only on a change, export again with a different value:
 
 ```jsx
 const [exportName, setExportName] = useState(null);
@@ -86,4 +86,4 @@ const [exportName, setExportName] = useState(null);
 <button onClick={() => setExportName(`visits-${Date.now()}.svg`)}>Download SVG</button>
 ```
 
-`Bar`, `Donut`, `ScatterPlot`, `Bullet` and `Brush` have no `exportChart` prop yet. For those, use the vanilla chart, or `@britecharts/wrappers`, which returns the chart instance.
+The brush has no `exportChart`, in React or in core.
