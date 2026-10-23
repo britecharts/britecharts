@@ -1,5 +1,45 @@
 # @britecharts/react
 
+## 3.0.0-beta.8
+
+### Minor Changes
+
+- a077b5b: Every chart but the legend now renders its data as a table that screen readers can read cell by cell. The table is visually hidden, placed right after the chart's svg and linked from it with `aria-details`, and captioned with the chart's name. Charts with several series lay it out wide, with a row per date or name and a column per series. It is on by default; turn it off with `a11yDataTable(false)` in core, `a11yDataTable: false` in a wrapper's configuration, or the `a11yDataTable` prop in React. The wrappers' `destroy` removes the table along with the svg.
+- 6c83336: A keyboard can now move through the data points of the bar, donut, grouped bar, heatmap, line, scatter plot, stacked area and stacked bar charts. Each chart is one tab stop: the arrow keys move between points (up and down move a day on the heatmap), Home and End go to the first and last, and Escape lets go. The chart responds as it does to a pointer, so the point is highlighted, the tooltip follows focus, and `customMouseOver`, `customMouseMove` and `customMouseOut` fire. It is on by default; turn it off with `a11yKeyboardNavigation(false)` in core, `a11yKeyboardNavigation: false` in a wrapper's configuration, or the `a11yKeyboardNavigation` prop in React.
+- 9f71b12: The stacked bar and stacked area charts can stack to 100%. `isNormalized(true)` scales every stack, or every date's areas, to fill the value axis, so each segment shows its share of the total, and the value axis reads from 0% to 100%. The tooltip still shows the values. React takes it as the `isNormalized` prop and the wrappers as a config key, and the chart schemas list it.
+- ea6fc0c: Add the brush and heatmap charts to the wrappers and React, so every chart has both. `@britecharts/wrappers` exports `BrushWrapper` and `HeatmapWrapper`, and `@britecharts/react` exports `Brush` and `Heatmap`, with `BrushProps` and `HeatmapProps`. The brush takes `customBrushStart` and `customBrushEnd`, which join `britechartsCustomEvents` in both packages; the heatmap takes the mouse events and works with `Tooltip`.
+
+### Patch Changes
+
+- e7d1605: Each package declares its license, Apache-2.0, in `package.json`. npm showed none, so license checkers flagged the packages as unlicensed.
+- 1dd2e5a: Each package ships the Apache 2.0 license text as `LICENSE.md`. The packages declared the license in `package.json`, but their tarballs carried no license file, which the license requires when redistributing.
+- bd7235c: `Bar`, `Bullet`, `Donut` and `ScatterPlot` declare the `exportChart` prop, as the other chart components do. It already reached the chart, but TypeScript rejected it.
+- f8c3fb2: Each package declares `sideEffects`, so bundlers can drop the charts an app doesn't import. Core lists its CSS, which only has an effect when imported; wrappers and react ship no CSS and declare `false`. The charts' `import 'd3-transition'` stays in a kept chart, since d3-transition declares its own side effects.
+- Updated dependencies [a077b5b]
+- Updated dependencies [8f38ac8]
+- Updated dependencies [f854bb5]
+- Updated dependencies [9f54337]
+- Updated dependencies [184d795]
+- Updated dependencies [c80e934]
+- Updated dependencies [acccdcd]
+- Updated dependencies [ca040a4]
+- Updated dependencies [6c83336]
+- Updated dependencies [816c483]
+- Updated dependencies [e7d1605]
+- Updated dependencies [1dd2e5a]
+- Updated dependencies [9f71b12]
+- Updated dependencies [d4700ff]
+- Updated dependencies [ea6fc0c]
+- Updated dependencies [f69c628]
+- Updated dependencies [cccf0d0]
+- Updated dependencies [6c83336]
+- Updated dependencies [f8c3fb2]
+- Updated dependencies [5257ab2]
+- Updated dependencies [d8884e3]
+- Updated dependencies [afb2052]
+    - @britecharts/core@3.0.0-beta.8
+    - @britecharts/wrappers@3.0.0-beta.8
+
 ## 3.0.0-beta.7
 
 ### Major Changes
