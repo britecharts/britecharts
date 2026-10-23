@@ -27,7 +27,7 @@ export const Playground = (args) => {
     const tooltip = miniTooltip();
 
     if (containerWidth) {
-        const dataset = aTestDataSet().withLettersFrequency().build();
+        const dataset = aTestDataSet().withColors().build();
 
         applyArgs(barChart, args)
             .width(containerWidth)
@@ -69,46 +69,7 @@ Playground.args = playgroundArgs(bar, [
 Playground.args.isAnimated = false;
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
-export const VerticalBarChart = () => {
-    const container = getCleanContainer();
-    const barChart = bar();
-    const barContainer = select(container);
-    const containerWidth = barContainer.node()
-        ? barContainer.node().getBoundingClientRect().width
-        : false;
-    const tooltip = miniTooltip();
-    let tooltipContainer;
-
-    if (containerWidth) {
-        const dataset = aTestDataSet().withColors().build();
-
-        barChart
-            .isAnimated(true)
-            .margin({
-                left: 30,
-                right: 20,
-                top: 20,
-                bottom: 30,
-            })
-            .colorSchema(colors.colorSchemas.britecharts)
-            .width(containerWidth)
-            .yAxisPaddingBetweenChart(20)
-            .height(300)
-            .percentageAxisToMaxRatio(1.3)
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
-            .on('customMouseOut', tooltip.hide);
-
-        barContainer.datum(dataset).call(barChart);
-
-        tooltipContainer = select('.bar-chart .metadata-group');
-        tooltipContainer.datum([]).call(tooltip);
-    }
-
-    return container;
-};
-
-export const HorizontalBarChart = () => {
+export const WithHorizontalDirection = () => {
     const container = getCleanContainer();
     const barChart = bar();
     const barContainer = select(container);
