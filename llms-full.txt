@@ -442,7 +442,7 @@ If you are excited about Britecharts, want to add more configurable properties o
 [barChartDataSchema]: https://britecharts.github.io/britecharts/docs/API/bar#exportsbarchartdata--arrayobject
 [barChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/main/packages/docs/static/img/tutorial/simple-bar-chart.png
 [simpleBarChartTutorialHTML]: https://github.com/britecharts/britecharts/blob/main/packages/docs/docs/tutorials/html/tutorial-simple-bar-chart.html
-[simpleBarChartTutorial]: https://britecharts.github.io/britecharts/storybook/core/?path=/story/charts-bar--vertical-bar-chart
+[simpleBarChartTutorial]: https://britecharts.github.io/britecharts/storybook/core/?path=/story/charts-bar--playground
 [composingDataviz]: https://britecharts.github.io/britecharts/docs/tutorials/composing-dataviz
 [installingBritecharts]: https://britecharts.github.io/britecharts/docs/tutorials/installing-britecharts
 
