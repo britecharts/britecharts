@@ -15,7 +15,7 @@ export default {
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart,
- * with its tooltip.
+ * with horizontal grid lines and its tooltip.
  */
 export const Playground: StoryFn<typeof Line> = (args) => {
     const data = lineData.oneSet();
@@ -35,7 +35,7 @@ export const Playground: StoryFn<typeof Line> = (args) => {
     );
 };
 
-Playground.args = { isAnimated: false };
+Playground.args = { isAnimated: false, grid: 'horizontal', yTicks: 10 };
 
 Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },

@@ -74,6 +74,7 @@ Playground.args = playgroundArgs(scatterPlot, [
     'isLoading',
 ]);
 Playground.args.isAnimated = false;
+Playground.args.grid = 'horizontal';
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithSingleSource = () => {

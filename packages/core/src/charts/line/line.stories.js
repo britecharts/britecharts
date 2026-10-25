@@ -112,6 +112,7 @@ Playground.args = playgroundArgs(line, [
     'isLoading',
 ]);
 Playground.args.isAnimated = false;
+Playground.args.grid = 'horizontal';
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithSingleLine = () => {
