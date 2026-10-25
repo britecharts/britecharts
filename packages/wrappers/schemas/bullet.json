@@ -167,13 +167,9 @@
                     },
                     "markers": {
                         "type": "array",
-                        "prefixItems": [
-                            {
-                                "type": "number"
-                            }
-                        ],
-                        "items": false,
-                        "minItems": 0
+                        "items": {
+                            "type": "number"
+                        }
                     }
                 },
                 "required": [

@@ -32,7 +32,7 @@ export declare enum BulletChartKeys {
 export type BulletChartDataShape = {
     [BulletChartKeys.Ranges]: [number?, number?, number?];
     [BulletChartKeys.Measures]: [number?, number?, number?];
-    [BulletChartKeys.Markers]: [number?];
+    [BulletChartKeys.Markers]: number[];
 };
 
 export type BulletChartBaseAPI = ChartBaseAPI<BulletChartModule>;
