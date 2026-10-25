@@ -123,7 +123,7 @@ export const WithSingleLine = () => {
     const containerWidth = lineContainer.node()
         ? lineContainer.node().getBoundingClientRect().width
         : false;
-    const dataset = aTestDataSet().withNegativeValues().build();
+    const dataset = aTestDataSet().withOneSource().build();
     let tooltipContainer;
 
     if (containerWidth) {
@@ -222,6 +222,30 @@ export const WithAnimation = () => {
     return container;
 };
 
+export const WithStepBeforeCurveAndTealColorSchema = () => {
+    const container = getCleanContainer();
+    const lineChart = line();
+    const lineContainer = select(container);
+    const containerWidth = lineContainer.node()
+        ? lineContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().with5Topics().build();
+
+        lineChart
+            .width(containerWidth)
+            .margin(lineMargin)
+            .lineCurve('stepBefore')
+            .tooltipThreshold(200)
+            .colorSchema(colors.colorSchemas.teal);
+
+        lineContainer.datum(dataset).call(lineChart);
+    }
+
+    return container;
+};
+
 export const WithTooltipAndBrush = () => {
     const container = getCleanContainer();
     const lineChart = line();
@@ -245,11 +269,7 @@ export const WithTooltipAndBrush = () => {
             .yAxisLabel('Value Axis Label')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', chartTooltip.hide)
-            .on('customDataEntryClick', (d, mousePosition) => {
-                // eslint-disable-next-line no-console
-                console.log('Data entry marker clicked', d, mousePosition);
-            });
+            .on('customMouseOut', chartTooltip.hide);
 
         lineContainer.datum(dataset).call(lineChart);
 

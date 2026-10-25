@@ -101,6 +101,42 @@ export const WithAnimation = () => {
     return container;
 };
 
+export const WithAnotherColorSchema = () => {
+    const container = getCleanContainer();
+    const heatmapContainer = select(container);
+    const heatmapChart = heatmap();
+    const containerWidth = heatmapContainer.node()
+        ? heatmapContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withWeeklyData().build();
+
+    if (containerWidth) {
+        heatmapChart.colorSchema(colors.colorSchemas.teal);
+
+        heatmapContainer.datum(dataset).call(heatmapChart);
+    }
+
+    return container;
+};
+
+export const WithDayLabels = () => {
+    const container = getCleanContainer();
+    const heatmapContainer = select(container);
+    const heatmapChart = heatmap();
+    const containerWidth = heatmapContainer.node()
+        ? heatmapContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withWeeklyData().build();
+
+    if (containerWidth) {
+        heatmapChart.yAxisLabels(['S', 'M', 'T', 'W', 'T', 'F', 'S']);
+
+        heatmapContainer.datum(dataset).call(heatmapChart);
+    }
+
+    return container;
+};
+
 export const WithLoadingState = () => {
     const container = getCleanContainer();
     const heatmapContainer = select(container);

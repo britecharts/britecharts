@@ -51,7 +51,7 @@ Playground.args.height = 200;
 Playground.args.dateRange = ['7/10/2015', '7/20/2015'];
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
-export const WithAnimation = () => {
+export const WithInitialDateRange = () => {
     const container = getCleanContainer();
     const brushContainer = select(container);
     const brushChart = brush();
@@ -63,16 +63,88 @@ export const WithAnimation = () => {
     if (containerWidth) {
         brushChart
             .width(containerWidth)
-            .height(125)
-            .isAnimated(true)
-            .on('customBrushStart', function (brushExtent) {
-                // eslint-disable-next-line no-console
-                console.log('customBrushStart extent:', brushExtent);
-            })
-            .on('customBrushEnd', function (brushExtent) {
-                // eslint-disable-next-line no-console
-                console.log('customBrushEnd extent:', brushExtent);
+            .height(200)
+            .dateRange([
+                '2015-06-27T07:00:00.000Z',
+                '2015-07-10T07:00:00.000Z',
+            ]);
+
+        brushContainer.datum(dataset).call(brushChart);
+    }
+
+    return container;
+};
+
+export const WithLockedSelection = () => {
+    const container = getCleanContainer();
+    const brushContainer = select(container);
+    const brushChart = brush();
+    const containerWidth = brushContainer.node()
+        ? brushContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withSimpleData().build();
+
+    if (containerWidth) {
+        brushChart
+            .width(containerWidth)
+            .height(200)
+            .dateRange(['2015-06-27T07:00:00.000Z', '2015-07-03T07:00:00.000Z'])
+            .isLocked(true);
+
+        brushContainer.datum(dataset).call(brushChart);
+    }
+
+    return container;
+};
+
+/**
+ * `customBrushEnd` gets the selection as one `[start, end]` array of dates,
+ * rounded to `roundingTimeInterval`.
+ */
+export const WithSelectionEvents = () => {
+    const container = getCleanContainer();
+    const brushContainer = select(container);
+    const brushChart = brush();
+    const containerWidth = brushContainer.node()
+        ? brushContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withSimpleData().build();
+
+    if (containerWidth) {
+        const caption = select(container)
+            .append('p')
+            .attr('class', 'story-caption')
+            .text('Drag across the chart');
+
+        brushChart
+            .width(containerWidth)
+            .height(200)
+            .roundingTimeInterval('timeDay')
+            .on('customBrushEnd', ([start, end]) => {
+                caption.text(
+                    start && end
+                        ? `${start.toDateString()} to ${end.toDateString()}`
+                        : 'No selection'
+                );
             });
+
+        brushContainer.datum(dataset).call(brushChart);
+    }
+
+    return container;
+};
+
+export const WithAnimation = () => {
+    const container = getCleanContainer();
+    const brushContainer = select(container);
+    const brushChart = brush();
+    const containerWidth = brushContainer.node()
+        ? brushContainer.node().getBoundingClientRect().width
+        : false;
+    const dataset = aTestDataSet().withSimpleData().build();
+
+    if (containerWidth) {
+        brushChart.width(containerWidth).height(125).isAnimated(true);
 
         brushContainer.datum(dataset).call(brushChart);
 
@@ -92,18 +164,7 @@ export const WithMissingData = () => {
     const dataset = aTestDataSet().withMissingData().build();
 
     if (containerWidth) {
-        brushChart
-            .width(containerWidth)
-            .height(125)
-            .isLocked(true)
-            .on('customBrushStart', function (brushExtent) {
-                // eslint-disable-next-line no-console
-                console.log('customBrushStart extent:', brushExtent);
-            })
-            .on('customBrushEnd', function (brushExtent) {
-                // eslint-disable-next-line no-console
-                console.log('customBrushEnd extent:', brushExtent);
-            });
+        brushChart.width(containerWidth).height(125).isLocked(true);
 
         brushContainer.datum(dataset).call(brushChart);
 

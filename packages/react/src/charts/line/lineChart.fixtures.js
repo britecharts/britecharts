@@ -200,6 +200,7 @@ const oneSet = () => ({
     ],
 });
 
+// From core's lineDataFiveTopics.json
 const fiveTopics = () => ({
     data: [
         {
@@ -413,248 +414,274 @@ const fiveTopics = () => ({
             value: 0,
         },
         {
+            topicName: 'San Francisco',
+            name: 103,
+            date: '2015-08-01T07:00:00.000Z',
+            value: 0,
+        },
+        {
+            topicName: 'San Francisco',
+            name: 103,
+            date: '2015-08-02T07:00:00.000Z',
+            value: 0,
+        },
+        {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-06-27T07:00:00.000Z',
             value: 0,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-06-28T07:00:00.000Z',
             value: 2,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-06-29T07:00:00.000Z',
             value: 4,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-06-30T07:00:00.000Z',
             value: 3,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-01T07:00:00.000Z',
             value: 1,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-02T07:00:00.000Z',
             value: 3,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-03T07:00:00.000Z',
             value: 3,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-04T07:00:00.000Z',
             value: 1,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-05T07:00:00.000Z',
             value: 2,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-06T07:00:00.000Z',
             value: 2,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-07T07:00:00.000Z',
             value: 4,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-08T07:00:00.000Z',
             value: 7,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-09T07:00:00.000Z',
             value: 1,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-10T07:00:00.000Z',
             value: 5,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-11T07:00:00.000Z',
             value: 9,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-12T07:00:00.000Z',
             value: 5,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-13T07:00:00.000Z',
             value: 2,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-14T07:00:00.000Z',
             value: 8,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-15T07:00:00.000Z',
             value: 3,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-16T07:00:00.000Z',
             value: 1,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-17T07:00:00.000Z',
             value: 2,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-18T07:00:00.000Z',
             value: 7,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-19T07:00:00.000Z',
             value: 1,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-20T07:00:00.000Z',
             value: 5,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-21T07:00:00.000Z',
             value: 0,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-22T07:00:00.000Z',
             value: 2,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-23T07:00:00.000Z',
             value: 5,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-24T07:00:00.000Z',
             value: 2,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-25T07:00:00.000Z',
             value: 2,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-26T07:00:00.000Z',
             value: 3,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-27T07:00:00.000Z',
             value: 8,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-28T07:00:00.000Z',
             value: 11,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-29T07:00:00.000Z',
             value: 17,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-30T07:00:00.000Z',
             value: 14,
         },
         {
             topicName:
-                'Unknown Location with a super hyper mega very long name.',
+                'Unknown Location with a super hyper mega very very very long name.',
             name: 149,
             date: '2015-07-31T07:00:00.000Z',
+            value: 0,
+        },
+        {
+            topicName:
+                'Unknown Location with a super hyper mega very very very long name.',
+            name: 149,
+            date: '2015-08-01T07:00:00.000Z',
+            value: 0,
+        },
+        {
+            topicName:
+                'Unknown Location with a super hyper mega very very very long name.',
+            name: 149,
+            date: '2015-08-02T07:00:00.000Z',
             value: 0,
         },
         {
@@ -868,6 +895,18 @@ const fiveTopics = () => ({
             value: 0,
         },
         {
+            topicName: 'Los Angeles',
+            name: 60,
+            date: '2015-08-01T07:00:00.000Z',
+            value: 0,
+        },
+        {
+            topicName: 'Los Angeles',
+            name: 60,
+            date: '2015-08-02T07:00:00.000Z',
+            value: 0,
+        },
+        {
             topicName: 'Oakland',
             name: 81,
             date: '2015-06-27T07:00:00.000Z',
@@ -1075,6 +1114,18 @@ const fiveTopics = () => ({
             topicName: 'Oakland',
             name: 81,
             date: '2015-07-31T07:00:00.000Z',
+            value: 0,
+        },
+        {
+            topicName: 'Oakland',
+            name: 81,
+            date: '2015-08-01T07:00:00.000Z',
+            value: 0,
+        },
+        {
+            topicName: 'Oakland',
+            name: 81,
+            date: '2015-08-02T07:00:00.000Z',
             value: 0,
         },
         {
@@ -1285,6 +1336,18 @@ const fiveTopics = () => ({
             topicName: 'Other',
             name: 0,
             date: '2015-07-31T07:00:00.000Z',
+            value: 0,
+        },
+        {
+            topicName: 'Other',
+            name: 0,
+            date: '2015-08-01T07:00:00.000Z',
+            value: 0,
+        },
+        {
+            topicName: 'Other',
+            name: 0,
+            date: '2015-08-02T07:00:00.000Z',
             value: 0,
         },
     ],

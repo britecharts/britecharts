@@ -66,30 +66,4 @@ export const ColorGradients = () => {
     return container;
 };
 
-export const SingleColors = () => {
-    const container = getCleanContainer();
-    const { singleColors } = colors;
-    const className = 'js-single-color-container';
-    const wrapper = document.createElement('div');
-    wrapper.classList = className;
-    container.appendChild(wrapper);
-
-    const colorsDiv = document.getElementsByClassName(
-        'js-single-color-container'
-    )[0];
-    colorsDiv.style.display = 'flex';
-
-    Object.keys(singleColors).forEach((singleColor) => {
-        const div = document.createElement('div');
-
-        div.style.width = '100px';
-        div.style.height = '100px';
-        div.style.background = singleColors[singleColor];
-
-        colorsDiv.appendChild(div);
-    });
-
-    return container;
-};
-
 export default { title: 'Attributes/Colors' };

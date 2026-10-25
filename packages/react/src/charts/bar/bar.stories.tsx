@@ -34,24 +34,28 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithHorizontalDirectionAndColorSchema = () => {
+export const WithHorizontalDirection = () => {
     const data = barData.withColors();
 
-    return (
+    const renderBar = (props: TooltipRenderArgs<typeof data>) => (
         <Bar
-            data={data}
+            {...props}
             isHorizontal={true}
-            height={400}
-            betweenBarsPadding={0.3}
-            colorSchema={colors.colorSchemas.orange}
+            isAnimated={true}
+            height={300}
+            percentageAxisToMaxRatio={1.3}
+            yAxisPaddingBetweenChart={20}
+            colorSchema={colors.colorSchemas.britecharts}
             margin={{
-                left: 100,
-                right: 40,
-                top: 40,
-                bottom: 40,
+                left: 120,
+                right: 20,
+                top: 20,
+                bottom: 30,
             }}
         />
     );
+
+    return <Tooltip data={data} render={renderBar} title="Frequency" />;
 };
 
 export const WithAnimation = () => {
@@ -64,23 +68,42 @@ export const WithAnimation = () => {
     return <Tooltip data={data} render={renderBar} title="Frequency" />;
 };
 
-export const WithLoadingState = () => {
-    const data: [] = [];
+export const WithBarLabels = () => {
+    const data = barData.withLetters();
 
-    return <Bar data={data} isLoading={true} />;
+    return (
+        <Bar
+            data={data}
+            height={300}
+            hasPercentage={true}
+            enableLabels={true}
+            labelsNumberFormat=".0%"
+        />
+    );
 };
 
-/**
- * A chart that starts loading and then has its data: `isLoading` turns `false`
- * and the chart replaces its loading state.
- */
-export const WithLoadingStateThatEnds = () => {
-    const [data] = React.useState(barData.withLetters);
-    const [isLoading, setIsLoading] = React.useState(true);
+export const WithNegativeValues = () => {
+    const data = barData.withNegativeValues();
 
-    React.useEffect(() => {
-        setIsLoading(false);
-    }, []);
+    return <Bar data={data} isAnimated={true} height={400} />;
+};
 
-    return <Bar data={data} isLoading={isLoading} />;
+export const WithNegativeValuesHorizontal = () => {
+    const data = barData.withNegativeValues();
+
+    return (
+        <Bar
+            data={data}
+            isAnimated={true}
+            isHorizontal={true}
+            height={400}
+            margin={{ left: 100, right: 40, top: 40, bottom: 40 }}
+        />
+    );
+};
+
+export const WithLoadingState = () => {
+    const data = barData.withLetters();
+
+    return <Bar data={data} height={300} isAnimated={true} isLoading={true} />;
 };

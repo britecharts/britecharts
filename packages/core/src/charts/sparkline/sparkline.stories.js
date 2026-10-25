@@ -53,6 +53,25 @@ Playground.argTypes = {
     height: { control: 'number' },
 };
 
+export const WithFixedWidth = () => {
+    const container = getCleanContainer();
+    const sparklineChart = sparkline();
+    const sparklineContainer = select(container);
+    const containerWidth = sparklineContainer.node()
+        ? sparklineContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().withLowValues().build();
+
+        sparklineChart.height(100).width(400);
+
+        sparklineContainer.datum(dataset).call(sparklineChart);
+    }
+
+    return container;
+};
+
 export const WithAnimation = () => {
     const container = getCleanContainer();
     const sparklineChart = sparkline();

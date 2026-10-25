@@ -16,8 +16,6 @@ import { StackedAreaDataBuilder } from './stackedAreaDataBuilder';
 import colors from '../helpers/color';
 
 const aTestDataSet = () => new StackedAreaDataBuilder();
-const uniq = (arrArg) =>
-    arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
 export const Playground = (args) => {
     const container = getCleanContainer();
@@ -187,62 +185,6 @@ export const WithNormalizedAreas = () => {
     return container;
 };
 
-export const WithSyncedTooltip = () => {
-    const container = getCleanContainer();
-    const stackedAreaChart = stackedArea();
-    const chartTooltip = tooltip();
-    const stackedAreaContainer = select(container);
-    const containerWidth = stackedAreaContainer.node()
-        ? stackedAreaContainer.node().getBoundingClientRect().width
-        : false;
-    const dataset = aTestDataSet().withSalesChannelData().build();
-    let tooltipContainer;
-
-    if (containerWidth) {
-        stackedAreaChart
-            .isAnimated(true)
-            .tooltipThreshold(600)
-            .height(400)
-            .width(containerWidth)
-            .grid('horizontal')
-            .topicsOrder([
-                'Other',
-                'Sunny',
-                'Blazing',
-                'Glittering',
-                'Flashing',
-                'Shining',
-            ])
-            .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', chartTooltip.hide);
-
-        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
-
-        // Tooltip Setup and start
-        chartTooltip
-            .topicsOrder([
-                'Other',
-                'Sunny',
-                'Blazing',
-                'Glittering',
-                'Flashing',
-                'Shining',
-            ])
-            // The stacked area dispatches its rows as `values`
-            .topicLabel('values')
-            .title('Testing tooltip')
-            .topicsOrder(uniq(dataset.map((d) => d.name)));
-
-        // Note that if the viewport width is less than the tooltipThreshold value,
-        // this container won't exist, and the tooltip won't show up
-        tooltipContainer = select('.metadata-group .vertical-marker-container');
-        tooltipContainer.datum([]).call(chartTooltip);
-    }
-
-    return container;
-};
-
 export const WithNegativeValues = () => {
     const container = getCleanContainer();
     const stackedAreaChart = stackedArea();
@@ -260,6 +202,46 @@ export const WithNegativeValues = () => {
             .height(400);
 
         stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+    }
+
+    return container;
+};
+
+/**
+ * The three mouse events, written under the chart: `customMouseMove` gets the
+ * data point under the pointer and its anchor `[x, y]`, along with the chart's
+ * size and the topic colours.
+ */
+export const WithMouseEvents = () => {
+    const container = getCleanContainer();
+    const stackedAreaChart = stackedArea();
+    const stackedAreaContainer = select(container);
+    const containerWidth = stackedAreaContainer.node()
+        ? stackedAreaContainer.node().getBoundingClientRect().width
+        : false;
+
+    if (containerWidth) {
+        const dataset = aTestDataSet().with2Sources().build();
+        const status = document.createElement('p');
+
+        status.textContent = 'Hover the chart';
+
+        stackedAreaChart
+            .width(containerWidth)
+            .on('customMouseOver', () => {
+                status.textContent = 'Mouse over';
+            })
+            .on('customMouseMove', (dataPoint, [x, y]) => {
+                status.textContent = `Mouse move: ${new Date(
+                    dataPoint.date
+                ).toDateString()} at [${Math.round(x)}, ${Math.round(y)}]`;
+            })
+            .on('customMouseOut', () => {
+                status.textContent = 'Mouse out';
+            });
+
+        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+        container.appendChild(status);
     }
 
     return container;

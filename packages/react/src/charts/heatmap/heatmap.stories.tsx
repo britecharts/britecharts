@@ -41,13 +41,30 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithBiggerBoxes = () => (
+export const WithWeeklyElements = () => (
     <Heatmap
-        data={heatmapData.withAlternativeWeeklyData()}
-        boxSize={40}
-        height={350}
+        data={heatmapData.withWeeklyData()}
+        boxSize={30}
+        isAnimated={true}
     />
 );
+
+export const WithAnimation = () => {
+    const data = heatmapData.withWeeklyData();
+
+    const renderHeatmap = (props: TooltipRenderArgs<typeof data>) => (
+        <Heatmap isAnimated={true} {...props} />
+    );
+
+    return (
+        <Tooltip
+            data={data}
+            render={renderHeatmap}
+            title="Visits"
+            nameLabel="hour"
+        />
+    );
+};
 
 export const WithAnotherColorSchema = () => (
     <Heatmap

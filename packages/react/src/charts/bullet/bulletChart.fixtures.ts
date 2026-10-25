@@ -14,10 +14,46 @@ const partialTestData = (): BulletChartDataShape[] => [
         markers: [105],
     },
 ];
-const underRangeNoMarker = (): BulletChartDataShape[] => [
+// From core's bullet data builder: withAllElements, withNoMarker and
+// withManyCPUData. Each item is one bullet.
+const withAllElements = (): BulletChartDataShape[] => [
     {
-        ranges: [50, 100],
-        measures: [25],
+        ranges: [1500, 2100, 3500],
+        measures: [1800, 2200],
+        markers: [2600],
+    },
+];
+const withNoMarker = (): BulletChartDataShape[] => [
+    {
+        ranges: [1500, 2100, 3500],
+        measures: [1800, 2200],
+        markers: [],
+    },
+];
+const withManyCPUData = (): BulletChartDataShape[] => [
+    {
+        ranges: [1500, 2100, 3500],
+        measures: [1800, 2200],
+        markers: [2600, 3000],
+    },
+    {
+        ranges: [1300, 1900, 3000],
+        measures: [1700, 2000],
+        markers: [1600],
+    },
+    {
+        ranges: [1300, 1500, 2000],
+        measures: [1500, 1800],
+        markers: [1950],
+    },
+    {
+        ranges: [1000, 2000],
+        measures: [1500],
+        markers: [],
+    },
+    {
+        ranges: [1000, 2000],
+        measures: [500],
         markers: [],
     },
 ];
@@ -25,5 +61,7 @@ const underRangeNoMarker = (): BulletChartDataShape[] => [
 export default {
     fullTestData,
     partialTestData,
-    underRangeNoMarker,
+    withAllElements,
+    withNoMarker,
+    withManyCPUData,
 };

@@ -77,50 +77,6 @@ Playground.args.isAnimated = false;
 Playground.args.grid = 'horizontal';
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
-export const WithSingleSource = () => {
-    const container = getCleanContainer();
-    const scatterPlotContainer = select(container);
-    const scatterChart = scatterPlot();
-    const tooltip = miniTooltip().title('Temperature (C)');
-    const containerWidth = scatterPlotContainer.node()
-        ? scatterPlotContainer.node().getBoundingClientRect().width
-        : false;
-    const dataset = aTestDataSet().withOneSource().build();
-    let tooltipContainer;
-
-    if (containerWidth) {
-        scatterChart
-            .isAnimated(true)
-            .width(containerWidth)
-            .circleOpacity(0.6)
-            .hasTrendline(true)
-            .grid('horizontal')
-            .margin({
-                left: 60,
-                bottom: 50,
-                right: 20,
-            })
-            .xAxisFormat('.1f')
-            .xAxisLabel('Temperature (C)')
-            .yAxisFormat('$')
-            .yAxisLabel('Ice Cream Sales')
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
-            .on('customMouseOut', tooltip.hide);
-
-        scatterPlotContainer.datum(dataset).call(scatterChart);
-
-        // tooltip set up
-        // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
-        tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
-
-        tooltipContainer = select('.scatter-plot .metadata-group');
-        tooltipContainer.datum([]).call(tooltip);
-    }
-
-    return container;
-};
-
 export const WithIncreasedAreaAndHollowCircles = () => {
     const container = getCleanContainer();
     const scatterPlotContainer = select(container);

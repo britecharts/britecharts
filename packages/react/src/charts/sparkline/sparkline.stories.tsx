@@ -34,19 +34,17 @@ export const WithFixedWidth = () => {
 export const WithAnimation = () => {
     const data = sparklineData.with1Source();
 
-    return (
-        <Sparkline
-            data={data}
-            isAnimated={true}
-            width={400}
-            animationDuration={1000}
-            height={100}
-        />
-    );
+    return <Sparkline data={data} isAnimated={true} />;
+};
+
+export const WithNegativeValues = () => {
+    const data = sparklineData.withNegativeValues();
+
+    return <Sparkline data={data} isAnimated={true} />;
 };
 
 export const WithLoadingState = () => {
-    const data: [] = [];
+    const data = sparklineData.with1Source();
 
-    return <Sparkline data={data} height={100} width={200} isLoading={true} />;
+    return <Sparkline data={data} isAnimated={true} isLoading={true} />;
 };

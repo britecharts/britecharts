@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "name": "React",
+            "id": 1,
+            "quantity": 60,
+            "percentage": 60
+        },
+        {
+            "name": "Ember",
+            "id": 2,
+            "quantity": 20,
+            "percentage": 20
+        },
+        {
+            "name": "Angular",
+            "id": 3,
+            "quantity": 10,
+            "percentage": 10
+        },
+        {
+            "name": "Backbone",
+            "id": 4,
+            "quantity": 10,
+            "percentage": 10
+        }
+    ]
+}

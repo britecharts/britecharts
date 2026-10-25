@@ -71,12 +71,37 @@ export const WithSelectionEvents = () => {
     );
 };
 
-export const WithMissingData = () => (
-    <Brush data={brushData.withMissingData()} height={200} />
+export const WithAnimation = () => (
+    <Brush
+        data={brushData.withSimpleData()}
+        dateRange={['2015-07-15T07:00:00.000Z', '2015-07-25T07:00:00.000Z']}
+        height={125}
+        isAnimated={true}
+    />
 );
 
-export const WithLoadingState = () => {
-    const data: [] = [];
+export const WithMissingData = () => (
+    <Brush
+        data={brushData.withMissingData()}
+        dateRange={['2015-07-10T07:00:00.000Z', '2015-07-15T07:00:00.000Z']}
+        height={125}
+        isLocked={true}
+    />
+);
 
-    return <Brush data={data} isLoading={true} />;
-};
+export const WithNegativeValues = () => (
+    <Brush
+        data={brushData.withNegativeValues()}
+        height={200}
+        isAnimated={true}
+    />
+);
+
+export const WithLoadingState = () => (
+    <Brush
+        data={brushData.withSimpleData()}
+        height={125}
+        isAnimated={true}
+        isLoading={true}
+    />
+);

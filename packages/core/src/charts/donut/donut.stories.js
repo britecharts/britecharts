@@ -218,7 +218,8 @@ export const WithHighlightedSlice = () => {
         ? donutContainer.node().getBoundingClientRect().width
         : false;
     const donutChart = donut();
-    const dataset = aTestDataSet().withThreeCategories().build();
+    const dataset = aTestDataSet().withFourSlices().build();
+    const fixedSlice = 2;
     const dataNoQuantity = JSON.parse(JSON.stringify(dataset)).map((item) => {
         delete item.quantity;
 
@@ -229,7 +230,7 @@ export const WithHighlightedSlice = () => {
 
     if (containerWidth) {
         donutChart
-            .highlightSliceById(11)
+            .highlightSliceById(fixedSlice)
             .hasFixedHighlightedSlice(true)
             .width(containerWidth)
             .height(containerWidth / 1.8)
@@ -239,12 +240,46 @@ export const WithHighlightedSlice = () => {
                 legendChart.highlight(slice.data.id);
             })
             .on('customMouseOut', function () {
-                legendChart.highlight(11);
+                legendChart.highlight(fixedSlice);
             });
 
-        legendChart.highlight(11);
+        legendChart.highlight(fixedSlice);
 
         donutContainer.datum(dataset).call(donutChart);
+    }
+
+    return container;
+};
+
+/**
+ * Hovering a slice reports it through `customMouseOver`: here, in the line
+ * under the chart.
+ */
+export const WithHoverEvent = () => {
+    const container = getCleanContainer();
+    const donutContainer = select(container);
+    const containerWidth = donutContainer.node()
+        ? donutContainer.node().getBoundingClientRect().width
+        : false;
+    const donutChart = donut();
+
+    if (containerWidth) {
+        const status = document.createElement('p');
+
+        status.textContent = 'Hover a slice';
+
+        donutChart
+            .width(containerWidth)
+            .height(Math.min(containerWidth, 400))
+            .externalRadius(100)
+            .internalRadius(47)
+            .highlightSliceById(1)
+            .on('customMouseOver', (slice) => {
+                status.textContent = `Mouse over: ${slice.data.name}`;
+            });
+
+        donutContainer.datum(dataset).call(donutChart);
+        container.appendChild(status);
     }
 
     return container;
