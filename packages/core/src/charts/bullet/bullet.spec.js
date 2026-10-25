@@ -214,6 +214,30 @@ describe('bullet Chart', () => {
                     expect(actual).toEqual(expected);
                 });
             });
+
+            describe('when several markers are passed', () => {
+                beforeEach(() => {
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
+                    dataset = buildDataSet('withManyCPUData');
+                    bulletChart = chart();
+                    dataPoint = dataset[0];
+
+                    // adds an html fixture to the DOM
+                    document.body.insertAdjacentHTML('afterbegin', fixture);
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataPoint).call(bulletChart);
+                });
+
+                it('should render a marker for each', () => {
+                    const expected = 2;
+                    const actual = containerFixture
+                        .selectAll('.marker-line')
+                        .nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
         });
 
         describe('when custom colorSchema is passed', () => {

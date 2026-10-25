@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import type { Meta, StoryFn } from '@storybook/react-vite';
 
@@ -12,12 +11,15 @@ export default {
     component: Donut,
 } satisfies Meta<typeof Donut>;
 
+// An id no slice has, which highlights none: an unset prop keeps the last one
+const NO_SLICE = -1;
+
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart.
  */
 export const Playground: StoryFn<typeof Donut> = (args) => {
-    const data = donutData.with4Slices();
+    const data = donutData.with6Slices();
 
     return <Donut {...args} data={data} />;
 };
@@ -28,8 +30,8 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithHighlightedLegend = () => {
-    const data = donutData.with4Slices();
+export const WithAnimationAndLegend = () => {
+    const data = donutData.with6Slices();
     const legendMargin = {
         top: 10,
         bottom: 10,
@@ -54,13 +56,13 @@ export const WithHighlightedLegend = () => {
                 width={width}
                 externalRadius={width / 2.5}
                 internalRadius={width / 5}
-                isAnimated={false}
+                isAnimated={true}
                 highlightSliceById={highlightedSlice}
                 customMouseOver={handleMouseOver.bind(this)}
                 customMouseOut={handleMouseOut.bind(this)}
             />
             <Legend
-                data={donutData.with4Slices()}
+                data={donutData.with6Slices()}
                 height={(data.length + 1) * 40}
                 width={300}
                 margin={legendMargin}
@@ -68,6 +70,43 @@ export const WithHighlightedLegend = () => {
             />
         </div>
     );
+};
+
+export const WithInlineLegend = () => {
+    const data = donutData.with3Slices();
+    const width = 500;
+    const [highlightedSlice, setHighlightedSlice] = React.useState(NO_SLICE);
+
+    return (
+        <div style={{ width }}>
+            <Donut
+                data={data}
+                height={width / 1.8}
+                width={width}
+                externalRadius={width / 5}
+                internalRadius={width / 10}
+                isAnimated={false}
+                customMouseOver={(slice: { data: { id: number } }) =>
+                    setHighlightedSlice(slice.data.id)
+                }
+                customMouseOut={() => setHighlightedSlice(NO_SLICE)}
+            />
+            <Legend
+                data={data}
+                isHorizontal={true}
+                height={40}
+                width={width}
+                markerSize={8}
+                highlightEntryById={highlightedSlice}
+            />
+        </div>
+    );
+};
+
+export const WithAnimation = () => {
+    const data = donutData.with6Slices();
+
+    return <Donut data={data} isAnimated={true} />;
 };
 
 /**
@@ -107,25 +146,28 @@ export const WithHighlightedSlice = () => {
     );
 };
 
-export const WithAnimation = () => {
-    const data = donutData.with4Slices();
-
-    return <Donut data={data} isAnimated={true} />;
-};
-
+/**
+ * Hovering a slice reports it through `customMouseOver`: here, in the line
+ * under the chart.
+ */
 export const WithHoverEvent = () => {
-    const data = donutData.with4Slices();
-    const logMouseOver = () => console.log('Mouse Over');
+    const data = donutData.with6Slices();
+    const [message, setMessage] = React.useState('Hover a slice');
 
     return (
-        <Donut
-            data={data}
-            customMouseOver={logMouseOver}
-            externalRadius={100}
-            internalRadius={47}
-            highlightSliceById={1}
-            isAnimated={false}
-        />
+        <div>
+            <Donut
+                data={data}
+                customMouseOver={(slice: { data: { name: string } }) =>
+                    setMessage(`Mouse over: ${slice.data.name}`)
+                }
+                externalRadius={100}
+                internalRadius={47}
+                highlightSliceById={1}
+                isAnimated={false}
+            />
+            <p>{message}</p>
+        </div>
     );
 };
 
@@ -135,11 +177,8 @@ export const WithHoverEvent = () => {
  * it off and the legend on its right names each slice, highlighting the one
  * under the pointer.
  */
-// An id no slice has, which highlights none: an unset prop keeps the last one
-const NO_SLICE = -1;
-
 export const WithPieChartFormat = () => {
-    const data = donutData.with4Slices();
+    const data = donutData.with6Slices();
     const width = 500;
     const [highlightedSlice, setHighlightedSlice] = React.useState(NO_SLICE);
 
@@ -170,7 +209,7 @@ export const WithPieChartFormat = () => {
 };
 
 export const WithLoadingState = () => {
-    const data: [] = [];
+    const data = donutData.with6Slices();
 
     return <Donut data={data} isLoading={true} />;
 };

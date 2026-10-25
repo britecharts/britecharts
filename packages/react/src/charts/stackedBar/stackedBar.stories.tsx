@@ -5,6 +5,7 @@ import StackedBar from './StackedBar';
 import Tooltip from '../tooltip/Tooltip';
 import type { TooltipRenderArgs } from '../tooltip/Tooltip';
 import stackedBarData from './stackedBarChart.fixtures';
+import { colors } from '@britecharts/core';
 
 export default {
     title: 'Charts/StackedBar',
@@ -40,11 +41,30 @@ Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithHorizontalDirectionAndFixedSize = () => {
-    const data = stackedBarData.with3Sources();
+export const WithHorizontalDirection = () => {
+    const data = stackedBarData.with3SourcesAndDates();
+
+    const renderStackedBar = (props: TooltipRenderArgs<typeof data>) => (
+        <StackedBar
+            isHorizontal={true}
+            tooltipThreshold={600}
+            grid="vertical"
+            height={400}
+            isAnimated={true}
+            margin={{ left: 100, top: 40, right: 30, bottom: 20 }}
+            colorSchema={colors.colorSchemas.red}
+            {...props}
+        />
+    );
 
     return (
-        <StackedBar data={data} isHorizontal={true} width={600} height={400} />
+        <Tooltip
+            data={data}
+            render={renderStackedBar}
+            title="Tooltip Title"
+            // The stacked bar names its rows by `stack`
+            nameLabel="stack"
+        />
     );
 };
 
@@ -85,6 +105,19 @@ export const WithNormalizedStacks = () => {
             title="Tooltip Title"
             // The stacked bar names its rows by `stack`
             nameLabel="stack"
+        />
+    );
+};
+
+export const WithNegativeValues = () => {
+    const data = stackedBarData.withNegativeValues();
+
+    return (
+        <StackedBar
+            data={data}
+            isAnimated={true}
+            grid="horizontal"
+            height={400}
         />
     );
 };

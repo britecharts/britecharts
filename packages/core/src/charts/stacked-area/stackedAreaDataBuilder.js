@@ -1,6 +1,7 @@
 import _ from 'underscore';
 
 import jsonThreeSources from './areaDataThreeSources.json';
+import jsonTwoSources from './areaDataTwoSources.json';
 import jsonSixSources from './areaDataSixSources.json';
 import jsonSalesChannel from './areaDataSalesChannel.json';
 import jsonReportService from './areaDataReportService.json';
@@ -15,6 +16,12 @@ export function StackedAreaDataBuilder(config) {
 
     this.with3Sources = function () {
         const attributes = _.extend({}, this.config, jsonThreeSources);
+
+        return new this.Klass(attributes);
+    };
+
+    this.with2Sources = function () {
+        const attributes = _.extend({}, this.config, jsonTwoSources);
 
         return new this.Klass(attributes);
     };

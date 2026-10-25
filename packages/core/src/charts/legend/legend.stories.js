@@ -14,7 +14,7 @@ import colors from '../helpers/color';
 
 const aTestDataSet = () => new DonutDataBuilder();
 
-const getInlineLegendChart = (container, dataset) => {
+const getInlineLegendChart = (container, dataset, markerSize) => {
     const legendChart = legend();
     const wrapper = document.createElement('div');
     wrapper.classList = 'legend-chart-container';
@@ -31,8 +31,11 @@ const getInlineLegendChart = (container, dataset) => {
         legendChart
             .isHorizontal(true)
             .width(containerWidth * 0.6)
-            .markerSize(8)
             .height(30);
+
+        if (markerSize) {
+            legendChart.markerSize(markerSize);
+        }
 
         legendContainer.datum(dataset).call(legendChart);
     }
@@ -96,15 +99,26 @@ Playground.argTypes = playgroundArgTypes(Playground.args);
 export const WithStackDirection = () => {
     const container = getCleanContainer();
     const dataset = aTestDataSet().withFivePlusOther().build();
-    const legendChart = getVerticalLegendChart(container, dataset);
+
+    getVerticalLegendChart(container, dataset);
 
     return container;
 };
 
 export const WithInlineDirection = () => {
     const container = getCleanContainer();
-    const dataset = aTestDataSet().withThreeCategories().build();
-    const legendChart = getInlineLegendChart(container, dataset);
+    const dataset = aTestDataSet().withFivePlusOther().build();
+
+    getInlineLegendChart(container, dataset);
+
+    return container;
+};
+
+export const WithInlineDirectionAndSmallerMarkers = () => {
+    const container = getCleanContainer();
+    const dataset = aTestDataSet().withFivePlusOther().build();
+
+    getInlineLegendChart(container, dataset, 8);
 
     return container;
 };
@@ -116,7 +130,8 @@ export const WithDonutBounded = () => {
         ? donutContainer.node().getBoundingClientRect().width
         : false;
     const donutChart = donut();
-    const dataset = aTestDataSet().withThreeCategories().build();
+    const dataset = aTestDataSet().withFourSlices().build();
+    const fixedSlice = 2;
     const dataNoQuantity = JSON.parse(JSON.stringify(dataset)).map((item) => {
         delete item.quantity;
 
@@ -126,7 +141,7 @@ export const WithDonutBounded = () => {
 
     if (containerWidth) {
         donutChart
-            .highlightSliceById(11)
+            .highlightSliceById(fixedSlice)
             .hasFixedHighlightedSlice(true)
             .width(containerWidth)
             .height(containerWidth / 1.8)
@@ -136,10 +151,10 @@ export const WithDonutBounded = () => {
                 legendChart.highlight(slice.data.id);
             })
             .on('customMouseOut', function () {
-                legendChart.highlight(11);
+                legendChart.highlight(fixedSlice);
             });
 
-        legendChart.highlight(11);
+        legendChart.highlight(fixedSlice);
 
         donutContainer.datum(dataset).call(donutChart);
     }

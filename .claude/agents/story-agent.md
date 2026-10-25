@@ -119,19 +119,29 @@ Rules specific to this style:
 Every chart's stories follow one order, in both packages. Storybook shows them in export order (`storySort` has no `method`), so the order in the file is the order in the sidebar:
 
 1. **`Playground`** — the chart at its default settings, with its tooltip if it has one, editable from the Controls panel. It starts static (`isAnimated` off). In core, take its args from `.storybook/playground.js`: `Playground.args = playgroundArgs(<factory>, [<accessors>])`, `Playground.argTypes = playgroundArgTypes(Playground.args)`, and render with `applyArgs(chart, args).width(containerWidth)`. List the accessors worth editing. Leave out `width`, callbacks, data-key accessors (`nameLabel`, `valueLabel`, `dateLabel` and the like) and commands (`exportChart`, `on`, `highlight`, `show`, `hide`, `update`).
-2. **The major variants** — orientation (`HorizontalBarChart`, `WithHorizontalDirection`), or the chart's main alternative mode (single vs. many lines, inline vs. vertical legend).
+2. **The major variants** — orientation (`WithHorizontalDirection`), or the chart's main alternative mode (single vs. many lines, inline vs. vertical legend).
 3. **`WithAnimation`** — on every chart with `isAnimated`: the Playground's render with `isAnimated` on.
 4. **The other features** — one story per visually distinct accessor or mode (`WithBarLabels`, color schema, axis type, percentages), and edge-case data where the chart historically breaks: empty datasets, all-zero series, negative values, numeric vs. date x-axes. The JSON fixtures beside `line.js` enumerate these for a reason; reuse them.
 5. **`WithLoadingState`** last, on every chart with `isLoading`.
 
 There is no separate default story or plain `WithTooltip`: the Playground is both.
 
-Name stories in PascalCase, describing what is shown, not the API call: `WithHorizontalDirectionAndColorSchema`, not `IsHorizontalTrue`.
+Name stories in PascalCase, describing what is shown, not the API call: `WithHorizontalDirection`, not `IsHorizontalTrue`.
+
+## Core And React Stay In Step
+
+Each chart has one set of stories, shown in both Storybooks. Core is the reference.
+
+- **Same stories, same names, same order.** Every core story has a React story with the same export name, doing the same thing with the same settings. When you add, rename or remove a story in one package, do the same in the other in the same change.
+- **A React story with no core equivalent goes into core too**, under the same name. A React story that shows the same thing as a core story under another name takes the core name and the core settings. Do not keep both.
+- **Use the larger dataset.** Core's data builders and React's fixtures are separate copies, and they drift. When the two versions of a story draw different data, use the one with more data points in both packages: port it into the core builder (a `withXxx()` method and its JSON file) or into the React fixtures file. With equal counts, keep core's. This applies to the Playground too.
+- **Only an API one side lacks is a reason to differ**, for example the React `ResponsiveContainer`, or core's colour palette stories. Note the reason in the story's comment.
+- **Renaming or removing a story changes its id** (`charts-bar--with-horizontal-direction`). Search the docs, the READMEs and the specs for the old id and export name, and update them.
 
 ## Workflow
 
 1. **Read the chart source** — enumerate its public accessors; those are the candidate stories.
-2. **Read the existing stories** for that chart and for a sibling chart in the same package — match their shape exactly.
+2. **Read the existing stories** for that chart in both packages, and for a sibling chart in the same package — match their shape exactly, and plan the change for both packages (see "Core And React Stay In Step").
 3. **Read the data builder** (`<chart>ChartDataBuilder.js`) or the fixtures file to see what datasets already exist.
 4. **Check the chart's module type** (declared in the chart file, `core/src/charts/<chart>/<chart>.ts`) if an accessor's argument shape is unclear.
 5. **Write the stories**, one variant per export.

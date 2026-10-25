@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import type { Meta, StoryFn } from '@storybook/react-vite';
 
@@ -15,10 +14,10 @@ export default {
 /**
  * Every prop the chart takes, editable from the Controls panel. Left unset, a
  * prop keeps the chart's own default, so this starts as the default chart,
- * with its tooltip.
+ * with horizontal grid lines and its tooltip.
  */
 export const Playground: StoryFn<typeof StackedArea> = (args) => {
-    const data = stackedAreaData.with3Sources();
+    const data = stackedAreaData.withSalesChannelData();
 
     const renderStackedArea = (props: TooltipRenderArgs<typeof data>) => (
         <StackedArea {...args} {...props} />
@@ -27,17 +26,43 @@ export const Playground: StoryFn<typeof StackedArea> = (args) => {
     // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
     // it creates the tooltip, and passing it again re-runs the deprecated setter
     // on every mouse move.
-    return <Tooltip data={data} render={renderStackedArea} title="Tooltip" />;
+    return (
+        <Tooltip
+            data={data}
+            render={renderStackedArea}
+            title="Testing tooltip"
+        />
+    );
 };
 
-Playground.args = { isAnimated: false };
+Playground.args = { isAnimated: false, grid: 'horizontal' };
 
 Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
 };
 
-export const WithAnimation = () => {
+export const WithThreeSources = () => {
     const data = stackedAreaData.with3Sources();
+
+    const renderStackedArea = (props: TooltipRenderArgs<typeof data>) => (
+        <StackedArea
+            tooltipThreshold={600}
+            grid="full"
+            xAxisFormat="custom"
+            xAxisCustomFormat="%Y/%m/%d"
+            xTicks={2}
+            height={400}
+            {...props}
+        />
+    );
+
+    return (
+        <Tooltip data={data} render={renderStackedArea} title="Tooltip Title" />
+    );
+};
+
+export const WithAnimation = () => {
+    const data = stackedAreaData.withSalesChannelData();
 
     const renderStackedArea = (props: TooltipRenderArgs<typeof data>) => (
         <StackedArea isAnimated={true} {...props} />
@@ -46,7 +71,13 @@ export const WithAnimation = () => {
     // No topicLabel here: @britecharts/wrappers already sets it to 'values' when
     // it creates the tooltip, and passing it again re-runs the deprecated setter
     // on every mouse move.
-    return <Tooltip data={data} render={renderStackedArea} title="Tooltip" />;
+    return (
+        <Tooltip
+            data={data}
+            render={renderStackedArea}
+            title="Testing tooltip"
+        />
+    );
 };
 
 /**
@@ -55,40 +86,65 @@ export const WithAnimation = () => {
  * to 100%. The tooltip still shows the values.
  */
 export const WithNormalizedAreas = () => {
-    const data = stackedAreaData.with3Sources();
+    const data = stackedAreaData.withSalesChannelData();
 
     const renderStackedArea = (props: TooltipRenderArgs<typeof data>) => (
         <StackedArea isNormalized={true} {...props} />
     );
 
-    return <Tooltip data={data} render={renderStackedArea} title="Tooltip" />;
+    return (
+        <Tooltip
+            data={data}
+            render={renderStackedArea}
+            title="Testing tooltip"
+        />
+    );
 };
 
-export const WithMouseEventsOnConsole = () => {
-    const data = stackedAreaData.with2Sources();
-    const logMouseOver = () => console.log('Mouse Over');
-    const logMouseOut = () => console.log('Mouse Out');
-    // What every chart dispatches on customMouseMove: the data point, its
-    // anchor [x, y], the chart's size and the topic colours
-    const logMouseMove: TooltipRenderArgs['customMouseMove'] = (
-        dataPoint,
-        position,
-        size,
-        topicColorMap
-    ) => {
-        console.log('Mouse Move: dataPoint', dataPoint);
-        console.log('Mouse Move: position', position);
-        console.log('Mouse Move: size', size);
-        console.log('Mouse Move: topicColorMap', topicColorMap);
-    };
+export const WithNegativeValues = () => {
+    const data = stackedAreaData.withNegativeValues();
 
     return (
         <StackedArea
             data={data}
-            customMouseOver={logMouseOver}
-            customMouseMove={logMouseMove}
-            customMouseOut={logMouseOut}
+            isAnimated={true}
+            grid="horizontal"
+            height={400}
         />
+    );
+};
+
+/**
+ * The three mouse events, written under the chart: `customMouseMove` gets the
+ * data point under the pointer and its anchor `[x, y]`, along with the chart's
+ * size and the topic colours.
+ */
+export const WithMouseEvents = () => {
+    const data = stackedAreaData.with2Sources();
+    const [message, setMessage] = React.useState('Hover the chart');
+    const showMouseMove: TooltipRenderArgs['customMouseMove'] = (
+        dataPoint,
+        [x, y]
+    ) => {
+        const { date } = dataPoint as { date: string };
+
+        setMessage(
+            `Mouse move: ${new Date(date).toDateString()} at [${Math.round(
+                x
+            )}, ${Math.round(y)}]`
+        );
+    };
+
+    return (
+        <div>
+            <StackedArea
+                data={data}
+                customMouseOver={() => setMessage('Mouse over')}
+                customMouseMove={showMouseMove}
+                customMouseOut={() => setMessage('Mouse out')}
+            />
+            <p>{message}</p>
+        </div>
     );
 };
 

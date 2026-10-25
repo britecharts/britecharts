@@ -5,6 +5,7 @@ import jsonFivePlusOther from './donutDataFivePlusOther.json';
 import jsonFivePlusOtherNoPercent from './donutDataFivePlusOtherNoPercent.json';
 import jsonOneZeroed from './donutDataOneZeroed.json';
 import jsonAllZeroed from './donutDataAllZeroed.json';
+import jsonFourSlices from './donutDataFourSlices.json';
 import jsonThreeCategories from './donutDataThreeCategories.json';
 
 export function DonutDataBuilder(config) {
@@ -30,6 +31,12 @@ export function DonutDataBuilder(config) {
 
     this.withThreeCategories = function () {
         const attributes = _.extend({}, this.config, jsonThreeCategories);
+
+        return new this.Klass(attributes);
+    };
+
+    this.withFourSlices = function () {
+        const attributes = _.extend({}, this.config, jsonFourSlices);
 
         return new this.Klass(attributes);
     };

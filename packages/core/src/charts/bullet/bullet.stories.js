@@ -55,27 +55,6 @@ Playground.args = playgroundArgs(bullet, [
 ]);
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
-export const WithAllElements = () => {
-    const container = getCleanContainer();
-    const bulletContainer = select(container);
-    const containerWidth = bulletContainer.node()
-        ? bulletContainer.node().getBoundingClientRect().width
-        : false;
-    const dataset = aTestDataSet().withAllElements().build();
-    let bulletChart;
-
-    if (containerWidth) {
-        dataset.forEach((data) => {
-            bulletChart = new bullet();
-            bulletChart.width(containerWidth);
-
-            bulletContainer.datum(data).call(bulletChart);
-        });
-    }
-
-    return container;
-};
-
 export const WithNoMarker = () => {
     const container = getCleanContainer();
     const bulletContainer = select(container);

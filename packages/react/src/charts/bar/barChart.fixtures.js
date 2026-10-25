@@ -132,7 +132,17 @@ const withColors = () => [
     },
 ];
 
+const withNegativeValues = () => [
+    { name: 'Shiny', value: 12 },
+    { name: 'Blazing', value: -8 },
+    { name: 'Dazzling', value: 5 },
+    { name: 'Radiant', value: -14 },
+    { name: 'Sparkling', value: 9 },
+    { name: 'Gleaming', value: -3 },
+];
+
 export default {
     withLetters,
     withColors,
+    withNegativeValues,
 };
