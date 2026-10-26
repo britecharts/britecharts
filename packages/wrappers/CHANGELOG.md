@@ -1,5 +1,50 @@
 # @britecharts/wrappers
 
+## 3.0.0-beta.8
+
+### Minor Changes
+
+- 184d795: Add a JSON Schema for each chart's spec, `{ chart, config, data }`, and check configuration values in the wrappers. The schemas are generated from the TypeScript types the wrappers take, published at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json` and shipped as `@britecharts/wrappers/schemas/<chart>.json`, so editors and coding agents can check a spec before drawing it. `create` and `update` now also throw on a value of the wrong type, naming the type it should be, such as `height: expected a number, got the string "300"`, alongside the existing check for keys a chart doesn't have. `undefined` and `null` values are still skipped.
+- ea6fc0c: Add the brush and heatmap charts to the wrappers and React, so every chart has both. `@britecharts/wrappers` exports `BrushWrapper` and `HeatmapWrapper`, and `@britecharts/react` exports `Brush` and `Heatmap`, with `BrushProps` and `HeatmapProps`. The brush takes `customBrushStart` and `customBrushEnd`, which join `britechartsCustomEvents` in both packages; the heatmap takes the mouse events and works with `Tooltip`.
+- afb2052: A configuration key the chart has no accessor for still throws `Method not supported by Britechart: <keys>`, and the message now goes on to help fix it. For each key that looks like a typo or a miscased name, it suggests the accessor or event that was meant (`heigth: did you mean height?`), and it links the chart's API page. A missing container's error now says to pass an element that exists in the document.
+
+### Patch Changes
+
+- a077b5b: Every chart but the legend now renders its data as a table that screen readers can read cell by cell. The table is visually hidden, placed right after the chart's svg and linked from it with `aria-details`, and captioned with the chart's name. Charts with several series lay it out wide, with a row per date or name and a column per series. It is on by default; turn it off with `a11yDataTable(false)` in core, `a11yDataTable: false` in a wrapper's configuration, or the `a11yDataTable` prop in React. The wrappers' `destroy` removes the table along with the svg.
+- f854bb5: `BrushWrapper` and `HeatmapWrapper` link their API page when given an unknown configuration key, as the other wrappers do.
+- 937683e: A bullet's `markers` can hold any number of values, as the chart already draws one line for each. The `BulletChartDataShape` type allowed one at most, so TypeScript rejected a bullet with two markers, and the wrappers' bullet schema rejected it too.
+- a38e8ea: The heatmap takes `xAxisLabels`, to match `yAxisLabels`: one label per column, from the first. With both sets, each box's `day` and `hour` index the labels, so a heatmap can show any two sets of categories, such as a square grid that compares six categories with each other. The columns, the keyboard navigation and the data table follow the labels' count. Without them, the columns stay the 24 hours of the day. Set it with `xAxisLabels([...])` in core, `xAxisLabels` in a wrapper's configuration, or the `xAxisLabels` prop in React.
+
+    The day labels now end just left of the boxes rather than start 30px left of them, so a longer label grows into the left margin instead of over the first column. Both axes' labels share one look: 12px, in the muted text colour, a little darker than the days were.
+
+    The labels' classes name rows and columns rather than days and hours, since they no longer have to be either: `.day-label` is now `.row-label`, `.hour-label` is `.column-label`, and their groups are `.row-labels-group` and `.column-labels-group`. Update any CSS or test that selects the old names.
+
+- e7d1605: Each package declares its license, Apache-2.0, in `package.json`. npm showed none, so license checkers flagged the packages as unlicensed.
+- 1dd2e5a: Each package ships the Apache 2.0 license text as `LICENSE.md`. The packages declared the license in `package.json`, but their tarballs carried no license file, which the license requires when redistributing.
+- 9f71b12: The stacked bar and stacked area charts can stack to 100%. `isNormalized(true)` scales every stack, or every date's areas, to fill the value axis, so each segment shows its share of the total, and the value axis reads from 0% to 100%. The tooltip still shows the values. React takes it as the `isNormalized` prop and the wrappers as a config key, and the chart schemas list it.
+- 6c83336: The chart schemas list `a11yDataTable` and `a11yKeyboardNavigation`.
+- f8c3fb2: Each package declares `sideEffects`, so bundlers can drop the charts an app doesn't import. Core lists its CSS, which only has an effect when imported; wrappers and react ship no CSS and declare `false`. The charts' `import 'd3-transition'` stays in a kept chart, since d3-transition declares its own side effects.
+- Updated dependencies [a077b5b]
+- Updated dependencies [8f38ac8]
+- Updated dependencies [9f54337]
+- Updated dependencies [937683e]
+- Updated dependencies [c80e934]
+- Updated dependencies [acccdcd]
+- Updated dependencies [ca040a4]
+- Updated dependencies [a38e8ea]
+- Updated dependencies [6c83336]
+- Updated dependencies [816c483]
+- Updated dependencies [e7d1605]
+- Updated dependencies [1dd2e5a]
+- Updated dependencies [9f71b12]
+- Updated dependencies [d4700ff]
+- Updated dependencies [f69c628]
+- Updated dependencies [cccf0d0]
+- Updated dependencies [f8c3fb2]
+- Updated dependencies [5257ab2]
+- Updated dependencies [d8884e3]
+    - @britecharts/core@3.0.0-beta.8
+
 ## 3.0.0-beta.7
 
 ### Patch Changes

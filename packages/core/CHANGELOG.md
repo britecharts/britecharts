@@ -1,5 +1,39 @@
 # @britecharts/core
 
+## 3.0.0-beta.8
+
+### Minor Changes
+
+- a077b5b: Every chart but the legend now renders its data as a table that screen readers can read cell by cell. The table is visually hidden, placed right after the chart's svg and linked from it with `aria-details`, and captioned with the chart's name. Charts with several series lay it out wide, with a row per date or name and a column per series. It is on by default; turn it off with `a11yDataTable(false)` in core, `a11yDataTable: false` in a wrapper's configuration, or the `a11yDataTable` prop in React. The wrappers' `destroy` removes the table along with the svg.
+- 8f38ac8: Ship an agent skill for coding assistants in `skills/britecharts`. It gives an agent each chart's exact data shape, accessors and events, where each chart's tooltip attaches, how to use React and the wrappers, and the v2 code that no longer works in v3. Install it with `npx skills add britecharts/britecharts`, or copy it from `node_modules/@britecharts/core/skills/britecharts` into your agent's skills folder.
+- c80e934: `exportChart` downloads an svg file when the filename ends in `.svg`, and a png otherwise, as before. The svg has the chart's styles inlined and the optional title, so it looks the same outside the page and stays sharp at any size. React's `exportChart` prop gets it too, on the components that have that prop.
+- a38e8ea: The heatmap takes `xAxisLabels`, to match `yAxisLabels`: one label per column, from the first. With both sets, each box's `day` and `hour` index the labels, so a heatmap can show any two sets of categories, such as a square grid that compares six categories with each other. The columns, the keyboard navigation and the data table follow the labels' count. Without them, the columns stay the 24 hours of the day. Set it with `xAxisLabels([...])` in core, `xAxisLabels` in a wrapper's configuration, or the `xAxisLabels` prop in React.
+
+    The day labels now end just left of the boxes rather than start 30px left of them, so a longer label grows into the left margin instead of over the first column. Both axes' labels share one look: 12px, in the muted text colour, a little darker than the days were.
+
+    The labels' classes name rows and columns rather than days and hours, since they no longer have to be either: `.day-label` is now `.row-label`, `.hour-label` is `.column-label`, and their groups are `.row-labels-group` and `.column-labels-group`. Update any CSS or test that selects the old names.
+
+- 6c83336: A keyboard can now move through the data points of the bar, donut, grouped bar, heatmap, line, scatter plot, stacked area and stacked bar charts. Each chart is one tab stop: the arrow keys move between points (up and down move a day on the heatmap), Home and End go to the first and last, and Escape lets go. The chart responds as it does to a pointer, so the point is highlighted, the tooltip follows focus, and `customMouseOver`, `customMouseMove` and `customMouseOut` fire. It is on by default; turn it off with `a11yKeyboardNavigation(false)` in core, `a11yKeyboardNavigation: false` in a wrapper's configuration, or the `a11yKeyboardNavigation` prop in React.
+- 9f71b12: The stacked bar and stacked area charts can stack to 100%. `isNormalized(true)` scales every stack, or every date's areas, to fill the value axis, so each segment shows its share of the total, and the value axis reads from 0% to 100%. The tooltip still shows the values. React takes it as the `isNormalized` prop and the wrappers as a config key, and the chart schemas list it.
+- d4700ff: Add `colors.colorSchemas.okabeIto`, a colour-blind-safe palette. Its eight colours, from Okabe and Ito's palette, stay distinct with the common kinds of colour blindness. Black, first in the original, comes last, so charts with up to seven categories never draw a series in the colour of their axes and text.
+- cccf0d0: Charts respect `prefers-reduced-motion`. When the reader's system asks for reduced motion, the bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, scatter plot, sparkline and brush charts draw without animation, whatever `isAnimated` is set to. They check on every render, so a change to the setting applies from the next one. `isAnimated()` still reads back the value that was set.
+- d8884e3: Theme the charts with CSS custom properties, and get dark mode from the page's `color-scheme`. Every colour around the data (text, axes, grid, tooltips, legend, loading states) is a `--bc-*` token with a light and a dark default, chosen with `light-dark()`. Set `color-scheme: light dark` on your page to follow the system, `dark` to force it, or set any token, such as `.britechart { --bc-text-muted: #555 }`. A page without a colour scheme stays light, so nothing changes until you opt in.
+
+    The tooltip's text, the donut's empty slice, the scatter plot's hollow circles, the line chart's custom lines and the sparkline's area gradient now take their colours from the tokens, set as styles. Exports resolve the tokens, so a dark export keeps its dark background.
+
+### Patch Changes
+
+- 9f54337: The brush no longer flickers when a new window is selected over an earlier one, and reports each selection once. After a selection, the brush eased it to whole days with a transition, and the end of that transition was taken for a new selection: it started another, so the brush looped for as long as it was on the page, fired `customBrushEnd` about every quarter second, and drew a new selection back towards the previous one while it was dragged.
+- 937683e: A bullet's `markers` can hold any number of values, as the chart already draws one line for each. The `BulletChartDataShape` type allowed one at most, so TypeScript rejected a bullet with two markers, and the wrappers' bullet schema rejected it too.
+- acccdcd: `exportChart`'s title is escaped, so a title with `&` or `<` no longer breaks the png or svg file, and it is drawn in a band above the chart instead of over its top edge. The exported image grows by the band's 30 px, and the chart moves down into the space below it.
+- ca040a4: `exportChart`'s title uses the charts' font, Helvetica Neue. Its font stack named it in typographic quotes, which made them part of the name, so the title fell back to Helvetica or Arial.
+- 816c483: The legend's `highlight()` and `clearHighlight()` commands no longer throw when called before the legend has drawn, as a wrapper or a React `clearHighlight` prop does on the first render. They do nothing until there is something to change.
+- e7d1605: Each package declares its license, Apache-2.0, in `package.json`. npm showed none, so license checkers flagged the packages as unlicensed.
+- 1dd2e5a: Each package ships the Apache 2.0 license text as `LICENSE.md`. The packages declared the license in `package.json`, but their tarballs carried no license file, which the license requires when redistributing.
+- f69c628: With `prefers-reduced-motion`, the tooltip appears, hides and follows the pointer without fading or easing, the legend removes entries without a fade, and the line, stacked area and scatter plot charts highlight a hovered point without its bounce. Only the charts' own draw animations respected the setting before.
+- f8c3fb2: Each package declares `sideEffects`, so bundlers can drop the charts an app doesn't import. Core lists its CSS, which only has an effect when imported; wrappers and react ship no CSS and declare `false`. The charts' `import 'd3-transition'` stays in a kept chart, since d3-transition declares its own side effects.
+- 5257ab2: The stacked bar's animation grows each stack as a whole from the baseline, like the stacked area's: a stack's segments stay together while they grow, where each used to grow from its own edge and open gaps in the stack.
+
 ## 3.0.0-beta.7
 
 ### Major Changes
