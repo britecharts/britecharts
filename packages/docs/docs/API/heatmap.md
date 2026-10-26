@@ -13,7 +13,8 @@ simple and configurable heatmap chart.
 import { select } from 'd3-selection';
 import { heatmap } from '@britecharts/core';
 
-// dataset: [{ day, hour, value }], day 0-6 and hour 0-23
+// dataset: [{ day, hour, value }], day 0-6 and hour 0-23, or indexes into
+// yAxisLabels and xAxisLabels
 const heatmapChart = heatmap();
 
 heatmapChart
@@ -41,6 +42,7 @@ select('.css-selector')
             * [.margin(_x)](#module_Heatmap--exports.margin) ⇒ <code>margin</code> \| <code>module</code>
             * [.on()](#module_Heatmap--exports.on) ⇒ <code>module</code>
             * [.yAxisLabels(_x)](#module_Heatmap--exports.yAxisLabels) ⇒ <code>yAxisLabels</code> \| <code>module</code>
+            * [.xAxisLabels(_x)](#module_Heatmap--exports.xAxisLabels) ⇒ <code>xAxisLabels</code> \| <code>module</code>
             * [.width(_x)](#module_Heatmap--exports.width) ⇒ <code>Number</code> \| <code>module</code>
         * _inner_
             * [~HeatmapData](#module_Heatmap--exports..HeatmapData) : <code>Array.&lt;Object&gt;</code>
@@ -252,6 +254,21 @@ Gets or Sets the y-axis labels of the chart
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | <code>[&#x27;Mo&#x27;,</code> | 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']     An array of string labels across the y-axis |
+
+<a name="module_Heatmap--exports.xAxisLabels" id="module_Heatmap--exports.xAxisLabels"></a>
+
+## xAxisLabels(_x) ⇒ <code>xAxisLabels</code> \| <code>module</code>
+Gets or Sets the x-axis labels of the chart. With them, `hour` indexes
+these labels rather than the hours of the day, so together with
+`yAxisLabels` the heatmap can show any two sets of categories.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Returns**: <code>xAxisLabels</code> \| <code>module</code> - Current xAxisLabels array or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | <code>Array.&lt;String&gt;</code> | <code>[&#x27;00h&#x27;,&#x27;01h&#x27;,...,&#x27;23h&#x27;</code> | An array of string labels across the x-axis |
 
 <a name="module_Heatmap--exports.width" id="module_Heatmap--exports.width"></a>
 

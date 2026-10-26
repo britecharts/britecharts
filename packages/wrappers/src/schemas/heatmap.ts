@@ -94,6 +94,12 @@ const schema: ConfigurationSchema = {
         width: {
             type: 'number',
         },
+        xAxisLabels: {
+            type: 'array',
+            items: {
+                type: 'string',
+            },
+        },
         yAxisLabels: {
             type: 'array',
             items: {

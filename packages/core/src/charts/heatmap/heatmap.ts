@@ -61,6 +61,9 @@ export interface HeatmapChartAPI
     /** Gets or Sets the y-axis labels of the chart */
     yAxisLabels(): string[] | undefined;
     yAxisLabels(labels: string[]): HeatmapChartModule;
+    /** Gets or Sets the x-axis labels of the chart */
+    xAxisLabels(): string[] | undefined;
+    xAxisLabels(labels: string[]): HeatmapChartModule;
     /** Gets or Sets the boxSize of the chart */
     boxSize(): number;
     boxSize(size: number): HeatmapChartModule;
@@ -80,7 +83,8 @@ export type HeatmapChartModule = ChartModuleSelection<HeatmapChartDataShape[]> &
  * import { select } from 'd3-selection';
  * import { heatmap } from '@britecharts/core';
  *
- * // dataset: [{ day, hour, value }], day 0-6 and hour 0-23
+ * // dataset: [{ day, hour, value }], day 0-6 and hour 0-23, or indexes into
+ * // yAxisLabels and xAxisLabels
  * const heatmapChart = heatmap();
  *
  * heatmapChart
@@ -161,12 +165,14 @@ export default function module(): HeatmapChartModule {
         colorSchema: string[] = colorHelper.colorSchemas.red,
         animationDuration: number = motion.duration,
         isAnimated = false,
-        // No default: `drawDayLabels` falls back to `daysHuman`, so reading
+        // No default: `rowNames` falls back to `daysHuman`, so reading
         // this accessor before setting it gives undefined, which is what the
         // declaration says.
         yAxisLabels: string[] | undefined,
-        dayLabels: Selection<BaseType, string, BaseType, unknown>,
-        hourLabels: Selection<BaseType, string, BaseType, unknown>;
+        // No default either: `columnNames` falls back to `hoursHuman`.
+        xAxisLabels: string[] | undefined,
+        rowLabels: Selection<BaseType, string, BaseType, unknown>,
+        columnLabels: Selection<BaseType, string, BaseType, unknown>;
 
     // One statement each rather than a second comma chain: `one-var` asks for
     // that.
@@ -176,8 +182,14 @@ export default function module(): HeatmapChartModule {
     const boxInitialColor = '#BBBBBB';
     const boxBorderColor = 'var(--bc-surface, #fff)';
     const daysHuman = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-    const dayLabelWidth = 30;
-    const hourLabelHeight = 20;
+    // The row labels end this far left of the boxes, so a longer label grows
+    // into the left margin rather than over the first column
+    const rowLabelGap = 8;
+    // Both axes' labels share one look, set here so the shared axis styles do
+    // not make the rows lighter than the columns
+    const labelFillColor = 'var(--bc-text-muted, #666a73)';
+    const labelTextSize = 12;
+    const columnLabelHeight = 20;
     // Dispatcher object to broadcast the mouse events
     // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
     const dispatcher = dispatch(
@@ -229,7 +241,7 @@ export default function module(): HeatmapChartModule {
             enableKeyboardNavigation(svg.node(), {
                 isEnabled: a11yKeyboardNavigation && !isLoading,
                 stops: keyboardStops,
-                rowLength: hoursHuman.length,
+                rowLength: columnNames().length,
             });
             if (isLoading) {
                 drawLoadingState();
@@ -238,8 +250,8 @@ export default function module(): HeatmapChartModule {
             }
             cleanLoadingState();
             buildScales();
-            drawDayLabels();
-            drawHourLabels();
+            drawRowLabels();
+            drawColumnLabels();
             drawBoxes();
         });
         // One assertion for the whole module, because the accessors below are
@@ -256,8 +268,8 @@ export default function module(): HeatmapChartModule {
     let a11yKeyboardNavigation = true;
 
     /**
-     * Where keyboard focus can rest: each box, by day and then by hour, so up
-     * and down move a day
+     * Where keyboard focus can rest: each box, by row and then by column, so
+     * up and down move a row
      * @private
      */
     function keyboardStops(): KeyboardStop[] {
@@ -278,17 +290,34 @@ export default function module(): HeatmapChartModule {
     }
 
     /**
-     * The chart's data as a table, for screen readers: a row per day and a
-     * column per hour
+     * The names of the rows: `yAxisLabels`, or the days of the week
+     * @private
+     */
+    function rowNames(): string[] {
+        return yAxisLabels || daysHuman;
+    }
+
+    /**
+     * The names of the columns: `xAxisLabels`, or the hours of the day
+     * @private
+     */
+    function columnNames(): string[] {
+        return xAxisLabels || hoursHuman;
+    }
+
+    /**
+     * The chart's data as a table, for screen readers: a row per row label and
+     * a column per column label
      * @private
      */
     function dataTable(): DataTable {
-        const dayLabels = yAxisLabels || daysHuman;
+        const rows = rowNames();
+        const columns = columnNames();
 
         return pivotTable(data, {
             heading: 'Day',
-            row: (d) => dayLabels[d.day],
-            column: (d) => hoursHuman[d.hour],
+            row: (d) => rows[d.day],
+            column: (d) => columns[d.hour],
             value: (d) => d.value,
         });
     }
@@ -353,8 +382,8 @@ export default function module(): HeatmapChartModule {
         svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('chart-group', true);
-        container.append('g').classed('day-labels-group', true);
-        container.append('g').classed('hour-labels-group', true);
+        container.append('g').classed('row-labels-group', true);
+        container.append('g').classed('column-labels-group', true);
         container.append('g').classed('metadata-group', true);
     }
 
@@ -482,47 +511,48 @@ export default function module(): HeatmapChartModule {
     }
 
     /**
-     * Draws the day labels
+     * Draws the row labels
      * @private
      */
-    function drawDayLabels(): void {
-        const dayLabelsGroup = svg.select('.day-labels-group');
-        const arrayForYAxisLabels = yAxisLabels || daysHuman;
+    function drawRowLabels(): void {
+        const rowLabelsGroup = svg.select('.row-labels-group');
 
-        dayLabels = svg
-            .select('.day-labels-group')
-            .selectAll<BaseType, string>('.day-label')
-            .data(arrayForYAxisLabels);
+        rowLabels = svg
+            .select('.row-labels-group')
+            .selectAll<BaseType, string>('.row-label')
+            .data(rowNames());
 
-        dayLabels
+        rowLabels
             .enter()
             .append('text')
             .text((label) => label)
             .attr('x', 0)
             .attr('y', (d, i) => i * boxSize)
-            .style('text-anchor', 'start')
+            .style('text-anchor', 'end')
             .style('dominant-baseline', 'central')
-            .attr('class', 'day-label y-axis-label');
+            .style('fill', labelFillColor)
+            .style('font-size', labelTextSize)
+            .attr('class', 'row-label y-axis-label');
 
-        dayLabelsGroup.attr(
+        rowLabelsGroup.attr(
             'transform',
-            `translate(-${dayLabelWidth}, ${boxSize / 2})`
+            `translate(-${rowLabelGap}, ${boxSize / 2})`
         );
     }
 
     /**
-     * Draws the hour labels
+     * Draws the column labels
      * @private
      */
-    function drawHourLabels(): void {
-        const hourLabelsGroup = svg.select('.hour-labels-group');
+    function drawColumnLabels(): void {
+        const columnLabelsGroup = svg.select('.column-labels-group');
 
-        hourLabels = svg
-            .select('.hour-labels-group')
-            .selectAll<BaseType, string>('.hour-label')
-            .data(hoursHuman);
+        columnLabels = svg
+            .select('.column-labels-group')
+            .selectAll<BaseType, string>('.column-label')
+            .data(columnNames());
 
-        hourLabels
+        columnLabels
             .enter()
             .append('text')
             .text((label) => label)
@@ -530,11 +560,13 @@ export default function module(): HeatmapChartModule {
             .attr('x', (d, i) => i * boxSize)
             .style('text-anchor', 'middle')
             .style('dominant-baseline', 'central')
-            .attr('class', 'hour-label');
+            .style('fill', labelFillColor)
+            .style('font-size', labelTextSize)
+            .attr('class', 'column-label');
 
-        hourLabelsGroup.attr(
+        columnLabelsGroup.attr(
             'transform',
-            `translate(${boxSize / 2}, -${hourLabelHeight})`
+            `translate(${boxSize / 2}, -${columnLabelHeight})`
         );
     }
 
@@ -844,6 +876,23 @@ export default function module(): HeatmapChartModule {
 
         return this;
     } as HeatmapChartModule['yAxisLabels'];
+
+    /**
+     * Gets or Sets the x-axis labels of the chart. With them, `hour` indexes
+     * these labels rather than the hours of the day, so together with
+     * `yAxisLabels` the heatmap can show any two sets of categories.
+     * @param  {String[]} _x=['00h','01h',...,'23h']     An array of string labels across the x-axis
+     * @return {xAxisLabels | module}                       Current xAxisLabels array or Chart module to chain calls
+     * @public
+     */
+    exports.xAxisLabels = function (this: HeatmapChartModule, _x?: string[]) {
+        if (!arguments.length) {
+            return xAxisLabels;
+        }
+        xAxisLabels = _x;
+
+        return this;
+    } as HeatmapChartModule['xAxisLabels'];
 
     /**
      * Gets or Sets the width of the chart

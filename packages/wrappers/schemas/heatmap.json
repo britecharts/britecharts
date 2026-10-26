@@ -121,6 +121,13 @@
                     "description": "Gets or Sets the width of the chart",
                     "type": "number"
                 },
+                "xAxisLabels": {
+                    "description": "Gets or Sets the x-axis labels of the chart",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "yAxisLabels": {
                     "description": "Gets or Sets the y-axis labels of the chart",
                     "type": "array",

@@ -63,19 +63,19 @@ describe('heatmap Chart', () => {
                 expect(actual).toEqual(expected);
             });
 
-            it('should render a day-labels-group', () => {
+            it('should render a row-labels-group', () => {
                 const expected = 1;
                 const actual = containerFixture
-                    .select('g.day-labels-group')
+                    .select('g.row-labels-group')
                     .size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render a hour-labels-group', () => {
+            it('should render a column-labels-group', () => {
                 const expected = 1;
                 const actual = containerFixture
-                    .select('g.hour-labels-group')
+                    .select('g.column-labels-group')
                     .size();
 
                 expect(actual).toEqual(expected);
@@ -90,18 +90,33 @@ describe('heatmap Chart', () => {
         });
 
         describe('axis', () => {
-            it('should render the day labels', () => {
+            it('should render a row label for each day by default', () => {
                 const expected = 7;
-                const actual = containerFixture.selectAll('.day-label').size();
+                const actual = containerFixture.selectAll('.row-label').size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render the hour labels', () => {
+            it('should render a column label for each hour by default', () => {
                 const expected = 24;
-                const actual = containerFixture.selectAll('.hour-label').size();
+                const actual = containerFixture
+                    .selectAll('.column-label')
+                    .size();
 
                 expect(actual).toEqual(expected);
+            });
+
+            it('should give the row and column labels the same look', () => {
+                const looks = ['.row-label', '.column-label'].map(
+                    (selector) => {
+                        const label = containerFixture.select(selector).node();
+
+                        return [label.style.fill, label.style.fontSize];
+                    }
+                );
+
+                expect(looks[0]).toEqual(looks[1]);
+                expect(looks[0][0]).toContain('--bc-text-muted');
             });
         });
 
@@ -134,6 +149,57 @@ describe('heatmap Chart', () => {
 
                 yAxisLabels.each((yAxisLabel, i) => {
                     expect(yAxisLabel).toBe(customYAxisLabels[i]);
+                });
+            });
+
+            describe('when given x axis labels', () => {
+                const labels = ['Cat', 'Dog', 'Fox'];
+                const squareData = labels.flatMap((row, day) =>
+                    labels.map((column, hour) => ({
+                        day,
+                        hour,
+                        value: day + hour,
+                    }))
+                );
+
+                beforeEach(() => {
+                    containerFixture.html('');
+                    heatmapChart = chart()
+                        .yAxisLabels(labels)
+                        .xAxisLabels(labels);
+                    containerFixture.datum(squareData).call(heatmapChart);
+                });
+
+                it('should draw a column label for each, in order', () => {
+                    const actual = containerFixture
+                        .selectAll('.column-label')
+                        .nodes()
+                        .map((label) => label.textContent);
+
+                    expect(actual).toEqual(labels);
+                });
+
+                it('should move a whole row of labels on an arrow down', () => {
+                    const hover = vi.fn();
+                    const press = (key) =>
+                        containerFixture
+                            .select('svg')
+                            .node()
+                            .dispatchEvent(
+                                new KeyboardEvent('keydown', {
+                                    key,
+                                    cancelable: true,
+                                })
+                            );
+
+                    heatmapChart.on('customMouseOver', hover);
+                    press('ArrowDown');
+                    press('ArrowDown');
+
+                    expect(hover.mock.lastCall[0]).toMatchObject({
+                        day: 1,
+                        hour: 0,
+                    });
                 });
             });
         });
@@ -313,6 +379,18 @@ describe('heatmap Chart', () => {
 
             heatmapChart.yAxisLabels(expected);
             actual = heatmapChart.yAxisLabels();
+
+            expect(previous).not.toBe(actual);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide xAxisLabels getter and setter', () => {
+            let previous = heatmapChart.xAxisLabels(),
+                expected = ['One', 'Two', 'Three'],
+                actual;
+
+            heatmapChart.xAxisLabels(expected);
+            actual = heatmapChart.xAxisLabels();
 
             expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);
