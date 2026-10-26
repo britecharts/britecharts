@@ -16,7 +16,30 @@ import { HeatmapDataBuilder } from './heatmapChartDataBuilder';
 import colors from '../helpers/color';
 
 const aTestDataSet = () => new HeatmapDataBuilder();
+const lightWords = [
+    'Blazing',
+    'Glittering',
+    'Shining',
+    'Sunny',
+    'Flashing',
+    'Radiant',
+];
+// What the tooltip shows for a box: its row and column words, and its value
+const nameBox = ({ day, hour, value }) => ({
+    name:
+        day === hour
+            ? lightWords[day]
+            : `${lightWords[day]} + ${lightWords[hour]}`,
+    value,
+});
 
+/**
+ * Categories on both axes: `yAxisLabels` names the rows and `xAxisLabels` the
+ * columns, and each box's `day` and `hour` index them. How often two light
+ * words describe the same thing, and on the diagonal how often each one does
+ * on its own. The chart is sized from the box size and margins, so the grid
+ * stays square.
+ */
 export const Playground = (args) => {
     const container = getCleanContainer();
     const heatmapChart = heatmap();
@@ -24,16 +47,25 @@ export const Playground = (args) => {
     const containerWidth = heatmapContainer.node()
         ? heatmapContainer.node().getBoundingClientRect().width
         : false;
-    const tooltip = miniTooltip().title('Tooltip Title');
+    const tooltip = miniTooltip().title('Described together').numberFormat('d');
 
     if (containerWidth) {
-        const dataset = aTestDataSet().withWeeklyData().build();
-
+        const dataset = aTestDataSet().withCategoricalData().build();
         applyArgs(heatmapChart, args)
-            .width(containerWidth)
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
+            .yAxisLabels(lightWords)
+            .xAxisLabels(lightWords)
+            .on('customMouseOver', (box, ...rest) =>
+                tooltip.show(nameBox(box), ...rest)
+            )
+            .on('customMouseMove', (box, ...rest) =>
+                tooltip.update(nameBox(box), ...rest)
+            )
             .on('customMouseOut', tooltip.hide);
+
+        const { top, right, bottom, left } = heatmapChart.margin();
+        const side = lightWords.length * heatmapChart.boxSize();
+
+        heatmapChart.width(left + side + right).height(top + side + bottom);
 
         heatmapContainer.datum(dataset).call(heatmapChart);
 
@@ -46,7 +78,6 @@ export const Playground = (args) => {
 };
 
 Playground.args = playgroundArgs(heatmap, [
-    'height',
     'margin',
     'isAnimated',
     'colorSchema',
@@ -54,6 +85,10 @@ Playground.args = playgroundArgs(heatmap, [
     'isLoading',
 ]);
 Playground.args.isAnimated = false;
+Playground.args.colorSchema = 'purple';
+Playground.args.boxSize = 70;
+// Room on the left for the longest word
+Playground.args.margin = { ...Playground.args.margin, left: 80 };
 Playground.argTypes = playgroundArgTypes(Playground.args);
 
 export const WithWeeklyElements = () => {

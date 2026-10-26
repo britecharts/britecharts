@@ -12,30 +12,72 @@ export default {
     component: Heatmap,
 } satisfies Meta<typeof Heatmap>;
 
+const lightWords = [
+    'Blazing',
+    'Glittering',
+    'Shining',
+    'Sunny',
+    'Flashing',
+    'Radiant',
+];
+
+type HeatmapBox = { day: number; hour: number; value: number };
+
+// What the tooltip shows for a box: its row and column words, and its value
+const nameBox = ({ day, hour, value }: HeatmapBox) => ({
+    name:
+        day === hour
+            ? lightWords[day]
+            : `${lightWords[day]} + ${lightWords[hour]}`,
+    value,
+});
+
 /**
- * Every prop the chart takes, editable from the Controls panel. Left unset, a
- * prop keeps the chart's own default, so this starts as the default chart.
- * The heatmap dispatches the hovered box as { day, hour, value }: the tooltip
- * shows its value, named by its hour.
+ * Every prop the chart takes, editable from the Controls panel. Categories on
+ * both axes: `yAxisLabels` names the rows and `xAxisLabels` the columns, and
+ * each box's `day` and `hour` index them. How often two light words describe
+ * the same thing, and on the diagonal how often each one does on its own. The
+ * chart is sized from the box size and margins, so the grid stays square.
  */
 export const Playground: StoryFn<typeof Heatmap> = (args) => {
-    const data = heatmapData.withWeeklyData();
+    const data = heatmapData.withCategoricalData();
+    const { boxSize = 70, margin = {} } = args;
+    const { top = 40, right = 20, bottom = 20, left = 80 } = margin;
+    const side = lightWords.length * boxSize;
 
-    const renderHeatmap = (props: TooltipRenderArgs<typeof data>) => (
-        <Heatmap {...args} {...props} />
+    const renderHeatmap = ({
+        customMouseMove,
+        ...props
+    }: TooltipRenderArgs<typeof data>) => (
+        <Heatmap
+            {...args}
+            {...props}
+            customMouseMove={(box, position, size) =>
+                customMouseMove(nameBox(box as HeatmapBox), position, size)
+            }
+            yAxisLabels={lightWords}
+            xAxisLabels={lightWords}
+            margin={{ top, right, bottom, left }}
+            width={left + side + right}
+            height={top + side + bottom}
+        />
     );
 
     return (
         <Tooltip
             data={data}
             render={renderHeatmap}
-            title="Visits"
-            nameLabel="hour"
+            title="Described together"
+            numberFormat="d"
         />
     );
 };
 
-Playground.args = { isAnimated: false };
+Playground.args = {
+    isAnimated: false,
+    colorSchema: colors.colorSchemas.purple,
+    boxSize: 70,
+};
 
 Playground.parameters = {
     controls: { exclude: ['data', 'chart', 'createTooltip'] },
