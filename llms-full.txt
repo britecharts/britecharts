@@ -3661,7 +3661,8 @@ simple and configurable heatmap chart.
 import { select } from 'd3-selection';
 import { heatmap } from '@britecharts/core';
 
-// dataset: [{ day, hour, value }], day 0-6 and hour 0-23
+// dataset: [{ day, hour, value }], day 0-6 and hour 0-23, or indexes into
+// yAxisLabels and xAxisLabels
 const heatmapChart = heatmap();
 
 heatmapChart
@@ -3820,6 +3821,17 @@ Gets or Sets the y-axis labels of the chart
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | _x | `Array.<String>` | `[&#x27;Mo&#x27;,` | 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']     An array of string labels across the y-axis |
+
+## xAxisLabels(_x) ⇒ `xAxisLabels` \| `module`
+Gets or Sets the x-axis labels of the chart. With them, `hour` indexes
+these labels rather than the hours of the day, so together with
+`yAxisLabels` the heatmap can show any two sets of categories.
+
+**Returns**: `xAxisLabels` \| `module` - Current xAxisLabels array or Chart module to chain calls  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | `Array.<String>` | `[&#x27;00h&#x27;,&#x27;01h&#x27;,...,&#x27;23h&#x27;` | An array of string labels across the x-axis |
 
 ## width(_x) ⇒ `Number` \| `module`
 Gets or Sets the width of the chart
