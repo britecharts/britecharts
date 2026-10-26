@@ -121,17 +121,20 @@ describe('heatmap Chart', () => {
 
             it('should set the heatmap options', () => {
                 const yAxisLabels = ['Sun', 'Mon'];
+                const xAxisLabels = ['Morning', 'Evening'];
                 const chart = heatmap.create(
                     anchor,
                     heatmapData.withTwoDays(),
                     {
                         boxSize: 20,
                         yAxisLabels,
+                        xAxisLabels,
                     }
                 );
 
                 expect(chart.boxSize()).toEqual(20);
                 expect(chart.yAxisLabels()).toEqual(yAxisLabels);
+                expect(chart.xAxisLabels()).toEqual(xAxisLabels);
             });
 
             it('should register the event handlers', () => {

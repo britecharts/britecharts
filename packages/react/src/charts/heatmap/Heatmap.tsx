@@ -103,6 +103,12 @@ export interface HeatmapProps {
     width?: number;
 
     /**
+     * Gets or Sets the labels of the x axis, one per hour, from the first. With
+     * them, `hour` indexes these labels, so the heatmap can show categories
+     */
+    xAxisLabels?: string[];
+
+    /**
      * Gets or Sets the labels of the y axis, one per day, from the first
      */
     yAxisLabels?: string[];

@@ -42,6 +42,7 @@ describe('heatmap Chart', () => {
 
             it('should pass the heatmap options to the chart', () => {
                 const yAxisLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+                const xAxisLabels = ['Morning', 'Evening'];
 
                 mount(
                     <Heatmap
@@ -49,6 +50,7 @@ describe('heatmap Chart', () => {
                         data={heatmapData.withWeeklyData()}
                         boxSize={20}
                         yAxisLabels={yAxisLabels}
+                        xAxisLabels={xAxisLabels}
                     />
                 );
 
@@ -56,6 +58,7 @@ describe('heatmap Chart', () => {
 
                 expect(configuration.boxSize).toEqual(20);
                 expect(configuration.yAxisLabels).toEqual(yAxisLabels);
+                expect(configuration.xAxisLabels).toEqual(xAxisLabels);
             });
         });
     });

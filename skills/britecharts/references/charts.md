@@ -112,7 +112,7 @@ Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`. T
 ## heatmap
 API page: `heatmap`. Data: an array of `{ day: number, hour: number, value: number }`, where `day` runs from 0 to 6 and `hour` from 0 to 23.
 
-Accessors: `animationDuration`, `boxSize`, `colorSchema`, `exportChart`, `isAnimated`, `on`, `yAxisLabels` (one label per day, from the first).
+Accessors: `animationDuration`, `boxSize`, `colorSchema`, `exportChart`, `isAnimated`, `on`, `xAxisLabels` (one label per hour, from the first), `yAxisLabels` (one label per day, from the first). With both label sets, `day` and `hour` index them, so the heatmap can show any two sets of categories.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`.
 

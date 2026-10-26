@@ -358,6 +358,25 @@ describe('data table content', () => {
         expect(cells(table.tHead.rows[0])).toEqual(['Day', '00h', '01h']);
         expect(cells(table.tBodies[0].rows[1])).toEqual(['Tu', '7', '']);
     });
+
+    it('should name the heatmap rows and columns from its axis labels', () => {
+        container
+            .datum([
+                { day: 0, hour: 0, value: 5 },
+                { day: 0, hour: 1, value: 6 },
+                { day: 1, hour: 0, value: 7 },
+            ])
+            .call(
+                heatmap()
+                    .yAxisLabels(['Cat', 'Dog'])
+                    .xAxisLabels(['Cat', 'Dog'])
+            );
+
+        const table = tableOf();
+
+        expect(cells(table.tHead.rows[0])).toEqual(['Day', 'Cat', 'Dog']);
+        expect(cells(table.tBodies[0].rows[1])).toEqual(['Dog', '7', '']);
+    });
 });
 
 // The charts with points to move between, and a hover to follow them
