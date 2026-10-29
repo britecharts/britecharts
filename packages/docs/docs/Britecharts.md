@@ -291,17 +291,15 @@ Read more in the [license document][britecharts-license]
 [stackedbarchart-story]: https://britecharts.github.io/britecharts/docs/API/stacked-bar 'Check the API reference'
 [groupedbarchart-story]: https://britecharts.github.io/britecharts/docs/API/grouped-bar 'Check the API reference'
 [stackedarea-story]: https://britecharts.github.io/britecharts-react/#stacked-area-chart 'Check the Demo'
-[stackedareaimg]: https://raw.githubusercontent.com/britecharts/britecharts-react/master/src/docs/images/thumbnails/stacked-area.png
-[barchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/bar-chart.png
-[linechartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/line-chart.png
-[donutchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/donut-chart.png
-[sparklinechartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/sparkline-chart.png
-[stackedareachartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-area-chart.png
-[stackedareachartlargeimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-area-chart-large.png
-[brushchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/brush-chart.png
-[stackedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
-[groupedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
-[legendchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/legend-chart.png
+[barchartimg]: https://britecharts.github.io/britecharts/img/thumbnails/bar-chart.png
+[linechartimg]: https://britecharts.github.io/britecharts/img/thumbnails/line-chart.png
+[donutchartimg]: https://britecharts.github.io/britecharts/img/thumbnails/donut-chart.png
+[sparklinechartimg]: https://britecharts.github.io/britecharts/img/thumbnails/sparkline-chart.png
+[stackedareachartlargeimg]: https://britecharts.github.io/britecharts/img/thumbnails/stacked-area-chart-large.png
+[brushchartimg]: https://britecharts.github.io/britecharts/img/thumbnails/brush-chart.png
+[stackedbarchartimg]: https://britecharts.github.io/britecharts/img/thumbnails/stacked-bar-chart.png
+[groupedbarchartimg]: https://britecharts.github.io/britecharts/img/thumbnails/grouped-bar-chart.png
+[legendchartimg]: https://britecharts.github.io/britecharts/img/thumbnails/legend-chart.png
 [tutorialsindex]: https://britecharts.github.io/britecharts/docs/tutorials/tutorials-index
 [howtoindex]: how-tos/how-to-index
 [topicsindex]: topics/topics-index
