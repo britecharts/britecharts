@@ -2,6 +2,22 @@
   "name": "@britecharts/core",
   "version": "3.0.0-beta.8",
   "license": "Apache-2.0",
+  "keywords": [
+    "britecharts",
+    "d3",
+    "d3js",
+    "charts",
+    "chart",
+    "charting-library",
+    "data-visualization",
+    "dataviz",
+    "visualization",
+    "svg",
+    "typescript",
+    "accessibility",
+    "a11y",
+    "dark-mode"
+  ],
   "type": "module",
   "sideEffects": [
     "**/*.css"
