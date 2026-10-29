@@ -1,7 +1,30 @@
 {
   "name": "@britecharts/react",
+  "description": "React components for Britecharts: finished, accessible D3.js charts with typed props and a shared tooltip.",
   "version": "3.0.0-beta.8",
   "license": "Apache-2.0",
+  "homepage": "https://britecharts.github.io/britecharts/docs/packages/react-readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/britecharts/britecharts.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/britecharts/britecharts/issues"
+  },
+  "keywords": [
+    "britecharts",
+    "react",
+    "react-charts",
+    "react-component",
+    "d3",
+    "charts",
+    "charting-library",
+    "data-visualization",
+    "visualization",
+    "typescript",
+    "accessibility"
+  ],
   "type": "module",
   "sideEffects": false,
   "main": "dist/umd/bundle/react.bundled.min.cjs",
