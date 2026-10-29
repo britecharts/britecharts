@@ -124,6 +124,12 @@ import { Bar } from '@britecharts/react';
 <Bar data={data} isHorizontal a11yTitle="Signups by plan" />;
 ```
 
+In an app set up with [shadcn/ui](https://ui.shadcn.com), one command adds a chart that follows your theme and its dark mode, with [one registry item per chart][shadcn-howto]:
+
+```bash
+npx shadcn@latest add https://britecharts.github.io/britecharts/r/bar-chart.json
+```
+
 To use Britecharts with another framework, use the `create`, `update` and `destroy` methods of the [wrappers package][wrappers-package]. For Angular, check out [ngx-britecharts][angularwrapper].
 
 ### As a JSON spec
@@ -250,6 +256,7 @@ Read more in the [license document][britecharts-license]
 [theming-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-theme-a-chart-and-support-dark-mode
 [export-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-export-a-chart
 [spec-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-describe-a-chart-as-a-spec-and-check-it
+[shadcn-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-add-a-chart-to-a-shadcn-app
 [migration-guide]: https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3
 [heatmap-story]: https://britecharts.github.io/britecharts/docs/API/heatmap 'Check the API reference'
 [d3]: https://d3js.org/
