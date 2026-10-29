@@ -42,6 +42,7 @@ select('.css-selector')
             * [.hasReversedStacks(_x)](#module_Stacked-bar--exports.hasReversedStacks) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.isAnimated(_x)](#module_Stacked-bar--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.isHorizontal(_x)](#module_Stacked-bar--exports.isHorizontal) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.isNormalized(_x)](#module_Stacked-bar--exports.isNormalized) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.isLoading(flag)](#module_Stacked-bar--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Stacked-bar--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
             * [.numberFormat(_x)](#module_Stacked-bar--exports.numberFormat) ⇒ <code>String</code> \| <code>module</code>
@@ -284,6 +285,26 @@ Gets or Sets the horizontal direction of the chart
 | --- | --- | --- |
 | _x | <code>Boolean</code> | = false     Desired horizontal direction for the graph |
 
+<a name="module_Stacked-bar--exports.isNormalized" id="module_Stacked-bar--exports.isNormalized"></a>
+
+## isNormalized(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+Gets or Sets whether every stack fills the whole value axis, a 100%
+stacked bar chart: each segment shows its share of its stack, and the
+value axis runs from 0% to 100%. The tooltip still shows the values.
+Meant for data without negative values.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
+**Returns**: <code>Boolean</code> \| <code>module</code> - If it is normalized or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>Boolean</code> | = false     Whether to stack to 100% |
+
+**Example**  
+```js
+stackedBar.isNormalized(true)
+```
 <a name="module_Stacked-bar--exports.isLoading" id="module_Stacked-bar--exports.isLoading"></a>
 
 ## isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>

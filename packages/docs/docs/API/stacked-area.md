@@ -42,6 +42,7 @@ select('.css-selector')
             * [.hasOutline(_x)](#module_Stacked-area--exports.hasOutline) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.height(_x)](#module_Stacked-area--exports.height) ⇒ <code>Number</code> \| <code>module</code>
             * [.isAnimated(_x)](#module_Stacked-area--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.isNormalized(_x)](#module_Stacked-area--exports.isNormalized) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.numberFormat(_x)](#module_Stacked-area--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
             * [.margin(_x)](#module_Stacked-area--exports.margin) ⇒ <code>Object</code> \| <code>module</code>
             * [.tooltipThreshold(_x)](#module_Stacked-area--exports.tooltipThreshold) ⇒ <code>Number</code> \| <code>module</code>
@@ -289,6 +290,26 @@ reduced motion (`prefers-reduced-motion`), whatever this is set to.
 | --- | --- | --- |
 | _x | <code>Boolean</code> | = false     Desired animation flag |
 
+<a name="module_Stacked-area--exports.isNormalized" id="module_Stacked-area--exports.isNormalized"></a>
+
+## isNormalized(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+Gets or Sets whether the areas fill the whole value axis, a 100%
+stacked area chart: each area shows its share of each date's total, and
+the value axis runs from 0% to 100%. The tooltip still shows the values.
+Meant for data without negative values.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Returns**: <code>Boolean</code> \| <code>module</code> - If it is normalized or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>Boolean</code> | = false     Whether to stack to 100% |
+
+**Example**  
+```js
+stackedArea.isNormalized(true)
+```
 <a name="module_Stacked-area--exports.numberFormat" id="module_Stacked-area--exports.numberFormat"></a>
 
 ## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
