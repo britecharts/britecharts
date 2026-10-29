@@ -48,6 +48,8 @@ An agent writes a chart correctly more often when the library tells it what it n
 - **Fixes you may have hit.** The brush no longer flickers on a second selection or fires `customBrushEnd` while idle. The animated stacked bar grows each stack as one block. The legend's highlight commands no longer throw before it draws. A bullet can have more than one marker.
 - **Smaller app bundles.** Each package declares `sideEffects`, so bundlers can drop the charts an app does not import. In a bar-only test app, the bundle went from 104.0 kB to 89.6 kB.
 
+![A square heatmap in purple that compares six light words, Blazing, Glittering, Shining, Sunny, Flashing and Radiant, with each other. The diagonal is darkest, where each word appears on its own.](./heatmap-categories.png)
+
 The [Storybook](pathname:///storybook/) shows all of it, with the same stories under the same names in core and in React.
 
 ## What to check before you upgrade
