@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunk_britecharts_docs||=[]).push([[6724],{7483(t){t.exports=JSON.parse('{"metadata":{"permalink":"/britecharts/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":2,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);

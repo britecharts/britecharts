@@ -2,11 +2,70 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://britecharts.github.io/britecharts/blog</id>
     <title>Britecharts Blog</title>
-    <updated>2026-10-18T00:00:00.000Z</updated>
+    <updated>2026-10-29T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://britecharts.github.io/britecharts/blog"/>
     <subtitle>Britecharts Blog</subtitle>
     <icon>https://britecharts.github.io/britecharts/img/icons/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Britecharts 3.0 beta 8, accessible by default]]></title>
+        <id>https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8</id>
+        <link href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8"/>
+        <updated>2026-10-29T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Britecharts 3.0.0-beta.8 is out! Every chart in it can be read by a screen reader cell by cell, used with a keyboard, themed with CSS and drawn in dark mode, with no setup. It is also the first version built for coding agents as well as for people.]]></summary>
+        <content type="html"><![CDATA[<p>Britecharts 3.0.0-beta.8 is out! Every chart in it can be read by a screen reader cell by cell, used with a keyboard, themed with CSS and drawn in dark mode, with no setup. It is also the first version built for coding agents as well as for people.</p>
+<div class="language-sh codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-sh codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token plain">npm install @britecharts/core@beta</span><br></div></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="why-there-is-another-beta">Why there is another beta<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8#why-there-is-another-beta" class="hash-link" aria-label="Direct link to Why there is another beta" title="Direct link to Why there is another beta" translate="no">​</a></h2>
+<p>I wrote that beta 7 would be the last beta, and that only bug fixes would come before 3.0.0. That did not happen. I compared Britecharts with eight current charting libraries, and the comparison showed what Britecharts can do better than any of them: <strong>finished charts that are accessible by default, free, and easy for an agent to write</strong>. Most of that work changes the API, so it had to land before 3.0.0 fixes the API in place.</p>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="accessible-by-default">Accessible by default<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8#accessible-by-default" class="hash-link" aria-label="Direct link to Accessible by default" title="Direct link to Accessible by default" translate="no">​</a></h2>
+<p>Only one library in that comparison gave readers a data table, keyboard navigation and reduced motion together, and it charges per seat. Every Britecharts chart now does all of it, with each part on by default and each one possible to turn off. See <a class="" href="https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-make-a-chart-accessible">how to make a chart accessible</a>.</p>
+<ul>
+<li class=""><strong>Its data as a table.</strong> Every chart but the legend renders its data as a visually hidden table after its svg, so a screen reader can read it cell by cell. Series charts lay it out with a row per date or name and a column per series. Turn it off with <code>a11yDataTable(false)</code>.</li>
+<li class=""><strong>A keyboard can move through the data.</strong> The bar, donut, grouped bar, heatmap, line, scatter plot, stacked area and stacked bar charts are each one tab stop. The arrow keys move between points, Home and End go to the ends, and Escape lets go. The point is highlighted and the tooltip follows focus, as they do for a pointer. Turn it off with <code>a11yKeyboardNavigation(false)</code>.</li>
+<li class=""><strong>Still when the reader asks.</strong> With <code>prefers-reduced-motion</code>, the charts draw without animation whatever <code>isAnimated</code> says, and the tooltip and legend stop fading.</li>
+<li class=""><strong>A colour-blind-safe palette.</strong> <code>colors.colorSchemas.okabeIto</code> keeps its eight colours apart with the common kinds of colour blindness.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="themes-and-dark-mode-with-css">Themes and dark mode, with CSS<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8#themes-and-dark-mode-with-css" class="hash-link" aria-label="Direct link to Themes and dark mode, with CSS" title="Direct link to Themes and dark mode, with CSS" translate="no">​</a></h2>
+<p>Every colour around the data is now a <code>--bc-*</code> custom property: text, axes, grid, tooltips, legend and loading states. The charts follow your page's <code>color-scheme</code> through <code>light-dark()</code>, so <code>color-scheme: light dark</code> on your page is all dark mode needs. To change one colour, set its token, such as <code>.britechart { --bc-text-muted: #555 }</code>. A page that declares no colour scheme stays light. See <a class="" href="https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-theme-a-chart-and-support-dark-mode">how to theme a chart</a>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="made-for-coding-agents">Made for coding agents<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8#made-for-coding-agents" class="hash-link" aria-label="Direct link to Made for coding agents" title="Direct link to Made for coding agents" translate="no">​</a></h2>
+<p>An agent writes a chart correctly more often when the library tells it what it needs. This beta adds four ways to do that:</p>
+<ul>
+<li class=""><strong>An agent skill</strong> ships in <code>@britecharts/core</code>, with each chart's data shape, accessors, events and the v2 code that no longer works. Install it with <code>npx skills add britecharts/britecharts</code>.</li>
+<li class=""><strong>A JSON Schema for every chart's spec</strong>, <code>{ chart, config, data }</code>, generated from the TypeScript types and published at <code>https://britecharts.github.io/britecharts/schema/v3/&lt;chart&gt;.json</code>. An editor or an agent can check a spec before drawing it. See <a class="" href="https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-describe-a-chart-as-a-spec-and-check-it">how to describe a chart as a spec</a>.</li>
+<li class=""><strong>Errors that say how to fix them.</strong> A misspelt key gets <code>heigth: did you mean height?</code> and a link to the chart's API page. A value of the wrong type names the type it should be.</li>
+<li class=""><strong><a href="https://britecharts.github.io/britecharts/llms.txt" target="_blank" rel="noopener noreferrer" class="">llms.txt</a></strong> describes every chart and accessor, generated from the same comments as the API pages.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="new-in-the-charts">New in the charts<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8#new-in-the-charts" class="hash-link" aria-label="Direct link to New in the charts" title="Direct link to New in the charts" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>100% stacks.</strong> <code>isNormalized(true)</code> stretches every stack of the stacked bar, or every date of the stacked area, to fill the value axis, which then reads from 0% to 100%.</li>
+<li class=""><strong>Any categories in the heatmap.</strong> <code>xAxisLabels</code> joins <code>yAxisLabels</code>, so a heatmap can compare any two sets of categories, such as a square grid of six.</li>
+<li class=""><strong>SVG export.</strong> <code>exportChart('chart.svg')</code> downloads an svg with its styles inlined, so it looks the same outside the page and stays sharp at any size.</li>
+<li class=""><strong>Every chart in every package.</strong> The brush and the heatmap now have a wrapper and a React component, like the other charts.</li>
+<li class=""><strong>Fixes you may have hit.</strong> The brush no longer flickers on a second selection or fires <code>customBrushEnd</code> while idle. The animated stacked bar grows each stack as one block. The legend's highlight commands no longer throw before it draws. A bullet can have more than one marker.</li>
+<li class=""><strong>Smaller app bundles.</strong> Each package declares <code>sideEffects</code>, so bundlers can drop the charts an app does not import. In a bar-only test app, the bundle went from 104.0 kB to 89.6 kB.</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="A square heatmap in purple that compares six light words, Blazing, Glittering, Shining, Sunny, Flashing and Radiant, with each other. The diagonal is darkest, where each word appears on its own." src="https://britecharts.github.io/britecharts/assets/images/heatmap-categories-a4383c46eea9472cc38414f6756044bb.png" width="1206" height="1028" class="img_nAt_"></p>
+<p>The <a href="https://britecharts.github.io/britecharts/storybook/" target="_blank" rel="noopener noreferrer" class="">Storybook</a> shows all of it, with the same stories under the same names in core and in React.</p>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="what-to-check-before-you-upgrade">What to check before you upgrade<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8#what-to-check-before-you-upgrade" class="hash-link" aria-label="Direct link to What to check before you upgrade" title="Direct link to What to check before you upgrade" translate="no">​</a></h2>
+<p>Five changes in this beta can affect a page that works with beta 7:</p>
+<ol>
+<li class=""><strong>Charts add a tab stop and a hidden table.</strong> If your page has its own table of the same data, or a tab order to keep, turn them off with <code>a11yDataTable(false)</code> or <code>a11yKeyboardNavigation(false)</code>.</li>
+<li class=""><strong>The wrappers check value types.</strong> <code>create</code> and <code>update</code> throw on a value of the wrong type, such as <code>height: "300"</code>. Before, the string reached the chart.</li>
+<li class=""><strong>An exported title gets its own band.</strong> The title sits in a 30px band above the chart instead of over its top edge, so an exported image with a title is 30px taller.</li>
+<li class=""><strong>The heatmap's label classes changed.</strong> <code>.day-label</code> is now <code>.row-label</code>, <code>.hour-label</code> is <code>.column-label</code>, and their groups are <code>.row-labels-group</code> and <code>.column-labels-group</code>. The row labels now end at the grid, and both axes share one label style.</li>
+<li class=""><strong>Some colours are set as styles now.</strong> The tooltip's text, the donut's empty slice, the scatter plot's hollow circles, the line chart's custom lines, the sparkline's gradient and the heatmap's labels take their colours from the <code>--bc-*</code> tokens, set on the element. A CSS rule on those elements no longer wins, so set the token instead.</li>
+</ol>
+<p>If you are coming from version 2, the <a class="" href="https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3">migration guide</a> has the full list.</p>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="what-happens-next">What happens next<a href="https://britecharts.github.io/britecharts/blog/britecharts-3-beta-8#what-happens-next" class="hash-link" aria-label="Direct link to What happens next" title="Direct link to What happens next" translate="no">​</a></h2>
+<p>The API work I wanted before 3.0.0 is done, so this time I mean it: what follows is bug fixes, then 3.0.0. Bigger features, such as server-side rendering, a Canvas renderer or Web Component bindings, wait as <a href="https://github.com/britecharts/britecharts/issues?q=label%3Astatus%3Aneeds_votes" target="_blank" rel="noopener noreferrer" class="">issues that need votes</a>. Add a 👍 to the ones you would use.</p>
+<p>Please try this beta in a real project, with a screen reader and a keyboard if you can. Open an <a href="https://github.com/britecharts/britecharts/issues" target="_blank" rel="noopener noreferrer" class="">issue</a> with the chart, the data and what you expected.</p>
+<p>Britecharts still needs maintainers. If you would like to own part of it, the <a href="https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="">contributing guide</a> is where to start.</p>]]></content>
+        <author>
+            <name>Marcos Iglesias Valle</name>
+            <uri>https://github.com/golodhros</uri>
+        </author>
+        <category label="Releases" term="Releases"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Britecharts 3.0 beta 7, the last beta]]></title>
         <id>https://britecharts.github.io/britecharts/blog/britecharts-3-beta-7</id>
