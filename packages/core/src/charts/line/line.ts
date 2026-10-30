@@ -21,6 +21,7 @@ import type { Line } from 'd3-shape';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
+import { renderChart } from '../helpers/render.js';
 import colorHelper from '../helpers/color.js';
 import { lineLoadingMarkup } from '../helpers/load.js';
 import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis.js';
@@ -54,6 +55,7 @@ import type {
 } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    RenderableChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -130,6 +132,7 @@ export type LineChartXAxisScale = 'linear' | 'logarithmic';
 export interface LineChartAPI
     extends
         AccessibleChartAPI<LineChartModule>,
+        RenderableChartAPI<LineChartModule, LineChartData>,
         DataTableChartAPI<LineChartModule>,
         KeyboardChartAPI<LineChartModule>,
         Omit<ChartBaseAPI<LineChartModule>, 'numberFormat'>,
@@ -2358,6 +2361,27 @@ export default function module(): LineChartModule {
 
         return this;
     } as LineChartModule['xAxisScale'];
+
+    /**
+     * Draws the chart into a target: a CSS selector, an element or a d3
+     * selection, as `select(target).datum(data).call(chart)` does. A selector
+     * draws into the first element it matches. Without data, the chart
+     * redraws with the data it last drew there.
+     * @param  {String | Element | D3Selection} target Where to draw the chart
+     * @param  {Object} [data]  The data to draw
+     * @return {module} The chart module, to chain calls
+     * @throws {Error} When the target matches no element
+     * @public
+     * @example
+     * line().width(600).render('#chart', data);
+     */
+    (exports as LineChartModule).render = function (
+        this: LineChartModule,
+        target,
+        data
+    ) {
+        return renderChart(this, target, data);
+    } as LineChartModule['render'];
 
     return exports as unknown as LineChartModule;
 }

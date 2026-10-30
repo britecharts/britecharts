@@ -1,6 +1,9 @@
 import type { BaseType, Selection } from 'd3-selection';
 
-import { britechartsCustomEvents } from '../constants.js';
+import {
+    britechartsCustomEvents,
+    notConfigurationMethods,
+} from '../constants.js';
 import type { WrapperConfiguration } from './configuration.js';
 import { checkValue } from './schema.js';
 import type { ConfigurationSchema } from './schema.js';
@@ -91,7 +94,10 @@ export const validateConfiguration = <TChart extends object>(
     // object for a function declaration, but an arrow function has no
     // `.prototype` at all, so that route throws a TypeError before it can
     // report anything.
-    const supportedMethods = Object.keys(chart);
+    const supportedMethods = Object.keys(chart).filter(
+        (methodName) =>
+            !(notConfigurationMethods as readonly string[]).includes(methodName)
+    );
 
     const notSupportedMethods = configurationPropertiesWithoutEvents.filter(
         (methodName) => !supportedMethods.includes(methodName)

@@ -1,6 +1,6 @@
 import * as core from '@britecharts/core';
 
-import { britechartsCustomEvents } from '../constants';
+import { britechartsCustomEvents, notConfigurationMethods } from '../constants';
 import { buildSchemas, CHARTS } from '../../scripts/generate-schemas.mjs';
 
 // The generated files are committed, so the chart types and the schemas can
@@ -29,7 +29,13 @@ describe('chart schemas', () => {
             const chart = (core as unknown as Record<string, () => object>)[
                 name
             ]();
-            const accessors = Object.keys(chart).filter((key) => key !== 'on');
+            const accessors = Object.keys(chart).filter(
+                (key) =>
+                    key !== 'on' &&
+                    !(notConfigurationMethods as readonly string[]).includes(
+                        key
+                    )
+            );
 
             expect(Object.keys(config.properties).sort()).toEqual(
                 [...accessors, ...britechartsCustomEvents].sort()

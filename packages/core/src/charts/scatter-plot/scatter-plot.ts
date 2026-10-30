@@ -24,6 +24,7 @@ import type { D3ZoomEvent } from 'd3-zoom';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
+import { renderChart } from '../helpers/render.js';
 import { scatterPlotLoadingMarkup } from '../helpers/load.js';
 import colorHelper from '../helpers/color.js';
 import {
@@ -42,6 +43,7 @@ import type { GridTypes } from '../../typings/common/grid.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    RenderableChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -94,6 +96,7 @@ export type ScatterPlotBaseAPI = Omit<
 export interface ScatterPlotAPI
     extends
         AccessibleChartAPI<ScatterPlotModule>,
+        RenderableChartAPI<ScatterPlotModule, ScatterPlotDataShape[]>,
         DataTableChartAPI<ScatterPlotModule>,
         KeyboardChartAPI<ScatterPlotModule>,
         ScatterPlotBaseAPI,
@@ -2091,6 +2094,27 @@ export default function module(): ScatterPlotModule {
 
         return this;
     } as ScatterPlotModule['yTicks'];
+
+    /**
+     * Draws the chart into a target: a CSS selector, an element or a d3
+     * selection, as `select(target).datum(data).call(chart)` does. A selector
+     * draws into the first element it matches. Without data, the chart
+     * redraws with the data it last drew there.
+     * @param  {String | Element | D3Selection} target Where to draw the chart
+     * @param  {Object} [data]  The data to draw
+     * @return {module} The chart module, to chain calls
+     * @throws {Error} When the target matches no element
+     * @public
+     * @example
+     * scatterPlot().width(600).render('#chart', data);
+     */
+    (exports as ScatterPlotModule).render = function (
+        this: ScatterPlotModule,
+        target,
+        data
+    ) {
+        return renderChart(this, target, data);
+    } as ScatterPlotModule['render'];
 
     return exports as unknown as ScatterPlotModule;
 }

@@ -11,6 +11,7 @@ import type { Arc, Pie, PieArcDatum } from 'd3-shape';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
+import { renderChart } from '../helpers/render.js';
 import * as textHelper from '../helpers/text.js';
 import colorHelper from '../helpers/color.js';
 import { calculatePercent } from '../helpers/number.js';
@@ -21,6 +22,7 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    RenderableChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -78,6 +80,7 @@ export interface DonutEmptyDataConfig {
 export interface DonutChartAPI
     extends
         AccessibleChartAPI<DonutChartModule>,
+        RenderableChartAPI<DonutChartModule, DonutChartDataShape[]>,
         DataTableChartAPI<DonutChartModule>,
         KeyboardChartAPI<DonutChartModule>,
         Omit<ChartBaseAPI<DonutChartModule>, 'numberFormat'>,
@@ -1526,6 +1529,27 @@ export default function module(): DonutChartModule {
 
         return this;
     } as DonutChartModule['width'];
+
+    /**
+     * Draws the chart into a target: a CSS selector, an element or a d3
+     * selection, as `select(target).datum(data).call(chart)` does. A selector
+     * draws into the first element it matches. Without data, the chart
+     * redraws with the data it last drew there.
+     * @param  {String | Element | D3Selection} target Where to draw the chart
+     * @param  {Object} [data]  The data to draw
+     * @return {module} The chart module, to chain calls
+     * @throws {Error} When the target matches no element
+     * @public
+     * @example
+     * donut().width(600).render('#chart', data);
+     */
+    (exports as DonutChartModule).render = function (
+        this: DonutChartModule,
+        target,
+        data
+    ) {
+        return renderChart(this, target, data);
+    } as DonutChartModule['render'];
 
     return exports as unknown as DonutChartModule;
 }

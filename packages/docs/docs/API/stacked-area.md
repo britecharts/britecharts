@@ -61,6 +61,7 @@ select('.css-selector')
             * [.yAxisLabelOffset([_x])](#module_Stacked-area--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTicks([_x])](#module_Stacked-area--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
             * [.yAxisBaseline([_x])](#module_Stacked-area--exports.yAxisBaseline) ⇒ <code>Number</code> \| <code>module</code>
+            * [.render(target, [data])](#module_Stacked-area--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~AreaChartData](#module_Stacked-area--exports..AreaChartData) : <code>Array.&lt;Object&gt;</code>
 
@@ -584,6 +585,31 @@ Gets or Sets the yAxisBaseline - this is the y-value where the area starts from 
 **Example**  
 ```js
 stackedArea.yAxisBaseline(20)
+```
+<a name="module_Stacked-area--exports.render" id="module_Stacked-area--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+stackedArea().width(600).render('#chart', data);
 ```
 <a name="module_Stacked-area--exports..AreaChartData" id="module_Stacked-area--exports..AreaChartData"></a>
 

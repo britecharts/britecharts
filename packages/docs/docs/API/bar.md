@@ -64,6 +64,7 @@ select('.css-selector')
             * [.yAxisLabelOffset(_x)](#module_Bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.yAxisPaddingBetweenChart(_x)](#module_Bar--exports.yAxisPaddingBetweenChart) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTicks(_x)](#module_Bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.render(target, [data])](#module_Bar--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~BarChartData](#module_Bar--exports..BarChartData) : <code>Array.&lt;Object&gt;</code>
             * [~LocaleObject](#module_Bar--exports..LocaleObject) : <code>Object</code>
@@ -587,6 +588,31 @@ Gets or Sets the number of vertical ticks on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 6         Desired number of vertical ticks for the graph |
 
+<a name="module_Bar--exports.render" id="module_Bar--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+bar().width(600).render('#chart', data);
+```
 <a name="module_Bar--exports..BarChartData" id="module_Bar--exports..BarChartData"></a>
 
 ## exports~BarChartData : <code>Array.&lt;Object&gt;</code>

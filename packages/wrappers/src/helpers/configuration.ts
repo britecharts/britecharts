@@ -1,5 +1,8 @@
 import { britechartsCustomEvents } from '../constants.js';
-import type { BritechartsCustomEvent } from '../constants.js';
+import type {
+    BritechartsCustomEvent,
+    NotConfigurationMethod,
+} from '../constants.js';
 
 export type ChartEventHandler = (...args: never[]) => void;
 
@@ -72,10 +75,17 @@ type Arity<TChart, TKey extends keyof TChart> = TChart[TKey] extends (
  * only compiling value the one `isSet` skips.
  *
  * Anything that is none of the three maps to `never`, so passing it is still
- * an error rather than silently doing nothing.
+ * an error rather than silently doing nothing. `render` is left out: the
+ * wrapper draws the chart itself.
  */
 export type ChartConfiguration<TChart> = Partial<{
-    [TKey in keyof TChart]: [Arity<TChart, TKey>] extends [0]
+    // Remapped with `as` rather than over `Exclude<keyof TChart, ...>`, which
+    // would lose each accessor's JSDoc, and with it the schemas' descriptions
+    [
+        TKey in keyof TChart as TKey extends NotConfigurationMethod
+            ? never
+            : TKey
+    ]: [Arity<TChart, TKey>] extends [0]
         ? boolean
         : [AccessorValue<TChart, TKey>] extends [never]
           ? CommandArgument<TChart, TKey>

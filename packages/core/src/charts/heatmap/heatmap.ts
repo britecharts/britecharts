@@ -8,12 +8,14 @@ import { dispatch } from 'd3-dispatch';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
+import { renderChart } from '../helpers/render.js';
 import { heatmapLoadingMarkup } from '../helpers/load.js';
 import colorHelper from '../helpers/color.js';
 import { hoursHuman, motion } from '../helpers/constants.js';
 import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type {
     AccessibleChartAPI,
+    RenderableChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -47,6 +49,7 @@ export type HeatmapChartDataShape = {
 export interface HeatmapChartAPI
     extends
         AccessibleChartAPI<HeatmapChartModule>,
+        RenderableChartAPI<HeatmapChartModule, HeatmapChartDataShape[]>,
         DataTableChartAPI<HeatmapChartModule>,
         KeyboardChartAPI<HeatmapChartModule>,
         BaseAPI<HeatmapChartModule>,
@@ -908,6 +911,27 @@ export default function module(): HeatmapChartModule {
 
         return this;
     } as HeatmapChartModule['width'];
+
+    /**
+     * Draws the chart into a target: a CSS selector, an element or a d3
+     * selection, as `select(target).datum(data).call(chart)` does. A selector
+     * draws into the first element it matches. Without data, the chart
+     * redraws with the data it last drew there.
+     * @param  {String | Element | D3Selection} target Where to draw the chart
+     * @param  {Object} [data]  The data to draw
+     * @return {module} The chart module, to chain calls
+     * @throws {Error} When the target matches no element
+     * @public
+     * @example
+     * heatmap().width(600).render('#chart', data);
+     */
+    (exports as HeatmapChartModule).render = function (
+        this: HeatmapChartModule,
+        target,
+        data
+    ) {
+        return renderChart(this, target, data);
+    } as HeatmapChartModule['render'];
 
     return exports;
 }

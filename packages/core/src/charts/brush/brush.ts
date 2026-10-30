@@ -15,6 +15,7 @@ import type { Area } from 'd3-shape';
 import 'd3-transition';
 
 import colorHelper from '../helpers/color.js';
+import { renderChart } from '../helpers/render.js';
 import timeAxisHelper from '../helpers/axis.js';
 import {
     axisTimeCombinations,
@@ -31,6 +32,7 @@ import type { AxisTimeCombinationValue } from '../helpers/constants.js';
 import type { AxisTickSettings } from '../helpers/axis.js';
 import type {
     AccessibleChartAPI,
+    RenderableChartAPI,
     DataTableChartAPI,
     AnimatedChartAPI,
     ChartBaseAPIMinimal,
@@ -82,6 +84,7 @@ export type BrushSelection = Selection<
 export interface BrushChartAPI
     extends
         AccessibleChartAPI<BrushChartModule>,
+        RenderableChartAPI<BrushChartModule, BrushChartDataShape[]>,
         DataTableChartAPI<BrushChartModule>,
         ChartBaseAPIMinimal<BrushChartModule>,
         AnimatedChartAPI<BrushChartModule>,
@@ -1280,6 +1283,27 @@ export default function module(): BrushChartModule {
 
         return this;
     } as BrushChartModule['roundingTimeInterval'];
+
+    /**
+     * Draws the chart into a target: a CSS selector, an element or a d3
+     * selection, as `select(target).datum(data).call(chart)` does. A selector
+     * draws into the first element it matches. Without data, the chart
+     * redraws with the data it last drew there.
+     * @param  {String | Element | D3Selection} target Where to draw the chart
+     * @param  {Object} [data]  The data to draw
+     * @return {module} The chart module, to chain calls
+     * @throws {Error} When the target matches no element
+     * @public
+     * @example
+     * brush().width(600).render('#chart', data);
+     */
+    (exports as BrushChartModule).render = function (
+        this: BrushChartModule,
+        target,
+        data
+    ) {
+        return renderChart(this, target, data);
+    } as BrushChartModule['render'];
 
     return exports as unknown as BrushChartModule;
 }
