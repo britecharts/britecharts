@@ -1,0 +1,82 @@
+<!doctype html>
+<!--
+    The source of static/img/social-preview.png, the docs site's Open Graph
+    image and the repository's social preview on GitHub. Its charts are drawn by
+    Britecharts. To redraw it: build core (pnpm --filter @britecharts/core run
+    build), open this file in a 1280 x 640 window, and screenshot it at
+    1280 x 640. GitHub's social preview wants a PNG under 1 MB.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../core/dist/styles/bundle/britecharts.min.css">
+<style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+        width: 1280px;
+        height: 640px;
+        overflow: hidden;
+        background: #ffffff;
+        font-family: -apple-system, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+        color: #1d2a33;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        padding: 64px 72px 48px;
+    }
+    header { display: grid; gap: 18px; justify-items: center; text-align: center; }
+    header img { width: 520px; height: auto; }
+    .tagline { font-size: 34px; line-height: 1.25; font-weight: 600; max-width: 1000px; margin: 0; letter-spacing: -0.01em; }
+    .facts { font-size: 22px; color: #5a6b77; margin: 0; }
+    .charts {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr 1.2fr;
+        gap: 28px;
+        align-items: end;
+        margin-top: 36px;
+    }
+    .chart { border: 1px solid #e3e8ec; border-radius: 14px; padding: 12px 14px 6px; height: 250px; display: grid; align-items: end; }
+</style>
+</head>
+<body>
+<header>
+    <img src="../static/img/brand/britecharts-logo.svg" alt="Britecharts">
+    <p class="tagline">Finished, accessible charts for any page, and any agent.</p>
+    <p class="facts">Screen readers and keyboards · Dark mode · Plain JavaScript or React · Free and open source</p>
+</header>
+<div class="charts">
+    <div class="chart" id="bar"></div>
+    <div class="chart" id="donut"></div>
+    <div class="chart" id="area"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>
+<script src="../../core/dist/cdn/bundle/core.cdn.min.js"></script>
+<script>
+    const { bar, donut, stackedArea } = core;
+    const words = ['Shiny', 'Blazing', 'Glittering', 'Radiant', 'Sunny'];
+    const box = (id) => document.getElementById(id).getBoundingClientRect();
+
+    const b = box('bar');
+    d3.select('#bar')
+        .datum(words.map((name, i) => ({ name, value: [12, 31, 18, 24, 15][i] })))
+        .call(bar().width(b.width - 28).height(230).isAnimated(false)
+            .colorSchema(['#39c2c9', '#6aedc7', '#ffce00', '#ffa71a', '#f866b9'])
+            .margin({ top: 10, right: 10, bottom: 30, left: 30 }));
+
+    const d = box('donut');
+    d3.select('#donut')
+        .datum(words.map((name, i) => ({ name, id: i, quantity: [10, 25, 15, 30, 20][i] })))
+        .call(donut().width(d.width - 28).height(230).isAnimated(false)
+            .externalRadius(105).internalRadius(52).hasCenterLegend(false));
+
+    const a = box('area');
+    const dates = ['2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04', '2026-10-05', '2026-10-06', '2026-10-07'];
+    const series = { Shiny: [3, 5, 4, 6, 5, 7, 8], Radiant: [2, 3, 5, 4, 6, 5, 6], Sunny: [1, 2, 2, 3, 3, 4, 3] };
+    d3.select('#area')
+        .datum(Object.entries(series).flatMap(([name, values]) => dates.map((date, i) => ({ date, name, value: values[i] }))))
+        .call(stackedArea().width(a.width - 28).height(230).isAnimated(false)
+            .grid('horizontal').xTicks(3)
+            .margin({ top: 10, right: 10, bottom: 30, left: 30 }));
+</script>
+</body>
+</html>
