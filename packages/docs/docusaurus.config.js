@@ -63,6 +63,8 @@ module.exports = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
+            // Shown when a page is shared; scripts/social-preview.html draws it
+            image: 'img/social-preview.png',
             navbar: {
                 logo: {
                     alt: 'Britecharts Logo',
