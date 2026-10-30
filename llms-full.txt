@@ -1088,6 +1088,8 @@ The bar, grouped bar, stacked bar, brush and scatter plot charts draw negative v
 The line and stacked area charts plot negative values as they are. Axis labels for negative numbers use the typographic minus sign: see [how to format numbers](https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-format-numbers-and-dates-for-your-language) to change it.
 
 ## How to Make a Chart Accessible
+For an overview with live charts to try, and how other libraries compare, see [Accessible JavaScript Charts](https://britecharts.github.io/britecharts/docs/accessibility).
+
 Every chart gives its svg a role and a name that screen readers announce: "Bar chart" by default. Name it after what it shows, and add a sentence about what it means:
 
 ```js
