@@ -450,10 +450,7 @@ export default function module(): DonutChartModule {
      * @private
      */
     function buildContainerGroups(): void {
-        const container = svg
-            .append('g')
-            .classed('container-group', true)
-            .attr('transform', `translate(${width / 2}, ${height / 2})`);
+        const container = svg.append('g').classed('container-group', true);
 
         svg.append('g').classed('loading-state-group', true);
 
@@ -529,6 +526,13 @@ export default function module(): DonutChartModule {
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
             .attr('width', width)
             .attr('height', height);
+
+        // On every draw, not only the first, so a new width or height moves
+        // the donut to the new centre
+        svg.select('.container-group').attr(
+            'transform',
+            `translate(${width / 2}, ${height / 2})`
+        );
 
         labelChart(svg.node(), {
             a11yTitle,
