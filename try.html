@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="plugin-pages plugin-id-default" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.2">
+<title data-rh="true">Try Britecharts | Britecharts</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://britecharts.github.io/britecharts/try"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="Try Britecharts | Britecharts"><meta data-rh="true" name="description" content="Open a running Britecharts example in your browser, in plain JavaScript or React, with nothing to install."><meta data-rh="true" property="og:description" content="Open a running Britecharts example in your browser, in plain JavaScript or React, with nothing to install."><link data-rh="true" rel="icon" href="/britecharts/img/icons/favicon.ico"><link data-rh="true" rel="canonical" href="https://britecharts.github.io/britecharts/try"><link data-rh="true" rel="alternate" href="https://britecharts.github.io/britecharts/try" hreflang="en"><link data-rh="true" rel="alternate" href="https://britecharts.github.io/britecharts/try" hreflang="x-default"><link rel="alternate" type="application/rss+xml" href="/britecharts/blog/rss.xml" title="Britecharts RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/britecharts/blog/atom.xml" title="Britecharts Atom Feed">
+
+<link rel="preconnect" href="https://www.google-analytics.com">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
+<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.2861a6d5.css">
+<script src="/britecharts/assets/js/runtime~main.ff41ac4f.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.28291310.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/britecharts/img/brand/britecharts-logo.svg"><div role="region" aria-label="Skip to main content"><a class="skipToContent_qZsu" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/britecharts/"><div class="navbar__logo"><img src="/britecharts/img/brand/britecharts-logo.svg" alt="Britecharts Logo" class="themedComponent_n8zL themedComponent--light_kWg1"><img src="/britecharts/img/brand/britecharts-logo.svg" alt="Britecharts Logo" class="themedComponent_n8zL themedComponent--dark_aXcq"></div></a><a class="navbar__item navbar__link" href="/britecharts/docs/Britecharts">Documentation</a><a class="navbar__item navbar__link" href="/britecharts/docs/API/bar">API Reference</a><a href="/britecharts/storybook/" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">StoryBook<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a><a class="navbar__item navbar__link" href="/britecharts/blog">Blog</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_RY12 colorModeToggle_cjBp"><button class="clean-btn toggleButton_Vhx4 toggleButtonDisabled_uh_Q" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_mdhc lightToggleIcon_gaFB"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_mdhc darkToggleIcon_Tr5K"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_mdhc systemToggleIcon_ESyr"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_EbT2"><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input id="search_input_react" type="search" placeholder="Loading..." aria-label="Search" class="navbar__search-input search-bar" disabled=""></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_GKor"><main class="container margin-vert--xl"><h1>Try Britecharts</h1><p class="lede_YOrH">Open a running example on StackBlitz, with nothing to install. Each draws a bar chart and a line chart with their tooltips, switches to dark mode, and moves through the data with the keyboard. StackBlitz installs the packages from npm and starts the app in a new tab, which takes about half a minute.</p><div class="examples_tDDI"><section class="card"><div class="card__header"><h2>Plain JavaScript</h2></div><div class="card__body"><p>Britecharts in plain JavaScript: a bar chart and a line chart with tooltips, dark mode and keyboard navigation</p></div><div class="card__footer"><form action="https://stackblitz.com/run?file=main.js" method="post" target="_blank"><input type="hidden" name="project[title]" value="Britecharts: Plain JavaScript"><input type="hidden" name="project[description]" value="Britecharts in plain JavaScript: a bar chart and a line chart with tooltips, dark mode and keyboard navigation"><input type="hidden" name="project[template]" value="node"><input type="hidden" name="project[files][.stackblitzrc]" value="{
+  &quot;installDependencies&quot;: true,
+  &quot;startCommand&quot;: &quot;npm run dev&quot;
+}
+"><input type="hidden" name="project[files][index.html]" value="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot; /&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+        &lt;title&gt;Britecharts in plain JavaScript&lt;/title&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;/style.css&quot; /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;main&gt;
+            &lt;header&gt;
+                &lt;h1&gt;Britecharts in plain JavaScript&lt;/h1&gt;
+                &lt;button id=&quot;theme&quot; type=&quot;button&quot;&gt;Dark mode&lt;/button&gt;
+            &lt;/header&gt;
+            &lt;p&gt;
+                Hover a chart for its tooltip, or press Tab to reach it and use
+                the arrow keys. Screen readers also get each chart&#x27;s data as a
+                table.
+            &lt;/p&gt;
+            &lt;section&gt;
+                &lt;h2&gt;Uses of each word&lt;/h2&gt;
+                &lt;div class=&quot;chart&quot; id=&quot;bar&quot;&gt;&lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section&gt;
+                &lt;h2&gt;Uses over a week&lt;/h2&gt;
+                &lt;div class=&quot;chart&quot; id=&quot;line&quot;&gt;&lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/main&gt;
+        &lt;script type=&quot;module&quot; src=&quot;/main.js&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+"><input type="hidden" name="project[files][main.js]" value="import { select } from &#x27;d3-selection&#x27;;
+import { bar, line, miniTooltip, tooltip } from &#x27;@britecharts/core&#x27;;
+import &#x27;@britecharts/core/dist/styles/bundle/britecharts.min.css&#x27;;
+
+const words = [&#x27;Shiny&#x27;, &#x27;Blazing&#x27;, &#x27;Glittering&#x27;, &#x27;Radiant&#x27;, &#x27;Sunny&#x27;];
+
+const barData = words.map((name, i) =&gt; ({
+    name,
+    value: [12, 31, 18, 24, 15][i],
+}));
+
+// The line chart takes one row per point: `name` identifies the line and
+// `topicName` labels it
+const days = [
+    &#x27;2026-10-19&#x27;,
+    &#x27;2026-10-20&#x27;,
+    &#x27;2026-10-21&#x27;,
+    &#x27;2026-10-22&#x27;,
+    &#x27;2026-10-23&#x27;,
+];
+const lineData = {
+    data: [&#x27;Blazing&#x27;, &#x27;Radiant&#x27;].flatMap((topicName, line) =&gt;
+        days.map((date, i) =&gt; ({
+            date,
+            name: line + 1,
+            topicName,
+            value: [
+                [4, 7, 6, 9, 8],
+                [3, 4, 6, 5, 7],
+            ][line][i],
+        }))
+    ),
+};
+
+function drawBar(container) {
+    const chart = bar()
+        .width(container.getBoundingClientRect().width)
+        .height(300)
+        .a11yTitle(&#x27;Uses of each word&#x27;);
+    const chartTooltip = miniTooltip().title(&#x27;Uses&#x27;).numberFormat(&#x27;d&#x27;);
+
+    chart
+        .on(&#x27;customMouseOver&#x27;, chartTooltip.show)
+        .on(&#x27;customMouseMove&#x27;, chartTooltip.update)
+        .on(&#x27;customMouseOut&#x27;, chartTooltip.hide);
+
+    select(container).datum(barData).call(chart);
+    select(container).select(&#x27;.metadata-group&#x27;).datum([]).call(chartTooltip);
+}
+
+function drawLine(container) {
+    const chart = line()
+        .width(container.getBoundingClientRect().width)
+        .height(300)
+        .grid(&#x27;horizontal&#x27;)
+        .a11yTitle(&#x27;Uses over a week&#x27;);
+    // The line chart sends the hovered date&#x27;s values under `topics`
+    const chartTooltip = tooltip().title(&#x27;Uses&#x27;).topicLabel(&#x27;topics&#x27;);
+
+    chart
+        .on(&#x27;customMouseOver&#x27;, chartTooltip.show)
+        .on(&#x27;customMouseMove&#x27;, chartTooltip.update)
+        .on(&#x27;customMouseOut&#x27;, chartTooltip.hide);
+
+    select(container).datum(lineData).call(chart);
+    select(container)
+        .select(&#x27;.metadata-group .hover-marker&#x27;)
+        .datum([])
+        .call(chartTooltip);
+}
+
+drawBar(document.getElementById(&#x27;bar&#x27;));
+drawLine(document.getElementById(&#x27;line&#x27;));
+
+// The charts take their colours from the page&#x27;s color-scheme
+const themeButton = document.getElementById(&#x27;theme&#x27;);
+
+themeButton.addEventListener(&#x27;click&#x27;, () =&gt; {
+    const isDark = document.documentElement.classList.toggle(&#x27;dark&#x27;);
+
+    themeButton.textContent = isDark ? &#x27;Light mode&#x27; : &#x27;Dark mode&#x27;;
+});
+"><input type="hidden" name="project[files][package.json]" value="{
+    &quot;name&quot;: &quot;britecharts-example-vanilla&quot;,
+    &quot;private&quot;: true,
+    &quot;description&quot;: &quot;Britecharts in plain JavaScript: a bar chart and a line chart with tooltips, dark mode and keyboard navigation&quot;,
+    &quot;type&quot;: &quot;module&quot;,
+    &quot;scripts&quot;: {
+        &quot;dev&quot;: &quot;vite&quot;,
+        &quot;build&quot;: &quot;vite build&quot;
+    },
+    &quot;dependencies&quot;: {
+        &quot;@britecharts/core&quot;: &quot;^3.0.0-beta.8&quot;,
+        &quot;d3-selection&quot;: &quot;^3.0.0&quot;
+    },
+    &quot;devDependencies&quot;: {
+        &quot;vite&quot;: &quot;^8.3.4&quot;
+    }
+}
+"><input type="hidden" name="project[files][style.css]" value=":root {
+    color-scheme: light;
+    font-family: system-ui, sans-serif;
+}
+
+:root.dark {
+    color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    background: light-dark(#fff, #121417);
+    color: light-dark(#1d2a33, #e4ecf1);
+}
+
+main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+h2 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+section {
+    margin-top: 24px;
+}
+
+.chart {
+    width: 100%;
+}
+"><button class="button button--primary" type="submit">Open in StackBlitz</button></form></div></section><section class="card"><div class="card__header"><h2>React</h2></div><div class="card__body"><p>Britecharts in React: a bar chart and a line chart with tooltips, dark mode and keyboard navigation</p></div><div class="card__footer"><form action="https://stackblitz.com/run?file=src/App.jsx" method="post" target="_blank"><input type="hidden" name="project[title]" value="Britecharts: React"><input type="hidden" name="project[description]" value="Britecharts in React: a bar chart and a line chart with tooltips, dark mode and keyboard navigation"><input type="hidden" name="project[template]" value="node"><input type="hidden" name="project[files][.stackblitzrc]" value="{
+  &quot;installDependencies&quot;: true,
+  &quot;startCommand&quot;: &quot;npm run dev&quot;
+}
+"><input type="hidden" name="project[files][index.html]" value="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot; /&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+        &lt;title&gt;Britecharts in React&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+        &lt;script type=&quot;module&quot; src=&quot;/src/main.jsx&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+"><input type="hidden" name="project[files][package.json]" value="{
+    &quot;name&quot;: &quot;britecharts-example-react&quot;,
+    &quot;private&quot;: true,
+    &quot;description&quot;: &quot;Britecharts in React: a bar chart and a line chart with tooltips, dark mode and keyboard navigation&quot;,
+    &quot;type&quot;: &quot;module&quot;,
+    &quot;scripts&quot;: {
+        &quot;dev&quot;: &quot;vite&quot;,
+        &quot;build&quot;: &quot;vite build&quot;
+    },
+    &quot;dependencies&quot;: {
+        &quot;@britecharts/core&quot;: &quot;^3.0.0-beta.8&quot;,
+        &quot;@britecharts/react&quot;: &quot;^3.0.0-beta.8&quot;,
+        &quot;react&quot;: &quot;^19.3.1&quot;,
+        &quot;react-dom&quot;: &quot;^19.3.1&quot;
+    },
+    &quot;devDependencies&quot;: {
+        &quot;@vitejs/plugin-react&quot;: &quot;^6.1.2&quot;,
+        &quot;vite&quot;: &quot;^8.3.4&quot;
+    }
+}
+"><input type="hidden" name="project[files][src/App.jsx]" value="import { useState } from &#x27;react&#x27;;
+import { Bar, Line, ResponsiveContainer, Tooltip } from &#x27;@britecharts/react&#x27;;
+import &#x27;@britecharts/core/dist/styles/bundle/britecharts.min.css&#x27;;
+
+const words = [&#x27;Shiny&#x27;, &#x27;Blazing&#x27;, &#x27;Glittering&#x27;, &#x27;Radiant&#x27;, &#x27;Sunny&#x27;];
+
+const barData = words.map((name, i) =&gt; ({
+    name,
+    value: [12, 31, 18, 24, 15][i],
+}));
+
+// The line chart takes one row per point: `name` identifies the line and
+// `topicName` labels it
+const days = [
+    &#x27;2026-10-19&#x27;,
+    &#x27;2026-10-20&#x27;,
+    &#x27;2026-10-21&#x27;,
+    &#x27;2026-10-22&#x27;,
+    &#x27;2026-10-23&#x27;,
+];
+const lineData = {
+    data: [&#x27;Blazing&#x27;, &#x27;Radiant&#x27;].flatMap((topicName, line) =&gt;
+        days.map((date, i) =&gt; ({
+            date,
+            name: line + 1,
+            topicName,
+            value: [
+                [4, 7, 6, 9, 8],
+                [3, 4, 6, 5, 7],
+            ][line][i],
+        }))
+    ),
+};
+
+export default function App() {
+    const [isDark, setIsDark] = useState(false);
+
+    // The charts take their colours from the page&#x27;s color-scheme
+    const toggleTheme = () =&gt; {
+        document.documentElement.classList.toggle(&#x27;dark&#x27;, !isDark);
+        setIsDark(!isDark);
+    };
+
+    return (
+        &lt;main&gt;
+            &lt;header&gt;
+                &lt;h1&gt;Britecharts in React&lt;/h1&gt;
+                &lt;button type=&quot;button&quot; onClick={toggleTheme}&gt;
+                    {isDark ? &#x27;Light mode&#x27; : &#x27;Dark mode&#x27;}
+                &lt;/button&gt;
+            &lt;/header&gt;
+            &lt;p&gt;
+                Hover a chart for its tooltip, or press Tab to reach it and use
+                the arrow keys. Screen readers also get each chart&amp;apos;s data
+                as a table.
+            &lt;/p&gt;
+            &lt;section&gt;
+                &lt;h2&gt;Uses of each word&lt;/h2&gt;
+                &lt;ResponsiveContainer
+                    render={({ width }) =&gt; (
+                        &lt;Tooltip
+                            data={barData}
+                            title=&quot;Uses&quot;
+                            render={(props) =&gt; (
+                                &lt;Bar
+                                    {...props}
+                                    width={width}
+                                    height={300}
+                                    a11yTitle=&quot;Uses of each word&quot;
+                                /&gt;
+                            )}
+                        /&gt;
+                    )}
+                /&gt;
+            &lt;/section&gt;
+            &lt;section&gt;
+                &lt;h2&gt;Uses over a week&lt;/h2&gt;
+                &lt;ResponsiveContainer
+                    render={({ width }) =&gt; (
+                        &lt;Tooltip
+                            data={lineData}
+                            title=&quot;Uses&quot;
+                            // The line chart sends the hovered date&#x27;s values under `topics`
+                            topicLabel=&quot;topics&quot;
+                            render={(props) =&gt; (
+                                &lt;Line
+                                    {...props}
+                                    width={width}
+                                    height={300}
+                                    grid=&quot;horizontal&quot;
+                                    a11yTitle=&quot;Uses over a week&quot;
+                                /&gt;
+                            )}
+                        /&gt;
+                    )}
+                /&gt;
+            &lt;/section&gt;
+        &lt;/main&gt;
+    );
+}
+"><input type="hidden" name="project[files][src/main.jsx]" value="import { StrictMode } from &#x27;react&#x27;;
+import { createRoot } from &#x27;react-dom/client&#x27;;
+
+import App from &#x27;./App.jsx&#x27;;
+import &#x27;./style.css&#x27;;
+
+createRoot(document.getElementById(&#x27;root&#x27;)).render(
+    &lt;StrictMode&gt;
+        &lt;App /&gt;
+    &lt;/StrictMode&gt;
+);
+"><input type="hidden" name="project[files][src/style.css]" value=":root {
+    color-scheme: light;
+    font-family: system-ui, sans-serif;
+}
+
+:root.dark {
+    color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    background: light-dark(#fff, #121417);
+    color: light-dark(#1d2a33, #e4ecf1);
+}
+
+main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+h2 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+section {
+    margin-top: 24px;
+}
+"><input type="hidden" name="project[files][vite.config.js]" value="import { defineConfig } from &#x27;vite&#x27;;
+import react from &#x27;@vitejs/plugin-react&#x27;;
+
+export default defineConfig({
+    plugins: [react()],
+});
+"><button class="button button--primary" type="submit">Open in StackBlitz</button></form></div></section></div><p class="source_erp2">The examples live in the repository&#x27;s<!-- --> <a href="https://github.com/britecharts/britecharts/tree/main/examples">examples folder</a>. To run one on your machine, copy its folder, then run <code>npm install</code> <!-- -->and <code>npm run dev</code>.</p></main></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
+</body>
+</html>
