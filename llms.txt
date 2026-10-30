@@ -47,4 +47,5 @@ The whole of this documentation, as one text file: https://britecharts.github.io
 - [Domain helpers](https://britecharts.github.io/britecharts/docs/API/helpers/domain): Internal helpers the charts share
 - [Grid helpers](https://britecharts.github.io/britecharts/docs/API/helpers/grid): Internal helpers the charts share
 - [Keyboard helpers](https://britecharts.github.io/britecharts/docs/API/helpers/keyboard): Internal helpers the charts share
+- [Render helpers](https://britecharts.github.io/britecharts/docs/API/helpers/render): Internal helpers the charts share
 - [Scale helpers](https://britecharts.github.io/britecharts/docs/API/helpers/scale): Internal helpers the charts share

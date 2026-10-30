@@ -2480,6 +2480,26 @@ Gets or Sets the number of vertical ticks on the chart
 | --- | --- | --- |
 | _x | `Number` | = 6         Desired number of vertical ticks for the graph |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+bar().width(600).render('#chart', data);
+```
 ## exports~BarChartData : `Array.<Object>`
 **Kind**: inner typedef of `exports`  
 **Properties**
@@ -2775,6 +2795,26 @@ timeWeek, utcWeek, timeSunday, utcSunday, timeMonday, utcMonday, timeTuesday, ut
 utcWednesday, timeThursday, utcThursday, timeFriday, utcFriday, timeSaturday, utcSaturday, timeMonth, utcMonth,
 timeYear and utcYear.
 ```
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+brush().width(600).render('#chart', data);
+```
 ## "customBrushStart"
 Event indicating when the brush moves
 
@@ -3008,6 +3048,26 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | `Number` | Desired width for the chart |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+bullet().width(600).render('#chart', data);
+```
 ## exports~BulletChartData : `Object`
 **Kind**: inner typedef of `exports`  
 **Properties**
@@ -3346,6 +3406,26 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | `Number` | Desired width for the graph |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+donut().width(600).render('#chart', data);
+```
 ## exports~DonutChartData : `Array.<Object>`
 **Kind**: inner typedef of `exports`  
 **Properties**
@@ -3677,6 +3757,26 @@ Gets or Sets the x and y offset of ticks of the y axis on the chart
 | --- | --- | --- | --- |
 | [_x] | `Object` | `{ y: -8, x: -20 }` | Desired offset |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+groupedBar().width(600).render('#chart', data);
+```
 ## exports~GroupedBarChartData : `Array.<Object>`
 **Kind**: inner typedef of `exports`  
 **Properties**
@@ -3893,6 +3993,26 @@ Gets or Sets the width of the chart
 | --- | --- | --- | --- |
 | _x | `Number` | `780` | Desired width for the chart |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+heatmap().width(600).render('#chart', data);
+```
 ## exports~HeatmapData : `Array.<Object>`
 The data a heatmap takes: one entry per box.
 
@@ -4098,6 +4218,26 @@ Gets or Sets the width of the legend chart
 | --- | --- | --- | --- |
 | [_x] | `number` | `320` | Desired width for the graph in pixels |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+legend().width(600).render('#chart', data);
+```
 ## exports~LegendChartData : `Array.<Object>`
 **Kind**: inner typedef of `exports`  
 **Properties**
@@ -4506,6 +4646,26 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 **Example**  
 ```js
 line.xAxisValueType('number').xAxisScale('logarithmic')
+```
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+line().width(600).render('#chart', data);
 ```
 ## exports~D3Selection : `Array.<Array>`
 **Kind**: inner typedef of `exports`  
@@ -5035,6 +5195,26 @@ Gets or Sets the xTicks of the chart
 | --- | --- | --- |
 | _x | `Number` | Desired height for the chart |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+scatterPlot().width(600).render('#chart', data);
+```
 ## exports~nameToColorMap
 Maps data point category name to
 each color of the given color scheme
@@ -5238,6 +5418,26 @@ Gets or Sets the width of the chart
 | --- | --- | --- | --- |
 | _x | `number` | `100` | Desired width for the graph |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+sparkline().width(600).render('#chart', data);
+```
 ## exports~SparklineChartData : `Array.<Object>`
 **Kind**: inner typedef of `exports`  
 **Properties**
@@ -5671,6 +5871,26 @@ Gets or Sets the yAxisBaseline - this is the y-value where the area starts from 
 ```js
 stackedArea.yAxisBaseline(20)
 ```
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+stackedArea().width(600).render('#chart', data);
+```
 ## exports~AreaChartData : `Array.<Object>`
 **Kind**: inner typedef of `exports`  
 **Properties**
@@ -6020,6 +6240,26 @@ Gets or Sets the number of vertical ticks of the axis on the chart
 | --- | --- | --- |
 | _x | `Number` | = 5      Desired vertical ticks |
 
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+stackedBar().width(600).render('#chart', data);
+```
 ## exports~StackedBarData : `Array.<Object>`
 **Kind**: inner typedef of `exports`  
 **Properties**
