@@ -11,6 +11,7 @@
 /static/llms-full.txt
 /static/schema
 /static/r
+/src/data/examples.json
 
 # Misc
 .DS_Store

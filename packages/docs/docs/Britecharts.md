@@ -79,7 +79,7 @@ Coming from version 2? Read the [migration guide][migration-guide].
 
 ### Try it in your browser
 
-Open a running example on StackBlitz, with nothing to install: [plain JavaScript][example-vanilla] or [React][example-react]. Each draws a bar chart and a line chart with their tooltips, switches to dark mode, and moves through the data with the keyboard.
+[Open a running example on StackBlitz][try-page], in plain JavaScript or React, with nothing to install. Each draws a bar chart and a line chart with their tooltips, switches to dark mode, and moves through the data with the keyboard.
 
 ### From a CDN, with no build step
 
@@ -319,5 +319,4 @@ Read more in the [license document][britecharts-license]
 [britecharts-react]: https://britecharts.github.io/britecharts-react/
 [github-projects]: https://github.com/orgs/britecharts/projects
 [react-package]: https://britecharts.github.io/britecharts/docs/packages/react-readme
-[example-vanilla]: https://stackblitz.com/github/britecharts/britecharts/tree/main/examples/vanilla?file=main.js
-[example-react]: https://stackblitz.com/github/britecharts/britecharts/tree/main/examples/react?file=src/App.jsx
+[try-page]: https://britecharts.github.io/britecharts/try
