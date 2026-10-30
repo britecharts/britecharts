@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Britecharts in plain JavaScript</title>
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body>
+        <main>
+            <header>
+                <h1>Britecharts in plain JavaScript</h1>
+                <button id="theme" type="button">Dark mode</button>
+            </header>
+            <p>
+                Hover a chart for its tooltip, or press Tab to reach it and use
+                the arrow keys. Screen readers also get each chart's data as a
+                table.
+            </p>
+            <section>
+                <h2>Uses of each word</h2>
+                <div class="chart" id="bar"></div>
+            </section>
+            <section>
+                <h2>Uses over a week</h2>
+                <div class="chart" id="line"></div>
+            </section>
+        </main>
+        <script type="module" src="/main.js"></script>
+    </body>
+</html>

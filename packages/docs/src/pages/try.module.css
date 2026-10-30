@@ -1,0 +1,15 @@
+.lede {
+    max-width: 65ch;
+    font-size: 1.1rem;
+}
+
+.examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-block: 2rem;
+}
+
+.source {
+    max-width: 65ch;
+}

@@ -1,0 +1,20 @@
+{
+    "name": "britecharts-example-react",
+    "private": true,
+    "description": "Britecharts in React: a bar chart and a line chart with tooltips, dark mode and keyboard navigation",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "dependencies": {
+        "@britecharts/core": "^3.0.0-beta.8",
+        "@britecharts/react": "^3.0.0-beta.8",
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-react": "^6.1.2",
+        "vite": "^8.3.4"
+    }
+}

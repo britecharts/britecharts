@@ -1,0 +1,17 @@
+{
+    "name": "britecharts-example-vanilla",
+    "private": true,
+    "description": "Britecharts in plain JavaScript: a bar chart and a line chart with tooltips, dark mode and keyboard navigation",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "dependencies": {
+        "@britecharts/core": "^3.0.0-beta.8",
+        "d3-selection": "^3.0.0"
+    },
+    "devDependencies": {
+        "vite": "^8.3.4"
+    }
+}
