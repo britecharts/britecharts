@@ -56,6 +56,11 @@ Agents write Britecharts correctly on the first try more often when the library 
 -   ✅ **A JSON Schema for every chart's spec**, so an editor or an agent can validate a config without running it.
 -   💬 **Errors that say how to fix them**: a misspelt key gets "did you mean `height`?" and a link to the chart's API page, and a value of the wrong type says what it should be.
 
+### Charting since 2015
+Britecharts started at Eventbrite in May 2015. Version 1 reached npm in March 2017, and version 2 followed that August. Since then, 55 people have contributed code and the repository has earned over 3,700 stars on GitHub. Version 2 is still installed about 5,000 times a week.
+
+Version 3 keeps the idea that made those charts last: a chart is a function you configure and then call on your data. It rebuilds everything around it in TypeScript, with accessibility, theming, React components and tools for coding agents.
+
 ## What's New in Version 3
 
 Version 3 is a rewrite of Britecharts in TypeScript, on D3 v7, as three packages: [`@britecharts/core`][core-package], [`@britecharts/wrappers`][wrappers-package] and [`@britecharts/react`][react-package].

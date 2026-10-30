@@ -1,5 +1,8 @@
 ---
 name: britecharts
+license: Apache-2.0
+metadata:
+  author: britecharts
 description: Write correct code with Britecharts v3, the D3-based charting library — @britecharts/core (vanilla JS), @britecharts/wrappers (framework glue) and @britecharts/react. Use this skill whenever the user wants to add, configure, fix or upgrade a Britecharts chart (bar, line, donut, stacked area, stacked bar, grouped bar, scatter plot, heatmap, sparkline, bullet, brush, legend or tooltip), when a project's package.json lists britecharts or @britecharts/*, when code calls things like bar().width(...) or imports from '@britecharts/react', or when migrating from britecharts v2 or britecharts-react. Also use it when the user asks for a chart in a project that already uses Britecharts, even if they don't name the library.
 ---
 
