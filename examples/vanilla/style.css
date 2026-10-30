@@ -1,0 +1,44 @@
+:root {
+    color-scheme: light;
+    font-family: system-ui, sans-serif;
+}
+
+:root.dark {
+    color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    background: light-dark(#fff, #121417);
+    color: light-dark(#1d2a33, #e4ecf1);
+}
+
+main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+h2 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+section {
+    margin-top: 24px;
+}
+
+.chart {
+    width: 100%;
+}
