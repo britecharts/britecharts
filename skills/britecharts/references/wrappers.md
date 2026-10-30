@@ -70,4 +70,4 @@ onBeforeUnmount(() => LineWrapper.destroy(el.value));
 
 ## Tooltips
 
-`TooltipWrapper.create(element, config)` takes no data. Its `update` takes a state object, `{ isActive, x, y, dataPoint, topicColorMap }`, not data. For most framework code it's simpler to draw the chart through its wrapper and attach a core `tooltip()` to the chart's svg, as the tooltip section of `SKILL.md` shows, using the chart instance `create` returned.
+`TooltipWrapper.create(element, config)` takes no data. Its `update` takes a state object, `{ isActive, x, y, dataPoint, topicColorMap }`, not data. For most framework code it's simpler to draw the chart through its wrapper and give the chart instance `create` returned a core tooltip with its `tooltip` setting, as the tooltip section of `SKILL.md` shows: `BarWrapper.create(el, data, config).tooltip(miniTooltip())`. The config can't name `tooltip`.

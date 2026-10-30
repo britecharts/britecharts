@@ -77,7 +77,7 @@ To change a colour, set its token on the charts:
 The data colours come from `colorSchema` and `colorMap`, not from these tokens. Exports carry the resolved colours, so an image exported in dark mode keeps its dark background. Browsers without `light-dark()` (before 2024) show the light values.
 
 ## How to Add a Tooltip to a Chart
-Give the chart a tooltip with its `tooltip` setting: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, heatmap and scatter plot, which show one value.
+Give the chart a tooltip with its `tooltip` setting: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, heatmap and scatter plot, which show one value. The donut has no tooltip: it shows the hovered slice in its centre instead.
 
 ```js
 stackedBar()
@@ -88,12 +88,18 @@ stackedBar()
 The chart does the rest, on every draw. It shows the tooltip when the pointer or the keyboard reaches a data point, moves it as they move and hides it when they leave. It draws the tooltip in place, and sets the labels that tell the tooltip which fields of its data points to read, unless you set them on the tooltip yourself. Set `tooltip(null)` to remove it. A tooltip belongs to one chart, so give each chart its own.
 
 ### Connect a tooltip by hand
-For the donut, or to change the data point before the tooltip shows it, connect the tooltip yourself:
+To change the data point before the tooltip shows it, connect the tooltip yourself.
+
+Drawing the tooltip by hand takes d3's `select`, which the `tooltip` setting does not need. With npm, run `npm install d3-selection` and import `select` from it. On a CDN page, add `<script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>` and call `d3.select`.
+
 1. Connect the chart's `customMouseOver`, `customMouseMove` and `customMouseOut` events to the tooltip's `show`, `update` and `hide`
 1. Tell the tooltip where the chart keeps its data, if the table below lists a setting for it
 1. Draw the chart, then call the tooltip on the chart's `.metadata-group` (for the line and stacked area, on `.metadata-group .vertical-marker-container`)
 
 ```js
+import { stackedBar, tooltip } from '@britecharts/core';
+import { select } from 'd3-selection';
+
 const stackedBarChart = stackedBar();
 const chartTooltip = tooltip()
     .topicLabel('values')
@@ -117,7 +123,7 @@ The charts do not all name the fields of the data point they send the tooltip th
 | Stacked bar | `topicLabel('values')`, `nameLabel('stack')` | `nameLabel="stack"` |
 | Grouped bar | `topicLabel('values')`, `nameLabel('group')` | `nameLabel="group"` |
 | Scatter plot | `valueLabel('y')` | `valueLabel="y"` |
-| Bar, donut, heatmap | none | none |
+| Bar, heatmap | none | none |
 
 React's `Tooltip` starts from `topicLabel('values')`, which is why the line chart is the one that needs a prop there. The [tooltip reference][tooltipAPI] describes each setting, and the [Storybook][storybook] shows each chart with its tooltip configured.
 

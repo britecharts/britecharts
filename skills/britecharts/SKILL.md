@@ -65,7 +65,7 @@ const barChart = bar()
 barChart.render(container, data);
 ```
 
-- `render(target, data)` takes a CSS selector, an element or a d3 selection, and throws if the target matches nothing. Don't add d3-selection just to draw: `select(el).datum(data).call(chart)` still works, but only use it in code that already uses d3.
+- `render(target, data)` takes a CSS selector, an element or a d3 selection, and throws if the target matches nothing. Don't add d3-selection just to draw: `select(el).datum(data).call(chart)` still works, but only use it in code that already uses d3. The one other reason to add d3-selection is a tooltip wired by hand (see Tooltips).
 - Create one chart instance per container and keep it. To redraw with new data or settings, change accessors on the same instance and render again: `barChart.render(container, newData)`, or `barChart.render(container)` to redraw with the same data.
 - Setters return the chart, so they chain; getters (no argument) return the value, and an accessor you never set reads `null`.
 - Charts take their width from you. For a responsive chart, measure the container and redraw on resize (React's `ResponsiveContainer` does this for you).
@@ -114,7 +114,9 @@ The chart connects the tooltip to its pointer and keyboard events, draws it in t
 | `line`, `stackedArea`, `stackedBar`, `groupedBar` | `tooltip()` |
 | `bar`, `heatmap`, `scatterPlot` | `miniTooltip()` |
 
-To customise the title per point, or for the donut, which has no `tooltip` setting, wire it by hand: connect `customMouseOver`, `customMouseMove` and `customMouseOut` to the tooltip's `show`, `update` and `hide`, render the chart, then call the tooltip on `.metadata-group` (`.metadata-group .vertical-marker-container` on the line and stacked area) with `.datum([])`. By hand, set the labels yourself: `.topicLabel('values')` on the stacked area; `.topicLabel('values').nameLabel('stack')` on the stacked bar; `.topicLabel('values').nameLabel('group')` on the grouped bar; `.valueLabel('y')` on the scatter plot. The charts dispatch `(dataPoint, [x, y], [width, height], colorMap)`, so a custom title looks like `(d, ...rest) => chartTooltip.title(d.name).update(d, ...rest)`.
+The donut takes no tooltip: it has no element to draw one in. It shows the hovered slice in its centre instead (`hasCenterLegend`, `centeredTextFunction`), or pair it with a `legend`.
+
+To customise the title per point, wire it by hand: connect `customMouseOver`, `customMouseMove` and `customMouseOut` to the tooltip's `show`, `update` and `hide`, render the chart, then call the tooltip on `.metadata-group` (`.metadata-group .vertical-marker-container` on the line and stacked area) with `.datum([])`. That call needs d3's `select`, so hand wiring needs d3-selection: `npm install d3-selection` and `import { select } from 'd3-selection'`, or on a CDN page the `https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js` script and `d3.select`. By hand, set the labels yourself: `.topicLabel('values')` on the stacked area; `.topicLabel('values').nameLabel('stack')` on the stacked bar; `.topicLabel('values').nameLabel('group')` on the grouped bar; `.valueLabel('y')` on the scatter plot. The charts dispatch `(dataPoint, [x, y], [width, height], colorMap)`, so a custom title looks like `(d, ...rest) => chartTooltip.title(d.name).update(d, ...rest)`.
 
 ## React
 
@@ -144,8 +146,8 @@ Use `@britecharts/wrappers`: `BarWrapper.create(element, data, config)` returns 
 - Every field name in the data matches the chart's row in the table above.
 - The stylesheet is imported once.
 - Each accessor used appears in the chart's list in `references/charts.md`; nothing from v2 (`aspectRatio`, `nameLabel` on a chart, `loadingMarkup`, `dataByTopic`, `step`).
-- Tooltips go through the chart's `tooltip` setting, one tooltip per chart, unless the code needs a custom title or uses the donut.
-- Charts draw with `render`, with no d3-selection import unless the code already uses d3.
+- In vanilla code, tooltips go through the chart's `tooltip` setting, one tooltip per chart, unless the code needs a custom title. The donut has none. React uses the `Tooltip` component, and a wrapper's config has no `tooltip` key: set it on the chart instance `create` returns.
+- In vanilla code, charts draw with `render`, with no d3-selection import unless the code already uses d3 or wires a tooltip by hand.
 - In React, data updates replace the array or object.
 
 The full documentation, as one text file, is at https://britecharts.github.io/britecharts/llms-full.txt, and each chart's API page is at `https://britecharts.github.io/britecharts/docs/API/<chart>` (for example `grouped-bar`, `scatter-plot`).
