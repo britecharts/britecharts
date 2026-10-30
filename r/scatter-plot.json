@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scatter-plot",
+  "title": "Scatter Plot",
+  "description": "A scatter plot of x and y values, with a tooltip. Accessible by default, and themed by the app's shadcn colours.",
+  "dependencies": [
+    "@britecharts/react",
+    "@britecharts/core"
+  ],
+  "files": [
+    {
+      "path": "registry/charts/scatter-plot.tsx",
+      "content": "'use client';\n\nimport {\n    ScatterPlot as BritechartsScatterPlot,\n    ResponsiveContainer,\n    Tooltip,\n    type ScatterPlotProps as BritechartsScatterPlotProps,\n} from '@britecharts/react';\nimport '@britecharts/core/dist/styles/bundle/britecharts.min.css';\n\nexport type ScatterPlotProps = Omit<BritechartsScatterPlotProps, 'width'> & {\n    /** Shown above the hovered point's name and value */\n    tooltipTitle?: string;\n};\n\n/**\n * A Britecharts scatter plot that fills its container's width, with a tooltip.\n * Data: `[{ name, x, y }]`. Every other prop is the chart's own:\n * https://britecharts.github.io/britecharts/docs/API/scatter-plot\n */\nexport function ScatterPlot({\n    data,\n    tooltipTitle = '',\n    ...props\n}: ScatterPlotProps) {\n    return (\n        <ResponsiveContainer\n            render={({ width }) => (\n                <Tooltip\n                    data={data}\n                    title={tooltipTitle}\n                    nameLabel=\"x\"\n                    valueLabel=\"y\"\n                    render={(tooltipProps) => (\n                        <BritechartsScatterPlot\n                            {...props}\n                            {...tooltipProps}\n                            width={width}\n                        />\n                    )}\n                />\n            )}\n        />\n    );\n}\n",
+      "type": "registry:component",
+      "target": "@components/charts/scatter-plot.tsx"
+    }
+  ],
+  "css": {
+    ".britechart": {
+      "--bc-text": "var(--foreground)",
+      "--bc-text-muted": "var(--muted-foreground)",
+      "--bc-text-subtle": "var(--muted-foreground)",
+      "--bc-axis": "var(--border)",
+      "--bc-grid": "var(--border)",
+      "--bc-grid-highlight": "var(--muted-foreground)",
+      "--bc-background": "var(--background)",
+      "--bc-surface": "var(--popover)",
+      "--bc-border": "var(--border)",
+      "--bc-skeleton": "var(--muted)",
+      "--bc-skeleton-strong": "var(--border)",
+      "--bc-brush-area": "var(--muted)",
+      "--bc-brush-area-missing": "var(--secondary)",
+      "--bc-sparkline-area-start": "var(--muted)",
+      "--bc-sparkline-area-end": "var(--background)"
+    }
+  },
+  "categories": [
+    "chart"
+  ],
+  "type": "registry:component"
+}

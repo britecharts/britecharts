@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bullet-chart",
+  "title": "Bullet Chart",
+  "description": "A bullet chart comparing a measure with ranges and a target. Accessible by default, and themed by the app's shadcn colours.",
+  "dependencies": [
+    "@britecharts/react",
+    "@britecharts/core"
+  ],
+  "files": [
+    {
+      "path": "registry/charts/bullet-chart.tsx",
+      "content": "'use client';\n\nimport {\n    Bullet,\n    ResponsiveContainer,\n    type BulletChartProps as BritechartsBulletChartProps,\n} from '@britecharts/react';\nimport '@britecharts/core/dist/styles/bundle/britecharts.min.css';\n\nexport type BulletChartProps = Omit<BritechartsBulletChartProps, 'width'>;\n\n/**\n * A Britecharts bullet chart that fills its container's width.\n * Data: `[{ ranges, measures, markers }]`, drawing the first item. Every other prop is the chart's own:\n * https://britecharts.github.io/britecharts/docs/API/bullet\n */\nexport function BulletChart(props: BulletChartProps) {\n    return (\n        <ResponsiveContainer\n            render={({ width }) => <Bullet {...props} width={width} />}\n        />\n    );\n}\n",
+      "type": "registry:component",
+      "target": "@components/charts/bullet-chart.tsx"
+    }
+  ],
+  "css": {
+    ".britechart": {
+      "--bc-text": "var(--foreground)",
+      "--bc-text-muted": "var(--muted-foreground)",
+      "--bc-text-subtle": "var(--muted-foreground)",
+      "--bc-axis": "var(--border)",
+      "--bc-grid": "var(--border)",
+      "--bc-grid-highlight": "var(--muted-foreground)",
+      "--bc-background": "var(--background)",
+      "--bc-surface": "var(--popover)",
+      "--bc-border": "var(--border)",
+      "--bc-skeleton": "var(--muted)",
+      "--bc-skeleton-strong": "var(--border)",
+      "--bc-brush-area": "var(--muted)",
+      "--bc-brush-area-missing": "var(--secondary)",
+      "--bc-sparkline-area-start": "var(--muted)",
+      "--bc-sparkline-area-end": "var(--background)"
+    }
+  },
+  "categories": [
+    "chart"
+  ],
+  "type": "registry:component"
+}

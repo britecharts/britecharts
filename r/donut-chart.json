@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "donut-chart",
+  "title": "Donut Chart",
+  "description": "A donut or pie chart that shows the hovered slice in its centre. Accessible by default, and themed by the app's shadcn colours.",
+  "dependencies": [
+    "@britecharts/react",
+    "@britecharts/core"
+  ],
+  "files": [
+    {
+      "path": "registry/charts/donut-chart.tsx",
+      "content": "'use client';\n\nimport {\n    Donut,\n    ResponsiveContainer,\n    type DonutChartProps as BritechartsDonutChartProps,\n} from '@britecharts/react';\nimport '@britecharts/core/dist/styles/bundle/britecharts.min.css';\n\nexport type DonutChartProps = Omit<BritechartsDonutChartProps, 'width'>;\n\n// Britecharts' defaults: the hole is this share of the radius, and a hovered\n// slice grows by this much\nconst HOLE_RATIO = 45.5 / 140;\nconst HOVER_OFFSET = 12;\n\n/**\n * A Britecharts donut chart that fills its container's width, sized to fit\n * its height. Data: `[{ name, quantity }]`. Every other prop is the chart's\n * own: https://britecharts.github.io/britecharts/docs/API/donut\n */\nexport function DonutChart({\n    height = 300,\n    externalRadius,\n    internalRadius,\n    radiusHoverOffset = HOVER_OFFSET,\n    ...props\n}: DonutChartProps) {\n    return (\n        <ResponsiveContainer\n            render={({ width }) => {\n                const radius =\n                    externalRadius ??\n                    Math.min(width, height) / 2 - radiusHoverOffset;\n\n                return (\n                    // Drawn afresh at each width, so the donut stays centred\n                    <Donut\n                        key={width}\n                        {...props}\n                        width={width}\n                        height={height}\n                        externalRadius={radius}\n                        internalRadius={internalRadius ?? radius * HOLE_RATIO}\n                        radiusHoverOffset={radiusHoverOffset}\n                    />\n                );\n            }}\n        />\n    );\n}\n",
+      "type": "registry:component",
+      "target": "@components/charts/donut-chart.tsx"
+    }
+  ],
+  "css": {
+    ".britechart": {
+      "--bc-text": "var(--foreground)",
+      "--bc-text-muted": "var(--muted-foreground)",
+      "--bc-text-subtle": "var(--muted-foreground)",
+      "--bc-axis": "var(--border)",
+      "--bc-grid": "var(--border)",
+      "--bc-grid-highlight": "var(--muted-foreground)",
+      "--bc-background": "var(--background)",
+      "--bc-surface": "var(--popover)",
+      "--bc-border": "var(--border)",
+      "--bc-skeleton": "var(--muted)",
+      "--bc-skeleton-strong": "var(--border)",
+      "--bc-brush-area": "var(--muted)",
+      "--bc-brush-area-missing": "var(--secondary)",
+      "--bc-sparkline-area-start": "var(--muted)",
+      "--bc-sparkline-area-end": "var(--background)"
+    }
+  },
+  "categories": [
+    "chart"
+  ],
+  "type": "registry:component"
+}

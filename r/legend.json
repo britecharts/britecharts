@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "legend",
+  "title": "Legend",
+  "description": "A legend for a chart's categories, highlighting the hovered one. Accessible by default, and themed by the app's shadcn colours.",
+  "dependencies": [
+    "@britecharts/react",
+    "@britecharts/core"
+  ],
+  "files": [
+    {
+      "path": "registry/charts/legend.tsx",
+      "content": "'use client';\n\nimport {\n    Legend as BritechartsLegend,\n    ResponsiveContainer,\n    type LegendProps as BritechartsLegendProps,\n} from '@britecharts/react';\nimport '@britecharts/core/dist/styles/bundle/britecharts.min.css';\n\nexport type LegendProps = Omit<BritechartsLegendProps, 'width'>;\n\n/**\n * A Britecharts legend that fills its container's width.\n * Data: `[{ id, name, quantity }]`. Every other prop is the chart's own:\n * https://britecharts.github.io/britecharts/docs/API/legend\n */\nexport function Legend(props: LegendProps) {\n    return (\n        <ResponsiveContainer\n            render={({ width }) => (\n                <BritechartsLegend {...props} width={width} />\n            )}\n        />\n    );\n}\n",
+      "type": "registry:component",
+      "target": "@components/charts/legend.tsx"
+    }
+  ],
+  "css": {
+    ".britechart": {
+      "--bc-text": "var(--foreground)",
+      "--bc-text-muted": "var(--muted-foreground)",
+      "--bc-text-subtle": "var(--muted-foreground)",
+      "--bc-axis": "var(--border)",
+      "--bc-grid": "var(--border)",
+      "--bc-grid-highlight": "var(--muted-foreground)",
+      "--bc-background": "var(--background)",
+      "--bc-surface": "var(--popover)",
+      "--bc-border": "var(--border)",
+      "--bc-skeleton": "var(--muted)",
+      "--bc-skeleton-strong": "var(--border)",
+      "--bc-brush-area": "var(--muted)",
+      "--bc-brush-area-missing": "var(--secondary)",
+      "--bc-sparkline-area-start": "var(--muted)",
+      "--bc-sparkline-area-end": "var(--background)"
+    }
+  },
+  "categories": [
+    "chart"
+  ],
+  "type": "registry:component"
+}

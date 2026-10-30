@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "heatmap",
+  "title": "Heatmap",
+  "description": "A heatmap of days and hours, or of any two sets of categories, with a tooltip. Accessible by default, and themed by the app's shadcn colours.",
+  "dependencies": [
+    "@britecharts/react",
+    "@britecharts/core"
+  ],
+  "files": [
+    {
+      "path": "registry/charts/heatmap.tsx",
+      "content": "'use client';\n\nimport {\n    Heatmap as BritechartsHeatmap,\n    Tooltip,\n    type HeatmapProps as BritechartsHeatmapProps,\n} from '@britecharts/react';\nimport '@britecharts/core/dist/styles/bundle/britecharts.min.css';\n\nexport type HeatmapProps = BritechartsHeatmapProps & {\n    /** Shown above the hovered box's name and value */\n    tooltipTitle?: string;\n};\n\n/**\n * A Britecharts heatmap with a tooltip.\n * Data: `[{ day, hour, value }]`. Every other prop is the chart's own:\n * https://britecharts.github.io/britecharts/docs/API/heatmap\n */\nexport function Heatmap({ data, tooltipTitle = '', ...props }: HeatmapProps) {\n    return (\n        <Tooltip\n            data={data}\n            title={tooltipTitle}\n            render={(tooltipProps) => (\n                <BritechartsHeatmap {...props} {...tooltipProps} />\n            )}\n        />\n    );\n}\n",
+      "type": "registry:component",
+      "target": "@components/charts/heatmap.tsx"
+    }
+  ],
+  "css": {
+    ".britechart": {
+      "--bc-text": "var(--foreground)",
+      "--bc-text-muted": "var(--muted-foreground)",
+      "--bc-text-subtle": "var(--muted-foreground)",
+      "--bc-axis": "var(--border)",
+      "--bc-grid": "var(--border)",
+      "--bc-grid-highlight": "var(--muted-foreground)",
+      "--bc-background": "var(--background)",
+      "--bc-surface": "var(--popover)",
+      "--bc-border": "var(--border)",
+      "--bc-skeleton": "var(--muted)",
+      "--bc-skeleton-strong": "var(--border)",
+      "--bc-brush-area": "var(--muted)",
+      "--bc-brush-area-missing": "var(--secondary)",
+      "--bc-sparkline-area-start": "var(--muted)",
+      "--bc-sparkline-area-end": "var(--background)"
+    }
+  },
+  "categories": [
+    "chart"
+  ],
+  "type": "registry:component"
+}

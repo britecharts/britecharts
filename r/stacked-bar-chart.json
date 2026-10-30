@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stacked-bar-chart",
+  "title": "Stacked Bar Chart",
+  "description": "A stacked bar chart, stacked to 100% if you like, with a tooltip for each stack. Accessible by default, and themed by the app's shadcn colours.",
+  "dependencies": [
+    "@britecharts/react",
+    "@britecharts/core"
+  ],
+  "files": [
+    {
+      "path": "registry/charts/stacked-bar-chart.tsx",
+      "content": "'use client';\n\nimport {\n    StackedBar,\n    ResponsiveContainer,\n    Tooltip,\n    type StackedBarProps as BritechartsStackedBarProps,\n} from '@britecharts/react';\nimport '@britecharts/core/dist/styles/bundle/britecharts.min.css';\n\nexport type StackedBarChartProps = Omit<BritechartsStackedBarProps, 'width'> & {\n    /** Shown above the hovered stack's name and value */\n    tooltipTitle?: string;\n};\n\n/**\n * A Britecharts stacked bar chart that fills its container's width, with a tooltip.\n * Data: `[{ stack, name, value }]`. Every other prop is the chart's own:\n * https://britecharts.github.io/britecharts/docs/API/stacked-bar\n */\nexport function StackedBarChart({\n    data,\n    tooltipTitle = '',\n    ...props\n}: StackedBarChartProps) {\n    return (\n        <ResponsiveContainer\n            render={({ width }) => (\n                <Tooltip\n                    data={data}\n                    title={tooltipTitle}\n                    nameLabel=\"stack\"\n                    render={(tooltipProps) => (\n                        <StackedBar\n                            {...props}\n                            {...tooltipProps}\n                            width={width}\n                        />\n                    )}\n                />\n            )}\n        />\n    );\n}\n",
+      "type": "registry:component",
+      "target": "@components/charts/stacked-bar-chart.tsx"
+    }
+  ],
+  "css": {
+    ".britechart": {
+      "--bc-text": "var(--foreground)",
+      "--bc-text-muted": "var(--muted-foreground)",
+      "--bc-text-subtle": "var(--muted-foreground)",
+      "--bc-axis": "var(--border)",
+      "--bc-grid": "var(--border)",
+      "--bc-grid-highlight": "var(--muted-foreground)",
+      "--bc-background": "var(--background)",
+      "--bc-surface": "var(--popover)",
+      "--bc-border": "var(--border)",
+      "--bc-skeleton": "var(--muted)",
+      "--bc-skeleton-strong": "var(--border)",
+      "--bc-brush-area": "var(--muted)",
+      "--bc-brush-area-missing": "var(--secondary)",
+      "--bc-sparkline-area-start": "var(--muted)",
+      "--bc-sparkline-area-end": "var(--background)"
+    }
+  },
+  "categories": [
+    "chart"
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "brush",
+  "title": "Brush",
+  "description": "A brush for selecting a date range, to drive another chart. Accessible by default, and themed by the app's shadcn colours.",
+  "dependencies": [
+    "@britecharts/react",
+    "@britecharts/core"
+  ],
+  "files": [
+    {
+      "path": "registry/charts/brush.tsx",
+      "content": "'use client';\n\nimport {\n    Brush as BritechartsBrush,\n    ResponsiveContainer,\n    type BrushProps as BritechartsBrushProps,\n} from '@britecharts/react';\nimport '@britecharts/core/dist/styles/bundle/britecharts.min.css';\n\nexport type BrushProps = Omit<BritechartsBrushProps, 'width'>;\n\n/**\n * A Britecharts brush that fills its container's width.\n * Data: `[{ date, value }]`. Every other prop is the chart's own:\n * https://britecharts.github.io/britecharts/docs/API/brush\n */\nexport function Brush(props: BrushProps) {\n    return (\n        <ResponsiveContainer\n            render={({ width }) => (\n                <BritechartsBrush {...props} width={width} />\n            )}\n        />\n    );\n}\n",
+      "type": "registry:component",
+      "target": "@components/charts/brush.tsx"
+    }
+  ],
+  "css": {
+    ".britechart": {
+      "--bc-text": "var(--foreground)",
+      "--bc-text-muted": "var(--muted-foreground)",
+      "--bc-text-subtle": "var(--muted-foreground)",
+      "--bc-axis": "var(--border)",
+      "--bc-grid": "var(--border)",
+      "--bc-grid-highlight": "var(--muted-foreground)",
+      "--bc-background": "var(--background)",
+      "--bc-surface": "var(--popover)",
+      "--bc-border": "var(--border)",
+      "--bc-skeleton": "var(--muted)",
+      "--bc-skeleton-strong": "var(--border)",
+      "--bc-brush-area": "var(--muted)",
+      "--bc-brush-area-missing": "var(--secondary)",
+      "--bc-sparkline-area-start": "var(--muted)",
+      "--bc-sparkline-area-end": "var(--background)"
+    }
+  },
+  "categories": [
+    "chart"
+  ],
+  "type": "registry:component"
+}
