@@ -57,6 +57,19 @@ donutDataSets.forEach((datasetName) => {
                 expect(actual).toEqual(expected);
             });
 
+            it('should centre the donut in its new size when redrawn', () => {
+                const expected = 'translate(200, 150)';
+
+                donutChart.width(400).height(300);
+                containerFixture.datum(dataset).call(donutChart);
+
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .attr('transform');
+
+                expect(actual).toEqual(expected);
+            });
+
             describe('groups', () => {
                 it('should create a container-group', () => {
                     const expected = 1;
