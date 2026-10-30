@@ -14,6 +14,8 @@ import 'd3-transition';
 
 import { wrapTextWithEllipses } from '../helpers/text.js';
 import { renderChart } from '../helpers/render.js';
+import { connectTooltip, disconnectTooltip } from '../helpers/tooltip.js';
+import type { TooltipModule } from '../tooltip/tooltip.js';
 import { exportChart } from '../helpers/export.js';
 import { getBaselineExtent, getValueDomain } from '../helpers/domain.js';
 import colorHelper from '../helpers/color.js';
@@ -30,6 +32,7 @@ import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     RenderableChartAPI,
+    TooltipChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -83,6 +86,7 @@ export interface BarChartAPI
     extends
         AccessibleChartAPI<BarChartModule>,
         RenderableChartAPI<BarChartModule, BarChartDataShape[]>,
+        TooltipChartAPI<BarChartModule>,
         DataTableChartAPI<BarChartModule>,
         KeyboardChartAPI<BarChartModule>,
         ChartBaseAPI<BarChartModule>,
@@ -510,6 +514,14 @@ export default function module(): BarChartModule {
             if (enableLabels) {
                 drawLabels(localeFormatter);
             }
+            if (chartTooltip) {
+                connectTooltip(
+                    exports as unknown as BarChartModule,
+                    chartTooltip,
+                    svg,
+                    {}
+                );
+            }
         });
     }
 
@@ -658,6 +670,7 @@ export default function module(): BarChartModule {
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
     let a11yKeyboardNavigation = true;
+    let chartTooltip: TooltipModule | null = null;
 
     /**
      * Where keyboard focus can rest: each bar, in order
@@ -2047,6 +2060,29 @@ export default function module(): BarChartModule {
 
         return this;
     } as BarChartModule['yTicks'];
+
+    /**
+     * Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+     * `miniTooltip()`. On every render the chart connects it to its pointer
+     * and keyboard events, draws it in place, and sets the labels its data
+     * points need, unless they were set on the tooltip. Null removes it.
+     * @param  {module | null} _x  The tooltip to show
+     * @return {module | null} Current tooltip or Chart module to chain calls
+     * @public
+     * @example
+     * bar().tooltip(miniTooltip().title('Uses')).render('#chart', data);
+     */
+    (exports as BarChartModule).tooltip = function (this: BarChartModule, _x) {
+        if (!arguments.length) {
+            return chartTooltip;
+        }
+        if (chartTooltip && _x !== chartTooltip) {
+            disconnectTooltip(this);
+        }
+        chartTooltip = _x;
+
+        return this;
+    } as BarChartModule['tooltip'];
 
     /**
      * Draws the chart into a target: a CSS selector, an element or a d3

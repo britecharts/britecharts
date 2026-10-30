@@ -64,6 +64,7 @@ select('.css-selector')
             * [.yAxisLabelOffset(_x)](#module_Bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.yAxisPaddingBetweenChart(_x)](#module_Bar--exports.yAxisPaddingBetweenChart) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTicks(_x)](#module_Bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.tooltip(_x)](#module_Bar--exports.tooltip) ⇒ <code>module</code> \| <code>null</code>
             * [.render(target, [data])](#module_Bar--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~BarChartData](#module_Bar--exports..BarChartData) : <code>Array.&lt;Object&gt;</code>
@@ -588,6 +589,26 @@ Gets or Sets the number of vertical ticks on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 6         Desired number of vertical ticks for the graph |
 
+<a name="module_Bar--exports.tooltip" id="module_Bar--exports.tooltip"></a>
+
+## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
+Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+`miniTooltip()`. On every render the chart connects it to its pointer
+and keyboard events, draws it in place, and sets the labels its data
+points need, unless they were set on the tooltip. Null removes it.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>module</code> \| <code>null</code> | The tooltip to show |
+
+**Example**  
+```js
+bar().tooltip(miniTooltip().title('Uses')).render('#chart', data);
+```
 <a name="module_Bar--exports.render" id="module_Bar--exports.render"></a>
 
 ## render(target, [data]) ⇒ <code>module</code>

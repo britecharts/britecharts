@@ -43,9 +43,10 @@ export const CHARTS = [
     ['tooltip', 'TooltipModule', null],
 ];
 
-// `on` registers events, which the configuration names directly instead, and
-// `render` draws the chart, which the wrapper does itself
-const NOT_CONFIGURATION = new Set(['on', 'render']);
+// `on` registers events, which the configuration names directly instead;
+// `render` draws the chart, which the wrapper does itself; and `tooltip`
+// takes a tooltip module, which JSON can't hold
+const NOT_CONFIGURATION = new Set(['on', 'render', 'tooltip']);
 
 // JSON can't hold a function, so a spec can't set one; `not: {}` says so to a
 // validator, and the wrappers accept a function wherever a schema has it

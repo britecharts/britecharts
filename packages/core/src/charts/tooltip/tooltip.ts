@@ -6,6 +6,7 @@ import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
 import { motionDuration } from '../helpers/a11y.js';
+import { markLabelSet } from '../helpers/tooltip.js';
 import { axisTimeCombinations, motion } from '../helpers/constants.js';
 import {
     formatIntegerValue,
@@ -558,7 +559,9 @@ export default function module(): TooltipModule {
      * @private
      */
     function buildSVG(container: Element) {
-        if (!svg) {
+        // Built again when the chart replaced the group it was drawn in, as
+        // the stacked area does with its vertical marker on every draw
+        if (!svg || svg.node()?.parentNode !== container) {
             svg = select(container)
                 .append('g')
                 .classed('britechart', true)
@@ -1530,6 +1533,7 @@ export default function module(): TooltipModule {
             return dateLabel;
         }
         dateLabel = _x;
+        markLabelSet(exports, 'dateLabel');
 
         return this;
     } as TooltipModule['dateLabel'];
@@ -1576,6 +1580,7 @@ export default function module(): TooltipModule {
             return nameLabel;
         }
         nameLabel = _x;
+        markLabelSet(exports, 'nameLabel');
 
         return this;
     } as TooltipModule['nameLabel'];
@@ -1767,6 +1772,7 @@ export default function module(): TooltipModule {
             return topicLabel;
         }
         topicLabel = _x;
+        markLabelSet(exports, 'topicLabel');
 
         return this;
     } as TooltipModule['topicLabel'];
@@ -1859,6 +1865,7 @@ export default function module(): TooltipModule {
             return valueLabel;
         }
         valueLabel = _x;
+        markLabelSet(exports, 'valueLabel');
 
         return this;
     } as TooltipModule['valueLabel'];
