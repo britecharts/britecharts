@@ -61,6 +61,7 @@ select('.css-selector')
             * [.yAxisLabelOffset([_x])](#module_Stacked-area--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTicks([_x])](#module_Stacked-area--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
             * [.yAxisBaseline([_x])](#module_Stacked-area--exports.yAxisBaseline) ⇒ <code>Number</code> \| <code>module</code>
+            * [.tooltip(_x)](#module_Stacked-area--exports.tooltip) ⇒ <code>module</code> \| <code>null</code>
             * [.render(target, [data])](#module_Stacked-area--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~AreaChartData](#module_Stacked-area--exports..AreaChartData) : <code>Array.&lt;Object&gt;</code>
@@ -585,6 +586,26 @@ Gets or Sets the yAxisBaseline - this is the y-value where the area starts from 
 **Example**  
 ```js
 stackedArea.yAxisBaseline(20)
+```
+<a name="module_Stacked-area--exports.tooltip" id="module_Stacked-area--exports.tooltip"></a>
+
+## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
+Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+`miniTooltip()`. On every render the chart connects it to its pointer
+and keyboard events, draws it in place, and sets the labels its data
+points need, unless they were set on the tooltip. Null removes it.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>module</code> \| <code>null</code> | The tooltip to show |
+
+**Example**  
+```js
+stackedArea().tooltip(tooltip().title('Uses')).render('#chart', data);
 ```
 <a name="module_Stacked-area--exports.render" id="module_Stacked-area--exports.render"></a>
 

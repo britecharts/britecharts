@@ -60,6 +60,7 @@ select('.css-selector')
             * [.on()](#module_Line--exports.on) ⇒ <code>module</code>
             * [.xAxisValueType([_x])](#module_Line--exports.xAxisValueType) ⇒ <code>string</code> \| <code>module</code>
             * [.xAxisScale([_x])](#module_Line--exports.xAxisScale) ⇒ <code>string</code> \| <code>module</code>
+            * [.tooltip(_x)](#module_Line--exports.tooltip) ⇒ <code>module</code> \| <code>null</code>
             * [.render(target, [data])](#module_Line--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~D3Selection](#module_Line--exports..D3Selection) : <code>Array.&lt;Array&gt;</code>
@@ -556,6 +557,26 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 **Example**  
 ```js
 line.xAxisValueType('number').xAxisScale('logarithmic')
+```
+<a name="module_Line--exports.tooltip" id="module_Line--exports.tooltip"></a>
+
+## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
+Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+`miniTooltip()`. On every render the chart connects it to its pointer
+and keyboard events, draws it in place, and sets the labels its data
+points need, unless they were set on the tooltip. Null removes it.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>module</code> \| <code>null</code> | The tooltip to show |
+
+**Example**  
+```js
+line().tooltip(tooltip().title('Uses')).render('#chart', data);
 ```
 <a name="module_Line--exports.render" id="module_Line--exports.render"></a>
 

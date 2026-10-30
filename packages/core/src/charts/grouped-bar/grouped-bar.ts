@@ -16,6 +16,8 @@ import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
 import { renderChart } from '../helpers/render.js';
+import { connectTooltip, disconnectTooltip } from '../helpers/tooltip.js';
+import type { TooltipModule } from '../tooltip/tooltip.js';
 import { getBaselineExtent, getValueDomain } from '../helpers/domain.js';
 import colorHelper from '../helpers/color.js';
 import { barLoadingMarkup } from '../helpers/load.js';
@@ -32,6 +34,7 @@ import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
     RenderableChartAPI,
+    TooltipChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -88,6 +91,7 @@ export interface GroupedBarChartAPI
     extends
         AccessibleChartAPI<GroupedBarChartModule>,
         RenderableChartAPI<GroupedBarChartModule, GroupedBarChartDataShape[]>,
+        TooltipChartAPI<GroupedBarChartModule>,
         DataTableChartAPI<GroupedBarChartModule>,
         KeyboardChartAPI<GroupedBarChartModule>,
         ChartBaseAPI<GroupedBarChartModule>,
@@ -397,6 +401,14 @@ export default function module(): GroupedBarChartModule {
             drawAxis();
             drawGroupedBar();
             addMouseEvents();
+            if (chartTooltip) {
+                connectTooltip(
+                    exports as unknown as GroupedBarChartModule,
+                    chartTooltip,
+                    svg,
+                    { topicLabel: 'values', nameLabel: 'group' }
+                );
+            }
         });
     }
 
@@ -601,6 +613,7 @@ export default function module(): GroupedBarChartModule {
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
     let a11yKeyboardNavigation = true;
+    let chartTooltip: TooltipModule | null = null;
 
     /**
      * Where keyboard focus can rest: each name's group of bars, in order. One
@@ -1829,6 +1842,32 @@ export default function module(): GroupedBarChartModule {
 
         return this;
     } as GroupedBarChartModule['yTickTextOffset'];
+
+    /**
+     * Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+     * `miniTooltip()`. On every render the chart connects it to its pointer
+     * and keyboard events, draws it in place, and sets the labels its data
+     * points need, unless they were set on the tooltip. Null removes it.
+     * @param  {module | null} _x  The tooltip to show
+     * @return {module | null} Current tooltip or Chart module to chain calls
+     * @public
+     * @example
+     * groupedBar().tooltip(tooltip().title('Uses')).render('#chart', data);
+     */
+    (exports as GroupedBarChartModule).tooltip = function (
+        this: GroupedBarChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return chartTooltip;
+        }
+        if (chartTooltip && _x !== chartTooltip) {
+            disconnectTooltip(this);
+        }
+        chartTooltip = _x;
+
+        return this;
+    } as GroupedBarChartModule['tooltip'];
 
     /**
      * Draws the chart into a target: a CSS selector, an element or a d3

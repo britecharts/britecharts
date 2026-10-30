@@ -22,6 +22,8 @@ import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
 import { renderChart } from '../helpers/render.js';
+import { connectTooltip, disconnectTooltip } from '../helpers/tooltip.js';
+import type { TooltipModule } from '../tooltip/tooltip.js';
 import colorHelper from '../helpers/color.js';
 import { lineLoadingMarkup } from '../helpers/load.js';
 import { getTimeSeriesAxis, getSortedNumberAxis } from '../helpers/axis.js';
@@ -56,6 +58,7 @@ import type {
 import type {
     AccessibleChartAPI,
     RenderableChartAPI,
+    TooltipChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -133,6 +136,7 @@ export interface LineChartAPI
     extends
         AccessibleChartAPI<LineChartModule>,
         RenderableChartAPI<LineChartModule, LineChartData>,
+        TooltipChartAPI<LineChartModule>,
         DataTableChartAPI<LineChartModule>,
         KeyboardChartAPI<LineChartModule>,
         Omit<ChartBaseAPI<LineChartModule>, 'numberFormat'>,
@@ -605,6 +609,14 @@ export default function module(): LineChartModule {
             }
 
             addTouchEvents();
+            if (chartTooltip) {
+                connectTooltip(
+                    exports as unknown as LineChartModule,
+                    chartTooltip,
+                    svg,
+                    { topicLabel: 'topics' }
+                );
+            }
         });
     }
 
@@ -939,6 +951,7 @@ export default function module(): LineChartModule {
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
     let a11yKeyboardNavigation = true;
+    let chartTooltip: TooltipModule | null = null;
 
     /**
      * Where keyboard focus can rest: each date, at its place on the x axis
@@ -2361,6 +2374,32 @@ export default function module(): LineChartModule {
 
         return this;
     } as LineChartModule['xAxisScale'];
+
+    /**
+     * Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+     * `miniTooltip()`. On every render the chart connects it to its pointer
+     * and keyboard events, draws it in place, and sets the labels its data
+     * points need, unless they were set on the tooltip. Null removes it.
+     * @param  {module | null} _x  The tooltip to show
+     * @return {module | null} Current tooltip or Chart module to chain calls
+     * @public
+     * @example
+     * line().tooltip(tooltip().title('Uses')).render('#chart', data);
+     */
+    (exports as LineChartModule).tooltip = function (
+        this: LineChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return chartTooltip;
+        }
+        if (chartTooltip && _x !== chartTooltip) {
+            disconnectTooltip(this);
+        }
+        chartTooltip = _x;
+
+        return this;
+    } as LineChartModule['tooltip'];
 
     /**
      * Draws the chart into a target: a CSS selector, an element or a d3
