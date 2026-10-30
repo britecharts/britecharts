@@ -24,27 +24,19 @@ export const Playground = (args) => {
     const containerWidth = stackedAreaContainer.node()
         ? stackedAreaContainer.node().getBoundingClientRect().width
         : false;
-    const chartTooltip = tooltip();
 
     if (containerWidth) {
         const dataset = aTestDataSet().withSalesChannelData().build();
 
+        // The chart connects and places its tooltip, and sets the label its
+        // rows need
         applyArgs(stackedAreaChart, args)
             .width(containerWidth)
-            .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', chartTooltip.hide);
+            .tooltip(tooltip().title('Testing tooltip'));
 
         stackedAreaContainer.datum(dataset).call(stackedAreaChart);
 
         addExportButtons(container, stackedAreaChart, 'stacked-area');
-
-        // The stacked area dispatches its rows as `values`
-        chartTooltip.topicLabel('values').title('Testing tooltip');
-
-        select('.metadata-group .vertical-marker-container')
-            .datum([])
-            .call(chartTooltip);
     }
 
     return container;

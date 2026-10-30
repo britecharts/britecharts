@@ -6,7 +6,7 @@ import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
 import { motionDuration } from '../helpers/a11y.js';
-import { markLabelSet } from '../helpers/tooltip.js';
+import { markLabelSet, registerTooltipGroup } from '../helpers/tooltip.js';
 import { axisTimeCombinations, motion } from '../helpers/constants.js';
 import {
     formatIntegerValue,
@@ -559,8 +559,13 @@ export default function module(): TooltipModule {
      * @private
      */
     function buildSVG(container: Element) {
-        // Built again when the chart replaced the group it was drawn in, as
-        // the stacked area does with its vertical marker on every draw
+        // Built again in a new container: the stacked area replaces its
+        // vertical marker on every draw, and the line chart only draws one
+        // once it is wide enough. The old group goes first, so a tooltip is
+        // never drawn twice.
+        if (svg && svg.node()?.parentNode !== container) {
+            svg.remove();
+        }
         if (!svg || svg.node()?.parentNode !== container) {
             svg = select(container)
                 .append('g')
@@ -574,6 +579,7 @@ export default function module(): TooltipModule {
                 .attr('pointer-events', 'none')
                 .style('visibility', 'hidden');
 
+            registerTooltipGroup(exports, svg.node());
             buildContainerGroups();
             drawTooltip();
 

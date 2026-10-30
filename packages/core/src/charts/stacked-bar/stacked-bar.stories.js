@@ -54,32 +54,19 @@ export const Playground = (args) => {
     const containerWidth = stackedBarContainer.node()
         ? stackedBarContainer.node().getBoundingClientRect().width
         : false;
-    const chartTooltip = tooltip();
 
     if (containerWidth) {
         const dataset = aTestDataSet().with3Sources().build();
 
+        // The chart connects and places its tooltip, and sets the labels its
+        // rows need
         applyArgs(stackedBar, args)
             .width(containerWidth)
-            .on('customMouseOver', function () {
-                chartTooltip.show();
-            })
-            .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', function () {
-                chartTooltip.hide();
-            });
+            .tooltip(tooltip().title('Tooltip title'));
 
         stackedBarContainer.datum(dataset).call(stackedBar);
 
         addExportButtons(container, stackedBar, 'stacked-bar');
-
-        // The stacked bar dispatches its rows as `values`, named by `stack`
-        chartTooltip
-            .topicLabel('values')
-            .nameLabel('stack')
-            .title('Tooltip title');
-
-        select('.metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;

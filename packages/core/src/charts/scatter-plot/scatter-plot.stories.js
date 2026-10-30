@@ -24,25 +24,21 @@ export const Playground = (args) => {
     const containerWidth = scatterPlotContainer.node()
         ? scatterPlotContainer.node().getBoundingClientRect().width
         : false;
-    const tooltip = miniTooltip().title('Temperature (C)');
 
     if (containerWidth) {
         const dataset = aTestDataSet().withOneSource().build();
+        // The chart sets `valueLabel('y')`; `nameLabel('x')` shows a point's
+        // `x` instead of its name
+        const tooltip = miniTooltip()
+            .title('Temperature (C)')
+            .nameLabel('x')
+            .numberFormat('$');
 
-        applyArgs(scatterChart, args)
-            .width(containerWidth)
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
-            .on('customMouseOut', tooltip.hide);
+        applyArgs(scatterChart, args).width(containerWidth).tooltip(tooltip);
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
         addExportButtons(container, scatterChart, 'scatter-plot');
-
-        // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
-        tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
-
-        select('.scatter-plot .metadata-group').datum([]).call(tooltip);
     }
 
     return container;

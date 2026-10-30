@@ -244,10 +244,14 @@ export interface RenderableChartAPI<T, DataShape> {
 export interface TooltipChartAPI<T> {
     /**
      * Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-     * `miniTooltip()`. On every render the chart connects it to its pointer
-     * and keyboard events, draws it in place, and sets the labels its data
-     * points need, unless they were set on the tooltip. Null removes it.
+     * `miniTooltip()`, set on this chart only. The chart connects it to its
+     * pointer and keyboard events, draws it in place, and sets the labels its
+     * data points need, unless they were set on the tooltip; it does so now
+     * if the chart has drawn, and again on every draw. Its event handlers go
+     * under the `britechartsTooltip` namespace. Null, or another tooltip,
+     * removes the one it had. Throws when the tooltip is set on another
+     * chart.
      */
     tooltip(): TooltipModule | null;
-    tooltip(tooltip: TooltipModule | null): T & TooltipChartAPI<T>;
+    tooltip(tooltip: TooltipModule | null): T;
 }

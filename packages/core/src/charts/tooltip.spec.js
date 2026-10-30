@@ -121,22 +121,28 @@ describe.each(CHARTS)(
 
         it('should connect the tooltip to the chart events, beside the user handlers', () => {
             const onMouseOver = () => undefined;
+            const onNamespaced = () => undefined;
 
+            chartTooltip.show = vi.fn();
+            chartTooltip.update = vi.fn();
+            chartTooltip.hide = vi.fn();
             instance
                 .on('customMouseOver', onMouseOver)
+                .on('customMouseOver.tooltip', onNamespaced)
                 .tooltip(chartTooltip)
                 .render('.test-container', data());
 
-            expect(instance.on('customMouseOver.tooltip')).toBe(
-                chartTooltip.show
-            );
-            expect(instance.on('customMouseMove.tooltip')).toBe(
-                chartTooltip.update
-            );
-            expect(instance.on('customMouseOut.tooltip')).toBe(
-                chartTooltip.hide
-            );
+            // The tooltip hides itself once when it is first drawn
+            vi.clearAllMocks();
+            instance.on('customMouseOver.britechartsTooltip')({ value: 1 });
+            instance.on('customMouseMove.britechartsTooltip')({ value: 1 });
+            instance.on('customMouseOut.britechartsTooltip')();
+
+            expect(chartTooltip.show).toHaveBeenCalledTimes(1);
+            expect(chartTooltip.update).toHaveBeenCalledTimes(1);
+            expect(chartTooltip.hide).toHaveBeenCalledTimes(1);
             expect(instance.on('customMouseOver')).toBe(onMouseOver);
+            expect(instance.on('customMouseOver.tooltip')).toBe(onNamespaced);
         });
 
         it('should set the labels the chart needs', () => {
@@ -159,13 +165,104 @@ describe.each(CHARTS)(
             expect(chartTooltip.valueLabel()).toBe('mine');
         });
 
-        it('should disconnect the tooltip when it is set to null', () => {
+        it('should remove the tooltip and disconnect it when it is set to null', () => {
             instance.tooltip(chartTooltip).render('.test-container', data());
             instance.tooltip(null);
 
-            expect(instance.on('customMouseOver.tooltip')).toBeUndefined();
-            expect(instance.on('customMouseMove.tooltip')).toBeUndefined();
-            expect(instance.on('customMouseOut.tooltip')).toBeUndefined();
+            expect(tooltipGroups().length).toBe(0);
+            expect(
+                instance.on('customMouseOver.britechartsTooltip')
+            ).toBeUndefined();
+            expect(
+                instance.on('customMouseMove.britechartsTooltip')
+            ).toBeUndefined();
+            expect(
+                instance.on('customMouseOut.britechartsTooltip')
+            ).toBeUndefined();
+        });
+
+        it('should replace the tooltip it had with a new one', () => {
+            const nextTooltip = makeTooltip();
+
+            instance.tooltip(chartTooltip).render('.test-container', data());
+            instance.tooltip(nextTooltip).render('.test-container', data());
+
+            expect(tooltipGroups().length).toBe(1);
+        });
+
+        it('should draw a tooltip set after the chart has drawn', () => {
+            instance.render('.test-container', data());
+            instance.tooltip(chartTooltip);
+
+            expect(tooltipGroups().length).toBe(1);
+            expect(instance.on('customMouseOver.britechartsTooltip')).toEqual(
+                expect.any(Function)
+            );
+        });
+
+        it('should refuse a tooltip set on another chart', () => {
+            chart().tooltip(chartTooltip);
+
+            expect(() => instance.tooltip(chartTooltip)).toThrow(
+                'Britecharts: this tooltip is already set on another chart'
+            );
+        });
+
+        it('should free a tooltip for another chart once it is taken off', () => {
+            const other = chart().tooltip(chartTooltip);
+
+            other.tooltip(null);
+
+            expect(() => instance.tooltip(chartTooltip)).not.toThrow();
         });
     }
 );
+
+describe('chart tooltip containers', () => {
+    beforeEach(() => {
+        document.body.insertAdjacentHTML(
+            'afterbegin',
+            '<div id="fixture"><div class="test-container"></div></div>'
+        );
+    });
+
+    afterEach(() => {
+        document.body.removeChild(document.getElementById('fixture'));
+    });
+
+    it('should keep one tooltip when the line chart grows its vertical marker', () => {
+        const lineChart = line().width(100).tooltip(tooltip());
+        const data = new LineDataBuilder().with5Topics().build();
+
+        lineChart.render('.test-container', data);
+        lineChart.width(800).render('.test-container', data);
+
+        const groups = document.querySelectorAll(
+            '.test-container .britechart-tooltip'
+        );
+
+        expect(groups.length).toBe(1);
+        expect(groups[0].closest('.vertical-marker-container')).not.toBeNull();
+    });
+
+    it('should name a heatmap box by its row and column', () => {
+        const chartTooltip = miniTooltip();
+        const heatmapChart = heatmap().tooltip(chartTooltip);
+
+        chartTooltip.show = vi.fn();
+        heatmapChart.render(
+            '.test-container',
+            new HeatmapDataBuilder().withWeeklyData().build()
+        );
+        heatmapChart.on('customMouseOver.britechartsTooltip')({
+            day: 1,
+            hour: 3,
+            value: 42,
+        });
+
+        expect(chartTooltip.show).toHaveBeenCalledWith({
+            name: 'Tu, 03h',
+            value: 42,
+        });
+    });
+});
