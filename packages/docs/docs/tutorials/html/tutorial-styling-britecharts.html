@@ -9,7 +9,6 @@
         type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Oswald:600" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"></script>
 
     <style>
@@ -26,7 +25,6 @@
     <script>
         // Instantiate Bar Chart
         const barChart = core.bar();
-        const container = d3.select('.bar-container');
 
         // Create Dataset with proper shape
         const barData = [
@@ -44,7 +42,7 @@
             .height(400)
             .width(600);
 
-        container.datum(barData).call(barChart);
+        barChart.render('.bar-container', barData);
     </script>
 </body>
 

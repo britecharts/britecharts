@@ -39,7 +39,8 @@ const lineData = {
 
 Before configuring the chart, we figure out the container's size to apply it as the chart width:
 ```js
-const containerWidth = container.node().getBoundingClientRect().width;
+const container = document.querySelector('.line-container');
+const containerWidth = container.getBoundingClientRect().width;
 ```
 
 Configuring and rendering the line chart follows an identical approach as with the bar chart:
@@ -49,7 +50,7 @@ lineChart
     .height(400)
     .width(containerWidth);
 
-container.datum(lineData).call(lineChart);
+lineChart.render(container, lineData);
 ```
 
 That renders the following chart:
@@ -61,24 +62,17 @@ Now that we have a line chart working, we are going to add a tooltip to allow us
 const chartTooltip = core.tooltip();
 ```
 
-In the next step, we are going to bind the events triggering when users hover, move or exit the line chart to the tooltip. The methods from the tooltip we are going to use are `show`, `update` and `hide`. Let's see how:
+Then we give it to the line chart:
 ```js
 lineChart
     .margin({bottom: 50})
     .height(400)
     .width(containerWidth)
-    .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', chartTooltip.update)
-    .on('customMouseOut', chartTooltip.hide);
-```
-Following the previous code, we expect the tooltip to appear whenever the user passes his mouse over the chart. It should hide when the mouse goes out of the area of the chart. Finally, the tooltip should update its values whenever the mouse moves within the limits of the chart.
+    .tooltip(chartTooltip);
 
-We still have to attach the tooltip to the rendered line chart. For that, and *only after we render the line chart*, we draw the tooltip inside the `metadata-group` within the line. Let's see it in code:
-```js
-const tooltipContainer = d3.select('.line-container .metadata-group .hover-marker');
-
-tooltipContainer.datum([]).call(chartTooltip);
+lineChart.render(container, lineData);
 ```
+The chart does the rest. It shows the tooltip when the pointer enters the chart, or when the keyboard moves to a date, updates it as they move, and hides it when they leave. It draws the tooltip in its hover marker, and tells the tooltip which fields of its data to read.
 After the previous code, we will see a tooltip like the following:
 ![Line Chart with Tooltip][lineChartTooltipImg]
 
@@ -91,13 +85,9 @@ Now we instantiate our new [legend component][legendAPIReference]:
 ```js
 const chartLegend = core.legend();
 ```
-The same way as we needed a container for the chart, we require another for the legend. To do it, we first create a div:
+The same way as we needed a container for the chart, we require another for the legend:
 ```html
 <div class="legend-container"></div>
-```
-And then select the container with a D3.js selection and save the reference:
-```js
-const legendContainer = d3.select('.legend-container');
 ```
 
 The legend is a component that depends on the data and in a specific data shape. We check the Legend data schema, and it needs to be:
@@ -134,7 +124,7 @@ chartLegend
     .height(60)
     .isHorizontal(true);
 
-legendContainer.datum(legendData).call(chartLegend);
+chartLegend.render('.legend-container', legendData);
 ```
 Note how we have used the container width to position the legend in the center. You can see the rest of the options of the legend component in its [API reference page][legendAPIReference].
 
@@ -147,12 +137,11 @@ Our current data is not that extensive, but in theory, our line chart could rend
 In this section, we go over the process of adding a brush chart to our visualization, allowing to drag and drop a section of the data to zoom in that period.
 
 ### Creating the brush chart
-Let's first instantiate the brush chart and its container:
+Let's first instantiate the brush chart:
 ```js
 const chartBrush = core.brush();
-const brushContainer = d3.select('.brush-container');
 ```
-We would need to add the container to the DOM:
+We would need to add its container to the DOM:
 ```html
 <div class="brush-container"></div>
 ```
@@ -185,7 +174,7 @@ chartBrush
     .xAxisFormat(chartBrush.axisTimeCombinations.DAY_MONTH)
     .margin({top:0, bottom: 40, left: 50, right: 30});
 
-brushContainer.datum(brushData).call(chartBrush);
+chartBrush.render('.brush-container', brushData);
 ```
 Notice that we are setting the x-axis format to a constant called `DAY_MONTH` within the axisTimeCombinations object. This `xAxisFormat` option is a way for us to select a date format that works for our data. In this case, it is the day of the month, as the default one (hours) was showing the same hour every day.
 
@@ -205,7 +194,7 @@ chartBrush
         if (brushStart && brushEnd) {
             let filteredLineData = filterData(brushStart, brushEnd);
 
-            container.datum(filteredLineData).call(lineChart);
+            lineChart.render(container, filteredLineData);
         }
     });
 ```

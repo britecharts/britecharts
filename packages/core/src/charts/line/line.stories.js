@@ -74,7 +74,7 @@ export const Playground = (args) => {
         // The chart connects and places its tooltip
         applyArgs(lineChart, args).width(containerWidth).tooltip(chartTooltip);
 
-        lineContainer.datum(dataset).call(lineChart);
+        lineChart.render(lineContainer, dataset);
 
         addExportButtons(container, lineChart, 'line');
     }
@@ -131,7 +131,7 @@ export const WithSingleLine = () => {
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
 
-        lineContainer.datum(dataset).call(lineChart);
+        lineChart.render(lineContainer, dataset);
 
         // Tooltip Setup and start
         chartTooltip.title('Quantity Sold');
@@ -170,7 +170,7 @@ export const WithManyLines = () => {
                 chartTooltip.hide();
             });
 
-        lineContainer.datum(dataset).call(lineChart);
+        lineChart.render(lineContainer, dataset);
 
         // Tooltip Setup and start
         chartTooltip.title('Quantity Sold');
@@ -203,7 +203,7 @@ export const WithAnimation = () => {
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
 
-        lineContainer.datum(dataset).call(lineChart);
+        lineChart.render(lineContainer, dataset);
 
         chartTooltip.topicsOrder([
             ...new Set(dataset.data.map(({ name }) => name)),
@@ -233,7 +233,7 @@ export const WithStepBeforeCurveAndTealColorSchema = () => {
             .tooltipThreshold(200)
             .colorSchema(colors.colorSchemas.teal);
 
-        lineContainer.datum(dataset).call(lineChart);
+        lineChart.render(lineContainer, dataset);
     }
 
     return container;
@@ -264,7 +264,7 @@ export const WithTooltipAndBrush = () => {
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
 
-        lineContainer.datum(dataset).call(lineChart);
+        lineChart.render(lineContainer, dataset);
 
         // Tooltip Setup and start
         chartTooltip
@@ -293,10 +293,10 @@ export const WithTooltipAndBrush = () => {
                         ? filterData(brushRangeStart, brushRangeEnd)
                         : dataset;
 
-                lineContainer.datum(data).call(lineChart);
+                lineChart.render(lineContainer, data);
             });
 
-        brushContainer.datum(brushDataAdapter(dataset)).call(brushChart);
+        brushChart.render(brushContainer, brushDataAdapter(dataset));
     }
 
     return container;
@@ -318,7 +318,7 @@ export const WithLoadingState = () => {
             .isAnimated(true)
             .isLoading(true);
 
-        lineContainer.datum(dataset).call(lineChart);
+        lineChart.render(lineContainer, dataset);
     }
 
     return container;

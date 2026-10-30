@@ -54,8 +54,7 @@ new Chart(document.getElementById('uses'), {
 A Britecharts bar chart takes one object per bar and draws into any element:
 
 ```js
-import { select } from 'd3-selection';
-import { bar } from '@britecharts/core';
+import { bar, miniTooltip } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
 const data = [
@@ -63,11 +62,14 @@ const data = [
     { name: 'Blazing', value: 31 },
     { name: 'Radiant', value: 24 },
 ];
-const barChart = bar().width(600).height(300).a11yTitle('Uses of each word');
-
-select('#uses').datum(data).call(barChart);
+bar()
+    .width(600)
+    .height(300)
+    .a11yTitle('Uses of each word')
+    .tooltip(miniTooltip())
+    .render('#uses', data);
 ```
 
-Chart.js shows a tooltip by default. In Britecharts, add one with the [mini tooltip](../how-tos/user-how-to-guides.md#how-to-add-a-tooltip-to-a-chart). To try both on a page with no build step, use the [CDN bundle](../tutorials/getting-started.md), or [open an example in your browser](https://britecharts.github.io/britecharts/try).
+Chart.js shows a tooltip by default. In Britecharts, the chart's `tooltip` setting adds one, as above: see [how to add a tooltip](../how-tos/user-how-to-guides.md#how-to-add-a-tooltip-to-a-chart). To try both on a page with no build step, use the [CDN bundle](../tutorials/getting-started.md), or [open an example in your browser](https://britecharts.github.io/britecharts/try).
 
 Sources: [Chart.js accessibility](https://www.chartjs.org/docs/latest/general/accessibility.html), [Chart.js introduction](https://www.chartjs.org/docs/latest/), [Chart.js API](https://www.chartjs.org/docs/latest/developers/api.html), [Chart.js integration](https://www.chartjs.org/docs/latest/getting-started/integration.html).

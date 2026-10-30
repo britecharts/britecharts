@@ -13,23 +13,26 @@ In this tutorial, you will learn to install Britecharts in your project by using
 ## Install with NPM
 The recommended way of installing Britecharts is to use npm or pnpm:
 ```
-npm install --save @britecharts/core d3-selection
+npm install --save @britecharts/core
 ```
 Or, using pnpm:
 ```
-pnpm add @britecharts/core d3-selection
+pnpm add @britecharts/core
 ```
 Notice this requires you to have in place a bundling system (Webpack, Parcel, Rollup, or Similar). If you want to drop a script in an HTML file and start working, use the CDN way below.
 
 To use the modules within your JavaScript code, you will follow a different approach depending on the type of modules you are using:
 ```js
 // For CommonJS modules
-const selection = require('d3-selection');
-const BarChart = require('@britecharts/core');
+const { bar } = require('@britecharts/core');
 
 // For ES modules
-import bar from '@britecharts/core';
+import { bar } from '@britecharts/core';
+
+bar().render('.bar-container', data);
 ```
+
+The charts draw with `render`, so you don't need d3 in your own code. If you do use d3, `select('.bar-container').datum(data).call(barChart)` works too.
 
 When loading the styles, you have two options, loading the whole stylesheet of the library:
 ```html

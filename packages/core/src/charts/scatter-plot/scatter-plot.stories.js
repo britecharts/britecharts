@@ -36,7 +36,7 @@ export const Playground = (args) => {
 
         applyArgs(scatterChart, args).width(containerWidth).tooltip(tooltip);
 
-        scatterPlotContainer.datum(dataset).call(scatterChart);
+        scatterChart.render(scatterPlotContainer, dataset);
 
         addExportButtons(container, scatterChart, 'scatter-plot');
     }
@@ -106,7 +106,7 @@ export const WithIncreasedAreaAndHollowCircles = () => {
             })
             .on('customMouseOut', tooltip.hide);
 
-        scatterPlotContainer.datum(dataset).call(scatterChart);
+        scatterChart.render(scatterPlotContainer, dataset);
 
         // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
         tooltip.valueLabel('y').nameLabel('x');
@@ -137,7 +137,7 @@ export const WithAnimation = () => {
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
 
-        scatterPlotContainer.datum(dataset).call(scatterChart);
+        scatterChart.render(scatterPlotContainer, dataset);
 
         // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
         tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
@@ -160,7 +160,7 @@ export const WithNegativeValues = () => {
     if (containerWidth) {
         scatterChart.isAnimated(true).width(containerWidth).height(400);
 
-        scatterPlotContainer.datum(dataset).call(scatterChart);
+        scatterChart.render(scatterPlotContainer, dataset);
     }
 
     return container;
@@ -192,7 +192,7 @@ export const WithValuesAboveAndBelowZero = () => {
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
 
-        scatterPlotContainer.datum(dataset).call(scatterChart);
+        scatterChart.render(scatterPlotContainer, dataset);
 
         // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
         tooltip.valueLabel('y').nameLabel('x');

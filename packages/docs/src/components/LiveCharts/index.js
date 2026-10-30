@@ -9,10 +9,7 @@ import styles from './styles.module.css';
 const CDN = 'https://cdn.jsdelivr.net/npm';
 const CORE = `${CDN}/@britecharts/core@${version}/dist`;
 const STYLES = `${CORE}/styles/bundle/britecharts.min.css`;
-const SCRIPTS = [
-    `${CDN}/d3-selection@3.0.0/dist/d3-selection.min.js`,
-    `${CORE}/cdn/bundle/core.cdn.min.js`,
-];
+const SCRIPT = `${CORE}/cdn/bundle/core.cdn.min.js`;
 
 let loading;
 
@@ -28,8 +25,8 @@ function loadScript(src) {
 }
 
 /**
- * Loads Britecharts once per page, in order: d3-selection, then the core
- * bundle, which expects `d3` on the window.
+ * Loads Britecharts once per page: its stylesheet and the core bundle, which
+ * includes d3.
  */
 function loadBritecharts() {
     if (!loading) {
@@ -38,10 +35,7 @@ function loadBritecharts() {
         link.rel = 'stylesheet';
         link.href = STYLES;
         document.head.appendChild(link);
-        loading = SCRIPTS.reduce(
-            (previous, src) => previous.then(() => loadScript(src)),
-            Promise.resolve()
-        );
+        loading = loadScript(SCRIPT);
     }
 
     return loading;
@@ -74,45 +68,27 @@ const lineData = {
 };
 
 function drawBar(container) {
-    const { d3, core } = window;
-    const chart = core
-        .bar()
+    const { core } = window;
+
+    core.bar()
         .width(container.getBoundingClientRect().width)
         .height(260)
         .a11yTitle('Uses of each word')
-        .a11yDescription('Blazing is used most, Shiny least');
-    const chartTooltip = core.miniTooltip().title('Uses').numberFormat('d');
-
-    chart
-        .on('customMouseOver', chartTooltip.show)
-        .on('customMouseMove', chartTooltip.update)
-        .on('customMouseOut', chartTooltip.hide);
-
-    d3.select(container).datum(barData).call(chart);
-    d3.select(container).select('.metadata-group').datum([]).call(chartTooltip);
+        .a11yDescription('Blazing is used most, Shiny least')
+        .tooltip(core.miniTooltip().title('Uses').numberFormat('d'))
+        .render(container, barData);
 }
 
 function drawLine(container) {
-    const { d3, core } = window;
-    const chart = core
-        .line()
+    const { core } = window;
+
+    core.line()
         .width(container.getBoundingClientRect().width)
         .height(260)
         .grid('horizontal')
-        .a11yTitle('Uses over a week');
-    // The line chart sends the hovered date's values under `topics`
-    const chartTooltip = core.tooltip().title('Uses').topicLabel('topics');
-
-    chart
-        .on('customMouseOver', chartTooltip.show)
-        .on('customMouseMove', chartTooltip.update)
-        .on('customMouseOut', chartTooltip.hide);
-
-    d3.select(container).datum(lineData).call(chart);
-    d3.select(container)
-        .select('.metadata-group .hover-marker')
-        .datum([])
-        .call(chartTooltip);
+        .a11yTitle('Uses over a week')
+        .tooltip(core.tooltip().title('Uses'))
+        .render(container, lineData);
 }
 
 /**

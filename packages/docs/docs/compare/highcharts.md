@@ -53,8 +53,7 @@ Highcharts.chart('uses', {
 A Britecharts bar chart takes one object per bar. Put the title in your page's markup. Give screen readers the same words:
 
 ```js
-import { select } from 'd3-selection';
-import { bar } from '@britecharts/core';
+import { bar, miniTooltip } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
 const data = [
@@ -62,9 +61,12 @@ const data = [
     { name: 'Blazing', value: 31 },
     { name: 'Radiant', value: 24 },
 ];
-const barChart = bar().width(600).height(300).a11yTitle('Uses of each word');
-
-select('#uses').datum(data).call(barChart);
+bar()
+    .width(600)
+    .height(300)
+    .a11yTitle('Uses of each word')
+    .tooltip(miniTooltip())
+    .render('#uses', data);
 ```
 
 Several series, like Highcharts' multi-series column chart, map to the [grouped bar chart](../API/grouped-bar.md).

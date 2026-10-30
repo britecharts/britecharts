@@ -30,7 +30,7 @@ export const Playground = (args) => {
         sparklineChart.height(containerWidth / 4);
         applyArgs(sparklineChart, args).width(containerWidth);
 
-        sparklineContainer.datum(dataset).call(sparklineChart);
+        sparklineChart.render(sparklineContainer, dataset);
 
         addExportButtons(container, sparklineChart, 'sparkline');
     }
@@ -66,7 +66,7 @@ export const WithFixedWidth = () => {
 
         sparklineChart.height(100).width(400);
 
-        sparklineContainer.datum(dataset).call(sparklineChart);
+        sparklineChart.render(sparklineContainer, dataset);
     }
 
     return container;
@@ -88,7 +88,7 @@ export const WithAnimation = () => {
             .height(containerWidth / 4)
             .width(containerWidth);
 
-        sparklineContainer.datum(dataset).call(sparklineChart);
+        sparklineChart.render(sparklineContainer, dataset);
     }
 
     return container;
@@ -109,7 +109,7 @@ export const WithNegativeValues = () => {
             .height(containerWidth / 4)
             .width(containerWidth);
 
-        sparklineContainer.datum(dataset).call(sparklineChart);
+        sparklineChart.render(sparklineContainer, dataset);
     }
 
     return container;
@@ -131,7 +131,7 @@ export const WithLoadingState = () => {
             .isAnimated(true)
             .isLoading(true);
 
-        sparklineContainer.datum(dataset).call(sparklineChart);
+        sparklineChart.render(sparklineContainer, dataset);
     }
 
     return container;

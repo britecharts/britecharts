@@ -1,4 +1,3 @@
-import { select } from 'd3-selection';
 import { bar, line, miniTooltip, tooltip } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
@@ -33,40 +32,23 @@ const lineData = {
 };
 
 function drawBar(container) {
-    const chart = bar()
+    bar()
         .width(container.getBoundingClientRect().width)
         .height(300)
-        .a11yTitle('Uses of each word');
-    const chartTooltip = miniTooltip().title('Uses').numberFormat('d');
-
-    chart
-        .on('customMouseOver', chartTooltip.show)
-        .on('customMouseMove', chartTooltip.update)
-        .on('customMouseOut', chartTooltip.hide);
-
-    select(container).datum(barData).call(chart);
-    select(container).select('.metadata-group').datum([]).call(chartTooltip);
+        .a11yTitle('Uses of each word')
+        .tooltip(miniTooltip().title('Uses').numberFormat('d'))
+        .render(container, barData);
 }
 
 function drawLine(container) {
-    const chart = line()
+    // The chart connects its tooltip and draws it on the hovered date
+    line()
         .width(container.getBoundingClientRect().width)
         .height(300)
         .grid('horizontal')
-        .a11yTitle('Uses over a week');
-    // The line chart sends the hovered date's values under `topics`
-    const chartTooltip = tooltip().title('Uses').topicLabel('topics');
-
-    chart
-        .on('customMouseOver', chartTooltip.show)
-        .on('customMouseMove', chartTooltip.update)
-        .on('customMouseOut', chartTooltip.hide);
-
-    select(container).datum(lineData).call(chart);
-    select(container)
-        .select('.metadata-group .hover-marker')
-        .datum([])
-        .call(chartTooltip);
+        .a11yTitle('Uses over a week')
+        .tooltip(tooltip().title('Uses'))
+        .render(container, lineData);
 }
 
 drawBar(document.getElementById('bar'));

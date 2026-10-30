@@ -7,6 +7,8 @@ Accessors every data chart shares are listed once here and left out below:
 - `width`, `height`, `margin({ top, right, bottom, left })`. Margins can be set partially.
 - `isLoading`, which draws a skeleton.
 - `a11yTitle` and `a11yDescription`, which give the chart its accessible name and description.
+- `render(target, data)`, which draws the chart into a CSS selector, an element or a d3 selection. Every chart has it, the legend included.
+- `tooltip(t)`, which connects and draws a tooltip: on the bar, grouped bar, heatmap, line, scatter plot, stacked area and stacked bar.
 
 The charts with an `on` accessor take event handlers with `chart.on('customMouseOver', handler)`.
 
@@ -117,7 +119,7 @@ Accessors: `animationDuration`, `boxSize`, `colorSchema`, `exportChart`, `isAnim
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`.
 
 ## bullet
-API page: `bullet`. Data: one object per chart, not an array. Bind it with `container.datum(bulletData)`.
+API page: `bullet`. Data: one object per chart, not an array: `bulletChart.render(container, bulletData)`.
 
 ```js
 { ranges: [130, 160, 250], measures: [150, 180], markers: [220] }

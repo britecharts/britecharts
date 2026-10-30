@@ -53,9 +53,8 @@ barChart
     .width(containerWidth)
     .height(300)
     .isAnimated(true)
-    .isLoading(true);
-    
-barContainer.datum(dataset).call(barChart);
+    .isLoading(true)
+    .render(barContainer, dataset);
 ```
 
 3. Use 'valueLocale' to format values
@@ -322,7 +321,7 @@ barContainer.datum([{ letter: 'A', frequency: 0.08 }]).call(barChart);
 
 // Version 3
 const data = rows.map(({ letter, frequency }) => ({ name: letter, value: frequency }));
-barContainer.datum(data).call(barChart);
+barChart.render(barContainer, data);
 ```
 
 The tooltip keeps its `dateLabel`, `nameLabel`, `topicLabel` and `valueLabel`: it reads the data points of several charts, and they use different keys.
@@ -364,6 +363,23 @@ Every chart gives its svg a role and an accessible name, so a screen reader anno
 barChart
     .a11yTitle('Monthly visits')
     .a11yDescription('Visits doubled in May');
+```
+
+9. Draw charts with 'render', and give them a 'tooltip'
+
+`render` draws a chart into a CSS selector, an element or a d3 selection, so a page needs no d3 code of its own. The `tooltip` setting connects and places a tooltip, and sets the labels the chart's data points need. Your version 2 code, `container.datum(data).call(chart)` and the tooltip wired by hand, keeps working.
+
+```js
+// Version 2
+barChart
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
+barContainer.datum(data).call(barChart);
+barContainer.select('.metadata-group').datum([]).call(chartTooltip);
+
+// Version 3
+barChart.tooltip(miniTooltip()).render(barContainer, data);
 ```
 
 ## Summary of Changes

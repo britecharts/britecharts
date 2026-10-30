@@ -8,14 +8,13 @@ We created Britecharts to help users consume and create D3.js charts. It leverag
 In this tutorial, we will *create a simple data visualization using Britecharts*. You will learn how to load Britecharts, instantiate and configure a chart and plot it within a container with a data set.
 
 ## Downloading Britecharts
-To use a Britechart, we need to install the library. In this tutorial, we are going to use a simple CDN link to install it. For that, create a simple HTML file and add these script tags:
+To use a Britechart, we need to install the library. In this tutorial, we are going to use a simple CDN link to install it. For that, create a simple HTML file and add this script tag:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"
         type="text/javascript"></script>
 ```
-The bundle has every chart, and the d3 modules they use. Note that we also load `d3-selection` on its own, version 3, which matches the d3 v7 modules the bundle is built on. We use this module to create a selection and load the data in the container where we render the chart.
+The bundle has every chart, and the d3 modules they use, so the page needs no other script.
 
 We also need to load the styling of our chart, and we do it similarly by accesing the CDN link:
 ```html
@@ -23,13 +22,9 @@ We also need to load the styling of our chart, and we do it similarly by accesin
 ```
 
 ## Setting up Container, Dataset and Chart
-To create a container, first we need to add a div in the DOM with a class:
+To create a container, we add a div in the DOM with a class:
 ```html
 <div class="bar-container"></div>
-```
-Next, we can create our D3.js container using the `d3-selection` module:
-```js
-const container = d3.select('.bar-container');
 ```
 
 We instantiate a new chart by calling the function bar() inside the `core` object in the global namespace:
@@ -70,10 +65,11 @@ barChart
 ```
 Notice how we tweaked a bit the left margin in order to allow space for our left aligned labels to render.
 
-We only need to combine our configured bar chart with the container and the data to render our chart:
+We only need to render our configured bar chart into the container, with the data:
 ```js
-container.datum(barData).call(barChart);
+barChart.render('.bar-container', barData);
 ```
+`render` takes a CSS selector, an element or a d3 selection. Calling it again with new data redraws the chart.
 To render a simple bar chart:
 
 ![Simple Bar Chart][barChartImg]
@@ -83,9 +79,8 @@ Here is all the code inside the `<body>` tag of our HTML file:
 <div class="bar-container"></div>
 
 <script>
-    // Instantiate bar chart and container
+    // Instantiate bar chart
     const barChart = core.bar();
-    const container = d3.select('.bar-container');
 
     // Create Dataset with proper shape
     const barData = [
@@ -102,7 +97,7 @@ Here is all the code inside the `<body>` tag of our HTML file:
         .height(400)
         .width(600);
 
-    container.datum(barData).call(barChart);
+    barChart.render('.bar-container', barData);
 </script>
 ```
 In version 3 of Britecharts, the rendered charts are already responsive, so you can stretch and compress the viewport size to see the chart react.

@@ -43,7 +43,7 @@ const getInlineLegendChart = (container, dataset, colorMap) => {
             .markerSize(8)
             .height(40);
 
-        legendContainer.datum(legendData).call(legendChart);
+        legendChart.render(legendContainer, legendData);
     }
 
     return legendChart;
@@ -66,7 +66,7 @@ export const Playground = (args) => {
             .width(containerWidth)
             .tooltip(tooltip().title('Testing tooltip'));
 
-        groupedBarContainer.datum(dataset).call(groupedBar);
+        groupedBar.render(groupedBarContainer, dataset);
 
         addExportButtons(container, groupedBar, 'grouped-bar');
     }
@@ -129,7 +129,7 @@ export const WithHorizontalDirection = () => {
                 chartTooltip.hide();
             });
 
-        groupedBarContainer.datum(dataset).call(groupedBar);
+        groupedBar.render(groupedBarContainer, dataset);
 
         // Tooltip Setup and start
         // The grouped bar dispatches its rows as `values`, named by `group`
@@ -170,7 +170,7 @@ export const WithAnimation = () => {
                 chartTooltip.hide();
             });
 
-        groupedBarContainer.datum(dataset).call(groupedBar);
+        groupedBar.render(groupedBarContainer, dataset);
 
         // The grouped bar dispatches its rows as `values`, named by `group`
         chartTooltip
@@ -196,7 +196,7 @@ export const WithNegativeValues = () => {
     if (containerWidth) {
         groupedBar.isAnimated(true).width(containerWidth).height(400);
 
-        groupedBarContainer.datum(dataset).call(groupedBar);
+        groupedBar.render(groupedBarContainer, dataset);
     }
 
     return container;
@@ -218,7 +218,7 @@ export const WithLoadingState = () => {
             .isAnimated(true)
             .isLoading(true);
 
-        groupedBarContainer.datum(dataset).call(groupedBar);
+        groupedBar.render(groupedBarContainer, dataset);
     }
 
     return container;

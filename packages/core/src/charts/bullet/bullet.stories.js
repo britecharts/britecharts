@@ -32,7 +32,7 @@ export const Playground = (args) => {
 
             applyArgs(bulletChart, args).width(containerWidth);
 
-            bulletContainer.datum(data).call(bulletChart);
+            bulletChart.render(bulletContainer, data);
         });
 
         // Each bullet draws into the same container, so the last one is shown
@@ -69,7 +69,7 @@ export const WithNoMarker = () => {
             bulletChart = new bullet();
             bulletChart.width(containerWidth);
 
-            bulletContainer.datum(data).call(bulletChart);
+            bulletChart.render(bulletContainer, data);
         });
     }
 
@@ -90,7 +90,7 @@ export const WithDashboardAlignment = () => {
             bulletChart = new bullet();
             bulletChart.width(containerWidth);
 
-            bulletContainer.datum(data).call(bulletChart);
+            bulletChart.render(bulletContainer, data);
         });
     }
 
