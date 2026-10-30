@@ -60,6 +60,7 @@ select('.css-selector')
             * [.on()](#module_Line--exports.on) ⇒ <code>module</code>
             * [.xAxisValueType([_x])](#module_Line--exports.xAxisValueType) ⇒ <code>string</code> \| <code>module</code>
             * [.xAxisScale([_x])](#module_Line--exports.xAxisScale) ⇒ <code>string</code> \| <code>module</code>
+            * [.render(target, [data])](#module_Line--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~D3Selection](#module_Line--exports..D3Selection) : <code>Array.&lt;Array&gt;</code>
             * [~LineChartFlatData](#module_Line--exports..LineChartFlatData) : <code>object</code>
@@ -555,6 +556,31 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 **Example**  
 ```js
 line.xAxisValueType('number').xAxisScale('logarithmic')
+```
+<a name="module_Line--exports.render" id="module_Line--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+line().width(600).render('#chart', data);
 ```
 <a name="module_Line--exports..D3Selection" id="module_Line--exports..D3Selection"></a>
 

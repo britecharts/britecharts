@@ -40,6 +40,7 @@ select('.css-selector')
             * [.isLoading(flag)](#module_Sparkline--exports.isLoading) ⇒ <code>boolean</code> \| <code>module</code>
             * [.margin(_x)](#module_Sparkline--exports.margin) ⇒ <code>object</code> \| <code>module</code>
             * [.width(_x)](#module_Sparkline--exports.width) ⇒ <code>width</code> \| <code>module</code>
+            * [.render(target, [data])](#module_Sparkline--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~SparklineChartData](#module_Sparkline--exports..SparklineChartData) : <code>Array.&lt;Object&gt;</code>
 
@@ -223,6 +224,31 @@ Gets or Sets the width of the chart
 | --- | --- | --- | --- |
 | _x | <code>number</code> | <code>100</code> | Desired width for the graph |
 
+<a name="module_Sparkline--exports.render" id="module_Sparkline--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+sparkline().width(600).render('#chart', data);
+```
 <a name="module_Sparkline--exports..SparklineChartData" id="module_Sparkline--exports..SparklineChartData"></a>
 
 ## exports~SparklineChartData : <code>Array.&lt;Object&gt;</code>

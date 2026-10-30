@@ -55,6 +55,7 @@ select('.css-selector')
             * [.percentageFormat(_x)](#module_Donut--exports.percentageFormat) ⇒ <code>Number</code> \| <code>Module</code>
             * [.radiusHoverOffset(_x)](#module_Donut--exports.radiusHoverOffset) ⇒ <code>Number</code> \| <code>Module</code>
             * [.width(_x)](#module_Donut--exports.width) ⇒ <code>Number</code> \| <code>Module</code>
+            * [.render(target, [data])](#module_Donut--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~DonutChartData](#module_Donut--exports..DonutChartData) : <code>Array.&lt;Object&gt;</code>
 
@@ -461,6 +462,31 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the graph |
 
+<a name="module_Donut--exports.render" id="module_Donut--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Donut--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+donut().width(600).render('#chart', data);
+```
 <a name="module_Donut--exports..DonutChartData" id="module_Donut--exports..DonutChartData"></a>
 
 ## exports~DonutChartData : <code>Array.&lt;Object&gt;</code>

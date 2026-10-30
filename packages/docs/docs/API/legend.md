@@ -50,6 +50,7 @@ select('.other-css-selector')
             * [.numberFormat(_x)](#module_Legend--exports.numberFormat) ⇒ <code>string</code> \| <code>module</code>
             * [.unit([_x])](#module_Legend--exports.unit) ⇒ <code>String</code> \| <code>module</code>
             * [.width([_x])](#module_Legend--exports.width) ⇒ <code>number</code> \| <code>module</code>
+            * [.render(target, [data])](#module_Legend--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~LegendChartData](#module_Legend--exports..LegendChartData) : <code>Array.&lt;Object&gt;</code>
 
@@ -260,6 +261,31 @@ Gets or Sets the width of the legend chart
 | --- | --- | --- | --- |
 | [_x] | <code>number</code> | <code>320</code> | Desired width for the graph in pixels |
 
+<a name="module_Legend--exports.render" id="module_Legend--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+legend().width(600).render('#chart', data);
+```
 <a name="module_Legend--exports..LegendChartData" id="module_Legend--exports..LegendChartData"></a>
 
 ## exports~LegendChartData : <code>Array.&lt;Object&gt;</code>

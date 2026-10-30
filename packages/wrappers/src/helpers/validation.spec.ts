@@ -50,6 +50,19 @@ describe('validation helpers', () => {
             );
         });
 
+        it('should reject render, which the wrapper calls itself', () => {
+            const chart = Object.assign(aChart(), {
+                render: () => undefined,
+            });
+
+            expect(() =>
+                validateConfiguration(
+                    chart,
+                    untyped<typeof chart>({ render: '#chart' })
+                )
+            ).toThrow('Method not supported by Britechart: render');
+        });
+
         it.each(britechartsCustomEvents)(
             'should accept the %s event, which is not an accessor',
             (eventName) => {

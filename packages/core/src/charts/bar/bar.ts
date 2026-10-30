@@ -13,6 +13,7 @@ import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
 import { wrapTextWithEllipses } from '../helpers/text.js';
+import { renderChart } from '../helpers/render.js';
 import { exportChart } from '../helpers/export.js';
 import { getBaselineExtent, getValueDomain } from '../helpers/domain.js';
 import colorHelper from '../helpers/color.js';
@@ -28,6 +29,7 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    RenderableChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -80,6 +82,7 @@ export type BarSelection = Selection<
 export interface BarChartAPI
     extends
         AccessibleChartAPI<BarChartModule>,
+        RenderableChartAPI<BarChartModule, BarChartDataShape[]>,
         DataTableChartAPI<BarChartModule>,
         KeyboardChartAPI<BarChartModule>,
         ChartBaseAPI<BarChartModule>,
@@ -2044,6 +2047,27 @@ export default function module(): BarChartModule {
 
         return this;
     } as BarChartModule['yTicks'];
+
+    /**
+     * Draws the chart into a target: a CSS selector, an element or a d3
+     * selection, as `select(target).datum(data).call(chart)` does. A selector
+     * draws into the first element it matches. Without data, the chart
+     * redraws with the data it last drew there.
+     * @param  {String | Element | D3Selection} target Where to draw the chart
+     * @param  {Object} [data]  The data to draw
+     * @return {module} The chart module, to chain calls
+     * @throws {Error} When the target matches no element
+     * @public
+     * @example
+     * bar().width(600).render('#chart', data);
+     */
+    (exports as BarChartModule).render = function (
+        this: BarChartModule,
+        target,
+        data
+    ) {
+        return renderChart(this, target, data);
+    } as BarChartModule['render'];
 
     return exports as unknown as BarChartModule;
 }

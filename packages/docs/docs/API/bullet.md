@@ -41,6 +41,7 @@ select('.css-selector')
             * [.startMaxRangeOpacity(_x)](#module_Bullet--exports.startMaxRangeOpacity) ⇒ <code>Number</code> \| <code>module</code>
             * [.ticks(_x)](#module_Bullet--exports.ticks) ⇒ <code>Number</code> \| <code>module</code>
             * [.width(_x)](#module_Bullet--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+            * [.render(target, [data])](#module_Bullet--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~BulletChartData](#module_Bullet--exports..BulletChartData) : <code>Object</code>
 
@@ -259,6 +260,31 @@ Gets or Sets the width of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired width for the chart |
 
+<a name="module_Bullet--exports.render" id="module_Bullet--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+bullet().width(600).render('#chart', data);
+```
 <a name="module_Bullet--exports..BulletChartData" id="module_Bullet--exports..BulletChartData"></a>
 
 ## exports~BulletChartData : <code>Object</code>

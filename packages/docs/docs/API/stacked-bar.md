@@ -55,6 +55,7 @@ select('.css-selector')
             * [.yAxisLabel(_x)](#module_Stacked-bar--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
             * [.yAxisLabelOffset(_x)](#module_Stacked-bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTicks(_x)](#module_Stacked-bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.render(target, [data])](#module_Stacked-bar--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~StackedBarData](#module_Stacked-bar--exports..StackedBarData) : <code>Array.&lt;Object&gt;</code>
 
@@ -475,6 +476,31 @@ Gets or Sets the number of vertical ticks of the axis on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 5      Desired vertical ticks |
 
+<a name="module_Stacked-bar--exports.render" id="module_Stacked-bar--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+stackedBar().width(600).render('#chart', data);
+```
 <a name="module_Stacked-bar--exports..StackedBarData" id="module_Stacked-bar--exports..StackedBarData"></a>
 
 ## exports~StackedBarData : <code>Array.&lt;Object&gt;</code>

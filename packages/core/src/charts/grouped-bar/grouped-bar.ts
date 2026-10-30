@@ -15,6 +15,7 @@ import type { BaseType, Selection } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
+import { renderChart } from '../helpers/render.js';
 import { getBaselineExtent, getValueDomain } from '../helpers/domain.js';
 import colorHelper from '../helpers/color.js';
 import { barLoadingMarkup } from '../helpers/load.js';
@@ -30,6 +31,7 @@ import type { Offset } from '../../typings/common/position.js';
 import type { ColorsSchemasType } from '../../typings/helpers/colors.js';
 import type {
     AccessibleChartAPI,
+    RenderableChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -85,6 +87,7 @@ export type GroupedBarSelection = Selection<
 export interface GroupedBarChartAPI
     extends
         AccessibleChartAPI<GroupedBarChartModule>,
+        RenderableChartAPI<GroupedBarChartModule, GroupedBarChartDataShape[]>,
         DataTableChartAPI<GroupedBarChartModule>,
         KeyboardChartAPI<GroupedBarChartModule>,
         ChartBaseAPI<GroupedBarChartModule>,
@@ -1826,6 +1829,27 @@ export default function module(): GroupedBarChartModule {
 
         return this;
     } as GroupedBarChartModule['yTickTextOffset'];
+
+    /**
+     * Draws the chart into a target: a CSS selector, an element or a d3
+     * selection, as `select(target).datum(data).call(chart)` does. A selector
+     * draws into the first element it matches. Without data, the chart
+     * redraws with the data it last drew there.
+     * @param  {String | Element | D3Selection} target Where to draw the chart
+     * @param  {Object} [data]  The data to draw
+     * @return {module} The chart module, to chain calls
+     * @throws {Error} When the target matches no element
+     * @public
+     * @example
+     * groupedBar().width(600).render('#chart', data);
+     */
+    (exports as GroupedBarChartModule).render = function (
+        this: GroupedBarChartModule,
+        target,
+        data
+    ) {
+        return renderChart(this, target, data);
+    } as GroupedBarChartModule['render'];
 
     return exports as unknown as GroupedBarChartModule;
 }

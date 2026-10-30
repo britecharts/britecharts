@@ -48,6 +48,7 @@ select('.css-selector')
             * [.xAxisFormat(_x)](#module_Brush--exports.xAxisFormat) ⇒ <code>String</code> \| <code>Module</code>
             * [.xTicks([_x])](#module_Brush--exports.xTicks) ⇒ <code>Number</code> \| <code>Module</code>
             * [.roundingTimeInterval([_x])](#module_Brush--exports.roundingTimeInterval) ⇒ <code>roundingTimeInterval</code> \| <code>Module</code>
+            * [.render(target, [data])](#module_Brush--exports.render) ⇒ <code>module</code>
         * _inner_
             * ["customBrushStart"](#event_customBrushStart)
             * ["customBrushEnd"](#event_customBrushEnd)
@@ -355,6 +356,31 @@ timeMillisecond, utcMillisecond, timeSecond, utcSecond, timeMinute, utcMinute, t
 timeWeek, utcWeek, timeSunday, utcSunday, timeMonday, utcMonday, timeTuesday, utcTuesday, timeWednesday,
 utcWednesday, timeThursday, utcThursday, timeFriday, utcFriday, timeSaturday, utcSaturday, timeMonth, utcMonth,
 timeYear and utcYear.
+```
+<a name="module_Brush--exports.render" id="module_Brush--exports.render"></a>
+
+## render(target, [data]) ⇒ <code>module</code>
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
+**Returns**: <code>module</code> - The chart module, to chain calls  
+**Throws**:
+
+- <code>Error</code> When the target matches no element
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>String</code> \| <code>Element</code> \| <code>D3Selection</code> | Where to draw the chart |
+| [data] | <code>Object</code> | The data to draw |
+
+**Example**  
+```js
+brush().width(600).render('#chart', data);
 ```
 <a name="event_customBrushStart" id="event_customBrushStart"></a>
 

@@ -1,3 +1,5 @@
+import type { Selection } from 'd3-selection';
+
 import { LocaleString } from './local.js';
 import { ColorsSchemasType } from '../helpers/colors.js';
 import { ChartMarginParams } from './margin.js';
@@ -211,4 +213,28 @@ export interface KeyboardChartAPI<T> {
     a11yKeyboardNavigation(
         a11yKeyboardNavigation: boolean
     ): T & KeyboardChartAPI<T>;
+}
+
+/**
+ * Where `render` draws a chart: a CSS selector, an element, or a d3 selection.
+ *
+ * The selection's types are left open: d3's `Selection` is invariant in them,
+ * so naming any would reject the selections callers hold, and the chart reads
+ * only the elements and the data bound to them.
+ */
+export type ChartRenderTarget =
+    | string
+    | Element
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | Selection<any, any, any, any>;
+
+export interface RenderableChartAPI<T, DataShape> {
+    /**
+     * Draws the chart into `target`: a CSS selector, an element or a d3
+     * selection, as `select(target).datum(data).call(chart)` does. A selector
+     * draws into the first element it matches. Without `data`, the chart
+     * redraws with the data it last drew there. Throws when the target
+     * matches nothing.
+     */
+    render(target: ChartRenderTarget, data?: DataShape): T;
 }
