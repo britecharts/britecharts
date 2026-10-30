@@ -10,6 +10,7 @@
 /static/llms.txt
 /static/llms-full.txt
 /static/schema
+/static/r
 
 # Misc
 .DS_Store

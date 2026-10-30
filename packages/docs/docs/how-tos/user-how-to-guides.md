@@ -261,6 +261,40 @@ BarWrapper.create(element, spec.data, spec.config);
 
 A key the chart doesn't have, or a value of the wrong type, throws an error that names each one and says what it should be. Options that take a function, such as the events and the formatting functions, can't be written in JSON: set them from JavaScript.
 
+## How to Add a Chart to a shadcn App
+Britecharts has a [shadcn registry](https://ui.shadcn.com/docs/registry), so in an app set up with shadcn/ui one command adds a chart:
+
+```bash
+npx shadcn@latest add https://britecharts.github.io/britecharts/r/bar-chart.json
+```
+
+It copies a component into `components/charts/bar-chart.tsx`, installs `@britecharts/react` and `@britecharts/core`, and adds a rule to your CSS that colours the charts with your shadcn theme: text with `--foreground` and `--muted-foreground`, axes and grid with `--border`, tooltips with `--popover`. The charts follow your app's light and dark modes, and the data keeps Britecharts' palettes. The component is yours to edit.
+
+```tsx
+import { BarChart } from '@/components/charts/bar-chart';
+
+<BarChart data={data} height={300} tooltipTitle="Signups" a11yTitle="Signups by plan" />;
+```
+
+Each chart fills the width of its container, so put it in an element that has a width, and comes with its tooltip set up. Every other prop is the chart's own, as on its API page.
+
+| Chart | Add it with |
+| --- | --- |
+| Bar | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/bar-chart.json` |
+| Grouped bar | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/grouped-bar-chart.json` |
+| Line | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/line-chart.json` |
+| Scatter plot | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/scatter-plot.json` |
+| Stacked area | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/stacked-area-chart.json` |
+| Stacked bar | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/stacked-bar-chart.json` |
+| Heatmap | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/heatmap.json` |
+| Donut | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/donut-chart.json` |
+| Sparkline | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/sparkline.json` |
+| Brush | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/brush.json` |
+| Bullet | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/bullet-chart.json` |
+| Legend | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/legend.json` |
+
+The registry's index, for `shadcn list` and shadcn's MCP server, is at `https://britecharts.github.io/britecharts/r/registry.json`.
+
 ## How to Configure Time Scales
 Britecharts has some logic to try guessing the best date format on time series charts from the time period of the dataset. As we haven't bulletproofed this algorithm, and sometimes users want specific formats, we also expose configuration options to set custom formats.
 
