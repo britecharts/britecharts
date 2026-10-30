@@ -1,0 +1,99 @@
+---
+sidebar_position: 6
+title: Accessible JavaScript Charts
+description: Britecharts' charts are accessible by default. Screen readers get a name and the data as a table, keyboards move through the data, and animation stops for reduced motion. Free and open source.
+---
+
+import LiveCharts from '@site/src/components/LiveCharts';
+
+# Accessible JavaScript Charts
+
+A chart is a picture of data. Readers who can't see the picture need the data some other way. Readers who don't use a mouse need another way to reach the values a tooltip shows.
+
+Britecharts gives every chart these by default, with nothing to configure:
+
+-   **A name for screen readers.** Each chart's svg has a role and a name, "Bar chart" until you set your own.
+-   **The data as a table.** Every chart but the legend renders its data as a table that screen readers can read. Britecharts hides the table from sight, so it takes no room on the page.
+-   **Keyboard navigation.** Eight charts are a stop in the page's tab order. The arrow keys move from one data point to the next. The tooltip follows focus.
+-   **Reduced motion.** When the reader's system asks for reduced motion, charts draw without animation.
+-   **A palette for colour blindness**, one setting away: `colors.colorSchemas.okabeIto`.
+
+Each of these is free, in the plain JavaScript charts and in the React components alike.
+
+## Try it
+
+Press Tab until a chart has focus, then use the arrow keys. With a screen reader, move past a chart to reach its table.
+
+<LiveCharts />
+
+| Key | Does |
+| --- | --- |
+| Right or Left arrow | moves to the next or previous data point: a bar, a slice, a date, a point |
+| Down or Up arrow | the same, except on the heatmap, where they move a day |
+| Home, End | moves to the first or last point |
+| Escape | lets go of the point; leaving the chart does too |
+
+## Name each chart
+
+The default name says what kind of chart it is, not what it shows. Name it after its data, and add a sentence about what it means:
+
+```js
+barChart
+    .a11yTitle('Monthly visits')
+    .a11yDescription('Visits doubled in May');
+```
+
+In React, pass `a11yTitle` and `a11yDescription` as props. The data table takes the chart's name as its caption.
+
+## What each chart supports
+
+| Chart | Name and description | Data table | Keyboard |
+| --- | --- | --- | --- |
+| Bar, grouped bar, stacked bar | yes | yes | yes |
+| Line, stacked area | yes | yes | yes |
+| Donut, heatmap, scatter plot | yes | yes | yes |
+| Brush, bullet, sparkline | yes | yes | no |
+| Legend | yes | no | no |
+
+The bullet chart and the sparkline draw no title. Put their label in your own markup, next to the chart, and give screen readers the same words with `a11yTitle`.
+
+## How other libraries compare
+
+What each library does by default, from its own documentation, as of October 2026:
+
+| | Britecharts | Highcharts | Recharts | Chart.js |
+| --- | --- | --- | --- | --- |
+| Name for screen readers | on by default | with the accessibility module | on by default since 3.0 | you add `aria-label` and `role` to the canvas |
+| Data as a table | on by default, hidden | with the export-data module | no | no; you write fallback content |
+| Keyboard through the data | on by default, 8 charts | with the accessibility module | on by default since 3.0 | no |
+| Sonification | no | yes | no | no |
+| Frameworks | plain JavaScript, React | plain JavaScript, official React, Angular, Vue and others | React | plain JavaScript, community wrappers |
+| License | Apache 2.0, free | commercial, from 366 USD per developer seat | MIT, free | MIT, free |
+
+Highcharts goes further than Britecharts. It adds sonification and more ways to read a chart, and every license includes its accessibility module. Britecharts is the free library in this table that gives screen readers both a name and a data table by default. It also gives keyboards a way through the data.
+
+Sources: [Highcharts accessibility module](https://www.highcharts.com/docs/accessibility/accessibility-module), [Highcharts shop](https://shop.highcharts.com/), [Recharts 3.0 migration guide](https://github.com/recharts/recharts/wiki/3.0-migration-guide), [Recharts and accessibility](https://github.com/recharts/recharts/wiki/Recharts-and-accessibility), [Chart.js accessibility](https://www.chartjs.org/docs/latest/general/accessibility.html). See also [Britecharts vs Chart.js](./compare/chartjs.md), [vs Recharts](./compare/recharts.md) and [vs Highcharts](./compare/highcharts.md).
+
+## Turn a feature off
+
+Each feature is on by default and has an opt-out, for pages that already provide the same thing:
+
+| To turn off | Core | React | Wrappers |
+| --- | --- | --- | --- |
+| The data table | `.a11yDataTable(false)` | `a11yDataTable={false}` | `a11yDataTable: false` |
+| Keyboard navigation | `.a11yKeyboardNavigation(false)` | `a11yKeyboardNavigation={false}` | `a11yKeyboardNavigation: false` |
+
+If the page already shows the same data in an accessible form, turn off the table. If charts are thumbnails in a list, turn off keyboard navigation so they don't each take a tab stop.
+
+## How it is tested
+
+Unit tests check the svg's role and name and each chart's table. Playwright tests run in real apps that install the packed packages. They read the data tables the way a screen reader finds them and press the keys to move the tooltip.
+
+If something doesn't work with your screen reader or keyboard, [open an issue](https://github.com/britecharts/britecharts/issues/new/choose) and say which reader and browser you use.
+
+## Read more
+
+-   [How to make a chart accessible](./how-tos/user-how-to-guides.md#how-to-make-a-chart-accessible): the details of each setting.
+-   [How to customize the chart's colors](./how-tos/user-how-to-guides.md#how-to-customize-the-charts-colors): the colour-blind-safe palette.
+-   [How to animate a chart](./how-tos/user-how-to-guides.md#how-to-animate-a-chart): reduced motion.
+-   [How to theme a chart and support dark mode](./how-tos/user-how-to-guides.md#how-to-theme-a-chart-and-support-dark-mode).
