@@ -89,6 +89,8 @@ try {
     // (consistently green on main; failures cluster on PRs, which run many
     // other jobs against the same commit in parallel). A 503 still gets
     // logged, just not failed; a real 404/DNS failure still fails the build.
+    // A 429 is the same answer: every page has an "edit this page" link to
+    // github.com, and the run's last few of them get rate limited.
     checker.on('statusCodeWarning', ({ url, status }) => {
         console.warn(`  [warn] ${status} ${url} (treated as non-fatal)`);
     });
@@ -102,7 +104,7 @@ try {
         retryErrors: true,
         retryErrorsCount: 2,
         linksToSkip: SKIP,
-        statusCodes: { 503: 'warn' },
+        statusCodes: { 429: 'warn', 503: 'warn' },
         urlRewriteExpressions: [{ pattern: DEPLOYED, replacement: BASE }],
     });
     const broken = result.links.filter((link) => link.state === 'BROKEN');
