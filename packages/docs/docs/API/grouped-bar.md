@@ -443,8 +443,8 @@ Gets or Sets the x and y offset of ticks of the y axis on the chart
 <a name="module_Grouped-bar--exports.tooltip" id="module_Grouped-bar--exports.tooltip"></a>
 
 ## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go

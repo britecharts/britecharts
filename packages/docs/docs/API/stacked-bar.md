@@ -480,8 +480,8 @@ Gets or Sets the number of vertical ticks of the axis on the chart
 <a name="module_Stacked-bar--exports.tooltip" id="module_Stacked-bar--exports.tooltip"></a>
 
 ## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go

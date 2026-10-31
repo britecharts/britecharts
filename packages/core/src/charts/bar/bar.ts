@@ -2069,8 +2069,8 @@ export default function module(): BarChartModule {
     } as BarChartModule['yTicks'];
 
     /**
-     * Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-     * `miniTooltip()`, set on this chart only. The chart connects it to its
+     * Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+     * chart only. The chart connects it to its
      * pointer and keyboard events, draws it in place, and sets the labels its
      * data points need, unless they were set on the tooltip; it does so now
      * if the chart has drawn, and again on every draw. Its event handlers go
@@ -2081,7 +2081,7 @@ export default function module(): BarChartModule {
      * @throws {Error} When the tooltip is already set on another chart
      * @public
      * @example
-     * bar().tooltip(miniTooltip().title('Uses')).render('#chart', data);
+     * bar().tooltip(tooltip().title('Uses')).render('#chart', data);
      */
     (exports as BarChartModule).tooltip = function (this: BarChartModule, _x) {
         if (!arguments.length) {

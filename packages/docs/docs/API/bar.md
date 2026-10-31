@@ -592,8 +592,8 @@ Gets or Sets the number of vertical ticks on the chart
 <a name="module_Bar--exports.tooltip" id="module_Bar--exports.tooltip"></a>
 
 ## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -614,7 +614,7 @@ removes the one it had.
 
 **Example**  
 ```js
-bar().tooltip(miniTooltip().title('Uses')).render('#chart', data);
+bar().tooltip(tooltip().title('Uses')).render('#chart', data);
 ```
 <a name="module_Bar--exports.render" id="module_Bar--exports.render"></a>
 

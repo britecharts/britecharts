@@ -1,7 +1,7 @@
 import { select } from 'd3-selection';
 
 import scatterPlot from './scatter-plot';
-import miniTooltip from '../mini-tooltip/mini-tooltip';
+import tooltip from '../tooltip/tooltip';
 
 import {
     addExportButtons,
@@ -29,12 +29,14 @@ export const Playground = (args) => {
         const dataset = aTestDataSet().withOneSource().build();
         // The chart sets `valueLabel('y')`; `nameLabel('x')` shows a point's
         // `x` instead of its name
-        const tooltip = miniTooltip()
+        const chartTooltip = tooltip()
             .title('Temperature (C)')
             .nameLabel('x')
             .numberFormat('$');
 
-        applyArgs(scatterChart, args).width(containerWidth).tooltip(tooltip);
+        applyArgs(scatterChart, args)
+            .width(containerWidth)
+            .tooltip(chartTooltip);
 
         scatterChart.render(scatterPlotContainer, dataset);
 
@@ -77,7 +79,7 @@ export const WithIncreasedAreaAndHollowCircles = () => {
     const container = getCleanContainer();
     const scatterPlotContainer = select(container);
     const scatterChart = scatterPlot();
-    const tooltip = miniTooltip();
+    const chartTooltip = tooltip();
     const containerWidth = scatterPlotContainer.node()
         ? scatterPlotContainer.node().getBoundingClientRect().width
         : false;
@@ -99,20 +101,22 @@ export const WithIncreasedAreaAndHollowCircles = () => {
             // Titled with the hovered point's group, set before the tooltip
             // draws so it never shows the previous point's
             .on('customMouseOver', (dataPoint, ...position) => {
-                tooltip.title(dataPoint.name).show(dataPoint, ...position);
+                chartTooltip.title(dataPoint.name).show(dataPoint, ...position);
             })
             .on('customMouseMove', (dataPoint, ...position) => {
-                tooltip.title(dataPoint.name).update(dataPoint, ...position);
+                chartTooltip
+                    .title(dataPoint.name)
+                    .update(dataPoint, ...position);
             })
-            .on('customMouseOut', tooltip.hide);
+            .on('customMouseOut', chartTooltip.hide);
 
         scatterChart.render(scatterPlotContainer, dataset);
 
         // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
-        tooltip.valueLabel('y').nameLabel('x');
+        chartTooltip.valueLabel('y').nameLabel('x');
 
         tooltipContainer = select('.scatter-plot .metadata-group');
-        tooltipContainer.datum([]).call(tooltip);
+        tooltipContainer.datum([]).call(chartTooltip);
     }
 
     return container;
@@ -125,7 +129,7 @@ export const WithAnimation = () => {
     const containerWidth = scatterPlotContainer.node()
         ? scatterPlotContainer.node().getBoundingClientRect().width
         : false;
-    const tooltip = miniTooltip().title('Temperature (C)');
+    const chartTooltip = tooltip().title('Temperature (C)');
 
     if (containerWidth) {
         const dataset = aTestDataSet().withOneSource().build();
@@ -133,16 +137,16 @@ export const WithAnimation = () => {
         scatterChart
             .isAnimated(true)
             .width(containerWidth)
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
-            .on('customMouseOut', tooltip.hide);
+            .on('customMouseOver', chartTooltip.show)
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', chartTooltip.hide);
 
         scatterChart.render(scatterPlotContainer, dataset);
 
         // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
-        tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
+        chartTooltip.valueLabel('y').nameLabel('x').numberFormat('$');
 
-        select('.scatter-plot .metadata-group').datum([]).call(tooltip);
+        select('.scatter-plot .metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;
@@ -178,7 +182,7 @@ export const WithValuesAboveAndBelowZero = () => {
     const containerWidth = scatterPlotContainer.node()
         ? scatterPlotContainer.node().getBoundingClientRect().width
         : false;
-    const tooltip = miniTooltip().title('Temperature delta (C)');
+    const chartTooltip = tooltip().title('Temperature delta (C)');
 
     if (containerWidth) {
         const dataset = aTestDataSet().withNegativeValues().build();
@@ -188,16 +192,16 @@ export const WithValuesAboveAndBelowZero = () => {
             .grid('full')
             .width(containerWidth)
             .height(400)
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
-            .on('customMouseOut', tooltip.hide);
+            .on('customMouseOver', chartTooltip.show)
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', chartTooltip.hide);
 
         scatterChart.render(scatterPlotContainer, dataset);
 
         // A point's value is its `y`; `nameLabel('x')` shows its `x` instead of its name
-        tooltip.valueLabel('y').nameLabel('x');
+        chartTooltip.valueLabel('y').nameLabel('x');
 
-        select('.scatter-plot .metadata-group').datum([]).call(tooltip);
+        select('.scatter-plot .metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;

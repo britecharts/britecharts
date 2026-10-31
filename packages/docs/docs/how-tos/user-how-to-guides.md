@@ -77,7 +77,7 @@ To change a colour, set its token on the charts:
 The data colours come from `colorSchema` and `colorMap`, not from these tokens. Exports carry the resolved colours, so an image exported in dark mode keeps its dark background. Browsers without `light-dark()` (before 2024) show the light values.
 
 ## How to Add a Tooltip to a Chart
-Give the chart a tooltip with its `tooltip` setting: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, heatmap and scatter plot, which show one value. The donut has no tooltip: it shows the hovered slice in its centre instead.
+Give the chart a tooltip with its `tooltip` setting. The same `tooltip()` works on every chart that takes one: the line, stacked area, stacked bar and grouped bar charts list one row per topic, and the bar, heatmap and scatter plot show one value. It has no title until you set one, and it shows a single value with two decimals unless you set a `numberFormat`. The donut has no tooltip: it shows the hovered slice in its centre instead.
 
 ```js
 stackedBar()

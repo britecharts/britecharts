@@ -59,7 +59,7 @@
                     "type": "boolean"
                 },
                 "layout": {
-                    "description": "Gets or Sets the layout: 'list' (title and one row per topic), 'single' (title, name and a big value; what miniTooltip renders) or 'auto' (the default: by the data point's shape). Set before the tooltip is drawn.",
+                    "description": "Gets or Sets the layout: 'list' (title and one row per topic), 'single' (title, name and a big value) or 'auto' (the default: by the data point's shape). Set before the tooltip is drawn.",
                     "enum": [
                         "auto",
                         "list",

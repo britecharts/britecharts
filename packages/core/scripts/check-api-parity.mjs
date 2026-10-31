@@ -78,9 +78,7 @@ for (const exported of checker.getExportsOfModule(barrelSymbol)) {
     if (!(target.flags & ts.SymbolFlags.Function)) {
         continue;
     }
-    const [signature] = checker
-        .getTypeOfSymbol(target)
-        .getCallSignatures();
+    const [signature] = checker.getTypeOfSymbol(target).getCallSignatures();
 
     if (signature) {
         factories.set(exported.getName(), signature.getReturnType());
@@ -152,22 +150,26 @@ for (const [name, { file, source }] of [...sources].sort()) {
     const moduleType = factories.get(name);
 
     if (!moduleType) {
-        // `colors` is a helper and `miniTooltip` is a preset of the tooltip;
+        // `colors` is a helper and `miniTooltip` is an alias of the tooltip;
         // neither declares a factory of its own.
         continue;
     }
 
     const declared = new Set(
-        checker.getPropertiesOfType(moduleType).map((symbol) => symbol.getName())
+        checker
+            .getPropertiesOfType(moduleType)
+            .map((symbol) => symbol.getName())
     );
     const exposed = assignedAccessors(source);
 
-    // A preset assigns nothing: `miniTooltip` is
+    // An alias assigns nothing: `miniTooltip` is
     // `tooltip().layout('single').title('').numberFormat('.2f')` and inherits the
     // tooltip's whole surface, so every member it declares is legitimately
     // absent from its own source.
     if (exposed.size === 0) {
-        console.log(`  ${name.padEnd(13)} a preset, nothing of its own to compare`);
+        console.log(
+            `  ${name.padEnd(13)} an alias, nothing of its own to compare`
+        );
         continue;
     }
     const undeclared = [...exposed].filter((n) => !declared.has(n)).sort();

@@ -1,7 +1,7 @@
 import { select } from 'd3-selection';
 
 import heatmap from './heatmap';
-import miniTooltip from '../mini-tooltip/mini-tooltip';
+import tooltip from '../tooltip/tooltip';
 
 import {
     addExportButtons,
@@ -47,7 +47,9 @@ export const Playground = (args) => {
     const containerWidth = heatmapContainer.node()
         ? heatmapContainer.node().getBoundingClientRect().width
         : false;
-    const tooltip = miniTooltip().title('Described together').numberFormat('d');
+    const chartTooltip = tooltip()
+        .title('Described together')
+        .numberFormat('d');
 
     if (containerWidth) {
         const dataset = aTestDataSet().withCategoricalData().build();
@@ -55,12 +57,12 @@ export const Playground = (args) => {
             .yAxisLabels(lightWords)
             .xAxisLabels(lightWords)
             .on('customMouseOver', (box, ...rest) =>
-                tooltip.show(nameBox(box), ...rest)
+                chartTooltip.show(nameBox(box), ...rest)
             )
             .on('customMouseMove', (box, ...rest) =>
-                tooltip.update(nameBox(box), ...rest)
+                chartTooltip.update(nameBox(box), ...rest)
             )
-            .on('customMouseOut', tooltip.hide);
+            .on('customMouseOut', chartTooltip.hide);
 
         const { top, right, bottom, left } = heatmapChart.margin();
         const side = lightWords.length * heatmapChart.boxSize();
@@ -71,7 +73,7 @@ export const Playground = (args) => {
 
         addExportButtons(container, heatmapChart, 'heatmap');
 
-        select('.heatmap .metadata-group').datum([]).call(tooltip);
+        select('.heatmap .metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;
@@ -116,7 +118,7 @@ export const WithAnimation = () => {
     const containerWidth = heatmapContainer.node()
         ? heatmapContainer.node().getBoundingClientRect().width
         : false;
-    const tooltip = miniTooltip().title('Tooltip Title');
+    const chartTooltip = tooltip().title('Tooltip Title');
 
     if (containerWidth) {
         const dataset = aTestDataSet().withWeeklyData().build();
@@ -124,13 +126,13 @@ export const WithAnimation = () => {
         heatmapChart
             .isAnimated(true)
             .width(containerWidth)
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
-            .on('customMouseOut', tooltip.hide);
+            .on('customMouseOver', chartTooltip.show)
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', chartTooltip.hide);
 
         heatmapChart.render(heatmapContainer, dataset);
 
-        select('.heatmap .metadata-group').datum([]).call(tooltip);
+        select('.heatmap .metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;

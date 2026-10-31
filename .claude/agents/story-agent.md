@@ -20,7 +20,7 @@ A story is a function that renders the chart into a container and **returns the 
 import { select } from 'd3-selection';
 
 import bar from './bar';
-import miniTooltip from '../mini-tooltip/mini-tooltip';
+import tooltip from '../tooltip/tooltip';
 
 import { getCleanContainer } from '../../../.storybook/helpers';
 import { BarDataBuilder } from './barChartDataBuilder';

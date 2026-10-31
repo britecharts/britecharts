@@ -123,7 +123,7 @@ export interface TooltipAPI {
     show(dataPoint?: TooltipDataShape, position?: TooltipPosition): void;
     /**
      * Gets or Sets the layout: 'list' (title and one row per topic), 'single'
-     * (title, name and a big value; what miniTooltip renders) or 'auto' (the
+     * (title, name and a big value) or 'auto' (the
      * default: by the data point's shape). Set before the tooltip is drawn.
      */
     layout(): TooltipLayout;
@@ -305,6 +305,9 @@ type TooltipDatum = TooltipDataShape & {
 // The legacy update(dataPoint, colorMap, x, y) order is warned about once
 let hasWarnedLegacyOrder = false;
 
+// How the single layout shows its value when no format is set
+const formatSingleValue = format('.2f');
+
 /**
  * Tooltip component: one box, drawn inside the chart's svg, that follows the
  * pointer and shows what it is over. It renders a **list** (a title and one
@@ -313,8 +316,8 @@ let hasWarnedLegacyOrder = false;
  * or a **single value** (a title, the element's name and a big value) for
  * the single-value charts -- bar, scatter plot, heatmap and donut. By
  * default it picks the layout from the data point it is given; `layout()`
- * forces one. `miniTooltip` is this component with the single layout, an
- * empty title and a `.2f` number format.
+ * forces one. It shows a title only if you set one, and a single value with
+ * two decimals unless you set a format.
  *
  * The tooltip keeps itself inside the chart: it measures the svg it is drawn
  * in, sits beside its anchor, flips to the other side when there is no room
@@ -356,32 +359,6 @@ let hasWarnedLegacyOrder = false;
  * In React, `Tooltip` starts from `topicLabel('values')`, so the line chart
  * is the one that needs a setting there: `topicLabel="topics"`.
  *
- * ### miniTooltip, the single-value preset
- *
- * `miniTooltip()` is `tooltip().layout('single').title('').numberFormat('.2f')`:
- * the same component with the single-value layout, no title and a `.2f`
- * number format, for the bar, scatter plot, heatmap and donut charts. Every
- * accessor documented on this page is available on it.
- *
- * ```js
- * const barChart = bar(),
- *     chartTooltip = miniTooltip();
- *
- * barChart
- *     .width(500)
- *     .on('customMouseOver', chartTooltip.show)
- *     .on('customMouseMove', chartTooltip.update)
- *     .on('customMouseOut', chartTooltip.hide);
- *
- * d3Selection.select('.css-selector')
- *     .datum(dataset)
- *     .call(barChart);
- *
- * d3Selection.select('.metadata-group')
- *     .datum([])
- *     .call(chartTooltip);
- * ```
- *
  * @module Tooltip
  * @tutorial tooltip
  *
@@ -414,7 +391,7 @@ export default function module(): TooltipModule {
     // and `const`: nearly every binding here is reassigned, either by an
     // accessor or while measuring and placing the box. The handful that are
     // not are below it.
-    let title = 'Tooltip title',
+    let title = '',
         shouldShowDateInTitle = true,
         // tooltip
         tooltipBackground: ChartSelection<SVGRectElement>,
@@ -451,7 +428,7 @@ export default function module(): TooltipModule {
         // Rows shown before the rest are folded into a "+n more" row
         maxEntries = 12,
         // 'list' (title + one row per topic), 'single' (title, name and a
-        // big value, the mini tooltip) or 'auto' (by the data point's shape)
+        // big value) or 'auto' (by the data point's shape)
         layout: TooltipLayout = 'auto',
         // The layout the last data point was rendered with
         activeLayout: Exclude<TooltipLayout, 'auto'> = 'list',
@@ -570,10 +547,7 @@ export default function module(): TooltipModule {
             svg = select(container)
                 .append('g')
                 .classed('britechart', true)
-                // The single layout keeps the mini tooltip's class, so the
-                // stylesheet and any selector written for it still apply
-                .classed('britechart-tooltip', layout !== 'single')
-                .classed('britechart-mini-tooltip', layout === 'single')
+                .call(setLayoutClass, layout === 'single')
                 // Never between the pointer and the chart: a tooltip that
                 // caught the pointer would end the hover that shows it
                 .attr('pointer-events', 'none')
@@ -712,6 +686,8 @@ export default function module(): TooltipModule {
         }
         if (numberFormat !== null) {
             chosenValueFormatter = format(numberFormat);
+        } else if (activeLayout === 'single') {
+            chosenValueFormatter = formatSingleValue;
         } else if (isInteger(value)) {
             chosenValueFormatter = formatIntegerValue;
         }
@@ -1177,6 +1153,23 @@ export default function module(): TooltipModule {
     }
 
     /**
+     * Marks the layout on the tooltip's group. The single layout keeps the
+     * mini tooltip's class, so the stylesheet and any selector written for it
+     * still apply
+     * @param {D3Selection} group   The tooltip's group
+     * @param {Boolean} isSingle    Whether the layout is the single one
+     * @private
+     */
+    function setLayoutClass(
+        group: ChartSelection<SVGGElement>,
+        isSingle: boolean
+    ) {
+        group
+            .classed('britechart-tooltip', !isSingle)
+            .classed('britechart-mini-tooltip', isSingle);
+    }
+
+    /**
      * Gets the tooltipTitle respecting the different settings
      * @param  {Date | String}  date  Date to use
      * @private
@@ -1478,6 +1471,7 @@ export default function module(): TooltipModule {
         yPosition: number
     ) {
         updateContent(dataPoint);
+        svg.call(setLayoutClass, activeLayout === 'single');
         updatePositionAndSize(xPosition, yPosition);
     }
 
@@ -1668,7 +1662,8 @@ export default function module(): TooltipModule {
     } as TooltipModule['show'];
 
     /**
-     * Gets or Sets the title of the tooltip (to only show the date, set a blank title)
+     * Gets or Sets the title of the tooltip. By default it has none, so a list
+     * shows only the date
      * @param  {String} _x          Desired title
      * @return {String | module}   Current title or module to chain calls
      * @public
@@ -1708,7 +1703,7 @@ export default function module(): TooltipModule {
      * with a colour dot, the topic's name and its value (the multi-value
      * charts: line, stacked area, stacked bar and grouped bar); 'single'
      * shows the title, the name and a big value (the single-value charts:
-     * bar, scatter plot, heatmap and donut -- what `miniTooltip` renders);
+     * bar, scatter plot, heatmap and donut);
      * 'auto', the default, picks by the data point: a list when it carries
      * an array under the topic label, a single value otherwise. Set before
      * the tooltip is drawn.

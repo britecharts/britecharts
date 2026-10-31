@@ -12,8 +12,8 @@ multi-value charts -- line, stacked area, stacked bar and grouped bar --
 or a **single value** (a title, the element's name and a big value) for
 the single-value charts -- bar, scatter plot, heatmap and donut. By
 default it picks the layout from the data point it is given; `layout()`
-forces one. `miniTooltip` is this component with the single layout, an
-empty title and a `.2f` number format.
+forces one. It shows a title only if you set one, and a single value with
+two decimals unless you set a format.
 
 The tooltip keeps itself inside the chart: it measures the svg it is drawn
 in, sits beside its anchor, flips to the other side when there is no room
@@ -54,32 +54,6 @@ without their colours, or no value:
 
 In React, `Tooltip` starts from `topicLabel('values')`, so the line chart
 is the one that needs a setting there: `topicLabel="topics"`.
-
-## miniTooltip, the single-value preset
-
-`miniTooltip()` is `tooltip().layout('single').title('').numberFormat('.2f')`:
-the same component with the single-value layout, no title and a `.2f`
-number format, for the bar, scatter plot, heatmap and donut charts. Every
-accessor documented on this page is available on it.
-
-```js
-const barChart = bar(),
-    chartTooltip = miniTooltip();
-
-barChart
-    .width(500)
-    .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', chartTooltip.update)
-    .on('customMouseOut', chartTooltip.hide);
-
-d3Selection.select('.css-selector')
-    .datum(dataset)
-    .call(barChart);
-
-d3Selection.select('.metadata-group')
-    .datum([])
-    .call(chartTooltip);
-```
 
 **Example**  
 ```js
@@ -303,7 +277,8 @@ first `update`, which is what the multi-value charts need.
 <a name="module_Tooltip--exports.title" id="module_Tooltip--exports.title"></a>
 
 ## title(_x) ⇒ <code>String</code> \| <code>module</code>
-Gets or Sets the title of the tooltip (to only show the date, set a blank title)
+Gets or Sets the title of the tooltip. By default it has none, so a list
+shows only the date
 
 **Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current title or module to chain calls  
@@ -339,7 +314,7 @@ Gets or Sets the layout: 'list' shows the title and one row per topic,
 with a colour dot, the topic's name and its value (the multi-value
 charts: line, stacked area, stacked bar and grouped bar); 'single'
 shows the title, the name and a big value (the single-value charts:
-bar, scatter plot, heatmap and donut -- what `miniTooltip` renders);
+bar, scatter plot, heatmap and donut);
 'auto', the default, picks by the data point: a list when it carries
 an array under the topic label, a single value otherwise. Set before
 the tooltip is drawn.

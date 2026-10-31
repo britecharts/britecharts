@@ -165,12 +165,80 @@ describe('tooltip Component', () => {
             });
         });
 
+        describe('with no settings', () => {
+            const singleDataPoint = { name: 'Radiant', value: 1234.5 };
+            const single = () =>
+                containerFixture.select('.britechart-mini-tooltip');
+
+            it('should have no title', () => {
+                expect(tooltipChart.title()).toBe('');
+            });
+
+            it('should show only the date on a list', () => {
+                tooltipChart.update(
+                    { date: '2015-08-05T07:00:00.000Z', topics: [] },
+                    topicColorMap,
+                    0
+                );
+
+                expect(
+                    containerFixture.select('.tooltip-title').text()
+                ).toMatch(/2015/);
+            });
+
+            it('should draw a single value as the mini tooltip does', () => {
+                tooltipChart.update(singleDataPoint, [0, 0]);
+
+                expect(single().size()).toBe(1);
+                expect(
+                    containerFixture.select('.britechart-tooltip').size()
+                ).toBe(0);
+                expect(single().select('.mini-tooltip-title').size()).toBe(0);
+                expect(single().select('.mini-tooltip-value').text()).toBe(
+                    '1234.50'
+                );
+            });
+
+            it('should go back to a list when the data point has topics', () => {
+                tooltipChart.update(singleDataPoint, [0, 0]);
+                tooltipChart.update(
+                    { date: '2015-08-05T07:00:00.000Z', topics: [] },
+                    topicColorMap,
+                    0
+                );
+
+                expect(single().size()).toBe(0);
+                expect(
+                    containerFixture.select('.britechart-tooltip').size()
+                ).toBe(1);
+            });
+
+            it('should use the numberFormat on a single value when it has one', () => {
+                tooltipChart.numberFormat('d');
+                tooltipChart.update(singleDataPoint, [0, 0]);
+
+                expect(single().select('.mini-tooltip-value').text()).toBe(
+                    '1235'
+                );
+            });
+
+            it('should show a title on a single value when it has one', () => {
+                tooltipChart.title('Uses');
+                tooltipChart.update(singleDataPoint, [0, 0]);
+
+                expect(single().select('.mini-tooltip-title').text()).toBe(
+                    'Uses'
+                );
+            });
+        });
+
         describe('title', () => {
             describe('when date has day granularity', () => {
                 it('should update the title of the tooltip with a date with year', () => {
                     const expected = 'Tooltip title - Aug 05, 2015';
                     let actual;
 
+                    tooltipChart.title('Tooltip title');
                     tooltipChart.dateFormat(
                         tooltipChart.axisTimeCombinations.DAY_MONTH
                     );
@@ -196,6 +264,7 @@ describe('tooltip Component', () => {
                     const expected = 'Tooltip title';
                     let actual;
 
+                    tooltipChart.title('Tooltip title');
                     tooltipChart.shouldShowDateInTitle(false);
                     tooltipChart.update(
                         {
@@ -656,6 +725,7 @@ describe('tooltip Component', () => {
                         const expected = 'Tooltip title - 20000';
                         let actual;
 
+                        tooltipChart.title('Tooltip title');
                         tooltipChart.xAxisValueType('number');
                         tooltipChart.update(
                             {
