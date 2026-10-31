@@ -49,3 +49,4 @@ The whole of this documentation, as one text file: https://britecharts.github.io
 - [Keyboard helpers](https://britecharts.github.io/britecharts/docs/API/helpers/keyboard): Internal helpers the charts share
 - [Render helpers](https://britecharts.github.io/britecharts/docs/API/helpers/render): Internal helpers the charts share
 - [Scale helpers](https://britecharts.github.io/britecharts/docs/API/helpers/scale): Internal helpers the charts share
+- [Tooltip helpers](https://britecharts.github.io/britecharts/docs/API/helpers/tooltip): Internal helpers the charts share
