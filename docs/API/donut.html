@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://www.google-analytics.com">
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
-<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.0bec1515.css">
-<script src="/britecharts/assets/js/runtime~main.7dce97bd.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.de44a5c5.js" defer="defer"></script>
+<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.bf0fa77b.css">
+<script src="/britecharts/assets/js/runtime~main.26c3801f.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.84afaf54.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -25,7 +25,7 @@ simple and configurable donut chart.</p>
 <ul>
 <li class=""><a href="#module_Donut" class="">Donut</a>
 <ul>
-<li class=""><a href="#exp_module_Donut--exports" class="">exports(_selection, _data)</a> ⏏
+<li class=""><a href="#exp_module_Donut--exports" class="">donut(_selection, _data)</a>
 <ul>
 <li class=""><em>static</em>
 <ul>
@@ -70,7 +70,7 @@ simple and configurable donut chart.</p>
 </li>
 </ul>
 <p><a name="exp_module_Donut--exports" id="exp_module_Donut--exports" class="anchorTargetStickyNavbar_YBOc"></a></p>
-<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exports_selection-_data-">exports(_selection, _data) ⏏<a href="#exports_selection-_data-" class="hash-link" aria-label="Direct link to exports(_selection, _data) ⏏" title="Direct link to exports(_selection, _data) ⏏" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="donut_selection-_data">donut(_selection, _data)<a href="#donut_selection-_data" class="hash-link" aria-label="Direct link to donut(_selection, _data)" title="Direct link to donut(_selection, _data)" translate="no">​</a></h2>
 <p>This function creates the graph using the selection as container</p>
 <p><strong>Kind</strong>: Exported function</p>
 
@@ -99,7 +99,7 @@ simple and configurable donut chart.</p>
 <p>Gets or Sets the name screen readers announce for the chart. It is
 set as the svg&#x27;s <code>aria-label</code>. Unset, the chart is announced as
 &quot;Donut chart&quot;.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>null</code> | <code>module</code> - Current a11yTitle or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -123,7 +123,7 @@ set as the svg&#x27;s <code>aria-label</code>. Unset, the chart is announced as
 <p>Gets or Sets a longer description screen readers announce after the
 chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 <code>&lt;desc&gt;</code>. Unset, the chart has no description.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>null</code> | <code>module</code> - Current a11yDescription or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -148,7 +148,7 @@ chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current a11yDataTable or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -174,7 +174,7 @@ points: the chart takes one tab stop, the arrow keys move between
 points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -196,7 +196,7 @@ default.</p>
 <p><a name="module_Donut--exports.animationDuration" id="module_Donut--exports.animationDuration" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="animationduration_x--duration--module">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code><a href="#animationduration_x--duration--module" class="hash-link" aria-label="Direct link to animationduration_x--duration--module" title="Direct link to animationduration_x--duration--module" translate="no">​</a></h2>
 <p>Gets or Sets the duration of the animation</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>duration</code> | <code>module</code> - Current animation duration or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -224,7 +224,7 @@ the format will be changed by the custom function&#x27;s value format.
 The default format function value is &quot;${d.percentage}% ${d.name}&quot;.
 The callback will provide the data object with id, name, percentage, and quantity.
 Also provides the component added by the user in each data entry.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>function</code> | <code>module</code> - Current centeredTextFunction or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -248,7 +248,7 @@ Also provides the component added by the user in each data entry.</p>
 <p><a name="module_Donut--exports.colorMap" id="module_Donut--exports.colorMap" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="colormap_x--number--module">colorMap([_x]) ⇒ <code>number</code> | <code>module</code><a href="#colormap_x--number--module" class="hash-link" aria-label="Direct link to colormap_x--number--module" title="Direct link to colormap_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the colorMap of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>number</code> | <code>module</code> - Current colorMap or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -274,7 +274,7 @@ Also provides the component added by the user in each data entry.</p>
 <p><a name="module_Donut--exports.colorSchema" id="module_Donut--exports.colorSchema" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="colorschema_x--string--module">colorSchema(_x) ⇒ <code>String</code> | <code>module</code><a href="#colorschema_x--string--module" class="hash-link" aria-label="Direct link to colorschema_x--string--module" title="Direct link to colorschema_x--string--module" translate="no">​</a></h2>
 <p>Gets or Sets the colorSchema of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current colorSchema or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -298,7 +298,7 @@ Also provides the component added by the user in each data entry.</p>
 <p>Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
 adds up to zero or there are no entries), the chart will render an empty slice
 with a given color (light gray by default)</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Object</code> | <code>module</code> - Current config for when chart data is an empty array<br>
 <strong>Access</strong>: public</p>
 
@@ -323,7 +323,7 @@ with a given color (light gray by default)</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportchartfilename-title--promise">exportChart(filename, title) ⇒ <code>Promise</code><a href="#exportchartfilename-title--promise" class="hash-link" aria-label="Direct link to exportchartfilename-title--promise" title="Direct link to exportchartfilename-title--promise" translate="no">​</a></h2>
 <p>Exports the chart and fires a download: an svg file when the filename
 ends in <code>.svg</code>, and a png otherwise</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully<br>
 <strong>Access</strong>: public</p>
 
@@ -350,7 +350,7 @@ ends in <code>.svg</code>, and a png otherwise</p>
 <p><a name="module_Donut--exports.externalRadius" id="module_Donut--exports.externalRadius" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="externalradius_x--number--module">externalRadius(_x) ⇒ <code>Number</code> | <code>Module</code><a href="#externalradius_x--number--module" class="hash-link" aria-label="Direct link to externalradius_x--number--module" title="Direct link to externalradius_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the externalRadius of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>Module</code> - Current externalRadius or Donut Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -373,7 +373,7 @@ ends in <code>.svg</code>, and a png otherwise</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="hascenterlegend_x--boolean--module">hasCenterLegend(_x) ⇒ <code>boolean</code> | <code>Module</code><a href="#hascenterlegend_x--boolean--module" class="hash-link" aria-label="Direct link to hascenterlegend_x--boolean--module" title="Direct link to hascenterlegend_x--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets the hasCenterLegend property of the chart, making it display
 legend at the center of the donut.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>Module</code> - Current hasCenterLegend flag or Chart module<br>
 <strong>Access</strong>: public</p>
 
@@ -397,7 +397,7 @@ legend at the center of the donut.</p>
 <p>Gets or Sets the hasHoverAnimation property of the chart. By default,
 donut chart highlights the hovered slice. This property explicitly
 disables this hover behavior.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Current hasHoverAnimation flag or Chart module<br>
 <strong>Access</strong>: public</p>
 
@@ -420,7 +420,7 @@ disables this hover behavior.</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="hasfixedhighlightedslice_x--boolean--module">hasFixedHighlightedSlice(_x) ⇒ <code>boolean</code> | <code>module</code><a href="#hasfixedhighlightedslice_x--boolean--module" class="hash-link" aria-label="Direct link to hasfixedhighlightedslice_x--boolean--module" title="Direct link to hasfixedhighlightedslice_x--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
 highlight the selected slice id set with <code>highlightSliceById</code> all the time.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Current hasFixedHighlightedSlice flag or Chart module<br>
 <strong>Access</strong>: public</p>
 
@@ -447,7 +447,7 @@ after &#x27;mouseout` event is triggered. The last hovered slice will remain
 in highlight state.
 Note: if both hasFixedHighlightedSlice and hasLastHoverSliceHighlighted
 are true, the latter property will override the former.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Current hasLastHoverSliceHighlighted value or Chart module<br>
 <strong>Access</strong>: public</p>
 
@@ -469,7 +469,7 @@ are true, the latter property will override the former.</p>
 <p><a name="module_Donut--exports.height" id="module_Donut--exports.height" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="height_x--number--module">height(_x) ⇒ <code>Number</code> | <code>Module</code><a href="#height_x--number--module" class="hash-link" aria-label="Direct link to height_x--number--module" title="Direct link to height_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the height of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>Module</code> - Current height or Donut Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -491,7 +491,7 @@ are true, the latter property will override the former.</p>
 <p><a name="module_Donut--exports.highlightSliceById" id="module_Donut--exports.highlightSliceById" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="highlightslicebyid_x--number--module">highlightSliceById(_x) ⇒ <code>Number</code> | <code>Module</code><a href="#highlightslicebyid_x--number--module" class="hash-link" aria-label="Direct link to highlightslicebyid_x--number--module" title="Direct link to highlightslicebyid_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the id of the slice to highlight</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>Module</code> - Current highlighted slice id or Donut Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -513,7 +513,7 @@ are true, the latter property will override the former.</p>
 <p><a name="module_Donut--exports.internalRadius" id="module_Donut--exports.internalRadius" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="internalradius_x--number--module">internalRadius(_x) ⇒ <code>Number</code> | <code>Module</code><a href="#internalradius_x--number--module" class="hash-link" aria-label="Direct link to internalradius_x--number--module" title="Direct link to internalradius_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the internalRadius of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>Module</code> - Current internalRadius or Donut Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -538,7 +538,7 @@ are true, the latter property will override the former.</p>
 The chart draws without animation when the reader&#x27;s system asks for
 reduced motion (<code>prefers-reduced-motion</code>), whatever this is set to.
 By default this is &#x27;false&#x27;</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current isAnimated flag or Chart module<br>
 <strong>Access</strong>: public</p>
 
@@ -560,7 +560,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Donut--exports.isLoading" id="module_Donut--exports.isLoading" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="isloadingflag--boolean--module">isLoading(flag) ⇒ <code>boolean</code> | <code>module</code><a href="#isloadingflag--boolean--module" class="hash-link" aria-label="Direct link to isloadingflag--boolean--module" title="Direct link to isloadingflag--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets the loading state of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Current loading state flag or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -582,7 +582,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Donut--exports.margin" id="module_Donut--exports.margin" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="margin_x--object--module">margin(_x) ⇒ <code>Object</code> | <code>Module</code><a href="#margin_x--object--module" class="hash-link" aria-label="Direct link to margin_x--object--module" title="Direct link to margin_x--object--module" translate="no">​</a></h2>
 <p>Gets or Sets the margin of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Object</code> | <code>Module</code> - Current margin or Donut Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -604,7 +604,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Donut--exports.numberFormat" id="module_Donut--exports.numberFormat" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="numberformat_x--string--module">numberFormat(_x) ⇒ <code>string</code> | <code>module</code><a href="#numberformat_x--string--module" class="hash-link" aria-label="Direct link to numberformat_x--string--module" title="Direct link to numberformat_x--string--module" translate="no">​</a></h2>
 <p>Gets or Sets the number format of the donut chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>string</code> | <code>module</code> - Current numberFormat or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -628,13 +628,13 @@ By default this is &#x27;false&#x27;</p>
 <p>Exposes an &#x27;on&#x27; method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut and customClick</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>module</code> - Bar Chart<br>
 <strong>Access</strong>: public<br>
 <a name="module_Donut--exports.orderingFunction" id="module_Donut--exports.orderingFunction" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="orderingfunction_x--function--module">orderingFunction(_x) ⇒ <code>function</code> | <code>Module</code><a href="#orderingfunction_x--function--module" class="hash-link" aria-label="Direct link to orderingfunction_x--function--module" title="Direct link to orderingfunction_x--function--module" translate="no">​</a></h2>
 <p>Changes the order of items given custom function</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>function</code> | <code>Module</code> - Void function with no return<br>
 <strong>Access</strong>: public</p>
 
@@ -656,7 +656,7 @@ customMouseOver, customMouseMove, customMouseOut and customClick</p>
 <p><a name="module_Donut--exports.percentageFormat" id="module_Donut--exports.percentageFormat" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="percentageformat_x--number--module">percentageFormat(_x) ⇒ <code>Number</code> | <code>Module</code><a href="#percentageformat_x--number--module" class="hash-link" aria-label="Direct link to percentageformat_x--number--module" title="Direct link to percentageformat_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the percentage format for the percentage label</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>Module</code> - Current format or Donut Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -678,7 +678,7 @@ customMouseOver, customMouseMove, customMouseOut and customClick</p>
 <p><a name="module_Donut--exports.radiusHoverOffset" id="module_Donut--exports.radiusHoverOffset" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="radiushoveroffset_x--number--module">radiusHoverOffset(_x) ⇒ <code>Number</code> | <code>Module</code><a href="#radiushoveroffset_x--number--module" class="hash-link" aria-label="Direct link to radiushoveroffset_x--number--module" title="Direct link to radiushoveroffset_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the radiusHoverOffset of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>Module</code> - Current offset or Donut Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -700,7 +700,7 @@ customMouseOver, customMouseMove, customMouseOut and customClick</p>
 <p><a name="module_Donut--exports.width" id="module_Donut--exports.width" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="width_x--number--module">width(_x) ⇒ <code>Number</code> | <code>Module</code><a href="#width_x--number--module" class="hash-link" aria-label="Direct link to width_x--number--module" title="Direct link to width_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the width of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>Module</code> - Current width or Donut Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -725,7 +725,7 @@ customMouseOver, customMouseMove, customMouseOut and customClick</p>
 selection, as <code>select(target).datum(data).call(chart)</code> does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Returns</strong>: <code>module</code> - The chart module, to chain calls<br>
 <strong>Throws</strong>:</p>
 <ul>
@@ -757,7 +757,7 @@ redraws with the data it last drew there.</p>
 <div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token function" style="color:#d73a49">donut</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">width</span><span class="token punctuation" style="color:#393A34">(</span><span class="token number" style="color:#36acaa">600</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">render</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&#x27;#chart&#x27;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> data</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><br></div></code></pre></div></div>
 <p><a name="module_Donut--exports..DonutChartData" id="module_Donut--exports..DonutChartData" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportsdonutchartdata--arrayobject">exports~DonutChartData : <code>Array.&lt;Object&gt;</code><a href="#exportsdonutchartdata--arrayobject" class="hash-link" aria-label="Direct link to exportsdonutchartdata--arrayobject" title="Direct link to exportsdonutchartdata--arrayobject" translate="no">​</a></h2>
-<p><strong>Kind</strong>: inner typedef of <a href="#exp_module_Donut--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: inner typedef of <a href="#exp_module_Donut--exports" class=""><code>donut</code></a><br>
 <strong>Properties</strong></p>
 
 
@@ -791,6 +791,6 @@ redraws with the data it last drew there.</p>
 
 <table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>quantity</td><td><code>Number</code></td><td>Quantity of the group (required)</td></tr><tr><td>percentage</td><td><code>Number</code></td><td>Percentage of the total (optional)</td></tr><tr><td>name</td><td><code>String</code></td><td>Name of the group (required)</td></tr><tr><td>id</td><td><code>Number</code></td><td>Identifier for the group required for legend feature (optional)</td></tr></tbody></table>
 <p><strong>Example</strong></p>
-<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">[</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">quantity</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">percentage</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">50</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">name</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;glittering&#x27;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">id</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">quantity</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">percentage</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">50</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">name</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;luminous&#x27;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">id</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">2</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">]</span><br></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/donut.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/API/bullet"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Bullet</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/grouped-bar"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Grouped Bar</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#exports_selection-_data-" class="table-of-contents__link toc-highlight">exports(_selection, _data) ⏏</a></li><li><a href="#a11ytitle_x--string--null--module" class="table-of-contents__link toc-highlight">a11yTitle(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydescription_x--string--null--module" class="table-of-contents__link toc-highlight">a11yDescription(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydatatable_x--boolean--module" class="table-of-contents__link toc-highlight">a11yDataTable(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#a11ykeyboardnavigation_x--boolean--module" class="table-of-contents__link toc-highlight">a11yKeyboardNavigation(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#animationduration_x--duration--module" class="table-of-contents__link toc-highlight">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code></a></li><li><a href="#centeredtextfunction_x--function--module" class="table-of-contents__link toc-highlight">centeredTextFunction(_x) ⇒ <code>function</code> | <code>module</code></a></li><li><a href="#colormap_x--number--module" class="table-of-contents__link toc-highlight">colorMap([_x]) ⇒ <code>number</code> | <code>module</code></a></li><li><a href="#colorschema_x--string--module" class="table-of-contents__link toc-highlight">colorSchema(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#emptydataconfig_x--object--module" class="table-of-contents__link toc-highlight">emptyDataConfig(_x) ⇒ <code>Object</code> | <code>module</code></a></li><li><a href="#exportchartfilename-title--promise" class="table-of-contents__link toc-highlight">exportChart(filename, title) ⇒ <code>Promise</code></a></li><li><a href="#externalradius_x--number--module" class="table-of-contents__link toc-highlight">externalRadius(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#hascenterlegend_x--boolean--module" class="table-of-contents__link toc-highlight">hasCenterLegend(_x) ⇒ <code>boolean</code> | <code>Module</code></a></li><li><a href="#hashoveranimation_x--boolean--module" class="table-of-contents__link toc-highlight">hasHoverAnimation(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#hasfixedhighlightedslice_x--boolean--module" class="table-of-contents__link toc-highlight">hasFixedHighlightedSlice(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#haslasthoverslicehighlighted_x--boolean--module" class="table-of-contents__link toc-highlight">hasLastHoverSliceHighlighted(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#height_x--number--module" class="table-of-contents__link toc-highlight">height(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#highlightslicebyid_x--number--module" class="table-of-contents__link toc-highlight">highlightSliceById(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#internalradius_x--number--module" class="table-of-contents__link toc-highlight">internalRadius(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#isanimated_x--boolean--module" class="table-of-contents__link toc-highlight">isAnimated(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#isloadingflag--boolean--module" class="table-of-contents__link toc-highlight">isLoading(flag) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#margin_x--object--module" class="table-of-contents__link toc-highlight">margin(_x) ⇒ <code>Object</code> | <code>Module</code></a></li><li><a href="#numberformat_x--string--module" class="table-of-contents__link toc-highlight">numberFormat(_x) ⇒ <code>string</code> | <code>module</code></a></li><li><a href="#on--module" class="table-of-contents__link toc-highlight">on() ⇒ <code>module</code></a></li><li><a href="#orderingfunction_x--function--module" class="table-of-contents__link toc-highlight">orderingFunction(_x) ⇒ <code>function</code> | <code>Module</code></a></li><li><a href="#percentageformat_x--number--module" class="table-of-contents__link toc-highlight">percentageFormat(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#radiushoveroffset_x--number--module" class="table-of-contents__link toc-highlight">radiusHoverOffset(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#width_x--number--module" class="table-of-contents__link toc-highlight">width(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#rendertarget-data--module" class="table-of-contents__link toc-highlight">render(target, [data]) ⇒ <code>module</code></a></li><li><a href="#exportsdonutchartdata--arrayobject" class="table-of-contents__link toc-highlight">exports~DonutChartData : <code>Array.&lt;Object&gt;</code></a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
+<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">[</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">quantity</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">percentage</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">50</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">name</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;glittering&#x27;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">id</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">quantity</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">percentage</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">50</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">name</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;luminous&#x27;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">id</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">2</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">]</span><br></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/donut.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/API/bullet"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Bullet</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/grouped-bar"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Grouped Bar</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#donut_selection-_data" class="table-of-contents__link toc-highlight">donut(_selection, _data)</a></li><li><a href="#a11ytitle_x--string--null--module" class="table-of-contents__link toc-highlight">a11yTitle(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydescription_x--string--null--module" class="table-of-contents__link toc-highlight">a11yDescription(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydatatable_x--boolean--module" class="table-of-contents__link toc-highlight">a11yDataTable(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#a11ykeyboardnavigation_x--boolean--module" class="table-of-contents__link toc-highlight">a11yKeyboardNavigation(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#animationduration_x--duration--module" class="table-of-contents__link toc-highlight">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code></a></li><li><a href="#centeredtextfunction_x--function--module" class="table-of-contents__link toc-highlight">centeredTextFunction(_x) ⇒ <code>function</code> | <code>module</code></a></li><li><a href="#colormap_x--number--module" class="table-of-contents__link toc-highlight">colorMap([_x]) ⇒ <code>number</code> | <code>module</code></a></li><li><a href="#colorschema_x--string--module" class="table-of-contents__link toc-highlight">colorSchema(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#emptydataconfig_x--object--module" class="table-of-contents__link toc-highlight">emptyDataConfig(_x) ⇒ <code>Object</code> | <code>module</code></a></li><li><a href="#exportchartfilename-title--promise" class="table-of-contents__link toc-highlight">exportChart(filename, title) ⇒ <code>Promise</code></a></li><li><a href="#externalradius_x--number--module" class="table-of-contents__link toc-highlight">externalRadius(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#hascenterlegend_x--boolean--module" class="table-of-contents__link toc-highlight">hasCenterLegend(_x) ⇒ <code>boolean</code> | <code>Module</code></a></li><li><a href="#hashoveranimation_x--boolean--module" class="table-of-contents__link toc-highlight">hasHoverAnimation(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#hasfixedhighlightedslice_x--boolean--module" class="table-of-contents__link toc-highlight">hasFixedHighlightedSlice(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#haslasthoverslicehighlighted_x--boolean--module" class="table-of-contents__link toc-highlight">hasLastHoverSliceHighlighted(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#height_x--number--module" class="table-of-contents__link toc-highlight">height(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#highlightslicebyid_x--number--module" class="table-of-contents__link toc-highlight">highlightSliceById(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#internalradius_x--number--module" class="table-of-contents__link toc-highlight">internalRadius(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#isanimated_x--boolean--module" class="table-of-contents__link toc-highlight">isAnimated(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#isloadingflag--boolean--module" class="table-of-contents__link toc-highlight">isLoading(flag) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#margin_x--object--module" class="table-of-contents__link toc-highlight">margin(_x) ⇒ <code>Object</code> | <code>Module</code></a></li><li><a href="#numberformat_x--string--module" class="table-of-contents__link toc-highlight">numberFormat(_x) ⇒ <code>string</code> | <code>module</code></a></li><li><a href="#on--module" class="table-of-contents__link toc-highlight">on() ⇒ <code>module</code></a></li><li><a href="#orderingfunction_x--function--module" class="table-of-contents__link toc-highlight">orderingFunction(_x) ⇒ <code>function</code> | <code>Module</code></a></li><li><a href="#percentageformat_x--number--module" class="table-of-contents__link toc-highlight">percentageFormat(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#radiushoveroffset_x--number--module" class="table-of-contents__link toc-highlight">radiusHoverOffset(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#width_x--number--module" class="table-of-contents__link toc-highlight">width(_x) ⇒ <code>Number</code> | <code>Module</code></a></li><li><a href="#rendertarget-data--module" class="table-of-contents__link toc-highlight">render(target, [data]) ⇒ <code>module</code></a></li><li><a href="#exportsdonutchartdata--arrayobject" class="table-of-contents__link toc-highlight">exports~DonutChartData : <code>Array.&lt;Object&gt;</code></a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
 </body>
 </html>

@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://www.google-analytics.com">
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
-<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.0bec1515.css">
-<script src="/britecharts/assets/js/runtime~main.7dce97bd.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.de44a5c5.js" defer="defer"></script>
+<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.bf0fa77b.css">
+<script src="/britecharts/assets/js/runtime~main.26c3801f.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.84afaf54.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -138,7 +138,7 @@ accessor documented on this page is available on it.</p>
 <ul>
 <li class=""><a href="#module_Tooltip" class="">Tooltip</a>
 <ul>
-<li class=""><a href="#exp_module_Tooltip--exports" class="">exports(_selection, _data)</a> ⏏
+<li class=""><a href="#exp_module_Tooltip--exports" class="">tooltip(_selection, _data)</a>
 <ul>
 <li class=""><a href="#module_Tooltip--exports.axisTimeCombinations" class="">.axisTimeCombinations</a></li>
 <li class=""><a href="#module_Tooltip--exports.dateFormat" class="">.dateFormat(_x)</a> ⇒ <code>String</code> | <code>module</code></li>
@@ -166,7 +166,7 @@ accessor documented on this page is available on it.</p>
 </li>
 </ul>
 <p><a name="exp_module_Tooltip--exports" id="exp_module_Tooltip--exports" class="anchorTargetStickyNavbar_YBOc"></a></p>
-<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exports_selection-_data-">exports(_selection, _data) ⏏<a href="#exports_selection-_data-" class="hash-link" aria-label="Direct link to exports(_selection, _data) ⏏" title="Direct link to exports(_selection, _data) ⏏" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="tooltip_selection-_data">tooltip(_selection, _data)<a href="#tooltip_selection-_data" class="hash-link" aria-label="Direct link to tooltip(_selection, _data)" title="Direct link to tooltip(_selection, _data)" translate="no">​</a></h2>
 <p>This function creates the graph using the selection as container</p>
 <p><strong>Kind</strong>: Exported function</p>
 
@@ -194,13 +194,13 @@ accessor documented on this page is available on it.</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="axistimecombinations">axisTimeCombinations<a href="#axistimecombinations" class="hash-link" aria-label="Direct link to axisTimeCombinations" title="Direct link to axisTimeCombinations" translate="no">​</a></h2>
 <p>constants to be used to force the x axis to respect a certain granularity
 current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR</p>
-<p><strong>Kind</strong>: static property of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: property of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Example</strong></p>
 <div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token plain">tooltip</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">dateFormat</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">tooltip</span><span class="token punctuation" style="color:#393A34">.</span><span class="token property-access">axisTimeCombinations</span><span class="token punctuation" style="color:#393A34">.</span><span class="token constant" style="color:#36acaa">HOUR_DAY</span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div>
 <p><a name="module_Tooltip--exports.dateFormat" id="module_Tooltip--exports.dateFormat" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="dateformat_x--string--module">dateFormat(_x) ⇒ <code>String</code> | <code>module</code><a href="#dateformat_x--string--module" class="hash-link" aria-label="Direct link to dateformat_x--string--module" title="Direct link to dateformat_x--string--module" translate="no">​</a></h2>
 <p>Exposes the ability to force the tooltip to use a certain date format</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current format or module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -222,7 +222,7 @@ current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR</p>
 <p><a name="module_Tooltip--exports.dateCustomFormat" id="module_Tooltip--exports.dateCustomFormat" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="datecustomformat_x--string--module">dateCustomFormat(_x) ⇒ <code>String</code> | <code>module</code><a href="#datecustomformat_x--string--module" class="hash-link" aria-label="Direct link to datecustomformat_x--string--module" title="Direct link to datecustomformat_x--string--module" translate="no">​</a></h2>
 <p>Exposes the ability to use a custom date format</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current format or module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -249,7 +249,7 @@ current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR</p>
 shown in the title. When the data point has no such field, its <code>key</code>
 (what the stacked and grouped bar charts dispatch) or its <code>date</code> is
 used, so the default works for every chart.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current dateLabel or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -271,13 +271,13 @@ used, so the default works for every chart.</p>
 <p><a name="module_Tooltip--exports.hide" id="module_Tooltip--exports.hide" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="hide--module">hide() ⇒ <code>module</code><a href="#hide--module" class="hash-link" aria-label="Direct link to hide--module" title="Direct link to hide--module" translate="no">​</a></h2>
 <p>Hides the tooltip</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>module</code> - Tooltip module to chain calls<br>
 <strong>Access</strong>: public<br>
 <a name="module_Tooltip--exports.locale" id="module_Tooltip--exports.locale" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="locale_x--string--module">locale(_x) ⇒ <code>String</code> | <code>module</code><a href="#locale_x--string--module" class="hash-link" aria-label="Direct link to locale_x--string--module" title="Direct link to locale_x--string--module" translate="no">​</a></h2>
 <p>Pass locale for the tooltip to render the date in</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current locale or module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -304,7 +304,7 @@ the single layout. <code>&#x27;name&#x27;</code> by default. The stacked bar cha
 rows by <code>stack</code> and the grouped bar chart by <code>group</code>: without
 <code>nameLabel(&#x27;stack&#x27;)</code> or <code>nameLabel(&#x27;group&#x27;)</code>, the tooltip looks up each
 row&#x27;s colour under the bar&#x27;s name, and the rows show none.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current nameLabel or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -326,7 +326,7 @@ row&#x27;s colour under the bar&#x27;s name, and the rows show none.</p>
 <p><a name="module_Tooltip--exports.numberFormat" id="module_Tooltip--exports.numberFormat" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="numberformat_x--string--module">numberFormat(_x) ⇒ <code>string</code> | <code>module</code><a href="#numberformat_x--string--module" class="hash-link" aria-label="Direct link to numberformat_x--string--module" title="Direct link to numberformat_x--string--module" translate="no">​</a></h2>
 <p>Gets or Sets the number format for the value displayed on the tooltip</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>string</code> | <code>module</code> - Current numberFormat or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -349,7 +349,7 @@ row&#x27;s colour under the bar&#x27;s name, and the rows show none.</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="valueformatter_x--function--module">valueFormatter(_x) ⇒ <code>function</code> | <code>module</code><a href="#valueformatter_x--function--module" class="hash-link" aria-label="Direct link to valueformatter_x--function--module" title="Direct link to valueformatter_x--function--module" translate="no">​</a></h2>
 <p>Gets or Sets the formatter function for the value displayed on the tooltip.
 Setting this property makes the tooltip ignore numberFormat.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>function</code> | <code>module</code> - Current valueFormatter or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -373,7 +373,7 @@ Setting this property makes the tooltip ignore numberFormat.</p>
 <p><a name="module_Tooltip--exports.shouldShowDateInTitle" id="module_Tooltip--exports.shouldShowDateInTitle" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="shouldshowdateintitle_x--boolean--module">shouldShowDateInTitle(_x) ⇒ <code>Boolean</code> | <code>module</code><a href="#shouldshowdateintitle_x--boolean--module" class="hash-link" aria-label="Direct link to shouldshowdateintitle_x--boolean--module" title="Direct link to shouldshowdateintitle_x--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets shouldShowDateInTitle</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current shouldShowDateInTitle or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -398,7 +398,7 @@ Setting this property makes the tooltip ignore numberFormat.</p>
 the single-value charts dispatch them on <code>customMouseOver</code>, it renders
 and places the tooltip at once; otherwise it shows empty until the
 first <code>update</code>, which is what the multi-value charts need.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>module</code> - Tooltip module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -425,7 +425,7 @@ first <code>update</code>, which is what the multi-value charts need.</p>
 <p><a name="module_Tooltip--exports.title" id="module_Tooltip--exports.title" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="title_x--string--module">title(_x) ⇒ <code>String</code> | <code>module</code><a href="#title_x--string--module" class="hash-link" aria-label="Direct link to title_x--string--module" title="Direct link to title_x--string--module" translate="no">​</a></h2>
 <p>Gets or Sets the title of the tooltip (to only show the date, set a blank title)</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current title or module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -449,7 +449,7 @@ first <code>update</code>, which is what the multi-value charts need.</p>
 <p>Gets or Sets an offset, in pixels, applied to the point the tooltip is
 placed next to: <code>x</code> moves the anchor along the chart, <code>y</code> moves the box
 up (negative) or down. The box still stays inside the chart.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>Object</code> | <code>module</code> - Current tooltipOffset or module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -480,7 +480,7 @@ bar, scatter plot, heatmap and donut -- what <code>miniTooltip</code> renders);
 &#x27;auto&#x27;, the default, picks by the data point: a list when it carries
 an array under the topic label, a single value otherwise. Set before
 the tooltip is drawn.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current layout or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -508,7 +508,7 @@ the tooltip is drawn.</p>
 <p>Gets or Sets the most rows the tooltip shows. Past that, the last row
 reads &quot;+n more&quot; instead, so the box keeps a height that fits in the
 chart. 0 shows every row.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - Current maxEntries or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -534,7 +534,7 @@ chart. 0 shows every row.</p>
 <p><a name="module_Tooltip--exports.topicsOrder" id="module_Tooltip--exports.topicsOrder" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="topicsorder_x--arraystring--module">topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code><a href="#topicsorder_x--arraystring--module" class="hash-link" aria-label="Direct link to topicsorder_x--arraystring--module" title="Direct link to topicsorder_x--arraystring--module" translate="no">​</a></h2>
 <p>Pass an override for the ordering of your tooltip</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>Array.&lt;String&gt;</code> | <code>module</code> - Current overrideOrder or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -561,7 +561,7 @@ line chart dispatches. The stacked area, stacked bar and grouped bar
 charts dispatch their rows as <code>values</code>, so set <code>topicLabel(&#x27;values&#x27;)</code>
 for them. (<code>@britecharts/wrappers</code>, and so React&#x27;s <code>Tooltip</code>, set
 <code>&#x27;values&#x27;</code> themselves: there, the line chart needs <code>&#x27;topics&#x27;</code>.)</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current topicLabel or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -590,7 +590,7 @@ chart&#x27;s drawing area, the chart&#x27;s size (ignored; the tooltip measures
 the chart itself) and, from the multi-value charts, the map of topic
 names to colours. The order the multi-value charts used before 3.0,
 <code>update(dataPoint, colorMap, x, y)</code>, still works and warns once.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>module</code> - Tooltip module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -632,7 +632,7 @@ names to colours. The order the multi-value charts used before 3.0,
 shown for each row, or the big value of the single layout. <code>&#x27;value&#x27;</code>
 by default. The scatter plot&#x27;s points carry theirs as <code>y</code>, so set
 <code>valueLabel(&#x27;y&#x27;)</code> for it.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current valueLabel or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -660,7 +660,7 @@ a string that parses as one is a date, a number or a numeric string
 is a number, anything else is a category. Set &#x27;date&#x27; for keys that
 happen to parse as numbers, or &#x27;category&#x27; for names that happen to
 parse as dates.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Tooltip--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Tooltip--exports" class=""><code>tooltip</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Current xAxisValueType or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -682,6 +682,6 @@ parse as dates.</p>
 
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>[_x]</td><td><code>String</code></td><td><code>&#x27;auto&#x27;</code></td><td>&#x27;auto&#x27;, &#x27;date&#x27;, &#x27;number&#x27; or &#x27;category&#x27;</td></tr></tbody></table>
 <p><strong>Example</strong></p>
-<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token plain">tooltip</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">xAxisValueType</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&#x27;category&#x27;</span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/tooltip.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/API/stacked-bar"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Stacked Bar</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/helpers/a11y"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">A11y helpers</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#reading-each-charts-data-point" class="table-of-contents__link toc-highlight">Reading each chart&#39;s data point</a></li><li><a href="#minitooltip-the-single-value-preset" class="table-of-contents__link toc-highlight">miniTooltip, the single-value preset</a></li><li><a href="#exports_selection-_data-" class="table-of-contents__link toc-highlight">exports(_selection, _data) ⏏</a></li><li><a href="#axistimecombinations" class="table-of-contents__link toc-highlight">axisTimeCombinations</a></li><li><a href="#dateformat_x--string--module" class="table-of-contents__link toc-highlight">dateFormat(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#datecustomformat_x--string--module" class="table-of-contents__link toc-highlight">dateCustomFormat(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#datelabel_x--string--module" class="table-of-contents__link toc-highlight">dateLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#hide--module" class="table-of-contents__link toc-highlight">hide() ⇒ <code>module</code></a></li><li><a href="#locale_x--string--module" class="table-of-contents__link toc-highlight">locale(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#namelabel_x--string--module" class="table-of-contents__link toc-highlight">nameLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#numberformat_x--string--module" class="table-of-contents__link toc-highlight">numberFormat(_x) ⇒ <code>string</code> | <code>module</code></a></li><li><a href="#valueformatter_x--function--module" class="table-of-contents__link toc-highlight">valueFormatter(_x) ⇒ <code>function</code> | <code>module</code></a></li><li><a href="#shouldshowdateintitle_x--boolean--module" class="table-of-contents__link toc-highlight">shouldShowDateInTitle(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#showdatapoint-position--module" class="table-of-contents__link toc-highlight">show([dataPoint], [position]) ⇒ <code>module</code></a></li><li><a href="#title_x--string--module" class="table-of-contents__link toc-highlight">title(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#tooltipoffset_x--object--module" class="table-of-contents__link toc-highlight">tooltipOffset(_x) ⇒ <code>Object</code> | <code>module</code></a></li><li><a href="#layout_x--string--module" class="table-of-contents__link toc-highlight">layout([_x]) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#maxentries_x--number--module" class="table-of-contents__link toc-highlight">maxEntries([_x]) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#topicsorder_x--arraystring--module" class="table-of-contents__link toc-highlight">topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code></a></li><li><a href="#topiclabel_x--string--module" class="table-of-contents__link toc-highlight">topicLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#updatedatapoint-position-chartsize-colormap--module" class="table-of-contents__link toc-highlight">update(dataPoint, position, [chartSize], [colorMap]) ⇒ <code>module</code></a></li><li><a href="#valuelabel_x--string--module" class="table-of-contents__link toc-highlight">valueLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#xaxisvaluetype_x--string--module" class="table-of-contents__link toc-highlight">xAxisValueType([_x]) ⇒ <code>String</code> | <code>module</code></a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
+<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token plain">tooltip</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">xAxisValueType</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&#x27;category&#x27;</span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/tooltip.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/API/stacked-bar"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Stacked Bar</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/helpers/a11y"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">A11y helpers</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#reading-each-charts-data-point" class="table-of-contents__link toc-highlight">Reading each chart&#39;s data point</a></li><li><a href="#minitooltip-the-single-value-preset" class="table-of-contents__link toc-highlight">miniTooltip, the single-value preset</a></li><li><a href="#tooltip_selection-_data" class="table-of-contents__link toc-highlight">tooltip(_selection, _data)</a></li><li><a href="#axistimecombinations" class="table-of-contents__link toc-highlight">axisTimeCombinations</a></li><li><a href="#dateformat_x--string--module" class="table-of-contents__link toc-highlight">dateFormat(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#datecustomformat_x--string--module" class="table-of-contents__link toc-highlight">dateCustomFormat(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#datelabel_x--string--module" class="table-of-contents__link toc-highlight">dateLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#hide--module" class="table-of-contents__link toc-highlight">hide() ⇒ <code>module</code></a></li><li><a href="#locale_x--string--module" class="table-of-contents__link toc-highlight">locale(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#namelabel_x--string--module" class="table-of-contents__link toc-highlight">nameLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#numberformat_x--string--module" class="table-of-contents__link toc-highlight">numberFormat(_x) ⇒ <code>string</code> | <code>module</code></a></li><li><a href="#valueformatter_x--function--module" class="table-of-contents__link toc-highlight">valueFormatter(_x) ⇒ <code>function</code> | <code>module</code></a></li><li><a href="#shouldshowdateintitle_x--boolean--module" class="table-of-contents__link toc-highlight">shouldShowDateInTitle(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#showdatapoint-position--module" class="table-of-contents__link toc-highlight">show([dataPoint], [position]) ⇒ <code>module</code></a></li><li><a href="#title_x--string--module" class="table-of-contents__link toc-highlight">title(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#tooltipoffset_x--object--module" class="table-of-contents__link toc-highlight">tooltipOffset(_x) ⇒ <code>Object</code> | <code>module</code></a></li><li><a href="#layout_x--string--module" class="table-of-contents__link toc-highlight">layout([_x]) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#maxentries_x--number--module" class="table-of-contents__link toc-highlight">maxEntries([_x]) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#topicsorder_x--arraystring--module" class="table-of-contents__link toc-highlight">topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code></a></li><li><a href="#topiclabel_x--string--module" class="table-of-contents__link toc-highlight">topicLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#updatedatapoint-position-chartsize-colormap--module" class="table-of-contents__link toc-highlight">update(dataPoint, position, [chartSize], [colorMap]) ⇒ <code>module</code></a></li><li><a href="#valuelabel_x--string--module" class="table-of-contents__link toc-highlight">valueLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#xaxisvaluetype_x--string--module" class="table-of-contents__link toc-highlight">xAxisValueType([_x]) ⇒ <code>String</code> | <code>module</code></a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
 </body>
 </html>

@@ -2127,7 +2127,7 @@ select('.css-selector')
     .call(barChart);
 ```
 
-## exports(_selection, _data)
+## bar(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -2142,6 +2142,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Bar chart".
 
+**Kind**: method of `bar`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2153,6 +2154,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `bar`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2165,6 +2167,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `bar`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2178,6 +2181,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
+**Kind**: method of `bar`  
 **Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2187,6 +2191,7 @@ default.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
+**Kind**: method of `bar`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2196,6 +2201,7 @@ Gets or Sets the duration of the animation
 ## betweenBarsPadding(_x) ⇒ `padding` \| `module`
 Gets or Sets the padding of the chart (Default is 0.1)
 
+**Kind**: method of `bar`  
 **Returns**: `padding` \| `module` - Current padding or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2205,6 +2211,7 @@ Gets or Sets the padding of the chart (Default is 0.1)
 ## chartGradient(_x) ⇒ `Array.<String>` \| `module`
 Gets or Sets the gradient colors of a bar in the chart
 
+**Kind**: method of `bar`  
 **Returns**: `Array.<String>` \| `module` - Current color gradient or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2214,6 +2221,7 @@ Gets or Sets the gradient colors of a bar in the chart
 ## colorMap([_x]) ⇒ `object` \| `module`
 Gets or Sets the colorMap of the chart
 
+**Kind**: method of `bar`  
 **Returns**: `object` \| `module` - Current colorMap or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2227,6 +2235,7 @@ barChart.colorMap({name: 'colorHex', name2: 'colorString'})
 ## colorSchema(_x) ⇒ `colorSchema` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `bar`  
 **Returns**: `colorSchema` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2236,6 +2245,7 @@ Gets or Sets the colorSchema of the chart
 ## enableLabels([_x]) ⇒ `Boolean` \| `module`
 If true, adds labels at the end of the bars
 
+**Kind**: method of `bar`  
 **Returns**: `Boolean` \| `module` - Current value of enableLabels or Chart module to chain calls  
 
 | Param | Type | Default |
@@ -2246,6 +2256,7 @@ If true, adds labels at the end of the bars
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `bar`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -2256,6 +2267,7 @@ ends in `.svg`, and a png otherwise
 ## hasPercentage(_x) ⇒ `boolean` \| `module`
 Gets or Sets the hasPercentage status
 
+**Kind**: method of `bar`  
 **Returns**: `boolean` \| `module` - Is percentage used or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2270,6 +2282,7 @@ all the bars but the hovered bar are considered to be highlighted
 and will be darkened (by default). To customize the bar highlight or
 remove it completely, use highlightBarFunction instead.
 
+**Kind**: method of `bar`  
 **Returns**: `boolean` \| `module` - Is hasSingleBarHighlight used or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2279,6 +2292,7 @@ remove it completely, use highlightBarFunction instead.
 ## height(_x) ⇒ `height` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `bar`  
 **Returns**: `height` \| `module` - Current height or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2294,6 +2308,7 @@ one that was hovered by the user. When hasSingleBarHighlight is false
 the highlighted bars are all the bars but the hovered one. The default
 highlight effect on a bar is darkening the highlighted bar(s) color.
 
+**Kind**: method of `bar`  
 **Returns**: `highlightBarFunction` \| `module` - Is highlightBarFunction used or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2311,6 +2326,7 @@ The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
+**Kind**: method of `bar`  
 **Returns**: `isAnimated` \| `module` - Current isAnimated flag or Chart module  
 
 | Param | Type | Description |
@@ -2320,6 +2336,7 @@ By default this is 'false'
 ## isHorizontal(_x) ⇒ `isHorizontal` \| `module`
 Gets or Sets the horizontal direction of the chart
 
+**Kind**: method of `bar`  
 **Returns**: `isHorizontal` \| `module` - If it is horizontal or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2329,6 +2346,7 @@ Gets or Sets the horizontal direction of the chart
 ## labelsMargin([_x]) ⇒ `number` \| `module`
 Offset between end of bar and start of the percentage bars
 
+**Kind**: method of `bar`  
 **Returns**: `number` \| `module` - Current offset or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2338,6 +2356,7 @@ Offset between end of bar and start of the percentage bars
 ## labelsNumberFormat([_x]) ⇒ `string` \| `module`
 Gets or Sets the labels number format
 
+**Kind**: method of `bar`  
 **Returns**: `string` \| `module` - Current labelsNumberFormat or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2347,6 +2366,7 @@ Gets or Sets the labels number format
 ## labelsSize([_x]) ⇒ `number` \| `module`
 Get or Sets the labels text size
 
+**Kind**: method of `bar`  
 **Returns**: `number` \| `module` - Current text size or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2356,6 +2376,7 @@ Get or Sets the labels text size
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `bar`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2365,6 +2386,7 @@ Gets or Sets the loading state of the chart
 ## margin(_x) ⇒ `margin` \| `module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `bar`  
 **Returns**: `margin` \| `module` - Current margin or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2374,6 +2396,7 @@ Gets or Sets the margin of the chart
 ## numberFormat(_x) ⇒ `string` \| `module`
 Gets or Sets the number format of the bar chart
 
+**Kind**: method of `bar`  
 **Returns**: `string` \| `module` - Current numberFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2385,10 +2408,12 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
 
+**Kind**: method of `bar`  
 **Returns**: `module` - Bar Chart  
 ## percentageAxisToMaxRatio(_x) ⇒ `ratio` \| `module`
 Configurable extension of the x axis. If your max point was 50% you might want to show x axis to 60%, pass 1.2
 
+**Kind**: method of `bar`  
 **Returns**: `ratio` \| `module` - Current ratio or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2398,6 +2423,7 @@ Configurable extension of the x axis. If your max point was 50% you might want t
 ## shouldReverseColorList(_x) ⇒ `boolean` \| `module`
 Gets or Sets whether the color list should be reversed or not
 
+**Kind**: method of `bar`  
 **Returns**: `boolean` \| `module` - Is color list being reversed or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2407,6 +2433,7 @@ Gets or Sets whether the color list should be reversed or not
 ## orderingFunction(_x) ⇒ `function` \| `Module`
 Changes the order of items given the custom function
 
+**Kind**: method of `bar`  
 **Returns**: `function` \| `Module` - A custom ordering function or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2417,6 +2444,7 @@ Changes the order of items given the custom function
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
+**Kind**: method of `bar`  
 **Returns**: `LocaleObject` \| `module` - Current locale object or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2431,6 +2459,7 @@ barChart
 ## width(_x) ⇒ `width` \| `module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `bar`  
 **Returns**: `width` \| `module` - Current width or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2440,6 +2469,7 @@ Gets or Sets the width of the chart
 ## xAxisLabel(_x) ⇒ `String` \| `module`
 Gets or Sets the text of the xAxisLabel on the chart
 
+**Kind**: method of `bar`  
 **Returns**: `String` \| `module` - Label or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2449,6 +2479,7 @@ Gets or Sets the text of the xAxisLabel on the chart
 ## xAxisLabelOffset(_x) ⇒ `Number` \| `module`
 Gets or Sets the offset of the xAxisLabel on the chart
 
+**Kind**: method of `bar`  
 **Returns**: `Number` \| `module` - label or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2458,6 +2489,7 @@ Gets or Sets the offset of the xAxisLabel on the chart
 ## xTicks(_x) ⇒ `Number` \| `module`
 Gets or Sets the number of ticks of the x axis on the chart
 
+**Kind**: method of `bar`  
 **Returns**: `Number` \| `module` - Current xTicks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2467,6 +2499,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 ## yAxisLabel(_x) ⇒ `String` \| `module`
 Gets or Sets the text of the yAxisLabel on the chart
 
+**Kind**: method of `bar`  
 **Returns**: `String` \| `module` - Label or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2476,6 +2509,7 @@ Gets or Sets the text of the yAxisLabel on the chart
 ## yAxisLabelOffset(_x) ⇒ `Number` \| `module`
 Gets or Sets the offset of the yAxisLabel on the chart
 
+**Kind**: method of `bar`  
 **Returns**: `Number` \| `module` - Label or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2485,6 +2519,7 @@ Gets or Sets the offset of the yAxisLabel on the chart
 ## yAxisPaddingBetweenChart(_x) ⇒ `Number` \| `module`
 Space between y axis and chart
 
+**Kind**: method of `bar`  
 **Returns**: `Number` \| `module` - Current value of yAxisPaddingBetweenChart or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2494,6 +2529,7 @@ Space between y axis and chart
 ## yTicks(_x) ⇒ `Number` \| `module`
 Gets or Sets the number of vertical ticks on the chart
 
+**Kind**: method of `bar`  
 **Returns**: `Number` \| `module` - Current yTicks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2509,6 +2545,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
+**Kind**: method of `bar`  
 **Returns**: `module` \| `null` - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -2528,6 +2565,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `bar`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -2543,7 +2581,7 @@ redraws with the data it last drew there.
 bar().width(600).render('#chart', data);
 ```
 ## exports~BarChartData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `bar`  
 **Properties**
 
 | Name | Type | Description |
@@ -2565,7 +2603,7 @@ bar().width(600).render('#chart', data);
 ]
 ```
 ## exports~LocaleObject : `Object`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `bar`  
 **Properties**
 
 | Name | Type | Description |
@@ -2615,7 +2653,7 @@ select('.css-selector')
     .call(brushChart);
 ```
 
-## exports(_selection, _data)
+## brush(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -2629,7 +2667,7 @@ This function creates the graph using the selection as container
 Exposes the constants to be used to force the x axis to respect a certain granularity
 current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
-**Kind**: static property of `exports`  
+**Kind**: property of `brush`  
 **Example**  
 ```js
 brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
@@ -2639,6 +2677,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Brush chart".
 
+**Kind**: method of `brush`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2650,6 +2689,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `brush`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2662,6 +2702,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `brush`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2671,6 +2712,7 @@ form.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the area animation
 
+**Kind**: method of `brush`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2680,6 +2722,7 @@ Gets or Sets the duration of the area animation
 ## areaCurve([_x]) ⇒ `String` \| `module`
 Gets or Sets the area curve of the stacked area.
 
+**Kind**: method of `brush`  
 **Returns**: `String` \| `module` - Current area curve setting or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2696,6 +2739,7 @@ updates it to the window customBrushEnd reports, and a click that clears
 the selection resets it. Every redraw places the window from it, and
 clears the selection when the range reaches outside the data.
 
+**Kind**: method of `brush`  
 **Returns**: `dateRange` \| `module` - Current dateRange or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2705,6 +2749,7 @@ clears the selection when the range reaches outside the data.
 ## gradient([_x]) ⇒ `String` \| `Module`
 Gets or Sets the gradient of the chart
 
+**Kind**: method of `brush`  
 **Returns**: `String` \| `Module` - Current gradient or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2714,6 +2759,7 @@ Gets or Sets the gradient of the chart
 ## height(_x) ⇒ `Number` \| `Module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `brush`  
 **Returns**: `Number` \| `Module` - Current height or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2725,6 +2771,7 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
+**Kind**: method of `brush`  
 **Returns**: `Boolean` \| `module` - Current isAnimated flag or Chart module  
 
 | Param | Type | Description |
@@ -2734,6 +2781,7 @@ reduced motion (`prefers-reduced-motion`), whatever this is set to.
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `brush`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2743,6 +2791,7 @@ Gets or Sets the loading state of the chart
 ## isLocked(_x) ⇒ `Boolean` \| `module`
 Gets or Sets the isLocked property of the brush, enforcing the initial brush size set with dateRange
 
+**Kind**: method of `brush`  
 **Returns**: `Boolean` \| `module` - Current isLocked flag or Chart module  
 
 | Param | Type | Description |
@@ -2754,6 +2803,7 @@ Pass language tag for the tooltip to localize the date.
 Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 
+**Kind**: method of `brush`  
 **Returns**: `String` \| `Module` - Current locale or module to chain calls  
 
 | Param | Type | Description |
@@ -2763,15 +2813,17 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 ## margin(_x) ⇒ `Object` \| `Module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `brush`  
 **Returns**: `Object` \| `Module` - Current margin or Chart module to chain calls  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | _x | `Object` | Margin object to get/set |
 
-## on(typenames, [callback]) ⇒ `exports`
+## on(typenames, [callback]) ⇒ `brush`
 Adds, removes, or gets the callback for the specified typenames.
 
+**Kind**: method of `brush`  
 **See**: [d3-dispatch:on](https://github.com/d3/d3-dispatch/blob/master/README.md#dispatch_on)  
 
 | Param | Type | Description |
@@ -2782,6 +2834,7 @@ Adds, removes, or gets the callback for the specified typenames.
 ## width(_x) ⇒ `Number` \| `Module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `brush`  
 **Returns**: `Number` \| `Module` - Current width or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2792,6 +2845,7 @@ Gets or Sets the width of the chart
 Exposes the ability to force the chart to show a certain x format
 It requires a `xAxisFormat` of 'custom' in order to work.
 
+**Kind**: method of `brush`  
 **Returns**: `String` \| `Module` - Current format or module to chain calls  
 
 | Param | Type | Description |
@@ -2801,6 +2855,7 @@ It requires a `xAxisFormat` of 'custom' in order to work.
 ## xAxisFormat(_x) ⇒ `String` \| `Module`
 Exposes the ability to force the chart to show a certain x axis grouping
 
+**Kind**: method of `brush`  
 **Returns**: `String` \| `Module` - Current format or module to chain calls  
 
 | Param | Type | Description |
@@ -2816,6 +2871,7 @@ Exposes the ability to force the chart to show a certain x ticks. It requires a 
 NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 how many and where the ticks will appear.
 
+**Kind**: method of `brush`  
 **Returns**: `Number` \| `Module` - Current number or ticks or module to chain calls  
 
 | Param | Type | Default | Description |
@@ -2825,6 +2881,7 @@ how many and where the ticks will appear.
 ## roundingTimeInterval([_x]) ⇒ `roundingTimeInterval` \| `Module`
 Gets or Sets the rounding time interval of the selection boundary
 
+**Kind**: method of `brush`  
 **Returns**: `roundingTimeInterval` \| `Module` - Current time interval or module to chain calls  
 **See**: [https://github.com/d3/d3-time#intervals](https://github.com/d3/d3-time#intervals)  
 
@@ -2846,6 +2903,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `brush`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -2863,15 +2921,15 @@ brush().width(600).render('#chart', data);
 ## "customBrushStart"
 Event indicating when the brush moves
 
-**Kind**: event emitted by `exports`  
+**Kind**: event emitted by `brush`  
 **See**: [d3-brush:on(brush)](https://github.com/d3/d3-brush#brush_on)  
 ## "customBrushEnd"
 Event indicating the end of a brush gesture
 
-**Kind**: event emitted by `exports`  
+**Kind**: event emitted by `brush`  
 **See**: [d3-brush:on(end)](https://github.com/d3/d3-brush#brush_on)  
 ## exports~BrushChartData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `brush`  
 **Properties**
 
 | Name | Type | Description |
@@ -2895,7 +2953,7 @@ Event indicating the end of a brush gesture
 ## exports~DateExtent : `Array.<Date>`
 Date range
 
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `brush`  
 **See**: [d3-brush:brushSelection](https://github.com/d3/d3-brush#brushSelection)  
 **Properties**
 
@@ -2905,7 +2963,7 @@ Date range
 | 1 | `Date` | Upper bound date selection |
 
 ## exports~eventCallback : `function`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `brush`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2936,7 +2994,7 @@ select('.css-selector')
     .call(bulletChart);
 ```
 
-## exports(_selection, _data)
+## bullet(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -2951,6 +3009,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Bullet chart".
 
+**Kind**: method of `bullet`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2962,6 +3021,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `bullet`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2974,6 +3034,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `bullet`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2986,6 +3047,7 @@ The first color from the array will be applied to range bars (the wider bars).
 The second color from the array will be applied to measure bars (the narrow bars) and
 the third color will be applied to the marker lines.
 
+**Kind**: method of `bullet`  
 **Returns**: `Array.<String>` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -2996,6 +3058,7 @@ the third color will be applied to the marker lines.
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `bullet`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -3006,6 +3069,7 @@ ends in `.svg`, and a png otherwise
 ## isLoading(_flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `bullet`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3019,6 +3083,7 @@ chart.isLoading(true)
 ## height(_x) ⇒ `Number` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `bullet`  
 **Returns**: `Number` \| `module` - Current height or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3029,6 +3094,7 @@ Gets or Sets the height of the chart
 Gets or Sets the isReverse status of the chart. If true,
 the elements will be rendered in reverse order.
 
+**Kind**: method of `bullet`  
 **Returns**: `Boolean` \| `module` - Current height or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3038,6 +3104,7 @@ the elements will be rendered in reverse order.
 ## margin(_x) ⇒ `margin` \| `module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `bullet`  
 **Returns**: `margin` \| `module` - Current margin or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3047,6 +3114,7 @@ Gets or Sets the margin of the chart
 ## numberFormat(_x) ⇒ `string` \| `module`
 Gets or Sets the number format of the bar chart
 
+**Kind**: method of `bullet`  
 **Returns**: `string` \| `module` - Current numberFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3056,6 +3124,7 @@ Gets or Sets the number format of the bar chart
 ## paddingBetweenAxisAndChart(_x) ⇒ `Number` \| `module`
 Space between axis and chart
 
+**Kind**: method of `bullet`  
 **Returns**: `Number` \| `module` - Current value of paddingBetweenAxisAndChart or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3065,6 +3134,7 @@ Space between axis and chart
 ## startMaxRangeOpacity(_x) ⇒ `Number` \| `module`
 Gets or Sets the starting point of the capacity range.
 
+**Kind**: method of `bullet`  
 **Returns**: `Number` \| `module` - current startMaxRangeOpacity or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3078,6 +3148,7 @@ bulletChart.startMaxRangeOpacity(0.8)
 ## ticks(_x) ⇒ `Number` \| `module`
 Gets or Sets the number of ticks of the x axis on the chart
 
+**Kind**: method of `bullet`  
 **Returns**: `Number` \| `module` - Current ticks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3087,6 +3158,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 ## width(_x) ⇒ `Number` \| `module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `bullet`  
 **Returns**: `Number` \| `module` - Current width or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3099,6 +3171,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `bullet`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -3114,7 +3187,7 @@ redraws with the data it last drew there.
 bullet().width(600).render('#chart', data);
 ```
 ## exports~BulletChartData : `Object`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `bullet`  
 **Properties**
 
 | Name | Type | Description |
@@ -3158,7 +3231,7 @@ select('.css-selector')
     .call(donutChart);
 ```
 
-## exports(_selection, _data)
+## donut(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -3173,6 +3246,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Donut chart".
 
+**Kind**: method of `donut`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3184,6 +3258,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `donut`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3196,6 +3271,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `donut`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3209,6 +3285,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
+**Kind**: method of `donut`  
 **Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3218,6 +3295,7 @@ default.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
+**Kind**: method of `donut`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3231,6 +3309,7 @@ The default format function value is "${d.percentage}% ${d.name}".
 The callback will provide the data object with id, name, percentage, and quantity.
 Also provides the component added by the user in each data entry.
 
+**Kind**: method of `donut`  
 **Returns**: `function` \| `module` - Current centeredTextFunction or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3244,6 +3323,7 @@ donutChart.centeredTextFunction(d => `${d.id} ${d.quantity}`)
 ## colorMap([_x]) ⇒ `number` \| `module`
 Gets or Sets the colorMap of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `number` \| `module` - Current colorMap or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3257,6 +3337,7 @@ stackedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
 ## colorSchema(_x) ⇒ `String` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `String` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3268,6 +3349,7 @@ Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantit
 adds up to zero or there are no entries), the chart will render an empty slice
 with a given color (light gray by default)
 
+**Kind**: method of `donut`  
 **Returns**: `Object` \| `module` - Current config for when chart data is an empty array  
 
 | Param | Type | Description |
@@ -3282,6 +3364,7 @@ donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `donut`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -3292,6 +3375,7 @@ ends in `.svg`, and a png otherwise
 ## externalRadius(_x) ⇒ `Number` \| `Module`
 Gets or Sets the externalRadius of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `Number` \| `Module` - Current externalRadius or Donut Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3302,6 +3386,7 @@ Gets or Sets the externalRadius of the chart
 Gets or Sets the hasCenterLegend property of the chart, making it display
 legend at the center of the donut.
 
+**Kind**: method of `donut`  
 **Returns**: `boolean` \| `Module` - Current hasCenterLegend flag or Chart module  
 
 | Param | Type | Description |
@@ -3313,6 +3398,7 @@ Gets or Sets the hasHoverAnimation property of the chart. By default,
 donut chart highlights the hovered slice. This property explicitly
 disables this hover behavior.
 
+**Kind**: method of `donut`  
 **Returns**: `boolean` \| `module` - Current hasHoverAnimation flag or Chart module  
 
 | Param | Type | Description |
@@ -3323,6 +3409,7 @@ disables this hover behavior.
 Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
 highlight the selected slice id set with `highlightSliceById` all the time.
 
+**Kind**: method of `donut`  
 **Returns**: `boolean` \| `module` - Current hasFixedHighlightedSlice flag or Chart module  
 
 | Param | Type | Description |
@@ -3337,6 +3424,7 @@ in highlight state.
 Note: if both hasFixedHighlightedSlice and hasLastHoverSliceHighlighted
 are true, the latter property will override the former.
 
+**Kind**: method of `donut`  
 **Returns**: `boolean` \| `module` - Current hasLastHoverSliceHighlighted value or Chart module  
 
 | Param | Type | Description |
@@ -3346,6 +3434,7 @@ are true, the latter property will override the former.
 ## height(_x) ⇒ `Number` \| `Module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `Number` \| `Module` - Current height or Donut Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3355,6 +3444,7 @@ Gets or Sets the height of the chart
 ## highlightSliceById(_x) ⇒ `Number` \| `Module`
 Gets or Sets the id of the slice to highlight
 
+**Kind**: method of `donut`  
 **Returns**: `Number` \| `Module` - Current highlighted slice id or Donut Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3364,6 +3454,7 @@ Gets or Sets the id of the slice to highlight
 ## internalRadius(_x) ⇒ `Number` \| `Module`
 Gets or Sets the internalRadius of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `Number` \| `Module` - Current internalRadius or Donut Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3376,6 +3467,7 @@ The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
+**Kind**: method of `donut`  
 **Returns**: `Boolean` \| `module` - Current isAnimated flag or Chart module  
 
 | Param | Type | Description |
@@ -3385,6 +3477,7 @@ By default this is 'false'
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3394,6 +3487,7 @@ Gets or Sets the loading state of the chart
 ## margin(_x) ⇒ `Object` \| `Module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `Object` \| `Module` - Current margin or Donut Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3403,6 +3497,7 @@ Gets or Sets the margin of the chart
 ## numberFormat(_x) ⇒ `string` \| `module`
 Gets or Sets the number format of the donut chart
 
+**Kind**: method of `donut`  
 **Returns**: `string` \| `module` - Current numberFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3414,10 +3509,12 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut and customClick
 
+**Kind**: method of `donut`  
 **Returns**: `module` - Bar Chart  
 ## orderingFunction(_x) ⇒ `function` \| `Module`
 Changes the order of items given custom function
 
+**Kind**: method of `donut`  
 **Returns**: `function` \| `Module` - Void function with no return  
 
 | Param | Type | Description |
@@ -3427,6 +3524,7 @@ Changes the order of items given custom function
 ## percentageFormat(_x) ⇒ `Number` \| `Module`
 Gets or Sets the percentage format for the percentage label
 
+**Kind**: method of `donut`  
 **Returns**: `Number` \| `Module` - Current format or Donut Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3436,6 +3534,7 @@ Gets or Sets the percentage format for the percentage label
 ## radiusHoverOffset(_x) ⇒ `Number` \| `Module`
 Gets or Sets the radiusHoverOffset of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `Number` \| `Module` - Current offset or Donut Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3445,6 +3544,7 @@ Gets or Sets the radiusHoverOffset of the chart
 ## width(_x) ⇒ `Number` \| `Module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `donut`  
 **Returns**: `Number` \| `Module` - Current width or Donut Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3457,6 +3557,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `donut`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -3472,7 +3573,7 @@ redraws with the data it last drew there.
 donut().width(600).render('#chart', data);
 ```
 ## exports~DonutChartData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `donut`  
 **Properties**
 
 | Name | Type | Description |
@@ -3525,7 +3626,7 @@ select('.css-selector')
     .call(groupedBarChart);
 ```
 
-## exports(_selection, _data)
+## groupedBar(_selection, _data)
 This function creates the graph using the selection and data provided
 
 **Kind**: Exported function  
@@ -3540,6 +3641,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Grouped bar chart".
 
+**Kind**: method of `groupedBar`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3551,6 +3653,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3563,6 +3666,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3576,6 +3680,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3585,6 +3690,7 @@ default.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
+**Kind**: method of `groupedBar`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3594,6 +3700,7 @@ Gets or Sets the duration of the animation
 ## betweenBarsPadding([_x]) ⇒ `Number` \| `module`
 Gets or Sets the padding between bars.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Number` \| `module` - Current padding or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3603,6 +3710,7 @@ Gets or Sets the padding between bars.
 ## betweenGroupsPadding([_x]) ⇒ `Number` \| `module`
 Gets or Sets the padding between groups of bars.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Number` \| `module` - Current group padding or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3612,6 +3720,7 @@ Gets or Sets the padding between groups of bars.
 ## colorMap([_x]) ⇒ `object` \| `module`
 Gets or Sets the colorMap of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `object` \| `module` - Current colorMap or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3625,6 +3734,7 @@ groupedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
 ## colorSchema(_x) ⇒ `colorSchema` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `colorSchema` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3635,6 +3745,7 @@ Gets or Sets the colorSchema of the chart
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -3645,6 +3756,7 @@ ends in `.svg`, and a png otherwise
 ## grid([_x]) ⇒ `String` \| `module`
 Gets or Sets the grid mode.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `String` \| `module` - Current mode of the grid or Area Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3654,6 +3766,7 @@ Gets or Sets the grid mode.
 ## height([_x]) ⇒ `height` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `height` \| `module` - Current height or Area Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3663,6 +3776,7 @@ Gets or Sets the height of the chart
 ## isHorizontal([_x]) ⇒ `isHorizontal` \| `module`
 Gets or Sets the horizontal direction of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `isHorizontal` \| `module` - If it is horizontal or Bar Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3675,6 +3789,7 @@ The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
+**Kind**: method of `groupedBar`  
 **Returns**: `isAnimated` \| `module` - Current isAnimated flag or Chart module  
 
 | Param | Type | Default | Description |
@@ -3684,6 +3799,7 @@ By default this is 'false'
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls     * @public  
 
 | Param | Type | Description |
@@ -3693,6 +3809,7 @@ Gets or Sets the loading state of the chart
 ## margin(_x) ⇒ `margin` \| `module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `margin` \| `module` - Current margin or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3702,6 +3819,7 @@ Gets or Sets the margin of the chart
 ## numberFormat(_x) ⇒ `Array.<string>` \| `module`
 Gets or Sets the numberFormat of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Array.<string>` \| `module` - Current numberFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3713,11 +3831,13 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
 
+**Kind**: method of `groupedBar`  
 **Returns**: `module` - Bar Chart  
 ## tooltipThreshold([_x]) ⇒ `Number` \| `module`
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Number` \| `module` - Current tooltipThreshold or Area Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3728,6 +3848,7 @@ NOTE: This could also depend on the aspect ratio
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `LocaleObject` \| `module` - Current locale object or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3742,6 +3863,7 @@ groupedBarChart
 ## width([_x]) ⇒ `Number` \| `module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Number` \| `module` - Current width or Area Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3751,6 +3873,7 @@ Gets or Sets the width of the chart
 ## xTicks([_x]) ⇒ `Number` \| `module`
 Gets or Sets the number of ticks of the x axis on the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Number` \| `module` - Current xTicks or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3760,6 +3883,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 ## yAxisLabel(_x) ⇒ `String` \| `module`
 Gets or Sets the y-axis label of the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `String` \| `module` - Current yAxisLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3774,6 +3898,7 @@ groupedBar.yAxisLabel('Ticket Sales')
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Number` \| `module` - Current yAxisLabelOffset or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3787,6 +3912,7 @@ groupedBar.yAxisLabelOffset(-55)
 ## yTicks([_x]) ⇒ `Number` \| `module`
 Gets or Sets the number of ticks of the y axis on the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Number` \| `module` - Current yTicks or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3796,6 +3922,7 @@ Gets or Sets the number of ticks of the y axis on the chart
 ## yTickTextOffset([_x]) ⇒ `Object` \| `module`
 Gets or Sets the x and y offset of ticks of the y axis on the chart
 
+**Kind**: method of `groupedBar`  
 **Returns**: `Object` \| `module` - Current offset or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3811,6 +3938,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `module` \| `null` - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -3830,6 +3958,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `groupedBar`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -3845,7 +3974,7 @@ redraws with the data it last drew there.
 groupedBar().width(600).render('#chart', data);
 ```
 ## exports~GroupedBarChartData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `groupedBar`  
 **Properties**
 
 | Name | Type | Description |
@@ -3891,7 +4020,7 @@ select('.css-selector')
     .call(heatmapChart);
 ```
 
-## exports(_selection)
+## heatmap(_selection)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -3905,6 +4034,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Heatmap".
 
+**Kind**: method of `heatmap`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3916,6 +4046,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `heatmap`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3928,6 +4059,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `heatmap`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3941,6 +4073,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
+**Kind**: method of `heatmap`  
 **Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3950,6 +4083,7 @@ default.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
+**Kind**: method of `heatmap`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3959,6 +4093,7 @@ Gets or Sets the duration of the animation
 ## boxSize(_x) ⇒ `Number` \| `module`
 Gets or Sets the boxSize of the chart
 
+**Kind**: method of `heatmap`  
 **Returns**: `Number` \| `module` - Current boxSize or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3968,6 +4103,7 @@ Gets or Sets the boxSize of the chart
 ## colorSchema(_x) ⇒ `Array.<String>` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `heatmap`  
 **Returns**: `Array.<String>` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -3978,6 +4114,8 @@ Gets or Sets the colorSchema of the chart
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `heatmap`  
+
 | Param | Type | Description |
 | --- | --- | --- |
 | filename | `String` | Name of the downloaded file, whose extension picks the format |
@@ -3986,6 +4124,7 @@ ends in `.svg`, and a png otherwise
 ## isLoading(_flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `heatmap`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -3999,6 +4138,7 @@ chart.isLoading(true)
 ## height(_x) ⇒ `Number` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `heatmap`  
 **Returns**: `Number` \| `module` - Current height or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4010,6 +4150,7 @@ Gets or Sets the isAnimated value of the chart
 The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
+**Kind**: method of `heatmap`  
 **Returns**: `Boolean` \| `module` - Current isAnimated value or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4019,6 +4160,7 @@ reduced motion (`prefers-reduced-motion`), whatever this is set to.
 ## margin(_x) ⇒ `margin` \| `module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `heatmap`  
 **Returns**: `margin` \| `module` - Current margin or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4030,10 +4172,12 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
 
+**Kind**: method of `heatmap`  
 **Returns**: `module` - Bar Chart  
 ## yAxisLabels(_x) ⇒ `yAxisLabels` \| `module`
 Gets or Sets the y-axis labels of the chart
 
+**Kind**: method of `heatmap`  
 **Returns**: `yAxisLabels` \| `module` - Current yAxisLabels array or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4045,6 +4189,7 @@ Gets or Sets the x-axis labels of the chart. With them, `hour` indexes
 these labels rather than the hours of the day, so together with
 `yAxisLabels` the heatmap can show any two sets of categories.
 
+**Kind**: method of `heatmap`  
 **Returns**: `xAxisLabels` \| `module` - Current xAxisLabels array or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4054,6 +4199,7 @@ these labels rather than the hours of the day, so together with
 ## width(_x) ⇒ `Number` \| `module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `heatmap`  
 **Returns**: `Number` \| `module` - Current width or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4069,6 +4215,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
+**Kind**: method of `heatmap`  
 **Returns**: `module` \| `null` - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -4088,6 +4235,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `heatmap`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -4105,7 +4253,7 @@ heatmap().width(600).render('#chart', data);
 ## exports~HeatmapData : `Array.<Object>`
 The data a heatmap takes: one entry per box.
 
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `heatmap`  
 **Properties**
 
 | Name | Type |
@@ -4163,7 +4311,7 @@ select('.other-css-selector')
     .call(legendChart);
 ```
 
-## exports(_selection, _data)
+## legend(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -4178,6 +4326,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Legend".
 
+**Kind**: method of `legend`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4189,6 +4338,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `legend`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4198,9 +4348,11 @@ chart's name, such as what the data shows. It is rendered as the svg's
 ## clearHighlight()
 Command that clears all highlighted entries on a legend instance
 
+**Kind**: method of `legend`  
 ## colorMap([_x]) ⇒ `object` \| `module`
 Gets or Sets the colorMap of the chart
 
+**Kind**: method of `legend`  
 **Returns**: `object` \| `module` - Current colorMap or Legend module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4210,6 +4362,7 @@ Gets or Sets the colorMap of the chart
 ## colorSchema([_x]) ⇒ `number` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `legend`  
 **Returns**: `number` \| `module` - Current colorSchema or Legend module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4219,6 +4372,7 @@ Gets or Sets the colorSchema of the chart
 ## height([_x]) ⇒ `height` \| `module`
 Gets or Sets the height of the legend chart
 
+**Kind**: method of `legend`  
 **Returns**: `height` \| `module` - Current height or Legend module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4228,6 +4382,8 @@ Gets or Sets the height of the legend chart
 ## highlight(entryId)
 Command that highlights a line entry by fading the rest of lines on a legend instance
 
+**Kind**: method of `legend`  
+
 | Param | Type | Description |
 | --- | --- | --- |
 | entryId | `number` | ID of the entry line |
@@ -4235,6 +4391,7 @@ Command that highlights a line entry by fading the rest of lines on a legend ins
 ## highlightEntryById([_x]) ⇒ `Number` \| `Module`
 Gets or Sets the id of the entry to highlight
 
+**Kind**: method of `legend`  
 **Returns**: `Number` \| `Module` - Current highlighted slice id or Donut Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4244,6 +4401,7 @@ Gets or Sets the id of the entry to highlight
 ## isHorizontal([_x]) ⇒ `Boolean` \| `module`
 Gets or Sets the horizontal mode on the legend
 
+**Kind**: method of `legend`  
 **Returns**: `Boolean` \| `module` - If it is horizontal or Legend module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4253,6 +4411,7 @@ Gets or Sets the horizontal mode on the legend
 ## margin(_x) ⇒ `object` \| `module`
 Gets or Sets the margin of the legend chart
 
+**Kind**: method of `legend`  
 **Returns**: `object` \| `module` - Current margin or Legend module to chain calls  
 
 | Param | Type | Description |
@@ -4263,6 +4422,7 @@ Gets or Sets the margin of the legend chart
 Gets or Sets the margin ratio of the legend chart.
 Used to determine spacing between legend elements.
 
+**Kind**: method of `legend`  
 **Returns**: `number` \| `module` - Current marginRatio or Legend module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4274,6 +4434,7 @@ Gets or Sets the markerSize of the legend chart.
 This markerSize will determine the horizontal and vertical size of the colored marks
 added as color identifiers for the chart's categories.
 
+**Kind**: method of `legend`  
 **Returns**: `object` \| `module` - Current markerSize or Legend module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4283,6 +4444,7 @@ added as color identifiers for the chart's categories.
 ## numberFormat(_x) ⇒ `string` \| `module`
 Gets or Sets the number format of the legend chart
 
+**Kind**: method of `legend`  
 **Returns**: `string` \| `module` - Current number format or Legend module to chain calls  
 
 | Param | Type | Description |
@@ -4292,6 +4454,7 @@ Gets or Sets the number format of the legend chart
 ## unit([_x]) ⇒ `String` \| `module`
 Gets or Sets the unit of the value
 
+**Kind**: method of `legend`  
 **Returns**: `String` \| `module` - Current unit or Legend module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4301,6 +4464,7 @@ Gets or Sets the unit of the value
 ## width([_x]) ⇒ `number` \| `module`
 Gets or Sets the width of the legend chart
 
+**Kind**: method of `legend`  
 **Returns**: `number` \| `module` - Current width or Legend module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4313,6 +4477,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `legend`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -4328,7 +4493,7 @@ redraws with the data it last drew there.
 legend().width(600).render('#chart', data);
 ```
 ## exports~LegendChartData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `legend`  
 **Properties**
 
 | Name | Type | Description |
@@ -4378,7 +4543,7 @@ select('.css-selector')
     .call(lineChart);
 ```
 
-## exports(_selection, _data)
+## line(_selection, _data)
 This function creates the graph using the selection and data provided
 
 **Kind**: Exported function  
@@ -4392,7 +4557,7 @@ This function creates the graph using the selection and data provided
 Exposes the constants to be used to force the x axis to respect a certain granularity
 current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
-**Kind**: static property of `exports`  
+**Kind**: property of `line`  
 **Example**  
 ```js
 line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
@@ -4402,6 +4567,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Line chart".
 
+**Kind**: method of `line`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4413,6 +4579,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `line`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4425,6 +4592,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `line`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4438,6 +4606,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
+**Kind**: method of `line`  
 **Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4447,6 +4616,7 @@ default.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
+**Kind**: method of `line`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4456,6 +4626,7 @@ Gets or Sets the duration of the animation
 ## xAxisLabel(_x) ⇒ `string` \| `module`
 Gets or Sets the label of the X axis of the chart
 
+**Kind**: method of `line`  
 **Returns**: `string` \| `module` - Current label of the X axis or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4465,6 +4636,7 @@ Gets or Sets the label of the X axis of the chart
 ## yAxisLabel(_x) ⇒ `String` \| `module`
 Gets or Sets the label of the Y axis of the chart
 
+**Kind**: method of `line`  
 **Returns**: `String` \| `module` - Current label of the Y axis or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4474,6 +4646,7 @@ Gets or Sets the label of the Y axis of the chart
 ## colorSchema(_x) ⇒ `Array.<string>` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `line`  
 **Returns**: `Array.<string>` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4483,6 +4656,7 @@ Gets or Sets the colorSchema of the chart
 ## colorMap([_x]) ⇒ `object` \| `module`
 Gets or Sets the colorMap of the chart
 
+**Kind**: method of `line`  
 **Returns**: `object` \| `module` - Current colorMap or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4498,6 +4672,7 @@ Exposes the ability to force the chart to show a certain x format
 It requires a `xAxisFormat` of 'custom' in order to work.
 NOTE: localization not supported
 
+**Kind**: method of `line`  
 **Returns**: `string` \| `module` - Current format or module to chain calls  
 
 | Param | Type | Description |
@@ -4507,6 +4682,7 @@ NOTE: localization not supported
 ## xAxisFormat(_x) ⇒ `String` \| `Module`
 Exposes the ability to force the chart to show a certain x axis grouping
 
+**Kind**: method of `line`  
 **Returns**: `String` \| `Module` - Current format or module to chain calls  
 
 | Param | Type | Description |
@@ -4522,6 +4698,7 @@ Exposes the ability to force the chart to show a certain x ticks. It requires a 
 NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 how many and where the ticks will appear.
 
+**Kind**: method of `line`  
 **Returns**: `Number` \| `module` - Current number or ticks or module to chain calls  
 
 | Param | Type | Description |
@@ -4531,6 +4708,7 @@ how many and where the ticks will appear.
 ## grid(_x) ⇒ `String` \| `module`
 Gets or Sets the grid mode.
 
+**Kind**: method of `line`  
 **Returns**: `String` \| `module` - Current mode of the grid or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4542,6 +4720,7 @@ Gets or Sets the hasMinimumValueScale property of the chart, making yAxix bottom
 to adjust to the minimum dataset value.
 By default this is 'false'
 
+**Kind**: method of `line`  
 **Returns**: `hasMinimumValueScale` \| `module` - Current hasMinimumValueScale flag or Chart module  
 
 | Param | Type | Description |
@@ -4551,6 +4730,7 @@ By default this is 'false'
 ## height(_x) ⇒ `Number` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `line`  
 **Returns**: `Number` \| `module` - Current height or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4562,6 +4742,7 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
+**Kind**: method of `line`  
 **Returns**: `isAnimated` \| `module` - Current isAnimated flag or Chart module  
 
 | Param | Type | Description |
@@ -4572,6 +4753,7 @@ reduced motion (`prefers-reduced-motion`), whatever this is set to.
 Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
 onto the chart with a specific color and a text annotation over the line.
 
+**Kind**: method of `line`  
 **Returns**: `Array.<Object>` \| `module` - Current lines or module to chain calls  
 
 | Param | Type | Description |
@@ -4589,6 +4771,7 @@ line.lines([{
 ## lineCurve(_x) ⇒ `curve` \| `module`
 Gets or Sets the curve of the line chart
 
+**Kind**: method of `line`  
 **Returns**: `curve` \| `module` - Current line curve or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4598,6 +4781,7 @@ Gets or Sets the curve of the line chart
 ## lineGradient(_x) ⇒ `Number` \| `module`
 Gets or Sets the gradient colors of the line chart when there is only one line
 
+**Kind**: method of `line`  
 **Returns**: `Number` \| `module` - Current color gradient or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4607,6 +4791,7 @@ Gets or Sets the gradient colors of the line chart when there is only one line
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `line`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4618,6 +4803,7 @@ Pass language tag for the tooltip to localize the date.
 Uses Intl.DateTimeFormat, for compatability and support, refer to
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 
+**Kind**: method of `line`  
 **Returns**: `string` \| `module` - Current locale or module to chain calls  
 
 | Param | Type | Description |
@@ -4627,6 +4813,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 ## margin(_x) ⇒ `object` \| `module`
 Gets or Sets the margin object of the chart (top, bottom, left and right)
 
+**Kind**: method of `line`  
 **Returns**: `object` \| `module` - Current margin or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4636,6 +4823,7 @@ Gets or Sets the margin object of the chart (top, bottom, left and right)
 ## numberFormat(_x) ⇒ `string` \| `module`
 Gets or Sets the number format of the line chart
 
+**Kind**: method of `line`  
 **Returns**: `string` \| `module` - Current numberFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4645,6 +4833,7 @@ Gets or Sets the number format of the line chart
 ## shouldShowAllDataPoints(_x) ⇒ `shouldShowAllDataPoints` \| `module`
 Gets or Sets whether every data point shows its marker, not just the hovered ones
 
+**Kind**: method of `line`  
 **Returns**: `shouldShowAllDataPoints` \| `module` - Current shouldShowAllDataPoints or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4655,6 +4844,7 @@ Gets or Sets whether every data point shows its marker, not just the hovered one
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
+**Kind**: method of `line`  
 **Returns**: `Number` \| `module` - Current tooltip threshold or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4664,6 +4854,7 @@ NOTE: This could also depend on the aspect ratio
 ## yAxisLabelPadding(_x&#x3D;) ⇒ `yAxisLabelPadding` \| `module`
 Gets or Sets the yAxisLabelPadding of the chart.
 
+**Kind**: method of `line`  
 **Returns**: `yAxisLabelPadding` \| `module` - Current yAxisLabelPadding or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4673,6 +4864,7 @@ Gets or Sets the yAxisLabelPadding of the chart.
 ## yTicks(_x) ⇒ `number` \| `module`
 Gets or Sets the number of ticks of the y axis on the chart
 
+**Kind**: method of `line`  
 **Returns**: `number` \| `module` - Current yTicks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4682,6 +4874,7 @@ Gets or Sets the number of ticks of the y axis on the chart
 ## width(_x) ⇒ `number` \| `Module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `line`  
 **Returns**: `number` \| `Module` - Current width or Line Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4692,6 +4885,7 @@ Gets or Sets the width of the chart
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `line`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -4705,12 +4899,14 @@ We are going to expose this events:
 customMouseHover, customMouseMove, customMouseOut,
 customDataEntryClick, and customTouchMove
 
+**Kind**: method of `line`  
 **Returns**: `module` - Bar Chart  
 ## xAxisValueType([_x]) ⇒ `string` \| `module`
 Gets or Sets the `xAxisValueType`.
 Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
 be dates anymore, but can be arbitrary numbers.
 
+**Kind**: method of `line`  
 **Returns**: `string` \| `module` - Current value type of the x-axis or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4726,6 +4922,7 @@ Gets or Sets the `xAxisScale`.
 Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
 'number' as well, otherwise it won't influence the visualization.
 
+**Kind**: method of `line`  
 **Returns**: `string` \| `module` - Current value type of the x-axis or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4745,6 +4942,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
+**Kind**: method of `line`  
 **Returns**: `module` \| `null` - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -4764,6 +4962,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `line`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -4779,7 +4978,7 @@ redraws with the data it last drew there.
 line().width(600).render('#chart', data);
 ```
 ## exports~D3Selection : `Array.<Array>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `line`  
 **Properties**
 
 | Name | Type | Description |
@@ -4788,7 +4987,7 @@ line().width(600).render('#chart', data);
 | parentNode | `DOMElement` | Parent of the selection |
 
 ## exports~LineChartFlatData : `object`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `line`  
 **Properties**
 
 | Name | Type | Description |
@@ -4811,7 +5010,7 @@ line().width(600).render('#chart', data);
 ## exports~LineChartDataSorted : `Array.<object>`
 The Data Sorted is calculated internally in the chart in order to pass it to our tooltips
 
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `line`  
 **Properties**
 
 | Name | Type | Description |
@@ -4850,7 +5049,7 @@ The data shape for the line chart.
 Up to version 2.10.1 this required a "dataByTopic" array. That shape was
 removed in 3.0.0 -- pass the flat dataset described here instead.
 
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `line`  
 **Properties**
 
 | Name | Type | Description |
@@ -4915,7 +5114,7 @@ select('.css-selector')
     .call(scatterPlotChart);
 ```
 
-## exports(_selection, _data)
+## scatterPlot(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -4930,6 +5129,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Scatter plot".
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4941,6 +5141,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4953,6 +5154,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4966,6 +5168,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -4975,6 +5178,7 @@ default.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the circle animation
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4985,6 +5189,7 @@ Gets or Sets the duration of the circle animation
 Gets or Sets each circle's border opacity value of the chart.
 It makes each circle border transparent if it's less than 1.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current circleStrokeOpacity or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -4999,6 +5204,7 @@ scatterPlot.circleStrokeOpacity(0.6)
 Gets or Sets each circle's border width value of the chart.
 It makes each circle border transparent if it's less than 1.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current circleStrokeWidth or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5014,6 +5220,7 @@ Gets or Sets the circles opacity value of the chart.
 Use this to set opacity of a circle for each data point of the chart.
 It makes the area of each data point more transparent if it's less than 1.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current circleOpacity or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5027,6 +5234,7 @@ scatterPlot.circleOpacity(0.6)
 ## colorMap([_x]) ⇒ `object` \| `module`
 Gets or Sets the colorMap of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `object` \| `module` - Current colorMap or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5040,6 +5248,7 @@ scatterPlot.colorMap({name: 'colorHex', name2: 'colorString'})
 ## colorSchema(_x) ⇒ `Array.<String>` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Array.<String>` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5054,6 +5263,7 @@ scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -5064,6 +5274,7 @@ ends in `.svg`, and a png otherwise
 ## grid(_x) ⇒ `String` \| `module`
 Gets or Sets the grid mode.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `String` \| `module` - Current mode of the grid or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5077,6 +5288,7 @@ and legend from both x and y axis. The user will see
 values for x under x axis line and y under y axis. Lines
 will be drawn with respect to highlighted data point
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `boolean` \| `module` - Current hasCrossHairs or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5086,6 +5298,7 @@ will be drawn with respect to highlighted data point
 ## hasHollowCircles(_x) ⇒ `boolean` \| `module`
 Gets or Sets the hasHollowCircles value of the chart area
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `boolean` \| `module` - Current hasHollowCircles value or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5097,6 +5310,7 @@ Gets or Sets the hasTrendline value of the chart area
 If true, the trendline calculated based off linear regression
 formula will be drawn
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `boolean` \| `module` - Current hasTrendline value or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5107,6 +5321,7 @@ formula will be drawn
 Gets or Sets weather the chart support zoom controls
 If true, zoom event handling will be added to the chart.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `boolean` \| `module` - Current enableZoom value or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5116,6 +5331,7 @@ If true, zoom event handling will be added to the chart.
 ## isLoading(_flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5129,6 +5345,7 @@ chart.isLoading(true)
 ## height(_x) ⇒ `Number` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current height or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5140,6 +5357,7 @@ Sets a custom distance between legend
 values with respect to both axises. The legends
 show up when hasCrossHairs is true.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current highlightTextLegendOffset or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5154,6 +5372,7 @@ scatterPlot.highlightTextLegendOffset(-55)
 Gets or Sets isAnimated value. If set to true,
 the chart will be initialized or updated with animation.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `boolean` \| `module` - Current isAnimated or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5163,6 +5382,7 @@ the chart will be initialized or updated with animation.
 ## margin(_x) ⇒ `Object` \| `module`
 Gets or Sets the margin object of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Object` \| `module` - Current margin or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5172,6 +5392,7 @@ Gets or Sets the margin object of the chart
 ## maxCircleArea(_x) ⇒ `Number` \| `module`
 Gets or Sets the maximum value of the chart area
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current maxCircleArea or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5183,11 +5404,13 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customClick, customMouseOut, customMouseOver, and customMouseMove
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `module` - Scatter Plot  
 ## valueLocale([_x]) ⇒ `LocaleObject` \| `module`
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `LocaleObject` \| `module` - Current locale object or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5202,6 +5425,7 @@ scatterPlot
 ## width(_x) ⇒ `Number` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current width or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5212,6 +5436,7 @@ Gets or Sets the height of the chart
 Gets or Sets the xAxisLabel of the chart. Adds a
 label bellow x-axis for better clarify of data representation.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `String` \| `module` - Current xAxisLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5222,6 +5447,7 @@ label bellow x-axis for better clarify of data representation.
 Gets or Sets the offset of the xAxisLabel of the chart.
 The method accepts both positive and negative values.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current xAxisLabelOffset or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5235,6 +5461,7 @@ scatterPlot.xAxisLabelOffset(-55)
 ## xAxisFormat(_x) ⇒ `String` \| `module`
 Exposes ability to set the format of x-axis values
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `String` \| `module` - Current xAxisFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5244,6 +5471,7 @@ Exposes ability to set the format of x-axis values
 ## xAxisFormatType(_x) ⇒ `string` \| `module`
 Exposes ability to set the formatter of x-axis values
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `string` \| `module` - current xAxisFormatType or Chart module to chain calls  
 **Value**: 'number'  
 **Value**: 'time'  
@@ -5255,6 +5483,7 @@ Exposes ability to set the formatter of x-axis values
 ## xTicks(_x) ⇒ `Number` \| `module`
 Gets or Sets the xTicks of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current xTicks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5264,6 +5493,7 @@ Gets or Sets the xTicks of the chart
 ## yAxisFormat(_x) ⇒ `String` \| `module`
 Exposes ability to set the format of y-axis values
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `String` \| `module` - Current yAxisFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5273,6 +5503,7 @@ Exposes ability to set the format of y-axis values
 ## yAxisLabel(_x) ⇒ `String` \| `module`
 Gets or Sets the y-axis label of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `String` \| `module` - Current yAxisLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5287,6 +5518,7 @@ scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current yAxisLabelOffset or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5300,6 +5532,7 @@ scatterPlot.yAxisLabelOffset(-55)
 ## yTicks(_x) ⇒ `Number` \| `module`
 Gets or Sets the xTicks of the chart
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `Number` \| `module` - Current yTicks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5315,6 +5548,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `module` \| `null` - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -5334,6 +5568,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `scatterPlot`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -5358,9 +5593,9 @@ each color of the given color scheme
     ...
 }
 
-**Kind**: inner property of `exports`  
+**Kind**: inner property of `scatterPlot`  
 ## exports~ScatterPlotData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `scatterPlot`  
 **Properties**
 
 | Name | Type | Description |
@@ -5421,7 +5656,7 @@ select('.css-selector')
     .call(sparklineChart);
 ```
 
-## exports(_selection, _data)
+## sparkline(_selection, _data)
 This function creates the graph using the selection and data provided
 
 **Kind**: Exported function  
@@ -5436,6 +5671,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Sparkline".
 
+**Kind**: method of `sparkline`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5447,6 +5683,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `sparkline`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5459,6 +5696,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `sparkline`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5468,6 +5706,7 @@ form.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
+**Kind**: method of `sparkline`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5477,6 +5716,7 @@ Gets or Sets the duration of the animation
 ## areaGradient(_x) ⇒ `areaGradient` \| `module`
 Gets or Sets the areaGradient of the chart
 
+**Kind**: method of `sparkline`  
 **Returns**: `areaGradient` \| `module` - Current areaGradient or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5487,6 +5727,7 @@ Gets or Sets the areaGradient of the chart
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `sparkline`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -5497,6 +5738,7 @@ ends in `.svg`, and a png otherwise
 ## height(_x) ⇒ `height` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `sparkline`  
 **Returns**: `height` \| `module` - Current height or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5509,6 +5751,7 @@ The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
+**Kind**: method of `sparkline`  
 **Returns**: `isAnimated` \| `module` - Current isAnimated flag or Chart module  
 
 | Param | Type | Default | Description |
@@ -5518,6 +5761,7 @@ By default this is 'false'
 ## lineGradient(_x) ⇒ `lineGradient` \| `module`
 Gets or Sets the lineGradient of the chart
 
+**Kind**: method of `sparkline`  
 **Returns**: `lineGradient` \| `module` - Current lineGradient or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5527,6 +5771,7 @@ Gets or Sets the lineGradient of the chart
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `sparkline`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5536,6 +5781,7 @@ Gets or Sets the loading state of the chart
 ## margin(_x) ⇒ `object` \| `module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `sparkline`  
 **Returns**: `object` \| `module` - Current margin or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5545,6 +5791,7 @@ Gets or Sets the margin of the chart
 ## width(_x) ⇒ `width` \| `module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `sparkline`  
 **Returns**: `width` \| `module` - Current width or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5557,6 +5804,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `sparkline`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -5572,7 +5820,7 @@ redraws with the data it last drew there.
 sparkline().width(600).render('#chart', data);
 ```
 ## exports~SparklineChartData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `sparkline`  
 **Properties**
 
 | Name | Type | Description |
@@ -5619,7 +5867,7 @@ select('.css-selector')
     .call(stackedAreaChart);
 ```
 
-## exports(_selection, _data)
+## stackedArea(_selection, _data)
 This function creates the graph using the selection and data provided
 
 **Kind**: Exported function  
@@ -5633,7 +5881,7 @@ This function creates the graph using the selection and data provided
 Exposes the constants to be used to force the x axis to respect a certain granularity
 current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
-**Kind**: static property of `exports`  
+**Kind**: property of `stackedArea`  
 **Example**  
 ```js
 area.xAxisCustomFormat(area.axisTimeCombinations.HOUR_DAY)
@@ -5643,6 +5891,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Stacked area chart".
 
+**Kind**: method of `stackedArea`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5654,6 +5903,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5666,6 +5916,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5679,6 +5930,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5688,6 +5940,7 @@ default.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the area animation
 
+**Kind**: method of `stackedArea`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5697,6 +5950,7 @@ Gets or Sets the duration of the area animation
 ## areaCurve([_x]) ⇒ `String` \| `module`
 Gets or Sets the area curve of the stacked area.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `String` \| `module` - Current area curve setting or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5710,6 +5964,7 @@ stackedArea.areaCurve('step')
 ## areaOpacity(_x) ⇒ `Number` \| `module`
 Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Number` \| `module` - Current opacity or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5719,6 +5974,7 @@ Gets or Sets the opacity of the stacked areas in the chart (all of them will hav
 ## colorMap([_x]) ⇒ `object` \| `module`
 Gets or Sets the colorMap of the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `object` \| `module` - Current colorMap or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5732,6 +5988,7 @@ stackedArea.colorMap({name: 'colorHex', name2: 'colorString'})
 ## colorSchema(_x) ⇒ `Array.<String>` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Array.<String>` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5741,6 +5998,7 @@ Gets or Sets the colorSchema of the chart
 ## emptyDataConfig(_x) ⇒ `Object` \| `module`
 Gets or Sets the emptyDataConfig of the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Object` \| `module` - Current config for when chart data is an empty array  
 
 | Param | Type | Description |
@@ -5750,6 +6008,7 @@ Gets or Sets the emptyDataConfig of the chart
 ## grid(_x) ⇒ `String` \| `module`
 Gets or Sets the grid mode
 
+**Kind**: method of `stackedArea`  
 **Returns**: `String` \| `module` - Current mode of the grid or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5759,6 +6018,7 @@ Gets or Sets the grid mode
 ## hasOutline(_x) ⇒ `Boolean` \| `module`
 Enables or disables the outline at the top of the areas
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Boolean` \| `module` - Current state of the flag  
 
 | Param | Type | Description |
@@ -5768,6 +6028,7 @@ Enables or disables the outline at the top of the areas
 ## height(_x) ⇒ `Number` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Number` \| `module` - Current height or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5779,6 +6040,7 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Boolean` \| `module` - Current isAnimated flag or Chart module  
 
 | Param | Type | Description |
@@ -5791,6 +6053,7 @@ stacked area chart: each area shows its share of each date's total, and
 the value axis runs from 0% to 100%. The tooltip still shows the values.
 Meant for data without negative values.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Boolean` \| `module` - If it is normalized or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5804,6 +6067,7 @@ stackedArea.isNormalized(true)
 ## numberFormat(_x) ⇒ `string` \| `module`
 Gets or Sets the number format of the stacked area chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `string` \| `module` - Current numberFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5813,6 +6077,7 @@ Gets or Sets the number format of the stacked area chart
 ## margin(_x) ⇒ `Object` \| `module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Object` \| `module` - Current margin or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5823,6 +6088,7 @@ Gets or Sets the margin of the chart
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Number` \| `module` - Current tooltipThreshold or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5832,6 +6098,7 @@ NOTE: This could also depend on the aspect ratio
 ## topicsOrder(_x) ⇒ `Array.<String>` \| `module`
 Pass an override for the ordering of the topics
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Array.<String>` \| `module` - Current override order or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5841,6 +6108,7 @@ Pass an override for the ordering of the topics
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5852,6 +6120,7 @@ Pass language tag for the tooltip to localize the date.
 Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 
+**Kind**: method of `stackedArea`  
 **Returns**: `String` \| `Module` - Current locale or module to chain calls  
 
 | Param | Type | Description |
@@ -5862,6 +6131,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -5875,10 +6145,12 @@ We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut,
 customDataEntryClick and customTouchMove
 
+**Kind**: method of `stackedArea`  
 **Returns**: `module` - Stacked Area  
 ## width(_x) ⇒ `Number` \| `module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Number` \| `module` - Current width or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5890,6 +6162,7 @@ Exposes the ability to force the chart to show a certain x format
 It requires a `xAxisFormat` of 'custom' in order to work.
 NOTE: localization not supported
 
+**Kind**: method of `stackedArea`  
 **Returns**: `String` \| `Module` - Current format or module to chain calls  
 
 | Param | Type | Description |
@@ -5903,6 +6176,7 @@ stackedArea.xAxisCustomFormat(stackedArea.axisTimeCombinations.HOUR_DAY)
 ## xAxisFormat(_x) ⇒ `String` \| `Module`
 Exposes the ability to force the chart to show a certain x axis grouping
 
+**Kind**: method of `stackedArea`  
 **Returns**: `String` \| `Module` - Current format or module to chain calls  
 
 | Param | Type | Description |
@@ -5918,6 +6192,7 @@ Gets or Sets the `xAxisValueType`.
 Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
 be dates anymore, but can be arbitrary numbers.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `string` \| `module` - Current value type of the x-axis or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5933,6 +6208,7 @@ Gets or Sets the `xAxisScale`.
 Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
 'number' as well, otherwise it won't influence the visualization.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `string` \| `module` - Current value type of the x-axis or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5948,6 +6224,7 @@ Exposes the ability to force the chart to show a certain x ticks. It requires a 
 NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 how many and where the ticks will appear.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Number` \| `Module` - Current number or ticks or module to chain calls  
 
 | Param | Type | Description |
@@ -5957,6 +6234,7 @@ how many and where the ticks will appear.
 ## yAxisLabel(_x) ⇒ `String` \| `module`
 Gets or Sets the y-axis label of the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `String` \| `module` - Current yAxisLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -5971,6 +6249,7 @@ stackedArea.yAxisLabel('Ticket Sales')
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Number` \| `module` - Current yAxisLabelOffset or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5984,6 +6263,7 @@ stackedArea.yAxisLabelOffset(-55)
 ## yTicks([_x]) ⇒ `Number` \| `module`
 Gets or Sets the number of ticks of the y axis on the chart
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Number` \| `module` - Current vertical ticks or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -5994,6 +6274,7 @@ Gets or Sets the number of ticks of the y axis on the chart
 Gets or Sets the yAxisBaseline - this is the y-value where the area starts from in y-direction
 (default is 0). Change this value if you don't want to start your area from y=0.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `Number` \| `module` - Current baseline or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -6013,6 +6294,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `module` \| `null` - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -6032,6 +6314,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `stackedArea`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -6047,7 +6330,7 @@ redraws with the data it last drew there.
 stackedArea().width(600).render('#chart', data);
 ```
 ## exports~AreaChartData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `stackedArea`  
 **Properties**
 
 | Name | Type | Description |
@@ -6092,7 +6375,7 @@ select('.css-selector')
     .call(stackedBarChart);
 ```
 
-## exports(_selection, _data)
+## stackedBar(_selection, _data)
 This function creates the graph using the selection and data provided
 
 **Kind**: Exported function  
@@ -6107,6 +6390,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Stacked bar chart".
 
+**Kind**: method of `stackedBar`  
 **Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6118,6 +6402,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
+**Kind**: method of `stackedBar`  
 **Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6130,6 +6415,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6143,6 +6429,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6152,6 +6439,7 @@ default.
 ## animationDuration(_x) ⇒ `duration` \| `module`
 Gets or Sets the duration of the animation
 
+**Kind**: method of `stackedBar`  
 **Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -6161,6 +6449,7 @@ Gets or Sets the duration of the animation
 ## betweenBarsPadding(_x) ⇒ `Number` \| `module`
 Gets or Sets the padding of the stacked bar chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Number` \| `module` - Current padding or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6170,6 +6459,7 @@ Gets or Sets the padding of the stacked bar chart
 ## colorMap([_x]) ⇒ `object` \| `module`
 Gets or Sets the colorMap of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `object` \| `module` - Current colorMap or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -6183,6 +6473,7 @@ stackedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
 ## colorSchema(_x) ⇒ `Array.<String>` \| `module`
 Gets or Sets the colorSchema of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Array.<String>` \| `module` - Current colorSchema or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6193,6 +6484,7 @@ Gets or Sets the colorSchema of the chart
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Promise` - Promise that resolves if the chart image was loaded and downloaded successfully  
 
 | Param | Type | Description |
@@ -6203,6 +6495,7 @@ ends in `.svg`, and a png otherwise
 ## grid(_x) ⇒ `String` \| `module`
 Gets or Sets the grid mode
 
+**Kind**: method of `stackedBar`  
 **Returns**: `String` \| `module` - Current mode of the grid or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6212,6 +6505,7 @@ Gets or Sets the grid mode
 ## hasPercentage(_x) ⇒ `Boolean` \| `module`
 Gets or Sets the hasPercentage status
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Boolean` \| `module` - Is percentage used or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6221,6 +6515,7 @@ Gets or Sets the hasPercentage status
 ## height(_x) ⇒ `Number` \| `module`
 Gets or Sets the height of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Number` \| `module` - Current height or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6230,6 +6525,7 @@ Gets or Sets the height of the chart
 ## hasReversedStacks(_x) ⇒ `Boolean` \| `module`
 Gets or Sets the hasReversedStacks property of the chart, reversing the order of stacks
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Boolean` \| `module` - Current hasReversedStacks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6242,6 +6538,7 @@ The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Boolean` \| `module` - Current isAnimated flag or Chart module  
 
 | Param | Type | Description |
@@ -6251,6 +6548,7 @@ By default this is 'false'
 ## isHorizontal(_x) ⇒ `Boolean` \| `module`
 Gets or Sets the horizontal direction of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Boolean` \| `module` - If it is horizontal or Bar Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6263,6 +6561,7 @@ stacked bar chart: each segment shows its share of its stack, and the
 value axis runs from 0% to 100%. The tooltip still shows the values.
 Meant for data without negative values.
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Boolean` \| `module` - If it is normalized or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6276,6 +6575,7 @@ stackedBar.isNormalized(true)
 ## isLoading(flag) ⇒ `boolean` \| `module`
 Gets or Sets the loading state of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6285,6 +6585,7 @@ Gets or Sets the loading state of the chart
 ## margin(_x) ⇒ `Object` \| `module`
 Gets or Sets the margin of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Object` \| `module` - Current margin or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6294,6 +6595,7 @@ Gets or Sets the margin of the chart
 ## numberFormat(_x) ⇒ `String` \| `module`
 Gets or Sets the numberFormat of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `String` \| `module` - Current numberFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6305,11 +6607,13 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
 
+**Kind**: method of `stackedBar`  
 **Returns**: `module` - Bar Chart  
 ## percentageAxisToMaxRatio(_x) ⇒ `Number` \| `module`
 Configurable extension of the x axis
 If your max point was 50% you might want to show x axis to 60%, pass 1.2
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Number` \| `module` - Current ratio or Bar Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6320,6 +6624,7 @@ If your max point was 50% you might want to show x axis to 60%, pass 1.2
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Number` \| `module` - Current tooltipThreshold or Area Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -6330,6 +6635,7 @@ NOTE: This could also depend on the aspect ratio
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
+**Kind**: method of `stackedBar`  
 **Returns**: `LocaleObject` \| `module` - Current locale object or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -6344,6 +6650,7 @@ stackedBarChart
 ## width(_x) ⇒ `Number` \| `module`
 Gets or Sets the width of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Number` \| `module` - Current width or Area Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6353,6 +6660,7 @@ Gets or Sets the width of the chart
 ## xTicks(_x) ⇒ `Number` \| `module`
 Gets or Sets the number of ticks of the x axis on the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Number` \| `module` - Current xTicks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6362,6 +6670,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 ## yAxisLabel(_x) ⇒ `String` \| `module`
 Gets or Sets the y-axis label of the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `String` \| `module` - Current yAxisLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6376,6 +6685,7 @@ stackedBar.yAxisLabel('Ticket Sales')
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Number` \| `module` - Current yAxisLabelOffset or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6389,6 +6699,7 @@ stackedBar.yAxisLabelOffset(-55)
 ## yTicks(_x) ⇒ `Number` \| `module`
 Gets or Sets the number of vertical ticks of the axis on the chart
 
+**Kind**: method of `stackedBar`  
 **Returns**: `Number` \| `module` - Current yTicks or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6404,6 +6715,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
+**Kind**: method of `stackedBar`  
 **Returns**: `module` \| `null` - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -6423,6 +6735,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
+**Kind**: method of `stackedBar`  
 **Returns**: `module` - The chart module, to chain calls  
 **Throws**:
 
@@ -6438,7 +6751,7 @@ redraws with the data it last drew there.
 stackedBar().width(600).render('#chart', data);
 ```
 ## exports~StackedBarData : `Array.<Object>`
-**Kind**: inner typedef of `exports`  
+**Kind**: inner typedef of `stackedBar`  
 **Properties**
 
 | Name | Type | Description |
@@ -6566,7 +6879,7 @@ container
     .call(chartTooltip);
 ```
 
-## exports(_selection, _data)
+## tooltip(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -6580,7 +6893,7 @@ This function creates the graph using the selection as container
 constants to be used to force the x axis to respect a certain granularity
 current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
-**Kind**: static property of `exports`  
+**Kind**: property of `tooltip`  
 **Example**  
 ```js
 tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
@@ -6588,6 +6901,7 @@ tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
 ## dateFormat(_x) ⇒ `String` \| `module`
 Exposes the ability to force the tooltip to use a certain date format
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current format or module to chain calls  
 
 | Param | Type | Description |
@@ -6597,6 +6911,7 @@ Exposes the ability to force the tooltip to use a certain date format
 ## dateCustomFormat(_x) ⇒ `String` \| `module`
 Exposes the ability to use a custom date format
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current format or module to chain calls  
 
 | Param | Type | Description |
@@ -6614,6 +6929,7 @@ shown in the title. When the data point has no such field, its `key`
 (what the stacked and grouped bar charts dispatch) or its `date` is
 used, so the default works for every chart.
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current dateLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6623,10 +6939,12 @@ used, so the default works for every chart.
 ## hide() ⇒ `module`
 Hides the tooltip
 
+**Kind**: method of `tooltip`  
 **Returns**: `module` - Tooltip module to chain calls  
 ## locale(_x) ⇒ `String` \| `module`
 Pass locale for the tooltip to render the date in
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current locale or module to chain calls  
 
 | Param | Type | Description |
@@ -6641,6 +6959,7 @@ rows by `stack` and the grouped bar chart by `group`: without
 `nameLabel('stack')` or `nameLabel('group')`, the tooltip looks up each
 row's colour under the bar's name, and the rows show none.
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current nameLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6650,6 +6969,7 @@ row's colour under the bar's name, and the rows show none.
 ## numberFormat(_x) ⇒ `string` \| `module`
 Gets or Sets the number format for the value displayed on the tooltip
 
+**Kind**: method of `tooltip`  
 **Returns**: `string` \| `module` - Current numberFormat or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6660,6 +6980,7 @@ Gets or Sets the number format for the value displayed on the tooltip
 Gets or Sets the formatter function for the value displayed on the tooltip.
 Setting this property makes the tooltip ignore numberFormat.
 
+**Kind**: method of `tooltip`  
 **Returns**: `function` \| `module` - Current valueFormatter or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6673,6 +6994,7 @@ tooltipChart.valueFormatter(value => value.toString().length.toString())
 ## shouldShowDateInTitle(_x) ⇒ `Boolean` \| `module`
 Gets or Sets shouldShowDateInTitle
 
+**Kind**: method of `tooltip`  
 **Returns**: `Boolean` \| `module` - Current shouldShowDateInTitle or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6685,6 +7007,7 @@ the single-value charts dispatch them on `customMouseOver`, it renders
 and places the tooltip at once; otherwise it shows empty until the
 first `update`, which is what the multi-value charts need.
 
+**Kind**: method of `tooltip`  
 **Returns**: `module` - Tooltip module to chain calls  
 
 | Param | Type | Description |
@@ -6695,6 +7018,7 @@ first `update`, which is what the multi-value charts need.
 ## title(_x) ⇒ `String` \| `module`
 Gets or Sets the title of the tooltip (to only show the date, set a blank title)
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current title or module to chain calls  
 
 | Param | Type | Description |
@@ -6706,6 +7030,7 @@ Gets or Sets an offset, in pixels, applied to the point the tooltip is
 placed next to: `x` moves the anchor along the chart, `y` moves the box
 up (negative) or down. The box still stays inside the chart.
 
+**Kind**: method of `tooltip`  
 **Returns**: `Object` \| `module` - Current tooltipOffset or module to chain calls  
 
 | Param | Type | Description |
@@ -6726,6 +7051,7 @@ bar, scatter plot, heatmap and donut -- what `miniTooltip` renders);
 an array under the topic label, a single value otherwise. Set before
 the tooltip is drawn.
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current layout or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -6741,6 +7067,7 @@ Gets or Sets the most rows the tooltip shows. Past that, the last row
 reads "+n more" instead, so the box keeps a height that fits in the
 chart. 0 shows every row.
 
+**Kind**: method of `tooltip`  
 **Returns**: `Number` \| `module` - Current maxEntries or Chart module to chain calls  
 
 | Param | Type | Default | Description |
@@ -6754,6 +7081,7 @@ tooltip.maxEntries(6)
 ## topicsOrder(_x) ⇒ `Array.<String>` \| `module`
 Pass an override for the ordering of your tooltip
 
+**Kind**: method of `tooltip`  
 **Returns**: `Array.<String>` \| `module` - Current overrideOrder or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6768,6 +7096,7 @@ charts dispatch their rows as `values`, so set `topicLabel('values')`
 for them. (`@britecharts/wrappers`, and so React's `Tooltip`, set
 `'values'` themselves: there, the line chart needs `'topics'`.)
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current topicLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6784,6 +7113,7 @@ the chart itself) and, from the multi-value charts, the map of topic
 names to colours. The order the multi-value charts used before 3.0,
 `update(dataPoint, colorMap, x, y)`, still works and warns once.
 
+**Kind**: method of `tooltip`  
 **Returns**: `module` - Tooltip module to chain calls  
 
 | Param | Type | Description |
@@ -6803,6 +7133,7 @@ shown for each row, or the big value of the single layout. `'value'`
 by default. The scatter plot's points carry theirs as `y`, so set
 `valueLabel('y')` for it.
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current valueLabel or Chart module to chain calls  
 
 | Param | Type | Description |
@@ -6818,6 +7149,7 @@ is a number, anything else is a category. Set 'date' for keys that
 happen to parse as numbers, or 'category' for names that happen to
 parse as dates.
 
+**Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current xAxisValueType or Chart module to chain calls  
 
 | Param | Type | Default | Description |

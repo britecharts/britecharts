@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://www.google-analytics.com">
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
-<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.0bec1515.css">
-<script src="/britecharts/assets/js/runtime~main.7dce97bd.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.de44a5c5.js" defer="defer"></script>
+<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.bf0fa77b.css">
+<script src="/britecharts/assets/js/runtime~main.26c3801f.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.84afaf54.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -25,7 +25,7 @@ simple and configurable heatmap chart.</p>
 <ul>
 <li class=""><a href="#module_Heatmap" class="">Heatmap</a>
 <ul>
-<li class=""><a href="#exp_module_Heatmap--exports" class="">exports(_selection)</a> ⏏
+<li class=""><a href="#exp_module_Heatmap--exports" class="">heatmap(_selection)</a>
 <ul>
 <li class=""><em>static</em>
 <ul>
@@ -60,7 +60,7 @@ simple and configurable heatmap chart.</p>
 </li>
 </ul>
 <p><a name="exp_module_Heatmap--exports" id="exp_module_Heatmap--exports" class="anchorTargetStickyNavbar_YBOc"></a></p>
-<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exports_selection-">exports(_selection) ⏏<a href="#exports_selection-" class="hash-link" aria-label="Direct link to exports(_selection) ⏏" title="Direct link to exports(_selection) ⏏" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="heatmap_selection">heatmap(_selection)<a href="#heatmap_selection" class="hash-link" aria-label="Direct link to heatmap(_selection)" title="Direct link to heatmap(_selection)" translate="no">​</a></h2>
 <p>This function creates the graph using the selection as container</p>
 <p><strong>Kind</strong>: Exported function</p>
 
@@ -84,7 +84,7 @@ simple and configurable heatmap chart.</p>
 <p>Gets or Sets the name screen readers announce for the chart. It is
 set as the svg&#x27;s <code>aria-label</code>. Unset, the chart is announced as
 &quot;Heatmap&quot;.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>null</code> | <code>module</code> - Current a11yTitle or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -108,7 +108,7 @@ set as the svg&#x27;s <code>aria-label</code>. Unset, the chart is announced as
 <p>Gets or Sets a longer description screen readers announce after the
 chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 <code>&lt;desc&gt;</code>. Unset, the chart has no description.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>null</code> | <code>module</code> - Current a11yDescription or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -133,7 +133,7 @@ chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current a11yDataTable or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -159,7 +159,7 @@ points: the chart takes one tab stop, the arrow keys move between
 points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -181,7 +181,7 @@ default.</p>
 <p><a name="module_Heatmap--exports.animationDuration" id="module_Heatmap--exports.animationDuration" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="animationduration_x--duration--module">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code><a href="#animationduration_x--duration--module" class="hash-link" aria-label="Direct link to animationduration_x--duration--module" title="Direct link to animationduration_x--duration--module" translate="no">​</a></h2>
 <p>Gets or Sets the duration of the animation</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>duration</code> | <code>module</code> - Current animation duration or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -205,7 +205,7 @@ default.</p>
 <p><a name="module_Heatmap--exports.boxSize" id="module_Heatmap--exports.boxSize" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="boxsize_x--number--module">boxSize(_x) ⇒ <code>Number</code> | <code>module</code><a href="#boxsize_x--number--module" class="hash-link" aria-label="Direct link to boxsize_x--number--module" title="Direct link to boxsize_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the boxSize of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - Current boxSize or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -229,7 +229,7 @@ default.</p>
 <p><a name="module_Heatmap--exports.colorSchema" id="module_Heatmap--exports.colorSchema" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="colorschema_x--arraystring--module">colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code><a href="#colorschema_x--arraystring--module" class="hash-link" aria-label="Direct link to colorschema_x--arraystring--module" title="Direct link to colorschema_x--arraystring--module" translate="no">​</a></h2>
 <p>Gets or Sets the colorSchema of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>Array.&lt;String&gt;</code> | <code>module</code> - Current colorSchema or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -254,7 +254,7 @@ default.</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportchartfilename-title">exportChart(filename, title)<a href="#exportchartfilename-title" class="hash-link" aria-label="Direct link to exportChart(filename, title)" title="Direct link to exportChart(filename, title)" translate="no">​</a></h2>
 <p>Exports the chart and fires a download: an svg file when the filename
 ends in <code>.svg</code>, and a png otherwise</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Access</strong>: public</p>
 
 
@@ -280,7 +280,7 @@ ends in <code>.svg</code>, and a png otherwise</p>
 <p><a name="module_Heatmap--exports.isLoading" id="module_Heatmap--exports.isLoading" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="isloading_flag--boolean--module">isLoading(_flag) ⇒ <code>boolean</code> | <code>module</code><a href="#isloading_flag--boolean--module" class="hash-link" aria-label="Direct link to isloading_flag--boolean--module" title="Direct link to isloading_flag--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets the loading state of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Current loading state flag or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -304,7 +304,7 @@ ends in <code>.svg</code>, and a png otherwise</p>
 <p><a name="module_Heatmap--exports.height" id="module_Heatmap--exports.height" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="height_x--number--module">height(_x) ⇒ <code>Number</code> | <code>module</code><a href="#height_x--number--module" class="hash-link" aria-label="Direct link to height_x--number--module" title="Direct link to height_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the height of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - Current height or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -330,7 +330,7 @@ ends in <code>.svg</code>, and a png otherwise</p>
 <p>Gets or Sets the isAnimated value of the chart
 The chart draws without animation when the reader&#x27;s system asks for
 reduced motion (<code>prefers-reduced-motion</code>), whatever this is set to.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current isAnimated value or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -354,7 +354,7 @@ reduced motion (<code>prefers-reduced-motion</code>), whatever this is set to.</
 <p><a name="module_Heatmap--exports.margin" id="module_Heatmap--exports.margin" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="margin_x--margin--module">margin(_x) ⇒ <code>margin</code> | <code>module</code><a href="#margin_x--margin--module" class="hash-link" aria-label="Direct link to margin_x--margin--module" title="Direct link to margin_x--margin--module" translate="no">​</a></h2>
 <p>Gets or Sets the margin of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>margin</code> | <code>module</code> - Current margin or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -378,13 +378,13 @@ reduced motion (<code>prefers-reduced-motion</code>), whatever this is set to.</
 <p>Exposes an &#x27;on&#x27; method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>module</code> - Bar Chart<br>
 <strong>Access</strong>: public<br>
 <a name="module_Heatmap--exports.yAxisLabels" id="module_Heatmap--exports.yAxisLabels" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="yaxislabels_x--yaxislabels--module">yAxisLabels(_x) ⇒ <code>yAxisLabels</code> | <code>module</code><a href="#yaxislabels_x--yaxislabels--module" class="hash-link" aria-label="Direct link to yaxislabels_x--yaxislabels--module" title="Direct link to yaxislabels_x--yaxislabels--module" translate="no">​</a></h2>
 <p>Gets or Sets the y-axis labels of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>yAxisLabels</code> | <code>module</code> - Current yAxisLabels array or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -410,7 +410,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick</p>
 <p>Gets or Sets the x-axis labels of the chart. With them, <code>hour</code> indexes
 these labels rather than the hours of the day, so together with
 <code>yAxisLabels</code> the heatmap can show any two sets of categories.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>xAxisLabels</code> | <code>module</code> - Current xAxisLabels array or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -434,7 +434,7 @@ these labels rather than the hours of the day, so together with
 <p><a name="module_Heatmap--exports.width" id="module_Heatmap--exports.width" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="width_x--number--module">width(_x) ⇒ <code>Number</code> | <code>module</code><a href="#width_x--number--module" class="hash-link" aria-label="Direct link to width_x--number--module" title="Direct link to width_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the width of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - Current width or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -464,7 +464,7 @@ data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
 under the <code>britechartsTooltip</code> namespace. Null, or another tooltip,
 removes the one it had.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>module</code> | <code>null</code> - Current tooltip or Chart module to chain calls<br>
 <strong>Throws</strong>:</p>
 <ul>
@@ -495,7 +495,7 @@ removes the one it had.</p>
 selection, as <code>select(target).datum(data).call(chart)</code> does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Returns</strong>: <code>module</code> - The chart module, to chain calls<br>
 <strong>Throws</strong>:</p>
 <ul>
@@ -528,7 +528,7 @@ redraws with the data it last drew there.</p>
 <p><a name="module_Heatmap--exports..HeatmapData" id="module_Heatmap--exports..HeatmapData" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportsheatmapdata--arrayobject">exports~HeatmapData : <code>Array.&lt;Object&gt;</code><a href="#exportsheatmapdata--arrayobject" class="hash-link" aria-label="Direct link to exportsheatmapdata--arrayobject" title="Direct link to exportsheatmapdata--arrayobject" translate="no">​</a></h2>
 <p>The data a heatmap takes: one entry per box.</p>
-<p><strong>Kind</strong>: inner typedef of <a href="#exp_module_Heatmap--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: inner typedef of <a href="#exp_module_Heatmap--exports" class=""><code>heatmap</code></a><br>
 <strong>Properties</strong></p>
 
 
@@ -553,6 +553,6 @@ redraws with the data it last drew there.</p>
 
 <table><thead><tr><th>Name</th><th>Type</th></tr></thead><tbody><tr><td>day</td><td><code>Number</code></td></tr><tr><td>hour</td><td><code>Number</code></td></tr><tr><td>value</td><td><code>Number</code></td></tr></tbody></table>
 <p><strong>Example</strong></p>
-<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">[</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">day</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">0</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">hour</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">0</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">value</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">7</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">day</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">0</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">hour</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">value</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">10</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">]</span><br></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/heatmap.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/API/grouped-bar"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Grouped Bar</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/legend"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Legend</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#exports_selection-" class="table-of-contents__link toc-highlight">exports(_selection) ⏏</a></li><li><a href="#a11ytitle_x--string--null--module" class="table-of-contents__link toc-highlight">a11yTitle(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydescription_x--string--null--module" class="table-of-contents__link toc-highlight">a11yDescription(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydatatable_x--boolean--module" class="table-of-contents__link toc-highlight">a11yDataTable(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#a11ykeyboardnavigation_x--boolean--module" class="table-of-contents__link toc-highlight">a11yKeyboardNavigation(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#animationduration_x--duration--module" class="table-of-contents__link toc-highlight">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code></a></li><li><a href="#boxsize_x--number--module" class="table-of-contents__link toc-highlight">boxSize(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#colorschema_x--arraystring--module" class="table-of-contents__link toc-highlight">colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code></a></li><li><a href="#exportchartfilename-title" class="table-of-contents__link toc-highlight">exportChart(filename, title)</a></li><li><a href="#isloading_flag--boolean--module" class="table-of-contents__link toc-highlight">isLoading(_flag) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#height_x--number--module" class="table-of-contents__link toc-highlight">height(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#isanimated_x--boolean--module" class="table-of-contents__link toc-highlight">isAnimated(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#margin_x--margin--module" class="table-of-contents__link toc-highlight">margin(_x) ⇒ <code>margin</code> | <code>module</code></a></li><li><a href="#on--module" class="table-of-contents__link toc-highlight">on() ⇒ <code>module</code></a></li><li><a href="#yaxislabels_x--yaxislabels--module" class="table-of-contents__link toc-highlight">yAxisLabels(_x) ⇒ <code>yAxisLabels</code> | <code>module</code></a></li><li><a href="#xaxislabels_x--xaxislabels--module" class="table-of-contents__link toc-highlight">xAxisLabels(_x) ⇒ <code>xAxisLabels</code> | <code>module</code></a></li><li><a href="#width_x--number--module" class="table-of-contents__link toc-highlight">width(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#tooltip_x--module--null" class="table-of-contents__link toc-highlight">tooltip(_x) ⇒ <code>module</code> | <code>null</code></a></li><li><a href="#rendertarget-data--module" class="table-of-contents__link toc-highlight">render(target, [data]) ⇒ <code>module</code></a></li><li><a href="#exportsheatmapdata--arrayobject" class="table-of-contents__link toc-highlight">exports~HeatmapData : <code>Array.&lt;Object&gt;</code></a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
+<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">[</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">day</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">0</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">hour</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">0</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">value</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">7</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">day</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">0</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">hour</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">value</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">10</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">]</span><br></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/heatmap.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/API/grouped-bar"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Grouped Bar</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/legend"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Legend</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#heatmap_selection" class="table-of-contents__link toc-highlight">heatmap(_selection)</a></li><li><a href="#a11ytitle_x--string--null--module" class="table-of-contents__link toc-highlight">a11yTitle(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydescription_x--string--null--module" class="table-of-contents__link toc-highlight">a11yDescription(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydatatable_x--boolean--module" class="table-of-contents__link toc-highlight">a11yDataTable(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#a11ykeyboardnavigation_x--boolean--module" class="table-of-contents__link toc-highlight">a11yKeyboardNavigation(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#animationduration_x--duration--module" class="table-of-contents__link toc-highlight">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code></a></li><li><a href="#boxsize_x--number--module" class="table-of-contents__link toc-highlight">boxSize(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#colorschema_x--arraystring--module" class="table-of-contents__link toc-highlight">colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code></a></li><li><a href="#exportchartfilename-title" class="table-of-contents__link toc-highlight">exportChart(filename, title)</a></li><li><a href="#isloading_flag--boolean--module" class="table-of-contents__link toc-highlight">isLoading(_flag) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#height_x--number--module" class="table-of-contents__link toc-highlight">height(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#isanimated_x--boolean--module" class="table-of-contents__link toc-highlight">isAnimated(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#margin_x--margin--module" class="table-of-contents__link toc-highlight">margin(_x) ⇒ <code>margin</code> | <code>module</code></a></li><li><a href="#on--module" class="table-of-contents__link toc-highlight">on() ⇒ <code>module</code></a></li><li><a href="#yaxislabels_x--yaxislabels--module" class="table-of-contents__link toc-highlight">yAxisLabels(_x) ⇒ <code>yAxisLabels</code> | <code>module</code></a></li><li><a href="#xaxislabels_x--xaxislabels--module" class="table-of-contents__link toc-highlight">xAxisLabels(_x) ⇒ <code>xAxisLabels</code> | <code>module</code></a></li><li><a href="#width_x--number--module" class="table-of-contents__link toc-highlight">width(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#tooltip_x--module--null" class="table-of-contents__link toc-highlight">tooltip(_x) ⇒ <code>module</code> | <code>null</code></a></li><li><a href="#rendertarget-data--module" class="table-of-contents__link toc-highlight">render(target, [data]) ⇒ <code>module</code></a></li><li><a href="#exportsheatmapdata--arrayobject" class="table-of-contents__link toc-highlight">exports~HeatmapData : <code>Array.&lt;Object&gt;</code></a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
 </body>
 </html>

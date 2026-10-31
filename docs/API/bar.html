@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://www.google-analytics.com">
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
-<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.0bec1515.css">
-<script src="/britecharts/assets/js/runtime~main.7dce97bd.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.de44a5c5.js" defer="defer"></script>
+<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.bf0fa77b.css">
+<script src="/britecharts/assets/js/runtime~main.26c3801f.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.84afaf54.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -25,7 +25,7 @@ simple and configurable bar chart.</p>
 <ul>
 <li class=""><a href="#module_Bar" class="">Bar</a>
 <ul>
-<li class=""><a href="#exp_module_Bar--exports" class="">exports(_selection, _data)</a> ⏏
+<li class=""><a href="#exp_module_Bar--exports" class="">bar(_selection, _data)</a>
 <ul>
 <li class=""><em>static</em>
 <ul>
@@ -81,7 +81,7 @@ simple and configurable bar chart.</p>
 </li>
 </ul>
 <p><a name="exp_module_Bar--exports" id="exp_module_Bar--exports" class="anchorTargetStickyNavbar_YBOc"></a></p>
-<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exports_selection-_data-">exports(_selection, _data) ⏏<a href="#exports_selection-_data-" class="hash-link" aria-label="Direct link to exports(_selection, _data) ⏏" title="Direct link to exports(_selection, _data) ⏏" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_YBOc" id="bar_selection-_data">bar(_selection, _data)<a href="#bar_selection-_data" class="hash-link" aria-label="Direct link to bar(_selection, _data)" title="Direct link to bar(_selection, _data)" translate="no">​</a></h2>
 <p>This function creates the graph using the selection as container</p>
 <p><strong>Kind</strong>: Exported function</p>
 
@@ -110,7 +110,7 @@ simple and configurable bar chart.</p>
 <p>Gets or Sets the name screen readers announce for the chart. It is
 set as the svg&#x27;s <code>aria-label</code>. Unset, the chart is announced as
 &quot;Bar chart&quot;.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>null</code> | <code>module</code> - Current a11yTitle or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -134,7 +134,7 @@ set as the svg&#x27;s <code>aria-label</code>. Unset, the chart is announced as
 <p>Gets or Sets a longer description screen readers announce after the
 chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 <code>&lt;desc&gt;</code>. Unset, the chart has no description.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>null</code> | <code>module</code> - Current a11yDescription or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -159,7 +159,7 @@ chart&#x27;s name, such as what the data shows. It is rendered as the svg&#x27;s
 table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current a11yDataTable or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -185,7 +185,7 @@ points: the chart takes one tab stop, the arrow keys move between
 points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -207,7 +207,7 @@ default.</p>
 <p><a name="module_Bar--exports.animationDuration" id="module_Bar--exports.animationDuration" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="animationduration_x--duration--module">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code><a href="#animationduration_x--duration--module" class="hash-link" aria-label="Direct link to animationduration_x--duration--module" title="Direct link to animationduration_x--duration--module" translate="no">​</a></h2>
 <p>Gets or Sets the duration of the animation</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>duration</code> | <code>module</code> - Current animation duration or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -231,7 +231,7 @@ default.</p>
 <p><a name="module_Bar--exports.betweenBarsPadding" id="module_Bar--exports.betweenBarsPadding" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="betweenbarspadding_x--padding--module">betweenBarsPadding(_x) ⇒ <code>padding</code> | <code>module</code><a href="#betweenbarspadding_x--padding--module" class="hash-link" aria-label="Direct link to betweenbarspadding_x--padding--module" title="Direct link to betweenbarspadding_x--padding--module" translate="no">​</a></h2>
 <p>Gets or Sets the padding of the chart (Default is 0.1)</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>padding</code> | <code>module</code> - Current padding or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -253,7 +253,7 @@ default.</p>
 <p><a name="module_Bar--exports.chartGradient" id="module_Bar--exports.chartGradient" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="chartgradient_x--arraystring--module">chartGradient(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code><a href="#chartgradient_x--arraystring--module" class="hash-link" aria-label="Direct link to chartgradient_x--arraystring--module" title="Direct link to chartgradient_x--arraystring--module" translate="no">​</a></h2>
 <p>Gets or Sets the gradient colors of a bar in the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Array.&lt;String&gt;</code> | <code>module</code> - Current color gradient or Line Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -275,7 +275,7 @@ default.</p>
 <p><a name="module_Bar--exports.colorMap" id="module_Bar--exports.colorMap" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="colormap_x--object--module">colorMap([_x]) ⇒ <code>object</code> | <code>module</code><a href="#colormap_x--object--module" class="hash-link" aria-label="Direct link to colormap_x--object--module" title="Direct link to colormap_x--object--module" translate="no">​</a></h2>
 <p>Gets or Sets the colorMap of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>object</code> | <code>module</code> - Current colorMap or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -301,7 +301,7 @@ default.</p>
 <p><a name="module_Bar--exports.colorSchema" id="module_Bar--exports.colorSchema" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="colorschema_x--colorschema--module">colorSchema(_x) ⇒ <code>colorSchema</code> | <code>module</code><a href="#colorschema_x--colorschema--module" class="hash-link" aria-label="Direct link to colorschema_x--colorschema--module" title="Direct link to colorschema_x--colorschema--module" translate="no">​</a></h2>
 <p>Gets or Sets the colorSchema of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>colorSchema</code> | <code>module</code> - Current colorSchema or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -323,7 +323,7 @@ default.</p>
 <p><a name="module_Bar--exports.enableLabels" id="module_Bar--exports.enableLabels" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="enablelabels_x--boolean--module">enableLabels([_x]) ⇒ <code>Boolean</code> | <code>module</code><a href="#enablelabels_x--boolean--module" class="hash-link" aria-label="Direct link to enablelabels_x--boolean--module" title="Direct link to enablelabels_x--boolean--module" translate="no">​</a></h2>
 <p>If true, adds labels at the end of the bars</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Boolean</code> | <code>module</code> - Current value of enableLabels or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -346,7 +346,7 @@ default.</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportchartfilename-title--promise">exportChart(filename, title) ⇒ <code>Promise</code><a href="#exportchartfilename-title--promise" class="hash-link" aria-label="Direct link to exportchartfilename-title--promise" title="Direct link to exportchartfilename-title--promise" translate="no">​</a></h2>
 <p>Exports the chart and fires a download: an svg file when the filename
 ends in <code>.svg</code>, and a png otherwise</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully<br>
 <strong>Access</strong>: public</p>
 
@@ -373,7 +373,7 @@ ends in <code>.svg</code>, and a png otherwise</p>
 <p><a name="module_Bar--exports.hasPercentage" id="module_Bar--exports.hasPercentage" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="haspercentage_x--boolean--module">hasPercentage(_x) ⇒ <code>boolean</code> | <code>module</code><a href="#haspercentage_x--boolean--module" class="hash-link" aria-label="Direct link to haspercentage_x--boolean--module" title="Direct link to haspercentage_x--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets the hasPercentage status</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Is percentage used or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -400,7 +400,7 @@ be highlighted and will be darkened by default. If the value is false,
 all the bars but the hovered bar are considered to be highlighted
 and will be darkened (by default). To customize the bar highlight or
 remove it completely, use highlightBarFunction instead.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Is hasSingleBarHighlight used or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -422,7 +422,7 @@ remove it completely, use highlightBarFunction instead.</p>
 <p><a name="module_Bar--exports.height" id="module_Bar--exports.height" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="height_x--height--module">height(_x) ⇒ <code>height</code> | <code>module</code><a href="#height_x--height--module" class="hash-link" aria-label="Direct link to height_x--height--module" title="Direct link to height_x--height--module" translate="no">​</a></h2>
 <p>Gets or Sets the height of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>height</code> | <code>module</code> - Current height or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -450,7 +450,7 @@ When hasSingleBarHighlight is true the highlighted bar will be the
 one that was hovered by the user. When hasSingleBarHighlight is false
 the highlighted bars are all the bars but the hovered one. The default
 highlight effect on a bar is darkening the highlighted bar(s) color.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>highlightBarFunction</code> | <code>module</code> - Is highlightBarFunction used or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -477,7 +477,7 @@ highlight effect on a bar is darkening the highlighted bar(s) color.</p>
 The chart draws without animation when the reader&#x27;s system asks for
 reduced motion (<code>prefers-reduced-motion</code>), whatever this is set to.
 By default this is &#x27;false&#x27;</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>isAnimated</code> | <code>module</code> - Current isAnimated flag or Chart module<br>
 <strong>Access</strong>: public</p>
 
@@ -499,7 +499,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Bar--exports.isHorizontal" id="module_Bar--exports.isHorizontal" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="ishorizontal_x--ishorizontal--module">isHorizontal(_x) ⇒ <code>isHorizontal</code> | <code>module</code><a href="#ishorizontal_x--ishorizontal--module" class="hash-link" aria-label="Direct link to ishorizontal_x--ishorizontal--module" title="Direct link to ishorizontal_x--ishorizontal--module" translate="no">​</a></h2>
 <p>Gets or Sets the horizontal direction of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>isHorizontal</code> | <code>module</code> - If it is horizontal or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -521,7 +521,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Bar--exports.labelsMargin" id="module_Bar--exports.labelsMargin" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="labelsmargin_x--number--module">labelsMargin([_x]) ⇒ <code>number</code> | <code>module</code><a href="#labelsmargin_x--number--module" class="hash-link" aria-label="Direct link to labelsmargin_x--number--module" title="Direct link to labelsmargin_x--number--module" translate="no">​</a></h2>
 <p>Offset between end of bar and start of the percentage bars</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>number</code> | <code>module</code> - Current offset or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -545,7 +545,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Bar--exports.labelsNumberFormat" id="module_Bar--exports.labelsNumberFormat" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="labelsnumberformat_x--string--module">labelsNumberFormat([_x]) ⇒ <code>string</code> | <code>module</code><a href="#labelsnumberformat_x--string--module" class="hash-link" aria-label="Direct link to labelsnumberformat_x--string--module" title="Direct link to labelsnumberformat_x--string--module" translate="no">​</a></h2>
 <p>Gets or Sets the labels number format</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>string</code> | <code>module</code> - Current labelsNumberFormat or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -569,7 +569,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Bar--exports.labelsSize" id="module_Bar--exports.labelsSize" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="labelssize_x--number--module">labelsSize([_x]) ⇒ <code>number</code> | <code>module</code><a href="#labelssize_x--number--module" class="hash-link" aria-label="Direct link to labelssize_x--number--module" title="Direct link to labelssize_x--number--module" translate="no">​</a></h2>
 <p>Get or Sets the labels text size</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>number</code> | <code>module</code> - Current text size or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -593,7 +593,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Bar--exports.isLoading" id="module_Bar--exports.isLoading" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="isloadingflag--boolean--module">isLoading(flag) ⇒ <code>boolean</code> | <code>module</code><a href="#isloadingflag--boolean--module" class="hash-link" aria-label="Direct link to isloadingflag--boolean--module" title="Direct link to isloadingflag--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets the loading state of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Current loading state flag or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -615,7 +615,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Bar--exports.margin" id="module_Bar--exports.margin" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="margin_x--margin--module">margin(_x) ⇒ <code>margin</code> | <code>module</code><a href="#margin_x--margin--module" class="hash-link" aria-label="Direct link to margin_x--margin--module" title="Direct link to margin_x--margin--module" translate="no">​</a></h2>
 <p>Gets or Sets the margin of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>margin</code> | <code>module</code> - Current margin or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -637,7 +637,7 @@ By default this is &#x27;false&#x27;</p>
 <p><a name="module_Bar--exports.numberFormat" id="module_Bar--exports.numberFormat" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="numberformat_x--string--module">numberFormat(_x) ⇒ <code>string</code> | <code>module</code><a href="#numberformat_x--string--module" class="hash-link" aria-label="Direct link to numberformat_x--string--module" title="Direct link to numberformat_x--string--module" translate="no">​</a></h2>
 <p>Gets or Sets the number format of the bar chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>string</code> | <code>module</code> - Current numberFormat or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -661,13 +661,13 @@ By default this is &#x27;false&#x27;</p>
 <p>Exposes an &#x27;on&#x27; method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>module</code> - Bar Chart<br>
 <strong>Access</strong>: public<br>
 <a name="module_Bar--exports.percentageAxisToMaxRatio" id="module_Bar--exports.percentageAxisToMaxRatio" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="percentageaxistomaxratio_x--ratio--module">percentageAxisToMaxRatio(_x) ⇒ <code>ratio</code> | <code>module</code><a href="#percentageaxistomaxratio_x--ratio--module" class="hash-link" aria-label="Direct link to percentageaxistomaxratio_x--ratio--module" title="Direct link to percentageaxistomaxratio_x--ratio--module" translate="no">​</a></h2>
 <p>Configurable extension of the x axis. If your max point was 50% you might want to show x axis to 60%, pass 1.2</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>ratio</code> | <code>module</code> - Current ratio or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -689,7 +689,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick</p>
 <p><a name="module_Bar--exports.shouldReverseColorList" id="module_Bar--exports.shouldReverseColorList" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="shouldreversecolorlist_x--boolean--module">shouldReverseColorList(_x) ⇒ <code>boolean</code> | <code>module</code><a href="#shouldreversecolorlist_x--boolean--module" class="hash-link" aria-label="Direct link to shouldreversecolorlist_x--boolean--module" title="Direct link to shouldreversecolorlist_x--boolean--module" translate="no">​</a></h2>
 <p>Gets or Sets whether the color list should be reversed or not</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>boolean</code> | <code>module</code> - Is color list being reversed or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -711,7 +711,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick</p>
 <p><a name="module_Bar--exports.orderingFunction" id="module_Bar--exports.orderingFunction" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="orderingfunction_x--function--module">orderingFunction(_x) ⇒ <code>function</code> | <code>Module</code><a href="#orderingfunction_x--function--module" class="hash-link" aria-label="Direct link to orderingfunction_x--function--module" title="Direct link to orderingfunction_x--function--module" translate="no">​</a></h2>
 <p>Changes the order of items given the custom function</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>function</code> | <code>Module</code> - A custom ordering function or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -734,7 +734,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick</p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="valuelocale_x--localeobject--module">valueLocale([_x]) ⇒ <code>LocaleObject</code> | <code>module</code><a href="#valuelocale_x--localeobject--module" class="hash-link" aria-label="Direct link to valuelocale_x--localeobject--module" title="Direct link to valuelocale_x--localeobject--module" translate="no">​</a></h2>
 <p>Gets or Sets the locale which our formatting functions use.
 Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel="noopener noreferrer" class="">the d3-format docs</a> for the required values.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>LocaleObject</code> | <code>module</code> - Current locale object or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -760,7 +760,7 @@ Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel
 <p><a name="module_Bar--exports.width" id="module_Bar--exports.width" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="width_x--width--module">width(_x) ⇒ <code>width</code> | <code>module</code><a href="#width_x--width--module" class="hash-link" aria-label="Direct link to width_x--width--module" title="Direct link to width_x--width--module" translate="no">​</a></h2>
 <p>Gets or Sets the width of the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>width</code> | <code>module</code> - Current width or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -782,7 +782,7 @@ Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel
 <p><a name="module_Bar--exports.xAxisLabel" id="module_Bar--exports.xAxisLabel" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="xaxislabel_x--string--module">xAxisLabel(_x) ⇒ <code>String</code> | <code>module</code><a href="#xaxislabel_x--string--module" class="hash-link" aria-label="Direct link to xaxislabel_x--string--module" title="Direct link to xaxislabel_x--string--module" translate="no">​</a></h2>
 <p>Gets or Sets the text of the xAxisLabel on the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Label or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -804,7 +804,7 @@ Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel
 <p><a name="module_Bar--exports.xAxisLabelOffset" id="module_Bar--exports.xAxisLabelOffset" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="xaxislabeloffset_x--number--module">xAxisLabelOffset(_x) ⇒ <code>Number</code> | <code>module</code><a href="#xaxislabeloffset_x--number--module" class="hash-link" aria-label="Direct link to xaxislabeloffset_x--number--module" title="Direct link to xaxislabeloffset_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the offset of the xAxisLabel on the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - label or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -826,7 +826,7 @@ Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel
 <p><a name="module_Bar--exports.xTicks" id="module_Bar--exports.xTicks" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="xticks_x--number--module">xTicks(_x) ⇒ <code>Number</code> | <code>module</code><a href="#xticks_x--number--module" class="hash-link" aria-label="Direct link to xticks_x--number--module" title="Direct link to xticks_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the number of ticks of the x axis on the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - Current xTicks or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -848,7 +848,7 @@ Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel
 <p><a name="module_Bar--exports.yAxisLabel" id="module_Bar--exports.yAxisLabel" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="yaxislabel_x--string--module">yAxisLabel(_x) ⇒ <code>String</code> | <code>module</code><a href="#yaxislabel_x--string--module" class="hash-link" aria-label="Direct link to yaxislabel_x--string--module" title="Direct link to yaxislabel_x--string--module" translate="no">​</a></h2>
 <p>Gets or Sets the text of the yAxisLabel on the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>String</code> | <code>module</code> - Label or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -870,7 +870,7 @@ Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel
 <p><a name="module_Bar--exports.yAxisLabelOffset" id="module_Bar--exports.yAxisLabelOffset" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="yaxislabeloffset_x--number--module">yAxisLabelOffset(_x) ⇒ <code>Number</code> | <code>module</code><a href="#yaxislabeloffset_x--number--module" class="hash-link" aria-label="Direct link to yaxislabeloffset_x--number--module" title="Direct link to yaxislabeloffset_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the offset of the yAxisLabel on the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - Label or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -892,7 +892,7 @@ Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel
 <p><a name="module_Bar--exports.yAxisPaddingBetweenChart" id="module_Bar--exports.yAxisPaddingBetweenChart" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="yaxispaddingbetweenchart_x--number--module">yAxisPaddingBetweenChart(_x) ⇒ <code>Number</code> | <code>module</code><a href="#yaxispaddingbetweenchart_x--number--module" class="hash-link" aria-label="Direct link to yaxispaddingbetweenchart_x--number--module" title="Direct link to yaxispaddingbetweenchart_x--number--module" translate="no">​</a></h2>
 <p>Space between y axis and chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - Current value of yAxisPaddingBetweenChart or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -914,7 +914,7 @@ Check <a href="https://github.com/d3/d3-format#formatLocale" target="_blank" rel
 <p><a name="module_Bar--exports.yTicks" id="module_Bar--exports.yTicks" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="yticks_x--number--module">yTicks(_x) ⇒ <code>Number</code> | <code>module</code><a href="#yticks_x--number--module" class="hash-link" aria-label="Direct link to yticks_x--number--module" title="Direct link to yticks_x--number--module" translate="no">​</a></h2>
 <p>Gets or Sets the number of vertical ticks on the chart</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>Number</code> | <code>module</code> - Current yTicks or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
 
@@ -942,7 +942,7 @@ data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
 under the <code>britechartsTooltip</code> namespace. Null, or another tooltip,
 removes the one it had.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>module</code> | <code>null</code> - Current tooltip or Chart module to chain calls<br>
 <strong>Throws</strong>:</p>
 <ul>
@@ -973,7 +973,7 @@ removes the one it had.</p>
 selection, as <code>select(target).datum(data).call(chart)</code> does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.</p>
-<p><strong>Kind</strong>: static method of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: method of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Returns</strong>: <code>module</code> - The chart module, to chain calls<br>
 <strong>Throws</strong>:</p>
 <ul>
@@ -1005,7 +1005,7 @@ redraws with the data it last drew there.</p>
 <div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token function" style="color:#d73a49">bar</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">width</span><span class="token punctuation" style="color:#393A34">(</span><span class="token number" style="color:#36acaa">600</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">render</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&#x27;#chart&#x27;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> data</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><br></div></code></pre></div></div>
 <p><a name="module_Bar--exports..BarChartData" id="module_Bar--exports..BarChartData" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportsbarchartdata--arrayobject">exports~BarChartData : <code>Array.&lt;Object&gt;</code><a href="#exportsbarchartdata--arrayobject" class="hash-link" aria-label="Direct link to exportsbarchartdata--arrayobject" title="Direct link to exportsbarchartdata--arrayobject" translate="no">​</a></h2>
-<p><strong>Kind</strong>: inner typedef of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: inner typedef of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Properties</strong></p>
 
 
@@ -1032,7 +1032,7 @@ redraws with the data it last drew there.</p>
 <div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">[</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">value</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">name</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;glittering&#x27;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">value</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token literal-property property" style="color:#36acaa">name</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&#x27;luminous&#x27;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">]</span><br></div></code></pre></div></div>
 <p><a name="module_Bar--exports..LocaleObject" id="module_Bar--exports..LocaleObject" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="exportslocaleobject--object">exports~LocaleObject : <code>Object</code><a href="#exportslocaleobject--object" class="hash-link" aria-label="Direct link to exportslocaleobject--object" title="Direct link to exportslocaleobject--object" translate="no">​</a></h2>
-<p><strong>Kind</strong>: inner typedef of <a href="#exp_module_Bar--exports" class=""><code>exports</code></a><br>
+<p><strong>Kind</strong>: inner typedef of <a href="#exp_module_Bar--exports" class=""><code>bar</code></a><br>
 <strong>Properties</strong></p>
 
 
@@ -1086,6 +1086,6 @@ redraws with the data it last drew there.</p>
 
 <table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>decimal</td><td><code>String</code></td><td>the decimal point(e.g., &quot;.&quot;)</td></tr><tr><td>thousands</td><td><code>String</code></td><td>the group separator(e.g., &quot;,&quot;)</td></tr><tr><td>grouping</td><td><code>Array.&lt;Number&gt;</code></td><td>the array of group sizes(e.g., [3]), cycled as needed</td></tr><tr><td>currency</td><td><code>Array.&lt;String&gt;</code></td><td>the currency prefix and suffix(e.g., [&quot;$&quot;, &quot;&quot;])</td></tr><tr><td>numerals</td><td><code>Array.&lt;String&gt;</code></td><td>optional; an array of ten strings to replace the numerals 0 - 9.</td></tr><tr><td>percent</td><td><code>String</code></td><td>optional; the percent sign(defaults to &quot;%&quot;)</td></tr><tr><td>minus</td><td><code>String</code></td><td>optional; the minus sign(defaults to hyphen - minus, &quot;-&quot;)</td></tr><tr><td>nan</td><td><code>String</code></td><td>optional; the not - a - number value(defaults &quot;NaN&quot;) See some standard locale object values <a href="https://cdn.jsdelivr.net/npm/d3-format/locale/" target="_blank" rel="noopener noreferrer" class="">here</a>.</td></tr></tbody></table>
 <p><strong>Example</strong></p>
-<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token string-property property" style="color:#36acaa">&quot;decimal&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;,&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token string-property property" style="color:#36acaa">&quot;thousands&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;.&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token string-property property" style="color:#36acaa">&quot;grouping&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token number" style="color:#36acaa">3</span><span class="token punctuation" style="color:#393A34">]</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token string-property property" style="color:#36acaa">&quot;currency&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token string" style="color:#e3116c">&quot;&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;\u00a0€&quot;</span><span class="token punctuation" style="color:#393A34">]</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/bar.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/tutorials/styling-charts"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Styling Britecharts</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/brush"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Brush</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#exports_selection-_data-" class="table-of-contents__link toc-highlight">exports(_selection, _data) ⏏</a></li><li><a href="#a11ytitle_x--string--null--module" class="table-of-contents__link toc-highlight">a11yTitle(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydescription_x--string--null--module" class="table-of-contents__link toc-highlight">a11yDescription(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydatatable_x--boolean--module" class="table-of-contents__link toc-highlight">a11yDataTable(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#a11ykeyboardnavigation_x--boolean--module" class="table-of-contents__link toc-highlight">a11yKeyboardNavigation(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#animationduration_x--duration--module" class="table-of-contents__link toc-highlight">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code></a></li><li><a href="#betweenbarspadding_x--padding--module" class="table-of-contents__link toc-highlight">betweenBarsPadding(_x) ⇒ <code>padding</code> | <code>module</code></a></li><li><a href="#chartgradient_x--arraystring--module" class="table-of-contents__link toc-highlight">chartGradient(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code></a></li><li><a href="#colormap_x--object--module" class="table-of-contents__link toc-highlight">colorMap([_x]) ⇒ <code>object</code> | <code>module</code></a></li><li><a href="#colorschema_x--colorschema--module" class="table-of-contents__link toc-highlight">colorSchema(_x) ⇒ <code>colorSchema</code> | <code>module</code></a></li><li><a href="#enablelabels_x--boolean--module" class="table-of-contents__link toc-highlight">enableLabels([_x]) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#exportchartfilename-title--promise" class="table-of-contents__link toc-highlight">exportChart(filename, title) ⇒ <code>Promise</code></a></li><li><a href="#haspercentage_x--boolean--module" class="table-of-contents__link toc-highlight">hasPercentage(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#hassinglebarhighlight_x--boolean--module" class="table-of-contents__link toc-highlight">hasSingleBarHighlight(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#height_x--height--module" class="table-of-contents__link toc-highlight">height(_x) ⇒ <code>height</code> | <code>module</code></a></li><li><a href="#highlightbarfunction_x--highlightbarfunction--module" class="table-of-contents__link toc-highlight">highlightBarFunction(_x) ⇒ <code>highlightBarFunction</code> | <code>module</code></a></li><li><a href="#isanimated_x--isanimated--module" class="table-of-contents__link toc-highlight">isAnimated(_x) ⇒ <code>isAnimated</code> | <code>module</code></a></li><li><a href="#ishorizontal_x--ishorizontal--module" class="table-of-contents__link toc-highlight">isHorizontal(_x) ⇒ <code>isHorizontal</code> | <code>module</code></a></li><li><a href="#labelsmargin_x--number--module" class="table-of-contents__link toc-highlight">labelsMargin([_x]) ⇒ <code>number</code> | <code>module</code></a></li><li><a href="#labelsnumberformat_x--string--module" class="table-of-contents__link toc-highlight">labelsNumberFormat([_x]) ⇒ <code>string</code> | <code>module</code></a></li><li><a href="#labelssize_x--number--module" class="table-of-contents__link toc-highlight">labelsSize([_x]) ⇒ <code>number</code> | <code>module</code></a></li><li><a href="#isloadingflag--boolean--module" class="table-of-contents__link toc-highlight">isLoading(flag) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#margin_x--margin--module" class="table-of-contents__link toc-highlight">margin(_x) ⇒ <code>margin</code> | <code>module</code></a></li><li><a href="#numberformat_x--string--module" class="table-of-contents__link toc-highlight">numberFormat(_x) ⇒ <code>string</code> | <code>module</code></a></li><li><a href="#on--module" class="table-of-contents__link toc-highlight">on() ⇒ <code>module</code></a></li><li><a href="#percentageaxistomaxratio_x--ratio--module" class="table-of-contents__link toc-highlight">percentageAxisToMaxRatio(_x) ⇒ <code>ratio</code> | <code>module</code></a></li><li><a href="#shouldreversecolorlist_x--boolean--module" class="table-of-contents__link toc-highlight">shouldReverseColorList(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#orderingfunction_x--function--module" class="table-of-contents__link toc-highlight">orderingFunction(_x) ⇒ <code>function</code> | <code>Module</code></a></li><li><a href="#valuelocale_x--localeobject--module" class="table-of-contents__link toc-highlight">valueLocale([_x]) ⇒ <code>LocaleObject</code> | <code>module</code></a></li><li><a href="#width_x--width--module" class="table-of-contents__link toc-highlight">width(_x) ⇒ <code>width</code> | <code>module</code></a></li><li><a href="#xaxislabel_x--string--module" class="table-of-contents__link toc-highlight">xAxisLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#xaxislabeloffset_x--number--module" class="table-of-contents__link toc-highlight">xAxisLabelOffset(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#xticks_x--number--module" class="table-of-contents__link toc-highlight">xTicks(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#yaxislabel_x--string--module" class="table-of-contents__link toc-highlight">yAxisLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#yaxislabeloffset_x--number--module" class="table-of-contents__link toc-highlight">yAxisLabelOffset(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#yaxispaddingbetweenchart_x--number--module" class="table-of-contents__link toc-highlight">yAxisPaddingBetweenChart(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#yticks_x--number--module" class="table-of-contents__link toc-highlight">yTicks(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#tooltip_x--module--null" class="table-of-contents__link toc-highlight">tooltip(_x) ⇒ <code>module</code> | <code>null</code></a></li><li><a href="#rendertarget-data--module" class="table-of-contents__link toc-highlight">render(target, [data]) ⇒ <code>module</code></a></li><li><a href="#exportsbarchartdata--arrayobject" class="table-of-contents__link toc-highlight">exports~BarChartData : <code>Array.&lt;Object&gt;</code></a></li><li><a href="#exportslocaleobject--object" class="table-of-contents__link toc-highlight">exports~LocaleObject : <code>Object</code></a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
+<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token string-property property" style="color:#36acaa">&quot;decimal&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;,&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token string-property property" style="color:#36acaa">&quot;thousands&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;.&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token string-property property" style="color:#36acaa">&quot;grouping&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token number" style="color:#36acaa">3</span><span class="token punctuation" style="color:#393A34">]</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token string-property property" style="color:#36acaa">&quot;currency&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token string" style="color:#e3116c">&quot;&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;\u00a0€&quot;</span><span class="token punctuation" style="color:#393A34">]</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_VGYP"><a href="https://github.com/britecharts/britecharts/edit/main/packages/docs/docs/API/bar.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_AAeR" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_UMwE"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/britecharts/docs/tutorials/styling-charts"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Styling Britecharts</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/britecharts/docs/API/brush"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Brush</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_EpZA thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#bar_selection-_data" class="table-of-contents__link toc-highlight">bar(_selection, _data)</a></li><li><a href="#a11ytitle_x--string--null--module" class="table-of-contents__link toc-highlight">a11yTitle(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydescription_x--string--null--module" class="table-of-contents__link toc-highlight">a11yDescription(_x) ⇒ <code>String</code> | <code>null</code> | <code>module</code></a></li><li><a href="#a11ydatatable_x--boolean--module" class="table-of-contents__link toc-highlight">a11yDataTable(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#a11ykeyboardnavigation_x--boolean--module" class="table-of-contents__link toc-highlight">a11yKeyboardNavigation(_x) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#animationduration_x--duration--module" class="table-of-contents__link toc-highlight">animationDuration(_x) ⇒ <code>duration</code> | <code>module</code></a></li><li><a href="#betweenbarspadding_x--padding--module" class="table-of-contents__link toc-highlight">betweenBarsPadding(_x) ⇒ <code>padding</code> | <code>module</code></a></li><li><a href="#chartgradient_x--arraystring--module" class="table-of-contents__link toc-highlight">chartGradient(_x) ⇒ <code>Array.&lt;String&gt;</code> | <code>module</code></a></li><li><a href="#colormap_x--object--module" class="table-of-contents__link toc-highlight">colorMap([_x]) ⇒ <code>object</code> | <code>module</code></a></li><li><a href="#colorschema_x--colorschema--module" class="table-of-contents__link toc-highlight">colorSchema(_x) ⇒ <code>colorSchema</code> | <code>module</code></a></li><li><a href="#enablelabels_x--boolean--module" class="table-of-contents__link toc-highlight">enableLabels([_x]) ⇒ <code>Boolean</code> | <code>module</code></a></li><li><a href="#exportchartfilename-title--promise" class="table-of-contents__link toc-highlight">exportChart(filename, title) ⇒ <code>Promise</code></a></li><li><a href="#haspercentage_x--boolean--module" class="table-of-contents__link toc-highlight">hasPercentage(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#hassinglebarhighlight_x--boolean--module" class="table-of-contents__link toc-highlight">hasSingleBarHighlight(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#height_x--height--module" class="table-of-contents__link toc-highlight">height(_x) ⇒ <code>height</code> | <code>module</code></a></li><li><a href="#highlightbarfunction_x--highlightbarfunction--module" class="table-of-contents__link toc-highlight">highlightBarFunction(_x) ⇒ <code>highlightBarFunction</code> | <code>module</code></a></li><li><a href="#isanimated_x--isanimated--module" class="table-of-contents__link toc-highlight">isAnimated(_x) ⇒ <code>isAnimated</code> | <code>module</code></a></li><li><a href="#ishorizontal_x--ishorizontal--module" class="table-of-contents__link toc-highlight">isHorizontal(_x) ⇒ <code>isHorizontal</code> | <code>module</code></a></li><li><a href="#labelsmargin_x--number--module" class="table-of-contents__link toc-highlight">labelsMargin([_x]) ⇒ <code>number</code> | <code>module</code></a></li><li><a href="#labelsnumberformat_x--string--module" class="table-of-contents__link toc-highlight">labelsNumberFormat([_x]) ⇒ <code>string</code> | <code>module</code></a></li><li><a href="#labelssize_x--number--module" class="table-of-contents__link toc-highlight">labelsSize([_x]) ⇒ <code>number</code> | <code>module</code></a></li><li><a href="#isloadingflag--boolean--module" class="table-of-contents__link toc-highlight">isLoading(flag) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#margin_x--margin--module" class="table-of-contents__link toc-highlight">margin(_x) ⇒ <code>margin</code> | <code>module</code></a></li><li><a href="#numberformat_x--string--module" class="table-of-contents__link toc-highlight">numberFormat(_x) ⇒ <code>string</code> | <code>module</code></a></li><li><a href="#on--module" class="table-of-contents__link toc-highlight">on() ⇒ <code>module</code></a></li><li><a href="#percentageaxistomaxratio_x--ratio--module" class="table-of-contents__link toc-highlight">percentageAxisToMaxRatio(_x) ⇒ <code>ratio</code> | <code>module</code></a></li><li><a href="#shouldreversecolorlist_x--boolean--module" class="table-of-contents__link toc-highlight">shouldReverseColorList(_x) ⇒ <code>boolean</code> | <code>module</code></a></li><li><a href="#orderingfunction_x--function--module" class="table-of-contents__link toc-highlight">orderingFunction(_x) ⇒ <code>function</code> | <code>Module</code></a></li><li><a href="#valuelocale_x--localeobject--module" class="table-of-contents__link toc-highlight">valueLocale([_x]) ⇒ <code>LocaleObject</code> | <code>module</code></a></li><li><a href="#width_x--width--module" class="table-of-contents__link toc-highlight">width(_x) ⇒ <code>width</code> | <code>module</code></a></li><li><a href="#xaxislabel_x--string--module" class="table-of-contents__link toc-highlight">xAxisLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#xaxislabeloffset_x--number--module" class="table-of-contents__link toc-highlight">xAxisLabelOffset(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#xticks_x--number--module" class="table-of-contents__link toc-highlight">xTicks(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#yaxislabel_x--string--module" class="table-of-contents__link toc-highlight">yAxisLabel(_x) ⇒ <code>String</code> | <code>module</code></a></li><li><a href="#yaxislabeloffset_x--number--module" class="table-of-contents__link toc-highlight">yAxisLabelOffset(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#yaxispaddingbetweenchart_x--number--module" class="table-of-contents__link toc-highlight">yAxisPaddingBetweenChart(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#yticks_x--number--module" class="table-of-contents__link toc-highlight">yTicks(_x) ⇒ <code>Number</code> | <code>module</code></a></li><li><a href="#tooltip_x--module--null" class="table-of-contents__link toc-highlight">tooltip(_x) ⇒ <code>module</code> | <code>null</code></a></li><li><a href="#rendertarget-data--module" class="table-of-contents__link toc-highlight">render(target, [data]) ⇒ <code>module</code></a></li><li><a href="#exportsbarchartdata--arrayobject" class="table-of-contents__link toc-highlight">exports~BarChartData : <code>Array.&lt;Object&gt;</code></a></li><li><a href="#exportslocaleobject--object" class="table-of-contents__link toc-highlight">exports~LocaleObject : <code>Object</code></a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/tutorials/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/API/bar">API Reference</a></li><li class="footer__item"><a class="footer__link-item" href="/britecharts/docs/how-tos/how-to-index">How-to Guides</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/search?q=britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/britecharts/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/britecharts/britecharts" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_WWXW"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Britecharts</div></div></div></footer></div>
 </body>
 </html>
