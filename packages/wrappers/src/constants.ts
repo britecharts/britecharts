@@ -14,7 +14,8 @@ export const britechartsCustomEvents = [
 export type BritechartsCustomEvent = (typeof britechartsCustomEvents)[number];
 
 // Chart methods a configuration can't name: `render` draws the chart, which
-// the wrapper does itself once the configuration is applied
-export const notConfigurationMethods = ['render'] as const;
+// the wrapper does itself once the configuration is applied, and `tooltip`
+// takes a tooltip module, which the wrappers attach with their own Tooltip
+export const notConfigurationMethods = ['render', 'tooltip'] as const;
 
 export type NotConfigurationMethod = (typeof notConfigurationMethods)[number];

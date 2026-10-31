@@ -44,6 +44,7 @@ select('.css-selector')
             * [.yAxisLabels(_x)](#module_Heatmap--exports.yAxisLabels) ⇒ <code>yAxisLabels</code> \| <code>module</code>
             * [.xAxisLabels(_x)](#module_Heatmap--exports.xAxisLabels) ⇒ <code>xAxisLabels</code> \| <code>module</code>
             * [.width(_x)](#module_Heatmap--exports.width) ⇒ <code>Number</code> \| <code>module</code>
+            * [.tooltip(_x)](#module_Heatmap--exports.tooltip) ⇒ <code>module</code> \| <code>null</code>
             * [.render(target, [data])](#module_Heatmap--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~HeatmapData](#module_Heatmap--exports..HeatmapData) : <code>Array.&lt;Object&gt;</code>
@@ -284,6 +285,33 @@ Gets or Sets the width of the chart
 | --- | --- | --- | --- |
 | _x | <code>Number</code> | <code>780</code> | Desired width for the chart |
 
+<a name="module_Heatmap--exports.tooltip" id="module_Heatmap--exports.tooltip"></a>
+
+## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
+Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+`miniTooltip()`, set on this chart only. The chart connects it to its
+pointer and keyboard events, draws it in place, and sets the labels its
+data points need, unless they were set on the tooltip; it does so now
+if the chart has drawn, and again on every draw. Its event handlers go
+under the `britechartsTooltip` namespace. Null, or another tooltip,
+removes the one it had.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
+**Throws**:
+
+- <code>Error</code> When the tooltip is already set on another chart
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>module</code> \| <code>null</code> | The tooltip to show |
+
+**Example**  
+```js
+heatmap().tooltip(miniTooltip()).render('#chart', data);
+```
 <a name="module_Heatmap--exports.render" id="module_Heatmap--exports.render"></a>
 
 ## render(target, [data]) ⇒ <code>module</code>

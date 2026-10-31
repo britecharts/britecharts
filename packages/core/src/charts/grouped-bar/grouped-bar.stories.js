@@ -56,32 +56,19 @@ export const Playground = (args) => {
     const containerWidth = groupedBarContainer.node()
         ? groupedBarContainer.node().getBoundingClientRect().width
         : false;
-    const chartTooltip = tooltip();
 
     if (containerWidth) {
         const dataset = aTestDataSet().with3Sources().build();
 
+        // The chart connects and places its tooltip, and sets the labels its
+        // rows need
         applyArgs(groupedBar, args)
             .width(containerWidth)
-            .on('customMouseOver', function () {
-                chartTooltip.show();
-            })
-            .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', function () {
-                chartTooltip.hide();
-            });
+            .tooltip(tooltip().title('Testing tooltip'));
 
         groupedBarContainer.datum(dataset).call(groupedBar);
 
         addExportButtons(container, groupedBar, 'grouped-bar');
-
-        // The grouped bar dispatches its rows as `values`, named by `group`
-        chartTooltip
-            .topicLabel('values')
-            .nameLabel('group')
-            .title('Testing tooltip');
-
-        select('.metadata-group').datum([]).call(chartTooltip);
     }
 
     return container;

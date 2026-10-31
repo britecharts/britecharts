@@ -62,6 +62,7 @@ select('.css-selector')
             * [.yAxisLabel(_x)](#module_Scatter-plot--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
             * [.yAxisLabelOffset(_x)](#module_Scatter-plot--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTicks(_x)](#module_Scatter-plot--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.tooltip(_x)](#module_Scatter-plot--exports.tooltip) ⇒ <code>module</code> \| <code>null</code>
             * [.render(target, [data])](#module_Scatter-plot--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~nameToColorMap](#module_Scatter-plot--exports..nameToColorMap)
@@ -596,6 +597,33 @@ Gets or Sets the xTicks of the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | Desired height for the chart |
 
+<a name="module_Scatter-plot--exports.tooltip" id="module_Scatter-plot--exports.tooltip"></a>
+
+## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
+Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+`miniTooltip()`, set on this chart only. The chart connects it to its
+pointer and keyboard events, draws it in place, and sets the labels its
+data points need, unless they were set on the tooltip; it does so now
+if the chart has drawn, and again on every draw. Its event handlers go
+under the `britechartsTooltip` namespace. Null, or another tooltip,
+removes the one it had.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
+**Throws**:
+
+- <code>Error</code> When the tooltip is already set on another chart
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>module</code> \| <code>null</code> | The tooltip to show |
+
+**Example**  
+```js
+scatterPlot().tooltip(miniTooltip()).render('#chart', data);
+```
 <a name="module_Scatter-plot--exports.render" id="module_Scatter-plot--exports.render"></a>
 
 ## render(target, [data]) ⇒ <code>module</code>

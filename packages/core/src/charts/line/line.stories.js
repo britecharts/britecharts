@@ -64,26 +64,19 @@ export const Playground = (args) => {
     const containerWidth = lineContainer.node()
         ? lineContainer.node().getBoundingClientRect().width
         : false;
-    const chartTooltip = tooltip();
 
     if (containerWidth) {
         const dataset = aTestDataSet().with5Topics().build();
+        const chartTooltip = tooltip().topicsOrder([
+            ...new Set(dataset.data.map(({ name }) => name)),
+        ]);
 
-        applyArgs(lineChart, args)
-            .width(containerWidth)
-            .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', chartTooltip.hide);
+        // The chart connects and places its tooltip
+        applyArgs(lineChart, args).width(containerWidth).tooltip(chartTooltip);
 
         lineContainer.datum(dataset).call(lineChart);
 
         addExportButtons(container, lineChart, 'line');
-
-        chartTooltip.topicsOrder([
-            ...new Set(dataset.data.map(({ name }) => name)),
-        ]);
-
-        select('.metadata-group .hover-marker').datum([]).call(chartTooltip);
     }
 
     return container;

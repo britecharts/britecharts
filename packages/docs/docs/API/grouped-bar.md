@@ -53,6 +53,7 @@ select('.css-selector')
             * [.yAxisLabelOffset([_x])](#module_Grouped-bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTicks([_x])](#module_Grouped-bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTickTextOffset([_x])](#module_Grouped-bar--exports.yTickTextOffset) ⇒ <code>Object</code> \| <code>module</code>
+            * [.tooltip(_x)](#module_Grouped-bar--exports.tooltip) ⇒ <code>module</code> \| <code>null</code>
             * [.render(target, [data])](#module_Grouped-bar--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~GroupedBarChartData](#module_Grouped-bar--exports..GroupedBarChartData) : <code>Array.&lt;Object&gt;</code>
@@ -439,6 +440,33 @@ Gets or Sets the x and y offset of ticks of the y axis on the chart
 | --- | --- | --- | --- |
 | [_x] | <code>Object</code> | <code>{ y: -8, x: -20 }</code> | Desired offset |
 
+<a name="module_Grouped-bar--exports.tooltip" id="module_Grouped-bar--exports.tooltip"></a>
+
+## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
+Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+`miniTooltip()`, set on this chart only. The chart connects it to its
+pointer and keyboard events, draws it in place, and sets the labels its
+data points need, unless they were set on the tooltip; it does so now
+if the chart has drawn, and again on every draw. Its event handlers go
+under the `britechartsTooltip` namespace. Null, or another tooltip,
+removes the one it had.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Grouped-bar--exports)  
+**Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
+**Throws**:
+
+- <code>Error</code> When the tooltip is already set on another chart
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>module</code> \| <code>null</code> | The tooltip to show |
+
+**Example**  
+```js
+groupedBar().tooltip(tooltip().title('Uses')).render('#chart', data);
+```
 <a name="module_Grouped-bar--exports.render" id="module_Grouped-bar--exports.render"></a>
 
 ## render(target, [data]) ⇒ <code>module</code>

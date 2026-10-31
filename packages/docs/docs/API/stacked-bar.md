@@ -55,6 +55,7 @@ select('.css-selector')
             * [.yAxisLabel(_x)](#module_Stacked-bar--exports.yAxisLabel) ⇒ <code>String</code> \| <code>module</code>
             * [.yAxisLabelOffset(_x)](#module_Stacked-bar--exports.yAxisLabelOffset) ⇒ <code>Number</code> \| <code>module</code>
             * [.yTicks(_x)](#module_Stacked-bar--exports.yTicks) ⇒ <code>Number</code> \| <code>module</code>
+            * [.tooltip(_x)](#module_Stacked-bar--exports.tooltip) ⇒ <code>module</code> \| <code>null</code>
             * [.render(target, [data])](#module_Stacked-bar--exports.render) ⇒ <code>module</code>
         * _inner_
             * [~StackedBarData](#module_Stacked-bar--exports..StackedBarData) : <code>Array.&lt;Object&gt;</code>
@@ -476,6 +477,33 @@ Gets or Sets the number of vertical ticks of the axis on the chart
 | --- | --- | --- |
 | _x | <code>Number</code> | = 5      Desired vertical ticks |
 
+<a name="module_Stacked-bar--exports.tooltip" id="module_Stacked-bar--exports.tooltip"></a>
+
+## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
+Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+`miniTooltip()`, set on this chart only. The chart connects it to its
+pointer and keyboard events, draws it in place, and sets the labels its
+data points need, unless they were set on the tooltip; it does so now
+if the chart has drawn, and again on every draw. Its event handlers go
+under the `britechartsTooltip` namespace. Null, or another tooltip,
+removes the one it had.
+
+**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-bar--exports)  
+**Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
+**Throws**:
+
+- <code>Error</code> When the tooltip is already set on another chart
+
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | <code>module</code> \| <code>null</code> | The tooltip to show |
+
+**Example**  
+```js
+stackedBar().tooltip(tooltip().title('Uses')).render('#chart', data);
+```
 <a name="module_Stacked-bar--exports.render" id="module_Stacked-bar--exports.render"></a>
 
 ## render(target, [data]) ⇒ <code>module</code>

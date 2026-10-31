@@ -9,6 +9,13 @@ import 'd3-transition';
 
 import { exportChart } from '../helpers/export.js';
 import { renderChart } from '../helpers/render.js';
+import {
+    claimTooltip,
+    connectTooltip,
+    releaseTooltip,
+} from '../helpers/tooltip.js';
+import type { TooltipLabels } from '../helpers/tooltip.js';
+import type { TooltipModule } from '../tooltip/tooltip.js';
 import { heatmapLoadingMarkup } from '../helpers/load.js';
 import colorHelper from '../helpers/color.js';
 import { hoursHuman, motion } from '../helpers/constants.js';
@@ -16,6 +23,7 @@ import type { ChartMarginParams } from '../../typings/common/margin.js';
 import type {
     AccessibleChartAPI,
     RenderableChartAPI,
+    TooltipChartAPI,
     DataTableChartAPI,
     KeyboardChartAPI,
     AnimatedChartAPI,
@@ -50,6 +58,7 @@ export interface HeatmapChartAPI
     extends
         AccessibleChartAPI<HeatmapChartModule>,
         RenderableChartAPI<HeatmapChartModule, HeatmapChartDataShape[]>,
+        TooltipChartAPI<HeatmapChartModule>,
         DataTableChartAPI<HeatmapChartModule>,
         KeyboardChartAPI<HeatmapChartModule>,
         BaseAPI<HeatmapChartModule>,
@@ -256,6 +265,15 @@ export default function module(): HeatmapChartModule {
             drawRowLabels();
             drawColumnLabels();
             drawBoxes();
+            if (chartTooltip) {
+                connectTooltip(
+                    exports as unknown as HeatmapChartModule,
+                    chartTooltip,
+                    svg,
+                    tooltipLabels,
+                    tooltipDataPoint
+                );
+            }
         });
         // One assertion for the whole module, because the accessors below are
         // properties assigned onto this function inside the closure and
@@ -269,6 +287,15 @@ export default function module(): HeatmapChartModule {
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
     let a11yKeyboardNavigation = true;
+    let chartTooltip: TooltipModule | null = null;
+    // The labels this chart's data points need on a tooltip
+    const tooltipLabels: TooltipLabels = {};
+    // The heatmap sends a box's row and column indexes; the tooltip names the
+    // box by its row and column labels instead
+    const tooltipDataPoint = ({ day, hour, value }: HeatmapChartDataShape) => ({
+        name: `${rowNames()[day]}, ${columnNames()[hour]}`,
+        value,
+    });
 
     /**
      * Where keyboard focus can rest: each box, by row and then by column, so
@@ -911,6 +938,53 @@ export default function module(): HeatmapChartModule {
 
         return this;
     } as HeatmapChartModule['width'];
+
+    /**
+     * Gets or Sets the tooltip the chart shows: a `tooltip()` or a
+     * `miniTooltip()`, set on this chart only. The chart connects it to its
+     * pointer and keyboard events, draws it in place, and sets the labels its
+     * data points need, unless they were set on the tooltip; it does so now
+     * if the chart has drawn, and again on every draw. Its event handlers go
+     * under the `britechartsTooltip` namespace. Null, or another tooltip,
+     * removes the one it had.
+     * @param  {module | null} _x  The tooltip to show
+     * @return {module | null} Current tooltip or Chart module to chain calls
+     * @throws {Error} When the tooltip is already set on another chart
+     * @public
+     * @example
+     * heatmap().tooltip(miniTooltip()).render('#chart', data);
+     */
+    (exports as HeatmapChartModule).tooltip = function (
+        this: HeatmapChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return chartTooltip;
+        }
+        if (_x === chartTooltip) {
+            return this;
+        }
+        if (_x) {
+            claimTooltip(this, _x);
+        }
+        if (chartTooltip) {
+            releaseTooltip(this, chartTooltip);
+        }
+        chartTooltip = _x;
+
+        // A chart that has drawn connects it now rather than on its next draw
+        if (chartTooltip && svg) {
+            connectTooltip(
+                this,
+                chartTooltip,
+                svg,
+                tooltipLabels,
+                tooltipDataPoint
+            );
+        }
+
+        return this;
+    } as HeatmapChartModule['tooltip'];
 
     /**
      * Draws the chart into a target: a CSS selector, an element or a d3

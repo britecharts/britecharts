@@ -24,22 +24,16 @@ export const Playground = (args) => {
     const containerWidth = barContainer.node()
         ? barContainer.node().getBoundingClientRect().width
         : false;
-    const tooltip = miniTooltip();
 
     if (containerWidth) {
         const dataset = aTestDataSet().withLettersFrequency().build();
 
-        applyArgs(barChart, args)
-            .width(containerWidth)
-            .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
-            .on('customMouseOut', tooltip.hide);
+        // The chart connects and places its tooltip
+        applyArgs(barChart, args).width(containerWidth).tooltip(miniTooltip());
 
         barContainer.datum(dataset).call(barChart);
 
         addExportButtons(container, barChart, 'bar');
-
-        select('.bar-chart .metadata-group').datum([]).call(tooltip);
     }
 
     return container;
