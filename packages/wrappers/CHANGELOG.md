@@ -1,5 +1,17 @@
 # @britecharts/wrappers
 
+## 3.0.0-beta.9
+
+### Patch Changes
+
+- 566e176: Each package's `package.json` describes it for npm: a `description`, `keywords` such as `charts`, `d3`, `data-visualization` and `accessibility`, a `homepage` on its docs page, and the `repository` and `bugs` links. npm search ranks by the description and keywords, and the packages' npm pages had no summary and no link back to GitHub.
+- Updated dependencies [731c729]
+- Updated dependencies [032188d]
+- Updated dependencies [ee209ba]
+- Updated dependencies [566e176]
+- Updated dependencies [017aa5a]
+    - @britecharts/core@3.0.0-beta.9
+
 ## 3.0.0-beta.8
 
 ### Minor Changes
