@@ -87,39 +87,44 @@ Coming from version 2? Read the [migration guide][migration-guide].
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/styles/bundle/britecharts.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"></script>
 
 <div class="bar-container"></div>
 
 <script>
-    const barChart = core.bar().height(300).a11yTitle('Signups by plan');
-
-    d3.select('.bar-container')
-        .datum([
+    core.bar()
+        .height(300)
+        .a11yTitle('Signups by plan')
+        .tooltip(core.miniTooltip())
+        .render('.bar-container', [
             { name: 'Pro', value: 412 },
             { name: 'Team', value: 236 },
             { name: 'Free', value: 1200 },
-        ])
-        .call(barChart);
+        ]);
 </script>
 ```
+
+The bundle includes d3, so the page needs no other script.
 
 ### From npm
 
 ```bash
-npm install @britecharts/core d3-selection
+npm install @britecharts/core
 ```
 
 ```js
-import { select } from 'd3-selection';
-import { bar } from '@britecharts/core';
+import { bar, miniTooltip } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
-const barChart = bar().isHorizontal(true).height(300).a11yTitle('Signups by plan');
-
-select('.bar-container').datum(data).call(barChart);
+bar()
+    .isHorizontal(true)
+    .height(300)
+    .a11yTitle('Signups by plan')
+    .tooltip(miniTooltip())
+    .render('.bar-container', data);
 ```
+
+`render` takes a CSS selector, an element or a d3 selection, and draws again with new data when you call it again. If you already use d3, `select('.bar-container').datum(data).call(barChart)` works too.
 
 ### With React
 

@@ -37,7 +37,7 @@ const getInlineLegendChart = (container, dataset, markerSize) => {
             legendChart.markerSize(markerSize);
         }
 
-        legendContainer.datum(dataset).call(legendChart);
+        legendChart.render(legendContainer, dataset);
     }
 
     return legendChart;
@@ -58,7 +58,7 @@ const getVerticalLegendChart = (container, dataset) => {
 
         legendChart.width(containerWidth / 2).height(200);
 
-        legendContainer.datum(dataset).call(legendChart);
+        legendChart.render(legendContainer, dataset);
     }
 
     return legendChart;
@@ -77,7 +77,7 @@ export const Playground = (args) => {
 
         applyArgs(legendChart, args).width(containerWidth);
 
-        legendContainer.datum(dataset).call(legendChart);
+        legendChart.render(legendContainer, dataset);
     }
 
     return container;
@@ -156,7 +156,7 @@ export const WithDonutBounded = () => {
 
         legendChart.highlight(fixedSlice);
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutChart.render(donutContainer, dataset);
     }
 
     return container;

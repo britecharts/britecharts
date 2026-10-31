@@ -77,13 +77,29 @@ To change a colour, set its token on the charts:
 The data colours come from `colorSchema` and `colorMap`, not from these tokens. Exports carry the resolved colours, so an image exported in dark mode keeps its dark background. Browsers without `light-dark()` (before 2024) show the light values.
 
 ## How to Add a Tooltip to a Chart
-Every chart dispatches the same three events, and the tooltip has a handler for each:
-1. Create the tooltip: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, donut, heatmap and scatter plot, which show one value
+Give the chart a tooltip with its `tooltip` setting: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, heatmap and scatter plot, which show one value. The donut has no tooltip: it shows the hovered slice in its centre instead.
+
+```js
+stackedBar()
+    .tooltip(tooltip().title('Visits'))
+    .render('.js-chart', data);
+```
+
+The chart does the rest, on every draw. It shows the tooltip when the pointer or the keyboard reaches a data point, moves it as they move and hides it when they leave. It draws the tooltip in place, and sets the labels that tell the tooltip which fields of its data points to read, unless you set them on the tooltip yourself. Set `tooltip(null)` to remove it. A tooltip belongs to one chart, so give each chart its own.
+
+### Connect a tooltip by hand
+To change the data point before the tooltip shows it, connect the tooltip yourself.
+
+Drawing the tooltip by hand takes d3's `select`, which the `tooltip` setting does not need. With npm, run `npm install d3-selection` and import `select` from it. On a CDN page, add `<script src="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js"></script>` and call `d3.select`.
+
 1. Connect the chart's `customMouseOver`, `customMouseMove` and `customMouseOut` events to the tooltip's `show`, `update` and `hide`
 1. Tell the tooltip where the chart keeps its data, if the table below lists a setting for it
 1. Draw the chart, then call the tooltip on the chart's `.metadata-group` (for the line and stacked area, on `.metadata-group .vertical-marker-container`)
 
 ```js
+import { stackedBar, tooltip } from '@britecharts/core';
+import { select } from 'd3-selection';
+
 const stackedBarChart = stackedBar();
 const chartTooltip = tooltip()
     .topicLabel('values')
@@ -92,13 +108,13 @@ const chartTooltip = tooltip()
 stackedBarChart
     .on('customMouseOver', chartTooltip.show)
     .on('customMouseMove', chartTooltip.update)
-    .on('customMouseOut', chartTooltip.hide);
+    .on('customMouseOut', chartTooltip.hide)
+    .render('.js-chart', data);
 
-select('.js-chart').datum(data).call(stackedBarChart);
 select('.js-chart .metadata-group').datum([]).call(chartTooltip);
 ```
 
-The charts do not all name the fields of the data point they send the tooltip the same way, so some need a setting. Without it, the tooltip shows no rows, rows without their colours, or no value:
+The charts do not all name the fields of the data point they send the tooltip the same way, so some need a setting. The `tooltip` setting sets these for you. By hand, or with React's `Tooltip`, set them yourself; without them, the tooltip shows no rows, rows without their colours, or no value:
 
 | Chart | Tooltip settings | React `Tooltip` props |
 | --- | --- | --- |
@@ -107,7 +123,7 @@ The charts do not all name the fields of the data point they send the tooltip th
 | Stacked bar | `topicLabel('values')`, `nameLabel('stack')` | `nameLabel="stack"` |
 | Grouped bar | `topicLabel('values')`, `nameLabel('group')` | `nameLabel="group"` |
 | Scatter plot | `valueLabel('y')` | `valueLabel="y"` |
-| Bar, donut, heatmap | none | none |
+| Bar, heatmap | none | none |
 
 React's `Tooltip` starts from `topicLabel('values')`, which is why the line chart is the one that needs a prop there. The [tooltip reference][tooltipAPI] describes each setting, and the [Storybook][storybook] shows each chart with its tooltip configured.
 
@@ -140,12 +156,10 @@ Every data chart can draw a skeleton in its own shape while the data loads:
 1. When the data arrives, set `isLoading(false)` and draw the chart again with it
 
 ```js
-barChart.isLoading(true);
-container.datum([]).call(barChart);
+barChart.isLoading(true).render('.js-chart', []);
 
 fetchData().then((data) => {
-    barChart.isLoading(false);
-    container.datum(data).call(barChart);
+    barChart.isLoading(false).render('.js-chart', data);
 });
 ```
 
@@ -235,8 +249,7 @@ The bullet chart and the sparkline draw only their data, with no title: text ins
 ```
 
 ```js
-bulletChart.a11yTitle('CPU load, GHz');
-select('.js-bullet-chart').datum(data).call(bulletChart);
+bulletChart.a11yTitle('CPU load, GHz').render('.js-bullet-chart', data);
 ```
 
 ## How to Describe a Chart as a Spec and Check It

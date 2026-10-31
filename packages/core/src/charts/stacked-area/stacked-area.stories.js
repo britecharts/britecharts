@@ -34,7 +34,7 @@ export const Playground = (args) => {
             .width(containerWidth)
             .tooltip(tooltip().title('Testing tooltip'));
 
-        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+        stackedAreaChart.render(stackedAreaContainer, dataset);
 
         addExportButtons(container, stackedAreaChart, 'stacked-area');
     }
@@ -93,7 +93,7 @@ export const WithThreeSources = () => {
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
 
-        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+        stackedAreaChart.render(stackedAreaContainer, dataset);
 
         // Tooltip Setup and start
         // The stacked area dispatches its rows as `values`
@@ -127,7 +127,7 @@ export const WithAnimation = () => {
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
 
-        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+        stackedAreaChart.render(stackedAreaContainer, dataset);
 
         // The stacked area dispatches its rows as `values`
         chartTooltip.topicLabel('values').title('Testing tooltip');
@@ -164,7 +164,7 @@ export const WithNormalizedAreas = () => {
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
 
-        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+        stackedAreaChart.render(stackedAreaContainer, dataset);
 
         // The stacked area dispatches its rows as `values`
         chartTooltip.topicLabel('values').title('Testing tooltip');
@@ -193,7 +193,7 @@ export const WithNegativeValues = () => {
             .width(containerWidth)
             .height(400);
 
-        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+        stackedAreaChart.render(stackedAreaContainer, dataset);
     }
 
     return container;
@@ -232,7 +232,7 @@ export const WithMouseEvents = () => {
                 status.textContent = 'Mouse out';
             });
 
-        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+        stackedAreaChart.render(stackedAreaContainer, dataset);
         container.appendChild(status);
     }
 
@@ -255,7 +255,7 @@ export const WithLoadingState = () => {
             .isAnimated(true)
             .isLoading(true);
 
-        stackedAreaContainer.datum(dataset).call(stackedAreaChart);
+        stackedAreaChart.render(stackedAreaContainer, dataset);
     }
 
     return container;

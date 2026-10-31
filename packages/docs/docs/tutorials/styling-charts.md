@@ -16,7 +16,6 @@ We will start from the code we got at the end of that tutorial, removing the res
 ```js
 // Instantiate Bar Chart
 const barChart = core.bar();
-const container = d3.select('.bar-container');
 
 // Create Dataset with proper shape
 const barData = [
@@ -33,7 +32,7 @@ barChart
     .height(400)
     .width(600);
 
-container.datum(barData).call(barChart);
+barChart.render('.bar-container', barData);
 ```
 
 Starting with this bar chart, we want to customize the color palette. The color schemas come with the bundle, as `core.colors`, so we can set the color schema of the bar chart by doing:

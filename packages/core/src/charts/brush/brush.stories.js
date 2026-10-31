@@ -26,7 +26,7 @@ export const Playground = (args) => {
 
         applyArgs(brushChart, args).width(containerWidth);
 
-        brushContainer.datum(dataset).call(brushChart);
+        brushChart.render(brushContainer, dataset);
     }
 
     return container;
@@ -69,7 +69,7 @@ export const WithInitialDateRange = () => {
                 '2015-07-10T07:00:00.000Z',
             ]);
 
-        brushContainer.datum(dataset).call(brushChart);
+        brushChart.render(brushContainer, dataset);
     }
 
     return container;
@@ -91,7 +91,7 @@ export const WithLockedSelection = () => {
             .dateRange(['2015-06-27T07:00:00.000Z', '2015-07-03T07:00:00.000Z'])
             .isLocked(true);
 
-        brushContainer.datum(dataset).call(brushChart);
+        brushChart.render(brushContainer, dataset);
     }
 
     return container;
@@ -128,7 +128,7 @@ export const WithSelectionEvents = () => {
                 );
             });
 
-        brushContainer.datum(dataset).call(brushChart);
+        brushChart.render(brushContainer, dataset);
     }
 
     return container;
@@ -146,7 +146,7 @@ export const WithAnimation = () => {
     if (containerWidth) {
         brushChart.width(containerWidth).height(125).isAnimated(true);
 
-        brushContainer.datum(dataset).call(brushChart);
+        brushChart.render(brushContainer, dataset);
 
         brushChart.dateRange(['7/15/2015', '7/25/2015']);
     }
@@ -166,7 +166,7 @@ export const WithMissingData = () => {
     if (containerWidth) {
         brushChart.width(containerWidth).height(125).isLocked(true);
 
-        brushContainer.datum(dataset).call(brushChart);
+        brushChart.render(brushContainer, dataset);
 
         brushChart.dateRange(['7/10/2015', '7/15/2015']);
     }
@@ -186,7 +186,7 @@ export const WithNegativeValues = () => {
     if (containerWidth) {
         brushChart.width(containerWidth).height(200).isAnimated(true);
 
-        brushContainer.datum(dataset).call(brushChart);
+        brushChart.render(brushContainer, dataset);
     }
 
     return container;
@@ -208,7 +208,7 @@ export const WithLoadingState = () => {
             .isAnimated(true)
             .isLoading(true);
 
-        brushContainer.datum(dataset).call(brushChart);
+        brushChart.render(brushContainer, dataset);
     }
 
     return container;

@@ -7,8 +7,9 @@ Accessors every data chart shares are listed once here and left out below:
 - `width`, `height`, `margin({ top, right, bottom, left })`. Margins can be set partially.
 - `isLoading`, which draws a skeleton.
 - `a11yTitle` and `a11yDescription`, which give the chart its accessible name and description.
+- `render(target, data)`, which draws the chart into a CSS selector, an element or a d3 selection. Every chart has it, the legend included.
 
-The charts with an `on` accessor take event handlers with `chart.on('customMouseOver', handler)`.
+The charts with an `on` accessor take event handlers with `chart.on('customMouseOver', handler)`. The charts with a `tooltip` accessor take a tooltip with `chart.tooltip(miniTooltip())`; the tooltip section of `SKILL.md` says which one each needs.
 
 ## Contents
 - [bar](#bar) · [groupedBar](#groupedbar) · [stackedBar](#stackedbar) · [donut](#donut)
@@ -23,7 +24,7 @@ API page: `bar`. Data: an array of `{ name: string, value: number }`.
 [{ name: 'Shiny', value: 4 }, { name: 'Blazing', value: 9 }]
 ```
 
-Accessors: `animationDuration`, `betweenBarsPadding`, `chartGradient`, `colorMap`, `colorSchema`, `enableLabels`, `exportChart`, `hasPercentage`, `hasSingleBarHighlight`, `highlightBarFunction`, `isAnimated`, `isHorizontal`, `labelsMargin`, `labelsNumberFormat`, `labelsSize`, `numberFormat`, `on`, `orderingFunction`, `percentageAxisToMaxRatio`, `shouldReverseColorList`, `valueLocale`, `xAxisLabel`, `xAxisLabelOffset`, `xTicks`, `yAxisLabel`, `yAxisLabelOffset`, `yAxisPaddingBetweenChart`, `yTicks`.
+Accessors: `animationDuration`, `betweenBarsPadding`, `chartGradient`, `colorMap`, `colorSchema`, `enableLabels`, `exportChart`, `hasPercentage`, `hasSingleBarHighlight`, `highlightBarFunction`, `isAnimated`, `isHorizontal`, `labelsMargin`, `labelsNumberFormat`, `labelsSize`, `numberFormat`, `on`, `orderingFunction`, `percentageAxisToMaxRatio`, `shouldReverseColorList`, `tooltip`, `valueLocale`, `xAxisLabel`, `xAxisLabelOffset`, `xTicks`, `yAxisLabel`, `yAxisLabelOffset`, `yAxisPaddingBetweenChart`, `yTicks`.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`. Negative values draw below, or left of, zero. A horizontal bar chart usually needs `margin({ left })` wide enough for its labels.
 
@@ -34,14 +35,14 @@ API page: `grouped-bar`. Data: an array of `{ name: string, group: string, value
 [{ name: 'Jan', group: 'Direct', value: 3 }, { name: 'Jan', group: 'Paid', value: 5 }]
 ```
 
-Accessors: `animationDuration`, `betweenBarsPadding`, `betweenGroupsPadding`, `colorMap`, `colorSchema`, `exportChart`, `grid`, `isAnimated`, `isHorizontal`, `numberFormat`, `on`, `tooltipThreshold`, `valueLocale`, `xTicks`, `yAxisLabel`, `yAxisLabelOffset`, `yTicks`, `yTickTextOffset`.
+Accessors: `animationDuration`, `betweenBarsPadding`, `betweenGroupsPadding`, `colorMap`, `colorSchema`, `exportChart`, `grid`, `isAnimated`, `isHorizontal`, `numberFormat`, `on`, `tooltip`, `tooltipThreshold`, `valueLocale`, `xTicks`, `yAxisLabel`, `yAxisLabelOffset`, `yTicks`, `yTickTextOffset`.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`. The tooltip shows only over a bar, and `customClick` passes the clicked bar's data as a third argument.
 
 ## stackedBar
 API page: `stacked-bar`. Data: an array of `{ name: string, stack: string, value: number }`. `name` is the category on the axis, and `stack` is the series stacked within it.
 
-Accessors: `animationDuration`, `betweenBarsPadding`, `colorMap`, `colorSchema`, `exportChart`, `grid`, `hasPercentage`, `hasReversedStacks`, `isAnimated`, `isHorizontal`, `numberFormat`, `on`, `percentageAxisToMaxRatio`, `tooltipThreshold`, `valueLocale`, `xTicks`, `yAxisLabel`, `yAxisLabelOffset`, `yTicks`.
+Accessors: `animationDuration`, `betweenBarsPadding`, `colorMap`, `colorSchema`, `exportChart`, `grid`, `hasPercentage`, `hasReversedStacks`, `isAnimated`, `isHorizontal`, `numberFormat`, `on`, `percentageAxisToMaxRatio`, `tooltip`, `tooltipThreshold`, `valueLocale`, `xTicks`, `yAxisLabel`, `yAxisLabelOffset`, `yTicks`.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`. Negative parts stack down from zero.
 
@@ -69,7 +70,7 @@ API page: `line`. Data: an object, not an array: `{ data: [{ topicName, name, da
 }
 ```
 
-Accessors: `animationDuration`, `colorMap`, `colorSchema`, `exportChart`, `grid`, `hasMinimumValueScale`, `isAnimated`, `lineCurve`, `lineGradient`, `lines`, `locale`, `numberFormat`, `on`, `shouldShowAllDataPoints`, `tooltipThreshold`, `xAxisCustomFormat`, `xAxisFormat`, `xAxisLabel`, `xAxisScale`, `xAxisValueType`, `xTicks`, `yAxisLabel`, `yAxisLabelPadding`, `yTicks`.
+Accessors: `animationDuration`, `colorMap`, `colorSchema`, `exportChart`, `grid`, `hasMinimumValueScale`, `isAnimated`, `lineCurve`, `lineGradient`, `lines`, `locale`, `numberFormat`, `on`, `shouldShowAllDataPoints`, `tooltip`, `tooltipThreshold`, `xAxisCustomFormat`, `xAxisFormat`, `xAxisLabel`, `xAxisScale`, `xAxisValueType`, `xTicks`, `yAxisLabel`, `yAxisLabelPadding`, `yTicks`.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customDataEntryClick`, `customTouchMove`. The wrappers and React only pass on the first three.
 
@@ -78,7 +79,7 @@ Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customDataEntry
 ## stackedArea
 API page: `stacked-area`. Data: an array of `{ date: string, name: string, value: number }`, one row per series per date. `name` is the series.
 
-Accessors: `animationDuration`, `areaCurve`, `areaOpacity`, `colorMap`, `colorSchema`, `emptyDataConfig`, `exportChart`, `grid`, `hasOutline`, `isAnimated`, `locale`, `numberFormat`, `on`, `tooltipThreshold`, `topicsOrder`, `xAxisCustomFormat`, `xAxisFormat`, `xAxisScale`, `xAxisValueType`, `xTicks`, `yAxisBaseline`, `yAxisLabel`, `yAxisLabelOffset`, `yTicks`.
+Accessors: `animationDuration`, `areaCurve`, `areaOpacity`, `colorMap`, `colorSchema`, `emptyDataConfig`, `exportChart`, `grid`, `hasOutline`, `isAnimated`, `locale`, `numberFormat`, `on`, `tooltip`, `tooltipThreshold`, `topicsOrder`, `xAxisCustomFormat`, `xAxisFormat`, `xAxisScale`, `xAxisValueType`, `xTicks`, `yAxisBaseline`, `yAxisLabel`, `yAxisLabelOffset`, `yTicks`.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customDataEntryClick`, `customTouchMove`.
 
@@ -105,19 +106,19 @@ brushChart.on('customBrushEnd', ([start, end]) => {
 ## scatterPlot
 API page: `scatter-plot`. Data: an array of `{ name: string, x: number, y: number }`. `name` is the series, and the points are coloured by it.
 
-Accessors: `animationDuration`, `circleOpacity`, `circleStrokeOpacity`, `circleStrokeWidth`, `colorMap`, `colorSchema`, `enableZoom`, `exportChart`, `grid`, `hasCrossHairs`, `hasHollowCircles`, `hasTrendline`, `highlightTextLegendOffset`, `isAnimated`, `maxCircleArea`, `on`, `valueLocale`, `xAxisFormat`, `xAxisFormatType`, `xAxisLabel`, `xAxisLabelOffset`, `xTicks`, `yAxisFormat`, `yAxisLabel`, `yAxisLabelOffset`, `yTicks`.
+Accessors: `animationDuration`, `circleOpacity`, `circleStrokeOpacity`, `circleStrokeWidth`, `colorMap`, `colorSchema`, `enableZoom`, `exportChart`, `grid`, `hasCrossHairs`, `hasHollowCircles`, `hasTrendline`, `highlightTextLegendOffset`, `isAnimated`, `maxCircleArea`, `on`, `tooltip`, `valueLocale`, `xAxisFormat`, `xAxisFormatType`, `xAxisLabel`, `xAxisLabelOffset`, `xTicks`, `yAxisFormat`, `yAxisLabel`, `yAxisLabelOffset`, `yTicks`.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`. The tooltip needs `valueLabel('y')`, because a point has no `value`.
 
 ## heatmap
 API page: `heatmap`. Data: an array of `{ day: number, hour: number, value: number }`, where `day` runs from 0 to 6 and `hour` from 0 to 23.
 
-Accessors: `animationDuration`, `boxSize`, `colorSchema`, `exportChart`, `isAnimated`, `on`, `xAxisLabels` (one label per hour, from the first), `yAxisLabels` (one label per day, from the first). With both label sets, `day` and `hour` index them, so the heatmap can show any two sets of categories.
+Accessors: `animationDuration`, `boxSize`, `colorSchema`, `exportChart`, `isAnimated`, `on`, `tooltip`, `xAxisLabels` (one label per hour, from the first), `yAxisLabels` (one label per day, from the first). With both label sets, `day` and `hour` index them, so the heatmap can show any two sets of categories.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`.
 
 ## bullet
-API page: `bullet`. Data: one object per chart, not an array. Bind it with `container.datum(bulletData)`.
+API page: `bullet`. Data: one object per chart, not an array: `bulletChart.render(container, bulletData)`.
 
 ```js
 { ranges: [130, 160, 250], measures: [150, 180], markers: [220] }

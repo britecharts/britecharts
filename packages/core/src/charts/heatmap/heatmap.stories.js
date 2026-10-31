@@ -67,7 +67,7 @@ export const Playground = (args) => {
 
         heatmapChart.width(left + side + right).height(top + side + bottom);
 
-        heatmapContainer.datum(dataset).call(heatmapChart);
+        heatmapChart.render(heatmapContainer, dataset);
 
         addExportButtons(container, heatmapChart, 'heatmap');
 
@@ -103,7 +103,7 @@ export const WithWeeklyElements = () => {
     if (containerWidth) {
         heatmapChart.boxSize(30).isAnimated(true);
 
-        heatmapContainer.datum(dataset).call(heatmapChart);
+        heatmapChart.render(heatmapContainer, dataset);
     }
 
     return container;
@@ -128,7 +128,7 @@ export const WithAnimation = () => {
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
 
-        heatmapContainer.datum(dataset).call(heatmapChart);
+        heatmapChart.render(heatmapContainer, dataset);
 
         select('.heatmap .metadata-group').datum([]).call(tooltip);
     }
@@ -148,7 +148,7 @@ export const WithAnotherColorSchema = () => {
     if (containerWidth) {
         heatmapChart.colorSchema(colors.colorSchemas.teal);
 
-        heatmapContainer.datum(dataset).call(heatmapChart);
+        heatmapChart.render(heatmapContainer, dataset);
     }
 
     return container;
@@ -166,7 +166,7 @@ export const WithDayLabels = () => {
     if (containerWidth) {
         heatmapChart.yAxisLabels(['S', 'M', 'T', 'W', 'T', 'F', 'S']);
 
-        heatmapContainer.datum(dataset).call(heatmapChart);
+        heatmapChart.render(heatmapContainer, dataset);
     }
 
     return container;

@@ -16,7 +16,7 @@ Britecharts is a set of finished, reusable D3 charts. Each chart is a function y
 | `@britecharts/wrappers` | One `create` / `update` / `destroy` object per chart, for wiring charts into any framework. |
 | `@britecharts/react` | The charts as React function components. |
 
-Most mistakes come from three places: writing v2-era code (different package names, removed accessors, an old line data shape), guessing a chart's data field names, and attaching tooltips to the wrong element. The rules below cover those. Look up anything else in the references rather than guessing; the API is small and exact.
+Most mistakes come from three places: writing v2-era code (different package names, removed accessors, an old line data shape), guessing a chart's data field names, and wiring tooltips by hand. The rules below cover those. Look up anything else in the references rather than guessing; the API is small and exact.
 
 ## Before writing code
 
@@ -28,7 +28,7 @@ Most mistakes come from three places: writing v2-era code (different package nam
 ## Install
 
 ```bash
-npm install @britecharts/core d3-selection        # vanilla
+npm install @britecharts/core                     # vanilla
 npm install @britecharts/react                    # React (brings core and wrappers)
 ```
 
@@ -38,40 +38,38 @@ Every setup also needs the stylesheet, or charts render unstyled (black areas, n
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 ```
 
-Without a bundler, load the CDN bundle, which exposes a global `core`, plus d3-selection for `d3.select`:
+Without a bundler, load the CDN bundle, which includes d3 and exposes a global `core`. No other script is needed:
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/styles/bundle/britecharts.min.css">
-<script src="https://cdn.jsdelivr.net/npm/d3-selection@3/dist/d3-selection.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@britecharts/core/dist/cdn/bundle/core.cdn.min.js"></script>
 <script>
-  const barChart = core.bar().width(600).height(300);
-  d3.select('.bar-container').datum(data).call(barChart);
+  core.bar().width(600).height(300).render('.bar-container', data);
 </script>
 ```
 
 ## The pattern every chart follows (vanilla)
 
 ```js
-import { select } from 'd3-selection';
 import { bar } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
-const container = select('.bar-container');
+const container = document.querySelector('.bar-container');
 const barChart = bar()
-    .width(container.node().getBoundingClientRect().width) // charts don't size themselves
+    .width(container.getBoundingClientRect().width) // charts don't size themselves
     .height(300)
     .isHorizontal(true)
     .margin({ left: 100 })
     .a11yTitle('Visits by source'); // what screen readers announce
 
-container.datum(data).call(barChart);
+barChart.render(container, data);
 ```
 
-- Create one chart instance per container and keep it. To redraw with new data or settings, change accessors on the same instance and call it again: `container.datum(newData).call(barChart)`.
+- `render(target, data)` takes a CSS selector, an element or a d3 selection, and throws if the target matches nothing. Don't add d3-selection just to draw: `select(el).datum(data).call(chart)` still works, but only use it in code that already uses d3. The one other reason to add d3-selection is a tooltip wired by hand (see Tooltips).
+- Create one chart instance per container and keep it. To redraw with new data or settings, change accessors on the same instance and render again: `barChart.render(container, newData)`, or `barChart.render(container)` to redraw with the same data.
 - Setters return the chart, so they chain; getters (no argument) return the value, and an accessor you never set reads `null`.
 - Charts take their width from you. For a responsive chart, measure the container and redraw on resize (React's `ResponsiveContainer` does this for you).
-- `isLoading(true)` draws a skeleton in the chart's shape; set it back to `false` and call again when data arrives.
+- `isLoading(true)` draws a skeleton in the chart's shape; set it back to `false` and render again when data arrives.
 - `isAnimated(true)` animates the draw; it is skipped automatically when the reader's system asks for reduced motion.
 - `colorSchema(colors.colorSchemas.okabeIto)` gives a colour-blind-safe palette (`import { colors } from '@britecharts/core'`). `colorMap({ category: '#hex' })` pins colours per category.
 - `exportChart('name.svg')` downloads an SVG, any other filename a PNG; an optional second argument adds a title.
@@ -101,33 +99,24 @@ Dates are ISO strings (`'2020-01-01T00:00:00Z'`). In `line`, `name` is a numeric
 
 ## Tooltips (vanilla)
 
-There is one tooltip component; `miniTooltip` is its single-value preset. Wire the chart's events to it, draw the chart, then call the tooltip on the right element inside the chart's svg:
+There is one tooltip component; `miniTooltip` is its single-value preset. Give it to the chart with the chart's `tooltip` setting:
 
 ```js
 import { line, tooltip } from '@britecharts/core';
 
-const lineChart = line();
-const chartTooltip = tooltip().title('Visits');
-
-lineChart
-    .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', chartTooltip.update)
-    .on('customMouseOut', chartTooltip.hide);
-
-container.datum(lineData).call(lineChart);
-container.select('.metadata-group .hover-marker').datum([]).call(chartTooltip);
+line().tooltip(tooltip().title('Visits')).render(container, lineData);
 ```
 
-| Chart | Tooltip | Attach to | Also set |
-|---|---|---|---|
-| `line` | `tooltip()` | `.metadata-group .hover-marker` | — |
-| `stackedArea` | `tooltip()` | `.metadata-group .vertical-marker-container` | `.topicLabel('values')` |
-| `stackedBar` | `tooltip()` | `.metadata-group` | `.topicLabel('values').nameLabel('stack')` |
-| `groupedBar` | `tooltip()` | `.metadata-group` | `.topicLabel('values').nameLabel('group')` |
-| `bar`, `donut`, `heatmap` | `miniTooltip()` | `.metadata-group` | — |
-| `scatterPlot` | `miniTooltip()` | `.metadata-group` | `.valueLabel('y')`, optionally `.nameLabel('x')` |
+The chart connects the tooltip to its pointer and keyboard events, draws it in the right element, and sets the labels its data points need. Don't wire `customMouseOver` and the rest by hand, and don't set `topicLabel` or `nameLabel` for it: a label you set on the tooltip overrides the chart's. One tooltip per chart: setting the same tooltip on a second chart throws. `tooltip(null)` removes it.
 
-Without those settings the tooltip shows no rows, rows without colours, or no value. Pass the handlers straight through: the charts dispatch `(dataPoint, [x, y], [width, height], colorMap)`, which `show` and `update` take as they come. To customise the title per point, set it before passing the point on: `(d, ...rest) => chartTooltip.title(d.name).update(d, ...rest)`.
+| Chart | Tooltip |
+|---|---|
+| `line`, `stackedArea`, `stackedBar`, `groupedBar` | `tooltip()` |
+| `bar`, `heatmap`, `scatterPlot` | `miniTooltip()` |
+
+The donut takes no tooltip: it has no element to draw one in. It shows the hovered slice in its centre instead (`hasCenterLegend`, `centeredTextFunction`), or pair it with a `legend`.
+
+To customise the title per point, wire it by hand: connect `customMouseOver`, `customMouseMove` and `customMouseOut` to the tooltip's `show`, `update` and `hide`, render the chart, then call the tooltip on `.metadata-group` (`.metadata-group .vertical-marker-container` on the line and stacked area) with `.datum([])`. That call needs d3's `select`, so hand wiring needs d3-selection: `npm install d3-selection` and `import { select } from 'd3-selection'`, or on a CDN page the `https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/dist/d3-selection.min.js` script and `d3.select`. By hand, set the labels yourself: `.topicLabel('values')` on the stacked area; `.topicLabel('values').nameLabel('stack')` on the stacked bar; `.topicLabel('values').nameLabel('group')` on the grouped bar; `.valueLabel('y')` on the scatter plot. The charts dispatch `(dataPoint, [x, y], [width, height], colorMap)`, so a custom title looks like `(d, ...rest) => chartTooltip.title(d.name).update(d, ...rest)`.
 
 ## React
 
@@ -157,7 +146,8 @@ Use `@britecharts/wrappers`: `BarWrapper.create(element, data, config)` returns 
 - Every field name in the data matches the chart's row in the table above.
 - The stylesheet is imported once.
 - Each accessor used appears in the chart's list in `references/charts.md`; nothing from v2 (`aspectRatio`, `nameLabel` on a chart, `loadingMarkup`, `dataByTopic`, `step`).
-- Tooltips are attached after the chart's first draw, to the element in the tooltip table.
+- In vanilla code, tooltips go through the chart's `tooltip` setting, one tooltip per chart, unless the code needs a custom title. The donut has none. React uses the `Tooltip` component, and a wrapper's config has no `tooltip` key: set it on the chart instance `create` returns.
+- In vanilla code, charts draw with `render`, with no d3-selection import unless the code already uses d3 or wires a tooltip by hand.
 - In React, data updates replace the array or object.
 
 The full documentation, as one text file, is at https://britecharts.github.io/britecharts/llms-full.txt, and each chart's API page is at `https://britecharts.github.io/britecharts/docs/API/<chart>` (for example `grouped-bar`, `scatter-plot`).

@@ -41,7 +41,7 @@ const getInlineLegendChart = (container, dataset) => {
             .markerSize(8)
             .height(40);
 
-        legendContainer.datum(legendData).call(legendChart);
+        legendChart.render(legendContainer, legendData);
     }
 
     return legendChart;
@@ -64,7 +64,7 @@ export const Playground = (args) => {
             .width(containerWidth)
             .tooltip(tooltip().title('Tooltip title'));
 
-        stackedBarContainer.datum(dataset).call(stackedBar);
+        stackedBar.render(stackedBarContainer, dataset);
 
         addExportButtons(container, stackedBar, 'stacked-bar');
     }
@@ -130,7 +130,7 @@ export const WithHorizontalDirection = () => {
                 chartTooltip.hide();
             });
 
-        stackedBarContainer.datum(dataset).call(stackedBar);
+        stackedBar.render(stackedBarContainer, dataset);
 
         // Tooltip Setup and start
         // The stacked bar dispatches its rows as `values`, named by `stack`
@@ -171,7 +171,7 @@ export const WithAnimation = () => {
                 chartTooltip.hide();
             });
 
-        stackedBarContainer.datum(dataset).call(stackedBar);
+        stackedBar.render(stackedBarContainer, dataset);
 
         // The stacked bar dispatches its rows as `values`, named by `stack`
         chartTooltip
@@ -213,7 +213,7 @@ export const WithNormalizedStacks = () => {
                 chartTooltip.hide();
             });
 
-        stackedBarContainer.datum(dataset).call(stackedBar);
+        stackedBar.render(stackedBarContainer, dataset);
 
         // The stacked bar dispatches its rows as `values`, named by `stack`
         chartTooltip
@@ -243,7 +243,7 @@ export const WithNegativeValues = () => {
             .width(containerWidth)
             .height(400);
 
-        stackedBarContainer.datum(dataset).call(stackedBar);
+        stackedBar.render(stackedBarContainer, dataset);
     }
 
     return container;
@@ -265,7 +265,7 @@ export const WithLoadingState = () => {
             .isAnimated(true)
             .isLoading(true);
 
-        stackedBarContainer.datum(dataset).call(stackedBar);
+        stackedBar.render(stackedBarContainer, dataset);
     }
 
     return container;

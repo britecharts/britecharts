@@ -31,7 +31,7 @@ export const Playground = (args) => {
         // The chart connects and places its tooltip
         applyArgs(barChart, args).width(containerWidth).tooltip(miniTooltip());
 
-        barContainer.datum(dataset).call(barChart);
+        barChart.render(barContainer, dataset);
 
         addExportButtons(container, barChart, 'bar');
     }
@@ -94,7 +94,7 @@ export const WithHorizontalDirection = () => {
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
 
-        barContainer.datum(dataset).call(barChart);
+        barChart.render(barContainer, dataset);
 
         tooltipContainer = select('.bar-chart .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
@@ -122,7 +122,7 @@ export const WithAnimation = () => {
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
 
-        barContainer.datum(dataset).call(barChart);
+        barChart.render(barContainer, dataset);
 
         select('.bar-chart .metadata-group').datum([]).call(tooltip);
     }
@@ -148,7 +148,7 @@ export const WithBarLabels = () => {
             .labelsNumberFormat('.0%')
             .height(300);
 
-        barContainer.datum(dataset).call(barChart);
+        barChart.render(barContainer, dataset);
     }
 
     return container;
@@ -167,7 +167,7 @@ export const WithNegativeValues = () => {
 
         barChart.isAnimated(true).width(containerWidth).height(400);
 
-        barContainer.datum(dataset).call(barChart);
+        barChart.render(barContainer, dataset);
     }
 
     return container;
@@ -191,7 +191,7 @@ export const WithNegativeValuesHorizontal = () => {
             .width(containerWidth)
             .height(400);
 
-        barContainer.datum(dataset).call(barChart);
+        barChart.render(barContainer, dataset);
     }
 
     return container;
@@ -213,7 +213,7 @@ export const WithLoadingState = () => {
             .isAnimated(true)
             .isLoading(true);
 
-        barContainer.datum(dataset).call(barChart);
+        barChart.render(barContainer, dataset);
     }
 
     return container;

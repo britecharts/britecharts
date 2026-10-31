@@ -32,7 +32,7 @@ const getLegendChart = (container, dataset, width) => {
         .height((dataset.length + 1) * 32)
         .numberFormat('s');
 
-    select(wrapper).datum(dataset).call(legendChart);
+    legendChart.render(wrapper, dataset);
 
     return legendChart;
 };
@@ -59,7 +59,7 @@ const getInlineLegendChart = (container, dataset) => {
             .markerSize(8)
             .height(40);
 
-        legendContainer.datum(dataset).call(legendChart);
+        legendChart.render(legendContainer, dataset);
     }
 
     return legendChart;
@@ -81,7 +81,7 @@ const getVerticalLegendChart = (container, dataset) => {
 
         legendChart.width(containerWidth).height(100);
 
-        legendContainer.datum(dataset).call(legendChart);
+        legendChart.render(legendContainer, dataset);
     }
 
     return legendChart;
@@ -98,7 +98,7 @@ export const Playground = (args) => {
     if (containerWidth) {
         applyArgs(donutChart, args).width(containerWidth);
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutChart.render(donutContainer, dataset);
 
         addExportButtons(container, donutChart, 'donut');
     }
@@ -158,7 +158,7 @@ export const WithAnimationAndLegend = () => {
                 legendChart.clearHighlight();
             });
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutChart.render(donutContainer, dataset);
         legendChart = getLegendChart(container, dataset, containerWidth * 0.4);
     }
 
@@ -187,7 +187,7 @@ export const WithInlineLegend = () => {
                 legendChart.clearHighlight();
             });
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutChart.render(donutContainer, dataset);
     }
     const legendChart = getInlineLegendChart(container, dataset);
 
@@ -205,7 +205,7 @@ export const WithAnimation = () => {
     if (containerWidth) {
         donutChart.isAnimated(true).width(containerWidth);
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutChart.render(donutContainer, dataset);
     }
 
     return container;
@@ -245,7 +245,7 @@ export const WithHighlightedSlice = () => {
 
         legendChart.highlight(fixedSlice);
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutChart.render(donutContainer, dataset);
     }
 
     return container;
@@ -278,7 +278,7 @@ export const WithHoverEvent = () => {
                 status.textContent = `Mouse over: ${slice.data.name}`;
             });
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutChart.render(donutContainer, dataset);
         container.appendChild(status);
     }
 
@@ -321,7 +321,7 @@ export const WithPieChartFormat = () => {
                 legendChart.clearHighlight();
             });
 
-        donutContainer.datum(dataset).call(pieChart);
+        pieChart.render(donutContainer, dataset);
 
         // On the pie's right, with room for each entry: the legend splits its
         // height evenly between them, so a short one stacks the markers
@@ -331,7 +331,7 @@ export const WithPieChartFormat = () => {
         legendChart
             .width(containerWidth * 0.4)
             .height((dataset.length + 1) * 32);
-        select(legendWrapper).datum(dataset).call(legendChart);
+        legendChart.render(legendWrapper, dataset);
     }
 
     return container;
@@ -359,7 +359,7 @@ export const WithLoadingState = () => {
             .internalRadius(chartHeight / 5)
             .isLoading(true);
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutChart.render(donutContainer, dataset);
     }
 
     return container;

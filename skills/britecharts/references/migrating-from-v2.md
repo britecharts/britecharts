@@ -31,7 +31,7 @@ React-specific changes:
 - **No PropTypes.** Each props type is exported for TypeScript instead.
 - **`axisTimeCombinations`.** It's an import now, not a prop.
 
-Runtime: v3 targets ES2020, so transpile it yourself for older browsers. It runs on the d3 v7 modules: use `d3-selection` 3 next to it. Negative axis labels use the typographic minus sign (−), not a hyphen.
+Runtime: v3 targets ES2020, so transpile it yourself for older browsers. It runs on the d3 v7 modules: if your own code uses d3, upgrade it to v7. Charts draw with `chart.render(container, data)`; `container.datum(data).call(chart)` still works. Negative axis labels use the typographic minus sign (−), not a hyphen.
 
 ## Converting old line data
 
