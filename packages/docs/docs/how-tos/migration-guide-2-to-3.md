@@ -227,7 +227,7 @@ lineChart.on('customMouseMove', function (dataPoint, [x, y], size, colorMap) {
 lineChart.on('customMouseMove', chartTooltip.update);
 ```
 
-With that, `tooltip` and `miniTooltip` are one component: `tooltip` shows a list or a single value by the shape of the data point (or as told by `layout`), and `miniTooltip` is `tooltip().layout('single').title('').numberFormat('.2f')`. The tooltip now keeps itself inside the chart, follows the pointer (the stacked and grouped bar charts show it over a bar only), and its `tooltipOffset` default is `{ x: 0, y: 0 }` (it was `{ x: 0, y: -55 }`, for a placement that no longer exists). `xAxisValueType` defaults to `'auto'`, which shows dates as dates, numbers as numbers and category names as they are; set `'date'` or `'number'` to force one, as before. In React, `Tooltip`'s `customMouseMove` callback receives the new order, and `Tooltip` now wraps the bar, scatter plot and heatmap charts too.
+With that, `tooltip` and `miniTooltip` are one component: `tooltip` shows a list or a single value by the shape of the data point (or as told by `layout`), so use `tooltip()` everywhere. `miniTooltip()` still works but is deprecated, logs a warning and goes in version 4. `tooltip()` also no longer shows the placeholder "Tooltip title": if your tooltips relied on it, set `title`. The tooltip now keeps itself inside the chart, follows the pointer (the stacked and grouped bar charts show it over a bar only), and its `tooltipOffset` default is `{ x: 0, y: 0 }` (it was `{ x: 0, y: -55 }`, for a placement that no longer exists). `xAxisValueType` defaults to `'auto'`, which shows dates as dates, numbers as numbers and category names as they are; set `'date'` or `'number'` to force one, as before. In React, `Tooltip`'s `customMouseMove` callback receives the new order, and `Tooltip` now wraps the bar, scatter plot and heatmap charts too.
 
 11. Replace the Step chart
 
@@ -379,7 +379,7 @@ barContainer.datum(data).call(barChart);
 barContainer.select('.metadata-group').datum([]).call(chartTooltip);
 
 // Version 3
-barChart.tooltip(miniTooltip()).render(barContainer, data);
+barChart.tooltip(tooltip()).render(barContainer, data);
 ```
 
 ## Summary of Changes

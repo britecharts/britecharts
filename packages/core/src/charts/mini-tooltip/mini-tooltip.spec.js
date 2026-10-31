@@ -5,6 +5,22 @@ import tooltip from './mini-tooltip';
 describe('mini Tooltip Component', () => {
     let tooltipChart, containerFixture, dataset;
 
+    it('should warn once that it is deprecated', async () => {
+        vi.resetModules();
+
+        const { default: freshTooltip } = await import('./mini-tooltip');
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+        // The beforeEach already built one, under the shared setup's spy
+        warnSpy.mockClear();
+        freshTooltip();
+        freshTooltip();
+
+        expect(warnSpy).toHaveBeenCalledTimes(1);
+        expect(warnSpy.mock.calls[0][0]).toContain('deprecated');
+        warnSpy.mockRestore();
+    });
+
     beforeEach(() => {
         const fixture =
             '<div id="fixture"><div class="test-container"></div></div>';

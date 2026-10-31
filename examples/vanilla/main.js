@@ -1,4 +1,4 @@
-import { bar, line, miniTooltip, tooltip } from '@britecharts/core';
+import { bar, line, tooltip } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
 const words = ['Shiny', 'Blazing', 'Glittering', 'Radiant', 'Sunny'];
@@ -36,7 +36,7 @@ function drawBar(container) {
         .width(container.getBoundingClientRect().width)
         .height(300)
         .a11yTitle('Uses of each word')
-        .tooltip(miniTooltip().title('Uses').numberFormat('d'))
+        .tooltip(tooltip().title('Uses').numberFormat('d'))
         .render(container, barData);
 }
 

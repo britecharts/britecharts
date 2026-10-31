@@ -53,7 +53,7 @@ Highcharts.chart('uses', {
 A Britecharts bar chart takes one object per bar. Put the title in your page's markup. Give screen readers the same words:
 
 ```js
-import { bar, miniTooltip } from '@britecharts/core';
+import { bar, tooltip } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
 const data = [
@@ -65,7 +65,7 @@ bar()
     .width(600)
     .height(300)
     .a11yTitle('Uses of each word')
-    .tooltip(miniTooltip())
+    .tooltip(tooltip())
     .render('#uses', data);
 ```
 

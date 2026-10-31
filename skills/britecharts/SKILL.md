@@ -99,7 +99,7 @@ Dates are ISO strings (`'2020-01-01T00:00:00Z'`). In `line`, `name` is a numeric
 
 ## Tooltips (vanilla)
 
-There is one tooltip component; `miniTooltip` is its single-value preset. Give it to the chart with the chart's `tooltip` setting:
+There is one tooltip component, and `tooltip()` works on every chart that takes one. Give it to the chart with the chart's `tooltip` setting. `miniTooltip` is deprecated, so don't use it:
 
 ```js
 import { line, tooltip } from '@britecharts/core';
@@ -109,10 +109,10 @@ line().tooltip(tooltip().title('Visits')).render(container, lineData);
 
 The chart connects the tooltip to its pointer and keyboard events, draws it in the right element, and sets the labels its data points need. Don't wire `customMouseOver` and the rest by hand, and don't set `topicLabel` or `nameLabel` for it: a label you set on the tooltip overrides the chart's. One tooltip per chart: setting the same tooltip on a second chart throws. `tooltip(null)` removes it.
 
-| Chart | Tooltip |
+| Chart | What `tooltip()` shows |
 |---|---|
-| `line`, `stackedArea`, `stackedBar`, `groupedBar` | `tooltip()` |
-| `bar`, `heatmap`, `scatterPlot` | `miniTooltip()` |
+| `line`, `stackedArea`, `stackedBar`, `groupedBar` | a list, one row per topic |
+| `bar`, `heatmap`, `scatterPlot` | a single value, with two decimals unless you set `numberFormat` |
 
 The donut takes no tooltip: it has no element to draw one in. It shows the hovered slice in its centre instead (`hasCenterLegend`, `centeredTextFunction`), or pair it with a `legend`.
 

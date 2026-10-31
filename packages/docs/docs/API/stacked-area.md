@@ -590,8 +590,8 @@ stackedArea.yAxisBaseline(20)
 <a name="module_Stacked-area--exports.tooltip" id="module_Stacked-area--exports.tooltip"></a>
 
 ## tooltip(_x) ⇒ <code>module</code> \| <code>null</code>
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go

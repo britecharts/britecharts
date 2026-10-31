@@ -95,7 +95,7 @@ Coming from version 2? Read the [migration guide][migration-guide].
     core.bar()
         .height(300)
         .a11yTitle('Signups by plan')
-        .tooltip(core.miniTooltip())
+        .tooltip(core.tooltip())
         .render('.bar-container', [
             { name: 'Pro', value: 412 },
             { name: 'Team', value: 236 },
@@ -113,14 +113,14 @@ npm install @britecharts/core
 ```
 
 ```js
-import { bar, miniTooltip } from '@britecharts/core';
+import { bar, tooltip } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
 bar()
     .isHorizontal(true)
     .height(300)
     .a11yTitle('Signups by plan')
-    .tooltip(miniTooltip())
+    .tooltip(tooltip())
     .render('.bar-container', data);
 ```
 

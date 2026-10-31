@@ -245,8 +245,25 @@ describe('chart tooltip containers', () => {
         expect(groups[0].closest('.vertical-marker-container')).not.toBeNull();
     });
 
+    it('should show a single value on a bar chart, with the same tooltip', () => {
+        const barChart = bar().tooltip(tooltip());
+
+        barChart.render('.test-container', [{ name: 'Radiant', value: 3 }]);
+        barChart.on('customMouseMove.britechartsTooltip')(
+            { name: 'Radiant', value: 3 },
+            [10, 10],
+            [100, 100]
+        );
+
+        expect(
+            document.querySelector(
+                '.test-container .britechart-mini-tooltip .mini-tooltip-value'
+            ).textContent
+        ).toBe('3.00');
+    });
+
     it('should name a heatmap box by its row and column', () => {
-        const chartTooltip = miniTooltip();
+        const chartTooltip = tooltip();
         const heatmapChart = heatmap().tooltip(chartTooltip);
 
         chartTooltip.show = vi.fn();

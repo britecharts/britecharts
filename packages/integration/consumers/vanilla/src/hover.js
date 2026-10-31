@@ -6,7 +6,6 @@ import {
     groupedBar,
     heatmap,
     line,
-    miniTooltip,
     scatterPlot,
     stackedArea,
     stackedBar,
@@ -55,7 +54,7 @@ function withTooltip(
 
 // The single-value tooltip: always on the chart's .metadata-group.
 function withMiniTooltip(chart, container, data, configure = () => {}) {
-    const chartTooltip = miniTooltip().title('Title');
+    const chartTooltip = tooltip().title('Title');
 
     chart
         .width(WIDTH)

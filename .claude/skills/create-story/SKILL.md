@@ -30,7 +30,7 @@ The repo has **two different story styles** and the agent picks by package:
 
 - **Chart path** — the exact source file the stories are for
 - **Package** — `core` (vanilla) or `react`; this decides the whole story shape
-- **Composition** — whether the chart is normally paired with `miniTooltip`, `tooltip` or `legend`, which the story should demo too
+- **Composition** — whether the chart is normally paired with `tooltip` or `legend`, which the story should demo too
 
 If the user names a chart without a package, default to `core` and say so — that is where a chart exists first.
 

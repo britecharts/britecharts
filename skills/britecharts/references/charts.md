@@ -9,13 +9,13 @@ Accessors every data chart shares are listed once here and left out below:
 - `a11yTitle` and `a11yDescription`, which give the chart its accessible name and description.
 - `render(target, data)`, which draws the chart into a CSS selector, an element or a d3 selection. Every chart has it, the legend included.
 
-The charts with an `on` accessor take event handlers with `chart.on('customMouseOver', handler)`. The charts with a `tooltip` accessor take a tooltip with `chart.tooltip(miniTooltip())`; the tooltip section of `SKILL.md` says which one each needs.
+The charts with an `on` accessor take event handlers with `chart.on('customMouseOver', handler)`. The charts with a `tooltip` accessor take a tooltip with `chart.tooltip(tooltip())`; the tooltip section of `SKILL.md` says what each shows.
 
 ## Contents
 - [bar](#bar) · [groupedBar](#groupedbar) · [stackedBar](#stackedbar) · [donut](#donut)
 - [line](#line) · [stackedArea](#stackedarea) · [sparkline](#sparkline) · [brush](#brush)
 - [scatterPlot](#scatterplot) · [heatmap](#heatmap) · [bullet](#bullet)
-- [legend](#legend) · [tooltip and miniTooltip](#tooltip-and-minitooltip) · [colors](#colors)
+- [legend](#legend) · [tooltip](#tooltip) · [colors](#colors)
 
 ## bar
 API page: `bar`. Data: an array of `{ name: string, value: number }`.
@@ -139,8 +139,8 @@ donutChart
     .on('customMouseOut', () => legendChart.clearHighlight());
 ```
 
-## tooltip and miniTooltip
-API page: `tooltip`. `miniTooltip()` is `tooltip().layout('single').title('').numberFormat('.2f')`.
+## tooltip
+API page: `tooltip`. It shows a list or a single value by the data point. `miniTooltip()` is its deprecated alias.
 
 Accessors: `dateCustomFormat`, `dateFormat`, `dateLabel`, `hide`, `layout`, `locale`, `maxEntries`, `nameLabel`, `numberFormat`, `shouldShowDateInTitle`, `show`, `title`, `tooltipOffset`, `topicLabel`, `topicsOrder`, `update`, `valueFormatter`, `valueLabel`, `xAxisValueType`.
 

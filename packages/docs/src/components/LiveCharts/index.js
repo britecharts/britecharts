@@ -75,7 +75,7 @@ function drawBar(container) {
         .height(260)
         .a11yTitle('Uses of each word')
         .a11yDescription('Blazing is used most, Shiny least')
-        .tooltip(core.miniTooltip().title('Uses').numberFormat('d'))
+        .tooltip(core.tooltip().title('Uses').numberFormat('d'))
         .render(container, barData);
 }
 

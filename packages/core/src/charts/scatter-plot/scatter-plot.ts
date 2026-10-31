@@ -2116,8 +2116,8 @@ export default function module(): ScatterPlotModule {
     } as ScatterPlotModule['yTicks'];
 
     /**
-     * Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-     * `miniTooltip()`, set on this chart only. The chart connects it to its
+     * Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+     * chart only. The chart connects it to its
      * pointer and keyboard events, draws it in place, and sets the labels its
      * data points need, unless they were set on the tooltip; it does so now
      * if the chart has drawn, and again on every draw. Its event handlers go
@@ -2128,7 +2128,7 @@ export default function module(): ScatterPlotModule {
      * @throws {Error} When the tooltip is already set on another chart
      * @public
      * @example
-     * scatterPlot().tooltip(miniTooltip()).render('#chart', data);
+     * scatterPlot().tooltip(tooltip()).render('#chart', data);
      */
     (exports as ScatterPlotModule).tooltip = function (
         this: ScatterPlotModule,
