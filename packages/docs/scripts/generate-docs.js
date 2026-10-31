@@ -594,10 +594,29 @@ async function generateDocs() {
                       1
                   )} helpers`
                 : title;
+            // The chart's function is `exports` in the source, so jsdoc2md
+            // heads its section `exports(_selection, _data) ⏏` and calls each
+            // accessor a "static method of exports". Readers know it by the
+            // name core exports it under, such as `groupedBar`.
+            const chartFunctionName = chartId.replace(/-(\w)/g, (_, letter) =>
+                letter.toUpperCase()
+            );
+            const named = isHelper
+                ? markdown
+                : markdown
+                      .replace(
+                          /\[<code>exports<\/code>\]/g,
+                          `[<code>${chartFunctionName}</code>]`
+                      )
+                      .replace(
+                          /^(#+ |\s*\* \[)exports\((.*?) ⏏$/gm,
+                          `$1${chartFunctionName}($2`
+                      );
             // The module heading would repeat the title; the rest -- the
             // chart's call, its accessors, typedefs, a helper's functions --
             // all sit one level under it
-            const page = markdown
+            const page = named
+                .replace(/^\*\*Kind\*\*: static /gm, '**Kind**: ')
                 .replace(new RegExp(`^# ${chartName}\\n`, 'm'), '')
                 // jsdoc2md's own indexes of a page's modules, typedefs,
                 // constants or functions: lists of links to what follows

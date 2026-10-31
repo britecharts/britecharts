@@ -26,7 +26,7 @@ select('.css-selector')
 ```
 
 * [Heatmap](#module_Heatmap)
-    * [exports(_selection)](#exp_module_Heatmap--exports) ⏏
+    * [heatmap(_selection)](#exp_module_Heatmap--exports)
         * _static_
             * [.a11yTitle(_x)](#module_Heatmap--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Heatmap--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
@@ -51,7 +51,7 @@ select('.css-selector')
 
 <a name="exp_module_Heatmap--exports" id="exp_module_Heatmap--exports"></a>
 
-## exports(_selection) ⏏
+## heatmap(_selection)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -67,7 +67,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Heatmap".
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -82,7 +82,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
 **Access**: public  
 
@@ -98,7 +98,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
 **Access**: public  
 
@@ -115,7 +115,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls  
 **Access**: public  
 
@@ -128,7 +128,7 @@ default.
 ## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>duration</code> \| <code>module</code> - Current animation duration or Chart module to chain calls  
 **Access**: public  
 
@@ -141,7 +141,7 @@ Gets or Sets the duration of the animation
 ## boxSize(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the boxSize of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current boxSize or Chart module to chain calls  
 **Access**: public  
 
@@ -154,7 +154,7 @@ Gets or Sets the boxSize of the chart
 ## colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>Array.&lt;String&gt;</code> \| <code>module</code> - Current colorSchema or Chart module to chain calls  
 **Access**: public  
 
@@ -168,7 +168,7 @@ Gets or Sets the colorSchema of the chart
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Access**: public  
 
 | Param | Type | Description |
@@ -181,7 +181,7 @@ ends in `.svg`, and a png otherwise
 ## isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
 **Access**: public  
 
@@ -198,7 +198,7 @@ chart.isLoading(true)
 ## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current height or Chart module to chain calls  
 **Access**: public  
 
@@ -213,7 +213,7 @@ Gets or Sets the isAnimated value of the chart
 The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current isAnimated value or Chart module to chain calls  
 **Access**: public  
 
@@ -226,7 +226,7 @@ reduced motion (`prefers-reduced-motion`), whatever this is set to.
 ## margin(_x) ⇒ <code>margin</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>margin</code> \| <code>module</code> - Current margin or Chart module to chain calls  
 **Access**: public  
 
@@ -241,7 +241,7 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>module</code> - Bar Chart  
 **Access**: public  
 <a name="module_Heatmap--exports.yAxisLabels" id="module_Heatmap--exports.yAxisLabels"></a>
@@ -249,7 +249,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick
 ## yAxisLabels(_x) ⇒ <code>yAxisLabels</code> \| <code>module</code>
 Gets or Sets the y-axis labels of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>yAxisLabels</code> \| <code>module</code> - Current yAxisLabels array or Chart module to chain calls  
 **Access**: public  
 
@@ -264,7 +264,7 @@ Gets or Sets the x-axis labels of the chart. With them, `hour` indexes
 these labels rather than the hours of the day, so together with
 `yAxisLabels` the heatmap can show any two sets of categories.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>xAxisLabels</code> \| <code>module</code> - Current xAxisLabels array or Chart module to chain calls  
 **Access**: public  
 
@@ -277,7 +277,7 @@ these labels rather than the hours of the day, so together with
 ## width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current width or Chart module to chain calls  
 **Access**: public  
 
@@ -296,7 +296,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -320,7 +320,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: method of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Returns**: <code>module</code> - The chart module, to chain calls  
 **Throws**:
 
@@ -342,7 +342,7 @@ heatmap().width(600).render('#chart', data);
 ## exports~HeatmapData : <code>Array.&lt;Object&gt;</code>
 The data a heatmap takes: one entry per box.
 
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Heatmap--exports)  
+**Kind**: inner typedef of [<code>heatmap</code>](#exp_module_Heatmap--exports)  
 **Properties**
 
 | Name | Type |

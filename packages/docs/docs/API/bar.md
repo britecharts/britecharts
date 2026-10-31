@@ -26,7 +26,7 @@ select('.css-selector')
 ```
 
 * [Bar](#module_Bar)
-    * [exports(_selection, _data)](#exp_module_Bar--exports) ⏏
+    * [bar(_selection, _data)](#exp_module_Bar--exports)
         * _static_
             * [.a11yTitle(_x)](#module_Bar--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Bar--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
@@ -72,7 +72,7 @@ select('.css-selector')
 
 <a name="exp_module_Bar--exports" id="exp_module_Bar--exports"></a>
 
-## exports(_selection, _data) ⏏
+## bar(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -89,7 +89,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Bar chart".
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -104,7 +104,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
 **Access**: public  
 
@@ -120,7 +120,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
 **Access**: public  
 
@@ -137,7 +137,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls  
 **Access**: public  
 
@@ -150,7 +150,7 @@ default.
 ## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>duration</code> \| <code>module</code> - Current animation duration or Chart module to chain calls  
 **Access**: public  
 
@@ -163,7 +163,7 @@ Gets or Sets the duration of the animation
 ## betweenBarsPadding(_x) ⇒ <code>padding</code> \| <code>module</code>
 Gets or Sets the padding of the chart (Default is 0.1)
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>padding</code> \| <code>module</code> - Current padding or Chart module to chain calls  
 **Access**: public  
 
@@ -176,7 +176,7 @@ Gets or Sets the padding of the chart (Default is 0.1)
 ## chartGradient(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the gradient colors of a bar in the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Array.&lt;String&gt;</code> \| <code>module</code> - Current color gradient or Line Chart module to chain calls  
 **Access**: public  
 
@@ -189,7 +189,7 @@ Gets or Sets the gradient colors of a bar in the chart
 ## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current colorMap or Chart module to chain calls  
 **Access**: public  
 
@@ -206,7 +206,7 @@ barChart.colorMap({name: 'colorHex', name2: 'colorString'})
 ## colorSchema(_x) ⇒ <code>colorSchema</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>colorSchema</code> \| <code>module</code> - Current colorSchema or Chart module to chain calls  
 **Access**: public  
 
@@ -219,7 +219,7 @@ Gets or Sets the colorSchema of the chart
 ## enableLabels([_x]) ⇒ <code>Boolean</code> \| <code>module</code>
 If true, adds labels at the end of the bars
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current value of enableLabels or Chart module to chain calls  
 **Access**: public  
 
@@ -233,7 +233,7 @@ If true, adds labels at the end of the bars
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
 **Access**: public  
 
@@ -247,7 +247,7 @@ ends in `.svg`, and a png otherwise
 ## hasPercentage(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasPercentage status
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Is percentage used or Chart module to chain calls  
 **Access**: public  
 
@@ -265,7 +265,7 @@ all the bars but the hovered bar are considered to be highlighted
 and will be darkened (by default). To customize the bar highlight or
 remove it completely, use highlightBarFunction instead.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Is hasSingleBarHighlight used or Chart module to chain calls  
 **Access**: public  
 
@@ -278,7 +278,7 @@ remove it completely, use highlightBarFunction instead.
 ## height(_x) ⇒ <code>height</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>height</code> \| <code>module</code> - Current height or Chart module to chain calls  
 **Access**: public  
 
@@ -297,7 +297,7 @@ one that was hovered by the user. When hasSingleBarHighlight is false
 the highlighted bars are all the bars but the hovered one. The default
 highlight effect on a bar is darkening the highlighted bar(s) color.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>highlightBarFunction</code> \| <code>module</code> - Is highlightBarFunction used or Chart module to chain calls  
 **Access**: public  
 
@@ -318,7 +318,7 @@ The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>isAnimated</code> \| <code>module</code> - Current isAnimated flag or Chart module  
 **Access**: public  
 
@@ -331,7 +331,7 @@ By default this is 'false'
 ## isHorizontal(_x) ⇒ <code>isHorizontal</code> \| <code>module</code>
 Gets or Sets the horizontal direction of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>isHorizontal</code> \| <code>module</code> - If it is horizontal or Chart module to chain calls  
 **Access**: public  
 
@@ -344,7 +344,7 @@ Gets or Sets the horizontal direction of the chart
 ## labelsMargin([_x]) ⇒ <code>number</code> \| <code>module</code>
 Offset between end of bar and start of the percentage bars
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>number</code> \| <code>module</code> - Current offset or Chart module to chain calls  
 **Access**: public  
 
@@ -357,7 +357,7 @@ Offset between end of bar and start of the percentage bars
 ## labelsNumberFormat([_x]) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the labels number format
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current labelsNumberFormat or Chart module to chain calls  
 **Access**: public  
 
@@ -370,7 +370,7 @@ Gets or Sets the labels number format
 ## labelsSize([_x]) ⇒ <code>number</code> \| <code>module</code>
 Get or Sets the labels text size
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>number</code> \| <code>module</code> - Current text size or Chart module to chain calls  
 **Access**: public  
 
@@ -383,7 +383,7 @@ Get or Sets the labels text size
 ## isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
 **Access**: public  
 
@@ -396,7 +396,7 @@ Gets or Sets the loading state of the chart
 ## margin(_x) ⇒ <code>margin</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>margin</code> \| <code>module</code> - Current margin or Chart module to chain calls  
 **Access**: public  
 
@@ -409,7 +409,7 @@ Gets or Sets the margin of the chart
 ## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the bar chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current numberFormat or Chart module to chain calls  
 **Access**: public  
 
@@ -424,7 +424,7 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut, and customClick
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>module</code> - Bar Chart  
 **Access**: public  
 <a name="module_Bar--exports.percentageAxisToMaxRatio" id="module_Bar--exports.percentageAxisToMaxRatio"></a>
@@ -432,7 +432,7 @@ customMouseOver, customMouseMove, customMouseOut, and customClick
 ## percentageAxisToMaxRatio(_x) ⇒ <code>ratio</code> \| <code>module</code>
 Configurable extension of the x axis. If your max point was 50% you might want to show x axis to 60%, pass 1.2
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>ratio</code> \| <code>module</code> - Current ratio or Chart module to chain calls  
 **Access**: public  
 
@@ -445,7 +445,7 @@ Configurable extension of the x axis. If your max point was 50% you might want t
 ## shouldReverseColorList(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets whether the color list should be reversed or not
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Is color list being reversed or Chart module to chain calls  
 **Access**: public  
 
@@ -458,7 +458,7 @@ Gets or Sets whether the color list should be reversed or not
 ## orderingFunction(_x) ⇒ <code>function</code> \| <code>Module</code>
 Changes the order of items given the custom function
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>function</code> \| <code>Module</code> - A custom ordering function or Chart module to chain calls  
 **Access**: public  
 
@@ -472,7 +472,7 @@ Changes the order of items given the custom function
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>LocaleObject</code> \| <code>module</code> - Current locale object or Chart module to chain calls  
 **Access**: public  
 
@@ -490,7 +490,7 @@ barChart
 ## width(_x) ⇒ <code>width</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>width</code> \| <code>module</code> - Current width or Chart module to chain calls  
 **Access**: public  
 
@@ -503,7 +503,7 @@ Gets or Sets the width of the chart
 ## xAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the text of the xAxisLabel on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Label or Chart module to chain calls  
 **Access**: public  
 
@@ -516,7 +516,7 @@ Gets or Sets the text of the xAxisLabel on the chart
 ## xAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the xAxisLabel on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - label or Chart module to chain calls  
 **Access**: public  
 
@@ -529,7 +529,7 @@ Gets or Sets the offset of the xAxisLabel on the chart
 ## xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the x axis on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current xTicks or Chart module to chain calls  
 **Access**: public  
 
@@ -542,7 +542,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 ## yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the text of the yAxisLabel on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Label or Chart module to chain calls  
 **Access**: public  
 
@@ -555,7 +555,7 @@ Gets or Sets the text of the yAxisLabel on the chart
 ## yAxisLabelOffset(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the offset of the yAxisLabel on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Label or Chart module to chain calls  
 **Access**: public  
 
@@ -568,7 +568,7 @@ Gets or Sets the offset of the yAxisLabel on the chart
 ## yAxisPaddingBetweenChart(_x) ⇒ <code>Number</code> \| <code>module</code>
 Space between y axis and chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current value of yAxisPaddingBetweenChart or Chart module to chain calls  
 **Access**: public  
 
@@ -581,7 +581,7 @@ Space between y axis and chart
 ## yTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of vertical ticks on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current yTicks or Chart module to chain calls  
 **Access**: public  
 
@@ -600,7 +600,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -624,7 +624,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
 **Returns**: <code>module</code> - The chart module, to chain calls  
 **Throws**:
 
@@ -644,7 +644,7 @@ bar().width(600).render('#chart', data);
 <a name="module_Bar--exports..BarChartData" id="module_Bar--exports..BarChartData"></a>
 
 ## exports~BarChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: inner typedef of [<code>bar</code>](#exp_module_Bar--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -668,7 +668,7 @@ bar().width(600).render('#chart', data);
 <a name="module_Bar--exports..LocaleObject" id="module_Bar--exports..LocaleObject"></a>
 
 ## exports~LocaleObject : <code>Object</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Bar--exports)  
+**Kind**: inner typedef of [<code>bar</code>](#exp_module_Bar--exports)  
 **Properties**
 
 | Name | Type | Description |

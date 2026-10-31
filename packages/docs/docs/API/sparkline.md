@@ -26,7 +26,7 @@ select('.css-selector')
 ```
 
 * [Sparkline](#module_Sparkline)
-    * [exports(_selection, _data)](#exp_module_Sparkline--exports) ⏏
+    * [sparkline(_selection, _data)](#exp_module_Sparkline--exports)
         * _static_
             * [.a11yTitle(_x)](#module_Sparkline--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Sparkline--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
@@ -46,7 +46,7 @@ select('.css-selector')
 
 <a name="exp_module_Sparkline--exports" id="exp_module_Sparkline--exports"></a>
 
-## exports(_selection, _data) ⏏
+## sparkline(_selection, _data)
 This function creates the graph using the selection and data provided
 
 **Kind**: Exported function  
@@ -63,7 +63,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Sparkline".
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -78,7 +78,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
 **Access**: public  
 
@@ -94,7 +94,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
 **Access**: public  
 
@@ -107,7 +107,7 @@ form.
 ## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>duration</code> \| <code>module</code> - Current animation duration or Chart module to chain calls  
 **Access**: public  
 
@@ -120,7 +120,7 @@ Gets or Sets the duration of the animation
 ## areaGradient(_x) ⇒ <code>areaGradient</code> \| <code>module</code>
 Gets or Sets the areaGradient of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>areaGradient</code> \| <code>module</code> - Current areaGradient or Chart module to chain calls  
 **Access**: public  
 
@@ -134,7 +134,7 @@ Gets or Sets the areaGradient of the chart
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
 **Access**: public  
 
@@ -148,7 +148,7 @@ ends in `.svg`, and a png otherwise
 ## height(_x) ⇒ <code>height</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>height</code> \| <code>module</code> - Current height or Chart module to chain calls  
 **Access**: public  
 
@@ -164,7 +164,7 @@ The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 By default this is 'false'
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>isAnimated</code> \| <code>module</code> - Current isAnimated flag or Chart module  
 **Access**: public  
 
@@ -177,7 +177,7 @@ By default this is 'false'
 ## lineGradient(_x) ⇒ <code>lineGradient</code> \| <code>module</code>
 Gets or Sets the lineGradient of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>lineGradient</code> \| <code>module</code> - Current lineGradient or Chart module to chain calls  
 **Access**: public  
 
@@ -190,7 +190,7 @@ Gets or Sets the lineGradient of the chart
 ## isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
 **Access**: public  
 
@@ -203,7 +203,7 @@ Gets or Sets the loading state of the chart
 ## margin(_x) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current margin or Chart module to chain calls  
 **Access**: public  
 
@@ -216,7 +216,7 @@ Gets or Sets the margin of the chart
 ## width(_x) ⇒ <code>width</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>width</code> \| <code>module</code> - Current width or Chart module to chain calls  
 **Access**: public  
 
@@ -232,7 +232,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: method of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Returns**: <code>module</code> - The chart module, to chain calls  
 **Throws**:
 
@@ -252,7 +252,7 @@ sparkline().width(600).render('#chart', data);
 <a name="module_Sparkline--exports..SparklineChartData" id="module_Sparkline--exports..SparklineChartData"></a>
 
 ## exports~SparklineChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Sparkline--exports)  
+**Kind**: inner typedef of [<code>sparkline</code>](#exp_module_Sparkline--exports)  
 **Properties**
 
 | Name | Type | Description |
