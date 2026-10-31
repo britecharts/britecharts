@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.0bec1515.css">
-<script src="/britecharts/assets/js/runtime~main.2edeb175.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.ad0cbc31.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.133763a7.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.25a8119f.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -52,8 +52,7 @@
         &lt;script type=&quot;module&quot; src=&quot;/main.js&quot;&gt;&lt;/script&gt;
     &lt;/body&gt;
 &lt;/html&gt;
-"><input type="hidden" name="project[files][main.js]" value="import { select } from &#x27;d3-selection&#x27;;
-import { bar, line, miniTooltip, tooltip } from &#x27;@britecharts/core&#x27;;
+"><input type="hidden" name="project[files][main.js]" value="import { bar, line, miniTooltip, tooltip } from &#x27;@britecharts/core&#x27;;
 import &#x27;@britecharts/core/dist/styles/bundle/britecharts.min.css&#x27;;
 
 const words = [&#x27;Shiny&#x27;, &#x27;Blazing&#x27;, &#x27;Glittering&#x27;, &#x27;Radiant&#x27;, &#x27;Sunny&#x27;];
@@ -87,40 +86,23 @@ const lineData = {
 };
 
 function drawBar(container) {
-    const chart = bar()
+    bar()
         .width(container.getBoundingClientRect().width)
         .height(300)
-        .a11yTitle(&#x27;Uses of each word&#x27;);
-    const chartTooltip = miniTooltip().title(&#x27;Uses&#x27;).numberFormat(&#x27;d&#x27;);
-
-    chart
-        .on(&#x27;customMouseOver&#x27;, chartTooltip.show)
-        .on(&#x27;customMouseMove&#x27;, chartTooltip.update)
-        .on(&#x27;customMouseOut&#x27;, chartTooltip.hide);
-
-    select(container).datum(barData).call(chart);
-    select(container).select(&#x27;.metadata-group&#x27;).datum([]).call(chartTooltip);
+        .a11yTitle(&#x27;Uses of each word&#x27;)
+        .tooltip(miniTooltip().title(&#x27;Uses&#x27;).numberFormat(&#x27;d&#x27;))
+        .render(container, barData);
 }
 
 function drawLine(container) {
-    const chart = line()
+    // The chart connects its tooltip and draws it on the hovered date
+    line()
         .width(container.getBoundingClientRect().width)
         .height(300)
         .grid(&#x27;horizontal&#x27;)
-        .a11yTitle(&#x27;Uses over a week&#x27;);
-    // The line chart sends the hovered date&#x27;s values under `topics`
-    const chartTooltip = tooltip().title(&#x27;Uses&#x27;).topicLabel(&#x27;topics&#x27;);
-
-    chart
-        .on(&#x27;customMouseOver&#x27;, chartTooltip.show)
-        .on(&#x27;customMouseMove&#x27;, chartTooltip.update)
-        .on(&#x27;customMouseOut&#x27;, chartTooltip.hide);
-
-    select(container).datum(lineData).call(chart);
-    select(container)
-        .select(&#x27;.metadata-group .hover-marker&#x27;)
-        .datum([])
-        .call(chartTooltip);
+        .a11yTitle(&#x27;Uses over a week&#x27;)
+        .tooltip(tooltip().title(&#x27;Uses&#x27;))
+        .render(container, lineData);
 }
 
 drawBar(document.getElementById(&#x27;bar&#x27;));
@@ -144,8 +126,7 @@ themeButton.addEventListener(&#x27;click&#x27;, () =&gt; {
         &quot;build&quot;: &quot;vite build&quot;
     },
     &quot;dependencies&quot;: {
-        &quot;@britecharts/core&quot;: &quot;^3.0.0-beta.8&quot;,
-        &quot;d3-selection&quot;: &quot;^3.0.0&quot;
+        &quot;@britecharts/core&quot;: &quot;^3.0.0-beta.9&quot;
     },
     &quot;devDependencies&quot;: {
         &quot;vite&quot;: &quot;^8.3.4&quot;
