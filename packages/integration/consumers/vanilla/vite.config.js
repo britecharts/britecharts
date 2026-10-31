@@ -10,6 +10,7 @@ const coreSrc = path.resolve(repoRoot, 'packages/core/src');
 const pages = [
     'index',
     'cdn-bundle',
+    'cdn-render',
     'umd-bundle',
     'esm-bundle',
     'esm-chart',
