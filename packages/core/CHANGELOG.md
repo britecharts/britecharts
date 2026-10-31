@@ -1,5 +1,20 @@
 # @britecharts/core
 
+## 3.0.0-beta.9
+
+### Minor Changes
+
+- 731c729: Every chart has a `render(target, data)` method, so a page draws one without d3 code of its own: `bar().width(600).render('#chart', data)`. The target is a CSS selector, an element or a d3 selection, and `data` is optional on a redraw. A target that matches nothing throws an error that names it. `selection.datum(data).call(chart)` keeps working. The wrappers don't accept `render` in a configuration, since they draw the chart themselves.
+- 032188d: The bar, grouped bar, heatmap, line, scatter plot, stacked area and stacked bar charts take a tooltip: `bar().tooltip(miniTooltip()).render('#chart', data)`. The chart connects the tooltip to its pointer and keyboard events, draws it in place, and sets the labels its data points need, such as the stacked bar's `nameLabel('stack')`; labels set on the tooltip itself are kept. It does so as soon as the tooltip is set on a chart that has drawn, and again on every draw. The heatmap's tooltip names each box by its row and column. Handlers registered on the same events keep running: the chart's go under the `britechartsTooltip` namespace. Setting `tooltip(null)`, or another tooltip, removes the one the chart had. A tooltip belongs to one chart: setting it on a second chart throws.
+
+    A tooltip moved to a new container no longer leaves its old group behind, so a stacked area keeps its tooltip after a redraw, and a line chart that grows wide enough to draw its vertical marker shows one tooltip, not two.
+
+### Patch Changes
+
+- ee209ba: The donut centres itself on every draw. It set its centre only when it first drew, so redrawing it at a new width or height, as React's `ResponsiveContainer` does once it measures its container, left the donut where the first size put it, off-centre and sometimes cut off.
+- 566e176: Each package's `package.json` describes it for npm: a `description`, `keywords` such as `charts`, `d3`, `data-visualization` and `accessibility`, a `homepage` on its docs page, and the `repository` and `bugs` links. npm search ranks by the description and keywords, and the packages' npm pages had no summary and no link back to GitHub.
+- 017aa5a: The agent skill shipped in `@britecharts/core` teaches `render(target, data)` and the charts' `tooltip` setting: it draws charts without d3-selection, gives each chart its own tooltip instead of wiring one by hand, and keeps the hand wiring for the donut and custom titles.
+
 ## 3.0.0-beta.8
 
 ### Minor Changes

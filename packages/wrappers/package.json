@@ -1,7 +1,7 @@
 {
   "name": "@britecharts/wrappers",
   "description": "Framework-agnostic wrappers for Britecharts: create, update and destroy any chart from a configuration that a JSON Schema checks.",
-  "version": "3.0.0-beta.8",
+  "version": "3.0.0-beta.9",
   "license": "Apache-2.0",
   "homepage": "https://britecharts.github.io/britecharts/docs/packages/wrappers-readme",
   "repository": {
