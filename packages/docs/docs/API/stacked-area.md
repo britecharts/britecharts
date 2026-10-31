@@ -25,7 +25,7 @@ select('.css-selector')
 ```
 
 * [Stacked-area](#module_Stacked-area)
-    * [exports(_selection, _data)](#exp_module_Stacked-area--exports) ⏏
+    * [stackedArea(_selection, _data)](#exp_module_Stacked-area--exports)
         * _static_
             * [.axisTimeCombinations](#module_Stacked-area--exports.axisTimeCombinations)
             * [.a11yTitle(_x)](#module_Stacked-area--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
@@ -68,7 +68,7 @@ select('.css-selector')
 
 <a name="exp_module_Stacked-area--exports" id="exp_module_Stacked-area--exports"></a>
 
-## exports(_selection, _data) ⏏
+## stackedArea(_selection, _data)
 This function creates the graph using the selection and data provided
 
 **Kind**: Exported function  
@@ -84,7 +84,7 @@ This function creates the graph using the selection and data provided
 Exposes the constants to be used to force the x axis to respect a certain granularity
 current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
-**Kind**: static property of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: property of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Example**  
 ```js
 area.xAxisCustomFormat(area.axisTimeCombinations.HOUR_DAY)
@@ -96,7 +96,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Stacked area chart".
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -111,7 +111,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
 **Access**: public  
 
@@ -127,7 +127,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
 **Access**: public  
 
@@ -144,7 +144,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls  
 **Access**: public  
 
@@ -157,7 +157,7 @@ default.
 ## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the area animation
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>duration</code> \| <code>module</code> - Current animation duration or Chart module to chain calls  
 **Access**: public  
 
@@ -170,7 +170,7 @@ Gets or Sets the duration of the area animation
 ## areaCurve([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the area curve of the stacked area.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current area curve setting or Chart module to chain calls  
 **Access**: public  
 
@@ -187,7 +187,7 @@ stackedArea.areaCurve('step')
 ## areaOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current opacity or Area Chart module to chain calls  
 **Access**: public  
 
@@ -200,7 +200,7 @@ Gets or Sets the opacity of the stacked areas in the chart (all of them will hav
 ## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current colorMap or Chart module to chain calls  
 **Access**: public  
 
@@ -217,7 +217,7 @@ stackedArea.colorMap({name: 'colorHex', name2: 'colorString'})
 ## colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Array.&lt;String&gt;</code> \| <code>module</code> - Current colorSchema or Chart module to chain calls  
 **Access**: public  
 
@@ -230,7 +230,7 @@ Gets or Sets the colorSchema of the chart
 ## emptyDataConfig(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the emptyDataConfig of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Object</code> \| <code>module</code> - Current config for when chart data is an empty array  
 **Access**: public  
 
@@ -243,7 +243,7 @@ Gets or Sets the emptyDataConfig of the chart
 ## grid(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the grid mode
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current mode of the grid or Area Chart module to chain calls  
 **Access**: public  
 
@@ -256,7 +256,7 @@ Gets or Sets the grid mode
 ## hasOutline(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Enables or disables the outline at the top of the areas
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current state of the flag  
 **Access**: public  
 
@@ -269,7 +269,7 @@ Enables or disables the outline at the top of the areas
 ## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current height or Area Chart module to chain calls  
 **Access**: public  
 
@@ -284,7 +284,7 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current isAnimated flag or Chart module  
 **Access**: public  
 
@@ -300,7 +300,7 @@ stacked area chart: each area shows its share of each date's total, and
 the value axis runs from 0% to 100%. The tooltip still shows the values.
 Meant for data without negative values.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - If it is normalized or Chart module to chain calls  
 **Access**: public  
 
@@ -317,7 +317,7 @@ stackedArea.isNormalized(true)
 ## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the stacked area chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current numberFormat or Chart module to chain calls  
 **Access**: public  
 
@@ -330,7 +330,7 @@ Gets or Sets the number format of the stacked area chart
 ## margin(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Object</code> \| <code>module</code> - Current margin or Area Chart module to chain calls  
 **Access**: public  
 
@@ -344,7 +344,7 @@ Gets or Sets the margin of the chart
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current tooltipThreshold or Area Chart module to chain calls  
 **Access**: public  
 
@@ -357,7 +357,7 @@ NOTE: This could also depend on the aspect ratio
 ## topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Pass an override for the ordering of the topics
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Array.&lt;String&gt;</code> \| <code>module</code> - Current override order or Chart module to chain calls  
 **Access**: public  
 
@@ -370,7 +370,7 @@ Pass an override for the ordering of the topics
 ## isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
 **Access**: public  
 
@@ -385,7 +385,7 @@ Pass language tag for the tooltip to localize the date.
 Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>String</code> \| <code>Module</code> - Current locale or module to chain calls  
 **Access**: public  
 
@@ -399,7 +399,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
 **Access**: public  
 
@@ -416,7 +416,7 @@ We are going to expose this events:
 customMouseOver, customMouseMove, customMouseOut,
 customDataEntryClick and customTouchMove
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>module</code> - Stacked Area  
 **Access**: public  
 <a name="module_Stacked-area--exports.width" id="module_Stacked-area--exports.width"></a>
@@ -424,7 +424,7 @@ customDataEntryClick and customTouchMove
 ## width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current width or Area Chart module to chain calls  
 **Access**: public  
 
@@ -439,7 +439,7 @@ Exposes the ability to force the chart to show a certain x format
 It requires a `xAxisFormat` of 'custom' in order to work.
 NOTE: localization not supported
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>String</code> \| <code>Module</code> - Current format or module to chain calls  
 **Access**: public  
 
@@ -456,7 +456,7 @@ stackedArea.xAxisCustomFormat(stackedArea.axisTimeCombinations.HOUR_DAY)
 ## xAxisFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x axis grouping
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>String</code> \| <code>Module</code> - Current format or module to chain calls  
 **Access**: public  
 
@@ -475,7 +475,7 @@ Gets or Sets the `xAxisValueType`.
 Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
 be dates anymore, but can be arbitrary numbers.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current value type of the x-axis or Chart module to chain calls  
 **Access**: public  
 
@@ -494,7 +494,7 @@ Gets or Sets the `xAxisScale`.
 Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
 'number' as well, otherwise it won't influence the visualization.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current value type of the x-axis or Chart module to chain calls  
 **Access**: public  
 
@@ -513,7 +513,7 @@ Exposes the ability to force the chart to show a certain x ticks. It requires a 
 NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 how many and where the ticks will appear.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Number</code> \| <code>Module</code> - Current number or ticks or module to chain calls  
 **Access**: public  
 
@@ -526,7 +526,7 @@ how many and where the ticks will appear.
 ## yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the y-axis label of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current yAxisLabel or Chart module to chain calls  
 **Access**: public  
 
@@ -544,7 +544,7 @@ stackedArea.yAxisLabel('Ticket Sales')
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current yAxisLabelOffset or Chart module to chain calls  
 **Access**: public  
 
@@ -561,7 +561,7 @@ stackedArea.yAxisLabelOffset(-55)
 ## yTicks([_x]) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the y axis on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current vertical ticks or Chart module to chain calls  
 **Access**: public  
 
@@ -575,7 +575,7 @@ Gets or Sets the number of ticks of the y axis on the chart
 Gets or Sets the yAxisBaseline - this is the y-value where the area starts from in y-direction
 (default is 0). Change this value if you don't want to start your area from y=0.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current baseline or Chart module to chain calls  
 **Access**: public  
 
@@ -598,7 +598,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -622,7 +622,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: method of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Returns**: <code>module</code> - The chart module, to chain calls  
 **Throws**:
 
@@ -642,7 +642,7 @@ stackedArea().width(600).render('#chart', data);
 <a name="module_Stacked-area--exports..AreaChartData" id="module_Stacked-area--exports..AreaChartData"></a>
 
 ## exports~AreaChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Stacked-area--exports)  
+**Kind**: inner typedef of [<code>stackedArea</code>](#exp_module_Stacked-area--exports)  
 **Properties**
 
 | Name | Type | Description |

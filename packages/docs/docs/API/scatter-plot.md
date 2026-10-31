@@ -26,7 +26,7 @@ select('.css-selector')
 ```
 
 * [Scatter-plot](#module_Scatter-plot)
-    * [exports(_selection, _data)](#exp_module_Scatter-plot--exports) ⏏
+    * [scatterPlot(_selection, _data)](#exp_module_Scatter-plot--exports)
         * _static_
             * [.a11yTitle(_x)](#module_Scatter-plot--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Scatter-plot--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
@@ -70,7 +70,7 @@ select('.css-selector')
 
 <a name="exp_module_Scatter-plot--exports" id="exp_module_Scatter-plot--exports"></a>
 
-## exports(_selection, _data) ⏏
+## scatterPlot(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -87,7 +87,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Scatter plot".
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -102,7 +102,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
 **Access**: public  
 
@@ -118,7 +118,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
 **Access**: public  
 
@@ -135,7 +135,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls  
 **Access**: public  
 
@@ -148,7 +148,7 @@ default.
 ## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the circle animation
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>duration</code> \| <code>module</code> - Current animation duration or Chart module to chain calls  
 **Access**: public  
 
@@ -162,7 +162,7 @@ Gets or Sets the duration of the circle animation
 Gets or Sets each circle's border opacity value of the chart.
 It makes each circle border transparent if it's less than 1.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current circleStrokeOpacity or Chart module to chain calls  
 **Access**: public  
 
@@ -180,7 +180,7 @@ scatterPlot.circleStrokeOpacity(0.6)
 Gets or Sets each circle's border width value of the chart.
 It makes each circle border transparent if it's less than 1.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current circleStrokeWidth or Chart module to chain calls  
 **Access**: public  
 
@@ -199,7 +199,7 @@ Gets or Sets the circles opacity value of the chart.
 Use this to set opacity of a circle for each data point of the chart.
 It makes the area of each data point more transparent if it's less than 1.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current circleOpacity or Chart module to chain calls  
 **Access**: public  
 
@@ -216,7 +216,7 @@ scatterPlot.circleOpacity(0.6)
 ## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current colorMap or Chart module to chain calls  
 **Access**: public  
 
@@ -233,7 +233,7 @@ scatterPlot.colorMap({name: 'colorHex', name2: 'colorString'})
 ## colorSchema(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Array.&lt;String&gt;</code> \| <code>module</code> - Current colorSchema or Chart module to chain calls  
 **Access**: public  
 
@@ -251,7 +251,7 @@ scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
 **Access**: public  
 
@@ -265,7 +265,7 @@ ends in `.svg`, and a png otherwise
 ## grid(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the grid mode.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current mode of the grid or Chart module to chain calls  
 **Access**: public  
 
@@ -282,7 +282,7 @@ and legend from both x and y axis. The user will see
 values for x under x axis line and y under y axis. Lines
 will be drawn with respect to highlighted data point
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current hasCrossHairs or Chart module to chain calls  
 **Access**: public  
 
@@ -295,7 +295,7 @@ will be drawn with respect to highlighted data point
 ## hasHollowCircles(_x) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the hasHollowCircles value of the chart area
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current hasHollowCircles value or Chart module to chain calls  
 **Access**: public  
 
@@ -310,7 +310,7 @@ Gets or Sets the hasTrendline value of the chart area
 If true, the trendline calculated based off linear regression
 formula will be drawn
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current hasTrendline value or Chart module to chain calls  
 **Access**: public  
 
@@ -324,7 +324,7 @@ formula will be drawn
 Gets or Sets weather the chart support zoom controls
 If true, zoom event handling will be added to the chart.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current enableZoom value or Chart module to chain calls  
 **Access**: public  
 
@@ -337,7 +337,7 @@ If true, zoom event handling will be added to the chart.
 ## isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
 **Access**: public  
 
@@ -354,7 +354,7 @@ chart.isLoading(true)
 ## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current height or Chart module to chain calls  
 **Access**: public  
 
@@ -369,7 +369,7 @@ Sets a custom distance between legend
 values with respect to both axises. The legends
 show up when hasCrossHairs is true.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current highlightTextLegendOffset or Chart module to chain calls  
 **Access**: public  
 
@@ -387,7 +387,7 @@ scatterPlot.highlightTextLegendOffset(-55)
 Gets or Sets isAnimated value. If set to true,
 the chart will be initialized or updated with animation.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current isAnimated or Chart module to chain calls  
 **Access**: public  
 
@@ -400,7 +400,7 @@ the chart will be initialized or updated with animation.
 ## margin(_x) ⇒ <code>Object</code> \| <code>module</code>
 Gets or Sets the margin object of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Object</code> \| <code>module</code> - Current margin or Chart module to chain calls  
 **Access**: public  
 
@@ -413,7 +413,7 @@ Gets or Sets the margin object of the chart
 ## maxCircleArea(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the maximum value of the chart area
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current maxCircleArea or Chart module to chain calls  
 **Access**: public  
 
@@ -428,7 +428,7 @@ Exposes an 'on' method that acts as a bridge with the event dispatcher
 We are going to expose this events:
 customClick, customMouseOut, customMouseOver, and customMouseMove
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>module</code> - Scatter Plot  
 **Access**: public  
 <a name="module_Scatter-plot--exports.valueLocale" id="module_Scatter-plot--exports.valueLocale"></a>
@@ -437,7 +437,7 @@ customClick, customMouseOut, customMouseOver, and customMouseMove
 Gets or Sets the locale which our formatting functions use.
 Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>LocaleObject</code> \| <code>module</code> - Current locale object or Chart module to chain calls  
 **Access**: public  
 
@@ -455,7 +455,7 @@ scatterPlot
 ## width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current width or Chart module to chain calls  
 **Access**: public  
 
@@ -469,7 +469,7 @@ Gets or Sets the height of the chart
 Gets or Sets the xAxisLabel of the chart. Adds a
 label bellow x-axis for better clarify of data representation.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current xAxisLabel or Chart module to chain calls  
 **Access**: public  
 
@@ -483,7 +483,7 @@ label bellow x-axis for better clarify of data representation.
 Gets or Sets the offset of the xAxisLabel of the chart.
 The method accepts both positive and negative values.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current xAxisLabelOffset or Chart module to chain calls  
 **Access**: public  
 
@@ -500,7 +500,7 @@ scatterPlot.xAxisLabelOffset(-55)
 ## xAxisFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes ability to set the format of x-axis values
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current xAxisFormat or Chart module to chain calls  
 **Access**: public  
 
@@ -513,7 +513,7 @@ Exposes ability to set the format of x-axis values
 ## xAxisFormatType(_x) ⇒ <code>string</code> \| <code>module</code>
 Exposes ability to set the formatter of x-axis values
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - current xAxisFormatType or Chart module to chain calls  
 **Access**: public  
 **Value**: 'number'  
@@ -528,7 +528,7 @@ Exposes ability to set the formatter of x-axis values
 ## xTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the xTicks of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current xTicks or Chart module to chain calls  
 **Access**: public  
 
@@ -541,7 +541,7 @@ Gets or Sets the xTicks of the chart
 ## yAxisFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes ability to set the format of y-axis values
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current yAxisFormat or Chart module to chain calls  
 **Access**: public  
 
@@ -554,7 +554,7 @@ Exposes ability to set the format of y-axis values
 ## yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the y-axis label of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current yAxisLabel or Chart module to chain calls  
 **Access**: public  
 
@@ -572,7 +572,7 @@ scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
 Gets or Sets the offset of the yAxisLabel of the chart.
 The method accepts both positive and negative values.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current yAxisLabelOffset or Chart module to chain calls  
 **Access**: public  
 
@@ -589,7 +589,7 @@ scatterPlot.yAxisLabelOffset(-55)
 ## yTicks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the xTicks of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current yTicks or Chart module to chain calls  
 **Access**: public  
 
@@ -608,7 +608,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -632,7 +632,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: method of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Returns**: <code>module</code> - The chart module, to chain calls  
 **Throws**:
 
@@ -661,11 +661,11 @@ each color of the given color scheme
     ...
 }
 
-**Kind**: inner property of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: inner property of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 <a name="module_Scatter-plot--exports..ScatterPlotData" id="module_Scatter-plot--exports..ScatterPlotData"></a>
 
 ## exports~ScatterPlotData : <code>Array.&lt;Object&gt;</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Scatter-plot--exports)  
+**Kind**: inner typedef of [<code>scatterPlot</code>](#exp_module_Scatter-plot--exports)  
 **Properties**
 
 | Name | Type | Description |

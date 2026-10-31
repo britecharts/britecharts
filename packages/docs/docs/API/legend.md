@@ -33,7 +33,7 @@ select('.other-css-selector')
 ```
 
 * [Legend](#module_Legend)
-    * [exports(_selection, _data)](#exp_module_Legend--exports) ⏏
+    * [legend(_selection, _data)](#exp_module_Legend--exports)
         * _static_
             * [.a11yTitle(_x)](#module_Legend--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Legend--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
@@ -56,7 +56,7 @@ select('.other-css-selector')
 
 <a name="exp_module_Legend--exports" id="exp_module_Legend--exports"></a>
 
-## exports(_selection, _data) ⏏
+## legend(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -73,7 +73,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Legend".
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -88,7 +88,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
 **Access**: public  
 
@@ -101,14 +101,14 @@ chart's name, such as what the data shows. It is rendered as the svg's
 ## clearHighlight()
 Command that clears all highlighted entries on a legend instance
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Access**: public  
 <a name="module_Legend--exports.colorMap" id="module_Legend--exports.colorMap"></a>
 
 ## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current colorMap or Legend module to chain calls  
 **Access**: public  
 
@@ -121,7 +121,7 @@ Gets or Sets the colorMap of the chart
 ## colorSchema([_x]) ⇒ <code>number</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>number</code> \| <code>module</code> - Current colorSchema or Legend module to chain calls  
 **Access**: public  
 
@@ -134,7 +134,7 @@ Gets or Sets the colorSchema of the chart
 ## height([_x]) ⇒ <code>height</code> \| <code>module</code>
 Gets or Sets the height of the legend chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>height</code> \| <code>module</code> - Current height or Legend module to chain calls  
 **Access**: public  
 
@@ -147,7 +147,7 @@ Gets or Sets the height of the legend chart
 ## highlight(entryId)
 Command that highlights a line entry by fading the rest of lines on a legend instance
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Access**: public  
 
 | Param | Type | Description |
@@ -159,7 +159,7 @@ Command that highlights a line entry by fading the rest of lines on a legend ins
 ## highlightEntryById([_x]) ⇒ <code>Number</code> \| <code>Module</code>
 Gets or Sets the id of the entry to highlight
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>Number</code> \| <code>Module</code> - Current highlighted slice id or Donut Chart module to chain calls  
 **Access**: public  
 
@@ -172,7 +172,7 @@ Gets or Sets the id of the entry to highlight
 ## isHorizontal([_x]) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets the horizontal mode on the legend
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - If it is horizontal or Legend module to chain calls  
 **Access**: public  
 
@@ -185,7 +185,7 @@ Gets or Sets the horizontal mode on the legend
 ## margin(_x) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the margin of the legend chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current margin or Legend module to chain calls  
 **Access**: public  
 
@@ -199,7 +199,7 @@ Gets or Sets the margin of the legend chart
 Gets or Sets the margin ratio of the legend chart.
 Used to determine spacing between legend elements.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>number</code> \| <code>module</code> - Current marginRatio or Legend module to chain calls  
 **Access**: public  
 
@@ -214,7 +214,7 @@ Gets or Sets the markerSize of the legend chart.
 This markerSize will determine the horizontal and vertical size of the colored marks
 added as color identifiers for the chart's categories.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current markerSize or Legend module to chain calls  
 **Access**: public  
 
@@ -227,7 +227,7 @@ added as color identifiers for the chart's categories.
 ## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the legend chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current number format or Legend module to chain calls  
 **Access**: public  
 
@@ -240,7 +240,7 @@ Gets or Sets the number format of the legend chart
 ## unit([_x]) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the unit of the value
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current unit or Legend module to chain calls  
 **Access**: public  
 
@@ -253,7 +253,7 @@ Gets or Sets the unit of the value
 ## width([_x]) ⇒ <code>number</code> \| <code>module</code>
 Gets or Sets the width of the legend chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>number</code> \| <code>module</code> - Current width or Legend module to chain calls  
 **Access**: public  
 
@@ -269,7 +269,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: method of [<code>legend</code>](#exp_module_Legend--exports)  
 **Returns**: <code>module</code> - The chart module, to chain calls  
 **Throws**:
 
@@ -289,7 +289,7 @@ legend().width(600).render('#chart', data);
 <a name="module_Legend--exports..LegendChartData" id="module_Legend--exports..LegendChartData"></a>
 
 ## exports~LegendChartData : <code>Array.&lt;Object&gt;</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Legend--exports)  
+**Kind**: inner typedef of [<code>legend</code>](#exp_module_Legend--exports)  
 **Properties**
 
 | Name | Type | Description |

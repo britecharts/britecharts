@@ -25,7 +25,7 @@ select('.css-selector')
 ```
 
 * [Bullet](#module_Bullet)
-    * [exports(_selection, _data)](#exp_module_Bullet--exports) ⏏
+    * [bullet(_selection, _data)](#exp_module_Bullet--exports)
         * _static_
             * [.a11yTitle(_x)](#module_Bullet--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
             * [.a11yDescription(_x)](#module_Bullet--exports.a11yDescription) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
@@ -47,7 +47,7 @@ select('.css-selector')
 
 <a name="exp_module_Bullet--exports" id="exp_module_Bullet--exports"></a>
 
-## exports(_selection, _data) ⏏
+## bullet(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -64,7 +64,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Bullet chart".
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -79,7 +79,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
 **Access**: public  
 
@@ -95,7 +95,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
 **Access**: public  
 
@@ -111,7 +111,7 @@ The first color from the array will be applied to range bars (the wider bars).
 The second color from the array will be applied to measure bars (the narrow bars) and
 the third color will be applied to the marker lines.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Array.&lt;String&gt;</code> \| <code>module</code> - Current colorSchema or Chart module to chain calls  
 **Access**: public  
 
@@ -125,7 +125,7 @@ the third color will be applied to the marker lines.
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
 **Access**: public  
 
@@ -139,7 +139,7 @@ ends in `.svg`, and a png otherwise
 ## isLoading(_flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
 **Access**: public  
 
@@ -156,7 +156,7 @@ chart.isLoading(true)
 ## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current height or Chart module to chain calls  
 **Access**: public  
 
@@ -170,7 +170,7 @@ Gets or Sets the height of the chart
 Gets or Sets the isReverse status of the chart. If true,
 the elements will be rendered in reverse order.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current height or Chart module to chain calls  
 **Access**: public  
 
@@ -183,7 +183,7 @@ the elements will be rendered in reverse order.
 ## margin(_x) ⇒ <code>margin</code> \| <code>module</code>
 Gets or Sets the margin of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>margin</code> \| <code>module</code> - Current margin or Chart module to chain calls  
 **Access**: public  
 
@@ -196,7 +196,7 @@ Gets or Sets the margin of the chart
 ## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the bar chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current numberFormat or Chart module to chain calls  
 **Access**: public  
 
@@ -209,7 +209,7 @@ Gets or Sets the number format of the bar chart
 ## paddingBetweenAxisAndChart(_x) ⇒ <code>Number</code> \| <code>module</code>
 Space between axis and chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current value of paddingBetweenAxisAndChart or Chart module to chain calls  
 **Access**: public  
 
@@ -222,7 +222,7 @@ Space between axis and chart
 ## startMaxRangeOpacity(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the starting point of the capacity range.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - current startMaxRangeOpacity or Chart module to chain calls  
 **Access**: public  
 
@@ -239,7 +239,7 @@ bulletChart.startMaxRangeOpacity(0.8)
 ## ticks(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the x axis on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current ticks or Chart module to chain calls  
 **Access**: public  
 
@@ -252,7 +252,7 @@ Gets or Sets the number of ticks of the x axis on the chart
 ## width(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the width of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current width or Chart module to chain calls  
 **Access**: public  
 
@@ -268,7 +268,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: method of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Returns**: <code>module</code> - The chart module, to chain calls  
 **Throws**:
 
@@ -288,7 +288,7 @@ bullet().width(600).render('#chart', data);
 <a name="module_Bullet--exports..BulletChartData" id="module_Bullet--exports..BulletChartData"></a>
 
 ## exports~BulletChartData : <code>Object</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Bullet--exports)  
+**Kind**: inner typedef of [<code>bullet</code>](#exp_module_Bullet--exports)  
 **Properties**
 
 | Name | Type | Description |

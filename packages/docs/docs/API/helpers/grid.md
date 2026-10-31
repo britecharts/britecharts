@@ -24,7 +24,7 @@ and ticksV() those of the vertical lines (from scaleX()).
 ## Grid.grid([scaleX], [scaleY]) ⇒ <code>gridGenerator</code>
 Constructor for a two-dimensional grid helper
 
-**Kind**: static method of [<code>Grid</code>](#module_Grid)  
+**Kind**: method of [<code>Grid</code>](#module_Grid)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -45,7 +45,7 @@ const grid = grid(xScale, yScale)
 ## Grid.gridHorizontal(scale) ⇒ <code>GridBaseGenerator</code>
 Constructor for a horizontal grid helper
 
-**Kind**: static method of [<code>Grid</code>](#module_Grid)  
+**Kind**: method of [<code>Grid</code>](#module_Grid)  
 **Returns**: <code>GridBaseGenerator</code> - The grid generator, so the accessor calls chain  
 **Access**: public  
 
@@ -67,7 +67,7 @@ const grid = gridHorizontal(yScale)
 ## Grid.gridVertical(scale) ⇒ <code>GridBaseGenerator</code>
 Constructor for a vertical grid helper
 
-**Kind**: static method of [<code>Grid</code>](#module_Grid)  
+**Kind**: method of [<code>Grid</code>](#module_Grid)  
 **Returns**: <code>GridBaseGenerator</code> - The grid generator, so the accessor calls chain  
 **Access**: public  
 

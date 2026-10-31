@@ -108,7 +108,7 @@ container
 ```
 
 * [Tooltip](#module_Tooltip)
-    * [exports(_selection, _data)](#exp_module_Tooltip--exports) ⏏
+    * [tooltip(_selection, _data)](#exp_module_Tooltip--exports)
         * [.axisTimeCombinations](#module_Tooltip--exports.axisTimeCombinations)
         * [.dateFormat(_x)](#module_Tooltip--exports.dateFormat) ⇒ <code>String</code> \| <code>module</code>
         * [.dateCustomFormat(_x)](#module_Tooltip--exports.dateCustomFormat) ⇒ <code>String</code> \| <code>module</code>
@@ -132,7 +132,7 @@ container
 
 <a name="exp_module_Tooltip--exports" id="exp_module_Tooltip--exports"></a>
 
-## exports(_selection, _data) ⏏
+## tooltip(_selection, _data)
 This function creates the graph using the selection as container
 
 **Kind**: Exported function  
@@ -148,7 +148,7 @@ This function creates the graph using the selection as container
 constants to be used to force the x axis to respect a certain granularity
 current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
-**Kind**: static property of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: property of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Example**  
 ```js
 tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
@@ -158,7 +158,7 @@ tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
 ## dateFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes the ability to force the tooltip to use a certain date format
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current format or module to chain calls  
 **Access**: public  
 
@@ -171,7 +171,7 @@ Exposes the ability to force the tooltip to use a certain date format
 ## dateCustomFormat(_x) ⇒ <code>String</code> \| <code>module</code>
 Exposes the ability to use a custom date format
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current format or module to chain calls  
 **Access**: public  
 
@@ -192,7 +192,7 @@ shown in the title. When the data point has no such field, its `key`
 (what the stacked and grouped bar charts dispatch) or its `date` is
 used, so the default works for every chart.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current dateLabel or Chart module to chain calls  
 **Access**: public  
 
@@ -205,7 +205,7 @@ used, so the default works for every chart.
 ## hide() ⇒ <code>module</code>
 Hides the tooltip
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>module</code> - Tooltip module to chain calls  
 **Access**: public  
 <a name="module_Tooltip--exports.locale" id="module_Tooltip--exports.locale"></a>
@@ -213,7 +213,7 @@ Hides the tooltip
 ## locale(_x) ⇒ <code>String</code> \| <code>module</code>
 Pass locale for the tooltip to render the date in
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current locale or module to chain calls  
 **Access**: public  
 
@@ -231,7 +231,7 @@ rows by `stack` and the grouped bar chart by `group`: without
 `nameLabel('stack')` or `nameLabel('group')`, the tooltip looks up each
 row's colour under the bar's name, and the rows show none.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current nameLabel or Chart module to chain calls  
 **Access**: public  
 
@@ -244,7 +244,7 @@ row's colour under the bar's name, and the rows show none.
 ## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format for the value displayed on the tooltip
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current numberFormat or Chart module to chain calls  
 **Access**: public  
 
@@ -258,7 +258,7 @@ Gets or Sets the number format for the value displayed on the tooltip
 Gets or Sets the formatter function for the value displayed on the tooltip.
 Setting this property makes the tooltip ignore numberFormat.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>function</code> \| <code>module</code> - Current valueFormatter or Chart module to chain calls  
 **Access**: public  
 
@@ -275,7 +275,7 @@ tooltipChart.valueFormatter(value => value.toString().length.toString())
 ## shouldShowDateInTitle(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets shouldShowDateInTitle
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current shouldShowDateInTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -291,7 +291,7 @@ the single-value charts dispatch them on `customMouseOver`, it renders
 and places the tooltip at once; otherwise it shows empty until the
 first `update`, which is what the multi-value charts need.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>module</code> - Tooltip module to chain calls  
 **Access**: public  
 
@@ -305,7 +305,7 @@ first `update`, which is what the multi-value charts need.
 ## title(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the title of the tooltip (to only show the date, set a blank title)
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current title or module to chain calls  
 **Access**: public  
 
@@ -320,7 +320,7 @@ Gets or Sets an offset, in pixels, applied to the point the tooltip is
 placed next to: `x` moves the anchor along the chart, `y` moves the box
 up (negative) or down. The box still stays inside the chart.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>Object</code> \| <code>module</code> - Current tooltipOffset or module to chain calls  
 **Access**: public  
 
@@ -344,7 +344,7 @@ bar, scatter plot, heatmap and donut -- what `miniTooltip` renders);
 an array under the topic label, a single value otherwise. Set before
 the tooltip is drawn.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current layout or Chart module to chain calls  
 **Access**: public  
 
@@ -363,7 +363,7 @@ Gets or Sets the most rows the tooltip shows. Past that, the last row
 reads "+n more" instead, so the box keeps a height that fits in the
 chart. 0 shows every row.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current maxEntries or Chart module to chain calls  
 **Access**: public  
 
@@ -380,7 +380,7 @@ tooltip.maxEntries(6)
 ## topicsOrder(_x) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
 Pass an override for the ordering of your tooltip
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>Array.&lt;String&gt;</code> \| <code>module</code> - Current overrideOrder or Chart module to chain calls  
 **Access**: public  
 
@@ -398,7 +398,7 @@ charts dispatch their rows as `values`, so set `topicLabel('values')`
 for them. (`@britecharts/wrappers`, and so React's `Tooltip`, set
 `'values'` themselves: there, the line chart needs `'topics'`.)
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current topicLabel or Chart module to chain calls  
 **Access**: public  
 
@@ -418,7 +418,7 @@ the chart itself) and, from the multi-value charts, the map of topic
 names to colours. The order the multi-value charts used before 3.0,
 `update(dataPoint, colorMap, x, y)`, still works and warns once.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>module</code> - Tooltip module to chain calls  
 **Access**: public  
 
@@ -441,7 +441,7 @@ shown for each row, or the big value of the single layout. `'value'`
 by default. The scatter plot's points carry theirs as `y`, so set
 `valueLabel('y')` for it.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current valueLabel or Chart module to chain calls  
 **Access**: public  
 
@@ -460,7 +460,7 @@ is a number, anything else is a category. Set 'date' for keys that
 happen to parse as numbers, or 'category' for names that happen to
 parse as dates.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Tooltip--exports)  
+**Kind**: method of [<code>tooltip</code>](#exp_module_Tooltip--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current xAxisValueType or Chart module to chain calls  
 **Access**: public  
 

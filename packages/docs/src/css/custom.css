@@ -37,3 +37,37 @@
 [data-theme='dark'] .docusaurus-highlight-code-line {
     background-color: rgba(0, 0, 0, 0.3);
 }
+
+/* Tables: rows separated by hairlines, no cell borders, stripes or header fill. */
+.markdown table {
+    --ifm-table-border-width: 0;
+    --ifm-table-head-background: transparent;
+    --ifm-table-stripe-background: transparent;
+    --ifm-table-cell-padding: 0.6rem 1rem;
+
+    font-size: 0.95em;
+}
+
+.markdown table tr {
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.markdown thead tr {
+    border-bottom-color: var(--ifm-color-emphasis-400);
+}
+
+.markdown table th {
+    color: var(--ifm-color-emphasis-700);
+    font-size: 0.85em;
+    font-weight: 600;
+    text-align: left;
+}
+
+.markdown table td {
+    vertical-align: top;
+}
+
+.markdown table th:first-child,
+.markdown table td:first-child {
+    padding-left: 0;
+}

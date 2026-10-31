@@ -25,7 +25,7 @@ select('.css-selector')
 ```
 
 * [Line](#module_Line)
-    * [exports(_selection, _data)](#exp_module_Line--exports) ⏏
+    * [line(_selection, _data)](#exp_module_Line--exports)
         * _static_
             * [.axisTimeCombinations](#module_Line--exports.axisTimeCombinations)
             * [.a11yTitle(_x)](#module_Line--exports.a11yTitle) ⇒ <code>String</code> \| <code>null</code> \| <code>module</code>
@@ -70,7 +70,7 @@ select('.css-selector')
 
 <a name="exp_module_Line--exports" id="exp_module_Line--exports"></a>
 
-## exports(_selection, _data) ⏏
+## line(_selection, _data)
 This function creates the graph using the selection and data provided
 
 **Kind**: Exported function  
@@ -86,7 +86,7 @@ This function creates the graph using the selection and data provided
 Exposes the constants to be used to force the x axis to respect a certain granularity
 current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 
-**Kind**: static property of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: property of [<code>line</code>](#exp_module_Line--exports)  
 **Example**  
 ```js
 line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
@@ -98,7 +98,7 @@ Gets or Sets the name screen readers announce for the chart. It is
 set as the svg's `aria-label`. Unset, the chart is announced as
 "Line chart".
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yTitle or Chart module to chain calls  
 **Access**: public  
 
@@ -113,7 +113,7 @@ Gets or Sets a longer description screen readers announce after the
 chart's name, such as what the data shows. It is rendered as the svg's
 `<desc>`. Unset, the chart has no description.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>String</code> \| <code>null</code> \| <code>module</code> - Current a11yDescription or Chart module to chain calls  
 **Access**: public  
 
@@ -129,7 +129,7 @@ table after its svg, which screen readers can read cell by cell. On by
 default; set it to false when the app gives the data its own accessible
 form.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yDataTable or Chart module to chain calls  
 **Access**: public  
 
@@ -146,7 +146,7 @@ points, Home and End go to the first and last, and Escape lets go. The
 tooltip and highlights follow focus as they follow the pointer. On by
 default.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Boolean</code> \| <code>module</code> - Current a11yKeyboardNavigation or Chart module to chain calls  
 **Access**: public  
 
@@ -159,7 +159,7 @@ default.
 ## animationDuration(_x) ⇒ <code>duration</code> \| <code>module</code>
 Gets or Sets the duration of the animation
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>duration</code> \| <code>module</code> - Current animation duration or Chart module to chain calls  
 **Access**: public  
 
@@ -172,7 +172,7 @@ Gets or Sets the duration of the animation
 ## xAxisLabel(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the label of the X axis of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current label of the X axis or Line Chart module to chain calls  
 **Access**: public  
 
@@ -185,7 +185,7 @@ Gets or Sets the label of the X axis of the chart
 ## yAxisLabel(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the label of the Y axis of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current label of the Y axis or Line Chart module to chain calls  
 **Access**: public  
 
@@ -198,7 +198,7 @@ Gets or Sets the label of the Y axis of the chart
 ## colorSchema(_x) ⇒ <code>Array.&lt;string&gt;</code> \| <code>module</code>
 Gets or Sets the colorSchema of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Array.&lt;string&gt;</code> \| <code>module</code> - Current colorSchema or Chart module to chain calls  
 **Access**: public  
 
@@ -211,7 +211,7 @@ Gets or Sets the colorSchema of the chart
 ## colorMap([_x]) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the colorMap of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current colorMap or Chart module to chain calls  
 **Access**: public  
 
@@ -230,7 +230,7 @@ Exposes the ability to force the chart to show a certain x format
 It requires a `xAxisFormat` of 'custom' in order to work.
 NOTE: localization not supported
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current format or module to chain calls  
 **Access**: public  
 
@@ -243,7 +243,7 @@ NOTE: localization not supported
 ## xAxisFormat(_x) ⇒ <code>String</code> \| <code>Module</code>
 Exposes the ability to force the chart to show a certain x axis grouping
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>String</code> \| <code>Module</code> - Current format or module to chain calls  
 **Access**: public  
 
@@ -262,7 +262,7 @@ Exposes the ability to force the chart to show a certain x ticks. It requires a 
 NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 how many and where the ticks will appear.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current number or ticks or module to chain calls  
 **Access**: public  
 
@@ -275,7 +275,7 @@ how many and where the ticks will appear.
 ## grid(_x) ⇒ <code>String</code> \| <code>module</code>
 Gets or Sets the grid mode.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>String</code> \| <code>module</code> - Current mode of the grid or Line Chart module to chain calls  
 **Access**: public  
 
@@ -290,7 +290,7 @@ Gets or Sets the hasMinimumValueScale property of the chart, making yAxix bottom
 to adjust to the minimum dataset value.
 By default this is 'false'
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>hasMinimumValueScale</code> \| <code>module</code> - Current hasMinimumValueScale flag or Chart module  
 **Access**: public  
 
@@ -303,7 +303,7 @@ By default this is 'false'
 ## height(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the height of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current height or Line Chart module to chain calls  
 **Access**: public  
 
@@ -318,7 +318,7 @@ Gets or Sets the isAnimated property of the chart, making it to animate when ren
 The chart draws without animation when the reader's system asks for
 reduced motion (`prefers-reduced-motion`), whatever this is set to.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>isAnimated</code> \| <code>module</code> - Current isAnimated flag or Chart module  
 **Access**: public  
 
@@ -332,7 +332,7 @@ reduced motion (`prefers-reduced-motion`), whatever this is set to.
 Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
 onto the chart with a specific color and a text annotation over the line.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Array.&lt;Object&gt;</code> \| <code>module</code> - Current lines or module to chain calls  
 **Access**: public  
 
@@ -353,7 +353,7 @@ line.lines([{
 ## lineCurve(_x) ⇒ <code>curve</code> \| <code>module</code>
 Gets or Sets the curve of the line chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>curve</code> \| <code>module</code> - Current line curve or Line Chart module to chain calls  
 **Access**: public  
 
@@ -366,7 +366,7 @@ Gets or Sets the curve of the line chart
 ## lineGradient(_x) ⇒ <code>Number</code> \| <code>module</code>
 Gets or Sets the gradient colors of the line chart when there is only one line
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current color gradient or Line Chart module to chain calls  
 **Access**: public  
 
@@ -379,7 +379,7 @@ Gets or Sets the gradient colors of the line chart when there is only one line
 ## isLoading(flag) ⇒ <code>boolean</code> \| <code>module</code>
 Gets or Sets the loading state of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>boolean</code> \| <code>module</code> - Current loading state flag or Chart module to chain calls  
 **Access**: public  
 
@@ -394,7 +394,7 @@ Pass language tag for the tooltip to localize the date.
 Uses Intl.DateTimeFormat, for compatability and support, refer to
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current locale or module to chain calls  
 **Access**: public  
 
@@ -407,7 +407,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 ## margin(_x) ⇒ <code>object</code> \| <code>module</code>
 Gets or Sets the margin object of the chart (top, bottom, left and right)
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>object</code> \| <code>module</code> - Current margin or Line Chart module to chain calls  
 **Access**: public  
 
@@ -420,7 +420,7 @@ Gets or Sets the margin object of the chart (top, bottom, left and right)
 ## numberFormat(_x) ⇒ <code>string</code> \| <code>module</code>
 Gets or Sets the number format of the line chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current numberFormat or Chart module to chain calls  
 **Access**: public  
 
@@ -433,7 +433,7 @@ Gets or Sets the number format of the line chart
 ## shouldShowAllDataPoints(_x) ⇒ <code>shouldShowAllDataPoints</code> \| <code>module</code>
 Gets or Sets whether every data point shows its marker, not just the hovered ones
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>shouldShowAllDataPoints</code> \| <code>module</code> - Current shouldShowAllDataPoints or Chart module to chain calls  
 **Access**: public  
 
@@ -447,7 +447,7 @@ Gets or Sets whether every data point shows its marker, not just the hovered one
 Gets or Sets the minimum width of the graph in order to show the tooltip
 NOTE: This could also depend on the aspect ratio
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Number</code> \| <code>module</code> - Current tooltip threshold or Line Chart module to chain calls  
 **Access**: public  
 
@@ -460,7 +460,7 @@ NOTE: This could also depend on the aspect ratio
 ## yAxisLabelPadding(_x&#x3D;) ⇒ <code>yAxisLabelPadding</code> \| <code>module</code>
 Gets or Sets the yAxisLabelPadding of the chart.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>yAxisLabelPadding</code> \| <code>module</code> - Current yAxisLabelPadding or Chart module to chain calls  
 **Access**: public  
 
@@ -473,7 +473,7 @@ Gets or Sets the yAxisLabelPadding of the chart.
 ## yTicks(_x) ⇒ <code>number</code> \| <code>module</code>
 Gets or Sets the number of ticks of the y axis on the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>number</code> \| <code>module</code> - Current yTicks or Chart module to chain calls  
 **Access**: public  
 
@@ -486,7 +486,7 @@ Gets or Sets the number of ticks of the y axis on the chart
 ## width(_x) ⇒ <code>number</code> \| <code>Module</code>
 Gets or Sets the width of the chart
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>number</code> \| <code>Module</code> - Current width or Line Chart module to chain calls  
 **Access**: public  
 
@@ -500,7 +500,7 @@ Gets or Sets the width of the chart
 Exports the chart and fires a download: an svg file when the filename
 ends in `.svg`, and a png otherwise
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>Promise</code> - Promise that resolves if the chart image was loaded and downloaded successfully  
 **Access**: public  
 
@@ -517,7 +517,7 @@ We are going to expose this events:
 customMouseHover, customMouseMove, customMouseOut,
 customDataEntryClick, and customTouchMove
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>module</code> - Bar Chart  
 **Access**: public  
 <a name="module_Line--exports.xAxisValueType" id="module_Line--exports.xAxisValueType"></a>
@@ -527,7 +527,7 @@ Gets or Sets the `xAxisValueType`.
 Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
 be dates anymore, but can be arbitrary numbers.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current value type of the x-axis or Chart module to chain calls  
 **Access**: public  
 
@@ -546,7 +546,7 @@ Gets or Sets the `xAxisScale`.
 Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
 'number' as well, otherwise it won't influence the visualization.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>string</code> \| <code>module</code> - Current value type of the x-axis or Chart module to chain calls  
 **Access**: public  
 
@@ -569,7 +569,7 @@ if the chart has drawn, and again on every draw. Its event handlers go
 under the `britechartsTooltip` namespace. Null, or another tooltip,
 removes the one it had.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>module</code> \| <code>null</code> - Current tooltip or Chart module to chain calls  
 **Throws**:
 
@@ -593,7 +593,7 @@ selection, as `select(target).datum(data).call(chart)` does. A selector
 draws into the first element it matches. Without data, the chart
 redraws with the data it last drew there.
 
-**Kind**: static method of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: method of [<code>line</code>](#exp_module_Line--exports)  
 **Returns**: <code>module</code> - The chart module, to chain calls  
 **Throws**:
 
@@ -613,7 +613,7 @@ line().width(600).render('#chart', data);
 <a name="module_Line--exports..D3Selection" id="module_Line--exports..D3Selection"></a>
 
 ## exports~D3Selection : <code>Array.&lt;Array&gt;</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: inner typedef of [<code>line</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -624,7 +624,7 @@ line().width(600).render('#chart', data);
 <a name="module_Line--exports..LineChartFlatData" id="module_Line--exports..LineChartFlatData"></a>
 
 ## exports~LineChartFlatData : <code>object</code>
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: inner typedef of [<code>line</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -649,7 +649,7 @@ line().width(600).render('#chart', data);
 ## exports~LineChartDataSorted : <code>Array.&lt;object&gt;</code>
 The Data Sorted is calculated internally in the chart in order to pass it to our tooltips
 
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: inner typedef of [<code>line</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
@@ -690,7 +690,7 @@ The data shape for the line chart.
 Up to version 2.10.1 this required a "dataByTopic" array. That shape was
 removed in 3.0.0 -- pass the flat dataset described here instead.
 
-**Kind**: inner typedef of [<code>exports</code>](#exp_module_Line--exports)  
+**Kind**: inner typedef of [<code>line</code>](#exp_module_Line--exports)  
 **Properties**
 
 | Name | Type | Description |
