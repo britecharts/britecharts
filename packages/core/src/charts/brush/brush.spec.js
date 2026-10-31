@@ -408,6 +408,39 @@ describe('brush Chart', () => {
                 expect(selectionOf(early)).not.toBeNull();
                 expect(selectionOf(early)).toEqual(selectionOf(late));
             });
+
+            it.each([[null], [undefined]])(
+                'should draw without a selection when it is %s',
+                (emptyRange) => {
+                    const container = d3.select(fixture).append('div');
+                    const expected = null;
+
+                    expect(() =>
+                        container
+                            .datum(dataset)
+                            .call(chart().dateRange(emptyRange))
+                    ).not.toThrow();
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                }
+            );
+
+            it('should forget a range that is then emptied', () => {
+                const container = d3.select(fixture).append('div');
+                const expected = null;
+
+                expect(() =>
+                    container
+                        .datum(dataset)
+                        .call(chart().dateRange(dateRange).dateRange(null))
+                ).not.toThrow();
+
+                const actual = selectionOf(container);
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         it('should provide a gradient getter and setter', () => {
@@ -660,6 +693,37 @@ describe('brush Chart', () => {
             expect(actual).toEqual(expected);
         });
 
+        describe('when the format changes after the first render', () => {
+            const customFormat = (chartToFormat) =>
+                chartToFormat.xAxisFormat('custom').xAxisCustomFormat('%Y');
+
+            it('should clear the month axis', () => {
+                const switchedChart = chart();
+                const container = drawInNewContainer(switchedChart);
+                const expected = 0;
+
+                container.call(customFormat(switchedChart));
+
+                const actual = tickText(container, '.axis.sub-x').length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should draw the month axis again when switching back', () => {
+                const switchedChart = chart();
+                const container = drawInNewContainer(switchedChart);
+                const expected = tickText(container, '.axis.sub-x');
+
+                container.call(customFormat(switchedChart));
+                container.call(switchedChart.xAxisFormat(null));
+
+                const actual = tickText(container, '.axis.sub-x');
+
+                expect(actual.length).toBeGreaterThan(0);
+                expect(actual).toEqual(expected);
+            });
+        });
+
         it('should ask d3 for the number of ticks in xTicks', () => {
             const customChart = (ticks) =>
                 chart()
@@ -724,6 +788,56 @@ describe('brush Chart', () => {
             const actual = container.select('.selection').attr('fill');
 
             expect(actual).toEqual(expected);
+        });
+
+        describe('when the chart redraws with a new gradient and width', () => {
+            const newGradient = ['#111111', '#222222'];
+            let redrawnChart, container;
+
+            beforeEach(() => {
+                redrawnChart = chart();
+                container = drawInNewContainer(redrawnChart);
+
+                container.call(redrawnChart.gradient(newGradient).width(500));
+            });
+
+            it('should colour the stops with the new gradient', () => {
+                const expected = newGradient;
+                const actual = container
+                    .selectAll('linearGradient stop')
+                    .nodes()
+                    .map((stop) => stop.getAttribute('stop-color'));
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should span the new width', () => {
+                const expected = '460';
+                const actual = container.select('linearGradient').attr('x2');
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should extend the x axis line to the new width', () => {
+                const expected = '460';
+                const actual = container.select('.extended-x-line').attr('x2');
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should not add a second gradient', () => {
+                const expected = 1;
+                const actual = container.selectAll('linearGradient').size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should not add a second x axis line', () => {
+                const expected = 1;
+                const actual = container.selectAll('.extended-x-line').size();
+
+                expect(actual).toEqual(expected);
+            });
         });
     });
 
@@ -1201,6 +1315,288 @@ describe('brush Chart', () => {
 
                     expect(actual).toEqual(expected);
                 });
+
+                it('should not log the error again on a redraw', () => {
+                    const expected = 1;
+
+                    container.call(moved);
+
+                    const actual = errorSpy.mock.calls.length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+        });
+
+        describe('when the chart redraws', () => {
+            // A wider span than `withSimpleData`, so the same dates fall on
+            // different pixels
+            const widerData = [
+                { date: '2015-06-01T00:00:00Z', value: 1 },
+                { date: '2015-08-31T00:00:00Z', value: 2 },
+            ];
+            const windowOn = (range, data) =>
+                selectionOf(drawInNewContainer(chart().dateRange(range), data));
+            let errorSpy;
+
+            beforeEach(() => {
+                errorSpy = vi
+                    .spyOn(console, 'error')
+                    .mockImplementation(() => {});
+            });
+
+            afterEach(() => {
+                errorSpy.mockRestore();
+            });
+
+            describe('when a date range is set', () => {
+                it('should place the window on it against the new data', () => {
+                    const redrawnChart = listeningChart().dateRange(dateWindow);
+                    const container = drawInNewContainer(redrawnChart);
+                    const expected = windowOn(dateWindow, widerData);
+
+                    container.datum(widerData).call(redrawnChart);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should place the window on it at the new width', () => {
+                    const redrawnChart = listeningChart().dateRange(dateWindow);
+                    const container = drawInNewContainer(redrawnChart);
+                    const expected = selectionOf(
+                        drawInNewContainer(
+                            chart().dateRange(dateWindow).width(500)
+                        )
+                    );
+
+                    container.call(redrawnChart.width(500));
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should not fire any event', () => {
+                    const redrawnChart = listeningChart().dateRange(dateWindow);
+                    const container = drawInNewContainer(redrawnChart);
+                    const expected = 0;
+
+                    startSpy.mockClear();
+                    container.datum(widerData).call(redrawnChart);
+
+                    const actual =
+                        startSpy.mock.calls.length + endSpy.mock.calls.length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when the window was dragged', () => {
+                const draggedWindow = [
+                    '2015-07-01T00:00:00.000Z',
+                    '2015-07-09T00:00:00.000Z',
+                ];
+                let redrawnChart, container;
+
+                beforeEach(() => {
+                    redrawnChart = listeningChart();
+                    container = drawInNewContainer(redrawnChart);
+
+                    drag(container, 100, 300);
+                });
+
+                it('should report the dragged window in dateRange', () => {
+                    const expected = draggedWindow;
+                    const actual = redrawnChart.dateRange();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should keep the dragged window', () => {
+                    const expected = windowOn(draggedWindow, widerData);
+
+                    container.datum(widerData).call(redrawnChart);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should not fire any event', () => {
+                    const expected = 0;
+
+                    startSpy.mockClear();
+                    endSpy.mockClear();
+                    container.datum(widerData).call(redrawnChart);
+
+                    const actual =
+                        startSpy.mock.calls.length + endSpy.mock.calls.length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should stop the rounding that was under way', async () => {
+                    const expected = windowOn(draggedWindow, widerData);
+
+                    container.datum(widerData).call(redrawnChart);
+                    startSpy.mockClear();
+                    await new Promise((resolve) => setTimeout(resolve, 300));
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                    expect(startSpy).not.toHaveBeenCalled();
+                });
+            });
+
+            describe('when the window was dragged from the edge of the data', () => {
+                // The data starts and ends at 07:00, and rounding to days
+                // moves that to midnight
+                const firstDate = '2015-06-27T07:00:00.000Z';
+
+                it('should report dates inside the data', () => {
+                    const container = drawInNewContainer(listeningChart());
+                    const expected = firstDate;
+
+                    drag(container, 0, 100);
+
+                    const actual = toDays(endSpy.mock.calls[0][0])[0];
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should keep the window through a redraw', () => {
+                    const redrawnChart = listeningChart();
+                    const container = drawInNewContainer(redrawnChart);
+
+                    drag(container, 0, 100);
+
+                    const expected = windowOn(
+                        toDays(endSpy.mock.calls[0][0]),
+                        buildDataSet('withSimpleData')
+                    );
+
+                    container.call(redrawnChart);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).not.toBeNull();
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when the selection was cleared with a click', () => {
+                let redrawnChart, container;
+
+                beforeEach(() => {
+                    redrawnChart = listeningChart().dateRange(dateWindow);
+                    container = drawInNewContainer(redrawnChart);
+
+                    click(container, 800);
+                });
+
+                it('should reset dateRange', () => {
+                    const expected = [null, null];
+                    const actual = redrawnChart.dateRange();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should leave no selection', () => {
+                    const expected = null;
+
+                    container.call(redrawnChart);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when customBrushStart itself redraws the chart', () => {
+                it('should keep the window being dragged', () => {
+                    const redrawnChart = listeningChart();
+                    const container = drawInNewContainer(redrawnChart);
+                    const expected = [
+                        '2015-07-01T00:00:00.000Z',
+                        '2015-07-09T00:00:00.000Z',
+                    ];
+
+                    startSpy.mockImplementation(() =>
+                        container.call(redrawnChart)
+                    );
+                    drag(container, 100, 300);
+
+                    const actual = toDays(endSpy.mock.calls[0][0]);
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when the date range falls outside the new data', () => {
+                const otherData = buildDataSet('withShortData');
+                let redrawnChart, container;
+
+                beforeEach(() => {
+                    redrawnChart = listeningChart().dateRange(dateWindow);
+                    container = drawInNewContainer(redrawnChart);
+                    startSpy.mockClear();
+
+                    container.datum(otherData).call(redrawnChart);
+                });
+
+                it('should clear the selection', () => {
+                    const expected = null;
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should not log an error', () => {
+                    expect(errorSpy).not.toHaveBeenCalled();
+                });
+
+                it('should not fire customBrushStart', () => {
+                    expect(startSpy).not.toHaveBeenCalled();
+                });
+
+                it('should keep the date range', () => {
+                    const expected = dateWindow;
+                    const actual = redrawnChart.dateRange();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw the window again when the data holds it', () => {
+                    const expected = windowOn(dateWindow, widerData);
+
+                    container.datum(widerData).call(redrawnChart);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when the date range is partly outside the new data', () => {
+                it('should clear the selection', () => {
+                    const redrawnChart = listeningChart().dateRange(dateWindow);
+                    const container = drawInNewContainer(redrawnChart);
+                    const expected = null;
+
+                    container
+                        .datum([
+                            { date: '2015-07-05T00:00:00Z', value: 1 },
+                            { date: '2015-07-25T00:00:00Z', value: 2 },
+                        ])
+                        .call(redrawnChart);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
             });
         });
 
@@ -1263,6 +1659,107 @@ describe('brush Chart', () => {
                 const actual = selectionOf(container);
 
                 expect(actual).toEqual(expected);
+            });
+
+            describe('when the window reaches the right edge', () => {
+                const chartEnd = 920;
+                const lastDate = new Date('2015-08-02T07:00:00.000Z');
+
+                it('should slide back to stay inside the chart', () => {
+                    const container = drawInNewContainer(lockedChart());
+                    const expected = [chartEnd - lockedWindowWidth, chartEnd];
+
+                    drag(container, 800, 850);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should report dates inside the data', () => {
+                    const container = drawInNewContainer(lockedChart());
+
+                    startSpy.mockClear();
+                    drag(container, 800, 850);
+
+                    const reported = [
+                        ...startSpy.mock.calls,
+                        ...endSpy.mock.calls,
+                    ].flatMap(([dates]) => dates);
+
+                    expect(reported.length).toBeGreaterThan(0);
+                    reported.forEach((date) =>
+                        expect(+date).toBeLessThanOrEqual(+lastDate)
+                    );
+                });
+            });
+
+            describe('when the date range is wider than the chart', () => {
+                it('should fill the chart', () => {
+                    const container = drawInNewContainer(
+                        listeningChart()
+                            .dateRange([
+                                '2015-01-01T00:00:00Z',
+                                '2016-01-01T00:00:00Z',
+                            ])
+                            .isLocked(true)
+                    );
+                    const expected = [0, 920];
+
+                    drag(container, 100, 120);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when rounding each end would shorten the window', () => {
+                // On this start the first end rounds up and the second down,
+                // a day apart from where the window's length puts them
+                const tenDays = 10 * 24 * 60 * 60 * 1000;
+                const lengthOf = ([start, end]) =>
+                    +new Date(end) - +new Date(start);
+
+                it('should report the locked length in customBrushEnd', () => {
+                    const container = drawInNewContainer(lockedChart());
+                    const expected = tenDays;
+
+                    drag(container, 108, 120);
+
+                    const actual = lengthOf(endSpy.mock.calls[0][0]);
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should keep the locked length in dateRange', () => {
+                    const movedChart = lockedChart();
+                    const container = drawInNewContainer(movedChart);
+                    const expected = tenDays;
+
+                    drag(container, 108, 120);
+
+                    const actual = lengthOf(movedChart.dateRange());
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when the date range is not in the data', () => {
+                it('should not bring the window back on a click', () => {
+                    const movedChart = lockedChart();
+                    const container = drawInNewContainer(movedChart);
+                    const expected = null;
+
+                    container
+                        .datum(buildDataSet('withShortData'))
+                        .call(movedChart);
+                    click(container, 800);
+
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
             });
         });
     });
