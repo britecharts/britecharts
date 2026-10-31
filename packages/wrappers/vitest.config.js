@@ -12,6 +12,18 @@ export default mergeConfig(
         resolve: {
             alias: { '@britecharts/core': source('../core/src/index.ts') },
         },
-        test: { name: '@britecharts/wrappers' },
+        test: {
+            name: '@britecharts/wrappers',
+            coverage: {
+                include: ['src/**/*.ts'],
+                exclude: ['src/**/*.spec.ts'],
+                thresholds: {
+                    statements: 96,
+                    branches: 91,
+                    functions: 93,
+                    lines: 97,
+                },
+            },
+        },
     })
 );

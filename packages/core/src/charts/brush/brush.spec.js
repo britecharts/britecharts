@@ -8,6 +8,28 @@ const buildDataSet = (dataSetName) => {
     return aTestDataSet()[dataSetName]().build();
 };
 
+// the path alternates x,y pairs, so every odd number is a y
+const yCoordinatesOf = (path) =>
+    path
+        .replace(/[A-Za-z]/g, ' ')
+        .trim()
+        .split(/[\s,]+/)
+        .map(Number)
+        .filter((_coordinate, index) => index % 2 === 1);
+
+// A container of its own, so a test can configure the chart before it first
+// draws: the one in `beforeEach` has already drawn.
+const drawInNewContainer = (
+    chartToDraw,
+    data = buildDataSet('withSimpleData')
+) => {
+    const container = d3.select('#fixture').append('div');
+
+    container.datum(data).call(chartToDraw);
+
+    return container;
+};
+
 describe('brush Chart', () => {
     let brushChart, dataset, containerFixture;
 
@@ -254,6 +276,42 @@ describe('brush Chart', () => {
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should remove the loading state once it has finished', () => {
+                const loadingChart = chart().isLoading(true);
+                const container = drawInNewContainer(loadingChart);
+                const expected = 0;
+
+                container.call(loadingChart.isLoading(false));
+
+                const actual = container.select('.brush-load-state').size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should draw a date range set before loading finished', () => {
+                const dateRange = [
+                    '2015-07-10T00:00:00Z',
+                    '2015-07-20T00:00:00Z',
+                ];
+                const loadingChart = chart()
+                    .dateRange(dateRange)
+                    .isLoading(true);
+                const container = drawInNewContainer(loadingChart);
+                const brushGroupOf = (parent) =>
+                    parent.node().querySelector('.brush-group');
+                const expected = d3.brushSelection(
+                    brushGroupOf(
+                        drawInNewContainer(chart().dateRange(dateRange))
+                    )
+                );
+
+                container.call(loadingChart.isLoading(false));
+
+                const actual = d3.brushSelection(brushGroupOf(container));
+
+                expect(actual).toEqual(expected);
+            });
         });
     });
 
@@ -265,15 +323,9 @@ describe('brush Chart', () => {
                 .datum(negativeDataset)
                 .call(brushChart.isAnimated(false));
 
-            // the path alternates x,y pairs, so every odd number is a y
-            const yCoordinates = containerFixture
-                .select('.brush-area')
-                .attr('d')
-                .replace(/[A-Za-z]/g, ' ')
-                .trim()
-                .split(/[\s,]+/)
-                .map(Number)
-                .filter((_coordinate, index) => index % 2 === 1);
+            const yCoordinates = yCoordinatesOf(
+                containerFixture.select('.brush-area').attr('d')
+            );
             // the area closes along its baseline, so the last y is where zero sits
             const baseline = yCoordinates[yCoordinates.length - 1];
 
@@ -441,10 +493,21 @@ describe('brush Chart', () => {
                         },
                         actual;
 
-                    brushChart.width(expected);
-                    actual = brushChart.width();
+                    brushChart.margin({ top: 10, right: 20 });
+                    actual = brushChart.margin();
 
                     expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw the chart inside the new margins', () => {
+                    const expected = 'translate(20, 10)';
+                    const actual = drawInNewContainer(
+                        chart().margin({ top: 10 })
+                    )
+                        .select('.container-group')
+                        .attr('transform');
+
                     expect(actual).toEqual(expected);
                 });
             });
@@ -565,6 +628,713 @@ describe('brush Chart', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
+        });
+    });
+
+    describe('when the x axis has a custom format', () => {
+        const tickText = (container, selector) =>
+            container
+                .selectAll(`${selector} .tick text`)
+                .nodes()
+                .map((node) => node.textContent);
+
+        it('should format the ticks with xAxisCustomFormat', () => {
+            const customChart = chart()
+                .xAxisFormat('custom')
+                .xAxisCustomFormat('%Y');
+            const container = drawInNewContainer(customChart);
+            const expected = ['2015'];
+            const actual = [...new Set(tickText(container, '.axis.x'))];
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should not draw the month axis', () => {
+            const customChart = chart()
+                .xAxisFormat('custom')
+                .xAxisCustomFormat('%Y');
+            const container = drawInNewContainer(customChart);
+            const expected = 0;
+            const actual = tickText(container, '.axis.sub-x').length;
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should ask d3 for the number of ticks in xTicks', () => {
+            const customChart = (ticks) =>
+                chart()
+                    .xAxisFormat('custom')
+                    .xAxisCustomFormat('%d')
+                    .xTicks(ticks);
+            const few = drawInNewContainer(customChart(2));
+            const many = drawInNewContainer(customChart(20));
+            const actual = tickText(few, '.axis.x').length;
+            const expected = tickText(many, '.axis.x').length;
+
+            expect(actual).toBeLessThan(expected);
+        });
+
+        describe('when xAxisCustomFormat is not set', () => {
+            it('should fall back to the d3 default tick format', () => {
+                const container = drawInNewContainer(
+                    chart().xAxisFormat('custom')
+                );
+                const expected = 'July';
+                const actual = tickText(container, '.axis.x');
+
+                expect(actual).toContain(expected);
+            });
+
+            it('should not draw the month axis', () => {
+                const container = drawInNewContainer(
+                    chart().xAxisFormat('custom')
+                );
+                const expected = 0;
+                const actual = tickText(container, '.axis.sub-x').length;
+
+                expect(actual).toEqual(expected);
+            });
+        });
+    });
+
+    describe('gradient', () => {
+        it('should colour the stops with the gradient that was set', () => {
+            const expected = ['#ffffff', '#fafefc'];
+            const container = drawInNewContainer(chart().gradient(expected));
+            const actual = container
+                .selectAll('linearGradient stop')
+                .nodes()
+                .map((stop) => stop.getAttribute('stop-color'));
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should span the width of the chart', () => {
+            const expected = '160';
+            const container = drawInNewContainer(chart().width(200));
+            const actual = container.select('linearGradient').attr('x2');
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should fill the brush selection', () => {
+            const container = drawInNewContainer(chart());
+            const gradientId = container.select('linearGradient').attr('id');
+            const expected = `url(#${gradientId})`;
+            const actual = container.select('.selection').attr('fill');
+
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('accessibility', () => {
+        it('should provide a11yTitle getter and setter', () => {
+            let previous = brushChart.a11yTitle(),
+                expected = 'Visits per day',
+                actual;
+
+            brushChart.a11yTitle(expected);
+            actual = brushChart.a11yTitle();
+
+            expect(previous).toBeNull();
+            expect(actual).toEqual(expected);
+        });
+
+        it('should provide a11yDescription getter and setter', () => {
+            let previous = brushChart.a11yDescription(),
+                expected = 'Visits grew through July',
+                actual;
+
+            brushChart.a11yDescription(expected);
+            actual = brushChart.a11yDescription();
+
+            expect(previous).toBeNull();
+            expect(actual).toEqual(expected);
+        });
+
+        it('should provide a11yDataTable getter and setter', () => {
+            let previous = brushChart.a11yDataTable(),
+                expected = false,
+                actual;
+
+            brushChart.a11yDataTable(expected);
+            actual = brushChart.a11yDataTable();
+
+            expect(previous).toEqual(true);
+            expect(actual).toEqual(expected);
+        });
+
+        it('should be announced as a brush chart by default', () => {
+            const expected = 'Brush chart';
+            const actual = drawInNewContainer(chart())
+                .select('svg')
+                .attr('aria-label');
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should be announced with the a11yTitle', () => {
+            const expected = 'Visits per day';
+            const actual = drawInNewContainer(chart().a11yTitle(expected))
+                .select('svg')
+                .attr('aria-label');
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should describe the chart with the a11yDescription', () => {
+            const expected = 'Visits grew through July';
+            const actual = drawInNewContainer(chart().a11yDescription(expected))
+                .select('svg desc')
+                .text();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render a row per entry in the data table', () => {
+            const expected = buildDataSet('withSimpleData').length;
+            const actual = drawInNewContainer(chart())
+                .selectAll('.britechart-data-table tbody tr')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should leave a missing value empty in the data table', () => {
+            const missingDataset = buildDataSet('withMissingData');
+            const missingIndex = missingDataset.findIndex(
+                ({ value }) => value === null
+            );
+            const expected = '';
+            const actual = drawInNewContainer(chart(), missingDataset)
+                .selectAll('.britechart-data-table tbody tr td')
+                .nodes()[missingIndex].textContent;
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should not render the data table when a11yDataTable is false', () => {
+            const expected = 0;
+            const actual = drawInNewContainer(chart().a11yDataTable(false))
+                .selectAll('.britechart-data-table')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should not render the data table while loading', () => {
+            const expected = 0;
+            const actual = drawInNewContainer(chart().isLoading(true))
+                .selectAll('.britechart-data-table')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('when animated', () => {
+        const stubReducedMotion = (matches) =>
+            vi.stubGlobal('matchMedia', (query) => ({
+                matches:
+                    matches && query === '(prefers-reduced-motion: reduce)',
+            }));
+        const animatedChart = () =>
+            chart().isAnimated(true).animationDuration(1);
+        const pathOf = (container, selector) =>
+            container.select(selector).attr('d');
+        const brushOpacity = (container) =>
+            container.node().querySelector('.brush-group').style.opacity;
+        // Leaves no transition to tick on a fixture that is already gone
+        const animationToFinish = (container) =>
+            vi.waitFor(() => {
+                expect(brushOpacity(container)).toEqual('1');
+            });
+
+        afterEach(() => {
+            vi.unstubAllGlobals();
+        });
+
+        describe('when the reader does not prefer reduced motion', () => {
+            beforeEach(() => {
+                stubReducedMotion(false);
+            });
+
+            it('should start the area flat on its baseline', async () => {
+                const container = drawInNewContainer(animatedChart());
+                const expected = 1;
+                const actual = new Set(
+                    yCoordinatesOf(pathOf(container, '.brush-area'))
+                ).size;
+
+                expect(actual).toEqual(expected);
+
+                await animationToFinish(container);
+            });
+
+            it('should grow the area to its values', async () => {
+                const container = drawInNewContainer(animatedChart());
+                const expected = pathOf(
+                    drawInNewContainer(chart()),
+                    '.brush-area'
+                );
+
+                await vi.waitFor(() => {
+                    expect(pathOf(container, '.brush-area')).toEqual(expected);
+                });
+                await animationToFinish(container);
+            });
+
+            it('should fade the brush in', async () => {
+                const container = drawInNewContainer(animatedChart());
+                const expected = '0';
+                const actual = brushOpacity(container);
+
+                expect(actual).toEqual(expected);
+
+                await animationToFinish(container);
+            });
+
+            describe('when the data has gaps', () => {
+                it('should start the missing data area flat', async () => {
+                    const container = drawInNewContainer(
+                        animatedChart(),
+                        buildDataSet('withMissingData')
+                    );
+                    const expected = 1;
+                    const actual = new Set(
+                        yCoordinatesOf(pathOf(container, '.missing-brush-area'))
+                    ).size;
+
+                    expect(actual).toEqual(expected);
+
+                    await animationToFinish(container);
+                });
+
+                it('should grow the missing data area to its values', async () => {
+                    const container = drawInNewContainer(
+                        animatedChart(),
+                        buildDataSet('withMissingData')
+                    );
+                    const expected = pathOf(
+                        drawInNewContainer(
+                            chart(),
+                            buildDataSet('withMissingData')
+                        ),
+                        '.missing-brush-area'
+                    );
+
+                    await vi.waitFor(() => {
+                        expect(
+                            pathOf(container, '.missing-brush-area')
+                        ).toEqual(expected);
+                    });
+                    await animationToFinish(container);
+                });
+            });
+        });
+
+        describe('when the reader prefers reduced motion', () => {
+            beforeEach(() => {
+                stubReducedMotion(true);
+            });
+
+            it('should draw the area at its values at once', () => {
+                const expected = pathOf(
+                    drawInNewContainer(chart()),
+                    '.brush-area'
+                );
+                const actual = pathOf(
+                    drawInNewContainer(animatedChart()),
+                    '.brush-area'
+                );
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should not fade the brush in', () => {
+                const expected = '';
+                const actual = brushOpacity(
+                    drawInNewContainer(animatedChart())
+                );
+
+                expect(actual).toEqual(expected);
+            });
+        });
+    });
+
+    describe('brush events', () => {
+        const dateWindow = ['2015-07-01T00:00:00Z', '2015-07-11T00:00:00Z'];
+        const lockedWindowWidth = 255;
+        let startSpy, endSpy;
+
+        // jsdom has no layout, so the pointer position falls back to clientX:
+        // these drive d3-brush's real listeners and say nothing about where a
+        // selection lands on screen, which packages/integration/tests/brush.spec.js
+        // checks in a browser. `view` is defined afterwards because the
+        // MouseEvent constructor rejects vitest's `window`, which is not the
+        // jsdom Window object.
+        const mouseEvent = (type, clientX) => {
+            const event = new MouseEvent(type, { bubbles: true, clientX });
+
+            Object.defineProperty(event, 'view', { value: window });
+
+            return event;
+        };
+        const press = (container, target, x) =>
+            container
+                .node()
+                .querySelector(target)
+                .dispatchEvent(mouseEvent('mousedown', x));
+        const moveTo = (x) => window.dispatchEvent(mouseEvent('mousemove', x));
+        const release = (x) => window.dispatchEvent(mouseEvent('mouseup', x));
+        const drag = (container, from, to, target = '.overlay') => {
+            press(container, target, from);
+            moveTo(to);
+            release(to);
+        };
+        const click = (container, x) => {
+            press(container, '.overlay', x);
+            release(x);
+        };
+        // Read off the node: `selection.select` would overwrite the datum d3-brush
+        // keeps on the group's children
+        const selectionOf = (container) =>
+            d3.brushSelection(container.node().querySelector('.brush-group'));
+        const toDays = (dates) => dates.map((date) => date.toISOString());
+        const listeningChart = () =>
+            chart()
+                .on('customBrushStart', startSpy)
+                .on('customBrushEnd', endSpy);
+
+        beforeEach(() => {
+            startSpy = vi.fn();
+            endSpy = vi.fn();
+        });
+
+        afterEach(() => {
+            d3.selectAll('.brush-group').interrupt();
+        });
+
+        describe('when a window is dragged', () => {
+            it('should fire customBrushStart with the dates under the pointer', () => {
+                const container = drawInNewContainer(listeningChart());
+                const expected = [
+                    '2015-07-01T04:54:46.956Z',
+                    '2015-07-09T00:44:20.869Z',
+                ];
+
+                drag(container, 100, 300);
+
+                const actual = toDays(startSpy.mock.calls[0][0]);
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should fire customBrushEnd with the window rounded to days', () => {
+                const container = drawInNewContainer(listeningChart());
+                const expected = [
+                    '2015-07-01T00:00:00.000Z',
+                    '2015-07-09T00:00:00.000Z',
+                ];
+
+                drag(container, 100, 300);
+
+                const actual = toDays(endSpy.mock.calls[0][0]);
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should round to the roundingTimeInterval', () => {
+                const container = drawInNewContainer(
+                    listeningChart().roundingTimeInterval('timeHour')
+                );
+                const expected = [
+                    '2015-07-01T05:00:00.000Z',
+                    '2015-07-09T01:00:00.000Z',
+                ];
+
+                drag(container, 100, 300);
+
+                const actual = toDays(endSpy.mock.calls[0][0]);
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should ease the window to the rounded days', async () => {
+                const container = drawInNewContainer(listeningChart());
+                const expected = selectionOf(
+                    drawInNewContainer(
+                        chart().dateRange([
+                            '2015-07-01T00:00:00Z',
+                            '2015-07-09T00:00:00Z',
+                        ])
+                    )
+                );
+
+                drag(container, 100, 300);
+
+                await vi.waitFor(() => {
+                    expect(selectionOf(container)).toEqual(expected);
+                });
+            });
+
+            it('should not fire customBrushEnd again when the rounding finishes', async () => {
+                const container = drawInNewContainer(listeningChart());
+                const expected = 1;
+
+                drag(container, 100, 300);
+                await vi.waitFor(() => {
+                    expect(selectionOf(container)[0]).not.toEqual(100);
+                });
+                d3.selectAll('.brush-group').interrupt();
+
+                const actual = endSpy.mock.calls.length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            describe('when the window rounds to nothing', () => {
+                it('should widen it to one whole interval', () => {
+                    const container = drawInNewContainer(listeningChart());
+                    const expected = [
+                        '2015-07-01T00:00:00.000Z',
+                        '2015-07-02T00:00:00.000Z',
+                    ];
+
+                    drag(container, 100, 102);
+
+                    const actual = toDays(endSpy.mock.calls[0][0]);
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+        });
+
+        describe('when the brush is clicked without dragging', () => {
+            it('should fire customBrushEnd without dates', () => {
+                const container = drawInNewContainer(listeningChart());
+                const expected = [null, null];
+
+                click(container, 100);
+
+                const actual = endSpy.mock.calls[0][0];
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should leave no selection', () => {
+                const container = drawInNewContainer(listeningChart());
+                const expected = null;
+
+                click(container, 100);
+
+                const actual = selectionOf(container);
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when dateRange moves the brush', () => {
+            it('should fire customBrushStart with the new dates', () => {
+                const movedChart = listeningChart();
+
+                drawInNewContainer(movedChart);
+                movedChart.dateRange(dateWindow);
+
+                // The scale's round trip through pixels can lose a millisecond
+                const toSeconds = (dates) =>
+                    dates.map((date) => Math.round(+new Date(date) / 1000));
+                const expected = toSeconds(dateWindow);
+                const actual = toSeconds(startSpy.mock.calls[0][0]);
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should not fire customBrushEnd, as there was no gesture', () => {
+                const movedChart = listeningChart();
+
+                drawInNewContainer(movedChart);
+                movedChart.dateRange(dateWindow);
+
+                const expected = 0;
+                const actual = endSpy.mock.calls.length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            describe('when the end date is not after the start date', () => {
+                let errorSpy, moved, container;
+
+                beforeEach(() => {
+                    errorSpy = vi
+                        .spyOn(console, 'error')
+                        .mockImplementation(() => {});
+                    moved = listeningChart();
+                    container = drawInNewContainer(moved.dateRange(dateWindow));
+                    startSpy.mockClear();
+
+                    moved.dateRange([dateWindow[1], dateWindow[0]]);
+                });
+
+                afterEach(() => {
+                    errorSpy.mockRestore();
+                });
+
+                it('should log an error', () => {
+                    const expected =
+                        'dateRange Error: End date should be posterior to startDate!';
+                    const actual = errorSpy.mock.calls[0][0];
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should clear the selection', () => {
+                    const expected = null;
+                    const actual = selectionOf(container);
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should not fire customBrushStart', () => {
+                    const expected = 0;
+                    const actual = startSpy.mock.calls.length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+        });
+
+        describe('when the brush is locked', () => {
+            const lockedChart = () =>
+                listeningChart().dateRange(dateWindow).isLocked(true);
+
+            it('should stretch a shorter window to the locked size', () => {
+                const container = drawInNewContainer(lockedChart());
+                const expected = [100, 100 + lockedWindowWidth];
+
+                drag(container, 100, 120);
+
+                const actual = selectionOf(container);
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should shrink a longer window to the locked size', () => {
+                const container = drawInNewContainer(lockedChart());
+                const expected = [100, 100 + lockedWindowWidth];
+
+                drag(container, 100, 500);
+
+                const actual = selectionOf(container);
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should report the locked size in customBrushStart', () => {
+                const container = drawInNewContainer(lockedChart());
+                const expected = '2015-07-11T04:23:28.695Z';
+
+                startSpy.mockClear();
+                drag(container, 100, 120);
+
+                const actual = startSpy.mock.calls.at(-1)[0][1].toISOString();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should let the window be dragged without resizing it', () => {
+                const container = drawInNewContainer(lockedChart());
+                const [start, end] = selectionOf(container);
+                const expected = [start + 50, end + 50];
+
+                drag(container, 200, 250, '.selection');
+
+                const actual = selectionOf(container);
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should bring the window back when the brush is clicked', () => {
+                const container = drawInNewContainer(lockedChart());
+                const expected = selectionOf(container);
+
+                click(container, 800);
+
+                const actual = selectionOf(container);
+
+                expect(actual).toEqual(expected);
+            });
+        });
+    });
+
+    describe('on', () => {
+        it('should return the chart when registering a callback', () => {
+            const expected = brushChart;
+            const actual = brushChart.on('customBrushEnd', () => {});
+
+            expect(actual).toBe(expected);
+        });
+
+        it('should return the callback that was registered', () => {
+            const expected = () => {};
+
+            brushChart.on('customBrushStart', expected);
+
+            const actual = brushChart.on('customBrushStart');
+
+            expect(actual).toBe(expected);
+        });
+    });
+
+    describe('render accessor', () => {
+        const target = () =>
+            d3.select('#fixture').append('div').attr('class', 'render-target');
+
+        it('should draw into a selector', () => {
+            target();
+            chart().render('.render-target', buildDataSet('withSimpleData'));
+
+            const expected = 1;
+            const actual = d3.selectAll('.render-target .brush-area').size();
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should return the chart', () => {
+            const renderedChart = chart();
+
+            target();
+
+            const view = renderedChart.render(
+                '.render-target',
+                buildDataSet('withSimpleData')
+            );
+
+            expect(view).toBe(renderedChart);
+        });
+
+        it('should redraw with the data it has when none is passed', () => {
+            const renderedChart = chart();
+
+            target();
+            renderedChart.render(
+                '.render-target',
+                buildDataSet('withShortData')
+            );
+            renderedChart.width(400).render('.render-target');
+
+            const expected = '400';
+            const actual = d3.select('.render-target svg').attr('width');
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should throw when the target matches no element', () => {
+            const expected = 'Britecharts: no element matches ".nowhere"';
+
+            expect(() =>
+                chart().render('.nowhere', buildDataSet('withSimpleData'))
+            ).toThrow(expected);
         });
     });
 });

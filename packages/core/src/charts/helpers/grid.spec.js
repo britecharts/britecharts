@@ -1,5 +1,8 @@
 import { select } from 'd3-selection';
-import { scaleBand, scaleLinear } from 'd3-scale';
+import { scaleBand, scaleLinear, scalePoint, scaleTime } from 'd3-scale';
+// grid.ts only imports d3-transition's types, so nothing else patches
+// `selection.transition` in this file.
+import 'd3-transition';
 
 import { grid, gridHorizontal, gridVertical } from './grid';
 
@@ -9,6 +12,13 @@ describe('grid helper', () => {
     const yScale = () => scaleLinear().domain([0, 10]).range([100, 0]);
     const xScale = () => scaleLinear().domain([0, 4]).range([0, 200]);
     const lines = (selector) => container.selectAll(selector).nodes();
+    const attrs = (selector, name) =>
+        lines(selector).map((node) => node.getAttribute(name));
+    const lineAt = (value) =>
+        lines('line.grid-line').find((node) => node.__data__ === value);
+
+    const H_LINES = 'g.grid.horizontal line.grid-line';
+    const V_LINES = 'g.grid.vertical line.grid-line';
 
     beforeEach(() => {
         container = select(document.body)
@@ -117,6 +127,188 @@ describe('grid helper', () => {
             // d3 ticks(5) on [-5, 5] gives -4, -2, 0, 2, 4
             expect(lines('line.grid-line')).toHaveLength(5);
         });
+
+        it('places each line on its tick, half a pixel in, at full opacity', () => {
+            gridHorizontal(yScale())
+                .range([0, 200])
+                .tickValues([2, 5])
+                .hideEdges(false)(container);
+
+            expect(attrs('line.grid-line', 'y1')).toEqual(['80.5', '50.5']);
+            expect(attrs('line.grid-line', 'y2')).toEqual(['80.5', '50.5']);
+            expect(attrs('line.grid-line', 'x1')).toEqual(['0', '0']);
+            expect(attrs('line.grid-line', 'opacity')).toEqual(['1', '1']);
+        });
+
+        it('uses the default ticks of the scale until a count is set', () => {
+            const g = gridHorizontal(yScale()).range([0, 200]).hideEdges(false);
+
+            g(container);
+            expect(lines('line.grid-line')).toHaveLength(11);
+
+            g.ticks(2)(container);
+            expect(lines('line.grid-line')).toHaveLength(3);
+        });
+
+        it('goes back to the ticks of the scale when the tick values are cleared', () => {
+            const g = gridHorizontal(yScale())
+                .range([0, 200])
+                .ticks(5)
+                .hideEdges(false)
+                .tickValues([5]);
+
+            g(container);
+            expect(lines('line.grid-line')).toHaveLength(1);
+
+            g.tickValues(null)(container);
+            expect(lines('line.grid-line')).toHaveLength(6);
+        });
+
+        it('keeps its own copy of the tick values it is given', () => {
+            const values = [2, 4];
+            const g = gridHorizontal(yScale())
+                .range([0, 200])
+                .hideEdges(false)
+                .tickValues(values);
+
+            values.push(6);
+            g(container);
+
+            expect(lines('line.grid-line')).toHaveLength(2);
+        });
+
+        describe('when edges are hidden', () => {
+            const edges = (hideEdges) => {
+                gridHorizontal(scaleLinear().domain([0, 4]).range([100, 0]))
+                    .range([0, 200])
+                    .ticks(4)
+                    .hideEdges(hideEdges)(container);
+
+                return attrs('line.grid-line', 'y1');
+            };
+
+            it('keeps both edges with false', () => {
+                expect(edges(false)).toEqual([
+                    '100.5',
+                    '75.5',
+                    '50.5',
+                    '25.5',
+                    '0.5',
+                ]);
+            });
+
+            it('drops only the last tick with last', () => {
+                expect(edges('last')).toEqual([
+                    '100.5',
+                    '75.5',
+                    '50.5',
+                    '25.5',
+                ]);
+            });
+
+            it('drops only the first tick with first', () => {
+                expect(edges('first')).toEqual(['75.5', '50.5', '25.5', '0.5']);
+            });
+
+            it('drops both ticks with both', () => {
+                expect(edges('both')).toEqual(['75.5', '50.5', '25.5']);
+            });
+
+            it('drops both ticks with true', () => {
+                expect(edges(true)).toEqual(['75.5', '50.5', '25.5']);
+            });
+
+            it('applies to explicit tick values without consuming them', () => {
+                const g = gridHorizontal(yScale())
+                    .range([0, 200])
+                    .tickValues([2, 4, 6])
+                    .hideEdges('both');
+
+                g(container);
+                g(container);
+
+                expect(attrs('line.grid-line', 'y1')).toEqual(['60.5']);
+                expect(g.tickValues()).toEqual([2, 4, 6]);
+            });
+        });
+
+        describe('when offsets are set', () => {
+            it('extends the lines past both ends of the range', () => {
+                gridHorizontal(yScale())
+                    .range([0, 200])
+                    .tickValues([5])
+                    .hideEdges(false)
+                    .offsetStart(5)
+                    .offsetEnd(7)(container);
+
+                expect(attrs('line.grid-line', 'x1')).toEqual(['-5']);
+                expect(attrs('line.grid-line', 'x2')).toEqual(['207']);
+            });
+
+            it('extends them outwards on an inverted range too', () => {
+                gridHorizontal(yScale())
+                    .range([200, 0])
+                    .tickValues([5])
+                    .hideEdges(false)
+                    .offsetStart(5)
+                    .offsetEnd(7)(container);
+
+                expect(attrs('line.grid-line', 'x1')).toEqual(['205']);
+                expect(attrs('line.grid-line', 'x2')).toEqual(['-7']);
+            });
+
+            it('insets the extended line inwards on an inverted range', () => {
+                gridHorizontal(yScale()).range([200, 0]).extendedLine(30)(
+                    container
+                );
+
+                expect(attrs('line.extended-x-line', 'x1')).toEqual(['170']);
+                expect(attrs('line.extended-x-line', 'x2')).toEqual(['0']);
+            });
+        });
+
+        describe('when it renders again', () => {
+            it('keeps one container and redraws the lines for the new scale', () => {
+                const g = gridHorizontal(yScale())
+                    .range([0, 200])
+                    .ticks(5)
+                    .hideEdges(false);
+
+                g(container);
+                expect(lines('line.grid-line')).toHaveLength(6);
+
+                g.scale(scaleLinear().domain([0, 4]).range([100, 0]))(
+                    container
+                );
+
+                expect(lines('g.grid.horizontal')).toHaveLength(1);
+                expect(attrs('line.grid-line', 'y1')).toEqual([
+                    '100.5',
+                    '75.5',
+                    '50.5',
+                    '25.5',
+                    '0.5',
+                ]);
+            });
+
+            it('moves a highlight to a different tick', () => {
+                const g = gridHorizontal(yScale())
+                    .range([0, 200])
+                    .tickValues([2, 4])
+                    .hideEdges(false)
+                    .highlight(2);
+
+                g(container);
+                g.highlight(4)(container);
+
+                const highlighted = lines(
+                    'line.horizontal-grid-line--highlighted'
+                );
+
+                expect(highlighted).toHaveLength(1);
+                expect(highlighted[0].getAttribute('y1')).toBe('60.5');
+            });
+        });
     });
 
     describe('accessors', () => {
@@ -205,6 +397,221 @@ describe('grid helper', () => {
 
             expect(lines('line.grid-line')[0].getAttribute('x1')).toBe('25');
         });
+
+        it('spans the range along y and sits on the tick along x', () => {
+            gridVertical(xScale())
+                .range([0, 100])
+                .tickValues([1, 3])
+                .hideEdges(false)
+                .offsetStart(5)
+                .offsetEnd(7)(container);
+
+            expect(attrs('line.grid-line', 'x1')).toEqual(['50.5', '150.5']);
+            expect(attrs('line.grid-line', 'x2')).toEqual(['50.5', '150.5']);
+            expect(attrs('line.grid-line', 'y1')).toEqual(['-5', '-5']);
+            expect(attrs('line.grid-line', 'y2')).toEqual(['107', '107']);
+        });
+
+        it('places lines by date on a time scale', () => {
+            const start = new Date(Date.UTC(2020, 0, 1));
+            const middle = new Date(Date.UTC(2020, 0, 2));
+            const end = new Date(Date.UTC(2020, 0, 3));
+            const time = scaleTime().domain([start, end]).range([0, 100]);
+
+            gridVertical(time)
+                .range([0, 50])
+                .tickValues([middle])
+                .hideEdges(false)(container);
+
+            expect(attrs('line.grid-line', 'x1')).toEqual(['50.5']);
+        });
+
+        describe('when the scale has no ticks', () => {
+            it('draws one line per domain value, ignoring the tick count', () => {
+                const band = scaleBand().domain(['a', 'b', 'c']).range([0, 90]);
+
+                gridVertical(band).range([0, 50]).ticks(10).hideEdges(false)(
+                    container
+                );
+
+                expect(attrs('line.grid-line', 'x1')).toEqual([
+                    '15',
+                    '45',
+                    '75',
+                ]);
+            });
+
+            it('rounds the centre of a rounded band scale', () => {
+                const band = scaleBand()
+                    .domain(['a', 'b'])
+                    .range([0, 100])
+                    .round(true);
+
+                gridVertical(band).range([0, 50]).hideEdges(false)(container);
+
+                expect(attrs('line.grid-line', 'x1')).toEqual(['25.5', '75.5']);
+            });
+
+            it('sits on the points of a point scale, which have no width', () => {
+                const point = scalePoint()
+                    .domain(['a', 'b', 'c'])
+                    .range([0, 100]);
+
+                gridVertical(point).range([0, 50]).hideEdges(false)(container);
+
+                expect(attrs('line.grid-line', 'x1')).toEqual([
+                    '0.5',
+                    '50.5',
+                    '100.5',
+                ]);
+            });
+        });
+    });
+
+    describe('when called on a transition', () => {
+        const FADED_OUT = '0.000001';
+        const animate = () => container.transition().duration(0);
+
+        it('fades new lines in on the first render, from their own position', async () => {
+            const transition = animate();
+
+            gridHorizontal(yScale())
+                .range([0, 200])
+                .tickValues([2, 5])
+                .hideEdges(false)(transition);
+
+            expect(attrs('line.grid-line', 'opacity')).toEqual([
+                FADED_OUT,
+                FADED_OUT,
+            ]);
+            expect(attrs('line.grid-line', 'y1')).toEqual(['80.5', '50.5']);
+
+            await transition.end();
+
+            expect(attrs('line.grid-line', 'opacity')).toEqual(['1', '1']);
+            expect(attrs('line.grid-line', 'y2')).toEqual(['80.5', '50.5']);
+            expect(attrs('line.grid-line', 'x2')).toEqual(['200', '200']);
+        });
+
+        it('moves lines that stay to their new position', async () => {
+            const scale = yScale();
+            const g = gridHorizontal(scale)
+                .range([0, 200])
+                .tickValues([5])
+                .hideEdges(false);
+            const transition = animate();
+
+            g(container);
+            const staying = lineAt(5);
+
+            scale.domain([0, 20]);
+            g(transition);
+
+            expect(staying.getAttribute('y1')).toBe('50.5');
+
+            await transition.end();
+
+            expect(lineAt(5)).toBe(staying);
+            expect(staying.getAttribute('y1')).toBe('75.5');
+        });
+
+        it('starts entering lines from where the previous scale had them', async () => {
+            const scale = yScale();
+            const g = gridHorizontal(scale)
+                .range([0, 200])
+                .tickValues([5])
+                .hideEdges(false);
+            const transition = animate();
+
+            g(container);
+
+            // Mutating the scale in place: the previous position has to come
+            // from the copy the grid kept, not from the scale it was given.
+            scale.domain([0, 20]);
+            g.tickValues([5, 15])(transition);
+
+            expect(lineAt(15).getAttribute('y1')).toBe('-49.5');
+            expect(lineAt(15).getAttribute('y2')).toBe('-49.5');
+
+            await transition.end();
+
+            expect(lineAt(15).getAttribute('y1')).toBe('25.5');
+            expect(lineAt(15).getAttribute('opacity')).toBe('1');
+        });
+
+        it('starts entering lines at their new position when the previous scale cannot place them', async () => {
+            const band = scaleBand().domain(['a', 'b']).range([0, 90]);
+            const g = gridVertical(band).range([0, 50]).hideEdges(false);
+            const transition = animate();
+
+            g(container);
+
+            band.domain(['a', 'b', 'c']);
+            g(transition);
+
+            expect(lineAt('c').getAttribute('x1')).toBe('75');
+            expect(lineAt('c').getAttribute('x2')).toBe('75');
+            expect(lineAt('c').getAttribute('opacity')).toBe(FADED_OUT);
+
+            await transition.end();
+        });
+
+        it('slides exiting lines to their new position, fades them and removes them', async () => {
+            const scale = yScale();
+            const g = gridHorizontal(scale)
+                .range([0, 200])
+                .tickValues([2, 8])
+                .hideEdges(false);
+            const transition = animate();
+
+            g(container);
+            const exiting = lineAt(8);
+
+            scale.domain([0, 20]);
+            g.tickValues([2])(transition);
+
+            expect(lines('line.grid-line')).toHaveLength(2);
+
+            await transition.end();
+
+            expect(lines('line.grid-line')).toHaveLength(1);
+            expect(exiting.isConnected).toBe(false);
+            expect(exiting.getAttribute('opacity')).toBe(FADED_OUT);
+            expect(exiting.getAttribute('y1')).toBe('60.5');
+            expect(exiting.getAttribute('y2')).toBe('60.5');
+        });
+
+        it('leaves exiting lines in place when the new scale cannot place them', async () => {
+            const band = scaleBand().domain(['a', 'b']).range([0, 100]);
+            const g = gridVertical(band).range([0, 50]).hideEdges(false);
+            const transition = animate();
+
+            g(container);
+            const exiting = lineAt('b');
+
+            band.domain(['a']);
+            g(transition);
+
+            await transition.end();
+
+            expect(exiting.isConnected).toBe(false);
+            expect(exiting.getAttribute('x1')).toBe('75');
+            expect(exiting.getAttribute('x2')).toBe('75');
+        });
+
+        it('animates both directions of the 2D grid', async () => {
+            const transition = animate();
+
+            grid(xScale(), yScale()).ticks(4).hideEdges(false)(transition);
+
+            expect(attrs(H_LINES, 'opacity')).toContain(FADED_OUT);
+            expect(attrs(V_LINES, 'opacity')).toContain(FADED_OUT);
+
+            await transition.end();
+
+            expect(attrs(H_LINES, 'opacity')).not.toContain(FADED_OUT);
+            expect(attrs(V_LINES, 'opacity')).not.toContain(FADED_OUT);
+        });
     });
 
     describe('grid (2D)', () => {
@@ -229,6 +636,341 @@ describe('grid helper', () => {
             expect(lines('line.vertical-grid-line--highlighted')).toHaveLength(
                 1
             );
+        });
+
+        it('reads the vertical highlight back on its own', () => {
+            const g = grid(xScale(), yScale()).highlightH(1).highlightV(2);
+
+            expect(g.highlightH()).toBe(1);
+            expect(g.highlightV()).toBe(2);
+        });
+
+        it('returns the generator from every setter, so the calls chain', () => {
+            const g = grid(xScale(), yScale());
+
+            expect(g.scaleX(xScale())).toBe(g);
+            expect(g.scaleY(yScale())).toBe(g);
+            expect(g.direction('full')).toBe(g);
+            expect(g.offsetStart(1)).toBe(g);
+            expect(g.offsetStartH(1)).toBe(g);
+            expect(g.offsetStartV(1)).toBe(g);
+            expect(g.offsetEnd(1)).toBe(g);
+            expect(g.offsetEndH(1)).toBe(g);
+            expect(g.offsetEndV(1)).toBe(g);
+            expect(g.hideEdges(false)).toBe(g);
+            expect(g.hideEdgesH(false)).toBe(g);
+            expect(g.hideEdgesV(false)).toBe(g);
+            expect(g.ticks(1)).toBe(g);
+            expect(g.ticksH(1)).toBe(g);
+            expect(g.ticksV(1)).toBe(g);
+            expect(g.tickValues([1])).toBe(g);
+            expect(g.tickValuesH([1])).toBe(g);
+            expect(g.tickValuesV([1])).toBe(g);
+            expect(g.extendedLineH(1)).toBe(g);
+            expect(g.extendedLineV(1)).toBe(g);
+            expect(g.highlightH(1)).toBe(g);
+            expect(g.highlightV(1)).toBe(g);
+        });
+
+        it('spans each direction across the range of the other scale', () => {
+            grid(xScale(), yScale()).tickValues([1]).hideEdges(false)(
+                container
+            );
+
+            expect(attrs(H_LINES, 'x1')).toEqual(['0']);
+            expect(attrs(H_LINES, 'x2')).toEqual(['200']);
+            expect(attrs(V_LINES, 'y1')).toEqual(['100']);
+            expect(attrs(V_LINES, 'y2')).toEqual(['0']);
+        });
+
+        describe('scales', () => {
+            it('reads back the scales it was built with', () => {
+                const x = xScale();
+                const y = yScale();
+                const g = grid(x, y);
+
+                expect(g.scaleX()).toBe(x);
+                expect(g.scaleY()).toBe(y);
+            });
+
+            it('can be built empty and given its scales before drawing', () => {
+                const g = grid()
+                    .scaleX(xScale())
+                    .scaleY(yScale())
+                    .tickValues([1])
+                    .hideEdges(false);
+
+                g(container);
+
+                expect(attrs(H_LINES, 'y1')).toEqual(['90.5']);
+                expect(attrs(H_LINES, 'x2')).toEqual(['200']);
+                expect(attrs(V_LINES, 'x1')).toEqual(['50.5']);
+                expect(attrs(V_LINES, 'y1')).toEqual(['100']);
+            });
+
+            it('takes vertical ticks and horizontal range from a new x-scale', () => {
+                const g = grid(xScale(), yScale())
+                    .tickValues([1])
+                    .hideEdges(false)
+                    .scaleX(scaleLinear().domain([0, 2]).range([0, 400]));
+
+                g(container);
+
+                expect(attrs(V_LINES, 'x1')).toEqual(['200.5']);
+                expect(attrs(H_LINES, 'x2')).toEqual(['400']);
+            });
+
+            it('takes horizontal ticks and vertical range from a new y-scale', () => {
+                const g = grid(xScale(), yScale())
+                    .tickValues([1])
+                    .hideEdges(false)
+                    .scaleY(scaleLinear().domain([0, 2]).range([300, 0]));
+
+                g(container);
+
+                expect(attrs(H_LINES, 'y1')).toEqual(['150.5']);
+                expect(attrs(V_LINES, 'y1')).toEqual(['300']);
+            });
+        });
+
+        describe('direction', () => {
+            const draw = (direction) => {
+                const g = grid(xScale(), yScale()).ticks(4).hideEdges(false);
+
+                if (direction) {
+                    g.direction(direction);
+                }
+                g(container);
+
+                return g;
+            };
+
+            it('draws both directions by default', () => {
+                const g = draw();
+
+                expect(g.direction()).toBe('full');
+                expect(lines(H_LINES).length).toBeGreaterThan(0);
+                expect(lines(V_LINES).length).toBeGreaterThan(0);
+            });
+
+            it('draws only horizontal lines when horizontal', () => {
+                const g = draw('horizontal');
+
+                expect(g.direction()).toBe('horizontal');
+                expect(lines(H_LINES).length).toBeGreaterThan(0);
+                expect(lines(V_LINES)).toHaveLength(0);
+            });
+
+            it('draws only vertical lines when vertical', () => {
+                const g = draw('vertical');
+
+                expect(g.direction()).toBe('vertical');
+                expect(lines(H_LINES)).toHaveLength(0);
+                expect(lines(V_LINES).length).toBeGreaterThan(0);
+            });
+
+            it('removes and restores a direction across re-renders', () => {
+                const g = draw();
+                const count = lines(V_LINES).length;
+
+                g.direction('horizontal')(container);
+                expect(lines(V_LINES)).toHaveLength(0);
+
+                g.direction('full')(container);
+                expect(lines(V_LINES)).toHaveLength(count);
+            });
+        });
+
+        describe('ticks', () => {
+            it('sets the tick count of both directions', () => {
+                const g = grid(xScale(), yScale()).hideEdges(false).ticks(2);
+
+                g(container);
+
+                // d3 ticks(2): [0, 5, 10] on y and [0, 2, 4] on x
+                expect(g.ticks()).toBe(2);
+                expect(lines(H_LINES)).toHaveLength(3);
+                expect(lines(V_LINES)).toHaveLength(3);
+            });
+
+            it('sets the count of each direction on its own', () => {
+                const g = grid(xScale(), yScale())
+                    .hideEdges(false)
+                    .ticksH(2)
+                    .ticksV(4);
+
+                g(container);
+
+                expect(g.ticksH()).toBe(2);
+                expect(g.ticksV()).toBe(4);
+                expect(lines(H_LINES)).toHaveLength(3);
+                expect(lines(V_LINES)).toHaveLength(5);
+            });
+        });
+
+        describe('tickValues', () => {
+            it('starts with no tick values in either direction', () => {
+                const g = grid(xScale(), yScale());
+
+                expect(g.tickValues()).toBeNull();
+                expect(g.tickValuesH()).toBeNull();
+                expect(g.tickValuesV()).toBeNull();
+            });
+
+            it('sets the values of both directions', () => {
+                const g = grid(xScale(), yScale())
+                    .hideEdges(false)
+                    .tickValues([1, 2]);
+
+                g(container);
+
+                expect(g.tickValues()).toEqual([1, 2]);
+                expect(attrs(H_LINES, 'y1')).toEqual(['90.5', '80.5']);
+                expect(attrs(V_LINES, 'x1')).toEqual(['50.5', '100.5']);
+            });
+
+            it('sets the values of each direction on its own', () => {
+                const g = grid(xScale(), yScale())
+                    .hideEdges(false)
+                    .tickValuesH([5])
+                    .tickValuesV([1, 3]);
+
+                g(container);
+
+                expect(g.tickValuesH()).toEqual([5]);
+                expect(g.tickValuesV()).toEqual([1, 3]);
+                expect(attrs(H_LINES, 'y1')).toEqual(['50.5']);
+                expect(attrs(V_LINES, 'x1')).toEqual(['50.5', '150.5']);
+            });
+
+            it('goes back to the ticks of the scales when cleared', () => {
+                const g = grid(xScale(), yScale())
+                    .ticks(2)
+                    .hideEdges(false)
+                    .tickValues([1]);
+
+                g(container);
+                expect(lines(H_LINES)).toHaveLength(1);
+
+                g.tickValues(null)(container);
+                expect(lines(H_LINES)).toHaveLength(3);
+                expect(lines(V_LINES)).toHaveLength(3);
+            });
+        });
+
+        describe('offsets', () => {
+            const build = () =>
+                grid(xScale(), yScale()).tickValues([1]).hideEdges(false);
+
+            it('applies offsetStart to both directions', () => {
+                const g = build().offsetStart(5);
+
+                g(container);
+
+                expect(g.offsetStart()).toBe(5);
+                expect(attrs(H_LINES, 'x1')).toEqual(['-5']);
+                expect(attrs(V_LINES, 'y1')).toEqual(['105']);
+            });
+
+            it('applies offsetStartH to the horizontal lines only', () => {
+                const g = build().offsetStartH(5);
+
+                g(container);
+
+                expect(g.offsetStartH()).toBe(5);
+                expect(g.offsetStartV()).toBe(0);
+                expect(attrs(H_LINES, 'x1')).toEqual(['-5']);
+                expect(attrs(V_LINES, 'y1')).toEqual(['100']);
+            });
+
+            it('applies offsetStartV to the vertical lines only', () => {
+                const g = build().offsetStartV(5);
+
+                g(container);
+
+                expect(g.offsetStartV()).toBe(5);
+                expect(g.offsetStartH()).toBe(0);
+                expect(attrs(H_LINES, 'x1')).toEqual(['0']);
+                expect(attrs(V_LINES, 'y1')).toEqual(['105']);
+            });
+
+            it('applies offsetEnd to both directions', () => {
+                const g = build().offsetEnd(7);
+
+                g(container);
+
+                expect(g.offsetEnd()).toBe(7);
+                expect(attrs(H_LINES, 'x2')).toEqual(['207']);
+                expect(attrs(V_LINES, 'y2')).toEqual(['-7']);
+            });
+
+            it('applies offsetEndH to the horizontal lines only', () => {
+                const g = build().offsetEndH(7);
+
+                g(container);
+
+                expect(g.offsetEndH()).toBe(7);
+                expect(g.offsetEndV()).toBe(0);
+                expect(attrs(H_LINES, 'x2')).toEqual(['207']);
+                expect(attrs(V_LINES, 'y2')).toEqual(['0']);
+            });
+
+            it('applies offsetEndV to the vertical lines only', () => {
+                const g = build().offsetEndV(7);
+
+                g(container);
+
+                expect(g.offsetEndV()).toBe(7);
+                expect(g.offsetEndH()).toBe(0);
+                expect(attrs(H_LINES, 'x2')).toEqual(['200']);
+                expect(attrs(V_LINES, 'y2')).toEqual(['-7']);
+            });
+        });
+
+        describe('hideEdges', () => {
+            const build = () => grid(xScale(), yScale()).tickValues([1, 2, 3]);
+
+            it('hides the first edge of both directions by default', () => {
+                const g = build();
+
+                g(container);
+
+                expect(g.hideEdges()).toBe('first');
+                expect(lines(H_LINES)).toHaveLength(2);
+                expect(lines(V_LINES)).toHaveLength(2);
+            });
+
+            it('sets both directions', () => {
+                const g = build().hideEdges('both');
+
+                g(container);
+
+                expect(g.hideEdges()).toBe('both');
+                expect(lines(H_LINES)).toHaveLength(1);
+                expect(lines(V_LINES)).toHaveLength(1);
+            });
+
+            it('sets the horizontal lines on their own', () => {
+                const g = build().hideEdges(false).hideEdgesH('both');
+
+                g(container);
+
+                expect(g.hideEdgesH()).toBe('both');
+                expect(g.hideEdgesV()).toBe(false);
+                expect(lines(H_LINES)).toHaveLength(1);
+                expect(lines(V_LINES)).toHaveLength(3);
+            });
+
+            it('sets the vertical lines on their own', () => {
+                const g = build().hideEdges(false).hideEdgesV('both');
+
+                g(container);
+
+                expect(g.hideEdgesV()).toBe('both');
+                expect(g.hideEdgesH()).toBe(false);
+                expect(lines(H_LINES)).toHaveLength(3);
+                expect(lines(V_LINES)).toHaveLength(1);
+            });
         });
     });
 });
