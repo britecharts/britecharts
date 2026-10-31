@@ -2691,7 +2691,10 @@ Gets or Sets the area curve of the stacked area.
 brushChart.areaCurve('step')
 ```
 ## dateRange([_x]) ⇒ `dateRange` \| `module`
-Gets or Sets the dateRange for the selected part of the brush
+Gets or Sets the dateRange for the selected part of the brush. A drag
+updates it to the window customBrushEnd reports, and a click that clears
+the selection resets it. Every redraw places the window from it, and
+clears the selection when the range reaches outside the data.
 
 **Returns**: `dateRange` \| `module` - Current dateRange or Chart module to chain calls  
 
@@ -4284,7 +4287,7 @@ Gets or Sets the number format of the legend chart
 
 | Param | Type | Description |
 | --- | --- | --- |
-| _x | `Array.<string>` | = 's'      Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
+| _x | `Array.<string>` | = '~s'     Desired numberFormat for the chart. See examples [here](https://d3js.org/d3-format) |
 
 ## unit([_x]) ⇒ `String` \| `module`
 Gets or Sets the unit of the value

@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.0bec1515.css">
-<script src="/britecharts/assets/js/runtime~main.133763a7.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.a3ae4d15.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.7dce97bd.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.de44a5c5.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -223,7 +223,10 @@ form.</p>
 <div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token plain">brushChart</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">areaCurve</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&#x27;step&#x27;</span><span class="token punctuation" style="color:#393A34">)</span><br></div></code></pre></div></div>
 <p><a name="module_Brush--exports.dateRange" id="module_Brush--exports.dateRange" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="daterange_x--daterange--module">dateRange([_x]) ⇒ <code>dateRange</code> | <code>module</code><a href="#daterange_x--daterange--module" class="hash-link" aria-label="Direct link to daterange_x--daterange--module" title="Direct link to daterange_x--daterange--module" translate="no">​</a></h2>
-<p>Gets or Sets the dateRange for the selected part of the brush</p>
+<p>Gets or Sets the dateRange for the selected part of the brush. A drag
+updates it to the window customBrushEnd reports, and a click that clears
+the selection resets it. Every redraw places the window from it, and
+clears the selection when the range reaches outside the data.</p>
 <p><strong>Kind</strong>: static method of <a href="#exp_module_Brush--exports" class=""><code>exports</code></a><br>
 <strong>Returns</strong>: <code>dateRange</code> | <code>module</code> - Current dateRange or Chart module to chain calls<br>
 <strong>Access</strong>: public</p>
