@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>C2 · one script tag, drawn with render</title>
+    <link rel="stylesheet" href="/src/page.css">
+    <link rel="stylesheet" href="/vendor/styles/bundle/britecharts.min.css">
+    <script src="/vendor/cdn/bundle/core.cdn.min.js"></script>
+</head>
+<body>
+    <h1>C2 · one script tag, drawn with render</h1>
+    <div class="bar-container"></div>
+    <script>
+        var barData = [
+            { name: "Luminous", value: 2 },
+            { name: "Glittering", value: 5 },
+            { name: "Intense", value: 4 },
+            { name: "Radiant", value: 3 },
+        ];
+
+        core.bar()
+            .margin({ left: 100 })
+            .isHorizontal(true)
+            .height(400)
+            .width(600)
+            .tooltip(core.miniTooltip().title("Brightness"))
+            .render(".bar-container", barData);
+    </script>
+</body>
+</html>

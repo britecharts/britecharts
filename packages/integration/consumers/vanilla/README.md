@@ -7,6 +7,7 @@ from npm. One HTML page per consumption path:
 | Page | Path exercised |
 |---|---|
 | `cdn-bundle.html` | `dist/cdn/bundle/core.cdn.min.js` as a script tag, global `core` |
+| `cdn-render.html` | that bundle as the only script: no d3 on the page, drawn with `render`, with a tooltip from the `tooltip` setting |
 | `umd-bundle.html` | `dist/umd/bundle/core.bundled.min.cjs` (the package `main`) through Vite |
 | `esm-bundle.html` | `import { bar } from '@britecharts/core'` (the package `module` entry) |
 | `esm-chart.html` | `import bar from '@britecharts/core/src/charts/bar/bar.js'` |

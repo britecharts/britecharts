@@ -22,6 +22,12 @@ const PAGES = [
         { bars: true },
     ],
     [
+        'C2',
+        `${VANILLA}/cdn-render.html`,
+        'one script tag: no d3 on the page, drawn with `render`',
+        { bars: true, noD3: true, miniTooltip: 'Brightness' },
+    ],
+    [
         'C3',
         `${VANILLA}/umd-bundle.html`,
         'UMD bundle (package main) through a bundler',
@@ -158,6 +164,18 @@ for (const [id, url, how, expects] of PAGES) {
             await expect(
                 page.locator('.bar-container svg.bar-chart rect.bar')
             ).toHaveCount(barData.length);
+        }
+        if (expects.noD3) {
+            expect(
+                await page.evaluate(() => typeof window.d3),
+                'the page should need no d3 of its own'
+            ).toBe('undefined');
+        }
+        if (expects.miniTooltip) {
+            await page.locator('.bar-container rect.bar').first().hover();
+            await expect(
+                page.locator('.bar-container .britechart-mini-tooltip')
+            ).toContainText(expects.miniTooltip);
         }
         if (expects.lifecycle) {
             const state = await page
