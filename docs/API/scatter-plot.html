@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-W3BQXCKSD9",{anonymize_ip:!0})</script><link rel="stylesheet" href="/britecharts/assets/css/styles.bf0fa77b.css">
-<script src="/britecharts/assets/js/runtime~main.26c3801f.js" defer="defer"></script>
-<script src="/britecharts/assets/js/main.0c4e9eb1.js" defer="defer"></script>
+<script src="/britecharts/assets/js/runtime~main.d0ba5623.js" defer="defer"></script>
+<script src="/britecharts/assets/js/main.d35a2889.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -926,8 +926,8 @@ The method accepts both positive and negative values.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>_x</td><td><code>Number</code></td><td>Desired height for the chart</td></tr></tbody></table>
 <p><a name="module_Scatter-plot--exports.tooltip" id="module_Scatter-plot--exports.tooltip" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="tooltip_x--module--null">tooltip(_x) ⇒ <code>module</code> | <code>null</code><a href="#tooltip_x--module--null" class="hash-link" aria-label="Direct link to tooltip_x--module--null" title="Direct link to tooltip_x--module--null" translate="no">​</a></h2>
-<p>Gets or Sets the tooltip the chart shows: a <code>tooltip()</code> or a
-<code>miniTooltip()</code>, set on this chart only. The chart connects it to its
+<p>Gets or Sets the tooltip the chart shows: a <code>tooltip()</code>, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -957,7 +957,7 @@ removes the one it had.</p>
 
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>_x</td><td><code>module</code> | <code>null</code></td><td>The tooltip to show</td></tr></tbody></table>
 <p><strong>Example</strong></p>
-<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token function" style="color:#d73a49">scatterPlot</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">tooltip</span><span class="token punctuation" style="color:#393A34">(</span><span class="token function" style="color:#d73a49">miniTooltip</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">render</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&#x27;#chart&#x27;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> data</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><br></div></code></pre></div></div>
+<div class="language-js codeBlockContainer_IyKD theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_m5SM"><pre tabindex="0" class="prism-code language-js codeBlock_VSdK thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_Prwg"><div class="token-line" style="color:#393A34"><span class="token function" style="color:#d73a49">scatterPlot</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">tooltip</span><span class="token punctuation" style="color:#393A34">(</span><span class="token function" style="color:#d73a49">tooltip</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token method function property-access" style="color:#d73a49">render</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">&#x27;#chart&#x27;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> data</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><br></div></code></pre></div></div>
 <p><a name="module_Scatter-plot--exports.render" id="module_Scatter-plot--exports.render" class="anchorTargetStickyNavbar_YBOc"></a></p>
 <h2 class="anchor anchorTargetStickyNavbar_YBOc" id="rendertarget-data--module">render(target, [data]) ⇒ <code>module</code><a href="#rendertarget-data--module" class="hash-link" aria-label="Direct link to rendertarget-data--module" title="Direct link to rendertarget-data--module" translate="no">​</a></h2>
 <p>Draws the chart into a target: a CSS selector, an element or a d3

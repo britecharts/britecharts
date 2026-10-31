@@ -103,7 +103,7 @@ Coming from version 2? Read the [migration guide][migration-guide].
     core.bar()
         .height(300)
         .a11yTitle('Signups by plan')
-        .tooltip(core.miniTooltip())
+        .tooltip(core.tooltip())
         .render('.bar-container', [
             { name: 'Pro', value: 412 },
             { name: 'Team', value: 236 },
@@ -121,14 +121,14 @@ npm install @britecharts/core
 ```
 
 ```js
-import { bar, miniTooltip } from '@britecharts/core';
+import { bar, tooltip } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 
 bar()
     .isHorizontal(true)
     .height(300)
     .a11yTitle('Signups by plan')
-    .tooltip(miniTooltip())
+    .tooltip(tooltip())
     .render('.bar-container', data);
 ```
 
@@ -980,7 +980,7 @@ To change a colour, set its token on the charts:
 The data colours come from `colorSchema` and `colorMap`, not from these tokens. Exports carry the resolved colours, so an image exported in dark mode keeps its dark background. Browsers without `light-dark()` (before 2024) show the light values.
 
 ## How to Add a Tooltip to a Chart
-Give the chart a tooltip with its `tooltip` setting: `tooltip()` for the line, stacked area, stacked bar and grouped bar charts, which list one row per topic, or `miniTooltip()` for the bar, heatmap and scatter plot, which show one value. The donut has no tooltip: it shows the hovered slice in its centre instead.
+Give the chart a tooltip with its `tooltip` setting. The same `tooltip()` works on every chart that takes one: the line, stacked area, stacked bar and grouped bar charts list one row per topic, and the bar, heatmap and scatter plot show one value. It has no title until you set one, and it shows a single value with two decimals unless you set a `numberFormat`. The donut has no tooltip: it shows the hovered slice in its centre instead.
 
 ```js
 stackedBar()
@@ -1483,7 +1483,7 @@ lineChart.on('customMouseMove', function (dataPoint, [x, y], size, colorMap) {
 lineChart.on('customMouseMove', chartTooltip.update);
 ```
 
-With that, `tooltip` and `miniTooltip` are one component: `tooltip` shows a list or a single value by the shape of the data point (or as told by `layout`), and `miniTooltip` is `tooltip().layout('single').title('').numberFormat('.2f')`. The tooltip now keeps itself inside the chart, follows the pointer (the stacked and grouped bar charts show it over a bar only), and its `tooltipOffset` default is `{ x: 0, y: 0 }` (it was `{ x: 0, y: -55 }`, for a placement that no longer exists). `xAxisValueType` defaults to `'auto'`, which shows dates as dates, numbers as numbers and category names as they are; set `'date'` or `'number'` to force one, as before. In React, `Tooltip`'s `customMouseMove` callback receives the new order, and `Tooltip` now wraps the bar, scatter plot and heatmap charts too.
+With that, `tooltip` and `miniTooltip` are one component: `tooltip` shows a list or a single value by the shape of the data point (or as told by `layout`), so use `tooltip()` everywhere. `miniTooltip()` still works but is deprecated, logs a warning and goes in version 4. `tooltip()` also no longer shows the placeholder "Tooltip title": if your tooltips relied on it, set `title`. The tooltip now keeps itself inside the chart, follows the pointer (the stacked and grouped bar charts show it over a bar only), and its `tooltipOffset` default is `{ x: 0, y: 0 }` (it was `{ x: 0, y: -55 }`, for a placement that no longer exists). `xAxisValueType` defaults to `'auto'`, which shows dates as dates, numbers as numbers and category names as they are; set `'date'` or `'number'` to force one, as before. In React, `Tooltip`'s `customMouseMove` callback receives the new order, and `Tooltip` now wraps the bar, scatter plot and heatmap charts too.
 
 11. Replace the Step chart
 
@@ -1635,7 +1635,7 @@ barContainer.datum(data).call(barChart);
 barContainer.select('.metadata-group').datum([]).call(chartTooltip);
 
 // Version 3
-barChart.tooltip(miniTooltip()).render(barContainer, data);
+barChart.tooltip(tooltip()).render(barContainer, data);
 ```
 
 ## Summary of Changes
@@ -2537,8 +2537,8 @@ Gets or Sets the number of vertical ticks on the chart
 | _x | `Number` | = 6         Desired number of vertical ticks for the graph |
 
 ## tooltip(_x) ⇒ `module` \| `null`
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -2557,7 +2557,7 @@ removes the one it had.
 
 **Example**  
 ```js
-bar().tooltip(miniTooltip().title('Uses')).render('#chart', data);
+bar().tooltip(tooltip().title('Uses')).render('#chart', data);
 ```
 ## render(target, [data]) ⇒ `module`
 Draws the chart into a target: a CSS selector, an element or a d3
@@ -3930,8 +3930,8 @@ Gets or Sets the x and y offset of ticks of the y axis on the chart
 | [_x] | `Object` | `{ y: -8, x: -20 }` | Desired offset |
 
 ## tooltip(_x) ⇒ `module` \| `null`
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -4207,8 +4207,8 @@ Gets or Sets the width of the chart
 | _x | `Number` | `780` | Desired width for the chart |
 
 ## tooltip(_x) ⇒ `module` \| `null`
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -4227,7 +4227,7 @@ removes the one it had.
 
 **Example**  
 ```js
-heatmap().tooltip(miniTooltip()).render('#chart', data);
+heatmap().tooltip(tooltip()).render('#chart', data);
 ```
 ## render(target, [data]) ⇒ `module`
 Draws the chart into a target: a CSS selector, an element or a d3
@@ -4934,8 +4934,8 @@ Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisV
 line.xAxisValueType('number').xAxisScale('logarithmic')
 ```
 ## tooltip(_x) ⇒ `module` \| `null`
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -5540,8 +5540,8 @@ Gets or Sets the xTicks of the chart
 | _x | `Number` | Desired height for the chart |
 
 ## tooltip(_x) ⇒ `module` \| `null`
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -5560,7 +5560,7 @@ removes the one it had.
 
 **Example**  
 ```js
-scatterPlot().tooltip(miniTooltip()).render('#chart', data);
+scatterPlot().tooltip(tooltip()).render('#chart', data);
 ```
 ## render(target, [data]) ⇒ `module`
 Draws the chart into a target: a CSS selector, an element or a d3
@@ -6286,8 +6286,8 @@ Gets or Sets the yAxisBaseline - this is the y-value where the area starts from 
 stackedArea.yAxisBaseline(20)
 ```
 ## tooltip(_x) ⇒ `module` \| `null`
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -6707,8 +6707,8 @@ Gets or Sets the number of vertical ticks of the axis on the chart
 | _x | `Number` | = 5      Desired vertical ticks |
 
 ## tooltip(_x) ⇒ `module` \| `null`
-Gets or Sets the tooltip the chart shows: a `tooltip()` or a
-`miniTooltip()`, set on this chart only. The chart connects it to its
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
 pointer and keyboard events, draws it in place, and sets the labels its
 data points need, unless they were set on the tooltip; it does so now
 if the chart has drawn, and again on every draw. Its event handlers go
@@ -6784,8 +6784,8 @@ multi-value charts -- line, stacked area, stacked bar and grouped bar --
 or a **single value** (a title, the element's name and a big value) for
 the single-value charts -- bar, scatter plot, heatmap and donut. By
 default it picks the layout from the data point it is given; `layout()`
-forces one. `miniTooltip` is this component with the single layout, an
-empty title and a `.2f` number format.
+forces one. It shows a title only if you set one, and a single value with
+two decimals unless you set a format.
 
 The tooltip keeps itself inside the chart: it measures the svg it is drawn
 in, sits beside its anchor, flips to the other side when there is no room
@@ -6826,32 +6826,6 @@ without their colours, or no value:
 
 In React, `Tooltip` starts from `topicLabel('values')`, so the line chart
 is the one that needs a setting there: `topicLabel="topics"`.
-
-## miniTooltip, the single-value preset
-
-`miniTooltip()` is `tooltip().layout('single').title('').numberFormat('.2f')`:
-the same component with the single-value layout, no title and a `.2f`
-number format, for the bar, scatter plot, heatmap and donut charts. Every
-accessor documented on this page is available on it.
-
-```js
-const barChart = bar(),
-    chartTooltip = miniTooltip();
-
-barChart
-    .width(500)
-    .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', chartTooltip.update)
-    .on('customMouseOut', chartTooltip.hide);
-
-d3Selection.select('.css-selector')
-    .datum(dataset)
-    .call(barChart);
-
-d3Selection.select('.metadata-group')
-    .datum([])
-    .call(chartTooltip);
-```
 
 **Example**  
 ```js
@@ -7016,7 +6990,8 @@ first `update`, which is what the multi-value charts need.
 | [position] | `Array.<Number>` | [x, y] to anchor the tooltip to, in pixels |
 
 ## title(_x) ⇒ `String` \| `module`
-Gets or Sets the title of the tooltip (to only show the date, set a blank title)
+Gets or Sets the title of the tooltip. By default it has none, so a list
+shows only the date
 
 **Kind**: method of `tooltip`  
 **Returns**: `String` \| `module` - Current title or module to chain calls  
@@ -7046,7 +7021,7 @@ Gets or Sets the layout: 'list' shows the title and one row per topic,
 with a colour dot, the topic's name and its value (the multi-value
 charts: line, stacked area, stacked bar and grouped bar); 'single'
 shows the title, the name and a big value (the single-value charts:
-bar, scatter plot, heatmap and donut -- what `miniTooltip` renders);
+bar, scatter plot, heatmap and donut);
 'auto', the default, picks by the data point: a list when it carries
 an array under the topic label, a single value otherwise. Set before
 the tooltip is drawn.
