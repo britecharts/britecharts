@@ -26,7 +26,8 @@ import stackedBarData from './stackedBar/stackedBarChart.fixtures';
 // Every component whose chart has an exportChart command, each rendered with
 // the prop set. An svg filename downloads without loading an image, which
 // jsdom cannot do, so the whole path is checked: the prop reaches the
-// wrapper, the wrapper calls the chart's exportChart, and a link is clicked.
+// wrapper, the wrapper calls the chart's exportChart once the chart has drawn,
+// and a link is clicked with the chart's svg.
 const CHARTS: [string, (filename: string) => ReactElement][] = [
     ['Bar', (f) => <Bar data={barData.withLetters()} exportChart={f} />],
     [
@@ -76,7 +77,7 @@ const CHARTS: [string, (filename: string) => ReactElement][] = [
 ];
 
 describe('the exportChart prop', () => {
-    let downloads: string[];
+    let downloads: { filename: string; href: string }[];
     let clickSpy: { mockRestore: () => void };
 
     beforeEach(() => {
@@ -84,7 +85,7 @@ describe('the exportChart prop', () => {
         clickSpy = vi
             .spyOn(HTMLAnchorElement.prototype, 'click')
             .mockImplementation(function (this: HTMLAnchorElement) {
-                downloads.push(this.download);
+                downloads.push({ filename: this.download, href: this.href });
             });
     });
 
@@ -95,10 +96,17 @@ describe('the exportChart prop', () => {
 
     it.each(CHARTS)(
         'should download the %s chart as the file named',
-        (name, render) => {
+        async (name, render) => {
             mount(render(`${name}.svg`));
 
-            expect(downloads).toEqual([`${name}.svg`]);
+            await vi.waitFor(() => expect(downloads).toHaveLength(1));
+
+            const [{ filename, href }] = downloads;
+            const content = decodeURIComponent(href);
+
+            expect(filename).toBe(`${name}.svg`);
+            expect(content).toContain('<svg');
+            expect(content).not.toContain('undefined');
         }
     );
 });

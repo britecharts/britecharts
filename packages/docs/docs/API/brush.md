@@ -158,7 +158,10 @@ brushChart.areaCurve('step')
 <a name="module_Brush--exports.dateRange" id="module_Brush--exports.dateRange"></a>
 
 ## dateRange([_x]) ⇒ <code>dateRange</code> \| <code>module</code>
-Gets or Sets the dateRange for the selected part of the brush
+Gets or Sets the dateRange for the selected part of the brush. A drag
+updates it to the window customBrushEnd reports, and a click that clears
+the selection resets it. Every redraw places the window from it, and
+clears the selection when the range reaches outside the data.
 
 **Kind**: static method of [<code>exports</code>](#exp_module_Brush--exports)  
 **Returns**: <code>dateRange</code> \| <code>module</code> - Current dateRange or Chart module to chain calls  

@@ -120,12 +120,29 @@ const isNotEventConfig = (configName: string) => !isEventConfig(configName);
 // have a flag turned back off (isLoading={false} could not end a loading state).
 const isSet = (value: unknown) => value !== undefined && value !== null;
 
+// `exportChart` downloads what the chart has drawn, and every wrapper applies
+// its configuration before it draws. The draw runs in the same tick, so a
+// microtask is enough to call the export once there is something to download.
+const exportAfterDraw = (chart: DynamicChart, filename: unknown) => {
+    Promise.resolve()
+        .then(() => chart['exportChart'](filename))
+        .catch((error: unknown) => {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        });
+};
+
 const setChartProperty = (
     chart: DynamicChart,
     configuration: Record<string, unknown>,
     key: string
 ) => {
-    if (isSet(configuration[key])) {
+    if (!isSet(configuration[key])) {
+        return;
+    }
+    if (key === 'exportChart') {
+        exportAfterDraw(chart, configuration[key]);
+    } else {
         chart[key](configuration[key]);
     }
 };

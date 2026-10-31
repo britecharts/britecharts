@@ -2,6 +2,7 @@
 import { select } from 'd3-selection';
 import type { Selection } from 'd3-selection';
 
+import bar from '../bar/bar';
 import legend from '../legend/legend';
 import { DonutDataBuilder } from '../donut/donutChartDataBuilder';
 import exportChart from './export';
@@ -18,6 +19,22 @@ type ExportContext = {
 };
 
 const aDonutTestDataSet = () => new DonutDataBuilder();
+
+const context = (margin: { left?: number } = { left: 0 }): ExportContext => ({
+    width: () => 200,
+    height: () => 100,
+    margin: () => margin,
+});
+
+const NOT_DRAWN_ERROR =
+    'Britecharts: this chart has not been drawn, so there is nothing to export. Draw it before calling exportChart.';
+
+const decodeImageSource = (source: string) =>
+    new TextDecoder().decode(
+        Uint8Array.from(atob(source.split(',')[1]), (character) =>
+            character.charCodeAt(0)
+        )
+    );
 
 describe('export Helper', () => {
     // Inferred from the legend module rather than annotated: importing it
@@ -60,11 +77,6 @@ describe('export Helper', () => {
     });
 
     describe('exportChart', () => {
-        const context = (): ExportContext => ({
-            width: () => 200,
-            height: () => 100,
-            margin: () => ({ left: 0 }),
-        });
         let clicked: HTMLAnchorElement[];
 
         beforeEach(() => {
@@ -138,6 +150,34 @@ describe('export Helper', () => {
 
                 expect(clicked[0].href).toMatch(/^data:image\/svg\+xml/);
             });
+
+            describe('when the chart has not drawn', () => {
+                it('should reject and download nothing', async () => {
+                    const expected = 0;
+
+                    await expect(
+                        exportChart.exportChart.call(
+                            context(),
+                            undefined,
+                            'chart.svg'
+                        )
+                    ).rejects.toThrow(NOT_DRAWN_ERROR);
+                    const actual = clicked.length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should reject when called through a chart', async () => {
+                    const expected = 0;
+
+                    await expect(
+                        bar().exportChart('chart.svg', '')
+                    ).rejects.toThrow(NOT_DRAWN_ERROR);
+                    const actual = clicked.length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
         });
 
         describe('when given a title', () => {
@@ -206,6 +246,42 @@ describe('export Helper', () => {
         });
 
         describe('when the filename does not end in .svg', () => {
+            const pngData = 'data:image/png;base64,iVBORw0KGgo=';
+            const chartSvg = () =>
+                select<SVGSVGElement, unknown>('.test-container svg');
+            // jsdom never loads an image, so the event its src would fire in a
+            // browser is fired by hand. The listeners are attached before src
+            // is set, so firing it from the setter reaches them.
+            const stubImageOutcome = (outcome: 'load' | 'error') => {
+                const sources: string[] = [];
+
+                vi.spyOn(
+                    HTMLImageElement.prototype,
+                    'src',
+                    'set'
+                ).mockImplementation(function (
+                    this: HTMLImageElement,
+                    source: string
+                ) {
+                    sources.push(source);
+                    this.dispatchEvent(new Event(outcome));
+                });
+
+                return sources;
+            };
+            const stubCanvasOutput = () => {
+                const canvases: HTMLCanvasElement[] = [];
+                const toDataURLSpy = vi
+                    .spyOn(HTMLCanvasElement.prototype, 'toDataURL')
+                    .mockImplementation(function (this: HTMLCanvasElement) {
+                        canvases.push(this);
+
+                        return pngData;
+                    });
+
+                return { canvases, toDataURLSpy };
+            };
+
             it('should go through an image, for a png, and download nothing yet', () => {
                 const svg = select<SVGSVGElement, unknown>(
                     '.test-container svg'
@@ -220,10 +296,347 @@ describe('export Helper', () => {
                 expect(result).toBeInstanceOf(Promise);
                 expect(clicked).toHaveLength(0);
             });
+
+            describe('when the image loads', () => {
+                it('should download the canvas as a png under that filename', async () => {
+                    stubImageOutcome('load');
+                    const { toDataURLSpy } = stubCanvasOutput();
+                    const expected = {
+                        count: 1,
+                        download: 'chart.png',
+                        href: pngData,
+                        mimeType: 'image/png',
+                    };
+
+                    await exportChart.exportChart.call(
+                        context(),
+                        chartSvg(),
+                        'chart.png'
+                    );
+                    const actual = {
+                        count: clicked.length,
+                        download: clicked[0].download,
+                        href: clicked[0].href,
+                        mimeType: toDataURLSpy.mock.calls[0][0],
+                    };
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should call the file britechart.png when given no filename', async () => {
+                    stubImageOutcome('load');
+                    stubCanvasOutput();
+                    const expected = 'britechart.png';
+
+                    await exportChart.exportChart.call(context(), chartSvg());
+                    const actual = clicked[0].download;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should remove the download link from the page', async () => {
+                    stubImageOutcome('load');
+                    stubCanvasOutput();
+                    const expected = 0;
+
+                    await exportChart.exportChart.call(
+                        context(),
+                        chartSvg(),
+                        'chart.png'
+                    );
+                    const actual =
+                        document.querySelectorAll('a[download]').length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw the image on a canvas the size of the chart', async () => {
+                    stubImageOutcome('load');
+                    const { canvases } = stubCanvasOutput();
+                    const expected = { width: 200, height: 100 };
+
+                    await exportChart.exportChart.call(
+                        context(),
+                        chartSvg(),
+                        'chart.png'
+                    );
+                    const [canvas] = canvases;
+                    const actual = {
+                        width: canvas.width,
+                        height: canvas.height,
+                    };
+
+                    expect(actual).toEqual(expected);
+                    expect(
+                        canvas.getContext('2d')!.drawImage
+                    ).toHaveBeenCalledTimes(1);
+                });
+
+                it('should make the canvas taller by the title band when given a title', async () => {
+                    stubImageOutcome('load');
+                    const { canvases } = stubCanvasOutput();
+                    const expected = 130;
+
+                    await exportChart.exportChart.call(
+                        context(),
+                        chartSvg(),
+                        'chart.png',
+                        'Visits'
+                    );
+                    const actual = canvases[0].height;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render the title into the image', async () => {
+                    const sources = stubImageOutcome('load');
+
+                    stubCanvasOutput();
+                    const expected = '>HIPERTENSIÓN 日本語</text>';
+
+                    await exportChart.exportChart.call(
+                        context(),
+                        chartSvg(),
+                        'chart.png',
+                        'HIPERTENSIÓN 日本語'
+                    );
+                    const actual = decodeImageSource(sources[0]);
+
+                    expect(actual).toContain(expected);
+                });
+            });
+
+            describe('when the chart has not drawn', () => {
+                it('should reject and download nothing', async () => {
+                    stubImageOutcome('load');
+                    stubCanvasOutput();
+                    const expected = 0;
+
+                    await expect(
+                        exportChart.exportChart.call(
+                            context(),
+                            undefined,
+                            'chart.png'
+                        )
+                    ).rejects.toThrow(NOT_DRAWN_ERROR);
+                    const actual = clicked.length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when the image fails to load', () => {
+                it('should reject and download nothing', async () => {
+                    stubImageOutcome('error');
+                    stubCanvasOutput();
+                    const expected = 0;
+
+                    await expect(
+                        exportChart.exportChart.call(
+                            context(),
+                            chartSvg(),
+                            'chart.png'
+                        )
+                    ).rejects.toBeInstanceOf(Event);
+                    const actual = clicked.length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+        });
+
+        describe('when the browser is Internet Explorer', () => {
+            type NavigatorInIE = Navigator & { msSaveOrOpenBlob?: () => void };
+
+            beforeEach(() => {
+                (navigator as NavigatorInIE).msSaveOrOpenBlob = vi.fn();
+                // Read once, when the module loads, so it needs a fresh copy
+                vi.resetModules();
+            });
+
+            afterEach(() => {
+                delete (navigator as NavigatorInIE).msSaveOrOpenBlob;
+            });
+
+            it('should explain the limitation, return false and download nothing', async () => {
+                const errorSpy = vi
+                    .spyOn(console, 'error')
+                    .mockImplementation(() => {});
+                const { default: freshExport } = await import('./export');
+                const expected = {
+                    result: false,
+                    clicks: 0,
+                    logged: 1,
+                };
+
+                const result = freshExport.exportChart.call(
+                    context(),
+                    select<SVGSVGElement, unknown>('.test-container svg'),
+                    'chart.svg'
+                );
+                const actual = {
+                    result,
+                    clicks: clicked.length,
+                    logged: errorSpy.mock.calls.length,
+                };
+
+                expect(actual).toEqual(expected);
+                expect(errorSpy.mock.calls[0][0]).toContain(
+                    'not available for IE'
+                );
+            });
+        });
+
+        describe('when the runtime has no navigator, as on Node 20', () => {
+            beforeEach(() => {
+                // Read once, when the module loads, so it needs a fresh copy
+                vi.resetModules();
+            });
+
+            afterEach(() => {
+                vi.unstubAllGlobals();
+            });
+
+            it('should still load and download the chart', async () => {
+                vi.stubGlobal('navigator', undefined);
+                const { default: freshExport } = await import('./export');
+                const expected = 'chart.svg';
+
+                await freshExport.exportChart.call(
+                    context(),
+                    select<SVGSVGElement, unknown>('.test-container svg'),
+                    'chart.svg'
+                );
+                const actual = clicked[0].download;
+
+                expect(actual).toEqual(expected);
+            });
         });
     });
 
-    describe.skip('convertSvgToHtml', () => {
+    describe('convertSvgToHtml', () => {
+        const toHtml = (title?: string, margin?: { left?: number }) =>
+            exportChart.convertSvgToHtml.call(
+                context(margin),
+                select('.test-container svg'),
+                title
+            )!;
+        // jsdom has no cascade to resolve a var() through, so the resolved
+        // colours a browser would give back are stubbed per theme token.
+        const stubThemeColors = (colors: Record<string, string>) => {
+            const getComputedStyle = window.getComputedStyle.bind(window);
+
+            vi.spyOn(window, 'getComputedStyle').mockImplementation(
+                (element, pseudoElement) => {
+                    const token = Object.keys(colors).find((name) =>
+                        (element as SVGElement).style
+                            ?.getPropertyValue('fill')
+                            .includes(name)
+                    );
+
+                    return token
+                        ? ({ fill: colors[token] } as CSSStyleDeclaration)
+                        : getComputedStyle(element, pseudoElement);
+                }
+            );
+        };
+
+        afterEach(() => {
+            vi.restoreAllMocks();
+        });
+
+        describe('when given no selection', () => {
+            it('should return undefined', () => {
+                const expected = undefined;
+                const actual = exportChart.convertSvgToHtml.call(
+                    context(),
+                    null
+                );
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when the user agent says FireFox', () => {
+            it('should leave the url references in the markup alone', () => {
+                vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(
+                    'Mozilla/5.0 FireFox/1.0'
+                );
+                document
+                    .querySelector('.test-container svg')!
+                    .setAttribute('filter', 'url("#shadow")');
+                const expected = 'filter="url(&quot;#shadow&quot;)"';
+                const actual = toHtml();
+
+                expect(actual).toContain(expected);
+            });
+        });
+
+        describe('when the theme colours can not be resolved', () => {
+            it('should fall back to a white background', () => {
+                const expected = '<style>svg{background:white;}</style>';
+                const actual = toHtml();
+
+                expect(actual).toContain(expected);
+            });
+        });
+
+        describe('when a theme colour resolves to none', () => {
+            it('should fall back to a white background', () => {
+                stubThemeColors({ '--bc-background': 'none' });
+                const expected = '<style>svg{background:white;}</style>';
+                const actual = toHtml();
+
+                expect(actual).toContain(expected);
+            });
+        });
+
+        describe('when the theme colours resolve', () => {
+            it('should carry the background in the exported markup', () => {
+                stubThemeColors({ '--bc-background': 'rgb(18, 18, 20)' });
+                const expected = '<style>svg{background:rgb(18, 18, 20);}';
+                const actual = toHtml();
+
+                expect(actual).toContain(expected);
+            });
+
+            it('should set the title in the resolved muted text colour', () => {
+                stubThemeColors({ '--bc-text-muted': 'rgb(200, 201, 202)' });
+                const expected = 'fill="rgb(200, 201, 202)">Visits</text>';
+                const actual = toHtml('Visits');
+
+                expect(actual).toContain(expected);
+            });
+        });
+
+        it('should leave nothing behind in the chart after reading its colours', () => {
+            const svgNode = document.querySelector('.test-container svg')!;
+            const expected = svgNode.childElementCount;
+
+            toHtml('Visits');
+            const actual = svgNode.childElementCount;
+
+            expect(actual).toEqual(expected);
+        });
+
+        describe('when the chart has a left margin', () => {
+            it('should line the title up with it', () => {
+                const expected = '<text x="40" y="20"';
+                const actual = toHtml('Visits', { left: 40 });
+
+                expect(actual).toContain(expected);
+            });
+        });
+
+        describe('when the margin has no left value', () => {
+            it('should start the title at the left edge', () => {
+                const expected = '<text x="0" y="20"';
+                const actual = toHtml('Visits', {});
+
+                expect(actual).toContain(expected);
+            });
+        });
+
         describe('when the title is regular text', () => {
             it('should add the title to the chart html', () => {
                 const expected = 1;
@@ -269,6 +682,59 @@ describe('export Helper', () => {
     });
 
     describe('createImage', () => {
+        const expectedMarkup = '<svg><text>日本語 – Ó</text></svg>';
+
+        it('should point at the svg as a base64 data url, unicode included', () => {
+            const expected = expectedMarkup;
+            const { src } = exportChart.createImage(expectedMarkup);
+            const actual = decodeImageSource(src);
+
+            expect(src).toMatch(/^data:image\/svg\+xml;base64,/);
+            expect(actual).toEqual(expected);
+        });
+
+        describe('when btoa is not available', () => {
+            beforeEach(() => {
+                vi.resetModules();
+            });
+
+            afterEach(() => {
+                vi.unstubAllGlobals();
+            });
+
+            it('should encode the same with the bundled encoder', async () => {
+                vi.stubGlobal('btoa', undefined);
+                const { default: freshExport } = await import('./export');
+                const expected = expectedMarkup;
+                const actual = decodeImageSource(
+                    freshExport.createImage(expectedMarkup).src
+                );
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when there is no window', () => {
+            beforeEach(() => {
+                vi.resetModules();
+            });
+
+            afterEach(() => {
+                vi.unstubAllGlobals();
+            });
+
+            it('should encode the same with the bundled encoder', async () => {
+                vi.stubGlobal('window', undefined);
+                const { default: freshExport } = await import('./export');
+                const expected = expectedMarkup;
+                const actual = decodeImageSource(
+                    freshExport.createImage(expectedMarkup).src
+                );
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
         describe('when callback is passed', () => {
             it('should be called at least once with one arg', () => {
                 const callbackSpy = vi.fn();

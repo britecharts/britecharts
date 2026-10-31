@@ -100,7 +100,9 @@ export interface BrushChartAPI
      * Gets or Sets the dateRange for the selected part of the brush.
      *
      * The getter's members are nullable: the default is `[null, null]`, and
-     * the chart only draws a selection once both ends are set.
+     * the chart only draws a selection once both ends are set. A drag updates
+     * it to the window customBrushEnd reports, and a click that clears the
+     * selection resets it. Every redraw places the window from it.
      */
     dateRange(): [string | null, string | null];
     dateRange(dateRange: [string, string]): BrushChartModule;
@@ -225,6 +227,10 @@ export default function module(): BrushChartModule {
         // A range set before the chart has drawn cannot move a brush that does
         // not exist yet, so the first render applies it.
         hasPendingDateRange = false,
+        // A redraw leaves the window alone during a gesture: d3-brush reads
+        // the selection when the gesture ends, so moving it there would lose
+        // the drag of a consumer that redraws from customBrushStart.
+        isDragging = false,
         isLocked = false,
         chartWidth: number,
         chartHeight: number,
@@ -248,7 +254,6 @@ export default function module(): BrushChartModule {
         brushArea: Area<BrushDatum> | undefined,
         areaCurve = 'monotoneX',
         handle: ChartSelection<BaseType>,
-        chartGradientEl: ChartSelection<SVGStopElement>,
         gradient: ColorGradientType = colorHelper.colorGradients.greenBlue,
         roundingTimeInterval = 'timeDay';
 
@@ -318,6 +323,8 @@ export default function module(): BrushChartModule {
             if (hasPendingDateRange) {
                 hasPendingDateRange = false;
                 setBrushByDates(...dateRange);
+            } else if (!isDragging) {
+                redrawBrushWindow();
             }
         });
     }
@@ -413,26 +420,24 @@ export default function module(): BrushChartModule {
      * @return {void}
      */
     function buildGradient(): void {
-        if (!chartGradientEl) {
-            chartGradientEl = svg
-                .select('.metadata-group')
-                .append('linearGradient')
-                .attr('id', gradientId)
-                .attr('gradientUnits', 'userSpaceOnUse')
-                .attr('x1', 0)
-                .attr('x2', xScale(data[data.length - 1].date))
-                .attr('y1', 0)
-                .attr('y2', 0)
-                .selectAll('stop')
-                .data([
-                    { offset: '0%', color: gradient[0] },
-                    { offset: '100%', color: gradient[1] },
-                ])
-                .enter()
-                .append('stop')
-                .attr('offset', ({ offset }) => offset)
-                .attr('stop-color', ({ color }) => color);
-        }
+        svg.select('.metadata-group')
+            .selectAll('linearGradient')
+            .data([0])
+            .join('linearGradient')
+            .attr('id', gradientId)
+            .attr('gradientUnits', 'userSpaceOnUse')
+            .attr('x1', 0)
+            .attr('x2', xScale(data[data.length - 1].date))
+            .attr('y1', 0)
+            .attr('y2', 0)
+            .selectAll('stop')
+            .data([
+                { offset: '0%', color: gradient[0] },
+                { offset: '100%', color: gradient[1] },
+            ])
+            .join('stop')
+            .attr('offset', ({ offset }) => offset)
+            .attr('stop-color', ({ color }) => color);
     }
 
     /**
@@ -559,8 +564,12 @@ export default function module(): BrushChartModule {
             .attr('transform', `translate(0, ${chartHeight})`)
             .call(xAxis);
 
-        if (xAxisFormat !== 'custom') {
-            svg.select<SVGGElement>('.x-axis-group .axis.sub-x')
+        const subAxis = svg.select<SVGGElement>('.x-axis-group .axis.sub-x');
+
+        if (xAxisFormat === 'custom') {
+            subAxis.selectAll('*').remove();
+        } else {
+            subAxis
                 .attr(
                     'transform',
                     `translate(0, ${chartHeight + monthAxisPadding})`
@@ -693,8 +702,7 @@ export default function module(): BrushChartModule {
         svg.select('.x-axis-group')
             .selectAll('line.extended-x-line')
             .data([0])
-            .enter()
-            .append('line')
+            .join('line')
             .attr('class', 'extended-x-line')
             .attr('x1', 0)
             .attr('x2', chartWidth)
@@ -711,6 +719,61 @@ export default function module(): BrushChartModule {
     }
 
     /**
+     * Keeps a rounded window inside the data, as rounding can land past either
+     * end. A locked window slides back to keep the length of its date range,
+     * which rounding each end on its own would change by an interval.
+     * @param  {Date[]} window Rounded start and end of the window
+     * @return {Date[]}        The window inside the data
+     * @private
+     */
+    function fitWindowInData([start, end]: [Date, Date]): [Date, Date] {
+        const [firstDate, lastDate] = xScale.domain();
+
+        if (!isLocked) {
+            return [
+                new Date(Math.max(+start, +firstDate)),
+                new Date(Math.min(+end, +lastDate)),
+            ];
+        }
+
+        const duration = Math.min(
+            +new Date(dateRange[1] as string) -
+                +new Date(dateRange[0] as string),
+            +lastDate - +firstDate
+        );
+        const lockedStart = Math.max(
+            +firstDate,
+            Math.min(+start, +lastDate - duration)
+        );
+
+        return [new Date(lockedStart), new Date(lockedStart + duration)];
+    }
+
+    /**
+     * Gets the pixels of the stored date range against the current scale
+     * @return {Number[] | null} The window, or null when there is no range to
+     * draw: it is unset, ends before it starts or reaches outside the data
+     * @private
+     */
+    function getDateRangeSelection(): [number, number] | null {
+        if (
+            !Array.isArray(dateRange) ||
+            dateRange[0] === null ||
+            dateRange[1] === null
+        ) {
+            return null;
+        }
+
+        const start = new Date(dateRange[0]);
+        const end = new Date(dateRange[1]);
+        const [firstDate, lastDate] = xScale.domain();
+
+        return firstDate <= start && start < end && end <= lastDate
+            ? [xScale(start), xScale(end)]
+            : null;
+    }
+
+    /**
      * When a brush event starts, we can extract info from the extension
      * of the brush.
      *
@@ -723,6 +786,10 @@ export default function module(): BrushChartModule {
         const selection = event.selection as [number, number] | null;
         let newSelection: [number, number];
 
+        if (event.sourceEvent instanceof Event) {
+            isDragging = true;
+        }
+
         if (!selection) {
             return;
         }
@@ -731,9 +798,12 @@ export default function module(): BrushChartModule {
             // Reached only when `isLocked`, which the chart documents as
             // requiring a dateRange -- so both ends are set here. `new
             // Date(null)` would be the epoch rather than a throw.
-            const lockedSelectionSize = Math.floor(
-                xScale(new Date(dateRange[1] as string)) -
-                    xScale(new Date(dateRange[0] as string))
+            const lockedSelectionSize = Math.min(
+                Math.floor(
+                    xScale(new Date(dateRange[1] as string)) -
+                        xScale(new Date(dateRange[0] as string))
+                ),
+                Math.floor(chartWidth)
             );
             const selectedRange = Math.floor(selection[1] - selection[0]);
 
@@ -742,10 +812,12 @@ export default function module(): BrushChartModule {
                 selectedRange > lockedSelectionSize
             ) {
                 // We round values so we don't get into an infinite loop
-                newSelection = [
+                const lockedStart = Math.min(
                     Math.floor(selection[0]),
-                    Math.floor(selection[0]) + lockedSelectionSize,
-                ];
+                    Math.floor(chartWidth) - lockedSelectionSize
+                );
+
+                newSelection = [lockedStart, lockedStart + lockedSelectionSize];
                 brush.move(chartBrush, newSelection);
             } else {
                 newSelection = selection;
@@ -780,6 +852,8 @@ export default function module(): BrushChartModule {
             return;
         }
 
+        isDragging = false;
+
         // Starts as the empty pair and is replaced wholesale when there is a
         // selection, which is why it is typed as the pair rather than as
         // `Date[]` -- the dispatched payload is always two entries.
@@ -805,7 +879,10 @@ export default function module(): BrushChartModule {
                 );
             }
 
-            dateExtentRounded = rounded;
+            const fitted = fitWindowInData(rounded);
+
+            dateExtentRounded = fitted;
+            dateRange = [fitted[0].toISOString(), fitted[1].toISOString()];
 
             select(this)
                 .transition()
@@ -814,16 +891,29 @@ export default function module(): BrushChartModule {
                     // the brush's own element and datum; `select(this)` is the
                     // same node d3 just handed us.
                     event.target.move as never,
-                    rounded.map(xScale) as never
+                    fitted.map(xScale) as never
                 );
-        } else {
+        } else if (!isLocked) {
             // When no selection (clicked on brush without dragging)
-            if (isLocked) {
-                setBrushByDates(...dateRange);
-            }
+            dateRange = [null, null];
+        } else if (getDateRangeSelection()) {
+            setBrushByDates(...dateRange);
         }
 
         dispatcher.call('customBrushEnd', this, dateExtentRounded);
+    }
+
+    /**
+     * Places the window on the stored date range against the current scale.
+     * It clears the selection when the range does not fit the data. Only
+     * customBrushStart listens to the move, and a redraw is not a selection.
+     * @return {void}
+     * @private
+     */
+    function redrawBrushWindow(): void {
+        brush.on('brush', null);
+        brush.move(chartBrush, getDateRangeSelection());
+        brush.on('brush', handleBrushStart);
     }
 
     /**
@@ -973,7 +1063,10 @@ export default function module(): BrushChartModule {
         axisTimeCombinations as BrushChartModule['axisTimeCombinations'];
 
     /**
-     * Gets or Sets the dateRange for the selected part of the brush
+     * Gets or Sets the dateRange for the selected part of the brush. A drag
+     * updates it to the window customBrushEnd reports, and a click that clears
+     * the selection resets it. Every redraw places the window from it, and
+     * clears the selection when the range reaches outside the data.
      * @param  {String[]} [_x=[null, null]]     Desired dateRange for the graph
      * @return { dateRange | module}            Current dateRange or Chart module to chain calls
      * @public
@@ -988,7 +1081,7 @@ export default function module(): BrushChartModule {
         dateRange = _x;
 
         if (!chartBrush) {
-            hasPendingDateRange = true;
+            hasPendingDateRange = Array.isArray(dateRange);
         } else if (Array.isArray(dateRange)) {
             setBrushByDates(...dateRange);
         }

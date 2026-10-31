@@ -130,7 +130,7 @@ export interface GridBaseGenerator {
      * The getter is `null` until one is set, which draws no baseline.
      */
     extendedLine(): number | null;
-    extendedLine(value: number): GridBaseGenerator;
+    extendedLine(value: number | null): GridBaseGenerator;
     /**
      * Gets or sets the tick value whose line is highlighted.
      *
@@ -191,6 +191,21 @@ function positionCenter(scale: GridScale) {
     }
 
     return (d: unknown) => +(scale(d) as number) + offset + 0.5;
+}
+
+/**
+ * Checks if a tick is the highlighted value. Dates compare by value: a time
+ * scale creates new Date objects each time it computes its ticks, so one is
+ * never the same object as the Date a caller passes in.
+ * @param {unknown} tick - Tick value of a grid line
+ * @param {unknown} highlight - Highlighted value
+ * @return {boolean}
+ * @private
+ */
+function isHighlightedTick(tick: unknown, highlight: unknown) {
+    return tick instanceof Date && highlight instanceof Date
+        ? tick.getTime() === highlight.getTime()
+        : tick === highlight;
 }
 
 /**
@@ -274,7 +289,7 @@ function gridBase(orient: string, scale: GridScale) {
         const lineSelection = initLine
             .merge(lineEnter)
             .attr('class', (d: unknown) =>
-                highlight !== null && d === highlight
+                highlight !== null && isHighlightedTick(d, highlight)
                     ? `grid-line ${orient}-grid-line--highlighted`
                     : 'grid-line'
             );
@@ -419,7 +434,10 @@ function gridBase(orient: string, scale: GridScale) {
         let scaleTicks;
 
         if (scale.ticks) {
-            scaleTicks = ticks ? scale.ticks(ticks) : scale.ticks();
+            // `??` rather than a truthiness check: 0 is a count, which draws
+            // no ticks, as on a d3 axis. Unset is null, or undefined from a
+            // call like `.ticks(undefined)`, and d3 gives its default for that.
+            scaleTicks = scale.ticks(ticks ?? undefined);
         } else {
             scaleTicks = scale.domain();
         }
@@ -556,7 +574,7 @@ function gridBase(orient: string, scale: GridScale) {
      * @return {number|null|gridBaseGenerator}
      * @public
      */
-    gridBaseGenerator.extendedLine = function (_?: number) {
+    gridBaseGenerator.extendedLine = function (_?: number | null) {
         if (!arguments.length) {
             return extendedLine;
         }
@@ -594,8 +612,8 @@ function gridBase(orient: string, scale: GridScale) {
 
 /**
  * Constructor for a two-dimensional grid helper
- * @param {GridScale} scaleX - d3 scale for the grid's x direction
- * @param {GridScale} scaleY - d3 scale for the grid's y direction
+ * @param {GridScale} [scaleX] - d3 scale for the grid's x direction, a linear scale by default
+ * @param {GridScale} [scaleY] - d3 scale for the grid's y direction, a linear scale by default
  * @return {gridGenerator}
  * @memberof Grid
  * @alias module:Grid.grid
@@ -607,13 +625,22 @@ function gridBase(orient: string, scale: GridScale) {
 
     grid(svg.select('.grid-lines-group'));
  */
-export function grid(scaleX: GridScale, scaleY: GridScale) {
-    const gridH = gridHorizontal(scaleY || scaleLinear());
-    const gridV = gridVertical(scaleX || scaleLinear());
-
-    let direction = DIRECTION_FULL,
+export function grid(scaleX?: GridScale | null, scaleY?: GridScale | null) {
+    let xScale: GridScale = scaleX || scaleLinear(),
+        yScale: GridScale = scaleY || scaleLinear(),
+        direction = DIRECTION_FULL,
         tickValuesX: unknown[] | null = null,
-        tickValuesY: unknown[] | null = null;
+        tickValuesY: unknown[] | null = null,
+        // Held here, as the tick values are, rather than on gridH and gridV: a
+        // direction that is off clears its line and gets it back when it is on.
+        extendedLineH: number | null = null,
+        extendedLineV: number | null = null;
+
+    const gridH = gridHorizontal(yScale);
+    const gridV = gridVertical(xScale);
+
+    const copyTickValues = (values?: unknown[] | null) =>
+        values === null ? null : [...(values as unknown[])];
 
     /**
      * Generator function for two-dimensional grid
@@ -630,16 +657,20 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
             direction === DIRECTION_HORIZONTAL
         ) {
             gridH.tickValues(tickValuesY);
-            gridH.range(scaleX.range());
+            gridH.range(xScale.range());
+            gridH.extendedLine(extendedLineH);
         } else {
             gridH.tickValues([]);
+            gridH.extendedLine(null);
         }
 
         if (direction === DIRECTION_FULL || direction === DIRECTION_VERTICAL) {
             gridV.tickValues(tickValuesX);
-            gridV.range(scaleY.range());
+            gridV.range(yScale.range());
+            gridV.extendedLine(extendedLineV);
         } else {
             gridV.tickValues([]);
+            gridV.extendedLine(null);
         }
 
         context.call(gridH).call(gridV);
@@ -661,9 +692,9 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
     // value is there, and it is not something TypeScript can follow.
     gridGenerator.scaleX = function (_?: GridScale) {
         if (!arguments.length) {
-            return scaleX;
+            return xScale;
         }
-        scaleX = _!;
+        xScale = _!;
         gridV.scale(_!);
 
         return gridGenerator;
@@ -678,9 +709,9 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
      */
     gridGenerator.scaleY = function (_?: GridScale) {
         if (!arguments.length) {
-            return scaleY;
+            return yScale;
         }
-        scaleY = _!;
+        yScale = _!;
         gridH.scale(_!);
 
         return gridGenerator;
@@ -925,9 +956,10 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
      */
     gridGenerator.tickValues = function (_?: unknown[] | null) {
         if (!arguments.length) {
-            return tickValuesY;
+            return tickValuesY && tickValuesY.slice();
         }
-        tickValuesX = tickValuesY = _ as unknown[] | null;
+        tickValuesX = copyTickValues(_);
+        tickValuesY = copyTickValues(_);
 
         return gridGenerator;
     };
@@ -941,9 +973,9 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
      */
     gridGenerator.tickValuesH = function (_?: unknown[] | null) {
         if (!arguments.length) {
-            return tickValuesY;
+            return tickValuesY && tickValuesY.slice();
         }
-        tickValuesY = _!;
+        tickValuesY = copyTickValues(_);
 
         return gridGenerator;
     };
@@ -957,9 +989,9 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
      */
     gridGenerator.tickValuesV = function (_?: unknown[] | null) {
         if (!arguments.length) {
-            return tickValuesX;
+            return tickValuesX && tickValuesX.slice();
         }
-        tickValuesX = _!;
+        tickValuesX = copyTickValues(_);
 
         return gridGenerator;
     };
@@ -971,11 +1003,11 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
      * @return {number|null|gridGenerator}
      * @public
      */
-    gridGenerator.extendedLineH = function (_?: number) {
+    gridGenerator.extendedLineH = function (_?: number | null) {
         if (!arguments.length) {
-            return gridH.extendedLine();
+            return extendedLineH;
         }
-        gridH.extendedLine(_!);
+        extendedLineH = _!;
 
         return gridGenerator;
     };
@@ -987,11 +1019,11 @@ export function grid(scaleX: GridScale, scaleY: GridScale) {
      * @return {number|null|gridGenerator}
      * @public
      */
-    gridGenerator.extendedLineV = function (_?: number) {
+    gridGenerator.extendedLineV = function (_?: number | null) {
         if (!arguments.length) {
-            return gridV.extendedLine();
+            return extendedLineV;
         }
-        gridV.extendedLine(_!);
+        extendedLineV = _!;
 
         return gridGenerator;
     };
