@@ -184,7 +184,7 @@ export default function module(): LegendModule {
         height = 180,
         markerSize = 16,
         marginRatio = 1.5,
-        numberFormat = 's',
+        numberFormat = '~s',
         unit = '',
         isHorizontal = false,
         highlightedEntryId: number | null = null,
@@ -217,7 +217,7 @@ export default function module(): LegendModule {
         // from here, since `writeEntryValues` is the only caller.
         format(numberFormat)(quantity as number) + unit;
     const getMarkerFill = ({ name }: LegendDatum) => {
-        if (nameToColorMap !== null) {
+        if (nameToColorMap) {
             return nameToColorMap[name]
                 ? nameToColorMap[name]
                 : colorScale(name);
@@ -264,7 +264,10 @@ export default function module(): LegendModule {
                 drawVerticalLegend();
             }
 
-            if (highlightedEntryId) {
+            if (
+                highlightedEntryId !== null &&
+                highlightedEntryId !== undefined
+            ) {
                 cleanFadedLines();
                 fadeLinesBut(highlightedEntryId);
             }
@@ -363,7 +366,7 @@ export default function module(): LegendModule {
         if (emptySpace > 0) {
             svg.select('g.legend-container-group').attr(
                 'transform',
-                `translate(${newXPosition},0)`
+                `translate(${newXPosition},${margin.top})`
             );
         }
     }
@@ -379,12 +382,14 @@ export default function module(): LegendModule {
             .node()!
             .getBoundingClientRect().width;
         const emptySpace = width - legendGroupSize;
-        const newXPosition = emptySpace / 2 - legendGroupSize / 2;
+        // The size only measures what is drawn, and that starts at the entries'
+        // offset within the group, so the group has to sit that much further left
+        const newXPosition = emptySpace / 2 - getVerticalEntryOffset();
 
         if (emptySpace > 0) {
             svg.select('g.legend-container-group').attr(
                 'transform',
-                `translate(${newXPosition},0)`
+                `translate(${newXPosition},${margin.top})`
             );
         }
     }
@@ -512,7 +517,7 @@ export default function module(): LegendModule {
             .classed('legend-entry', true)
             .attr('data-item', getId)
             .attr('transform', function (d, i) {
-                const horizontalOffset = markerSize + getLineElementMargin();
+                const horizontalOffset = getVerticalEntryOffset();
                 const lineHeight = chartHeight / (data.length + 1);
                 const verticalOffset = (i + 1) * lineHeight;
 
@@ -585,6 +590,15 @@ export default function module(): LegendModule {
     }
 
     /**
+     * Calculates how far from the start of the group the vertical entries are drawn
+     * @return {Number} Horizontal offset of the entries
+     * @private
+     */
+    function getVerticalEntryOffset(): number {
+        return markerSize + getLineElementMargin();
+    }
+
+    /**
      * Simple method to move the last item of an overflowing legend into the next line
      * @return {void}
      * @private
@@ -594,6 +608,12 @@ export default function module(): LegendModule {
             '.legend-entry'
         );
         const numberOfEntries = legendEntries.size();
+
+        // A single entry would only leave an empty line behind it
+        if (numberOfEntries < 2) {
+            return;
+        }
+
         const lineHeight = (chartHeight / 2) * 1.7;
         const newLine = svg
             .select('.legend-group')
@@ -816,7 +836,7 @@ export default function module(): LegendModule {
 
     /**
      * Gets or Sets the number format of the legend chart
-     * @param  {string[]} _x = 's'      Desired numberFormat for the chart. See examples [here]{@link https://d3js.org/d3-format}
+     * @param  {string[]} _x = '~s'     Desired numberFormat for the chart. See examples [here]{@link https://d3js.org/d3-format}
      * @return {string | module}        Current number format or Legend module to chain calls
      * @public
      */

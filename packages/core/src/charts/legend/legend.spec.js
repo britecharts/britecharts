@@ -13,6 +13,10 @@ const stubElementWidth = (width) =>
         .mockReturnValue({ width });
 const getTranslateX = (selection) =>
     parseFloat(selection.attr('transform').match(/translate\(([^,]+),/)[1]);
+const getTranslateY = (selection) =>
+    parseFloat(
+        selection.attr('transform').match(/translate\([^,]+,([^)]+)\)/)[1]
+    );
 
 describe('legend', () => {
     let legendChart, dataset, containerFixture;
@@ -361,6 +365,20 @@ describe('legend', () => {
             expect(actual).toEqual(expected);
         });
 
+        it('should trim the trailing zeros from the values by default', () => {
+            const expected = ['86', '814', '1.5k'];
+            const actual = drawInNewContainer(legend(), [
+                { id: 1, name: 'Shiny', quantity: 86 },
+                { id: 2, name: 'Radiant', quantity: 814 },
+                { id: 3, name: 'Sparkling', quantity: 1500 },
+            ])
+                .selectAll('.legend-entry-value')
+                .nodes()
+                .map((node) => node.textContent);
+
+            expect(actual).toEqual(expected);
+        });
+
         describe('when data changes', () => {
             it('should draw only the new entries', () => {
                 const data = buildDataSet('withThreeCategories');
@@ -426,6 +444,18 @@ describe('legend', () => {
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should not split a horizontal legend too narrow for its line', () => {
+                const expected = 1;
+                const actual = drawInNewContainer(
+                    legend().isHorizontal(true).width(20),
+                    []
+                )
+                    .selectAll('.legend-line')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('when an entry is highlighted by id', () => {
@@ -456,6 +486,15 @@ describe('legend', () => {
                             .highlightEntryById(dataset[1].id),
                         dataset
                     )
+                );
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should draw only that entry unfaded with an id of zero', () => {
+                const expected = [0];
+                const actual = notFaded(
+                    drawInNewContainer(legend().highlightEntryById(0), dataset)
                 );
 
                 expect(actual).toEqual(expected);
@@ -576,6 +615,72 @@ describe('legend', () => {
                         .attr('transform');
 
                     expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when the legend is narrower than the svg', () => {
+                let widthSpy;
+
+                // Where the markers start on the svg. The bounding box covers
+                // what is drawn, and the entries sit inset within the group.
+                const getLeftEdge = (container) =>
+                    getTranslateX(
+                        container.select('g.legend-container-group')
+                    ) + getTranslateX(container.select('.legend-entry'));
+
+                beforeEach(() => {
+                    widthSpy = stubElementWidth(200);
+                });
+
+                afterEach(() => {
+                    widthSpy.mockRestore();
+                });
+
+                it('should center what it draws on the svg', () => {
+                    const expected = 60;
+                    const actual = getLeftEdge(
+                        drawInNewContainer(legend().width(320), dataset)
+                    );
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should center it with any marker size and margin ratio', () => {
+                    const expected = 60;
+                    const actual = getLeftEdge(
+                        drawInNewContainer(
+                            legend().width(320).markerSize(24).marginRatio(1),
+                            dataset
+                        )
+                    );
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should keep the top margin', () => {
+                    const expected = 12;
+                    const actual = getTranslateY(
+                        drawInNewContainer(
+                            legend().margin({ top: 12 }),
+                            dataset
+                        ).select('g.legend-container-group')
+                    );
+
+                    expect(actual).toEqual(expected);
+                });
+
+                describe('when it almost fills the svg', () => {
+                    it('should stay inside the svg', () => {
+                        const expected = 10;
+
+                        widthSpy.mockReturnValue({ width: 300 });
+
+                        const actual = getLeftEdge(
+                            drawInNewContainer(legend().width(320), dataset)
+                        );
+
+                        expect(actual).toEqual(expected);
+                    });
                 });
             });
         });
@@ -754,6 +859,38 @@ describe('legend', () => {
 
                     expect(actual).toEqual(expected);
                 });
+
+                it('should keep the top margin', () => {
+                    const expected = 12;
+                    const actual = getTranslateY(
+                        drawInNewContainer(
+                            legend()
+                                .isHorizontal(true)
+                                .width(500)
+                                .margin({ top: 12 }),
+                            dataset
+                        ).select('g.legend-container-group')
+                    );
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should keep the markers inside a short svg', () => {
+                    const container = drawInNewContainer(
+                        legend().isHorizontal(true).width(500).height(30),
+                        dataset
+                    );
+                    const circle = container.select('.legend-circle');
+                    const actual =
+                        getTranslateY(
+                            container.select('g.legend-container-group')
+                        ) +
+                        getTranslateY(container.select('.legend-entry')) +
+                        +circle.attr('cy') -
+                        +circle.attr('r');
+
+                    expect(actual).toBeGreaterThanOrEqual(0);
+                });
             });
 
             describe('when chart width is not enough for one line', () => {
@@ -833,6 +970,34 @@ describe('legend', () => {
                     expect(actual).toEqual(expected);
                 });
 
+                describe('when there is a single entry', () => {
+                    const singleEntry = [{ id: 1, name: 'Shiny' }];
+
+                    it('should keep it on the only line', () => {
+                        const expected = 1;
+                        const actual = drawInNewContainer(
+                            legend().isHorizontal(true).height(50).width(200),
+                            singleEntry
+                        )
+                            .selectAll('.legend-line')
+                            .size();
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should not move it', () => {
+                        const expected = 'translate(16,20)';
+                        const actual = drawInNewContainer(
+                            legend().isHorizontal(true).height(50).width(200),
+                            singleEntry
+                        )
+                            .select('.legend-entry')
+                            .attr('transform');
+
+                        expect(actual).toEqual(expected);
+                    });
+                });
+
                 describe('when the chart redraws', () => {
                     it('should not add more lines', () => {
                         const expected = 2;
@@ -902,6 +1067,21 @@ describe('legend', () => {
 
                     expect(actual).toEqual(expected);
                 });
+            });
+        });
+
+        describe('when the colorMap is set to undefined', () => {
+            it('should take the colors from the colorSchema', () => {
+                const expected = ['red', 'blue', 'pink'];
+                const actual = drawInNewContainer(
+                    legend().colorMap(undefined).colorSchema(expected),
+                    buildDataSet('withThreeCategories')
+                )
+                    .selectAll('.legend-circle')
+                    .nodes()
+                    .map((node) => node.style.fill);
+
+                expect(actual).toEqual(expected);
             });
         });
 
@@ -1146,6 +1326,13 @@ describe('legend', () => {
             it('should have a markerSize of 16', () => {
                 const expected = 16;
                 const actual = legendChart.markerSize();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should have a numberFormat of ~s', () => {
+                const expected = '~s';
+                const actual = legendChart.numberFormat();
 
                 expect(actual).toEqual(expected);
             });
