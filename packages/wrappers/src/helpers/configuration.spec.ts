@@ -103,6 +103,42 @@ describe('configuration', () => {
             });
         });
 
+        describe('exportChart', () => {
+            it('should wait for the draw that follows', async () => {
+                const exportChart = vi.fn();
+
+                applyConfiguration(
+                    { exportChart } as never,
+                    {
+                        exportChart: 'chart.svg',
+                    } as never
+                );
+
+                expect(exportChart).not.toHaveBeenCalled();
+
+                await Promise.resolve();
+
+                expect(exportChart).toHaveBeenCalledWith('chart.svg');
+            });
+
+            it('should log an export that fails', async () => {
+                const failure = new Error('nothing to export');
+                const errorSpy = vi
+                    .spyOn(console, 'error')
+                    .mockImplementation(() => {});
+
+                applyConfiguration(
+                    { exportChart: () => Promise.reject(failure) } as never,
+                    { exportChart: 'chart.svg' } as never
+                );
+
+                await vi.waitFor(() =>
+                    expect(errorSpy).toHaveBeenCalledWith(failure)
+                );
+                errorSpy.mockRestore();
+            });
+        });
+
         describe('a value that is set', () => {
             it.each([
                 ['true', true],

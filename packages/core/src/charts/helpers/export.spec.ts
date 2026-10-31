@@ -2,6 +2,7 @@
 import { select } from 'd3-selection';
 import type { Selection } from 'd3-selection';
 
+import bar from '../bar/bar';
 import legend from '../legend/legend';
 import { DonutDataBuilder } from '../donut/donutChartDataBuilder';
 import exportChart from './export';
@@ -24,6 +25,9 @@ const context = (margin: { left?: number } = { left: 0 }): ExportContext => ({
     height: () => 100,
     margin: () => margin,
 });
+
+const NOT_DRAWN_ERROR =
+    'Britecharts: this chart has not been drawn, so there is nothing to export. Draw it before calling exportChart.';
 
 const decodeImageSource = (source: string) =>
     new TextDecoder().decode(
@@ -145,6 +149,34 @@ describe('export Helper', () => {
                 await exportChart.exportChart.call(context(), svg, 'CHART.SVG');
 
                 expect(clicked[0].href).toMatch(/^data:image\/svg\+xml/);
+            });
+
+            describe('when the chart has not drawn', () => {
+                it('should reject and download nothing', async () => {
+                    const expected = 0;
+
+                    await expect(
+                        exportChart.exportChart.call(
+                            context(),
+                            undefined,
+                            'chart.svg'
+                        )
+                    ).rejects.toThrow(NOT_DRAWN_ERROR);
+                    const actual = clicked.length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should reject when called through a chart', async () => {
+                    const expected = 0;
+
+                    await expect(
+                        bar().exportChart('chart.svg', '')
+                    ).rejects.toThrow(NOT_DRAWN_ERROR);
+                    const actual = clicked.length;
+
+                    expect(actual).toEqual(expected);
+                });
             });
         });
 
@@ -374,6 +406,25 @@ describe('export Helper', () => {
                 });
             });
 
+            describe('when the chart has not drawn', () => {
+                it('should reject and download nothing', async () => {
+                    stubImageOutcome('load');
+                    stubCanvasOutput();
+                    const expected = 0;
+
+                    await expect(
+                        exportChart.exportChart.call(
+                            context(),
+                            undefined,
+                            'chart.png'
+                        )
+                    ).rejects.toThrow(NOT_DRAWN_ERROR);
+                    const actual = clicked.length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
             describe('when the image fails to load', () => {
                 it('should reject and download nothing', async () => {
                     stubImageOutcome('error');
@@ -435,6 +486,32 @@ describe('export Helper', () => {
                 );
             });
         });
+
+        describe('when the runtime has no navigator, as on Node 20', () => {
+            beforeEach(() => {
+                // Read once, when the module loads, so it needs a fresh copy
+                vi.resetModules();
+            });
+
+            afterEach(() => {
+                vi.unstubAllGlobals();
+            });
+
+            it('should still load and download the chart', async () => {
+                vi.stubGlobal('navigator', undefined);
+                const { default: freshExport } = await import('./export');
+                const expected = 'chart.svg';
+
+                await freshExport.exportChart.call(
+                    context(),
+                    select<SVGSVGElement, unknown>('.test-container svg'),
+                    'chart.svg'
+                );
+                const actual = clicked[0].download;
+
+                expect(actual).toEqual(expected);
+            });
+        });
     });
 
     describe('convertSvgToHtml', () => {
@@ -477,6 +554,21 @@ describe('export Helper', () => {
                 );
 
                 expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when the user agent says FireFox', () => {
+            it('should leave the url references in the markup alone', () => {
+                vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(
+                    'Mozilla/5.0 FireFox/1.0'
+                );
+                document
+                    .querySelector('.test-container svg')!
+                    .setAttribute('filter', 'url("#shadow")');
+                const expected = 'filter="url(&quot;#shadow&quot;)"';
+                const actual = toHtml();
+
+                expect(actual).toContain(expected);
             });
         });
 

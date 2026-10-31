@@ -50,11 +50,15 @@ type SvgSelection = Selection<
 
 const isBrowser = typeof window !== 'undefined';
 // `msSaveOrOpenBlob` is IE-only and not in the DOM typings. The cast is the
-// feature detection, not a claim that it exists.
-const isIE = (navigator as Navigator & { msSaveOrOpenBlob?: unknown })
-    .msSaveOrOpenBlob;
+// feature detection, not a claim that it exists. `navigator` is guarded because
+// it is read on import, and it is not a global on Node 20.
+const isIE =
+    typeof navigator !== 'undefined' &&
+    (navigator as Navigator & { msSaveOrOpenBlob?: unknown }).msSaveOrOpenBlob;
 const IE_ERROR_MSG =
     'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
+const NOT_DRAWN_ERROR_MSG =
+    'Britecharts: this chart has not been drawn, so there is nothing to export. Draw it before calling exportChart.';
 // The charts' own stack (base/_typography.scss), with the family names
 // unquoted, which CSS allows. Typographic quotes would become part of the
 // name, which then matches no font.
@@ -113,11 +117,13 @@ const isSvgFilename = (filename?: string): filename is string =>
  * @param  d3svg     The chart's svg selection
  * @param  filename  download to be called <filename>, britechart.png by default
  * @param  title     Title for the image
+ * @return A promise that rejects, with nothing downloaded, when the chart has
+ * not been drawn. False in Internet Explorer.
  * @private
  */
 export function exportChart(
     this: ExportableChartContext,
-    d3svg: SvgSelection,
+    d3svg: SvgSelection | null | undefined,
     filename?: string,
     title?: string
 ): Promise<void> | false {
@@ -128,16 +134,19 @@ export function exportChart(
         return false;
     }
 
+    const html = convertSvgToHtml.call(this, d3svg, title);
+
+    if (html === undefined) {
+        return Promise.reject(new Error(NOT_DRAWN_ERROR_MSG));
+    }
+
     if (isSvgFilename(filename)) {
-        downloadSvg(
-            convertSvgToHtml.call(this, d3svg, title) as string,
-            filename
-        );
+        downloadSvg(html, filename);
 
         return Promise.resolve();
     }
 
-    return loadImage(convertSvgToHtml.call(this, d3svg, title) as string)
+    return loadImage(html)
         .then((img) => {
             return {
                 canvas: createCanvas(
@@ -212,7 +221,6 @@ export function convertSvgToHtml(
     const svgNode = d3svg.node() as Element;
     let html = serializer(svgNode) as string;
 
-    html = formatHtmlByBrowser(html);
     html = prependTitle.call(
         this,
         html,
@@ -328,21 +336,6 @@ function downloadUrl(url: string, filename: string): void {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
-
-/**
- * Some browsers need special formatting, we handle that here
- * @private
- */
-function formatHtmlByBrowser(html: string): string {
-    if (navigator.userAgent.search('FireFox') > -1) {
-        return html.replace(
-            /url.*&quot;\)/,
-            'url(&quot;linearGradient[id*="-gradient-"]&quot;);'
-        );
-    }
-
-    return html;
 }
 
 /**

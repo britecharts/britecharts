@@ -205,6 +205,14 @@ describe('heatmap Chart', () => {
         });
     });
 
+    describe('exportChart', () => {
+        it('should hand back the export, so a failed one can be caught', async () => {
+            await expect(chart().exportChart('heatmap.svg')).rejects.toThrow(
+                'has not been drawn'
+            );
+        });
+    });
+
     describe('lifecycle', () => {
         describe('when hovering a box', () => {
             it('should trigger a callback on mouse over', () => {

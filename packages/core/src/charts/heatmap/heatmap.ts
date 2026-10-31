@@ -800,7 +800,7 @@ export default function module(): HeatmapChartModule {
      * @public
      */
     exports.exportChart = function (filename: string, title: string) {
-        exportChart.call(exports, svg, filename, title);
+        return exportChart.call(exports, svg, filename, title);
     } as HeatmapChartModule['exportChart'];
 
     /**
