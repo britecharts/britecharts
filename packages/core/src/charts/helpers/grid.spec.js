@@ -150,6 +150,38 @@ describe('grid helper', () => {
             expect(lines('line.grid-line')).toHaveLength(3);
         });
 
+        it('draws no lines with a tick count of 0, as a d3 axis does', () => {
+            const g = gridHorizontal(yScale()).range([0, 200]).hideEdges(false);
+
+            g.ticks(0)(container);
+
+            expect(g.ticks()).toBe(0);
+            expect(lines('line.grid-line')).toHaveLength(0);
+        });
+
+        it('removes the lines when the tick count goes to 0, keeping the extended line', () => {
+            const g = gridHorizontal(yScale())
+                .range([0, 200])
+                .ticks(5)
+                .hideEdges(false)
+                .extendedLine(0);
+
+            g(container);
+            g.ticks(0)(container);
+
+            expect(lines('line.grid-line')).toHaveLength(0);
+            expect(lines('line.extended-x-line')).toHaveLength(1);
+        });
+
+        it('uses the default ticks of the scale when the count is undefined', () => {
+            gridHorizontal(yScale())
+                .range([0, 200])
+                .hideEdges(false)
+                .ticks(undefined)(container);
+
+            expect(lines('line.grid-line')).toHaveLength(11);
+        });
+
         it('goes back to the ticks of the scale when the tick values are cleared', () => {
             const g = gridHorizontal(yScale())
                 .range([0, 200])
@@ -424,6 +456,69 @@ describe('grid helper', () => {
                 .hideEdges(false)(container);
 
             expect(attrs('line.grid-line', 'x1')).toEqual(['50.5']);
+        });
+
+        describe('when the ticks are dates', () => {
+            const time = () =>
+                scaleTime()
+                    .domain([
+                        new Date(Date.UTC(2020, 0, 1)),
+                        new Date(Date.UTC(2020, 0, 11)),
+                    ])
+                    .range([0, 100]);
+
+            it('highlights the tick at an equal date, which is never the same object', () => {
+                const scale = time();
+                const tick = scale.ticks()[2];
+
+                gridVertical(scale)
+                    .range([0, 50])
+                    .hideEdges(false)
+                    .highlight(new Date(tick.getTime()))(container);
+
+                const highlighted = lines(
+                    'line.vertical-grid-line--highlighted'
+                );
+
+                expect(highlighted).toHaveLength(1);
+                expect(highlighted[0].__data__.getTime()).toBe(tick.getTime());
+            });
+
+            it('highlights nothing when no tick falls on the date', () => {
+                const scale = time();
+
+                gridVertical(scale)
+                    .range([0, 50])
+                    .hideEdges(false)
+                    .highlight(new Date(scale.ticks()[2].getTime() + 1))(
+                    container
+                );
+
+                expect(
+                    lines('line.vertical-grid-line--highlighted')
+                ).toHaveLength(0);
+            });
+
+            it('draws no lines with a tick count of 0', () => {
+                gridVertical(time()).range([0, 50]).hideEdges(false).ticks(0)(
+                    container
+                );
+
+                expect(lines('line.grid-line')).toHaveLength(0);
+            });
+        });
+
+        it('highlights a band by its name', () => {
+            const band = scaleBand().domain(['a', 'b']).range([0, 100]);
+
+            gridVertical(band).range([0, 50]).hideEdges(false).highlight('b')(
+                container
+            );
+
+            const highlighted = lines('line.vertical-grid-line--highlighted');
+
+            expect(highlighted).toHaveLength(1);
+            expect(highlighted[0].__data__).toBe('b');
         });
 
         describe('when the scale has no ticks', () => {
@@ -708,6 +803,46 @@ describe('grid helper', () => {
                 expect(attrs(V_LINES, 'y1')).toEqual(['100']);
             });
 
+            it('draws with default linear scales when built with none', () => {
+                grid().hideEdges(false)(container);
+
+                expect(lines(H_LINES)).toHaveLength(11);
+                expect(lines(V_LINES)).toHaveLength(11);
+                expect(attrs(H_LINES, 'x2')[0]).toBe('1');
+                expect(attrs(V_LINES, 'y2')[0]).toBe('1');
+            });
+
+            it('reads back the default scales it draws with', () => {
+                const g = grid().tickValues([1]).hideEdges(false);
+
+                g.scaleX().domain([0, 4]).range([0, 200]);
+                g.scaleY().domain([0, 10]).range([100, 0]);
+                g(container);
+
+                expect(attrs(V_LINES, 'x1')).toEqual(['50.5']);
+                expect(attrs(H_LINES, 'x2')).toEqual(['200']);
+                expect(attrs(H_LINES, 'y1')).toEqual(['90.5']);
+                expect(attrs(V_LINES, 'y1')).toEqual(['100']);
+            });
+
+            it('falls back on the scale it is missing when given only one', () => {
+                const x = xScale();
+
+                grid(x).tickValues([1]).hideEdges(false)(container);
+                expect(attrs(V_LINES, 'x1')).toEqual(['50.5']);
+                expect(attrs(V_LINES, 'y2')).toEqual(['1']);
+            });
+
+            it('falls back on a default scale for a null one too', () => {
+                const g = grid(null, yScale()).tickValues([1]).hideEdges(false);
+
+                g(container);
+
+                expect(g.scaleX().range()).toEqual([0, 1]);
+                expect(attrs(H_LINES, 'x2')).toEqual(['1']);
+                expect(attrs(H_LINES, 'y1')).toEqual(['90.5']);
+            });
+
             it('takes vertical ticks and horizontal range from a new x-scale', () => {
                 const g = grid(xScale(), yScale())
                     .tickValues([1])
@@ -778,6 +913,81 @@ describe('grid helper', () => {
 
                 g.direction('full')(container);
                 expect(lines(V_LINES)).toHaveLength(count);
+            });
+
+            describe('and extended lines are set', () => {
+                const build = () =>
+                    grid(xScale(), yScale())
+                        .ticks(4)
+                        .hideEdges(false)
+                        .extendedLineH(20)
+                        .extendedLineV(5);
+
+                it('draws only the extended line of the horizontal direction', () => {
+                    build().direction('horizontal')(container);
+
+                    expect(attrs('line.extended-x-line', 'x1')).toEqual(['20']);
+                    expect(lines('line.extended-y-line')).toHaveLength(0);
+                });
+
+                it('draws only the extended line of the vertical direction', () => {
+                    build().direction('vertical')(container);
+
+                    expect(attrs('line.extended-y-line', 'y1')).toEqual(['95']);
+                    expect(lines('line.extended-x-line')).toHaveLength(0);
+                });
+
+                it('removes and restores the vertical extended line across re-renders', () => {
+                    const g = build();
+
+                    g(container);
+                    expect(lines('line.extended-y-line')).toHaveLength(1);
+
+                    g.direction('horizontal')(container);
+                    expect(lines('line.extended-y-line')).toHaveLength(0);
+                    expect(g.extendedLineV()).toBe(5);
+
+                    g.direction('full')(container);
+                    expect(attrs('line.extended-y-line', 'y1')).toEqual(['95']);
+                    expect(attrs('line.extended-y-line', 'y2')).toEqual(['0']);
+                });
+
+                it('removes and restores the horizontal extended line across re-renders', () => {
+                    const g = build();
+
+                    g(container);
+                    expect(lines('line.extended-x-line')).toHaveLength(1);
+
+                    g.direction('vertical')(container);
+                    expect(lines('line.extended-x-line')).toHaveLength(0);
+                    expect(g.extendedLineH()).toBe(20);
+
+                    g.direction('full')(container);
+                    expect(attrs('line.extended-x-line', 'x1')).toEqual(['20']);
+                    expect(attrs('line.extended-x-line', 'x2')).toEqual([
+                        '200',
+                    ]);
+                });
+
+                it('draws an extended line set while its direction is off, once it is back', () => {
+                    const g = grid(xScale(), yScale()).direction('horizontal');
+
+                    g.extendedLineV(5)(container);
+                    expect(lines('line.extended-y-line')).toHaveLength(0);
+
+                    g.direction('vertical')(container);
+                    expect(attrs('line.extended-y-line', 'y1')).toEqual(['95']);
+                });
+
+                it('does not bring back an extended line cleared while its direction is off', () => {
+                    const g = build().direction('horizontal');
+
+                    g(container);
+                    g.extendedLineV(null).direction('full')(container);
+
+                    expect(g.extendedLineV()).toBeNull();
+                    expect(lines('line.extended-y-line')).toHaveLength(0);
+                });
             });
         });
 
@@ -855,6 +1065,74 @@ describe('grid helper', () => {
                 g.tickValues(null)(container);
                 expect(lines(H_LINES)).toHaveLength(3);
                 expect(lines(V_LINES)).toHaveLength(3);
+            });
+
+            it('hands back copies of the tick values of both directions', () => {
+                const g = grid(xScale(), yScale())
+                    .hideEdges(false)
+                    .tickValues([1, 2]);
+
+                g.tickValues().push(3);
+                g(container);
+
+                expect(g.tickValues()).toEqual([1, 2]);
+                expect(lines(H_LINES)).toHaveLength(2);
+                expect(lines(V_LINES)).toHaveLength(2);
+            });
+
+            it('hands back a copy of the horizontal tick values', () => {
+                const g = grid(xScale(), yScale())
+                    .hideEdges(false)
+                    .tickValuesH([5]);
+
+                g.tickValuesH().push(6);
+                g(container);
+
+                expect(g.tickValuesH()).toEqual([5]);
+                expect(lines(H_LINES)).toHaveLength(1);
+            });
+
+            it('hands back a copy of the vertical tick values', () => {
+                const g = grid(xScale(), yScale())
+                    .hideEdges(false)
+                    .tickValuesV([1]);
+
+                g.tickValuesV().push(2);
+                g(container);
+
+                expect(g.tickValuesV()).toEqual([1]);
+                expect(lines(V_LINES)).toHaveLength(1);
+            });
+
+            it('keeps its own copy of the tick values it is given', () => {
+                const both = [1, 2];
+                const horizontal = [5];
+                const vertical = [1];
+                const g = grid(xScale(), yScale()).hideEdges(false);
+
+                g.tickValues(both);
+                both.push(3);
+                expect(g.tickValuesH()).toEqual([1, 2]);
+                expect(g.tickValuesV()).toEqual([1, 2]);
+
+                g.tickValuesH(horizontal).tickValuesV(vertical);
+                horizontal.push(6);
+                vertical.push(2);
+                g(container);
+
+                expect(lines(H_LINES)).toHaveLength(1);
+                expect(lines(V_LINES)).toHaveLength(1);
+            });
+
+            it('clears the values of each direction on null', () => {
+                const g = grid(xScale(), yScale())
+                    .tickValuesH([5])
+                    .tickValuesV([1]);
+
+                g.tickValuesH(null).tickValuesV(null);
+
+                expect(g.tickValuesH()).toBeNull();
+                expect(g.tickValuesV()).toBeNull();
             });
         });
 

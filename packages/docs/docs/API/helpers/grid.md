@@ -15,21 +15,21 @@ and ticksV() those of the vertical lines (from scaleX()).
 
 
 * [Grid](#module_Grid)
-    * [.grid(scaleX, scaleY)](#module_Grid.grid) ⇒ <code>gridGenerator</code>
+    * [.grid([scaleX], [scaleY])](#module_Grid.grid) ⇒ <code>gridGenerator</code>
     * [.gridHorizontal(scale)](#module_Grid.gridHorizontal) ⇒ <code>GridBaseGenerator</code>
     * [.gridVertical(scale)](#module_Grid.gridVertical) ⇒ <code>GridBaseGenerator</code>
 
 <a name="module_Grid.grid" id="module_Grid.grid"></a>
 
-## Grid.grid(scaleX, scaleY) ⇒ <code>gridGenerator</code>
+## Grid.grid([scaleX], [scaleY]) ⇒ <code>gridGenerator</code>
 Constructor for a two-dimensional grid helper
 
 **Kind**: static method of [<code>Grid</code>](#module_Grid)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| scaleX | [<code>GridScale</code>](#GridScale) | d3 scale for the grid's x direction |
-| scaleY | [<code>GridScale</code>](#GridScale) | d3 scale for the grid's y direction |
+| [scaleX] | [<code>GridScale</code>](#GridScale) | d3 scale for the grid's x direction, a linear scale by default |
+| [scaleY] | [<code>GridScale</code>](#GridScale) | d3 scale for the grid's y direction, a linear scale by default |
 
 **Example**  
 ```js
