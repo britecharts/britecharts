@@ -92,7 +92,6 @@ export type HeatmapChartModule = ChartModuleSelection<HeatmapChartDataShape[]> &
  * @tutorial heatmap
  *
  * @example
- * import { select } from 'd3-selection';
  * import { heatmap } from '@britecharts/core';
  *
  * // dataset: [{ day, hour, value }], day 0-6 and hour 0-23, or indexes into
@@ -100,11 +99,8 @@ export type HeatmapChartModule = ChartModuleSelection<HeatmapChartDataShape[]> &
  * const heatmapChart = heatmap();
  *
  * heatmapChart
- *     .width(500);
- *
- * select('.css-selector')
- *     .datum(dataset)
- *     .call(heatmapChart);
+ *     .width(500)
+ *     .render('.css-selector', dataset);
  */
 
 /**

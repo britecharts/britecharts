@@ -10,18 +10,14 @@ rendering a multi grouped bar and configurable chart.
 
 **Example**  
 ```js
-import { select } from 'd3-selection';
 import { groupedBar } from '@britecharts/core';
 
 // dataset: [{ name, group, value }]
 const groupedBarChart = groupedBar();
 
 groupedBarChart
-    .width(containerWidth);
-
-select('.css-selector')
-    .datum(dataset)
-    .call(groupedBarChart);
+    .width(containerWidth)
+    .render('.css-selector', dataset);
 ```
 
 * [Grouped-bar](#module_Grouped-bar)

@@ -113,7 +113,6 @@ type SparklineDatum = {
  * @tutorial sparkline
  *
  * @example
- * import { select } from 'd3-selection';
  * import { sparkline } from '@britecharts/core';
  *
  * // dataset: [{ date, value }]
@@ -121,11 +120,8 @@ type SparklineDatum = {
  *
  * sparklineChart
  *     .width(200)
- *     .height(100);
- *
- * select('.css-selector')
- *     .datum(dataset)
- *     .call(sparklineChart);
+ *     .height(100)
+ *     .render('.css-selector', dataset);
  */
 
 /**

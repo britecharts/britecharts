@@ -10,7 +10,6 @@ simple and configurable legend element.
 
 **Example**  
 ```js
-import { select } from 'd3-selection';
 import { donut, legend } from '@britecharts/core';
 
 // dataset: [{ id, name, quantity }], the same ids for both
@@ -21,15 +20,10 @@ donutChart
     .externalRadius(500)
     .internalRadius(200)
     .on('customMouseOver', (data) => legendChart.highlight(data.data.id))
-    .on('customMouseOut', () => legendChart.clearHighlight());
+    .on('customMouseOut', () => legendChart.clearHighlight())
+    .render('.css-selector', dataset);
 
-select('.css-selector')
-    .datum(dataset)
-    .call(donutChart);
-
-select('.other-css-selector')
-    .datum(dataset)
-    .call(legendChart);
+legendChart.render('.other-css-selector', dataset);
 ```
 
 * [Legend](#module_Legend)
