@@ -34,7 +34,7 @@ export declare enum BulletChartKeys {
 export type BulletChartDataShape = {
     [BulletChartKeys.Ranges]: [number?, number?, number?];
     [BulletChartKeys.Measures]: [number?, number?, number?];
-    [BulletChartKeys.Markers]: number[];
+    [BulletChartKeys.Markers]?: number[];
 };
 
 export type BulletChartBaseAPI = ChartBaseAPI<BulletChartModule>;
@@ -96,30 +96,56 @@ type BulletData = {
  * Reusable Bullet Chart API class that renders a
  * simple and configurable Bullet Chart.
  *
+ * A bullet chart shows one number against a target and some bands of context,
+ * like a compact gauge for "are we on track?". One chart draws one metric, so
+ * to show several, create one chart per metric, each in its own element.
+ *
+ * ### The data
+ *
+ * The data is a single object, not an array:
+ *
+ * | Field | What it draws | Typical use |
+ * | --- | --- | --- |
+ * | `ranges` | Full-height background bands, widest at the back and fading by opacity | Poor, fair and good thresholds |
+ * | `measures` | Thinner bars on top of the bands | The actual value, and optionally a second one such as a forecast |
+ * | `markers` | Vertical lines, optional | The target |
+ *
+ * Give the values in any order: the chart sorts them. The narrowest measure
+ * is the strongest, so a second, longer measure reads as a forecast. The axis
+ * runs from 0 to the largest value in any of the three fields, and the first
+ * three colours of `colorSchema` go to the ranges, the measures and the
+ * markers, in that order.
+ *
+ * ### What it does not have
+ *
+ * The chart draws no label, so put the metric's name in your own markup next
+ * to it; `a11yTitle` only names it for screen readers. It has no tooltip and
+ * fires no events.
+ *
  * @module Bullet
  * @tutorial bullet-chart
  *
  * @example
- * import { select } from 'd3-selection';
  * import { bullet } from '@britecharts/core';
  *
- * // dataset: one object: { ranges, measures, markers }
- * const bulletChart = bullet();
- *
- * bulletChart
- *     .width(containerWidth);
- *
- * select('.css-selector')
- *     .datum(dataset)
- *     .call(bulletChart);
+ * bullet()
+ *     .width(600)
+ *     .height(100)
+ *     .a11yTitle('Revenue against target')
+ *     .numberFormat('$,.0f')
+ *     .render('#revenue', {
+ *         ranges: [1500, 2100, 3500], // bands: poor, fair, good
+ *         measures: [1800, 2200],     // the actual values
+ *         markers: [2600],            // the target
+ *     });
  */
 
 /**
  * @typedef BulletChartData
  * @type {Object}
- * @property {Number[]} ranges      Range that encodes the qualitative measure
- * @property {Number[]} measures    Range that encodes the performance measure
- * @property {Number[]} markers     Marker lines that encode the comparative measure
+ * @property {Number[]} ranges      Background bands, such as poor, fair and good thresholds
+ * @property {Number[]} measures    Bars for the actual values, such as a result and a forecast
+ * @property {Number[]} [markers]   Marker lines for the targets
  *
  * @example
  * {
@@ -147,6 +173,7 @@ export default function module(): BulletChartModule {
         xScale: ScaleLinear<number, number>,
         rangeOpacityScale: number[],
         measureOpacityScale: number[],
+        markerOpacity: number,
         colorSchema: string[] = colorHelper.colorSchemas.britecharts,
         rangeColor: string,
         measureColor: string,
@@ -288,9 +315,12 @@ export default function module(): BulletChartModule {
         rangeOpacityScale = ranges
             .map((d, i) => startMaxRangeOpacity - i * rangeOpacifyDiff)
             .reverse();
-        measureOpacityScale = ranges
+        // The narrowest measure, usually the actual value, is the strongest,
+        // so a measure on its own never takes a forecast's lighter tone
+        measureOpacityScale = measures
             .map((d, i) => 0.9 - i * measureOpacifyDiff)
             .reverse();
+        markerOpacity = 0.9 - (ranges.length - 1) * measureOpacifyDiff;
 
         // initialize range and measure bars and marker line colors
         rangeColor = colorSchema[0];
@@ -301,6 +331,13 @@ export default function module(): BulletChartModule {
     let a11yTitle: string | null = null;
     let a11yDescription: string | null = null;
     let a11yDataTable = true;
+
+    /**
+     * Sorts values widest first, so a narrower one draws on top of a wider one
+     * @private
+     */
+    const sortDescending = (values: number[]) =>
+        [...values].sort((a, b) => b - a);
 
     /**
      * The chart's data as a table, for screen readers: its ranges, measures
@@ -379,11 +416,9 @@ export default function module(): BulletChartModule {
         // documented `@typedef` above says `Number[]`, which is what the
         // implementation actually requires.
         const newData = {
-            ranges: ([...originalData.ranges] as number[]).sort().reverse(),
-            measures: ([...originalData.measures] as number[]).sort().reverse(),
-            markers: originalData.markers.length
-                ? ([...originalData.markers] as number[]).sort().reverse()
-                : [],
+            ranges: sortDescending(originalData.ranges as number[]),
+            measures: sortDescending(originalData.measures as number[]),
+            markers: sortDescending(originalData.markers ?? []),
         };
 
         return newData;
@@ -464,7 +499,7 @@ export default function module(): BulletChartModule {
                 .attr('class', 'marker-line')
                 .attr('stroke', markerColor)
                 .attr('stroke-width', markerStrokeWidth)
-                .attr('opacity', measureOpacityScale[0])
+                .attr('opacity', markerOpacity)
                 .attr('x1', xScale)
                 .attr('x2', xScale)
                 .attr('y1', 0)

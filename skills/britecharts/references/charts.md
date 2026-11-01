@@ -124,7 +124,7 @@ API page: `bullet`. Data: one object per chart, not an array: `bulletChart.rende
 { ranges: [130, 160, 250], measures: [150, 180], markers: [220] }
 ```
 
-`ranges` are the background bands, `measures` the bars, and `markers` the target line. The chart draws no title, so label it in your own markup.
+`ranges` are the background bands, `measures` the bars, and `markers`, which is optional, the target line. Give the values in any order. The chart draws no title, so label it in your own markup.
 
 Accessors: `colorSchema`, `exportChart`, `isReverse`, `numberFormat`, `paddingBetweenAxisAndChart`, `startMaxRangeOpacity`, `ticks`. It has no events.
 

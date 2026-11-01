@@ -38,8 +38,29 @@ Playground.parameters = {
 
 export const WithNoMarker = () => renderBullets(bulletData.withNoMarker());
 
-export const WithDashboardAlignment = () =>
-    renderBullets(bulletData.withManyCPUData());
+// What each bullet of withIncreasingDetail adds to the one before it
+const DETAIL_STEPS = [
+    'Start with a measure on two ranges: the value and its bands',
+    'Add a third range for one more band',
+    'Add a second measure, such as a forecast',
+    'Add a marker for the target',
+    'Add a second marker for a stretch target',
+];
+
+export const WithDashboardAlignment = () => (
+    <>
+        {bulletData.withIncreasingDetail().map((bullet, index) => (
+            <div key={index}>
+                <p className="story-caption">{DETAIL_STEPS[index]}</p>
+                <Bullet data={[bullet]} height={100} />
+            </div>
+        ))}
+        <p className="story-caption">
+            Each bullet is its own chart. They line up because they share a
+            width and a largest value, which sets the axis.
+        </p>
+    </>
+);
 
 export const WithLoadingState = () => {
     const data = bulletData.withAllElements();

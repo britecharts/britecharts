@@ -91,6 +91,74 @@ describe('bullet Chart', () => {
             });
         });
 
+        describe('measure opacity', () => {
+            const opacities = (data) => {
+                const drawn = d3.select('.test-container').append('div');
+
+                drawn.datum(data).call(chart());
+
+                return drawn
+                    .selectAll('rect.measure')
+                    .nodes()
+                    .map((bar) => Number(bar.getAttribute('fill-opacity')));
+            };
+
+            it('should draw a single measure at full strength, whatever the ranges', () => {
+                const twoRanges = opacities({
+                    ranges: [10, 20],
+                    measures: [15],
+                });
+                const threeRanges = opacities({
+                    ranges: [10, 20, 30],
+                    measures: [15],
+                });
+
+                expect(threeRanges).toEqual(twoRanges);
+                expect(threeRanges).toEqual([0.9]);
+            });
+
+            it('should draw the narrower of two measures stronger', () => {
+                const [wider, narrower] = opacities({
+                    ranges: [10, 20, 30],
+                    measures: [15, 25],
+                });
+
+                expect(narrower).toBe(0.9);
+                expect(wider).toBeLessThan(narrower);
+            });
+        });
+
+        describe('when the values have different numbers of digits', () => {
+            let drawn;
+
+            beforeEach(() => {
+                drawn = d3.select('.test-container').append('div');
+                drawn
+                    .datum({
+                        ranges: [90, 100, 250],
+                        measures: [9, 80],
+                        markers: [7, 100],
+                    })
+                    .call(chart());
+            });
+
+            it('should draw the widest range first, at the back', () => {
+                expect(drawn.selectAll('rect.range').data()).toEqual([
+                    250, 100, 90,
+                ]);
+            });
+
+            it('should draw the widest measure first', () => {
+                expect(drawn.selectAll('rect.measure').data()).toEqual([80, 9]);
+            });
+
+            it('should sort the markers the same way', () => {
+                expect(drawn.selectAll('line.marker-line').data()).toEqual([
+                    100, 7,
+                ]);
+            });
+        });
+
         describe('ranges', () => {
             it('should render ranges', () => {
                 const expected = 3;
@@ -178,6 +246,32 @@ describe('bullet Chart', () => {
                     expect(markerLine.getAttribute('x')).toBeDefined();
                     expect(markerLine.getAttribute('width')).toBeDefined();
                     expect(markerLine.getAttribute('height')).toBeDefined();
+                });
+            });
+
+            describe('when no markers are passed', () => {
+                let drawn;
+
+                beforeEach(() => {
+                    drawn = d3.select('.test-container').append('div');
+                    drawn
+                        .datum({ ranges: [10, 20], measures: [15] })
+                        .call(chart());
+                });
+
+                it('should draw the ranges and the measures', () => {
+                    expect(drawn.selectAll('rect.range').size()).toBe(2);
+                    expect(drawn.selectAll('rect.measure').size()).toBe(1);
+                });
+
+                it('should draw no marker lines', () => {
+                    expect(drawn.selectAll('line.marker-line').size()).toBe(0);
+                });
+
+                it('should leave the markers out of the data table', () => {
+                    expect(drawn.select('table').text()).not.toContain(
+                        'Markers'
+                    );
                 });
             });
 

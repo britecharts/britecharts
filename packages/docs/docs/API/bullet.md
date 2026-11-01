@@ -8,20 +8,46 @@ sidebar_position: 1
 Reusable Bullet Chart API class that renders a
 simple and configurable Bullet Chart.
 
+A bullet chart shows one number against a target and some bands of context,
+like a compact gauge for "are we on track?". One chart draws one metric, so
+to show several, create one chart per metric, each in its own element.
+
+## The data
+
+The data is a single object, not an array:
+
+| Field | What it draws | Typical use |
+| --- | --- | --- |
+| `ranges` | Full-height background bands, widest at the back and fading by opacity | Poor, fair and good thresholds |
+| `measures` | Thinner bars on top of the bands | The actual value, and optionally a second one such as a forecast |
+| `markers` | Vertical lines, optional | The target |
+
+Give the values in any order: the chart sorts them. The narrowest measure
+is the strongest, so a second, longer measure reads as a forecast. The axis
+runs from 0 to the largest value in any of the three fields, and the first
+three colours of `colorSchema` go to the ranges, the measures and the
+markers, in that order.
+
+## What it does not have
+
+The chart draws no label, so put the metric's name in your own markup next
+to it; `a11yTitle` only names it for screen readers. It has no tooltip and
+fires no events.
+
 **Example**  
 ```js
-import { select } from 'd3-selection';
 import { bullet } from '@britecharts/core';
 
-// dataset: one object: { ranges, measures, markers }
-const bulletChart = bullet();
-
-bulletChart
-    .width(containerWidth);
-
-select('.css-selector')
-    .datum(dataset)
-    .call(bulletChart);
+bullet()
+    .width(600)
+    .height(100)
+    .a11yTitle('Revenue against target')
+    .numberFormat('$,.0f')
+    .render('#revenue', {
+        ranges: [1500, 2100, 3500], // bands: poor, fair, good
+        measures: [1800, 2200],     // the actual values
+        markers: [2600],            // the target
+    });
 ```
 
 * [Bullet](#module_Bullet)
@@ -293,9 +319,9 @@ bullet().width(600).render('#chart', data);
 
 | Name | Type | Description |
 | --- | --- | --- |
-| ranges | <code>Array.&lt;Number&gt;</code> | Range that encodes the qualitative measure |
-| measures | <code>Array.&lt;Number&gt;</code> | Range that encodes the performance measure |
-| markers | <code>Array.&lt;Number&gt;</code> | Marker lines that encode the comparative measure |
+| ranges | <code>Array.&lt;Number&gt;</code> | Background bands, such as poor, fair and good thresholds |
+| measures | <code>Array.&lt;Number&gt;</code> | Bars for the actual values, such as a result and a forecast |
+| [markers] | <code>Array.&lt;Number&gt;</code> | Marker lines for the targets |
 
 **Example**  
 ```js
