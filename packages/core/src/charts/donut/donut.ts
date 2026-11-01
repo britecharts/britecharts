@@ -246,7 +246,6 @@ type SliceElement = SVGPathElement & { __data__?: DonutArcDatum };
  * @tutorial donut
  *
  * @example
- * import { select } from 'd3-selection';
  * import { donut } from '@britecharts/core';
  *
  * // dataset: [{ name, quantity, id }]
@@ -254,11 +253,8 @@ type SliceElement = SVGPathElement & { __data__?: DonutArcDatum };
  *
  * donutChart
  *     .externalRadius(500)
- *     .internalRadius(200);
- *
- * select('.css-selector')
- *     .datum(dataset)
- *     .call(donutChart);
+ *     .internalRadius(200)
+ *     .render('.css-selector', dataset);
  */
 
 /**

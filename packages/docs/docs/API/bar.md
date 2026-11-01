@@ -10,7 +10,6 @@ simple and configurable bar chart.
 
 **Example**  
 ```js
-import { select } from 'd3-selection';
 import { bar } from '@britecharts/core';
 
 // dataset: [{ name, value }]
@@ -18,11 +17,8 @@ const barChart = bar();
 
 barChart
     .height(500)
-    .width(800);
-
-select('.css-selector')
-    .datum(dataset)
-    .call(barChart);
+    .width(800)
+    .render('.css-selector', dataset);
 ```
 
 * [Bar](#module_Bar)

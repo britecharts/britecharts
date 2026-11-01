@@ -247,18 +247,14 @@ type StackedBarPoint = SeriesPoint<StackedBarColumn>;
  * @tutorial stacked-bar
  *
  * @example
- * import { select } from 'd3-selection';
  * import { stackedBar } from '@britecharts/core';
  *
  * // dataset: [{ name, stack, value }]
  * const stackedBarChart = stackedBar();
  *
  * stackedBarChart
- *     .width(containerWidth);
- *
- * select('.css-selector')
- *     .datum(dataset)
- *     .call(stackedBarChart);
+ *     .width(containerWidth)
+ *     .render('.css-selector', dataset);
  */
 
 /**

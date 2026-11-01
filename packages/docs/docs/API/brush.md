@@ -10,7 +10,6 @@ simple and configurable brush chart.
 
 **Example**  
 ```js
-import { select } from 'd3-selection';
 import { brush } from '@britecharts/core';
 
 // dataset: [{ date, value }]
@@ -18,11 +17,8 @@ const brushChart = brush();
 
 brushChart
     .height(500)
-    .width(800);
-
-select('.css-selector')
-    .datum(dataset)
-    .call(brushChart);
+    .width(800)
+    .render('.css-selector', dataset);
 ```
 
 * [Brush](#module_Brush)

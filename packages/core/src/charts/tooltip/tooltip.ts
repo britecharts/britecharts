@@ -363,28 +363,13 @@ const formatSingleValue = format('.2f');
  * @tutorial tooltip
  *
  * @example
- * import { select } from 'd3-selection';
  * import { line, tooltip } from '@britecharts/core';
  *
  * // dataset: { data: [{ topicName, name, date, value }] }
- * const lineChart = line();
- * const chartTooltip = tooltip().title('Tooltip title');
- *
- * lineChart
+ * line()
  *     .width(500)
- *     .on('customMouseOver', chartTooltip.show)
- *     .on('customMouseMove', chartTooltip.update)
- *     .on('customMouseOut', chartTooltip.hide);
- *
- * const container = select('.css-selector');
- *
- * container.datum(dataset).call(lineChart);
- *
- * // After the chart has drawn: the line chart's tooltip goes on its hover marker
- * container
- *     .select('.metadata-group .hover-marker')
- *     .datum([])
- *     .call(chartTooltip);
+ *     .tooltip(tooltip().title('Visits'))
+ *     .render('.css-selector', dataset);
  */
 export default function module(): TooltipModule {
     // Kept as one `let` chain with annotations rather than split into `let`

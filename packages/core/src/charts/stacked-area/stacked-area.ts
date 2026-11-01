@@ -316,18 +316,14 @@ type StackedAreaXScale =
  * @tutorial stacked-area
  *
  * @example
- * import { select } from 'd3-selection';
  * import { stackedArea } from '@britecharts/core';
  *
  * // dataset: [{ date, name, value }]
  * const stackedAreaChart = stackedArea();
  *
  * stackedAreaChart
- *     .width(containerWidth);
- *
- * select('.css-selector')
- *     .datum(dataset)
- *     .call(stackedAreaChart);
+ *     .width(containerWidth)
+ *     .render('.css-selector', dataset);
  */
 
 /**

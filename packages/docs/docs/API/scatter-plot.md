@@ -10,7 +10,6 @@ simple and configurable scatter chart.
 
 **Example**  
 ```js
-import { select } from 'd3-selection';
 import { scatterPlot } from '@britecharts/core';
 
 // dataset: [{ name, x, y }]
@@ -18,11 +17,8 @@ const scatterPlotChart = scatterPlot();
 
 scatterPlotChart
     .grid('horizontal')
-    .width(500);
-
-select('.css-selector')
-    .datum(dataset)
-    .call(scatterPlotChart);
+    .width(500)
+    .render('.css-selector', dataset);
 ```
 
 * [Scatter-plot](#module_Scatter-plot)

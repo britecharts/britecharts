@@ -299,7 +299,6 @@ type TrendLinePoint = {
  * @tutorial scatter-plot
  *
  * @example
- * import { select } from 'd3-selection';
  * import { scatterPlot } from '@britecharts/core';
  *
  * // dataset: [{ name, x, y }]
@@ -307,11 +306,8 @@ type TrendLinePoint = {
  *
  * scatterPlotChart
  *     .grid('horizontal')
- *     .width(500);
- *
- * select('.css-selector')
- *     .datum(dataset)
- *     .call(scatterPlotChart);
+ *     .width(500)
+ *     .render('.css-selector', dataset);
  */
 
 /**

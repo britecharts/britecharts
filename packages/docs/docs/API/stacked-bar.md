@@ -10,18 +10,14 @@ rendering a multi stacked bar and configurable chart.
 
 **Example**  
 ```js
-import { select } from 'd3-selection';
 import { stackedBar } from '@britecharts/core';
 
 // dataset: [{ name, stack, value }]
 const stackedBarChart = stackedBar();
 
 stackedBarChart
-    .width(containerWidth);
-
-select('.css-selector')
-    .datum(dataset)
-    .call(stackedBarChart);
+    .width(containerWidth)
+    .render('.css-selector', dataset);
 ```
 
 * [Stacked-bar](#module_Stacked-bar)

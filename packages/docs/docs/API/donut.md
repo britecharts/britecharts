@@ -10,7 +10,6 @@ simple and configurable donut chart.
 
 **Example**  
 ```js
-import { select } from 'd3-selection';
 import { donut } from '@britecharts/core';
 
 // dataset: [{ name, quantity, id }]
@@ -18,11 +17,8 @@ const donutChart = donut();
 
 donutChart
     .externalRadius(500)
-    .internalRadius(200);
-
-select('.css-selector')
-    .datum(dataset)
-    .call(donutChart);
+    .internalRadius(200)
+    .render('.css-selector', dataset);
 ```
 
 * [Donut](#module_Donut)
