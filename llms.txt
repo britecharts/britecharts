@@ -1,6 +1,6 @@
 # Britecharts
 
-> Britecharts is a library of reusable D3.js charts: bar, grouped bar, stacked bar, line, stacked area, donut, scatter plot, heatmap, sparkline and bullet charts, with a legend, tooltips and a brush. Each chart is a function configured through chained getter and setter accessors, then called on a D3 selection that holds the data. `@britecharts/core` has the charts, `@britecharts/wrappers` creates, updates and destroys them in one call, and `@britecharts/react` has them as React components.
+> Britecharts is a library of reusable D3.js charts: bar, grouped bar, stacked bar, line, stacked area, donut, scatter plot, heatmap, treemap, sparkline and bullet charts, with a legend, tooltips and a brush. Each chart is a function configured through chained getter and setter accessors, then called on a D3 selection that holds the data. `@britecharts/core` has the charts, `@britecharts/wrappers` creates, updates and destroys them in one call, and `@britecharts/react` has them as React components.
 
 Version 3 is in beta: install `@britecharts/core@beta`, `@britecharts/wrappers@beta` or `@britecharts/react@beta`. Code written for version 2, the `britecharts` package, differs; the migration guide lists each change. Every chart shares one accessor vocabulary, such as `colorSchema`, `isAnimated`, `isLoading`, `numberFormat`, `a11yTitle` and `a11yDescription`, and an unset accessor reads back `null`.
 
@@ -37,6 +37,7 @@ The whole of this documentation, as one text file: https://britecharts.github.io
 - [Stacked Area](https://britecharts.github.io/britecharts/docs/API/stacked-area): Stacked Area Chart reusable API module that allows us rendering a multi area and configurable chart
 - [Stacked Bar](https://britecharts.github.io/britecharts/docs/API/stacked-bar): Stacked Bar Chart reusable API module that allows us rendering a multi stacked bar and configurable chart
 - [Tooltip](https://britecharts.github.io/britecharts/docs/API/tooltip): Tooltip component: one box, drawn inside the chart's svg, that follows the pointer and shows what it is over
+- [Treemap](https://britecharts.github.io/britecharts/docs/API/treemap): Treemap Chart reusable API module that shows how a total divides into its parts: each entry is a rectangle with an area proportional to its value
 
 ## Optional
 

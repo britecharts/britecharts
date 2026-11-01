@@ -38,7 +38,7 @@ Source: https://britecharts.github.io/britecharts/docs/Britecharts
 </div>
 <br/>
 
-Britecharts is a library of finished [D3.js][d3] charts: bar, line, donut, stacked and grouped bar, stacked area, scatter plot, heatmap, sparkline, bullet and brush, plus a tooltip and a legend. You choose a chart, give it data and a few settings, and get a polished, interactive, accessible chart that works the same in plain HTML, any framework or React.
+Britecharts is a library of finished [D3.js][d3] charts: bar, line, donut, stacked and grouped bar, stacked area, scatter plot, heatmap, treemap, sparkline, bullet and brush, plus a tooltip and a legend. You choose a chart, give it data and a few settings, and get a polished, interactive, accessible chart that works the same in plain HTML, any framework or React.
 
 ## Why Britecharts
 
@@ -179,6 +179,7 @@ Every chart shares the common accessors (`width`, `height`, `margin`, `colorSche
 -   [API][stacked-area-docs], [Demo][stackedareachart-story] Stacked Area Chart
 -   [API][scatter-docs], [Demo][scatterplot-story] Scatter Plot
 -   [API][heatmap-docs], [Demo][heatmap-story] Heatmap
+-   [API][treemap-docs], [Demo][treemap-story] Treemap
 -   [API][sparkline-docs], [Demo][sparklinechart-story] Sparkline Chart
 -   [API][bullet-docs], [Demo][bulletchart-story] Bullet Chart
 -   [API][brush-docs], [Demo][brushchart-story] Brush Chart
@@ -194,6 +195,7 @@ Every chart shares the common accessors (`width`, `height`, `margin`, `colorSche
 [brush-docs]: https://britecharts.github.io/britecharts/docs/API/brush
 [scatter-docs]: https://britecharts.github.io/britecharts/docs/API/scatter-plot
 [heatmap-docs]: https://britecharts.github.io/britecharts/docs/API/heatmap
+[treemap-docs]: https://britecharts.github.io/britecharts/docs/API/treemap
 [sparkline-docs]: https://britecharts.github.io/britecharts/docs/API/sparkline
 [stacked-area-docs]: https://britecharts.github.io/britecharts/docs/API/stacked-area
 [mini-tooltip-docs]: https://britecharts.github.io/britecharts/docs/API/tooltip#minitooltip-the-single-value-preset
@@ -281,6 +283,7 @@ Read more in the [license document][britecharts-license]
 [shadcn-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-add-a-chart-to-a-shadcn-app
 [migration-guide]: https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3
 [heatmap-story]: https://britecharts.github.io/britecharts/docs/API/heatmap 'Check the API reference'
+[treemap-story]: https://britecharts.github.io/britecharts/docs/API/treemap 'Check the API reference'
 [d3]: https://d3js.org/
 [mike-chart]: https://bost.ocks.org/mike/chart/
 [changelog]: https://github.com/britecharts/britecharts/blob/main/CHANGELOG.md
@@ -1075,7 +1078,7 @@ Charts draw without animation by default. Set `isAnimated(true)` to animate them
 lineChart.isAnimated(true).animationDuration(600);
 ```
 
-`animationDuration` does nothing while `isAnimated` is `false`. The bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, scatter plot, sparkline and brush charts animate. React components take both as props.
+`animationDuration` does nothing while `isAnimated` is `false`. The bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, treemap, scatter plot, sparkline and brush charts animate. React components take both as props.
 
 A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set. The rest of the motion stops too: tooltips appear and move without fading or easing, the legend drops entries without a fade, and a hovered point is highlighted without its bounce.
 
@@ -1167,7 +1170,7 @@ A chart can be written down as a spec, a plain object with its name, its configu
 }
 ```
 
-Each chart has a JSON Schema for its spec at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json`: `bar`, `brush`, `bullet`, `donut`, `groupedBar`, `heatmap`, `legend`, `line`, `scatterPlot`, `sparkline`, `stackedArea`, `stackedBar` and `tooltip`. They are generated from the charts' TypeScript types, so they list every accessor with its type and description. With the `$schema` line, editors such as VS Code check and complete the spec as you type, and any JSON Schema validator (Ajv, for example) can check one before you draw it.
+Each chart has a JSON Schema for its spec at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json`: `bar`, `brush`, `bullet`, `donut`, `groupedBar`, `heatmap`, `legend`, `line`, `scatterPlot`, `sparkline`, `stackedArea`, `stackedBar`, `tooltip` and `treemap`. They are generated from the charts' TypeScript types, so they list every accessor with its type and description. With the `$schema` line, editors such as VS Code check and complete the spec as you type, and any JSON Schema validator (Ajv, for example) can check one before you draw it.
 
 Draw a spec with the chart's wrapper, which checks it too:
 
@@ -1205,6 +1208,7 @@ Each chart fills the width of its container, so put it in an element that has a 
 | Stacked area | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/stacked-area-chart.json` |
 | Stacked bar | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/stacked-bar-chart.json` |
 | Heatmap | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/heatmap.json` |
+| Treemap | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/treemap.json` |
 | Donut | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/donut-chart.json` |
 | Sparkline | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/sparkline.json` |
 | Brush | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/brush.json` |
@@ -1884,7 +1888,7 @@ A chart can be written down as a spec: its name, its configuration and its data.
 The schemas are published at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json` and ship in this package as `@britecharts/wrappers/schemas/<chart>.json`, one per chart, named as core names it (`bar`, `groupedBar`, `scatterPlot`…). Draw a spec with its wrapper: `BarWrapper.create(element, spec.data, spec.config)`. Options that take a function, such as the events and the formatting functions, can't be written in JSON; set them from JavaScript.
 
 ## Availability
-Every chart in `@britecharts/core` has a wrapper: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper` and `StackedBarWrapper`, plus `TooltipWrapper` for the tooltip.
+Every chart in `@britecharts/core` has a wrapper: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper`, `StackedBarWrapper` and `TreemapWrapper`, plus `TooltipWrapper` for the tooltip.
 
 ## Installation
 
@@ -1979,7 +1983,7 @@ The charts name the fields of their data points differently, so some of them nee
 | `StackedBar` | `nameLabel="stack"` |
 | `GroupedBar` | `nameLabel="group"` |
 | `ScatterPlot` | `valueLabel="y"` |
-| `Bar`, `Donut`, `Heatmap` | none |
+| `Bar`, `Donut`, `Heatmap`, `Treemap` | none |
 
 Without them, the tooltip shows no rows (line), rows without their colours (stacked and grouped bar) or no value (scatter plot).
 
@@ -2022,6 +2026,7 @@ Every Britecharts chart has a component:
 - Grouped Bar charts [(API)][groupedBarChartAPI]
 - Donut charts [(API)][donutChartAPI]
 - Heatmaps [(API)][heatmapAPI]
+- Treemaps [(API)][treemapAPI]
 - Line charts [(API)][lineChartAPI]
 - Scatter Plots [(API)][scatterPlotAPI]
 - Sparkline charts [(API)][sparklineChartAPI]
@@ -2090,6 +2095,7 @@ The package is written in TypeScript, and its type declarations are generated fr
 [bulletAPI]: https://britecharts.github.io/britecharts/docs/API/bullet
 [brushAPI]: https://britecharts.github.io/britecharts/docs/API/brush
 [heatmapAPI]: https://britecharts.github.io/britecharts/docs/API/heatmap
+[treemapAPI]: https://britecharts.github.io/britecharts/docs/API/treemap
 [jsDelivrLib]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/dist/
 [npmModule]: https://www.npmjs.com/package/britecharts-react
@@ -6762,7 +6768,7 @@ pointer and shows what it is over. It renders a **list** (a title and one
 row per topic, with a colour dot, the topic's name and its value) for the
 multi-value charts -- line, stacked area, stacked bar and grouped bar --
 or a **single value** (a title, the element's name and a big value) for
-the single-value charts -- bar, scatter plot, heatmap and donut. By
+the single-value charts -- bar, scatter plot, heatmap, treemap and donut. By
 default it picks the layout from the data point it is given; `layout()`
 forces one. It shows a title only if you set one, and a single value with
 two decimals unless you set a format.
@@ -6780,7 +6786,7 @@ What they carry, and where to `.call()` the tooltip:
 | --- | --- | --- | --- | --- |
 | line, stacked area | `(data, [x, y])` | `(dataPoint, [x, y], [width, height], colorMap)` | the hovered date's x, the pointer's y | `.metadata-group .vertical-marker-container` |
 | stacked bar, grouped bar | `(data, [x, y])` | `(dataPoint, [x, y], [width, height], colorMap)` | the pointer, over a bar only | `.metadata-group` |
-| bar, heatmap, donut | `(dataPoint, [x, y], [width, height])` | `(dataPoint, [x, y], [width, height])` | the pointer, over a shape only | `.metadata-group` |
+| bar, heatmap, treemap, donut | `(dataPoint, [x, y], [width, height])` | `(dataPoint, [x, y], [width, height])` | the pointer, over a shape only | `.metadata-group` |
 | scatter plot | `(dataPoint, [x, y])` | `(dataPoint, [x, y], [width, height])` | the hovered point | `.metadata-group` |
 
 Positions are in pixels relative to the chart's drawing area (inside the
@@ -6802,7 +6808,7 @@ without their colours, or no value:
 | stacked bar | `topicLabel('values')`, `nameLabel('stack')` | its rows are under `values`, named by `stack` |
 | grouped bar | `topicLabel('values')`, `nameLabel('group')` | its rows are under `values`, named by `group` |
 | scatter plot | `valueLabel('y')` | a point's value is its `y` (add `nameLabel('x')` to show `x` instead of its name) |
-| bar, donut, heatmap | nothing | their data points carry `name` and `value` |
+| bar, donut, heatmap, treemap | nothing | their data points carry `name` and `value` |
 
 In React, `Tooltip` starts from `topicLabel('values')`, so the line chart
 is the one that needs a setting there: `topicLabel="topics"`.
@@ -7099,4 +7105,288 @@ parse as dates.
 **Example**  
 ```js
 tooltip.xAxisValueType('category')
+```
+
+---
+
+# Treemap
+
+Source: https://britecharts.github.io/britecharts/docs/API/treemap
+
+Treemap Chart reusable API module that shows how a total divides into its
+parts: each entry is a rectangle with an area proportional to its value.
+
+**Example**  
+```js
+import { treemap } from '@britecharts/core';
+
+// dataset: [{ name, value }]
+treemap()
+    .width(500)
+    .height(300)
+    .render('.css-selector', dataset);
+```
+
+## treemap(_selection)
+This function creates the graph using the selection as container
+
+**Kind**: Exported function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _selection | `D3Selection` | A d3 selection that represents                                  the container(s) where the chart(s) will be rendered |
+
+## a11yTitle(_x) ⇒ `String` \| `null` \| `module`
+Gets or Sets the name screen readers announce for the chart. It is
+set as the svg's `aria-label`. Unset, the chart is announced as
+"Treemap".
+
+**Kind**: method of `treemap`  
+**Returns**: `String` \| `null` \| `module` - Current a11yTitle or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `String` \| `null` | Desired accessible title for the chart |
+
+## a11yDescription(_x) ⇒ `String` \| `null` \| `module`
+Gets or Sets a longer description screen readers announce after the
+chart's name, such as what the data shows. It is rendered as the svg's
+`<desc>`. Unset, the chart has no description.
+
+**Kind**: method of `treemap`  
+**Returns**: `String` \| `null` \| `module` - Current a11yDescription or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `String` \| `null` | Desired accessible description for the chart |
+
+## a11yDataTable(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart renders its data as a visually hidden
+table after its svg, which screen readers can read cell by cell. On by
+default; set it to false when the app gives the data its own accessible
+form.
+
+**Kind**: method of `treemap`  
+**Returns**: `Boolean` \| `module` - Current a11yDataTable or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether to render the data table |
+
+## a11yKeyboardNavigation(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether a keyboard can move through the chart's data
+points: the chart takes one tab stop, the arrow keys move between
+points, Home and End go to the first and last, and Escape lets go. The
+tooltip and highlights follow focus as they follow the pointer. On by
+default.
+
+**Kind**: method of `treemap`  
+**Returns**: `Boolean` \| `module` - Current a11yKeyboardNavigation or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Boolean` | Whether the keyboard can move through the data |
+
+## animationDuration(_x) ⇒ `duration` \| `module`
+Gets or Sets the duration of the animation
+
+**Kind**: method of `treemap`  
+**Returns**: `duration` \| `module` - Current animation duration or Chart module to chain calls  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | `Number` | `1200` | Desired animation duration for the graph |
+
+## colorSchema(_x) ⇒ `Array.<String>` \| `module`
+Gets or Sets the colorSchema of the chart. Each name takes a colour.
+
+**Kind**: method of `treemap`  
+**Returns**: `Array.<String>` \| `module` - Current colorSchema or Chart module to chain calls  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | `Array.<String>` | `britecharts` | Desired colorSchema for the cells |
+
+## hasLabels(_x) ⇒ `Boolean` \| `module`
+Gets or Sets whether the chart labels its cells. A label
+shows only where it fits: a small cell has no name, and a slightly
+bigger one no value.
+
+**Kind**: method of `treemap`  
+**Returns**: `Boolean` \| `module` - Current hasLabels or Chart module to chain calls  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | `Boolean` | `true` | Whether to draw the labels |
+
+## exportChart(filename, title)
+Exports the chart and fires a download: an svg file when the filename
+ends in `.svg`, and a png otherwise
+
+**Kind**: method of `treemap`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| filename | `String` | Name of the downloaded file, whose extension picks the format |
+| title | `String` | Title to add at the top of the exported picture |
+
+## height(_x) ⇒ `Number` \| `module`
+Gets or Sets the height of the chart
+
+**Kind**: method of `treemap`  
+**Returns**: `Number` \| `module` - Current height or Chart module to chain calls  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | `Number` | `400` | Desired height for the chart |
+
+## isAnimated(_x) ⇒ `Boolean` \| `module`
+Gets or Sets the isAnimated value of the chart. New cells fade in and
+existing ones move to their new place.
+The chart draws without animation when the reader's system asks for
+reduced motion (`prefers-reduced-motion`), whatever this is set to.
+
+**Kind**: method of `treemap`  
+**Returns**: `Boolean` \| `module` - Current isAnimated value or Chart module to chain calls  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | `Boolean` | `false` | Decide whether to show chart animation |
+
+## isLoading(_flag) ⇒ `boolean` \| `module`
+Gets or Sets the loading state of the chart
+
+**Kind**: method of `treemap`  
+**Returns**: `boolean` \| `module` - Current loading state flag or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _flag | `boolean` | Desired value for the loading state |
+
+**Example**  
+```js
+chart.isLoading(true)
+```
+## labelsNumberFormat(_x) ⇒ `String` \| `module`
+Gets or Sets the d3-format string of the values on the cells
+
+**Kind**: method of `treemap`  
+**Returns**: `String` \| `module` - Current labelsNumberFormat or Chart module to chain calls  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | `String` | `&#x27;,&#x27;` | Desired format |
+
+**Example**  
+```js
+treemapChart.labelsNumberFormat('$,.0f')
+```
+## margin(_x) ⇒ `margin` \| `module`
+Gets or Sets the margin of the chart
+
+**Kind**: method of `treemap`  
+**Returns**: `margin` \| `module` - Current margin or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `Object` | Margin object to get/set |
+
+## on() ⇒ `module`
+Exposes an 'on' method that acts as a bridge with the event dispatcher
+We are going to expose this events:
+customMouseOver, customMouseMove, customMouseOut, and customClick.
+Each sends the entry, the pointer's position and the chart's size.
+
+**Kind**: method of `treemap`  
+**Returns**: `module` - Treemap Chart  
+## tooltip(_x) ⇒ `module` \| `null`
+Gets or Sets the tooltip the chart shows: a `tooltip()`, set on this
+chart only. The chart connects it to its
+pointer and keyboard events, draws it in place, and sets the labels its
+data points need, unless they were set on the tooltip; it does so now
+if the chart has drawn, and again on every draw. Its event handlers go
+under the `britechartsTooltip` namespace. Null, or another tooltip,
+removes the one it had.
+
+**Kind**: method of `treemap`  
+**Returns**: `module` \| `null` - Current tooltip or Chart module to chain calls  
+**Throws**:
+
+- `Error` When the tooltip is already set on another chart
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `module` \| `null` | The tooltip to show |
+
+**Example**  
+```js
+treemap().tooltip(tooltip()).render('#chart', data);
+```
+## render(target, [data]) ⇒ `module`
+Draws the chart into a target: a CSS selector, an element or a d3
+selection, as `select(target).datum(data).call(chart)` does. A selector
+draws into the first element it matches. Without data, the chart
+redraws with the data it last drew there.
+
+**Kind**: method of `treemap`  
+**Returns**: `module` - The chart module, to chain calls  
+**Throws**:
+
+- `Error` When the target matches no element
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | `String` \| `Element` \| `D3Selection` | Where to draw the chart |
+| [data] | `Object` | The data to draw |
+
+**Example**  
+```js
+treemap().width(600).render('#chart', data);
+```
+## valueLocale(_x) ⇒ `LocaleObject` \| `null` \| `module`
+Gets or Sets the locale the values on the cells are formatted with.
+Check [the d3-format docs](https://github.com/d3/d3-format#formatLocale) for the required values.
+
+**Kind**: method of `treemap`  
+**Returns**: `LocaleObject` \| `null` \| `module` - Current locale or Chart module to chain calls  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| _x | `LocaleObject` \| `null` | Desired locale |
+
+## width(_x) ⇒ `Number` \| `module`
+Gets or Sets the width of the chart
+
+**Kind**: method of `treemap`  
+**Returns**: `Number` \| `module` - Current width or Chart module to chain calls  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| _x | `Number` | `780` | Desired width for the chart |
+
+## exports~TreemapData : `Array.<Object>`
+The data a treemap takes: one entry per cell. Entries with a value of zero
+or less have no area, so they are not drawn, but they stay in the data
+table.
+
+**Kind**: inner typedef of `treemap`  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | `String` | The cell's name |
+| value | `Number` | The cell's size |
+
+**Example**  
+```js
+[
+    {
+        name: 'Rent',
+        value: 1200
+    },
+    {
+        name: 'Groceries',
+        value: 480
+    }
+]
 ```
