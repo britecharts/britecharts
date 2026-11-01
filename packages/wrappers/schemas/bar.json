@@ -112,6 +112,10 @@
                     "description": "Executes a command that triggers the download of the current chart: an svg file when the filename ends in `.svg`, and a png otherwise",
                     "type": "string"
                 },
+                "hasLabels": {
+                    "description": "If true, adds labels at the end of the bars",
+                    "type": "boolean"
+                },
                 "hasPercentage": {
                     "description": "Gets or Sets the hasPercentage status",
                     "type": "boolean"

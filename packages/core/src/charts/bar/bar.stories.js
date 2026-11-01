@@ -48,7 +48,7 @@ Playground.args = playgroundArgs(bar, [
     'shouldReverseColorList',
     'betweenBarsPadding',
     'hasPercentage',
-    'enableLabels',
+    'hasLabels',
     'labelsNumberFormat',
     'numberFormat',
     'hasSingleBarHighlight',
@@ -144,7 +144,7 @@ export const WithBarLabels = () => {
         barChart
             .width(containerWidth)
             .hasPercentage(true)
-            .enableLabels(true)
+            .hasLabels(true)
             .labelsNumberFormat('.0%')
             .height(300);
 

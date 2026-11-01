@@ -76,7 +76,7 @@ export const WithBarLabels = () => {
             data={data}
             height={300}
             hasPercentage={true}
-            enableLabels={true}
+            hasLabels={true}
             labelsNumberFormat=".0%"
         />
     );

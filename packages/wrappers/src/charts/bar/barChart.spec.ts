@@ -67,6 +67,14 @@ describe('bar Chart', () => {
                 expect(actual).toEqual(expected);
             });
 
+            it('should set hasLabels', () => {
+                const chart = bar.create(anchor, barData.withLetters(), {
+                    hasLabels: true,
+                });
+
+                expect(chart.hasLabels()).toBe(true);
+            });
+
             it('should set the width', () => {
                 const expected = 500;
 

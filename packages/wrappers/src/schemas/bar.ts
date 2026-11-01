@@ -87,6 +87,9 @@ const schema: ConfigurationSchema = {
         exportChart: {
             type: 'string',
         },
+        hasLabels: {
+            type: 'boolean',
+        },
         hasPercentage: {
             type: 'boolean',
         },

@@ -24,7 +24,7 @@ API page: `bar`. Data: an array of `{ name: string, value: number }`.
 [{ name: 'Shiny', value: 4 }, { name: 'Blazing', value: 9 }]
 ```
 
-Accessors: `animationDuration`, `betweenBarsPadding`, `chartGradient`, `colorMap`, `colorSchema`, `enableLabels`, `exportChart`, `hasPercentage`, `hasSingleBarHighlight`, `highlightBarFunction`, `isAnimated`, `isHorizontal`, `labelsMargin`, `labelsNumberFormat`, `labelsSize`, `numberFormat`, `on`, `orderingFunction`, `percentageAxisToMaxRatio`, `shouldReverseColorList`, `tooltip`, `valueLocale`, `xAxisLabel`, `xAxisLabelOffset`, `xTicks`, `yAxisLabel`, `yAxisLabelOffset`, `yAxisPaddingBetweenChart`, `yTicks`.
+Accessors: `animationDuration`, `betweenBarsPadding`, `chartGradient`, `colorMap`, `colorSchema`, `exportChart`, `hasLabels` (`enableLabels` is its deprecated name), `hasPercentage`, `hasSingleBarHighlight`, `highlightBarFunction`, `isAnimated`, `isHorizontal`, `labelsMargin`, `labelsNumberFormat`, `labelsSize`, `numberFormat`, `on`, `orderingFunction`, `percentageAxisToMaxRatio`, `shouldReverseColorList`, `tooltip`, `valueLocale`, `xAxisLabel`, `xAxisLabelOffset`, `xTicks`, `yAxisLabel`, `yAxisLabelOffset`, `yAxisPaddingBetweenChart`, `yTicks`.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`. Negative values draw below, or left of, zero. A horizontal bar chart usually needs `margin({ left })` wide enough for its labels.
 
