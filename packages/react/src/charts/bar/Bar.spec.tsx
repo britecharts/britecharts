@@ -54,6 +54,18 @@ describe('bar Chart', () => {
     // referentially identical props makes no update: a consumer who mutates
     // their data array in place gets no redraw, and needs a new array or
     // object.
+    describe('when hasLabels is passed', () => {
+        it('should draw the labels', () => {
+            const wrapper = mount(
+                <Bar data={barData.withLetters()} hasLabels={true} />
+            );
+
+            expect(wrapper.findAll('.percentage-label').length).toBeGreaterThan(
+                0
+            );
+        });
+    });
+
     describe('re-rendering with props that did not change', () => {
         let updateSpy: MockInstance<typeof BarWrapper.update>;
 

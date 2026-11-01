@@ -142,6 +142,7 @@ const barOwn = bar();
 
 const barPadding: number = barOwn.betweenBarsPadding();
 const barLabelsEnabled: boolean = barOwn.enableLabels();
+const barHasLabels: boolean = barOwn.hasLabels();
 const barPercentage: boolean = barOwn.hasPercentage();
 const barSingleHighlight: boolean = barOwn.hasSingleBarHighlight();
 const barHorizontal: boolean = barOwn.isHorizontal();
@@ -178,7 +179,7 @@ const barSorted: BarChartDataShape[] = [
 // bar-specific one still resolves.
 const barChained: number = bar()
     .isAnimated(true)
-    .enableLabels(true)
+    .hasLabels(true)
     .labelsSize(14)
     .labelsSize();
 
@@ -455,6 +456,7 @@ export const scatterPlotAccessors = {
 export const barOwnAccessors = {
     barPadding,
     barLabelsEnabled,
+    barHasLabels,
     barPercentage,
     barSingleHighlight,
     barHorizontal,

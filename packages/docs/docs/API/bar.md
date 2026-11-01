@@ -33,8 +33,9 @@ barChart
             * [.chartGradient(_x)](#module_Bar--exports.chartGradient) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
             * [.colorMap([_x])](#module_Bar--exports.colorMap) ⇒ <code>object</code> \| <code>module</code>
             * [.colorSchema(_x)](#module_Bar--exports.colorSchema) ⇒ <code>colorSchema</code> \| <code>module</code>
-            * [.enableLabels([_x])](#module_Bar--exports.enableLabels) ⇒ <code>Boolean</code> \| <code>module</code>
+            * ~~[.enableLabels([_x])](#module_Bar--exports.enableLabels) ⇒ <code>Boolean</code> \| <code>module</code>~~
             * [.exportChart(filename, title)](#module_Bar--exports.exportChart) ⇒ <code>Promise</code>
+            * [.hasLabels([_x])](#module_Bar--exports.hasLabels) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.hasPercentage(_x)](#module_Bar--exports.hasPercentage) ⇒ <code>boolean</code> \| <code>module</code>
             * [.hasSingleBarHighlight(_x)](#module_Bar--exports.hasSingleBarHighlight) ⇒ <code>boolean</code> \| <code>module</code>
             * [.height(_x)](#module_Bar--exports.height) ⇒ <code>height</code> \| <code>module</code>
@@ -212,11 +213,13 @@ Gets or Sets the colorSchema of the chart
 
 <a name="module_Bar--exports.enableLabels" id="module_Bar--exports.enableLabels"></a>
 
-## enableLabels([_x]) ⇒ <code>Boolean</code> \| <code>module</code>
+## ~~enableLabels([_x]) ⇒ <code>Boolean</code> \| <code>module</code>~~
+***Use `hasLabels`, which does the same. Goes in version 4.***
+
 If true, adds labels at the end of the bars
 
 **Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
-**Returns**: <code>Boolean</code> \| <code>module</code> - Current value of enableLabels or Chart module to chain calls  
+**Returns**: <code>Boolean</code> \| <code>module</code> - Current value of hasLabels or Chart module to chain calls  
 **Access**: public  
 
 | Param | Type | Default |
@@ -237,6 +240,19 @@ ends in `.svg`, and a png otherwise
 | --- | --- | --- |
 | filename | <code>String</code> | Name of the downloaded file, whose extension picks the format |
 | title | <code>String</code> | Title to add at the top of the exported picture |
+
+<a name="module_Bar--exports.hasLabels" id="module_Bar--exports.hasLabels"></a>
+
+## hasLabels([_x]) ⇒ <code>Boolean</code> \| <code>module</code>
+If true, adds labels at the end of the bars
+
+**Kind**: method of [<code>bar</code>](#exp_module_Bar--exports)  
+**Returns**: <code>Boolean</code> \| <code>module</code> - Current value of hasLabels or Chart module to chain calls  
+**Access**: public  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [_x] | <code>Boolean</code> | <code>false</code> | 
 
 <a name="module_Bar--exports.hasPercentage" id="module_Bar--exports.hasPercentage"></a>
 

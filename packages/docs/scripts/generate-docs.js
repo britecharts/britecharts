@@ -536,7 +536,7 @@ async function generateDocs() {
         const markdown = apiMarkdown
             .replace(/<a name="([^"]+)"><\/a>/g, '<a name="$1" id="$1"></a>')
             .replace(/^### /gm, '## ')
-            .replace(/^(#+ )exports\./gm, '$1');
+            .replace(/^(#+ (?:~~)?)exports\./gm, '$1');
 
         // if there's markdown, do stuff
         if (markdown && markdown.length > 0) {

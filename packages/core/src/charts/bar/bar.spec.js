@@ -188,7 +188,7 @@ describe('bar Chart', () => {
                 it('should show the $ sign as a default currency symbol', () => {
                     const newDataset = buildDataSet('withColors');
 
-                    barChart.enableLabels(true).labelsNumberFormat('$,.2f');
+                    barChart.hasLabels(true).labelsNumberFormat('$,.2f');
                     containerFixture.datum(newDataset).call(barChart);
 
                     const actual = containerFixture
@@ -224,7 +224,7 @@ describe('bar Chart', () => {
 
                         barChart
                             .labelsNumberFormat('$,.2f')
-                            .enableLabels(true)
+                            .hasLabels(true)
                             .locale(customLocale);
                         containerFixture.datum(newDataset).call(barChart);
 
@@ -680,15 +680,46 @@ describe('bar Chart', () => {
         });
 
         it('should provide enable labels getter and setter', () => {
-            let previous = barChart.enableLabels(),
+            let previous = barChart.hasLabels(),
                 expected = true,
                 actual;
 
-            barChart.enableLabels(expected);
-            actual = barChart.enableLabels();
+            barChart.hasLabels(expected);
+            actual = barChart.hasLabels();
 
             expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);
+        });
+
+        it('should keep enableLabels as a deprecated double of hasLabels', () => {
+            expect(barChart.enableLabels(true)).toBe(barChart);
+            expect(barChart.hasLabels()).toBe(true);
+
+            barChart.hasLabels(false);
+
+            expect(barChart.enableLabels()).toBe(false);
+        });
+
+        it('should warn once that enableLabels is deprecated', async () => {
+            vi.resetModules();
+
+            const warnSpy = vi
+                .spyOn(console, 'warn')
+                .mockImplementation(() => {});
+
+            warnSpy.mockClear();
+
+            const { default: freshChart } = await import('./bar');
+
+            freshChart().enableLabels(true);
+            freshChart().enableLabels();
+
+            expect(warnSpy).toHaveBeenCalledTimes(1);
+            expect(warnSpy.mock.calls[0][0]).toContain('deprecated');
+            warnSpy.mockClear();
+            freshChart().hasLabels(true);
+
+            expect(warnSpy).not.toHaveBeenCalled();
         });
 
         it('should have exportChart defined', () => {

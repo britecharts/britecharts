@@ -77,8 +77,15 @@ export interface BarChartProps {
 
     /**
      * If true, adds labels at the end of the bars
+     *
+     * @deprecated Use `hasLabels`, which does the same. Goes in version 4.
      */
     enableLabels?: boolean;
+
+    /**
+     * If true, adds labels at the end of the bars
+     */
+    hasLabels?: boolean;
 
     /**
      * The filename to export the chart to. Setting it exports the chart and fires

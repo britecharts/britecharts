@@ -110,9 +110,15 @@ export interface BarChartAPI
      */
     chartGradient(): [string, string] | null;
     chartGradient(gradient: [string, string]): BarChartModule;
-    /** If true, adds labels at the end of the bars */
+    /**
+     * If true, adds labels at the end of the bars
+     * @deprecated Use `hasLabels`, which does the same. Goes in version 4.
+     */
     enableLabels(): boolean;
     enableLabels(shouldEnable: boolean): BarChartModule;
+    /** If true, adds labels at the end of the bars */
+    hasLabels(): boolean;
+    hasLabels(hasLabels: boolean): BarChartModule;
     /**
      * Gets or Sets the hasPercentage status
      *
@@ -228,6 +234,9 @@ export type BarChartModule = ChartModuleSelection<BarChartDataShape[]> &
 
 const PERCENTAGE_FORMAT = '%';
 const NUMBER_FORMAT = ',f';
+
+// Warned about once
+let hasWarnedEnableLabels = false;
 
 /**
  * The chart's own svg, and the selections derived from it. The datum and parent
@@ -374,7 +383,7 @@ export default function module(): BarChartModule {
         xTicks = 5,
         percentageAxisToMaxRatio = 1,
         numberFormat = NUMBER_FORMAT,
-        enableLabels = false,
+        hasLabels = false,
         labelsMargin = 7,
         labelsNumberFormat = NUMBER_FORMAT,
         labelsSize = 12,
@@ -512,7 +521,7 @@ export default function module(): BarChartModule {
             drawAxis();
             drawBars();
 
-            if (enableLabels) {
+            if (hasLabels) {
                 drawLabels(localeFormatter);
             }
             if (chartTooltip) {
@@ -1565,19 +1574,26 @@ export default function module(): BarChartModule {
     /**
      * If true, adds labels at the end of the bars
      * @param  {Boolean} [_x=false]
-     * @return {Boolean | module}    Current value of enableLabels or Chart module to chain calls
+     * @return {Boolean | module}    Current value of hasLabels or Chart module to chain calls
+     * @deprecated Use `hasLabels`, which does the same. Goes in version 4.
      * @public
      */
     (exports as BarChartModule).enableLabels = function (
         this: BarChartModule,
         _x
     ) {
-        if (!arguments.length) {
-            return enableLabels;
+        if (!hasWarnedEnableLabels) {
+            hasWarnedEnableLabels = true;
+            // eslint-disable-next-line no-console
+            console.warn(
+                'Britecharts: enableLabels is deprecated and goes in version 4. Use hasLabels, which does the same.'
+            );
         }
-        enableLabels = _x;
+        if (!arguments.length) {
+            return this.hasLabels();
+        }
 
-        return this;
+        return this.hasLabels(_x);
     } as BarChartModule['enableLabels'];
 
     /**
@@ -1596,6 +1612,24 @@ export default function module(): BarChartModule {
             title
         );
     } as BarChartModule['exportChart'];
+
+    /**
+     * If true, adds labels at the end of the bars
+     * @param  {Boolean} [_x=false]
+     * @return {Boolean | module}    Current value of hasLabels or Chart module to chain calls
+     * @public
+     */
+    (exports as BarChartModule).hasLabels = function (
+        this: BarChartModule,
+        _x
+    ) {
+        if (!arguments.length) {
+            return hasLabels;
+        }
+        hasLabels = _x;
+
+        return this;
+    } as BarChartModule['hasLabels'];
 
     /**
      * Gets or Sets the hasPercentage status
