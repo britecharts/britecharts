@@ -1,5 +1,31 @@
 # @britecharts/wrappers
 
+## 3.0.0-beta.9
+
+### Minor Changes
+
+- afbb6a4: The bar chart's `enableLabels` is deprecated in favour of `hasLabels`, which follows the rule that booleans start with `has`, `is` or `should`. `hasLabels` is new in core and as a prop and configuration key in React and the wrappers. `enableLabels` still works, reads and sets the same value, logs a warning once, and goes in version 4.
+- cd3762f: There's a new chart, the treemap: `treemap()` in core, `TreemapWrapper` in the wrappers and `Treemap` in React. It shows how a total divides into its parts, from an array of `{ name, value }`. It takes `tooltip()`, keyboard navigation, the data table, export and the loading state like the other charts, and a label shows only where it fits. Core gains `d3-hierarchy` as a dependency.
+
+### Patch Changes
+
+- 566e176: Each package's `package.json` describes it for npm: a `description`, `keywords` such as `charts`, `d3`, `data-visualization` and `accessibility`, a `homepage` on its docs page, and the `repository` and `bugs` links. npm search ranks by the description and keywords, and the packages' npm pages had no summary and no link back to GitHub.
+- 5ed14fe: The `exportChart` setting and React prop download the chart. The wrappers called the export before the chart had drawn, so the file held no chart. They now call it once the draw is done, and log the error if the export fails.
+- Updated dependencies [afbb6a4]
+- Updated dependencies [5ed14fe]
+- Updated dependencies [6526013]
+- Updated dependencies [731c729]
+- Updated dependencies [032188d]
+- Updated dependencies [ee209ba]
+- Updated dependencies [5ed14fe]
+- Updated dependencies [5ed14fe]
+- Updated dependencies [5ed14fe]
+- Updated dependencies [566e176]
+- Updated dependencies [a19b81f]
+- Updated dependencies [017aa5a]
+- Updated dependencies [cd3762f]
+    - @britecharts/core@3.0.0-beta.9
+
 ## 3.0.0-beta.8
 
 ### Minor Changes
