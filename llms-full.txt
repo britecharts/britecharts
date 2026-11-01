@@ -2128,6 +2128,7 @@ barChart
     .width(800)
     .render('.css-selector', dataset);
 ```
+            * ~~.enableLabels([_x]) ⇒ `Boolean` \| `module`~~
 
 ## bar(_selection, _data)
 This function creates the graph using the selection as container
@@ -2244,11 +2245,13 @@ Gets or Sets the colorSchema of the chart
 | --- | --- | --- |
 | _x | `Array.<String>` | Desired colorSchema for the graph |
 
-## enableLabels([_x]) ⇒ `Boolean` \| `module`
+## ~~enableLabels([_x]) ⇒ `Boolean` \| `module`~~
+***Use `hasLabels`, which does the same. Goes in version 4.***
+
 If true, adds labels at the end of the bars
 
 **Kind**: method of `bar`  
-**Returns**: `Boolean` \| `module` - Current value of enableLabels or Chart module to chain calls  
+**Returns**: `Boolean` \| `module` - Current value of hasLabels or Chart module to chain calls  
 
 | Param | Type | Default |
 | --- | --- | --- |
@@ -2265,6 +2268,16 @@ ends in `.svg`, and a png otherwise
 | --- | --- | --- |
 | filename | `String` | Name of the downloaded file, whose extension picks the format |
 | title | `String` | Title to add at the top of the exported picture |
+
+## hasLabels([_x]) ⇒ `Boolean` \| `module`
+If true, adds labels at the end of the bars
+
+**Kind**: method of `bar`  
+**Returns**: `Boolean` \| `module` - Current value of hasLabels or Chart module to chain calls  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [_x] | `Boolean` | `false` | 
 
 ## hasPercentage(_x) ⇒ `boolean` \| `module`
 Gets or Sets the hasPercentage status
