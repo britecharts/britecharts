@@ -23,6 +23,8 @@ import stackedArea from './stacked-area/stacked-area';
 import { StackedAreaDataBuilder } from './stacked-area/stackedAreaDataBuilder';
 import stackedBar from './stacked-bar/stacked-bar';
 import { StackedBarDataBuilder } from './stacked-bar/stackedBarDataBuilder';
+import treemap from './treemap/treemap';
+import { TreemapDataBuilder } from './treemap/treemapDataBuilder';
 
 // Every chart that draws its own svg, with the data its own spec renders
 const CHARTS = [
@@ -66,6 +68,7 @@ const CHARTS = [
         stackedBar,
         () => new StackedBarDataBuilder().with3Sources().build(),
     ],
+    ['treemap', treemap, () => new TreemapDataBuilder().withBudget().build()],
 ];
 
 describe.each(CHARTS)('%s chart render', (_name, chart, data) => {

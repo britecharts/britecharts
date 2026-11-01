@@ -112,7 +112,7 @@ A chart can be written down as a spec: its name, its configuration and its data.
 The schemas are published at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json` and ship in this package as `@britecharts/wrappers/schemas/<chart>.json`, one per chart, named as core names it (`bar`, `groupedBar`, `scatterPlot`…). Draw a spec with its wrapper: `BarWrapper.create(element, spec.data, spec.config)`. Options that take a function, such as the events and the formatting functions, can't be written in JSON; set them from JavaScript.
 
 ## Availability
-Every chart in `@britecharts/core` has a wrapper: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper` and `StackedBarWrapper`, plus `TooltipWrapper` for the tooltip.
+Every chart in `@britecharts/core` has a wrapper: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper`, `StackedBarWrapper` and `TreemapWrapper`, plus `TooltipWrapper` for the tooltip.
 
 ## Installation
 

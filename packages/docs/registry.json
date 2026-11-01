@@ -242,6 +242,40 @@
             "categories": ["chart"]
         },
         {
+            "name": "treemap",
+            "type": "registry:component",
+            "title": "Treemap",
+            "description": "A treemap of how a total divides into its parts, with a tooltip. Accessible by default, and themed by the app's shadcn colours.",
+            "dependencies": ["@britecharts/react", "@britecharts/core"],
+            "files": [
+                {
+                    "path": "registry/charts/treemap.tsx",
+                    "type": "registry:component",
+                    "target": "@components/charts/treemap.tsx"
+                }
+            ],
+            "css": {
+                ".britechart": {
+                    "--bc-text": "var(--foreground)",
+                    "--bc-text-muted": "var(--muted-foreground)",
+                    "--bc-text-subtle": "var(--muted-foreground)",
+                    "--bc-axis": "var(--border)",
+                    "--bc-grid": "var(--border)",
+                    "--bc-grid-highlight": "var(--muted-foreground)",
+                    "--bc-background": "var(--background)",
+                    "--bc-surface": "var(--popover)",
+                    "--bc-border": "var(--border)",
+                    "--bc-skeleton": "var(--muted)",
+                    "--bc-skeleton-strong": "var(--border)",
+                    "--bc-brush-area": "var(--muted)",
+                    "--bc-brush-area-missing": "var(--secondary)",
+                    "--bc-sparkline-area-start": "var(--muted)",
+                    "--bc-sparkline-area-end": "var(--background)"
+                }
+            },
+            "categories": ["chart"]
+        },
+        {
             "name": "donut-chart",
             "type": "registry:component",
             "title": "Donut Chart",

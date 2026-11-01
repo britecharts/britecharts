@@ -1,0 +1,201 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://britecharts.github.io/britecharts/schema/v3/treemap.json",
+    "title": "Britecharts treemap spec",
+    "description": "A treemap chart: the chart's name, its configuration (the accessors, commands and events the treemap wrapper takes) and its data.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "chart": {
+            "const": "treemap"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "a11yDataTable": {
+                    "description": "Gets or Sets whether the chart renders its data as a table that screen readers can read, row by row and cell by cell. The table is visually hidden, placed right after the svg and linked from it with `aria-details`; its caption is the chart's name. On by default: set it to false for an app that gives the data its own accessible form.",
+                    "type": "boolean"
+                },
+                "a11yDescription": {
+                    "description": "Gets or Sets a longer description screen readers announce after the name, such as what the data shows. It is rendered as the svg's `<desc>` and linked with `aria-describedby`. Unset, there is no description.",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "a11yKeyboardNavigation": {
+                    "description": "Gets or Sets whether a keyboard can move through the chart's data points. The chart takes one tab stop; the arrow keys move between points, Home and End go to the first and last, and Escape lets go. The tooltip, highlights and custom events follow focus as they follow the pointer. On by default.",
+                    "type": "boolean"
+                },
+                "a11yTitle": {
+                    "description": "Gets or Sets the name screen readers announce for the chart. It is set as the svg's `aria-label`. Unset, the getter reads `null` and the chart is announced by its type, such as \"Bar chart\".",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "animationDuration": {
+                    "description": "Gets or Sets the duration of the animation",
+                    "type": "number"
+                },
+                "colorSchema": {
+                    "description": "Gets or Sets the colorSchema of the chart",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "customBrushEnd": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customBrushStart": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customClick": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseMove": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOut": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "customMouseOver": {
+                    "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
+                    "not": {}
+                },
+                "enableLabels": {
+                    "description": "Gets or Sets whether the chart labels its cells",
+                    "type": "boolean"
+                },
+                "exportChart": {
+                    "description": "Executes a command that triggers the download of the current chart: an svg file when the filename ends in `.svg`, and a png otherwise",
+                    "type": "string"
+                },
+                "height": {
+                    "description": "Gets or Sets the height of the chart",
+                    "type": "number"
+                },
+                "isAnimated": {
+                    "description": "Gets or Sets the isAnimated property of the chart, making it to animate when render. Ignored when the reader's system asks for reduced motion",
+                    "type": "boolean"
+                },
+                "isLoading": {
+                    "description": "Gets or Sets the loading state of the chart",
+                    "type": "boolean"
+                },
+                "labelsNumberFormat": {
+                    "description": "Gets or Sets the d3-format string of the values on the cells",
+                    "type": "string"
+                },
+                "margin": {
+                    "description": "Gets or Sets the margin object of the chart (top, bottom, left and right)",
+                    "type": "object",
+                    "properties": {
+                        "left": {
+                            "type": "number"
+                        },
+                        "right": {
+                            "type": "number"
+                        },
+                        "top": {
+                            "type": "number"
+                        },
+                        "bottom": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "valueLocale": {
+                    "description": "Gets or Sets the locale the values on the cells are formatted with",
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "decimal": {
+                                    "type": "string"
+                                },
+                                "thousands": {
+                                    "type": "string"
+                                },
+                                "grouping": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                },
+                                "currency": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "numerals": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "percent": {
+                                    "type": "string"
+                                },
+                                "minus": {
+                                    "type": "string"
+                                },
+                                "nan": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "width": {
+                    "description": "Gets or Sets the width of the chart",
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "name",
+                    "value"
+                ]
+            }
+        }
+    },
+    "required": [
+        "chart",
+        "data"
+    ],
+    "additionalProperties": false
+}

@@ -19,7 +19,7 @@ As of October 2026, from each library's documentation.
 | Screen readers | a name and the data as a table, by default | ARIA labels and roles, by default since 3.0; no data table |
 | Keyboard through the data | on by default, 8 charts | arrow keys, on by default since 3.0 |
 | Export | PNG and svg, with the `exportChart` prop | none built in |
-| Chart types | bar, grouped bar, stacked bar, line, stacked area, donut and pie, heatmap, scatter plot, bullet, sparkline, brush | area, bar, line, composed, scatter, pie, radar, radial bar, funnel, treemap, sankey, sunburst |
+| Chart types | bar, grouped bar, stacked bar, line, stacked area, donut and pie, heatmap, treemap, scatter plot, bullet, sparkline, brush | area, bar, line, composed, scatter, pie, radar, radial bar, funnel, treemap, sankey, sunburst |
 | shadcn | a [registry](../how-tos/user-how-to-guides.md#how-to-add-a-chart-to-a-shadcn-app) of chart components | shadcn/ui's chart component |
 | License | Apache 2.0 | MIT |
 

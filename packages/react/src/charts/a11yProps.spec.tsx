@@ -16,6 +16,7 @@ import {
     SparklineWrapper,
     StackedAreaWrapper,
     StackedBarWrapper,
+    TreemapWrapper,
 } from '@britecharts/wrappers';
 
 import Bar from './bar/Bar';
@@ -42,6 +43,8 @@ import StackedArea from './stackedArea/StackedArea';
 import stackedAreaData from './stackedArea/stackedAreaChart.fixtures';
 import StackedBar from './stackedBar/StackedBar';
 import stackedBarData from './stackedBar/stackedBarChart.fixtures';
+import Treemap from './treemap/Treemap';
+import treemapData from './treemap/treemapChart.fixtures';
 
 interface A11yProps {
     a11yTitle?: string | null;
@@ -105,6 +108,9 @@ const CHARTS: ChartCase[] = [
     })),
     chartCase('StackedBar', StackedBar, StackedBarWrapper, () => ({
         data: stackedBarData.with3Sources(),
+    })),
+    chartCase('Treemap', Treemap, TreemapWrapper, () => ({
+        data: treemapData.withBudget(),
     })),
 ];
 

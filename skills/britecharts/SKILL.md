@@ -3,7 +3,7 @@ name: britecharts
 license: Apache-2.0
 metadata:
   author: britecharts
-description: Write correct code with Britecharts v3, the D3-based charting library — @britecharts/core (vanilla JS), @britecharts/wrappers (framework glue) and @britecharts/react. Use this skill whenever the user wants to add, configure, fix or upgrade a Britecharts chart (bar, line, donut, stacked area, stacked bar, grouped bar, scatter plot, heatmap, sparkline, bullet, brush, legend or tooltip), when a project's package.json lists britecharts or @britecharts/*, when code calls things like bar().width(...) or imports from '@britecharts/react', or when migrating from britecharts v2 or britecharts-react. Also use it when the user asks for a chart in a project that already uses Britecharts, even if they don't name the library.
+description: Write correct code with Britecharts v3, the D3-based charting library — @britecharts/core (vanilla JS), @britecharts/wrappers (framework glue) and @britecharts/react. Use this skill whenever the user wants to add, configure, fix or upgrade a Britecharts chart (bar, line, donut, stacked area, stacked bar, grouped bar, scatter plot, heatmap, treemap, sparkline, bullet, brush, legend or tooltip), when a project's package.json lists britecharts or @britecharts/*, when code calls things like bar().width(...) or imports from '@britecharts/react', or when migrating from britecharts v2 or britecharts-react. Also use it when the user asks for a chart in a project that already uses Britecharts, even if they don't name the library.
 ---
 
 # Britecharts
@@ -74,7 +74,7 @@ barChart.render(container, data);
 - `colorSchema(colors.colorSchemas.okabeIto)` gives a colour-blind-safe palette (`import { colors } from '@britecharts/core'`). `colorMap({ category: '#hex' })` pins colours per category.
 - `exportChart('name.svg')` downloads an SVG, any other filename a PNG; an optional second argument adds a title.
 - Every chart but the legend renders its data as a visually hidden table after its svg, linked with `aria-details`, so screen readers can read the numbers. It is on by default; `a11yDataTable(false)` (a prop or config key of the same name) turns it off. Don't add your own hidden table unless you turn this one off.
-- The bar, donut, grouped bar, heatmap, line, scatter plot, stacked area and stacked bar charts are keyboard navigable by default: one tab stop, arrow keys move between points, and the tooltip and `customMouse*` events follow focus. `a11yKeyboardNavigation(false)` turns it off. Don't add `tabindex` or key handlers to the svg yourself.
+- The bar, donut, grouped bar, heatmap, line, scatter plot, stacked area, stacked bar and treemap charts are keyboard navigable by default: one tab stop, arrow keys move between points, and the tooltip and `customMouse*` events follow focus. `a11yKeyboardNavigation(false)` turns it off. Don't add `tabindex` or key handlers to the svg yourself.
 - Dark mode and theming are CSS, not accessors: the charts follow the page's `color-scheme` (`:root { color-scheme: light dark }`), and every non-data colour is a `--bc-*` custom property, such as `.britechart { --bc-text-muted: #555 }`. Don't hard-code axis or text colours in JavaScript.
 - Number formats are d3-format strings (`numberFormat('.1%')`); locales are objects passed to `valueLocale` (bar, grouped bar, stacked bar, scatter plot) or BCP 47 tags to `locale` (dates, time-series charts).
 
@@ -90,6 +90,7 @@ barChart.render(container, data);
 | Series over time, stacked | `stackedArea` | `{ date, name, value }` |
 | Two numeric variables | `scatterPlot` | `{ name, x, y }` |
 | Day × hour intensity | `heatmap` | `{ day, hour, value }` (day 0–6, hour 0–23) |
+| Parts of a total | `treemap` | `{ name, value }` |
 | A small trend, no axes | `sparkline` | `{ date, value }` |
 | A measure against ranges and a target | `bullet` | one object per chart, not an array: `{ ranges: [n, n, n], measures: [n, n?], markers?: [n] }` |
 | Selecting a date window | `brush` | `{ date, value }` (value may be `null` for gaps) |
@@ -112,7 +113,7 @@ The chart connects the tooltip to its pointer and keyboard events, draws it in t
 | Chart | What `tooltip()` shows |
 |---|---|
 | `line`, `stackedArea`, `stackedBar`, `groupedBar` | a list, one row per topic |
-| `bar`, `heatmap`, `scatterPlot` | a single value, with two decimals unless you set `numberFormat` |
+| `bar`, `heatmap`, `scatterPlot`, `treemap` | a single value, with two decimals unless you set `numberFormat` |
 
 The donut takes no tooltip: it has no element to draw one in. It shows the hovered slice in its centre instead (`hasCenterLegend`, `centeredTextFunction`), or pair it with a `legend`.
 

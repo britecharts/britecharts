@@ -14,7 +14,7 @@ The charts with an `on` accessor take event handlers with `chart.on('customMouse
 ## Contents
 - [bar](#bar) · [groupedBar](#groupedbar) · [stackedBar](#stackedbar) · [donut](#donut)
 - [line](#line) · [stackedArea](#stackedarea) · [sparkline](#sparkline) · [brush](#brush)
-- [scatterPlot](#scatterplot) · [heatmap](#heatmap) · [bullet](#bullet)
+- [scatterPlot](#scatterplot) · [heatmap](#heatmap) · [treemap](#treemap) · [bullet](#bullet)
 - [legend](#legend) · [tooltip](#tooltip) · [colors](#colors)
 
 ## bar
@@ -116,6 +116,13 @@ API page: `heatmap`. Data: an array of `{ day: number, hour: number, value: numb
 Accessors: `animationDuration`, `boxSize`, `colorSchema`, `exportChart`, `isAnimated`, `on`, `tooltip`, `xAxisLabels` (one label per hour, from the first), `yAxisLabels` (one label per day, from the first). With both label sets, `day` and `hour` index them, so the heatmap can show any two sets of categories.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`.
+
+## treemap
+API page: `treemap`. Data: an array of `{ name: string, value: number }`. Entries with a value of zero or less are not drawn, but stay in the data table.
+
+Accessors: `animationDuration`, `colorSchema`, `enableLabels` (on by default; a label shows only where it fits), `exportChart`, `isAnimated`, `labelsNumberFormat`, `on`, `tooltip`, `valueLocale`. The chart fills its width and height, and its margins default to 0.
+
+Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`, each sent the entry, the pointer's position and the chart's size.
 
 ## bullet
 API page: `bullet`. Data: one object per chart, not an array: `bulletChart.render(container, bulletData)`.

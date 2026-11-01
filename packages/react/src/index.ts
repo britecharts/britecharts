@@ -8,6 +8,7 @@ export { default as Legend } from './charts/legend/Legend.js';
 export { default as Line } from './charts/line/Line.js';
 export { default as ScatterPlot } from './charts/scatterPlot/ScatterPlot.js';
 export { default as Sparkline } from './charts/sparkline/Sparkline.js';
+export { default as Treemap } from './charts/treemap/Treemap.js';
 export { default as StackedArea } from './charts/stackedArea/StackedArea.js';
 export { default as StackedBar } from './charts/stackedBar/StackedBar.js';
 
@@ -30,6 +31,7 @@ export type { LegendProps } from './charts/legend/Legend.js';
 export type { LineProps } from './charts/line/Line.js';
 export type { ScatterPlotProps } from './charts/scatterPlot/ScatterPlot.js';
 export type { SparklineProps } from './charts/sparkline/Sparkline.js';
+export type { TreemapProps } from './charts/treemap/Treemap.js';
 export type { StackedAreaProps } from './charts/stackedArea/StackedArea.js';
 export type { StackedBarProps } from './charts/stackedBar/StackedBar.js';
 export type {

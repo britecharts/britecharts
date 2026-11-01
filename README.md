@@ -30,7 +30,7 @@
 </div>
 <br/>
 
-Britecharts is a library of finished [D3.js][d3] charts: bar, line, donut, stacked and grouped bar, stacked area, scatter plot, heatmap, sparkline, bullet and brush, plus a tooltip and a legend. You choose a chart, give it data and a few settings, and get a polished, interactive, accessible chart that works the same in plain HTML, any framework or React.
+Britecharts is a library of finished [D3.js][d3] charts: bar, line, donut, stacked and grouped bar, stacked area, scatter plot, heatmap, treemap, sparkline, bullet and brush, plus a tooltip and a legend. You choose a chart, give it data and a few settings, and get a polished, interactive, accessible chart that works the same in plain HTML, any framework or React.
 
 ## Why Britecharts
 
@@ -171,6 +171,7 @@ Every chart shares the common accessors (`width`, `height`, `margin`, `colorSche
 -   [API][stacked-area-docs], [Demo][stackedareachart-story] Stacked Area Chart
 -   [API][scatter-docs], [Demo][scatterplot-story] Scatter Plot
 -   [API][heatmap-docs], [Demo][heatmap-story] Heatmap
+-   [API][treemap-docs], [Demo][treemap-story] Treemap
 -   [API][sparkline-docs], [Demo][sparklinechart-story] Sparkline Chart
 -   [API][bullet-docs], [Demo][bulletchart-story] Bullet Chart
 -   [API][brush-docs], [Demo][brushchart-story] Brush Chart
@@ -186,6 +187,7 @@ Every chart shares the common accessors (`width`, `height`, `margin`, `colorSche
 [brush-docs]: https://britecharts.github.io/britecharts/docs/API/brush
 [scatter-docs]: https://britecharts.github.io/britecharts/docs/API/scatter-plot
 [heatmap-docs]: https://britecharts.github.io/britecharts/docs/API/heatmap
+[treemap-docs]: https://britecharts.github.io/britecharts/docs/API/treemap
 [sparkline-docs]: https://britecharts.github.io/britecharts/docs/API/sparkline
 [stacked-area-docs]: https://britecharts.github.io/britecharts/docs/API/stacked-area
 [mini-tooltip-docs]: https://britecharts.github.io/britecharts/docs/API/tooltip#minitooltip-the-single-value-preset
@@ -273,6 +275,7 @@ Read more in the [license document][britecharts-license]
 [shadcn-howto]: https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides#how-to-add-a-chart-to-a-shadcn-app
 [migration-guide]: https://britecharts.github.io/britecharts/docs/how-tos/migration-guide-2-to-3
 [heatmap-story]: https://britecharts.github.io/britecharts/docs/API/heatmap 'Check the API reference'
+[treemap-story]: https://britecharts.github.io/britecharts/docs/API/treemap 'Check the API reference'
 [d3]: https://d3js.org/
 [mike-chart]: https://bost.ocks.org/mike/chart/
 [changelog]: https://github.com/britecharts/britecharts/blob/main/CHANGELOG.md

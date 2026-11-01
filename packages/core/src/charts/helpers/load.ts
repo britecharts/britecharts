@@ -190,6 +190,26 @@ export const heatmapLoadingMarkup = `
         </svg>
     `;
 
+export const treemapLoadingMarkup = `
+        <svg
+            class="load-state treemap-load-state"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 711 325"
+        >
+            ${linearGradient}
+            <g style="fill: var(--bc-skeleton-strong, #c3c6cf)">
+                <rect x="0" y="0" width="340" height="325" rx="2" />
+                <rect x="346" y="0" width="365" height="170" rx="2" />
+            </g>
+            <g style="fill: var(--bc-skeleton, #eff2f5)">
+                <rect x="346" y="176" width="200" height="149" rx="2" />
+                <rect x="552" y="176" width="159" height="80" rx="2" />
+                <rect x="552" y="262" width="159" height="63" rx="2" />
+            </g>
+            <rect class="chart-filter" fill="url(#lgrad)" x="-100%" y="0" width="300%" height="100%"></rect>
+        </svg>
+    `;
+
 export const bulletLoadingMarkup = `
         <svg
             class="load-state bullet-load-state"
@@ -256,5 +276,6 @@ export default {
     stackedAreaLoadingMarkup,
     bulletLoadingMarkup,
     heatmapLoadingMarkup,
+    treemapLoadingMarkup,
     scatterPlotLoadingMarkup,
 };

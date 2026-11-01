@@ -67,7 +67,7 @@ The charts name the fields of their data points differently, so some of them nee
 | `StackedBar` | `nameLabel="stack"` |
 | `GroupedBar` | `nameLabel="group"` |
 | `ScatterPlot` | `valueLabel="y"` |
-| `Bar`, `Donut`, `Heatmap` | none |
+| `Bar`, `Donut`, `Heatmap`, `Treemap` | none |
 
 Without them, the tooltip shows no rows (line), rows without their colours (stacked and grouped bar) or no value (scatter plot).
 
@@ -110,6 +110,7 @@ Every Britecharts chart has a component:
 - Grouped Bar charts [(API)][groupedBarChartAPI]
 - Donut charts [(API)][donutChartAPI]
 - Heatmaps [(API)][heatmapAPI]
+- Treemaps [(API)][treemapAPI]
 - Line charts [(API)][lineChartAPI]
 - Scatter Plots [(API)][scatterPlotAPI]
 - Sparkline charts [(API)][sparklineChartAPI]
@@ -178,6 +179,7 @@ The package is written in TypeScript, and its type declarations are generated fr
 [bulletAPI]: https://britecharts.github.io/britecharts/docs/API/bullet
 [brushAPI]: https://britecharts.github.io/britecharts/docs/API/brush
 [heatmapAPI]: https://britecharts.github.io/britecharts/docs/API/heatmap
+[treemapAPI]: https://britecharts.github.io/britecharts/docs/API/treemap
 [jsDelivrLib]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/lib/
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts-react@latest/dist/
 [npmModule]: https://www.npmjs.com/package/britecharts-react

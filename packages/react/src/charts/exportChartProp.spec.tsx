@@ -22,6 +22,8 @@ import StackedArea from './stackedArea/StackedArea';
 import stackedAreaData from './stackedArea/stackedAreaChart.fixtures';
 import StackedBar from './stackedBar/StackedBar';
 import stackedBarData from './stackedBar/stackedBarChart.fixtures';
+import Treemap from './treemap/Treemap';
+import treemapData from './treemap/treemapChart.fixtures';
 
 // Every component whose chart has an exportChart command, each rendered with
 // the prop set. An svg filename downloads without loading an image, which
@@ -73,6 +75,10 @@ const CHARTS: [string, (filename: string) => ReactElement][] = [
         (f) => (
             <StackedBar data={stackedBarData.with3Sources()} exportChart={f} />
         ),
+    ],
+    [
+        'Treemap',
+        (f) => <Treemap data={treemapData.withBudget()} exportChart={f} />,
     ],
 ];
 

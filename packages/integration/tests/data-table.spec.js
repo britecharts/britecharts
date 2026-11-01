@@ -13,6 +13,7 @@ const CHARTS = [
     'bar',
     'scatter-plot',
     'heatmap',
+    'treemap',
 ];
 
 test.beforeEach(async ({ page }) => {

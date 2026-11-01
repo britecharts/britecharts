@@ -70,6 +70,12 @@ const CHARTS = [
         'shape rect.box',
         '.britechart-mini-tooltip',
     ],
+    [
+        'treemap + mini tooltip',
+        '.hover-treemap',
+        'shape rect.cell',
+        '.britechart-mini-tooltip',
+    ],
 ];
 
 async function hoverPoints(container, frame, target) {

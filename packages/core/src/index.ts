@@ -10,6 +10,7 @@ import scatterPlot from './charts/scatter-plot/scatter-plot.js';
 import groupedBar from './charts/grouped-bar/grouped-bar.js';
 import stackedBar from './charts/stacked-bar/stacked-bar.js';
 import heatmap from './charts/heatmap/heatmap.js';
+import treemap from './charts/treemap/treemap.js';
 import brush from './charts/brush/brush.js';
 import bullet from './charts/bullet/bullet.js';
 import colors from './charts/helpers/color.js';
@@ -44,6 +45,7 @@ export type * from './charts/sparkline/sparkline.js';
 export type * from './charts/stacked-area/stacked-area.js';
 export type * from './charts/stacked-bar/stacked-bar.js';
 export type * from './charts/tooltip/tooltip.js';
+export type * from './charts/treemap/treemap.js';
 export type * from './typings/common/grid.js';
 export type * from './typings/common/local.js';
 export type * from './typings/helpers/colors.js';
@@ -62,6 +64,7 @@ export {
     groupedBar,
     stackedBar,
     heatmap,
+    treemap,
     brush,
     bullet,
     colors,
@@ -81,6 +84,7 @@ const britecharts = {
     groupedBar,
     stackedBar,
     heatmap,
+    treemap,
     brush,
     bullet,
     colors,

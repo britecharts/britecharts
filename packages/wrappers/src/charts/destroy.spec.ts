@@ -22,6 +22,8 @@ import stackedArea from './stackedArea/stackedAreaChart';
 import stackedAreaData from './stackedArea/stackedAreaChart.fixtures';
 import stackedBar from './stackedBar/stackedBarChart';
 import stackedBarData from './stackedBar/stackedBarChart.fixtures';
+import treemap from './treemap/treemapChart';
+import treemapData from './treemap/treemapChart.fixtures';
 import tooltip from './tooltip/tooltipChart';
 import type { Wrapper } from '../helpers/wrapper';
 
@@ -71,6 +73,7 @@ const CHARTS: DestroyCase[] = [
         stackedAreaData.with3Sources()
     ),
     destroyCase('stackedBar', stackedBar, () => stackedBarData.with3Sources()),
+    destroyCase('treemap', treemap, () => treemapData.withBudget()),
 ];
 
 describe('chart wrappers destroy', () => {

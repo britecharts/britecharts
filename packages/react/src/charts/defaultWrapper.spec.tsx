@@ -16,6 +16,7 @@ import {
     SparklineWrapper,
     StackedAreaWrapper,
     StackedBarWrapper,
+    TreemapWrapper,
     TooltipWrapper,
 } from '@britecharts/wrappers';
 
@@ -43,6 +44,8 @@ import StackedArea from './stackedArea/StackedArea';
 import stackedAreaData from './stackedArea/stackedAreaChart.fixtures';
 import StackedBar from './stackedBar/StackedBar';
 import stackedBarData from './stackedBar/stackedBarChart.fixtures';
+import Treemap from './treemap/Treemap';
+import treemapData from './treemap/treemapChart.fixtures';
 import Tooltip from './tooltip/Tooltip';
 
 type SpiedCreate = (...args: never[]) => unknown;
@@ -102,6 +105,9 @@ const CHARTS: ChartCase[] = [
     })),
     chartCase('StackedBar', StackedBar, StackedBarWrapper, () => ({
         data: stackedBarData.with3Sources(),
+    })),
+    chartCase('Treemap', Treemap, TreemapWrapper, () => ({
+        data: treemapData.withBudget(),
     })),
     chartCase(
         'Tooltip',

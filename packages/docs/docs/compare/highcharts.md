@@ -20,7 +20,7 @@ As of October 2026, from each library's documentation.
 | Keyboard through the data | on by default, 8 charts | with the accessibility module |
 | Sonification | no | yes |
 | Export | PNG and svg | PNG, JPEG, PDF and svg; data as CSV, XLS or an HTML table |
-| Chart types | bar, grouped bar, stacked bar, line, stacked area, donut and pie, heatmap, scatter plot, bullet, sparkline, brush | many series types, plus Stock, Maps, Gantt and Dashboards as separate products |
+| Chart types | bar, grouped bar, stacked bar, line, stacked area, donut and pie, heatmap, treemap, scatter plot, bullet, sparkline, brush | many series types, plus Stock, Maps, Gantt and Dashboards as separate products |
 | Frameworks | plain JavaScript, React | plain JavaScript; official React, Angular, Vue, Svelte and others |
 | Dark mode | follows the page's `color-scheme`, with `--bc-*` custom properties | themes and CSS styling |
 

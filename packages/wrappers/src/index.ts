@@ -16,6 +16,7 @@ export { default as ScatterPlotWrapper } from './charts/scatterPlot/scatterPlotC
 export { default as SparklineWrapper } from './charts/sparkline/sparklineChart.js';
 export { default as StackedAreaWrapper } from './charts/stackedArea/stackedAreaChart.js';
 export { default as StackedBarWrapper } from './charts/stackedBar/stackedBarChart.js';
+export { default as TreemapWrapper } from './charts/treemap/treemapChart.js';
 
 export { default as TooltipWrapper } from './charts/tooltip/tooltipChart.js';
 

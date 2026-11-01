@@ -20,7 +20,7 @@ As of October 2026, from each library's documentation.
 | Styling | CSS, with `--bc-*` custom properties | the chart's options; canvas ignores CSS |
 | Dark mode | follows the page's `color-scheme` | set colours in the options |
 | Export | PNG and svg, `exportChart('chart.svg')` | PNG or JPEG data URL, `toBase64Image()` |
-| Chart types | bar, grouped bar, stacked bar, line, stacked area, donut and pie, heatmap, scatter plot, bullet, sparkline, brush | bar, line and area, pie and doughnut, scatter, bubble, radar, polar area, mixed, plus community chart types |
+| Chart types | bar, grouped bar, stacked bar, line, stacked area, donut and pie, heatmap, treemap, scatter plot, bullet, sparkline, brush | bar, line and area, pie and doughnut, scatter, bubble, radar, polar area, mixed, plus community chart types |
 | Frameworks | plain JavaScript, React | plain JavaScript; React, Vue, Svelte and Angular through community wrappers |
 | License | Apache 2.0 | MIT |
 

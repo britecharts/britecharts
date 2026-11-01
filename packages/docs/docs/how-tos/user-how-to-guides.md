@@ -172,7 +172,7 @@ Charts draw without animation by default. Set `isAnimated(true)` to animate them
 lineChart.isAnimated(true).animationDuration(600);
 ```
 
-`animationDuration` does nothing while `isAnimated` is `false`. The bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, scatter plot, sparkline and brush charts animate. React components take both as props.
+`animationDuration` does nothing while `isAnimated` is `false`. The bar, grouped bar, stacked bar, line, stacked area, donut, heatmap, treemap, scatter plot, sparkline and brush charts animate. React components take both as props.
 
 A reader whose system asks for reduced motion (the `prefers-reduced-motion` setting) sees every chart drawn without animation, whatever `isAnimated` is set to. Charts check it each time they draw, so changing the setting applies from the next render. `isAnimated()` still reads back the value you set. The rest of the motion stops too: tooltips appear and move without fading or easing, the legend drops entries without a fade, and a hovered point is highlighted without its bounce.
 
@@ -264,7 +264,7 @@ A chart can be written down as a spec, a plain object with its name, its configu
 }
 ```
 
-Each chart has a JSON Schema for its spec at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json`: `bar`, `brush`, `bullet`, `donut`, `groupedBar`, `heatmap`, `legend`, `line`, `scatterPlot`, `sparkline`, `stackedArea`, `stackedBar` and `tooltip`. They are generated from the charts' TypeScript types, so they list every accessor with its type and description. With the `$schema` line, editors such as VS Code check and complete the spec as you type, and any JSON Schema validator (Ajv, for example) can check one before you draw it.
+Each chart has a JSON Schema for its spec at `https://britecharts.github.io/britecharts/schema/v3/<chart>.json`: `bar`, `brush`, `bullet`, `donut`, `groupedBar`, `heatmap`, `legend`, `line`, `scatterPlot`, `sparkline`, `stackedArea`, `stackedBar`, `tooltip` and `treemap`. They are generated from the charts' TypeScript types, so they list every accessor with its type and description. With the `$schema` line, editors such as VS Code check and complete the spec as you type, and any JSON Schema validator (Ajv, for example) can check one before you draw it.
 
 Draw a spec with the chart's wrapper, which checks it too:
 
@@ -302,6 +302,7 @@ Each chart fills the width of its container, so put it in an element that has a 
 | Stacked area | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/stacked-area-chart.json` |
 | Stacked bar | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/stacked-bar-chart.json` |
 | Heatmap | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/heatmap.json` |
+| Treemap | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/treemap.json` |
 | Donut | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/donut-chart.json` |
 | Sparkline | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/sparkline.json` |
 | Brush | `npx shadcn@latest add https://britecharts.github.io/britecharts/r/brush.json` |

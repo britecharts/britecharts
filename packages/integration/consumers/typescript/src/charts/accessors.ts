@@ -810,3 +810,24 @@ export const sparklineAccessors = {
     sparklineLineGradient,
     sparklineChained,
 };
+
+// The treemap's own accessors, each read back as its value rather than the
+// chart.
+import { treemap } from '@britecharts/core';
+
+const treemapChart = treemap();
+
+const treemapEnableLabels: boolean = treemapChart.enableLabels();
+const treemapLabelsFormat: string = treemapChart.labelsNumberFormat();
+
+// The setters still chain.
+const treemapChained: string = treemap()
+    .enableLabels(false)
+    .labelsNumberFormat('$,')
+    .labelsNumberFormat();
+
+export const treemapAccessors = {
+    treemapEnableLabels,
+    treemapLabelsFormat,
+    treemapChained,
+};

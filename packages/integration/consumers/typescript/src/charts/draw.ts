@@ -22,6 +22,7 @@ import {
   sparkline,
   stackedArea,
   stackedBar,
+  treemap,
 } from '@britecharts/core';
 
 import { SAMPLE_BAR_DATA } from '../data/bar-sample';
@@ -36,6 +37,7 @@ import { SAMPLE_SCATTER_PLOT_DATA } from '../data/scatter-plot-sample';
 import { SAMPLE_SPARKLINE_DATA } from '../data/sparkline-sample';
 import { SAMPLE_STACKED_AREA_DATA } from '../data/stacked-area-sample';
 import { SAMPLE_STACKED_BAR_DATA } from '../data/stacked-bar-sample';
+import { SAMPLE_TREEMAP_DATA } from '../data/treemap-sample';
 
 export const drawAll = (node: HTMLElement) => {
   select(node).datum(SAMPLE_BAR_DATA).call(bar());
@@ -50,4 +52,5 @@ export const drawAll = (node: HTMLElement) => {
   select(node).datum(SAMPLE_SPARKLINE_DATA).call(sparkline());
   select(node).datum(SAMPLE_STACKED_AREA_DATA).call(stackedArea());
   select(node).datum(SAMPLE_STACKED_BAR_DATA).call(stackedBar());
+  select(node).datum(SAMPLE_TREEMAP_DATA).call(treemap());
 };

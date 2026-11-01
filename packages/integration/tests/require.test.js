@@ -31,6 +31,7 @@ const CORE_EXPORTS = [
     'stackedArea',
     'stackedBar',
     'tooltip',
+    'treemap',
 ];
 const WRAPPER_EXPORTS = [
     'BarWrapper',
@@ -46,6 +47,7 @@ const WRAPPER_EXPORTS = [
     'StackedAreaWrapper',
     'StackedBarWrapper',
     'TooltipWrapper',
+    'TreemapWrapper',
 ];
 
 test('C3 · require("@britecharts/core") resolves main to the UMD bundle', () => {
@@ -105,6 +107,7 @@ const REACT_COMPONENTS = [
     'StackedArea',
     'StackedBar',
     'Tooltip',
+    'Treemap',
 ];
 
 test('R1 · require("@britecharts/react") resolves main to the UMD bundle', () => {

@@ -24,6 +24,8 @@ import stackedArea from './stackedArea/stackedAreaChart';
 import stackedAreaData from './stackedArea/stackedAreaChart.fixtures';
 import stackedBar from './stackedBar/stackedBarChart';
 import stackedBarData from './stackedBar/stackedBarChart.fixtures';
+import treemap from './treemap/treemapChart';
+import treemapData from './treemap/treemapChart.fixtures';
 import type { Wrapper } from '../helpers/wrapper';
 
 // As in destroy.spec.ts, each row resolves its wrapper and data types where
@@ -96,6 +98,7 @@ const CHARTS: EmptyDataCase[] = [
         () => stackedBarData.with3Sources(),
         []
     ),
+    emptyDataCase('treemap', treemap, () => treemapData.withBudget(), []),
 ];
 
 describe('chart wrappers update with no data', () => {

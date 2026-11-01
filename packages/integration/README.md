@@ -56,8 +56,8 @@ pnpm test:integration     # from the repo root; needs Chromium once:
    removes the chart; without the fixme it fails on a doubled svg count.
    `tests/hover.spec.js` runs on the same server against `hover.html`, one
    chart per way a tooltip is attached (line, stacked area, stacked bar and
-   grouped bar with the tooltip; bar, scatter plot and heatmap with the mini
-   tooltip): a real pointer visits the corners and the middle of each chart,
+   grouped bar with the tooltip; bar, scatter plot, heatmap and treemap with
+   the mini tooltip): a real pointer visits the corners and the middle of each chart,
    and the tooltip has to stay inside the svg every time, with no `NaN`
    attribute anywhere. It is the only place hover geometry is tested; the
    unit specs run under jsdom, which has none.
