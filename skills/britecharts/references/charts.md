@@ -120,7 +120,7 @@ Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`.
 ## treemap
 API page: `treemap`. Data: an array of `{ name: string, value: number }`. Entries with a value of zero or less are not drawn, but stay in the data table.
 
-Accessors: `animationDuration`, `colorSchema`, `enableLabels` (on by default; a label shows only where it fits), `exportChart`, `isAnimated`, `labelsNumberFormat`, `on`, `tooltip`, `valueLocale`. The chart fills its width and height, and its margins default to 0.
+Accessors: `animationDuration`, `colorSchema`, `hasLabels` (on by default; a label shows only where it fits), `exportChart`, `isAnimated`, `labelsNumberFormat`, `on`, `tooltip`, `valueLocale`. The chart fills its width and height, and its margins default to 0.
 
 Events: `customMouseOver`, `customMouseMove`, `customMouseOut`, `customClick`, each sent the entry, the pointer's position and the chart's size.
 

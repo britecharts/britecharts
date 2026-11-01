@@ -124,12 +124,12 @@ describe('treemap Chart', () => {
                     anchor,
                     treemapData.withUpdatedBudget(),
                     {
-                        enableLabels: false,
+                        hasLabels: false,
                         labelsNumberFormat: '$,',
                     }
                 );
 
-                expect(chart.enableLabels()).toEqual(false);
+                expect(chart.hasLabels()).toEqual(false);
                 expect(chart.labelsNumberFormat()).toEqual('$,');
             });
 

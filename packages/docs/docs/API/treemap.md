@@ -28,7 +28,7 @@ treemap()
             * [.a11yKeyboardNavigation(_x)](#module_Treemap--exports.a11yKeyboardNavigation) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.animationDuration(_x)](#module_Treemap--exports.animationDuration) ⇒ <code>duration</code> \| <code>module</code>
             * [.colorSchema(_x)](#module_Treemap--exports.colorSchema) ⇒ <code>Array.&lt;String&gt;</code> \| <code>module</code>
-            * [.enableLabels(_x)](#module_Treemap--exports.enableLabels) ⇒ <code>Boolean</code> \| <code>module</code>
+            * [.hasLabels(_x)](#module_Treemap--exports.hasLabels) ⇒ <code>Boolean</code> \| <code>module</code>
             * [.exportChart(filename, title)](#module_Treemap--exports.exportChart)
             * [.height(_x)](#module_Treemap--exports.height) ⇒ <code>Number</code> \| <code>module</code>
             * [.isAnimated(_x)](#module_Treemap--exports.isAnimated) ⇒ <code>Boolean</code> \| <code>module</code>
@@ -143,15 +143,15 @@ Gets or Sets the colorSchema of the chart. Each name takes a colour.
 | --- | --- | --- | --- |
 | _x | <code>Array.&lt;String&gt;</code> | <code>britecharts</code> | Desired colorSchema for the cells |
 
-<a name="module_Treemap--exports.enableLabels" id="module_Treemap--exports.enableLabels"></a>
+<a name="module_Treemap--exports.hasLabels" id="module_Treemap--exports.hasLabels"></a>
 
-## enableLabels(_x) ⇒ <code>Boolean</code> \| <code>module</code>
+## hasLabels(_x) ⇒ <code>Boolean</code> \| <code>module</code>
 Gets or Sets whether the chart labels its cells. A label
 shows only where it fits: a small cell has no name, and a slightly
 bigger one no value.
 
 **Kind**: method of [<code>treemap</code>](#exp_module_Treemap--exports)  
-**Returns**: <code>Boolean</code> \| <code>module</code> - Current enableLabels or Chart module to chain calls  
+**Returns**: <code>Boolean</code> \| <code>module</code> - Current hasLabels or Chart module to chain calls  
 **Access**: public  
 
 | Param | Type | Default | Description |

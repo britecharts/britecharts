@@ -6,7 +6,7 @@ export const constructChart = (containerNode: Element): TreemapChartModule => {
   treemapChart
     .width(containerNode.clientWidth)
     .height(300)
-    .enableLabels(true)
+    .hasLabels(true)
     .labelsNumberFormat('$,')
     .isAnimated(true)
     .animationDuration(400);

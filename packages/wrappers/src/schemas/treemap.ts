@@ -59,11 +59,11 @@ const schema: ConfigurationSchema = {
         customMouseOver: {
             not: {},
         },
-        enableLabels: {
-            type: 'boolean',
-        },
         exportChart: {
             type: 'string',
+        },
+        hasLabels: {
+            type: 'boolean',
         },
         height: {
             type: 'number',

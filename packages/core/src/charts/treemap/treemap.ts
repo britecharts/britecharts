@@ -69,8 +69,8 @@ export interface TreemapChartAPI
         InteractiveChartAPI<TreemapChartModule>,
         ExportableChartAPI {
     /** Gets or Sets whether the chart labels its cells */
-    enableLabels(): boolean;
-    enableLabels(isEnabled: boolean): TreemapChartModule;
+    hasLabels(): boolean;
+    hasLabels(isEnabled: boolean): TreemapChartModule;
     /** Gets or Sets the d3-format string of the values on the cells */
     labelsNumberFormat(): string;
     labelsNumberFormat(format: string): TreemapChartModule;
@@ -145,6 +145,29 @@ type ChartSelection<TElement extends BaseType> = Selection<
 >;
 
 const NUMBER_FORMAT = ',';
+const CELL_GAP = 2;
+const HIGHLIGHT_DARKENING = 0.6;
+const HIDDEN_OPACITY = 0;
+const VISIBLE_OPACITY = 1;
+const LABEL_SIZE = 12;
+const LABEL_WEIGHT = 600;
+const LABEL_BASELINE = 'central';
+const LABEL_LINE_HEIGHT = 16;
+const LABEL_PADDING = 6;
+const NAME_LABEL_OFFSET = LABEL_PADDING + LABEL_LINE_HEIGHT / 2;
+const VALUE_LABEL_OFFSET = NAME_LABEL_OFFSET + LABEL_LINE_HEIGHT;
+const NAME_LABEL_MIN_HEIGHT = LABEL_LINE_HEIGHT + LABEL_PADDING * 2;
+const VALUE_LABEL_MIN_HEIGHT = LABEL_LINE_HEIGHT * 2 + LABEL_PADDING * 2;
+// Wider than the average character of a proportional font, so a label that
+// passes the check fits. Measuring each label would mean a canvas per cell on
+// every draw.
+const LABEL_CHARACTER_WIDTH = 0.6;
+// The two ends of the grey palette, and the lightness of a cell where they
+// read equally well on it
+const { grey } = colorHelper.colorSchemas;
+const LIGHT_LABEL_COLOR = grey[0];
+const DARK_LABEL_COLOR = grey[grey.length - 1];
+const DARK_LABEL_MIN_LIGHTNESS = 54;
 
 export default function module(): TreemapChartModule {
     let margin: ChartMarginParams = {
@@ -165,21 +188,11 @@ export default function module(): TreemapChartModule {
         colorSchema: ColorsSchemasType = colorHelper.colorSchemas.britecharts,
         animationDuration: number = motion.duration,
         isAnimated = false,
-        enableLabels = true,
+        hasLabels = true,
         labelsNumberFormat = NUMBER_FORMAT,
         locale: LocalObject | null = null,
         localeFormatter: FormatLocaleObject = d3Format;
 
-    const cellGap = 2;
-    const labelSize = 12;
-    const labelLineHeight = 16;
-    const labelPadding = 6;
-    // Wider than the average character of a proportional font, so a label
-    // that passes the check fits. Measuring each label would mean a canvas
-    // per cell on every draw.
-    const characterWidth = 0.6;
-    // The lightness at which black text starts reading better than white
-    const darkLabelLightness = 50;
     const dispatcher = dispatch(
         'customMouseOver',
         'customMouseOut',
@@ -189,13 +202,15 @@ export default function module(): TreemapChartModule {
     const getCellColor = ({ data: { name } }: TreemapCell) =>
         colorScale(name as string);
     const getLabelColor = (cell: TreemapCell) =>
-        hcl(getCellColor(cell)).l > darkLabelLightness ? '#000' : '#fff';
+        hcl(getCellColor(cell)).l > DARK_LABEL_MIN_LIGHTNESS
+            ? DARK_LABEL_COLOR
+            : LIGHT_LABEL_COLOR;
     const getCellWidth = ({ x0, x1 }: TreemapCell) => x1 - x0;
     const getCellHeight = ({ y0, y1 }: TreemapCell) => y1 - y0;
     const getFormattedValue = ({ data: { value } }: TreemapCell) =>
         localeFormatter.format(labelsNumberFormat)(value as number);
-    const textFits = (text: string, available: number, fontSize: number) =>
-        text.length * fontSize * characterWidth <= available;
+    const textFits = (text: string, available: number) =>
+        text.length * LABEL_SIZE * LABEL_CHARACTER_WIDTH <= available;
 
     // Generic for the reason set out on the heatmap: it is what
     // `ChartModuleSelection` declares.
@@ -385,7 +400,7 @@ export default function module(): TreemapChartModule {
         const entries = data.filter(({ value }) => value > 0);
         const root = treemapLayout<TreemapNode>()
             .size([chartWidth, chartHeight])
-            .paddingInner(cellGap)(
+            .paddingInner(CELL_GAP)(
             hierarchy<TreemapNode>({ children: entries })
                 .sum(({ value }) => value ?? 0)
                 .sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
@@ -433,7 +448,7 @@ export default function module(): TreemapChartModule {
         const allCells = newCells.merge(cellElements);
 
         if (shouldAnimate) {
-            newCells.style('opacity', 0);
+            newCells.style('opacity', HIDDEN_OPACITY);
             allCells
                 .transition()
                 .duration(animationDuration)
@@ -442,7 +457,7 @@ export default function module(): TreemapChartModule {
                 .attr('width', getCellWidth)
                 .attr('height', getCellHeight)
                 .style('fill', getCellColor)
-                .style('opacity', 1);
+                .style('opacity', VISIBLE_OPACITY);
         } else {
             allCells
                 .interrupt()
@@ -451,7 +466,7 @@ export default function module(): TreemapChartModule {
                 .attr('width', getCellWidth)
                 .attr('height', getCellHeight)
                 .style('fill', getCellColor)
-                .style('opacity', 1);
+                .style('opacity', VISIBLE_OPACITY);
         }
     }
 
@@ -476,7 +491,7 @@ export default function module(): TreemapChartModule {
             .join('text')
             .classed(className, true)
             .text(text)
-            .attr('x', ({ x0 }) => x0 + labelPadding)
+            .attr('x', ({ x0 }) => x0 + LABEL_PADDING)
             .style('pointer-events', 'none');
     }
 
@@ -487,46 +502,42 @@ export default function module(): TreemapChartModule {
      */
     function drawLabels(): void {
         const available = (cell: TreemapCell) =>
-            getCellWidth(cell) - labelPadding * 2;
-        const namedCells = enableLabels
+            getCellWidth(cell) - LABEL_PADDING * 2;
+        const namedCells = hasLabels
             ? cells.filter(
                   (cell) =>
-                      textFits(
-                          cell.data.name as string,
-                          available(cell),
-                          labelSize
-                      ) &&
-                      getCellHeight(cell) >= labelLineHeight + labelPadding * 2
+                      textFits(cell.data.name as string, available(cell)) &&
+                      getCellHeight(cell) >= NAME_LABEL_MIN_HEIGHT
               )
             : [];
         const valuedCells = namedCells.filter(
             (cell) =>
-                textFits(getFormattedValue(cell), available(cell), labelSize) &&
-                getCellHeight(cell) >= labelLineHeight * 2 + labelPadding * 2
+                textFits(getFormattedValue(cell), available(cell)) &&
+                getCellHeight(cell) >= VALUE_LABEL_MIN_HEIGHT
         );
 
         drawLabelSet('cell-label', namedCells, ({ data: { name } }) => name!)
-            .attr('y', ({ y0 }) => y0 + labelPadding + labelLineHeight / 2)
-            .style('dominant-baseline', 'central')
+            .attr('y', ({ y0 }) => y0 + NAME_LABEL_OFFSET)
+            .style('dominant-baseline', LABEL_BASELINE)
             .style('fill', getLabelColor)
-            .style('font-size', labelSize)
-            .style('font-weight', 600);
+            .style('font-size', LABEL_SIZE)
+            .style('font-weight', LABEL_WEIGHT);
         drawLabelSet('cell-value', valuedCells, getFormattedValue)
-            .attr('y', ({ y0 }) => y0 + labelPadding + labelLineHeight * 1.5)
-            .style('dominant-baseline', 'central')
+            .attr('y', ({ y0 }) => y0 + VALUE_LABEL_OFFSET)
+            .style('dominant-baseline', LABEL_BASELINE)
             .style('fill', getLabelColor)
-            .style('font-size', labelSize);
+            .style('font-size', LABEL_SIZE);
 
         const labels = svg.selectAll('.labels-group text');
 
         if (isAnimated && !prefersReducedMotion()) {
             labels
-                .style('opacity', 0)
+                .style('opacity', HIDDEN_OPACITY)
                 .transition()
                 .duration(animationDuration)
-                .style('opacity', 1);
+                .style('opacity', VISIBLE_OPACITY);
         } else {
-            labels.interrupt().style('opacity', 1);
+            labels.interrupt().style('opacity', VISIBLE_OPACITY);
         }
     }
 
@@ -547,7 +558,10 @@ export default function module(): TreemapChartModule {
         d: TreemapCell,
         event: MouseEvent
     ): void {
-        select(e).style('fill', String(hcl(getCellColor(d)).darker(0.6)));
+        select(e).style(
+            'fill',
+            String(hcl(getCellColor(d)).darker(HIGHLIGHT_DARKENING))
+        );
         dispatcher.call(
             'customMouseOver',
             e,
@@ -713,17 +727,17 @@ export default function module(): TreemapChartModule {
      * shows only where it fits: a small cell has no name, and a slightly
      * bigger one no value.
      * @param  {Boolean} _x=true      Whether to draw the labels
-     * @return {Boolean | module}     Current enableLabels or Chart module to chain calls
+     * @return {Boolean | module}     Current hasLabels or Chart module to chain calls
      * @public
      */
-    exports.enableLabels = function (this: TreemapChartModule, _x?: boolean) {
+    exports.hasLabels = function (this: TreemapChartModule, _x?: boolean) {
         if (!arguments.length) {
-            return enableLabels;
+            return hasLabels;
         }
-        enableLabels = _x as boolean;
+        hasLabels = _x as boolean;
 
         return this;
-    } as TreemapChartModule['enableLabels'];
+    } as TreemapChartModule['hasLabels'];
 
     /**
      * Exports the chart and fires a download: an svg file when the filename

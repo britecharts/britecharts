@@ -817,17 +817,17 @@ import { treemap } from '@britecharts/core';
 
 const treemapChart = treemap();
 
-const treemapEnableLabels: boolean = treemapChart.enableLabels();
+const treemapHasLabels: boolean = treemapChart.hasLabels();
 const treemapLabelsFormat: string = treemapChart.labelsNumberFormat();
 
 // The setters still chain.
 const treemapChained: string = treemap()
-    .enableLabels(false)
+    .hasLabels(false)
     .labelsNumberFormat('$,')
     .labelsNumberFormat();
 
 export const treemapAccessors = {
-    treemapEnableLabels,
+    treemapHasLabels,
     treemapLabelsFormat,
     treemapChained,
 };

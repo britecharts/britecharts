@@ -191,14 +191,14 @@ describe('treemap Chart', () => {
 
             expect(
                 containerFixture.select('.cell-label').node().style.fill
-            ).toEqual('rgb(255, 255, 255)');
+            ).toEqual('rgb(248, 248, 250)');
 
             treemapChart.colorSchema(['#ffffff']);
             containerFixture.call(treemapChart);
 
             expect(
                 containerFixture.select('.cell-label').node().style.fill
-            ).toEqual('rgb(0, 0, 0)');
+            ).toEqual('rgb(40, 44, 53)');
         });
 
         it('should let the pointer through to the cell', () => {
@@ -228,7 +228,7 @@ describe('treemap Chart', () => {
         });
 
         it('should draw none when turned off', () => {
-            treemapChart.enableLabels(false);
+            treemapChart.hasLabels(false);
             containerFixture
                 .datum(buildDataSet('withBudget'))
                 .call(treemapChart);
@@ -430,7 +430,7 @@ describe('treemap Chart', () => {
         it.each([
             ['animationDuration', 1200, 300],
             ['colorSchema', colors.colorSchemas.britecharts, ['#000', '#fff']],
-            ['enableLabels', true, false],
+            ['hasLabels', true, false],
             ['height', 400, 200],
             ['isAnimated', false, true],
             ['isLoading', false, true],

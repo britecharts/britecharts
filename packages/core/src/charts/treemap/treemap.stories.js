@@ -48,7 +48,7 @@ Playground.args = playgroundArgs(treemap, [
     'height',
     'margin',
     'colorSchema',
-    'enableLabels',
+    'hasLabels',
     'labelsNumberFormat',
     'isAnimated',
     'isLoading',
@@ -65,7 +65,7 @@ export const WithoutLabels = () => {
     if (containerWidth) {
         treemap()
             .width(containerWidth)
-            .enableLabels(false)
+            .hasLabels(false)
             .render(treemapContainer, aTestDataSet().withBudget().build());
     }
 

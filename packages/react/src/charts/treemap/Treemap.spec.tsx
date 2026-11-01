@@ -45,14 +45,14 @@ describe('treemap Chart', () => {
                     <Treemap
                         chart={TreemapWrapper}
                         data={treemapData.withBudget()}
-                        enableLabels={false}
+                        hasLabels={false}
                         labelsNumberFormat="$,"
                     />
                 );
 
                 const configuration = createSpy.mock.calls[0][2]!;
 
-                expect(configuration.enableLabels).toEqual(false);
+                expect(configuration.hasLabels).toEqual(false);
                 expect(configuration.labelsNumberFormat).toEqual('$,');
             });
         });

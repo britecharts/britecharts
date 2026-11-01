@@ -35,7 +35,7 @@ export const Playground: StoryFn<typeof Treemap> = (args) => {
 
 Playground.args = {
     isAnimated: false,
-    enableLabels: true,
+    hasLabels: true,
     labelsNumberFormat: '$,',
 };
 
@@ -44,7 +44,7 @@ Playground.parameters = {
 };
 
 export const WithoutLabels = () => (
-    <Treemap data={treemapData.withBudget()} enableLabels={false} />
+    <Treemap data={treemapData.withBudget()} hasLabels={false} />
 );
 
 export const WithAnotherColorSchema = () => (

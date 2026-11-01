@@ -79,13 +79,13 @@
                     "$comment": "A function: set it from JavaScript, since JSON can't hold one.",
                     "not": {}
                 },
-                "enableLabels": {
-                    "description": "Gets or Sets whether the chart labels its cells",
-                    "type": "boolean"
-                },
                 "exportChart": {
                     "description": "Executes a command that triggers the download of the current chart: an svg file when the filename ends in `.svg`, and a png otherwise",
                     "type": "string"
+                },
+                "hasLabels": {
+                    "description": "Gets or Sets whether the chart labels its cells",
+                    "type": "boolean"
                 },
                 "height": {
                     "description": "Gets or Sets the height of the chart",

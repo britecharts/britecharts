@@ -61,7 +61,7 @@ export interface TreemapProps {
      * Gets or Sets whether the chart labels its cells. A label shows only
      * where it fits. On by default
      */
-    enableLabels?: boolean;
+    hasLabels?: boolean;
 
     /**
      * The filename to export the chart to. Setting it exports the chart and fires

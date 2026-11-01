@@ -73,7 +73,7 @@ export const heatmap = <Heatmap {...heatmapProps} />;
 
 export const treemapProps: TreemapProps = {
     data: [{ name: 'Rent', value: 1450 }],
-    enableLabels: true,
+    hasLabels: true,
 };
 export const treemap = <Treemap {...treemapProps} />;
 
