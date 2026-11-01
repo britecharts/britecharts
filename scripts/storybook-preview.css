@@ -88,3 +88,17 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+.story-caption p,
+.story-caption ul {
+    margin: 0 0 8px;
+}
+
+.story-caption ul {
+    padding-left: 20px;
+}
+
+.story-caption code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+}
+

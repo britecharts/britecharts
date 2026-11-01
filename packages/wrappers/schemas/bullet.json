@@ -174,8 +174,7 @@
                 },
                 "required": [
                     "ranges",
-                    "measures",
-                    "markers"
+                    "measures"
                 ]
             }
         }

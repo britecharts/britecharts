@@ -14,8 +14,8 @@ const partialTestData = (): BulletChartDataShape[] => [
         markers: [105],
     },
 ];
-// From core's bullet data builder: withAllElements, withNoMarker and
-// withManyCPUData. Each item is one bullet.
+// From core's bullet data builder: withAllElements, withNoMarker,
+// withIncreasingDetail and withManyCPUData. Each item is one bullet.
 const withAllElements = (): BulletChartDataShape[] => [
     {
         ranges: [1500, 2100, 3500],
@@ -28,6 +28,32 @@ const withNoMarker = (): BulletChartDataShape[] => [
         ranges: [1500, 2100, 3500],
         measures: [1800, 2200],
         markers: [],
+    },
+];
+// One bullet per step, simplest first, each adding one thing to the last.
+// They share their largest value, so their axes line up.
+const withIncreasingDetail = (): BulletChartDataShape[] => [
+    {
+        ranges: [2000, 3500],
+        measures: [1800],
+    },
+    {
+        ranges: [1500, 2100, 3500],
+        measures: [1800],
+    },
+    {
+        ranges: [1500, 2100, 3500],
+        measures: [1800, 2200],
+    },
+    {
+        ranges: [1500, 2100, 3500],
+        measures: [1800, 2200],
+        markers: [2600],
+    },
+    {
+        ranges: [1500, 2100, 3500],
+        measures: [1800, 2200],
+        markers: [2600, 3000],
     },
 ];
 const withManyCPUData = (): BulletChartDataShape[] => [
@@ -63,5 +89,6 @@ export default {
     partialTestData,
     withAllElements,
     withNoMarker,
+    withIncreasingDetail,
     withManyCPUData,
 };

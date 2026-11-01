@@ -57,6 +57,39 @@ export function BulletDataBuilder(config) {
         return new this.Klass(attributes);
     };
 
+    // One bullet per step, simplest first, each adding one thing to the last.
+    // They share their largest value, so their axes line up.
+    this.withIncreasingDetail = function () {
+        const attributes = _.extend({}, this.config, {
+            data: [
+                {
+                    ranges: [2000, 3500],
+                    measures: [1800],
+                },
+                {
+                    ranges: [1500, 2100, 3500],
+                    measures: [1800],
+                },
+                {
+                    ranges: [1500, 2100, 3500],
+                    measures: [1800, 2200],
+                },
+                {
+                    ranges: [1500, 2100, 3500],
+                    measures: [1800, 2200],
+                    markers: [2600],
+                },
+                {
+                    ranges: [1500, 2100, 3500],
+                    measures: [1800, 2200],
+                    markers: [2600, 3000],
+                },
+            ],
+        });
+
+        return new this.Klass(attributes);
+    };
+
     this.withManyCPUData = function () {
         const attributes = _.extend({}, this.config, {
             data: [

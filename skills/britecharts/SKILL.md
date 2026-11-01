@@ -91,7 +91,7 @@ barChart.render(container, data);
 | Two numeric variables | `scatterPlot` | `{ name, x, y }` |
 | Day × hour intensity | `heatmap` | `{ day, hour, value }` (day 0–6, hour 0–23) |
 | A small trend, no axes | `sparkline` | `{ date, value }` |
-| A measure against ranges and a target | `bullet` | one object per chart, not an array: `{ ranges: [n, n, n], measures: [n, n?], markers: [n] }` |
+| A measure against ranges and a target | `bullet` | one object per chart, not an array: `{ ranges: [n, n, n], measures: [n, n?], markers?: [n] }` |
 | Selecting a date window | `brush` | `{ date, value }` (value may be `null` for gaps) |
 | A key for another chart | `legend` | `{ id, name, quantity? }` |
 
