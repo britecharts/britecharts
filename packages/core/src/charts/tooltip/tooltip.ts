@@ -67,7 +67,7 @@ export type TooltipListDataShape = {
     [tooltipKeys.Topics]: TooltipTopic[];
 };
 
-/** What the single-value charts (bar, scatter plot, heatmap, donut) dispatch */
+/** What the single-value charts (bar, scatter plot, heatmap, treemap, donut) dispatch */
 export type TooltipSingleDataShape = {
     name: string;
     value: number;
@@ -314,7 +314,7 @@ const formatSingleValue = format('.2f');
  * row per topic, with a colour dot, the topic's name and its value) for the
  * multi-value charts -- line, stacked area, stacked bar and grouped bar --
  * or a **single value** (a title, the element's name and a big value) for
- * the single-value charts -- bar, scatter plot, heatmap and donut. By
+ * the single-value charts -- bar, scatter plot, heatmap, treemap and donut. By
  * default it picks the layout from the data point it is given; `layout()`
  * forces one. It shows a title only if you set one, and a single value with
  * two decimals unless you set a format.
@@ -332,7 +332,7 @@ const formatSingleValue = format('.2f');
  * | --- | --- | --- | --- | --- |
  * | line, stacked area | `(data, [x, y])` | `(dataPoint, [x, y], [width, height], colorMap)` | the hovered date's x, the pointer's y | `.metadata-group .vertical-marker-container` |
  * | stacked bar, grouped bar | `(data, [x, y])` | `(dataPoint, [x, y], [width, height], colorMap)` | the pointer, over a bar only | `.metadata-group` |
- * | bar, heatmap, donut | `(dataPoint, [x, y], [width, height])` | `(dataPoint, [x, y], [width, height])` | the pointer, over a shape only | `.metadata-group` |
+ * | bar, heatmap, treemap, donut | `(dataPoint, [x, y], [width, height])` | `(dataPoint, [x, y], [width, height])` | the pointer, over a shape only | `.metadata-group` |
  * | scatter plot | `(dataPoint, [x, y])` | `(dataPoint, [x, y], [width, height])` | the hovered point | `.metadata-group` |
  *
  * Positions are in pixels relative to the chart's drawing area (inside the
@@ -354,7 +354,7 @@ const formatSingleValue = format('.2f');
  * | stacked bar | `topicLabel('values')`, `nameLabel('stack')` | its rows are under `values`, named by `stack` |
  * | grouped bar | `topicLabel('values')`, `nameLabel('group')` | its rows are under `values`, named by `group` |
  * | scatter plot | `valueLabel('y')` | a point's value is its `y` (add `nameLabel('x')` to show `x` instead of its name) |
- * | bar, donut, heatmap | nothing | their data points carry `name` and `value` |
+ * | bar, donut, heatmap, treemap | nothing | their data points carry `name` and `value` |
  *
  * In React, `Tooltip` starts from `topicLabel('values')`, so the line chart
  * is the one that needs a setting there: `topicLabel="topics"`.

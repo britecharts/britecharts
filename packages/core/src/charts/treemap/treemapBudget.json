@@ -1,0 +1,52 @@
+{
+    "data": [
+        {
+            "name": "Rent",
+            "value": 1450
+        },
+        {
+            "name": "Utilities",
+            "value": 210
+        },
+        {
+            "name": "Insurance",
+            "value": 130
+        },
+        {
+            "name": "Groceries",
+            "value": 520
+        },
+        {
+            "name": "Restaurants",
+            "value": 240
+        },
+        {
+            "name": "Coffee",
+            "value": 60
+        },
+        {
+            "name": "Car",
+            "value": 340
+        },
+        {
+            "name": "Fuel",
+            "value": 150
+        },
+        {
+            "name": "Train",
+            "value": 90
+        },
+        {
+            "name": "Holidays",
+            "value": 300
+        },
+        {
+            "name": "Gym",
+            "value": 55
+        },
+        {
+            "name": "Books",
+            "value": 35
+        }
+    ]
+}

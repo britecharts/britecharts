@@ -160,7 +160,7 @@ const section = (heading, entries) =>
 
 const index = `# Britecharts
 
-> Britecharts is a library of reusable D3.js charts: bar, grouped bar, stacked bar, line, stacked area, donut, scatter plot, heatmap, sparkline and bullet charts, with a legend, tooltips and a brush. Each chart is a function configured through chained getter and setter accessors, then called on a D3 selection that holds the data. \`@britecharts/core\` has the charts, \`@britecharts/wrappers\` creates, updates and destroys them in one call, and \`@britecharts/react\` has them as React components.
+> Britecharts is a library of reusable D3.js charts: bar, grouped bar, stacked bar, line, stacked area, donut, scatter plot, heatmap, treemap, sparkline and bullet charts, with a legend, tooltips and a brush. Each chart is a function configured through chained getter and setter accessors, then called on a D3 selection that holds the data. \`@britecharts/core\` has the charts, \`@britecharts/wrappers\` creates, updates and destroys them in one call, and \`@britecharts/react\` has them as React components.
 
 Version 3 is in beta: install \`@britecharts/core@beta\`, \`@britecharts/wrappers@beta\` or \`@britecharts/react@beta\`. Code written for version 2, the \`britecharts\` package, differs; the migration guide lists each change. Every chart shares one accessor vocabulary, such as \`colorSchema\`, \`isAnimated\`, \`isLoading\`, \`numberFormat\`, \`a11yTitle\` and \`a11yDescription\`, and an unset accessor reads back \`null\`.
 

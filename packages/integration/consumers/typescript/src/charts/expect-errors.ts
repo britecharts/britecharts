@@ -12,6 +12,7 @@ import {
     miniTooltip,
     scatterPlot,
     sparkline,
+    treemap,
     stackedArea,
     stackedBar,
     tooltip,
@@ -40,6 +41,10 @@ miniTooltip().nope();
 scatterPlot().width('wide');
 // @ts-expect-error width takes a number
 sparkline().width('wide');
+// @ts-expect-error width takes a number
+treemap().width('wide');
+// @ts-expect-error a treemap entry needs a name
+treemap().render('#chart', [{ value: 1 }]);
 // @ts-expect-error width takes a number
 stackedArea().width('wide');
 // @ts-expect-error width takes a number

@@ -370,6 +370,9 @@ importers:
       '@types/d3-format':
         specifier: 3.0.4
         version: 3.0.4
+      '@types/d3-hierarchy':
+        specifier: 3.1.7
+        version: 3.1.7
       '@types/d3-interpolate':
         specifier: 3.0.4
         version: 3.0.4
@@ -419,6 +422,9 @@ importers:
         specifier: 3.0.1
         version: 3.0.1
       d3-format:
+        specifier: 3.1.2
+        version: 3.1.2
+      d3-hierarchy:
         specifier: 3.1.2
         version: 3.1.2
       d3-interpolate:
@@ -3770,6 +3776,9 @@ packages:
 
   '@types/d3-format@3.0.4':
     resolution: {integrity: sha512-fALi2aI6shfg7vM5KiR1wNJnZ7r6UuggVqtDA+xiEdPZQwy/trcQaHnwShLuLdta2rTymCNpxYTiMZX/e09F4g==}
+
+  '@types/d3-hierarchy@3.1.7':
+    resolution: {integrity: sha512-tJFtNoYBtRtkNysX1Xq4sxtjK8YgoWUNpIiUee0/jHGRwqvzYxkq0hGVbbOGSz+JgFxxRu4K8nb3YpG3CMARtg==}
 
   '@types/d3-interpolate@3.0.4':
     resolution: {integrity: sha512-mgLPETlrpVV1YRJIglr4Ez47g7Yxjl1lj7YKsiMCb27VJH9W8NVM6Bb9d8kkpG/uAQS5AmbA48q2IAolKKo1MA==}
@@ -14263,6 +14272,8 @@ snapshots:
   '@types/d3-ease@3.0.2': {}
 
   '@types/d3-format@3.0.4': {}
+
+  '@types/d3-hierarchy@3.1.7': {}
 
   '@types/d3-interpolate@3.0.4':
     dependencies:

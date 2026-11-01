@@ -16,6 +16,8 @@ import { StackedAreaDataBuilder } from './stacked-area/stackedAreaDataBuilder';
 import stackedBar from './stacked-bar/stacked-bar';
 import { StackedBarDataBuilder } from './stacked-bar/stackedBarDataBuilder';
 import tooltip from './tooltip/tooltip';
+import treemap from './treemap/treemap';
+import { TreemapDataBuilder } from './treemap/treemapDataBuilder';
 
 // Every chart with a tooltip: its data, the tooltip it takes, and the labels
 // it sets on that tooltip
@@ -68,6 +70,13 @@ const CHARTS = [
         () => new StackedBarDataBuilder().with3Sources().build(),
         tooltip,
         { topicLabel: 'values', nameLabel: 'stack' },
+    ],
+    [
+        'treemap',
+        treemap,
+        () => new TreemapDataBuilder().withBudget().build(),
+        tooltip,
+        {},
     ],
 ];
 

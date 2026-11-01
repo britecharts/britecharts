@@ -41,6 +41,7 @@ export const CHARTS = [
     ['stackedArea', 'StackedAreaChartModule', 'StackedAreaChartDataShape[]'],
     ['stackedBar', 'StackedBarChartModule', 'StackedBarChartDataShape[]'],
     ['tooltip', 'TooltipModule', null],
+    ['treemap', 'TreemapChartModule', 'TreemapChartDataShape[]'],
 ];
 
 // `on` registers events, which the configuration names directly instead;

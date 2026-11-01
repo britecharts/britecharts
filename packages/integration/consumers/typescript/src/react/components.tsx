@@ -13,6 +13,7 @@ import {
     Sparkline,
     StackedArea,
     StackedBar,
+    Treemap,
     ResponsiveContainer,
     Tooltip,
     withResponsiveness,
@@ -30,6 +31,7 @@ import type {
     SparklineProps,
     StackedAreaProps,
     StackedBarProps,
+    TreemapProps,
     TooltipProps,
     TooltipRenderArgs,
 } from '@britecharts/react';
@@ -68,6 +70,12 @@ export const heatmapProps: HeatmapProps = {
     yAxisLabels: ['Sun'],
 };
 export const heatmap = <Heatmap {...heatmapProps} />;
+
+export const treemapProps: TreemapProps = {
+    data: [{ name: 'Rent', value: 1450 }],
+    hasLabels: true,
+};
+export const treemap = <Treemap {...treemapProps} />;
 
 export const legendProps: LegendProps = {
     data: [{ id: 1, quantity: 2, name: 'Shiny' }],
@@ -158,6 +166,9 @@ export const stackedAreaWithRef = <StackedArea {...stackedAreaProps} ref={someRe
 // prettier-ignore
 // @ts-expect-error StackedBar is a function component: it takes no ref
 export const stackedBarWithRef = <StackedBar {...stackedBarProps} ref={someRef} />;
+// prettier-ignore
+// @ts-expect-error Treemap is a function component: it takes no ref
+export const treemapWithRef = <Treemap {...treemapProps} ref={someRef} />;
 // prettier-ignore
 // @ts-expect-error Bullet is a function component: it takes no ref
 export const bulletWithRef = <Bullet {...bulletProps} ref={someRef} />;

@@ -23,6 +23,8 @@ import stackedArea from './stacked-area/stacked-area';
 import { StackedAreaDataBuilder } from './stacked-area/stackedAreaDataBuilder';
 import stackedBar from './stacked-bar/stacked-bar';
 import { StackedBarDataBuilder } from './stacked-bar/stackedBarDataBuilder';
+import treemap from './treemap/treemap';
+import { TreemapDataBuilder } from './treemap/treemapDataBuilder';
 
 // Every chart that draws its own svg, with the data its own spec renders and
 // the name it is announced by when no a11yTitle is set.
@@ -98,6 +100,12 @@ const CHARTS = [
         stackedBar,
         () => new StackedBarDataBuilder().with3Sources().build(),
         'Stacked bar chart',
+    ],
+    [
+        'treemap',
+        treemap,
+        () => new TreemapDataBuilder().withBudget().build(),
+        'Treemap',
     ],
 ];
 
@@ -390,6 +398,7 @@ const KEYBOARD_CHARTS = CHARTS.filter(([name]) =>
         'scatter plot',
         'stacked area',
         'stacked bar',
+        'treemap',
     ].includes(name)
 );
 

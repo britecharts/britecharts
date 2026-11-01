@@ -10,6 +10,7 @@ import {
     stackedArea,
     stackedBar,
     tooltip,
+    treemap,
 } from '@britecharts/core';
 import '@britecharts/core/dist/styles/bundle/britecharts.min.css';
 import {
@@ -20,6 +21,7 @@ import {
     scatterData,
     stackedAreaData,
     stackedBarData,
+    treemapData,
 } from './hover-data.js';
 
 const WIDTH = 600;
@@ -114,3 +116,4 @@ withMiniTooltip(
 withMiniTooltip(heatmap(), select('.hover-heatmap'), heatmapData, (chart) =>
     chart.boxSize(20)
 );
+withMiniTooltip(treemap(), select('.hover-treemap'), treemapData);

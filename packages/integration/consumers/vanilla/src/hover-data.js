@@ -73,3 +73,11 @@ export const heatmapData = Array.from({ length: 7 }, (_, dayIndex) =>
         value: (dayIndex * 5 + hour * 3) % 17,
     }))
 ).flat();
+
+export const treemapData = [
+    { name: 'Rent', value: 1450 },
+    { name: 'Utilities', value: 210 },
+    { name: 'Groceries', value: 520 },
+    { name: 'Restaurants', value: 240 },
+    { name: 'Car', value: 340 },
+];

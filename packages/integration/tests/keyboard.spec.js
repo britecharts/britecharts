@@ -15,6 +15,7 @@ const CHARTS = [
     ['bar', '.britechart-mini-tooltip'],
     ['scatter-plot', '.britechart-mini-tooltip'],
     ['heatmap', '.britechart-mini-tooltip'],
+    ['treemap', '.britechart-mini-tooltip'],
 ];
 
 test.beforeEach(async ({ page }) => {

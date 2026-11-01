@@ -8,7 +8,7 @@ Use the wrappers to put a Britecharts chart into a framework without React: Vue,
 | `update(element, data, config, chart)` | when data or config change | the chart |
 | `destroy(element)` | unmount | nothing; removes the chart's svg |
 
-Wrappers: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper`, `StackedBarWrapper`, and `TooltipWrapper`, which has its own signature.
+Wrappers: `BarWrapper`, `BrushWrapper`, `BulletWrapper`, `DonutWrapper`, `GroupedBarWrapper`, `HeatmapWrapper`, `LegendWrapper`, `LineWrapper`, `ScatterPlotWrapper`, `SparklineWrapper`, `StackedAreaWrapper`, `StackedBarWrapper`, `TreemapWrapper`, and `TooltipWrapper`, which has its own signature.
 
 ```js
 import { BarWrapper } from '@britecharts/wrappers';
