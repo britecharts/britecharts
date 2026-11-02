@@ -75,7 +75,7 @@ export const Playground: StoryFn<typeof Heatmap> = (args) => {
 
 Playground.args = {
     isAnimated: false,
-    colorSchema: colors.colorSchemas.purple,
+    colorSchema: colors.colorSchemas.yellow,
     boxSize: 70,
 };
 

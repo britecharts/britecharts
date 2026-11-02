@@ -12,6 +12,8 @@ Use it from a script tag, in React, or through the wrappers in your framework of
 
 <!-- truncate -->
 
+![A horizontal bar chart comparing six categories. Vibrant and Vivid have the largest values at 6, followed by Opalescent at 4.](./horizontal-bar.png)
+
 ## A chart you can put in a product
 
 D3 gives you the low-level tools to build a visualization. Britecharts gives you **finished charts** built with D3: bars, lines, donuts, stacked areas, scatter plots, heatmaps and more. You choose the chart and supply its data, then use a shared API to make it fit your page.
@@ -32,39 +34,19 @@ Give a chart a meaningful `a11yTitle` and an `a11yDescription` that explains wha
 
 ## Make it fit your page, and take it with you
 
-Text, axes, grids, tooltips, legends and loading states now get their colours from `--bc-*` CSS custom properties. Change a token to match your design, or let the charts follow your page's colour scheme. Set `color-scheme: light|dark` on the page and the charts support dark mode with it.
+Text, axes, grids, tooltips, legends and loading states now get their colours from `--bc-*` CSS custom properties. Change a token to match your design, or let the charts follow your page's colour scheme. Set `color-scheme: light` or `color-scheme: dark` on the page to choose a theme, or `color-scheme: light dark` to follow the reader’s preference.
+
+![The horizontal bar chart tested in dark mode within our storybook.](./bar-dark.png)
 
 When someone needs the chart in a report or a presentation, `exportChart()` downloads an SVG or PNG with its styles and an optional title. SVG keeps the chart sharp at any size, and exported images retain the resolved theme colours.
 
 The how-to guides show [theming and dark mode](/docs/how-tos/user-how-to-guides#how-to-theme-a-chart-and-support-dark-mode) and [export](/docs/how-tos/user-how-to-guides#how-to-export-a-chart) in use.
 
-## Use it where you already work
-
-Version 3 splits the library into three packages:
-
-- **`@britecharts/core`** contains the D3 charts and helpers. Use it directly, with a bundler or from a CDN.
-- **`@britecharts/wrappers`** provides a configuration-based layer for creating and updating charts, ready to connect to a framework's lifecycle.
-- **`@britecharts/react`** provides React components, including the brush, heatmap and new treemap, with React 19 and StrictMode covered by integration tests.
-
-The packages use D3 v7, ship TypeScript types, and support **ES modules, CommonJS, UMD and CDN builds**. Bundlers can drop charts you do not import. I also checked the published types against runtime behaviour and corrected getters, callbacks and accessors.
-
-## Clear enough for a coding agent, too
-
-Version 3 includes a **JSON Schema for each chart spec**, shaped as `{ chart, config, data }`, so an editor or agent can validate it before rendering. The wrappers check configuration values and explain mistakes: an unknown `heigth` key gets a suggestion to use `height`, with a link to the chart's API page. Explicit data shapes and configuration help people writing charts and agents writing them on their behalf.
-
-I also added an **agent skill** that documents the data shapes, settings, events and migration pitfalls. Install it with:
-
-```sh
-npx skills add britecharts/britecharts
-```
-
-There is also an [llms.txt](pathname:///llms.txt), an index of the docs for coding agents, generated from the same source comments as the API reference. The [chart spec guide](/docs/how-tos/user-how-to-guides#how-to-describe-a-chart-as-a-spec-and-check-it) explains how the pieces fit together.
-
 ## More ways to show your data
 
 ### A new treemap chart
 
-Added since the last beta, the treemap shows how a total divides into its parts: each rectangle's area is proportional to its value. Use it to compare spending categories in a budget, product revenue or other contributions to a total. It takes a flat array of `{ name, value }` entries and is available in core, the wrappers and React.
+The new treemap shows how a total divides into its parts: each rectangle's area is proportional to its value. Use it to compare spending categories in a budget, product revenue or other contributions to a total. It takes a flat array of `{ name, value }` entries and is available in core, the wrappers and React.
 
 ![A treemap of a household budget, with labelled rectangles sized by spending. Rent is the largest at 1,450, followed by groceries at 520 and car costs at 340.](./treemap.png)
 
@@ -80,15 +62,42 @@ The stacked bar and stacked area support `isNormalized(true)`, scaling each stac
 
 The heatmap now accepts `xAxisLabels` as well as `yAxisLabels`, so you can compare any two sets of categories. A square comparison grid is one example:
 
+<div class="release-post-heatmap">
+
 ![A six-by-six purple heatmap comparing Blazing, Glittering, Shining, Sunny, Flashing and Radiant on both axes, with darker cells along the diagonal.](./heatmap.png)
+
+</div>
 
 Version 3 also adds **negative values** in the bar, grouped bar, stacked bar, brush and scatter plot.
 
 The [Storybook](pathname:///storybook/) lets you explore the charts and their options in both core and React.
 
+
+## Clear enough for a coding agent, too
+
+Version 3 includes a **JSON Schema for each chart spec**, shaped as `{ chart, config, data }`, so an editor or agent can validate it before rendering. The wrappers check configuration values and explain mistakes: an unknown `heigth` key gets a suggestion to use `height`, with a link to the chart's API page. Explicit data shapes and configuration help people writing charts and agents writing them on their behalf.
+
+I also added an **agent skill** that documents the data shapes, settings, events and migration pitfalls. Install it with:
+
+```sh
+npx skills add britecharts/britecharts
+```
+
+There is also an [llms.txt](pathname:///llms.txt), an index of the docs for coding agents, generated from the same source comments as the API reference. The [chart spec guide](/docs/how-tos/user-how-to-guides#how-to-describe-a-chart-as-a-spec-and-check-it) explains how the pieces fit together.
+
+## Use it where you already work
+
+Version 3 splits the library into three packages:
+
+- **`@britecharts/core`** contains the D3 charts and helpers. Use it directly, with a bundler or from a CDN.
+- **`@britecharts/wrappers`** provides a configuration-based layer for creating and updating charts, ready to connect to a framework's lifecycle.
+- **`@britecharts/react`** provides React components, including the brush, heatmap and new treemap, with React 19 and StrictMode covered by integration tests.
+
+The packages use D3 v7, ship TypeScript types, and support **ES modules, CommonJS, UMD and CDN builds**. Bundlers can drop charts you do not import. The types cover chart getters, callbacks and accessors.
+
 ## Moving from version 2
 
-This is a major release, and **there are breaking changes**. The [v2-to-v3 migration guide](/docs/how-tos/migration-guide-2-to-3) covers the changes with before-and-after examples, including changes between the betas. Version 2 ends at 2.18.2, and I do not plan to keep patching it after this release.
+This is a major release, and **there are breaking changes**. The [v2-to-v3 migration guide](/docs/how-tos/migration-guide-2-to-3) covers the changes with before-and-after examples. Version 2 ends at 2.18.2, and I do not plan to keep patching it after this release.
 
 ## Build your first chart, or help build the next release
 
