@@ -20,7 +20,7 @@ npm install @britecharts/core
 
 D3 gives you the tools to build a visualization. Britecharts gives you finished charts built with D3: bars, lines, donuts, stacked areas, scatter plots, heatmaps and more. You choose the chart and supply its data, then use a shared vocabulary of settings to make it fit your page.
 
-That has always been the point of the library. Version 3 takes it further: charts are responsive by default, loading states are available across the library, and a unified tooltip follows the pointer without getting cut off at the chart's edges. You can assign consistent category colours with `colorMap` and control animation timing with `animationDuration`.
+That has always been the point of the library. Version 3 takes it further: charts are responsive by default, and loading states are available across the library. A unified tooltip follows the pointer without getting cut off at the chart's edges. You can assign consistent category colours with `colorMap` and control animation timing with `animationDuration`.
 
 These are the details a chart needs once it leaves a demo and becomes part of someone's daily work. They belong in the library, so you can spend your time on what the data means.
 
@@ -50,13 +50,13 @@ Version 3 splits the library into three packages:
 - **`@britecharts/wrappers`** provides a configuration-based layer for creating and updating charts, ready to connect to a framework's lifecycle.
 - **`@britecharts/react`** provides React components, including the brush, heatmap and new treemap, with React 19 and StrictMode covered by integration tests.
 
-The packages use D3 v7, ship TypeScript types, and support ES modules, CommonJS, UMD and CDN builds. Bundlers can drop charts you do not import. The published types have also been checked against the charts' runtime behaviour, correcting getters, callbacks and accessors along the way.
+The packages use D3 v7, ship TypeScript types, and support ES modules, CommonJS, UMD and CDN builds. Bundlers can drop charts you do not import. I also checked the published types against runtime behaviour and corrected getters, callbacks and accessors.
 
 ## Clear enough for a coding agent, too
 
-A library is easier to use when its data shapes and configuration are explicit. That helps people writing charts and agents writing them on their behalf.
-
 Version 3 includes a JSON Schema for each chart spec, shaped as `{ chart, config, data }`, so an editor or agent can validate it before rendering. The wrappers check configuration values and explain mistakes: an unknown `heigth` key gets a suggestion to use `height`, with a link to the chart's API page.
+
+Explicit data shapes and configuration help people writing charts and agents writing them on their behalf.
 
 An agent skill documents the data shapes, settings, events and migration pitfalls. Install it with:
 
@@ -64,7 +64,7 @@ An agent skill documents the data shapes, settings, events and migration pitfall
 npx skills add britecharts/britecharts
 ```
 
-There is also an [llms.txt](pathname:///llms.txt) generated from the same source comments as the API reference. The [chart spec guide](/docs/how-tos/user-how-to-guides#how-to-describe-a-chart-as-a-spec-and-check-it) explains how the pieces fit together.
+There is also an [llms.txt](pathname:///llms.txt), an index of the docs for coding agents, generated from the same source comments as the API reference. The [chart spec guide](/docs/how-tos/user-how-to-guides#how-to-describe-a-chart-as-a-spec-and-check-it) explains how the pieces fit together.
 
 ## More ways to show your data
 
@@ -96,7 +96,7 @@ The [Storybook](pathname:///storybook/) lets you explore the charts and their op
 
 This is a major release, and there are breaking changes. Start with package imports: charts are now named exports from `@britecharts/core`, replacing the old per-chart paths under `britecharts/dist/umd`.
 
-You will also need to check renamed accessors, replace `loadingState()` with `isLoading(true)`, use the documented data keys, and await `exportChart()`. Accessibility adds hidden tables and, on supported charts, a tab stop; CSS overrides may need to move to the new theme tokens.
+You will also need to check renamed accessors, replace `loadingState()` with `isLoading(true)`, use the documented data keys, and await `exportChart()`. Charts now add a hidden table and, where supported, a tab stop. If your page already handles either one, turn it off with `a11yDataTable(false)` or `a11yKeyboardNavigation(false)`. CSS overrides may need to move to the new theme tokens.
 
 The [v2-to-v3 migration guide](/docs/how-tos/migration-guide-2-to-3) covers the changes with before-and-after examples, including changes between the betas. Version 2 ends at 2.18.2, and I do not plan to keep patching it after this release.
 
