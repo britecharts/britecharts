@@ -3,7 +3,7 @@ slug: britecharts-3
 title: Britecharts 3.0 is out! Finished D3 charts, accessible by default
 authors: [marcos]
 tags: [releases]
-draft: true
+draft: false
 ---
 
 Britecharts 3.0 is here. Pick a chart, give it data, and get a polished visualization with tooltips, animation, loading states and export built in. Version 3 brings **screen-reader data tables, keyboard navigation, dark mode, TypeScript types and tools for coding agents** to that same idea.
@@ -64,7 +64,7 @@ The heatmap now accepts `xAxisLabels` as well as `yAxisLabels`, so you can compa
 
 <div class="release-post-heatmap">
 
-![A six-by-six purple heatmap comparing Blazing, Glittering, Shining, Sunny, Flashing and Radiant on both axes, with darker cells along the diagonal.](./heatmap.png)
+![A six-by-six yellow heatmap comparing Blazing, Glittering, Shining, Sunny, Flashing and Radiant on both axes, with darker cells along the diagonal.](./heatmap.png)
 
 </div>
 
