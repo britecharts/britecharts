@@ -51,7 +51,9 @@ jobs:
 
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'
-        run: pnpm exec commitlint --last --verbose
+        env:
+          COMMITLINT_DEPENDABOT: ${{ github.event.head_commit.author.username == 'dependabot[bot]' }}
+        run: pnpm exec commitlint --config .github/commitlint.cjs --last --verbose
 
       # Dependabot writes its own messages, whose bodies carry URLs longer than
       # the body line limit. Its pull request titles are still checked below.
@@ -65,9 +67,12 @@ jobs:
       # " (#<number>)", which counts toward the header length limit. It comes in
       # through the environment, never interpolated into the script, because a
       # title is text anyone opening a pull request controls.
+      # Dependabot gets only a subject-case exception, keyed on the PR author
+      # so a maintainer pushing a lockfile fix does not change its treatment.
       - name: Validate PR title with commitlint
         if: github.event_name == 'pull_request'
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: printf '%s (#%s)\n' "$PR_TITLE" "$PR_NUMBER" | pnpm exec commitlint --verbose
+          COMMITLINT_DEPENDABOT: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
+        run: printf '%s (#%s)\n' "$PR_TITLE" "$PR_NUMBER" | pnpm exec commitlint --config .github/commitlint.cjs --verbose
