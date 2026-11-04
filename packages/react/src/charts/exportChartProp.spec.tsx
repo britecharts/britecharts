@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import type { ReactElement } from 'react';
 import { mount } from '../../testing/mount';
 
@@ -103,9 +103,14 @@ describe('the exportChart prop', () => {
     it.each(CHARTS)(
         'should download the %s chart as the file named',
         async (name, render) => {
-            mount(render(`${name}.svg`));
+            // The wrapper queues export in a microtask after drawing. Flush
+            // it before asserting, without a polling deadline that depends
+            // on how quickly jsdom serializes the chart on a busy CI runner.
+            await act(async () => {
+                mount(render(`${name}.svg`));
+            });
 
-            await vi.waitFor(() => expect(downloads).toHaveLength(1));
+            expect(downloads).toHaveLength(1);
 
             const [{ filename, href }] = downloads;
             const content = decodeURIComponent(href);
