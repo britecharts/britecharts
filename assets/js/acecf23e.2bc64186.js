@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_britecharts_docs||=[]).push([[1903],{1912(s){s.exports=JSON.parse('{"blogBasePath":"/britecharts/blog","blogTitle":"Britecharts Blog: Releases and D3 Charting Guides","authorsListPath":"/britecharts/blog/authors"}')}}]);

@@ -9,11 +9,11 @@
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
         <item>
-            <title><![CDATA[Britecharts 3.0 is out! Finished D3 charts, accessible by default]]></title>
+            <title><![CDATA[Britecharts 3.0: Accessible D3 Charts for JavaScript and React]]></title>
             <link>https://britecharts.github.io/britecharts/blog/britecharts-3</link>
             <guid>https://britecharts.github.io/britecharts/blog/britecharts-3</guid>
             <pubDate>Mon, 02 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Britecharts 3.0 is here. Pick a chart, give it data, and get a polished visualization with tooltips, animation, loading states and export built in. Version 3 brings screen-reader data tables, keyboard navigation, dark mode, TypeScript types and tools for coding agents to that same idea.]]></description>
+            <description><![CDATA[Britecharts 3.0 brings accessible D3 charts, keyboard navigation, dark mode, TypeScript support, and a new treemap to JavaScript and React.]]></description>
             <content:encoded><![CDATA[<p>Britecharts 3.0 is here. Pick a chart, give it data, and get a polished visualization with tooltips, animation, loading states and export built in. Version 3 brings <strong>screen-reader data tables, keyboard navigation, dark mode, TypeScript types and tools for coding agents</strong> to that same idea.</p>
 <p>Use it from a script tag, in React, or through the wrappers in your framework of choice. It is free and open source under the Apache 2.0 licence.</p>
 <p><img decoding="async" loading="lazy" alt="A horizontal bar chart comparing six categories. Vibrant and Vivid have the largest values at 6, followed by Opalescent at 4." src="https://britecharts.github.io/britecharts/assets/images/horizontal-bar-37813ab389fd4fa59f56521f8539c603.png" width="1146" height="354" class="img_nAt_"></p>

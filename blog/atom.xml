@@ -8,11 +8,11 @@
     <subtitle>Britecharts Blog</subtitle>
     <icon>https://britecharts.github.io/britecharts/img/icons/favicon.ico</icon>
     <entry>
-        <title type="html"><![CDATA[Britecharts 3.0 is out! Finished D3 charts, accessible by default]]></title>
+        <title type="html"><![CDATA[Britecharts 3.0: Accessible D3 Charts for JavaScript and React]]></title>
         <id>https://britecharts.github.io/britecharts/blog/britecharts-3</id>
         <link href="https://britecharts.github.io/britecharts/blog/britecharts-3"/>
         <updated>2026-11-02T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Britecharts 3.0 is here. Pick a chart, give it data, and get a polished visualization with tooltips, animation, loading states and export built in. Version 3 brings screen-reader data tables, keyboard navigation, dark mode, TypeScript types and tools for coding agents to that same idea.]]></summary>
+        <summary type="html"><![CDATA[Britecharts 3.0 brings accessible D3 charts, keyboard navigation, dark mode, TypeScript support, and a new treemap to JavaScript and React.]]></summary>
         <content type="html"><![CDATA[<p>Britecharts 3.0 is here. Pick a chart, give it data, and get a polished visualization with tooltips, animation, loading states and export built in. Version 3 brings <strong>screen-reader data tables, keyboard navigation, dark mode, TypeScript types and tools for coding agents</strong> to that same idea.</p>
 <p>Use it from a script tag, in React, or through the wrappers in your framework of choice. It is free and open source under the Apache 2.0 licence.</p>
 <p><img decoding="async" loading="lazy" alt="A horizontal bar chart comparing six categories. Vibrant and Vivid have the largest values at 6, followed by Opalescent at 4." src="https://britecharts.github.io/britecharts/assets/images/horizontal-bar-37813ab389fd4fa59f56521f8539c603.png" width="1146" height="354" class="img_nAt_"></p>
@@ -64,7 +64,7 @@
 <p>Start with <a class="" href="https://britecharts.github.io/britecharts/docs/tutorials/installing-britecharts">installation</a> and <a class="" href="https://britecharts.github.io/britecharts/docs/tutorials/getting-started">getting started</a>, or explore the <a class="" href="https://britecharts.github.io/britecharts/docs/API/bar">API reference</a> and <a class="" href="https://britecharts.github.io/britecharts/docs/how-tos/user-how-to-guides">how-to guides</a> if you already know what you want to build.</p>
 <p>Britecharts <strong>needs maintainers</strong>. I have carried most of this release myself, and I would love its next chapter to have more people contributing to it. If there is a chart, a package or a part of the documentation you would enjoy owning, the <a href="https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="">contributing guide</a> is where to start!</p>]]></content>
         <author>
-            <name>Marcos Iglesias Valle</name>
+            <name>Marcos Iglesias</name>
             <uri>https://github.com/golodhros</uri>
         </author>
         <category label="Releases" term="Releases"/>
@@ -123,7 +123,7 @@
 <p>Please try this beta in a real project, with a screen reader and a keyboard if you can. Open an <a href="https://github.com/britecharts/britecharts/issues" target="_blank" rel="noopener noreferrer" class="">issue</a> with the chart, the data and what you expected.</p>
 <p>Britecharts still needs maintainers. If you would like to own part of it, the <a href="https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="">contributing guide</a> is where to start.</p>]]></content>
         <author>
-            <name>Marcos Iglesias Valle</name>
+            <name>Marcos Iglesias</name>
             <uri>https://github.com/golodhros</uri>
         </author>
         <category label="Releases" term="Releases"/>
@@ -164,7 +164,7 @@
 <p>So please try this beta in a real project. Open an <a href="https://github.com/britecharts/britecharts/issues" target="_blank" rel="noopener noreferrer" class="">issue</a> with the chart, the data and what you expected. The <a href="https://britecharts.github.io/britecharts/storybook/" target="_blank" rel="noopener noreferrer" class="">Storybook</a> shows every chart and its options, in core and in React. It is the fastest way to check whether something is a bug or a setting.</p>
 <p>Britecharts still needs maintainers. If you would like to own part of it, the <a href="https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="">contributing guide</a> is where to start.</p>]]></content>
         <author>
-            <name>Marcos Iglesias Valle</name>
+            <name>Marcos Iglesias</name>
             <uri>https://github.com/golodhros</uri>
         </author>
         <category label="Releases" term="Releases"/>
@@ -207,7 +207,7 @@
 <p>A beta is only useful if people actually try to break it, so please do. Open an <a href="https://github.com/britecharts/britecharts/issues" target="_blank" rel="noopener noreferrer" class="">issue</a> with the chart, the data and what you expected instead — the more specific, the faster I can act on it.</p>
 <p>I will also say plainly what the <a href="https://github.com/britecharts/britecharts/blob/main/.github/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="">contributing guide</a> says: Britecharts needs maintainers. I have carried this release mostly on my own, and a 3.7k-star library with one person behind it is not a sustainable place to leave it. If any part of this codebase is something you would enjoy owning, that guide is where to start the conversation.</p>]]></content>
         <author>
-            <name>Marcos Iglesias Valle</name>
+            <name>Marcos Iglesias</name>
             <uri>https://github.com/golodhros</uri>
         </author>
         <category label="Releases" term="Releases"/>
