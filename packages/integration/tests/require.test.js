@@ -7,9 +7,26 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { createRequire } = require('node:module');
 const path = require('node:path');
+const { pathToFileURL } = require('node:url');
 
 const CONSUMER = path.resolve(__dirname, '..', 'consumers', 'vanilla');
 const requireFromConsumer = createRequire(path.join(CONSUMER, 'package.json'));
+
+test('ESM chart selections receive d3-transition methods in a consumer install', async () => {
+    const requireFromCore = createRequire(
+        requireFromConsumer.resolve('@britecharts/core/package.json')
+    );
+    const { selection } = await import(
+        pathToFileURL(requireFromCore.resolve('d3-selection')).href
+    );
+
+    await import(pathToFileURL(requireFromCore.resolve('d3-transition')).href);
+
+    // d3-transition patches its own resolved selection prototype. An exact
+    // dependency pin can leave core using a second, unpatched copy instead.
+    assert.equal(typeof selection.prototype.transition, 'function');
+    assert.equal(typeof selection.prototype.interrupt, 'function');
+});
 
 // The public API of @britecharts/core, frozen for 3.0.0:
 // the 14 charts, `colors` and `constants`. The bundle must expose exactly
