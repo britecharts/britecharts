@@ -87,7 +87,7 @@ Playground.args = playgroundArgs(heatmap, [
     'isLoading',
 ]);
 Playground.args.isAnimated = false;
-Playground.args.colorSchema = 'purple';
+Playground.args.colorSchema = 'yellow';
 Playground.args.boxSize = 70;
 // Room on the left for the longest word
 Playground.args.margin = { ...Playground.args.margin, left: 80 };

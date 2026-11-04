@@ -71,3 +71,7 @@
 .markdown table td:first-child {
     padding-left: 0;
 }
+
+.release-post-heatmap img {
+    width: 85%;
+}

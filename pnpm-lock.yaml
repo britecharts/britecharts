@@ -201,7 +201,7 @@ catalogs:
       specifier: 18.13.0
       version: 18.13.0
     d3-selection:
-      specifier: 3.0.0
+      specifier: ^3.0.0
       version: 3.0.0
     eslint:
       specifier: 10.13.0
