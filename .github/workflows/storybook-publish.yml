@@ -44,6 +44,27 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Dependabot PRs do not receive Actions secrets. Keep building every
+      # Storybook, and publish only when its project token is available.
+      - name: Check Chromatic publishing credentials
+        id: chromatic-tokens
+        env:
+          CHROMATIC_TOKEN_CORE: ${{ secrets.CHROMATIC_TOKEN_CORE }}
+          CHROMATIC_TOKEN_REACT: ${{ secrets.CHROMATIC_TOKEN_REACT }}
+        run: |
+          for project in core react; do
+            case "$project" in
+              core) token="$CHROMATIC_TOKEN_CORE" ;;
+              react) token="$CHROMATIC_TOKEN_REACT" ;;
+            esac
+            if [ -n "$token" ]; then
+              echo "${project}=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "${project}=false" >> "$GITHUB_OUTPUT"
+              echo "Chromatic publishing skipped for ${project}: project token unavailable. Storybook builds still run." >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
       - name: Build all packages 🔧
         run: pnpm run build:packages
 
@@ -51,6 +72,7 @@ jobs:
         run: pnpm --filter @britecharts/core run demo:build
 
       - name: Publish core storybook to Chromatic 🚀
+        if: steps.chromatic-tokens.outputs.core == 'true'
         uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_TOKEN_CORE }}
@@ -61,6 +83,7 @@ jobs:
         run: pnpm --filter @britecharts/react run demo:build
 
       - name: Publish react storybook to Chromatic 🚀
+        if: steps.chromatic-tokens.outputs.react == 'true'
         uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_TOKEN_REACT }}
