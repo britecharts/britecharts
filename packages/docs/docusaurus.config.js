@@ -39,6 +39,10 @@ module.exports = {
                         'https://github.com/britecharts/britecharts/edit/main/packages/docs/',
                 },
                 blog: {
+                    blogTitle:
+                        'Britecharts Blog: Releases and D3 Charting Guides',
+                    blogDescription:
+                        'Britecharts releases and guides for building accessible D3 charts in JavaScript and React, with tips on accessibility, theming, and data visualization.',
                     showReadingTime: true,
                     editUrl:
                         'https://github.com/britecharts/britecharts/edit/main/packages/docs/blog/',

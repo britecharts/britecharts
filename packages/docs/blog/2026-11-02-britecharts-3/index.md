@@ -1,6 +1,8 @@
 ---
 slug: britecharts-3
-title: Britecharts 3.0 is out! Finished D3 charts, accessible by default
+title: 'Britecharts 3.0: Accessible D3 Charts for JavaScript and React'
+description: Britecharts 3.0 brings accessible D3 charts, keyboard navigation, dark mode, TypeScript support, and a new treemap to JavaScript and React.
+image: ./social-preview.png
 authors: [marcos]
 tags: [releases]
 draft: false
