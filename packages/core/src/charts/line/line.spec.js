@@ -17,6 +17,66 @@ describe('line Chart', () => {
     let dataset, containerFixture, lineChart;
 
     describe('render', () => {
+        describe('when values span positive and negative thousands', () => {
+            beforeEach(() => {
+                document.body.insertAdjacentHTML(
+                    'afterbegin',
+                    '<div id="fixture"><div class="test-container"></div></div>'
+                );
+                dataset = {
+                    data: [
+                        {
+                            topicName: 'Net',
+                            name: 1,
+                            date: '2024-05-01T00:00:00Z',
+                            value: -50000,
+                        },
+                        {
+                            topicName: 'Net',
+                            name: 1,
+                            date: '2024-05-02T00:00:00Z',
+                            value: 50000,
+                        },
+                    ],
+                };
+                lineChart = chart().width(600).isAnimated(false);
+                containerFixture = d3.select('.test-container');
+            });
+
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should abbreviate both signs by default', () => {
+                containerFixture.datum(dataset).call(lineChart);
+
+                const ticks = containerFixture
+                    .selectAll('.y-axis-group .tick text')
+                    .nodes()
+                    .map((node) => node.textContent);
+
+                expect(ticks).toEqual(['−40k', '−20k', '0', '20k', '40k']);
+            });
+
+            it('should preserve an explicit number format', () => {
+                lineChart.numberFormat(',.0f');
+                containerFixture.datum(dataset).call(lineChart);
+
+                const ticks = containerFixture
+                    .selectAll('.y-axis-group .tick text')
+                    .nodes()
+                    .map((node) => node.textContent);
+
+                expect(ticks).toEqual([
+                    '−40,000',
+                    '−20,000',
+                    '0',
+                    '20,000',
+                    '40,000',
+                ]);
+            });
+        });
+
         describe('when a single line of zeroes', () => {
             beforeEach(() => {
                 const fixture =
