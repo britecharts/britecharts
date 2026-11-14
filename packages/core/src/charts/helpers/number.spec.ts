@@ -1,6 +1,50 @@
-import { calcLinearRegression, calculatePercent, isInteger } from './number';
+import {
+    calcLinearRegression,
+    calculatePercent,
+    formatDecimalValue,
+    formatIntegerValue,
+    isInteger,
+} from './number';
 
 describe('number Helper', () => {
+    describe('formatIntegerValue', () => {
+        it.each([
+            [0, '0', '0'],
+            [9, '9', '−9'],
+            [10, '10', '−10'],
+            [999, '999', '−999'],
+            [1000, '1.0k', '−1.0k'],
+            [50000, '50k', '−50k'],
+            [2000000, '2.0M', '−2.0M'],
+        ] as const)(
+            'should format both signs of %s by magnitude',
+            (value, positive, negative) => {
+                expect(formatIntegerValue(value)).toEqual(positive);
+                expect(formatIntegerValue(-value)).toEqual(negative);
+            }
+        );
+    });
+
+    describe('formatDecimalValue', () => {
+        it.each([
+            [0, '0.000', '0.000'],
+            [0.125, '0.125', '−0.125'],
+            [9.5, '9.500', '−9.500'],
+            [10, '10.0', '−10.0'],
+            [50.5, '50.5', '−50.5'],
+            [99.5, '99.5', '−99.5'],
+            [100, '100', '−100'],
+            [12345.678, '12k', '−12k'],
+            [2000000.5, '2.0M', '−2.0M'],
+        ] as const)(
+            'should format both signs of %s by magnitude',
+            (value, positive, negative) => {
+                expect(formatDecimalValue(value)).toEqual(positive);
+                expect(formatDecimalValue(-value)).toEqual(negative);
+            }
+        );
+    });
+
     describe('calcLinearRegression', () => {
         // These points sit exactly on y = x + 10, so the fit is slope 1,
         // intercept 10 and both ends are known without recomputing the
