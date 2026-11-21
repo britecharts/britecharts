@@ -1,5 +1,12 @@
 # @britecharts/wrappers
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [e377b0f]
+    - @britecharts/core@3.0.1
+
 ## 3.0.0
 
 ### Major Changes

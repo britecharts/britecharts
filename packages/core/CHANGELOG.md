@@ -1,5 +1,11 @@
 # @britecharts/core
 
+## 3.0.1
+
+### Patch Changes
+
+- e377b0f: Choose default number formats by absolute magnitude so negative values use the same decimal precision and k/M abbreviations as positive values.
+
 ## 3.0.0
 
 ### Major Changes
