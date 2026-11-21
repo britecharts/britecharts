@@ -52,11 +52,12 @@ const getValueSize = (
     value: number,
     limits: ValueFormatTable
 ): keyof ValueFormatTable => {
+    const magnitude = Math.abs(value);
     let size: keyof ValueFormatTable = 'large';
 
-    if (value < limits.small.limit) {
+    if (magnitude < limits.small.limit) {
         size = 'small';
-    } else if (value < limits.medium.limit) {
+    } else if (magnitude < limits.medium.limit) {
         size = 'medium';
     }
 
